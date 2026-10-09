@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e11" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Sound Trainer" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="description" content="Private, offline-first acoustic training. Learn and recognize four sounds using your device microphone." />
+  <title>Dry Fire Sound Trainer</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="hero-copy">
+        <p class="eyebrow">OFFLINE • PRIVATE • ON DEVICE</p>
+        <h1>Sound Trainer</h1>
+        <p class="subhead">Teach the app four sounds from your equipment, then test how well it recognizes new recordings.</p>
+      </div>
+      <div id="statusPill" class="status-pill" role="status" aria-live="polite">Loading…</div>
+    </header>
+
+    <section class="safety-card" aria-labelledby="safety-title">
+      <div class="safety-icon" aria-hidden="true">!</div>
+      <div>
+        <h2 id="safety-title">Safety check</h2>
+        <p>Before handling any firearm: verify it is unloaded, remove live ammunition from the area, and maintain a safe direction and backstop.</p>
+        <label class="checkbox-row"><input id="safetyAck" type="checkbox" /> I have completed the safety check for this session.</label>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="App sections">
+      <button class="tab active" data-view="home" aria-current="page" type="button"><span class="nav-glyph">⌂</span> Home</button>
+      <button class="tab" data-view="learn" type="button"><span class="nav-glyph">◉</span> Learn</button>
+      <button class="tab" data-view="recognize" type="button"><span class="nav-glyph">≋</span> Listen</button>
+      <button class="tab" data-view="history" type="button"><span class="nav-glyph">▤</span> History</button>
+      <button class="tab" data-view="settings" type="button"><span class="nav-glyph">⚙</span> Settings</button>
+    </nav>
+
+    <p id="appMessage" class="app-message hidden" role="alert"></p>
+
+    <section id="homeView" class="view" aria-labelledby="home-title">
+      <div class="home-kicker">YOUR PRIVATE ACOUSTIC TRAINER</div>
+      <h2 id="home-title" class="home-title">Train the sounds.<br><em>Track the results.</em></h2>
+      <p class="muted">Learn how your equipment sounds in your environment. Recognition runs on your device; no account or cloud upload.</p>
+      <div class="home-stats">
+        <article><span class="stat-icon">◈</span><strong id="homeExamples">0 / 32</strong><small>Training samples</small></article>
+        <article><span class="stat-icon">◎</span><strong id="homeEvents">0</strong><small>Recent detections</small></article>
+        <article><span class="stat-icon">✓</span><strong id="homeAccuracy">—</strong><small>Verified accuracy</small></article>
+      </div>
+      <div class="home-actions">
+        <button id="homeLearnBtn" type="button" class="button primary">Learn my sounds <span>→</span></button>
+        <button id="homeListenBtn" type="button" class="button secondary">Open live recognition <span>→</span></button>
+      </div>
+      <div class="info-note home-steps"><strong>How it works</strong><ol><li>Record at least 3 examples each of Draw from holster, Rack slide, Trigger pull and Change magazine.</li><li>Choose a built-in drill or free listening, then start the microphone and check detections.</li><li>Verify predictions to measure accuracy over time.</li></ol></div>
+    </section>
+
+    <section id="learnView" class="view hidden" aria-labelledby="learn-title">
+      <div class="section-head">
+        <div><p class="eyebrow">01 / TRAIN THE MODEL</p><h2 id="learn-title">Learn your sounds</h2></div>
+        <button id="resetModelBtn" class="button secondary" type="button">Reset sounds</button>
+      </div>
+      <p class="muted">Capture at least <strong>3 samples of each type</strong> (8–10 recommended). Each capture gives you a two-second countdown followed by a two-second recording window.</p>
+      <div id="modelNotice" class="info-note hidden" role="status"></div>
+      <div id="classCards" class="class-grid"></div>
+      <div class="tip"><strong>Recording tip:</strong> Keep the phone in a consistent position, perform just one action per recording, and avoid background noise. Raw audio is not saved—only numeric sound features.</div>
+    </section>
+
+    <section id="recognizeView" class="view hidden" aria-labelledby="recognize-title">
+      <div class="section-head">
+        <div><p class="eyebrow">02 / TEST THE MODEL</p><h2 id="recognize-title">Recognize</h2></div>
+      </div>
+      <section class="drill-panel" aria-labelledby="drill-heading">
+        <div class="drill-panel-head">
+          <div><p class="eyebrow">BUILT-IN DRILLS</p><h3 id="drill-heading">Choose a sound sequence</h3></div>
+          <span id="drillProgressBadge" class="drill-badge">Free listen</span>
+        </div>
+        <label class="drill-select-label" for="drillSelect">Training mode
+          <select id="drillSelect">
+            <option value="">Free listen · recognize any sound</option>
+            <option value="trigger-only">1 · Trigger pull</option>
+            <option value="rack-trigger">2 · Rack slide → Trigger pull</option>
+            <option value="mag-trigger">3 · Magazine change → Trigger pull</option>
+            <option value="draw-mag-trigger">4 · Draw from holster → Magazine change → Trigger pull</option>
+          </select>
+        </label>
+        <p id="drillExplanation" class="muted small">Select a preset to track its ordered sound detections while the microphone stays active.</p>
+        <ol id="drillSteps" class="drill-steps" aria-label="Expected sound sequence"></ol>
+        <div id="drillStats" class="drill-stats hidden" aria-live="polite">
+          <span><strong id="drillCompleted">0</strong> completed</span>
+          <span><strong id="drillIncorrect">0</strong> out of order</span>
+          <span><strong id="drillUnknown">0</strong> unknown</span>
+        </div>
+        <p id="drillFeedback" class="drill-feedback" role="status" aria-live="polite"></p>
+        <button id="resetDrillBtn" type="button" class="button secondary hidden">Reset drill counters</button>
+        <p class="muted small">A completed drill means the app detected the selected sequence in order, not that the actions were physically verified. Unknown sounds do not advance the sequence.</p>
+      </section>
+      <div class="listen-panel">
+        <div class="listen-visual" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <p id="trainingSummary" class="muted">Checking sound profiles…</p>
+        <div class="listener-control">
+          <button id="listenBtn" class="button primary" type="button">Start continuous listening</button>
+          <button id="singleShotBtn" class="button secondary" type="button">Single sound test</button>
+        </div>
+        <label class="sensitivity-control" for="sensitivity">Detection sensitivity
+          <select id="sensitivity"><option value="normal">Normal</option><option value="high">High (quieter events)</option><option value="low">Low (noisier rooms)</option></select>
+        </label>
+        <p id="listeningIndicator" class="listening-indicator" role="status" aria-live="polite">Microphone inactive</p>
+        <div class="meter-track" role="img" aria-label="Live microphone level"><div id="meterFill" class="meter-fill"></div></div>
+        <p class="muted small" id="listenNote">Continuous mode stays active through multiple separate actions. Pause briefly between sounds; tap Stop when finished. Single sound test records one sound and stops.</p>
+        <p id="eventCounter" class="eyebrow">0 detected · 0 discarded</p>
+        <h3 class="timeline-heading">Detected actions this session (newest first)</h3>
+        <ol id="sessionTimeline" class="session-timeline" aria-live="polite"></ol>
+      </div>
+      <div id="predictionEmpty" class="prediction empty">Your next recognition result will appear here.</div>
+      <div id="predictionCard" class="prediction hidden" aria-live="polite">
+        <p class="eyebrow">LATEST RESULT</p>
+        <div class="prediction-row"><div><h3 id="predictionLabel">—</h3><p id="predictionConfidence" class="muted">—</p></div><div id="predictionScore" class="score">—</div></div>
+        <div id="distanceBars" class="distance-list"></div>
+        <p class="small muted">Scores and similarity distances are experimental and are <strong>not calibrated probabilities</strong>. Confirm matches yourself.</p>
+        <div class="verify-inline">
+          <label for="latestActual">What sound did you actually make?</label>
+          <div class="verify-inline-controls">
+            <select id="latestActual">
+              <option value="">Choose actual sound…</option>
+              <option value="draw">Draw from holster</option><option value="rack">Rack slide</option>
+              <option value="trigger">Trigger pull</option><option value="reload">Change magazine</option>
+              <option value="other">Other / background noise</option>
+            </select>
+            <button id="verifyLatestBtn" type="button" class="button secondary">Verify</button>
+          </div>
+          <p class="small muted">Verification labels are used for accuracy evaluation, not automatic retraining.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="historyView" class="view hidden" aria-labelledby="history-title">
+      <div class="section-head"><div><p class="eyebrow">03 / LOCAL DATA</p><h2 id="history-title">History</h2></div></div>
+      <div class="settings-row"><label for="maxResults">Keep last N recognition results</label><input id="maxResults" type="number" min="1" max="500" step="1" value="50" /></div>
+      <p class="muted small">Training samples are stored separately. Changing N trims recognition history, not learned sound examples. Label each result to evaluate recognition on your own real-world samples.</p>
+      <div class="evaluation-panel" aria-live="polite">
+        <h3>Recognition quality · verified events only</h3>
+        <div class="eval-stats"><div><strong id="verifiedCount">0</strong><span>Verified</span></div><div><strong id="accuracyPct">—</strong><span>Accuracy</span></div><div><strong id="falsePositivePct">—</strong><span>Other-sound false positives</span></div></div>
+        <div id="confusionTable" class="confusion-wrap"></div>
+        <p class="small muted">Accuracy is based solely on the manually verified events retained on this device. It cannot measure missed sounds or events that were never detected.</p>
+      </div>
+      <div id="historyList" class="history-list"></div>
+      <button id="clearHistoryBtn" class="button secondary" type="button">Clear history</button>
+    </section>
+
+    <section id="settingsView" class="view hidden" aria-labelledby="settings-title">
+      <div class="section-head"><div><p class="eyebrow">05 / DEVICE &amp; PRIVACY</p><h2 id="settings-title">Settings</h2></div></div>
+      <div class="install-card">
+        <div class="install-badge">iOS · HOME SCREEN</div>
+        <h3>Install on your iPhone</h3>
+        <p id="installStatus" class="muted">Checking installation status…</p>
+        <ol><li>Open your deployed HTTPS address in <strong>Safari</strong>.</li><li>Tap the <strong>Share</strong> button.</li><li>Choose <strong>Add to Home Screen</strong>.</li><li>Enable <strong>Open as Web App</strong> (if shown), then tap <strong>Add</strong>.</li></ol>
+        <p class="small muted">This installs a web app icon and standalone experience, not an App Store IPA. The microphone runs only when the app is open.</p>
+      </div>
+      <div class="settings-group">
+        <h3>Backup &amp; restore</h3>
+        <p class="muted small">Export learned numeric sound features and the saved result history. The backup contains no raw recordings. Keep this file private.</p>
+        <div class="settings-actions"><button id="exportBtn" class="button secondary" type="button">Export backup</button><button id="importBtn" class="button secondary" type="button">Import backup</button><input id="importFile" type="file" accept="application/json,.json" class="hidden" /></div>
+        <p class="small muted">Import replaces the model and history on this device. Files from another device may perform differently.</p>
+      </div>
+      <div class="settings-group"><h3>About</h3><p class="muted small">Sound Trainer v0.7.0 · Private IndexedDB storage · Up to 50 learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
+    </section>
+
+    <footer>Microphone access stops when you tap Stop, leave recognition, or the page becomes hidden. Only numeric learned features, predictions and optional verification labels are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.</footer>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

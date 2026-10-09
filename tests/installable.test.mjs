@@ -1,0 +1,34 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { restoreBackup } from '../src/storage.js';
+
+const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+
+test('all app navigation targets and controls exist in HTML', () => {
+  for (const id of ['homeView', 'learnView', 'recognizeView', 'historyView', 'settingsView',
+    'homeLearnBtn', 'homeListenBtn', 'exportBtn', 'importBtn', 'importFile', 'installStatus',
+    'homeExamples', 'homeEvents', 'homeAccuracy', 'safetyAck', 'listenBtn', 'trainingSummary',
+    'maxResults', 'predictionCard', 'historyList',
+    'drillSelect', 'drillSteps', 'drillStats', 'drillFeedback', 'drillProgressBadge', 'resetDrillBtn']) {
+    assert.match(html, new RegExp(`id="${id}"`), `Missing ${id}`);
+  }
+  assert.match(html, /apple-touch-icon/);
+  assert.match(html, /manifest.webmanifest/);
+});
+
+test('invalid backup files are rejected before database access', async () => {
+  await assert.rejects(restoreBackup(null), /not a compatible/);
+  await assert.rejects(restoreBackup({format:'sound-trainer-backup',version:1,featureVersion:999}), /not a compatible/);
+  await assert.rejects(restoreBackup({format:'sound-trainer-backup',version:1,featureVersion:2,examples:[{label:'draw',id:'x',featureVersion:2,features:[1]}], events:[]}), /incompatible learned/);
+  await assert.rejects(restoreBackup({format:'sound-trainer-backup',version:1,featureVersion:2,examples:[], events:[{id:'e',label:'draw',score:20,actualLabel:'wrong'}]}), /invalid verification/);
+});
+
+test('four labels and repeated-event timeline are present', () => {
+  for (const label of ['draw', 'rack', 'trigger', 'reload']) {
+    assert.match(html, new RegExp(`value="${label}"`));
+  }
+  for (const id of ['sessionTimeline', 'listeningIndicator', 'eventCounter']) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+});

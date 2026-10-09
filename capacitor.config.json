@@ -1,0 +1,6 @@
+{
+  "appId": "app.dryfire.soundtrainer",
+  "appName": "Dry Fire Sound Trainer",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
