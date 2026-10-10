@@ -614,7 +614,6 @@ async function init() {
       $('#modelNotice').classList.add('hidden');
       setStatus('All learned sounds reset');
       setMessage('All four sound profiles were reset. Recognition history was kept.');
-      setMessage();
     } catch (error) { showError(error); }
     finally { setBusy(false); renderClassCards(); }
   });
