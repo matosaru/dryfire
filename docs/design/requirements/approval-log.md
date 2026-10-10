@@ -139,3 +139,14 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 
 - State: **Documentation implemented**. The tracker includes per-request history, current done/pending feature table, source/browser evidence and an ordered remaining plan. Entry points and repository agent rules link it and require future request outcomes to be maintained.
 - Publication is pending until an observed push is appended. Deployment remains unverified; this ledger does not infer it from code completion or tests.
+
+### CHG-012/013 publication update — 2026-10-10
+
+- State: **Published to GitHub `main`** in [`b19aa4d`](https://github.com/matosaru/dryfire/commit/b19aa4d). The push completed successfully and a subsequent remote-head check returned `b19aa4d132ba1bebd8daa69a095fedfdb7da13dc` for `refs/heads/main`.
+- Includes the multi-gun implementation, custom editor, migration/backups, tests, actual local screenshots, specifications and implementation-history tracker. This publication update records observed delivery; it introduces no product-scope change.
+- Cloudflare deployment remains unverified and is checked separately using the public URL supplied by the user: `https://dryfire.matosaru.workers.dev`.
+
+### CHG-012 deployment-verification attempt — 2026-10-10
+
+- Read-only HTTPS and fresh Chromium access to the supplied public URL were blocked by the execution network gateway before app content arrived (HTTP 403 / `ERR_TUNNEL_CONNECTION_FAILED`). GitHub Actions API access was also blocked. This does not establish a Cloudflare or site failure.
+- State remains **Deployment unverified**. Check a successful Cloudflare production deployment containing `b19aa4d`. Expected assets are `index-CKkKtMnK.js`, `index-BLoJorSS.css`, and service-worker cache `dryfire-sound-trainer-v11`; no real user site data was cleared.

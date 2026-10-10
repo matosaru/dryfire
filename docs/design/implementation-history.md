@@ -2,7 +2,7 @@
 
 Updated: 2026-10-10. This is the delivery tracker for **Dry Fire With Ease**. Specifications and approvals remain authoritative; this document explains what is working, what is still planned and what has actually been published or deployed.
 
-**Current request completed in code and locally validated:** the approved multiple-gun flow, separate learned models/history, saved custom sequence editor and compatible backups now work. The earlier published mockups alone did not provide those features. GitHub publication is pending; Cloudflare deployment remains unverified. This history tracker is maintained after each request.
+**Current request completed, validated and pushed to `main`:** the approved multiple-gun flow, separate learned models/history, saved custom sequence editor and compatible backups now work in [`b19aa4d`](https://github.com/matosaru/dryfire/commit/b19aa4d). The earlier published mockups alone did not provide those features. Cloudflare deployment remains unverified. This history tracker is maintained after each request.
 
 ## Current delivery status
 
@@ -10,7 +10,7 @@ Updated: 2026-10-10. This is the delivery tracker for **Dry Fire With Ease**. Sp
 | --- | --- | --- | --- |
 | Reference-design Home, Learn, Drills, navigation, illustrated previews and independent resets | Authorized, CHG-001 | Implemented | Locally validated and on `main`; see [reference update](development/DESIGN_CHANGES.md) |
 | **Dry Fire With Ease** display brand and WITH EASE logo lockup | Approved, CHG-011 | Implemented | 64 checks and build verification passed; pushed in [`fb11f02`](https://github.com/matosaru/dryfire/commit/fb11f02); Cloudflare deployment unverified |
-| First-gun name/type, five-gun library and selected-gun switcher | Approved, CHG-003/012 | Implemented | Blank-name rejection, exact types, cancel, fifth/sixth capacity and refresh checks passed; push pending |
+| First-gun name/type, five-gun library and selected-gun switcher | Approved, CHG-003/012 | Implemented | Blank-name rejection, exact types, cancel, fifth/sixth capacity and refresh checks passed; on `main` in `b19aa4d` |
 | Independent learned sounds and recognition history per gun; remembered selection | Approved, CHG-003/012 | Implemented | Legacy migration, switch/reload isolation and scoped reset/history/retention checks passed |
 | Custom sequence editor and gun-owned saved presets | Requested explicitly, DRILL-06/CHG-012 | Implemented | Save/reorder/remove/edit, repeated actions, per-gun selection/configuration and draft clearing checks passed |
 | Version-2 whole-library backup and compatible version-1 restore | Existing preservation requirement, CHG-012 | Implemented | Actual download/exact restore, compatible legacy restore and malformed-owner atomic rejection passed |
@@ -42,12 +42,14 @@ This records outcomes without rewriting the original approval evidence. Related 
 | Suggest a name from Dry/Drive Fire With Ease | Naming candidates were proposed; the user rejected the coined alternatives and chose Dry Fire With Ease | No availability/trademark clearance was established; naming suggestions made no code change |
 | Retain Dry Fire With Ease and extend logo/app branding | App/header/About/accessibility/install/native labels and compatible backup label updated; pushed as `fb11f02` | Cloudflare production deployment and real-device installation were unverified; multi-gun code was not included |
 | Explain how to check Cloudflare deployment | Dashboard/commit/production-deployment checks and safe refresh guidance | No observed deployment success was established by those instructions |
-| Report missing multiple-gun support; proceed with implementation and create a history plan | CHG-012 implemented the approved gun library, independent sounds/history, custom editor, reload persistence/migration and backups; this tracker/maintenance rule delivered under CHG-013. 16 smoke/100 Jest checks, build/asset verification and browser acceptance passed | GitHub push pending, Cloudflare unverified; dedicated sessions/beep, advanced settings, cloud recovery and free-plan cap remain separate |
+| Report missing multiple-gun support; proceed with implementation and create a history plan | CHG-012 implemented the approved gun library, independent sounds/history, custom editor, reload persistence/migration and backups; this tracker/maintenance rule delivered under CHG-013. 16 smoke/100 Jest checks, build/asset verification and browser acceptance passed; pushed to `main` in `b19aa4d` | Cloudflare unverified; dedicated sessions/beep, advanced settings, cloud recovery and free-plan cap remain separate |
+| Report that the commit was not yet visible on GitHub | Confirmed the implementation commit was local at that point, then completed the push; remote `main` was observed at `b19aa4d132ba1bebd8daa69a095fedfdb7da13dc` | Production deployment must be checked separately at the supplied Cloudflare URL |
+| Provide `dryfire.matosaru.workers.dev` for deployment verification | Attempted read-only HTTPS and a fresh browser visit; this workspace's network gateway returned HTTP 403 / `ERR_TUNNEL_CONNECTION_FAILED` before receiving app content | Deployment remains unverified; check the Cloudflare production deployment commit against `b19aa4d` or a later commit containing it |
 
 ## Remaining implementation plan
 
 1. **Completed in this request:** first-use gun setup, library/switcher, independent learned models/presets/recognition history, remembered selection, non-destructive migration, custom editor and whole-library backups. Five-profile capacity and blocking ownership changes during capture/listening are validated.
-2. **Next delivery step:** publish the validated code and record the observed GitHub commit/push. Verify Cloudflare production deployment separately if access/evidence is available. Never clear local site data to refresh the app.
+2. **Publication completed; deployment verification pending:** the validated implementation is on `main` in `b19aa4d`. Verify Cloudflare production deployment separately at `https://dryfire.matosaru.workers.dev` when accessible. Never clear local site data to refresh the app.
 3. **Dedicated drill sessions:** resolve still-proposed defaults/interruption rules through the approval process, then implement fixed/random timing, Start/countdown/GO, repetition target/progress, approved optional beep and saved session/repetition review.
 4. **Working settings:** specify/approve unresolved defaults/options/triggers, connect controls to real supported browser capabilities and persist preferences. Confirm unsupported-device behavior; do not claim real microphone/vibration verification from synthetic tests.
 5. **Later scope:** apply the one-gun free-version restriction only when that deferred iteration is authorized. Accounts/cloud recovery, profile deletion and new sound taxonomies need their own approved requirements.
@@ -59,7 +61,9 @@ This records outcomes without rewriting the original approval evidence. Related 
 | Reference-design update | 16 smoke/48 Jest checks, build, asset verification and browser UI checks documented | On `main` | Not established by this tracker |
 | Documentation/provenance consolidation | Local Markdown-link and diff checks | [`cbe5616`](https://github.com/matosaru/dryfire/commit/cbe5616) on `main` | Documentation publication does not prove app deployment |
 | Branding | 16 smoke/48 Jest checks, build/`verify:dist`, 320–1280 px browser checks; legacy backup and cache-update data preservation | [`fb11f02`](https://github.com/matosaru/dryfire/commit/fb11f02) on `main` | Unverified |
-| CHG-012 multi-gun/presets | Baseline: 16 smoke/48 Jest. Final: 16 smoke/100 Jest (8 suites), build/`verify:dist` and browser checks passed | Publication pending | Unverified |
+| CHG-012 multi-gun/presets and CHG-013 tracker | Baseline: 16 smoke/48 Jest. Final: 16 smoke/100 Jest (8 suites), build/`verify:dist` and browser checks passed | [`b19aa4d`](https://github.com/matosaru/dryfire/commit/b19aa4d) on `main`; push and remote head observed | Unverified |
+
+Production verification attempt on 2026-10-10: HTTPS and fresh Chromium access to `https://dryfire.matosaru.workers.dev` were blocked by the execution network gateway (HTTP 403 / `ERR_TUNNEL_CONNECTION_FAILED`) before app content arrived. GitHub Actions API access was also blocked. These are access limitations, not evidence that the site or deployment failed. Expected implementation assets: `index-CKkKtMnK.js`, `index-BLoJorSS.css`; service-worker cache `dryfire-sound-trainer-v11`. Verify a successful Cloudflare **production** deployment containing `b19aa4d`; see the [deployment guide](development/DEPLOY.md). No user site data was cleared.
 
 CHG-012 main bundle sizes, before → after (raw / gzip kB): HTML **18.29 / 5.21 → 23.48 / 6.36**, CSS **24.25 / 6.21 → 31.42 / 7.65**, JavaScript **37.88 / 12.70 → 55.48 / 17.66**. Worklet (0.53 kB), service worker (1.34 kB) and detector chunk (1.59 kB) stay unchanged in size.
 
