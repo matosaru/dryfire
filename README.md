@@ -92,7 +92,7 @@ For step-by-step hosting instructions (GitHub + Netlify or manual Netlify Drop),
 
 - Compact header and angular **DF** logo inspired by the dark/olive reference image; matching installed-app icons.
 - Main navigation: **Home / Learn / Drills / Live Listen / History**, with Settings in the top-right gear.
-- Four looping abstract sound-cue GIFs on Learn cards, with static fallbacks for Reduce Motion.
+- Four lightweight, looping animated SVG sound cues on Learn cards. Vector previews reduce download size; movement is decorative and not a measured waveform.
 - Per-sound **Reset** button deletes only that class's learned examples. Settings → **Reset all learned sounds** removes all four classes, preserving recognition history. History has an independent clear control. All deletions ask for confirmation.
 - No audio feature format or IndexedDB version change: existing compatible models and history remain intact.
 - Deploy via Cloudflare Workers Builds, Pages, or Netlify; see [DEPLOY.md](DEPLOY.md).

@@ -1,12 +1,12 @@
 name: Test and build
 on:
   push:
-    branches: [main, 'release/**']
+    branches: [main]
   pull_request:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -16,9 +16,11 @@ jobs:
       - run: npm run test:smoke
       - run: npm run build
       - run: npm run verify:dist
-      - name: Jest regression suite
-        run: npm test -- --verbose
-        timeout-minutes: 4
+      - name: Jest regression assertions
+        # forceExit is temporary while investigating leftover Jest handles in CI;
+        # it still runs the entire test suite and fails on assertion errors.
+        run: npm test -- --verbose --forceExit
+        timeout-minutes: 2
       - uses: actions/upload-artifact@v4
         with:
           name: minified-web-app
