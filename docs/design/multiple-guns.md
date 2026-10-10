@@ -1,6 +1,6 @@
 # Multiple guns — proposed front-door flow
 
-These visualisations are proposals for confirmation. They do not implement gun profiles, custom drill editing, session results or cloud synchronization.
+The first-visit, library and selected-gun flow was approved by the user. These visualisations describe the accepted proposal. They do not implement gun profiles, custom drill editing, session results or cloud synchronization.
 
 ## First visit, library and selected-gun Home
 

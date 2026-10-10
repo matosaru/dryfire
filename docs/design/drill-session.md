@@ -9,3 +9,12 @@ This mockup proposes three states of one dedicated drill page. It is a design pr
 - **Review:** show the session summary and saved repetition results, with Repeat Session and Back to Drills controls.
 
 Times describe sound detection, not verified physical actions. The mockup contains illustrative sample results.
+
+## Clarified sequence and start controls
+
+- Use **Drill Session** as the page title. Show the complete action sequence once, in the colored sequence strip beneath the title. These chips describe the ordered actions; they are not separate Start buttons.
+- Keep the timing breakdowns in a completed repetition's result: they show individual intervals rather than repeating the full drill heading.
+- Rename the ambiguous Start cue control to **Sound at start**, with the explanation **Play a beep when GO appears**.
+- With this switch on, play a short beep as each repetition's countdown ends and the visual **GO** signal appears. With it off, show the same countdown and GO signal silently.
+- The visual start signal remains available in both modes. The sound switch does not control microphone permission, recording, the start delay or whether a repetition begins.
+- Starting the session remains an explicit **Start Session** action. A fixed or random delay is applied before each repetition.
