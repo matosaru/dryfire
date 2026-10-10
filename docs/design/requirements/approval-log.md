@@ -160,3 +160,10 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 - State: requested scope authorized; **assistant-proposed detailed choices awaiting confirmation** under the user's approved change process. Do not infer approval of this revision from the general request to proceed.
 - Baseline: dependency installation, 16 smoke checks, 100 Jest tests, production build and `verify:dist` passed before code changes. Baseline main sizes (raw / gzip kB): HTML 23.48 / 6.36, CSS 31.42 / 7.65, JavaScript 55.48 / 17.66.
 - Implementation: not started for the proposed choices; read-only integration/storage reviews complete. GitHub publication and deployment are separate observed states.
+
+### CHG-014 proposal-publication update — 2026-10-10
+
+- Proposal revision 1.0 is published in [`ebac22b`](https://github.com/matosaru/dryfire/blob/ebac22b/docs/design/requirements/next-implementation.md). Push success and the remote `main` head were observed. All 174 local links across 26 Markdown documents resolved.
+- A single bundled confirmation was requested for the still-proposed detailed choices; no answer has been received. Existing feature/beep approvals are retained and not requested again.
+- Read-only session-logic, data migration/backups, UI and browser-capability reviews were prepared. No application code was changed pending the required confirmation of new proposed behavior.
+- A fresh Chromium visit to the supplied live URL was again blocked before app content arrived (`ERR_TUNNEL_CONNECTION_FAILED`). Deployment remains unverified; no real user site data was touched.
