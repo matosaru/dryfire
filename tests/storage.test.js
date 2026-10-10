@@ -1,5 +1,5 @@
 import {
-  addEvent, addExample, clearEvents, clearExamples, getEvents, getExamples,
+  addEvent, addExample, clearEvents, clearExamples, clearExamplesForLabel, getEvents, getExamples,
   getOutdatedExampleCount, getSetting, normalizeMaxResults, setSetting, trimEvents, verifyEvent,
   MAX_EXAMPLES_PER_CLASS,
 } from '../src/storage.js';
@@ -28,6 +28,18 @@ describe('IndexedDB storage', () => {
     expect(items.every(row => row.featureVersion === 2)).toBe(true);
     await clearExamples();
     expect(await getExamples()).toHaveLength(0);
+  });
+
+  test('clears only the requested learned sound, keeping others and history', async () => {
+    await addExample('draw',[0.1,0.2]);
+    await addExample('rack',[0.2,0.3]);
+    await addExample('trigger',[0.3,0.4]);
+    await addExample('reload',[0.4,0.5]);
+    const event = await addEvent({ label:'draw', score:75 });
+    await clearExamplesForLabel('draw');
+    expect((await getExamples()).map(x=>x.label).sort()).toEqual(['rack','reload','trigger']);
+    expect((await getEvents()).map(x=>x.id)).toEqual([event.id]);
+    await expect(clearExamplesForLabel('bad')).rejects.toThrow(TypeError);
   });
 
   test('rejects invalid training samples', async () => {

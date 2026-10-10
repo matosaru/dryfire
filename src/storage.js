@@ -89,6 +89,20 @@ export async function clearExamples() {
   await withTransaction(EXAMPLES, 'readwrite', store => { store.clear(); });
 }
 
+/** Delete just one learned label and leave other profiles and history untouched. */
+export async function clearExamplesForLabel(label) {
+  if (!labels.includes(label)) throw new TypeError('Unknown sound profile.');
+  await withTransaction(EXAMPLES, 'readwrite', store => {
+    const request = store.index('label').openKeyCursor(IDBKeyRange.only(label));
+    request.onsuccess = () => {
+      const cursor = request.result;
+      if (!cursor) return;
+      store.delete(cursor.primaryKey);
+      cursor.continue();
+    };
+  });
+}
+
 export async function addEvent(event) {
   const row = {
     label: labels.includes(event.label) ? event.label : 'unknown',
