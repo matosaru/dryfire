@@ -150,3 +150,13 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 
 - Read-only HTTPS and fresh Chromium access to the supplied public URL were blocked by the execution network gateway before app content arrived (HTTP 403 / `ERR_TUNNEL_CONNECTION_FAILED`). GitHub Actions API access was also blocked. This does not establish a Cloudflare or site failure.
 - State remains **Deployment unverified**. Check a successful Cloudflare production deployment containing `b19aa4d`. Expected assets are `index-CKkKtMnK.js`, `index-BLoJorSS.css`, and service-worker cache `dryfire-sound-trainer-v11`; no real user site data was cleared.
+
+## CHG-014 — Timed sessions and working settings
+
+- Date: 2026-10-10. Affected requirements: DRILL-01–05, DRILL-07–09, DATA-01–04 and SET-01–05.
+- Evidence: after confirmation that multi-gun implementation was delivered and timed sessions/settings remained pending, the user instructed **“proceed with next steps”**.
+- Requested implementation scope: the existing timed-session/results/start-beep and working-settings requirements. Existing approvals, including CHG-008 beep semantics, remain valid.
+- Concrete proposal: [next-implementation.md](next-implementation.md), revision 1.0, resolves the explicitly open defaults, automatic progression, interruption/resume policy, saved review, settings ownership/options/triggers and cue guard. It retains the reviewed three-state visual direction.
+- State: requested scope authorized; **assistant-proposed detailed choices awaiting confirmation** under the user's approved change process. Do not infer approval of this revision from the general request to proceed.
+- Baseline: dependency installation, 16 smoke checks, 100 Jest tests, production build and `verify:dist` passed before code changes. Baseline main sizes (raw / gzip kB): HTML 23.48 / 6.36, CSS 31.42 / 7.65, JavaScript 55.48 / 17.66.
+- Implementation: not started for the proposed choices; read-only integration/storage reviews complete. GitHub publication and deployment are separate observed states.

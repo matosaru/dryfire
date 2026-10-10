@@ -2,6 +2,8 @@
 
 Updated: 2026-10-10. This is the delivery tracker for **Dry Fire With Ease**. Specifications and approvals remain authoritative; this document explains what is working, what is still planned and what has actually been published or deployed.
 
+**Next request in progress:** the user instructed “proceed with next steps.” Baseline checks pass; [CHG-014 proposal](requirements/next-implementation.md) specifies remaining timed-session/settings defaults and interruption behavior for confirmation before those choices are implemented.
+
 **Current request completed, validated and pushed to `main`:** the approved multiple-gun flow, separate learned models/history, saved custom sequence editor and compatible backups now work in [`b19aa4d`](https://github.com/matosaru/dryfire/commit/b19aa4d). The earlier published mockups alone did not provide those features. Cloudflare deployment remains unverified. This history tracker is maintained after each request.
 
 ## Current delivery status
@@ -45,6 +47,8 @@ This records outcomes without rewriting the original approval evidence. Related 
 | Report missing multiple-gun support; proceed with implementation and create a history plan | CHG-012 implemented the approved gun library, independent sounds/history, custom editor, reload persistence/migration and backups; this tracker/maintenance rule delivered under CHG-013. 16 smoke/100 Jest checks, build/asset verification and browser acceptance passed; pushed to `main` in `b19aa4d` | Cloudflare unverified; dedicated sessions/beep, advanced settings, cloud recovery and free-plan cap remain separate |
 | Report that the commit was not yet visible on GitHub | Confirmed the implementation commit was local at that point, then completed the push; remote `main` was observed at `b19aa4d132ba1bebd8daa69a095fedfdb7da13dc` | Production deployment must be checked separately at the supplied Cloudflare URL |
 | Provide `dryfire.matosaru.workers.dev` for deployment verification | Attempted read-only HTTPS and a fresh browser visit; this workspace's network gateway returned HTTP 403 / `ERR_TUNNEL_CONNECTION_FAILED` before receiving app content | Deployment remains unverified; check the Cloudflare production deployment commit against `b19aa4d` or a later commit containing it |
+| Ask whether the work is done | Confirmed multi-gun scope and tracker are complete; distinguished pending sessions/settings and unverified deployment | Next implementation scope remained pending |
+| Proceed with next steps | In progress: passing 16 smoke/100 Jest baseline and production build; concrete CHG-014 proposal prepared for the still-open session/settings choices | Confirm the proposed defaults/interruption behavior, implement, validate and publish; no new deployment success is asserted |
 
 ## Remaining implementation plan
 
