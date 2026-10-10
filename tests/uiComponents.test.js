@@ -65,3 +65,20 @@ describe('reusable UI factories', () => {
     expect(b.attributes['aria-label']).toBe('Record sample');
   });
 });
+
+test('reference design cards retain real actions and label-colored sequences', () => {
+  const doc = fakeDocument();
+  const sound = soundCard({label:'draw',meta:{title:'Draw',description:'Draw',tone:'blue'},count:4,maxExamples:50,minExamples:3,recommendedExamples:10,locked:false,onRecord:()=>{},onReset:()=>{}},doc);
+  expect(flatten(sound).find(n=>n.tag==='button').textContent).toBe('▶ Train');
+  const drill = drillCard({drill:{title:'Draw then trigger',steps:['draw','trigger']},index:0,titleFor:l=>l,onChoose:()=>{}},doc);
+  expect(flatten(drill).find(n=>n.tag==='button').textContent).toBe('▶ Start Drill');
+  expect(flatten(drill).filter(n=>n.className==='preset-chip').map(n=>n.attributes['data-sound'])).toEqual(['draw','trigger']);
+});
+
+test('learning GIFs have a reduced-motion SVG fallback', () => {
+  const card = soundCard({label:'rack',meta:{title:'Rack',description:'Rack',tone:'green'},count:0,maxExamples:50,minExamples:3,recommendedExamples:10,locked:false,onRecord:()=>{},onReset:()=>{}},fakeDocument());
+  const nodes = flatten(card);
+  expect(nodes.find(n=>n.tag==='source').srcset).toBe('/motions/rack.gif');
+  expect(nodes.find(n=>n.tag==='source').media).toBe('(prefers-reduced-motion: no-preference)');
+  expect(nodes.find(n=>n.tag==='img').src).toBe('/motions/rack.svg');
+});

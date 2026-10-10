@@ -25,45 +25,39 @@
       <div class="header-actions"><div id="statusPill" class="status-pill" role="status" aria-live="polite">Loading…</div><button id="settingsShortcut" class="icon-button" type="button" aria-label="Open settings" title="Settings">⚙</button></div>
     </header>
 
-    <section class="safety-card" aria-labelledby="safety-title">
+    <details class="safety-disclosure"><summary>Safety check <span>Required before recording</span></summary><section class="safety-card" aria-labelledby="safety-title">
       <div class="safety-icon" aria-hidden="true">!</div>
       <div>
         <h2 id="safety-title">Safety first</h2>
         <p>Verify unloaded; remove live ammunition from the area; use a safe direction and backstop.</p>
         <label class="checkbox-row"><input id="safetyAck" type="checkbox" /> I confirm the safety check.</label>
       </div>
-    </section>
+    </section></details>
 
     <nav class="tabs" aria-label="Main navigation">
-      <button class="tab active" data-view="home" aria-current="page" type="button"><span class="nav-glyph">⌂</span>Home</button>
-      <button class="tab" data-view="learn" type="button"><span class="nav-glyph">◉</span>Learn</button>
-      <button class="tab" data-view="drills" type="button"><span class="nav-glyph">◎</span>Drills</button>
-      <button class="tab" data-view="recognize" type="button"><span class="nav-glyph">≋</span>Live Listen</button>
-      <button class="tab" data-view="history" type="button"><span class="nav-glyph">▥</span>History</button>
+      <button class="tab active" data-view="home" aria-current="page" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z"/></svg></span>Home</button>
+      <button class="tab" data-view="learn" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4"/></svg></span>Learn</button>
+      <button class="tab" data-view="drills" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg></span>Drills</button>
+      <button class="tab" data-view="recognize" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6m4-9v12m5-15v18m5-15v12m4-9v6"/></svg></span>Live Listen</button>
+      <button class="tab" data-view="history" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h3v7H4zm7-6h3v13h-3zm7-5h3v18h-3z"/></svg></span>History</button>
     </nav>
 
     <p id="appMessage" class="app-message hidden" role="alert"></p>
 
     <section id="homeView" class="view" aria-labelledby="home-title">
-      <div class="home-kicker">YOUR PRIVATE ACOUSTIC TRAINER</div>
-      <h2 id="home-title" class="home-title">Train the sounds.<br><em>Track the results.</em></h2>
-      <p class="muted">Learn how your equipment sounds in your environment. Recognition runs on your device; no account or cloud upload.</p>
-      <div class="home-stats">
-        <article><span class="stat-icon">◈</span><strong id="homeExamples">0 / 32</strong><small>Training samples</small></article>
-        <article><span class="stat-icon">◎</span><strong id="homeEvents">0</strong><small>Recent detections</small></article>
-        <article><span class="stat-icon">✓</span><strong id="homeAccuracy">—</strong><small>Verified accuracy</small></article>
-      </div>
+      <article class="welcome-card"><h2 id="home-title">Train by sound.</h2><p>Build faster, more consistent<br>mechanical skills.</p><span class="orange-rule"></span></article>
       <div class="home-actions">
-        <button id="homeLearnBtn" type="button" class="button primary">Learn my sounds <span>→</span></button>
-        <button id="homeDrillsBtn" type="button" class="button secondary">Choose a drill <span>→</span></button>
-        <button id="homeListenBtn" type="button" class="button secondary">Live listen <span>→</span></button>
+        <button id="homeLearnBtn" class="dashboard-card" type="button"><span class="dashboard-icon orange"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4"/></svg></span><span><strong>Learn Sounds</strong><small>Learn and recognize<br>each core action sound.</small></span><span class="chevron">›</span></button>
+        <button id="homeDrillsBtn" class="dashboard-card" type="button"><span class="dashboard-icon blue"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg></span><span><strong>Drills</strong><small>Combine sounds into<br>realistic sequences.</small></span><span class="chevron">›</span></button>
+        <button id="homeListenBtn" class="dashboard-card" type="button"><span class="dashboard-icon green"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6m4-9v12m5-15v18m5-15v12m4-9v6"/></svg></span><span><strong>Live Listen</strong><small>Identify sounds in<br>real time.</small></span><span class="chevron">›</span></button>
+        <button id="homeHistoryBtn" class="dashboard-card" type="button"><span class="dashboard-icon purple"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h3v7H4zm7-6h3v13h-3zm7-5h3v18h-3z"/></svg></span><span><strong>History</strong><small>Track your progress<br>and accuracy.</small></span><span class="chevron">›</span></button>
       </div>
-      <div class="info-note home-steps"><strong>How it works</strong><ol><li>Record at least 3 examples each of Draw from holster, Rack slide, Trigger pull and Change magazine.</li><li>Choose a built-in drill or free listening, then start the microphone and check detections.</li><li>Verify predictions to measure accuracy over time.</li></ol></div>
+      <div class="home-stats"><article><strong id="homeExamples">0 / 32</strong><small>Training samples</small></article><article><strong id="homeEvents">0</strong><small>Recent detections</small></article><article><strong id="homeAccuracy">—</strong><small>Verified accuracy</small></article></div>
     </section>
 
     <section id="learnView" class="view hidden" aria-labelledby="learn-title">
-      <div class="section-head">
-        <div><p class="eyebrow">01 / SOUND PROFILES</p><h2 id="learn-title">Learn your sounds</h2></div>
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button>
+        <div><p class="eyebrow">01 / SOUND PROFILES</p><h2 id="learn-title">Learn Sounds</h2></div>
       </div>
       <p class="muted">Capture at least <strong>3 samples of each type</strong> (8–10 recommended). Each capture gives you a two-second countdown followed by a two-second recording window.</p>
       <div id="modelNotice" class="info-note hidden" role="status"></div>
@@ -73,14 +67,14 @@
     </section>
 
     <section id="drillsView" class="view hidden" aria-labelledby="drills-title">
-      <div class="section-head"><div><p class="eyebrow">02 / PRACTICE PRESETS</p><h2 id="drills-title">Drills</h2></div></div>
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">02 / PRACTICE PRESETS</p><h2 id="drills-title">Drills</h2></div></div>
       <p class="muted">Select a preset to check a sequence of recognized sounds. You can also use Live Listen without a preset.</p>
-      <div id="drillCatalog" class="drill-catalog"></div>
+      <div class="segmented-control" aria-label="Drill collection"><span class="selected">Built-in Drills</span><span title="Custom drills are not yet available">Custom · soon</span></div><div id="drillCatalog" class="drill-catalog"></div>
       <button id="freeListenBtn" type="button" class="button secondary wide-action">Start free listening →</button>
     </section>
 
     <section id="recognizeView" class="view hidden" aria-labelledby="recognize-title">
-      <div class="section-head">
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button>
         <div><p class="eyebrow">03 / REAL-TIME DETECTION</p><h2 id="recognize-title">Live Listen</h2></div>
       </div>
       <section class="drill-panel" aria-labelledby="drill-heading">
@@ -149,7 +143,7 @@
     </section>
 
     <section id="historyView" class="view hidden" aria-labelledby="history-title">
-      <div class="section-head"><div><p class="eyebrow">04 / LOCAL DATA</p><h2 id="history-title">History</h2></div></div>
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">04 / LOCAL DATA</p><h2 id="history-title">History</h2></div></div>
       <div class="settings-row"><label for="maxResults">Keep last N recognition results</label><input id="maxResults" type="number" min="1" max="500" step="1" value="50" /></div>
       <p class="muted small">Training samples are stored separately. Changing N trims recognition history, not learned sound examples. Label each result to evaluate recognition on your own real-world samples.</p>
       <div class="evaluation-panel" aria-live="polite">
@@ -163,23 +157,23 @@
     </section>
 
     <section id="settingsView" class="view hidden" aria-labelledby="settings-title">
-      <div class="section-head"><div><p class="eyebrow">05 / DEVICE &amp; PRIVACY</p><h2 id="settings-title">Settings</h2></div></div>
-      <div class="install-card">
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">05 / DEVICE &amp; PRIVACY</p><h2 id="settings-title">Settings</h2></div></div>
+      <details class="install-details"><summary>Install on your iPhone <span>›</span></summary><div class="install-card">
         <div class="install-badge">iOS · HOME SCREEN</div>
         <h3>Install on your iPhone</h3>
         <p id="installStatus" class="muted">Checking installation status…</p>
         <ol><li>Open your deployed HTTPS address in <strong>Safari</strong>.</li><li>Tap the <strong>Share</strong> button.</li><li>Choose <strong>Add to Home Screen</strong>.</li><li>Enable <strong>Open as Web App</strong> (if shown), then tap <strong>Add</strong>.</li></ol>
         <p class="small muted">This installs a web app icon and standalone experience, not an App Store IPA. The microphone runs only when the app is open.</p>
       </div>
-      <div class="settings-group">
-        <h3>Reset learned sound profiles</h3>
+      </details><div class="settings-group">
+        <h3>Learned Sounds</h3>
         <p class="muted small">For one sound, use Reset on its card in Learn. To erase every learned sound at once, use the button below. Recognition history stays intact.</p>
-        <button id="resetModelBtn" class="button danger" type="button">Reset all learned sounds</button>
+        <button id="resetModelBtn" class="button danger" type="button"><span class="settings-action-icon" aria-hidden="true">⏻</span><span>Reset all learned sounds</span><span class="settings-chevron" aria-hidden="true">›</span></button>
       </div>
       <div class="settings-group">
-        <h3>Backup &amp; restore</h3>
+        <h3>Backup &amp; Data</h3>
         <p class="muted small">Export learned numeric sound features and the saved result history. The backup contains no raw recordings. Keep this file private.</p>
-        <div class="settings-actions"><button id="exportBtn" class="button secondary" type="button">Export backup</button><button id="importBtn" class="button secondary" type="button">Import backup</button><input id="importFile" type="file" accept="application/json,.json" class="hidden" /></div>
+        <div class="settings-actions"><button id="exportBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↑</span><span>Export backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><button id="importBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↓</span><span>Import backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><input id="importFile" type="file" accept="application/json,.json" class="hidden" /></div>
         <p class="small muted">Import replaces the model and history on this device. Files from another device may perform differently.</p>
       </div>
       <div class="settings-group"><h3>About</h3><p class="muted small">Sound Trainer v0.8.0 · Private IndexedDB storage · Up to 50 learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
