@@ -1,4 +1,4 @@
-# Sound Trainer v0.7.0 — four-action acoustic learning
+# Sound Trainer v0.8.0 — four-action acoustic learning
 
 Offline-first, local sound-learning PWA, compatible with a future Capacitor iOS/Android wrapper. **It is not a signed IPA.** Classifier accuracy is experimental; complete the in-app safety checklist and test on inert/safe equipment before use.
 
@@ -86,3 +86,13 @@ Confirm the safety checklist, train all four acoustic classes and tap **Start co
 **Caution:** These are *classifier-inferred* sequence completions, not measurements of physical action completion or performance. The classifier can miss, merge, or mislabel sounds. Keep actions safely separated for reliable segmentation. The microphone operates only in the foreground.
 
 For step-by-step hosting instructions (GitHub + Netlify or manual Netlify Drop), read **`NETLIFY_DEPLOY.md`**.
+
+
+## Version 0.8.0 — interface refresh
+
+- Compact header and angular **DF** logo inspired by the dark/olive reference image; matching installed-app icons.
+- Main navigation: **Home / Learn / Drills / Live Listen / History**, with Settings in the top-right gear.
+- Four lightweight, looping animated SVG sound cues on Learn cards. Vector previews reduce download size; movement is decorative and not a measured waveform.
+- Per-sound **Reset** button deletes only that class's learned examples. Settings → **Reset all learned sounds** removes all four classes, preserving recognition history. History has an independent clear control. All deletions ask for confirmation.
+- No audio feature format or IndexedDB version change: existing compatible models and history remain intact.
+- Deploy via Cloudflare Workers Builds, Pages, or Netlify; see [DEPLOY.md](DEPLOY.md).

@@ -3,7 +3,7 @@ import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
 import { ACTUAL_CLASSES, PREDICTED_CLASSES, evaluateEvents } from './evaluation.js';
 import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
 import {
-  addExample, getExamples, getOutdatedExampleCount, clearExamples,
+  addExample, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
   addEvent, getEvents, verifyEvent, clearEvents, trimEvents, getSetting, setSetting, normalizeMaxResults, MAX_EXAMPLES_PER_CLASS, exportBackup, restoreBackup,
 } from './storage.js';
 
@@ -11,7 +11,7 @@ const labelMeta = {
   draw: { title: 'Draw from holster', description: 'Holster release and presentation sounds', tone: 'orange', short: 'DR' },
   rack: { title: 'Rack slide', description: 'Slide movement and return', tone: 'blue', short: 'RK' },
   trigger: { title: 'Trigger pull', description: 'Dry trigger click', tone: 'purple', short: 'TR' },
-  reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'blue', short: 'MG' },
+  reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'green', short: 'MG' },
 };
 const $ = selector => document.querySelector(selector);
 let examples = [];
@@ -40,7 +40,7 @@ function ensureSafe() {
 }
 function setBusy(next) {
   busy = next;
-  document.querySelectorAll('.record-example, #singleShotBtn, #resetModelBtn, #clearHistoryBtn').forEach(button => { button.disabled = next; });
+  document.querySelectorAll('.record-example, .reset-class, #singleShotBtn, #resetModelBtn, #clearHistoryBtn').forEach(button => { button.disabled = next; });
 }
 function getCounts() { return trainingCounts(examples); }
 
@@ -53,59 +53,125 @@ function renderClassCards() {
     const count = counts[label];
     const card = document.createElement('article');
     card.className = `class-card tone-${meta.tone}`;
-    const top = document.createElement('div');
-    top.className = 'class-card-top';
-    const symbol = document.createElement('span');
-    symbol.className = 'class-symbol';
-    symbol.textContent = meta.short;
-    const copy = document.createElement('div');
+    const preview = document.createElement('div');
+    preview.className = 'class-preview';
+    const animation = document.createElement('img');
+    animation.src = `/motions/${label}.svg`;
+    animation.alt = `Looping sound pattern animation for ${meta.title}`;
+    animation.width = 240;
+    animation.height = 140;
+    animation.loading = 'lazy';
+    preview.append(animation);
+    const info = document.createElement('div');
+    info.className = 'class-info';
     const title = document.createElement('h3');
     title.textContent = meta.title;
     const description = document.createElement('p');
     description.textContent = meta.description;
-    copy.append(title, description);
-    top.append(symbol, copy);
+    info.append(title,description);
+    const top = document.createElement('div');
+    top.className = 'class-card-top';
+    top.append(preview,info);
     const progress = document.createElement('p');
     progress.className = 'progress-label';
-    progress.textContent = `${count} samples · ${count >= RECOMMENDED_EXAMPLES_PER_CLASS ? 'recommended amount reached' : `${Math.max(0, MIN_EXAMPLES_PER_CLASS - count)} needed to start`}`;
+    progress.textContent = `${count} samples · ${count >= RECOMMENDED_EXAMPLES_PER_CLASS ? 'recommended amount reached' : count >= MIN_EXAMPLES_PER_CLASS ? 'ready to recognize' : `${Math.max(0, MIN_EXAMPLES_PER_CLASS-count)} to minimum`}`;
     const bar = document.createElement('div');
     bar.className = 'progress-track';
     const fill = document.createElement('span');
-    fill.style.width = `${Math.min(100, (count / RECOMMENDED_EXAMPLES_PER_CLASS) * 100)}%`;
+    fill.style.width = `${Math.min(100,count/RECOMMENDED_EXAMPLES_PER_CLASS*100)}%`;
     bar.append(fill);
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'button primary record-example';
-    button.textContent = count >= MAX_EXAMPLES_PER_CLASS ? 'Sample limit reached' : `Record ${meta.title} sample`;
-    button.disabled = busy || !!liveSession || livePendingStart || count >= MAX_EXAMPLES_PER_CLASS;
-    button.addEventListener('click', () => recordExample(label));
-    card.append(top, progress, bar, button);
+    const actions = document.createElement('div');
+    actions.className = 'class-actions';
+    const record = document.createElement('button');
+    record.type = 'button';
+    record.className = 'button primary record-example';
+    record.textContent = count >= MAX_EXAMPLES_PER_CLASS ? 'Sample limit reached' : 'Record sample';
+    record.disabled = busy || !!liveSession || livePendingStart || count >= MAX_EXAMPLES_PER_CLASS;
+    record.setAttribute('aria-label',`Record ${meta.title} sample`);
+    record.addEventListener('click',()=>recordExample(label));
+    const reset = document.createElement('button');
+    reset.type = 'button';
+    reset.className = 'button secondary reset-class';
+    reset.textContent = 'Reset';
+    reset.disabled = busy || !!liveSession || livePendingStart || count===0;
+    reset.setAttribute('aria-label',`Reset learned ${meta.title} sounds`);
+    reset.addEventListener('click',()=>resetSoundProfile(label));
+    actions.append(record,reset);
+    card.append(top,progress,bar,actions);
     host.append(card);
   }
-  const ready = labels.every(label => counts[label] >= MIN_EXAMPLES_PER_CLASS);
+  const ready = labels.every(label=>counts[label]>=MIN_EXAMPLES_PER_CLASS);
   $('#trainingSummary').textContent = ready
-    ? `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`
-    : `Learn at least ${MIN_EXAMPLES_PER_CLASS} examples of each sound before recognition. ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
-  $('#listenBtn').disabled = busy || livePendingStart || (!ready && !liveSession);
+    ? `Ready to test · ${labels.map(label=>`${titleFor(label)}: ${counts[label]}`).join(' · ')}`
+    : `Learn at least ${MIN_EXAMPLES_PER_CLASS} examples of each sound before recognition. ${labels.map(label=>`${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
+  $('#listenBtn').disabled = busy || livePendingStart || (!ready&&!liveSession);
   $('#singleShotBtn').disabled = busy || !!liveSession || livePendingStart || !ready;
-  $('#homeExamples').textContent = `${labels.reduce((sum, label) => sum + counts[label], 0)} / ${RECOMMENDED_EXAMPLES_PER_CLASS * labels.length}`;
+  $('#homeExamples').textContent = `${labels.reduce((sum,label)=>sum+counts[label],0)} / ${RECOMMENDED_EXAMPLES_PER_CLASS*labels.length}`;
   $('#homeListenBtn').disabled = busy || !ready;
 }
 
+async function resetSoundProfile(label) {
+  if (busy || liveSession || livePendingStart || !labels.includes(label)) return;
+  if (!confirm(`Reset learned ${titleFor(label)} sounds only? Other sounds and recognition history will be kept.`)) return;
+  setBusy(true);
+  try {
+    await clearExamplesForLabel(label);
+    examples = await getExamples();
+    setStatus(`${titleFor(label)} reset`);
+    setMessage(`${titleFor(label)} examples removed. Other profiles and history were kept.`);
+  } catch(error) {showError(error);}
+  finally {setBusy(false);renderClassCards();}
+}
+
+function renderDrillCatalog() {
+  const host = $('#drillCatalog');
+  host.replaceChildren();
+  for (const [index,drill] of DRILLS.entries()) {
+    const card = document.createElement('article');
+    card.className = 'preset-card';
+    const heading = document.createElement('h3');
+    heading.textContent = `${String(index+1).padStart(2,'0')}  ${drill.title}`;
+    const steps = document.createElement('div');
+    steps.className = 'preset-steps';
+    drill.steps.forEach((label,position)=>{
+      if(position){const arrow=document.createElement('span');arrow.setAttribute('aria-hidden','true');arrow.textContent='→';steps.append(arrow);}
+      const chip=document.createElement('span');
+      chip.className='preset-chip';
+      chip.textContent=titleFor(label);
+      steps.append(chip);
+    });
+    const button = document.createElement('button');
+    button.type='button';
+    button.className='button primary';
+    button.textContent='Choose drill →';
+    button.addEventListener('click',()=>{
+      if(busy)return;
+      $('#drillSelect').value=drill.id;
+      resetDrill();
+      switchView('recognize');
+    });
+    card.append(heading,steps,button);
+    host.append(card);
+  }
+}
+
 function switchView(name) {
-  if (busy || !['home', 'learn', 'recognize', 'history', 'settings'].includes(name)) return;
+  if (busy || !['home','learn','drills','recognize','history','settings'].includes(name)) return;
   if (liveSession || livePendingStart) void stopLive();
-  activeView = name;
-  document.querySelectorAll('.tab').forEach(tab => {
-    const selected = tab.dataset.view === name;
-    tab.classList.toggle('active', selected);
-    if (selected) tab.setAttribute('aria-current', 'page');
+  activeView=name;
+  document.querySelectorAll('.tab').forEach(tab=>{
+    const selected=tab.dataset.view===name;
+    tab.classList.toggle('active',selected);
+    if(selected)tab.setAttribute('aria-current','page');
     else tab.removeAttribute('aria-current');
   });
-  for (const view of ['home', 'learn', 'recognize', 'history', 'settings']) $(`#${view}View`).classList.toggle('hidden', view !== name);
+  for(const view of ['home','learn','drills','recognize','history','settings']) $('#'+view+'View').classList.toggle('hidden',view!==name);
+  $('#settingsShortcut').classList.toggle('active',name==='settings');
+  if(name==='settings')$('#settingsShortcut').setAttribute('aria-current','page');
+  else $('#settingsShortcut').removeAttribute('aria-current');
   setMessage();
-  if (name === 'history') renderHistory().catch(showError);
-  if (name === 'home') renderHome().catch(showError);
+  if(name==='history')renderHistory().catch(showError);
+  if(name==='home')renderHome().catch(showError);
 }
 
 function renderDistances(distances) {
@@ -143,11 +209,13 @@ function renderDrill() {
   $('#resetDrillBtn').classList.toggle('hidden', !drill);
   if (!drill) {
     $('#drillProgressBadge').textContent = 'Free listen';
+    $('#drill-heading').textContent = 'Free listening';
     $('#drillExplanation').textContent = 'Select a preset to track its ordered sound detections while the microphone stays active.';
     $('#drillFeedback').textContent = '';
     return;
   }
   const state = drillState;
+  $('#drill-heading').textContent = drill.title;
   $('#drillProgressBadge').textContent = `Step ${(state?.stepIndex ?? 0) + 1} / ${drill.steps.length}`;
   $('#drillExplanation').textContent = drill.title;
   $('#drillCompleted').textContent = String(state?.completed ?? 0);
@@ -289,7 +357,7 @@ function renderLiveButton() {
   const ready = labels.every(label => getCounts()[label] >= MIN_EXAMPLES_PER_CLASS);
   $('#listenBtn').disabled = busy || livePendingStart || (!ready && !listening);
   $('#singleShotBtn').disabled = listening || busy || livePendingStart || !ready;
-  document.querySelectorAll('.record-example, #resetModelBtn, #clearHistoryBtn').forEach(button => {
+  document.querySelectorAll('.record-example, .reset-class, #resetModelBtn, #clearHistoryBtn').forEach(button => {
     button.disabled = busy || listening || livePendingStart;
   });
 }
@@ -474,11 +542,16 @@ async function init() {
   }
   $('#maxResults').value = normalizeMaxResults(await getSetting('maxResults', 50));
   document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
+  $('#settingsShortcut').addEventListener('click', () => switchView('settings'));
+  $('#changeDrillBtn').addEventListener('click', () => switchView('drills'));
+  $('#freeListenBtn').addEventListener('click', () => { $('#drillSelect').value = ''; resetDrill(); switchView('recognize'); });
+  renderDrillCatalog();
   $('#listenBtn').addEventListener('click', toggleLive);
   $('#drillSelect').addEventListener('change', resetDrill);
   $('#resetDrillBtn').addEventListener('click', resetDrill);
   resetDrill();
   $('#homeLearnBtn').addEventListener('click', () => switchView('learn'));
+  $('#homeDrillsBtn').addEventListener('click', () => switchView('drills'));
   $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));
   $('#importBtn').addEventListener('click', () => $('#importFile').click());
   $('#exportBtn').addEventListener('click', async () => {
@@ -533,14 +606,14 @@ async function init() {
   window.addEventListener('pagehide', () => { if (liveSession || livePendingStart) void stopLive(); });
   $('#safetyAck').addEventListener('change', () => { if (!$('#safetyAck').checked && (liveSession || livePendingStart)) void stopLive(); });
   $('#resetModelBtn').addEventListener('click', async () => {
-    if (busy || !confirm('Delete all learned sound examples on this device?')) return;
+    if (busy || liveSession || livePendingStart || !confirm('Delete ALL learned sound profiles on this device? Recognition history will be kept.')) return;
     setBusy(true);
     try {
       await clearExamples();
       examples = [];
       $('#modelNotice').classList.add('hidden');
-      setStatus('Model reset');
-      setMessage();
+      setStatus('All learned sounds reset');
+      setMessage('All four sound profiles were reset. Recognition history was kept.');
     } catch (error) { showError(error); }
     finally { setBusy(false); renderClassCards(); }
   });

@@ -1,5 +1,5 @@
 import {
-  addEvent, addExample, clearEvents, clearExamples, getEvents, getExamples,
+  addEvent, addExample, clearEvents, clearExamples, clearExamplesForLabel, getEvents, getExamples,
   getOutdatedExampleCount, getSetting, normalizeMaxResults, setSetting, trimEvents, verifyEvent,
   MAX_EXAMPLES_PER_CLASS,
 } from '../src/storage.js';
@@ -30,6 +30,18 @@ describe('IndexedDB storage', () => {
     expect(await getExamples()).toHaveLength(0);
   });
 
+  test('clears only the requested learned sound, keeping others and history', async () => {
+    await addExample('draw',[0.1,0.2]);
+    await addExample('rack',[0.2,0.3]);
+    await addExample('trigger',[0.3,0.4]);
+    await addExample('reload',[0.4,0.5]);
+    const event = await addEvent({ label:'draw', score:75 });
+    await clearExamplesForLabel('draw');
+    expect((await getExamples()).map(x=>x.label).sort()).toEqual(['rack','reload','trigger']);
+    expect((await getEvents()).map(x=>x.id)).toEqual([event.id]);
+    await expect(clearExamplesForLabel('bad')).rejects.toThrow(TypeError);
+  });
+
   test('rejects invalid training samples', async () => {
     await expect(addExample('nope', [1])).rejects.toThrow(TypeError);
     await expect(addExample('draw', [Infinity])).rejects.toThrow(TypeError);
@@ -39,16 +51,25 @@ describe('IndexedDB storage', () => {
   test('can identify incompatible old model vectors without mixing them', async () => {
     const db = await new Promise((resolve, reject) => {
       const request = indexedDB.open(DB_NAME, 1);
+      // Simulate the previous schema, not a brand-new empty database.
+      request.onupgradeneeded = () => {
+        const store = request.result.createObjectStore('examples', { keyPath: 'id' });
+        store.createIndex('label', 'label', { unique: false });
+      };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
-    await new Promise((resolve, reject) => {
-      const tx = db.transaction('examples', 'readwrite');
-      tx.objectStore('examples').put({ id: 'old', label: 'draw', features: [1], createdAt: 10 });
-      tx.oncomplete = resolve;
-      tx.onerror = () => reject(tx.error);
-    });
-    db.close();
+    try {
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction('examples', 'readwrite');
+        tx.objectStore('examples').put({ id: 'old', label: 'draw', features: [1], createdAt: 10 });
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    } finally {
+      // Always close, including on an assertion or transaction failure.
+      db.close();
+    }
     expect(await getOutdatedExampleCount()).toBe(1);
     expect(await getExamples()).toEqual([]);
   });

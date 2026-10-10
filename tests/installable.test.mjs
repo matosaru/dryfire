@@ -32,3 +32,20 @@ test('four labels and repeated-event timeline are present', () => {
     assert.match(html, new RegExp(`id="${id}"`));
   }
 });
+
+
+test('compact navigation, per-class reset and animated previews are wired', async()=>{
+  const main=await readFile(new URL('../src/main.js',import.meta.url),'utf8');
+  const storage=await readFile(new URL('../src/storage.js',import.meta.url),'utf8');
+  const styles=await readFile(new URL('../src/styles.css',import.meta.url),'utf8');
+  for(const id of ['settingsShortcut','drillCatalog','homeDrillsBtn','changeDrillBtn','freeListenBtn'])assert.match(html,new RegExp('id="'+id+'"'));
+  assert.match(html,/data-view="drills"/);
+  assert.match(main,/resetSoundProfile\(label\)/);
+  assert.match(storage,/export async function clearExamplesForLabel/);
+  assert.match(styles,/\.class-preview/);
+  for(const label of ['draw','rack','trigger','reload']){
+    const asset=await readFile(new URL('../public/motions/'+label+'.svg',import.meta.url),'utf8');
+    assert.match(asset,/<svg/);
+    assert.match(asset,/<animate/);
+  }
+});

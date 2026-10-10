@@ -1,3 +1,12 @@
+## 0.8.0
+- Redesigned compact iPhone header with stylized DF logo and new app icons.
+- Navigation split into Learn, Drills, and Live Listen; Settings moved to header gear.
+- Added four lightweight looping abstract waveform previews and static reduced-motion images.
+- Added one-sound reset and retained full learned-model reset and separate history clearing.
+- Added Jest persistence tests and static app/asset smoke checks.
+- Added Cloudflare Workers static deployment `wrangler.jsonc` and clarified deployment steps.
+- Bumped service worker cache version so existing installations fetch updated assets.
+
 # v0.7.0 — Built-in acoustic sequence drills
 
 - Added four requested presets: trigger, rack→trigger, magazine change→trigger, draw→magazine change→trigger.
