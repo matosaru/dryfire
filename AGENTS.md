@@ -3,6 +3,15 @@
 ## Project
 Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with Capacitor. It learns four user-recorded acoustic events: `draw` (holster draw), `rack` (slide rack), `trigger` (trigger pull), and `reload` (magazine change). It recognizes sound events in continuous listening and tracks ordered multi-action drills. Training examples and history are local (IndexedDB). Production is hosted as static assets on Cloudflare Workers using `wrangler.jsonc`.
 
+## Persistent requirements and approved designs
+
+- Before product work, read [REQUIREMENTS.md](REQUIREMENTS.md), the relevant files in [docs/requirements](docs/requirements/README.md), the [approval log](docs/requirements/approval-log.md), and the [design catalog](docs/design/README.md).
+- Treat these Markdown specifications as the source of truth for requirements. Preserve linked designs and their reviewed revisions in Git. Handoff notes and illustrative mockup values do not override them.
+- Before implementing changed product scope, behavior, data ownership, retention or defaults, document the concrete change, affected requirement IDs, acceptance criteria and revised design. Record the user's approval of that revision before implementation.
+- Reuse explicit approval or a specific direct instruction already given in the conversation; do not ask again for unchanged approved scope. Assistant-proposed additions remain proposed until approved. Routine fixes restoring approved behavior do not require a new product approval.
+- Follow [change-process.md](docs/requirements/change-process.md). Append approval evidence honestly; never infer approval from silence, an uploaded image, a successful push or elapsed time.
+- Keep requirement approval, implementation, validation and deployment status separate. Update specifications, design links and implementation status when relevant behavior changes. Do not mark a mockup as implemented.
+
 ## First rule: test BEFORE refactoring
 1. Read `README.md`, `package.json`, `vite.config.js`, `wrangler.jsonc`, and existing tests.
 2. Before changing application code, run and record results of:

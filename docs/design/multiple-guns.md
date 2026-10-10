@@ -1,6 +1,6 @@
 # Multiple guns — proposed front-door flow
 
-The first-visit, library and selected-gun flow was approved by the user. These visualisations describe the accepted proposal. They do not implement gun profiles, custom drill editing, session results or cloud synchronization.
+The first-visit, library and selected-gun flow was approved by the user. These visualisations describe the accepted proposal. They do not implement gun profiles, custom drill editing, session results or cloud synchronization. Authoritative scope and approval states are in [gun-profiles.md](../requirements/gun-profiles.md), [drill-sessions.md](../requirements/drill-sessions.md) and [persistence.md](../requirements/persistence.md). See the [design catalog](README.md) for reviewed visual revisions.
 
 ## First visit, library and selected-gun Home
 
@@ -25,7 +25,7 @@ The first-visit, library and selected-gun flow was approved by the user. These v
 - Learned sound samples and classification use only that gun's profiles.
 - Built-in drill definitions can be shared; custom presets, session configuration and results belong to one gun.
 - Custom drill creation supports a name, ordered actions, repeated actions and editable session defaults. The session page uses the previously proposed [Configure / Run / Review flow](drill-session.md).
-- Prevent switching gun profiles during recording or an active session. End or pause safely before a switch rather than silently assigning results to another gun.
+- Proposed session detail: prevent switching gun profiles during recording or an active session. Exact end/pause/switch behavior remains to be confirmed; never silently assign results to another gun.
 - Reset one sound only for the selected gun. Reset all sounds for this gun preserves its session history and every other gun's data. Deleting an entire profile is a separate confirmed action.
 - Gun type is descriptive metadata. The proposal does not silently redefine the app's existing sound identifiers. Sound categories or drill suggestions for different types need to be agreed and validated before implementation.
 

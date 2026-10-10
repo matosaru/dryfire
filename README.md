@@ -1,5 +1,7 @@
 # Sound Trainer v0.8.0 — four-action acoustic learning
 
+Product planning: [Requirements and approvals](REQUIREMENTS.md) · [Design catalog](docs/design/README.md). Read these before changing product behavior.
+
 Offline-first, local sound-learning PWA, compatible with a future Capacitor iOS/Android wrapper. **It is not a signed IPA.** Classifier accuracy is experimental; complete the in-app safety checklist and test on inert/safe equipment before use.
 
 ## Four sounds
