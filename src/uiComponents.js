@@ -27,11 +27,16 @@ export function soundCard({
   preview.className = 'class-preview';
   const animation = doc.createElement('img');
   animation.src = `/motions/${label}.svg`;
-  animation.alt = `Looping sound pattern animation for ${meta.title}`;
+  animation.alt = `Illustrative sound preview for ${meta.title}`;
   animation.width = 240;
   animation.height = 140;
   animation.loading = 'lazy';
-  preview.append(animation);
+  const picture = doc.createElement('picture');
+  const animatedSource = doc.createElement('source');
+  animatedSource.srcset = `/motions/${label}.gif`;
+  animatedSource.media = '(prefers-reduced-motion: no-preference)';
+  picture.append(animatedSource, animation);
+  preview.append(picture);
 
   const info = doc.createElement('div');
   info.className = 'class-info';
@@ -55,7 +60,7 @@ export function soundCard({
   actions.className = 'class-actions';
   actions.append(
     actionButton({
-      label: count >= maxExamples ? 'Sample limit reached' : 'Record sample',
+      label: count >= maxExamples ? 'Sample limit reached' : '▶ Train',
       className: 'button primary record-example',
       disabled: locked || count >= maxExamples,
       ariaLabel: `Record ${meta.title} sample`,
@@ -69,13 +74,14 @@ export function soundCard({
       onClick: onReset
     }, doc)
   );
-  card.append(top, progress, bar, actions);
+  info.append(progress, bar, actions);
+  card.append(top);
   return card;
 }
 export function drillCard({ drill, index, titleFor, onChoose }, doc = document) {
   const card = doc.createElement('article');
   card.className = 'preset-card';
-  const heading = textNode(doc, 'h3', '', `${String(index + 1).padStart(2,'0')}  ${drill.title}`);
+  const heading = textNode(doc, 'h3', '', drill.title);
   const steps = doc.createElement('div');
   steps.className = 'preset-steps';
   drill.steps.forEach((label, position) => {
@@ -84,8 +90,14 @@ export function drillCard({ drill, index, titleFor, onChoose }, doc = document) 
       arrow.setAttribute('aria-hidden', 'true');
       steps.append(arrow);
     }
-    steps.append(textNode(doc, 'span', 'preset-chip', titleFor(label)));
+    const chip = textNode(doc, 'span', 'preset-chip', titleFor(label));
+    chip.setAttribute('data-sound', label);
+    steps.append(chip);
   });
-  card.append(heading, steps, actionButton({label:'Choose drill →',onClick:onChoose},doc));
+  const icon = textNode(doc, 'span', 'drill-target', '◎');
+  const header = doc.createElement('div');
+  header.className = 'preset-header';
+  header.append(icon, heading);
+  card.append(header, textNode(doc, 'p', 'drill-description', drill.steps.length === 1 ? 'Practice consistent trigger press recognition.' : `${drill.steps.length === 2 ? 'Two' : 'Three'}-part sequence.`), steps, actionButton({label:'▶ Start Drill',onClick:onChoose},doc));
   return card;
 }

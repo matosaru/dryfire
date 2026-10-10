@@ -9,10 +9,10 @@ import {
 } from './storage.js';
 
 const labelMeta = {
-  draw: { title: 'Draw from holster', description: 'Holster release and presentation sounds', tone: 'orange', short: 'DR' },
-  rack: { title: 'Rack slide', description: 'Slide movement and return', tone: 'blue', short: 'RK' },
-  trigger: { title: 'Trigger pull', description: 'Dry trigger click', tone: 'purple', short: 'TR' },
-  reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'green', short: 'MG' },
+  draw: { title: 'Draw from holster', description: 'Holster release and presentation sounds', tone: 'blue', short: 'DR' },
+  rack: { title: 'Rack slide', description: 'Slide movement and return', tone: 'green', short: 'RK' },
+  trigger: { title: 'Trigger pull', description: 'Dry trigger click', tone: 'orange', short: 'TR' },
+  reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple', short: 'MG' },
 };
 const $ = selector => document.querySelector(selector);
 let examples = [];
@@ -36,6 +36,7 @@ function setMessage(text = '') {
 function ensureSafe() {
   if ($('#safetyAck').checked) return true;
   setMessage('Complete and acknowledge the safety check before recording.');
+  $('.safety-disclosure').open = true;
   $('#safetyAck').focus();
   return false;
 }
@@ -104,6 +105,8 @@ function switchView(name) {
   if (busy || !['home','learn','drills','recognize','history','settings'].includes(name)) return;
   if (liveSession || livePendingStart) void stopLive();
   activeView=name;
+  document.body.dataset.view = name;
+  window.scrollTo({top:0,behavior:'instant'});
   document.querySelectorAll('.tab').forEach(tab=>{
     const selected=tab.dataset.view===name;
     tab.classList.toggle('active',selected);
@@ -487,6 +490,8 @@ async function init() {
   }
   $('#maxResults').value = normalizeMaxResults(await getSetting('maxResults', 50));
   document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
+  document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => switchView('home')));
+  $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
   $('#settingsShortcut').addEventListener('click', () => switchView('settings'));
   $('#changeDrillBtn').addEventListener('click', () => switchView('drills'));
   $('#freeListenBtn').addEventListener('click', () => { $('#drillSelect').value = ''; resetDrill(); switchView('recognize'); });

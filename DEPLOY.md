@@ -9,6 +9,7 @@ The repository holds **editable source**. Only `dist/` is deployed as the minifi
    - Build command: `npm run build`
    - Deploy command: `npx wrangler deploy`
    - Repository root as working directory; production branch `main`.
+   - Preview/non-production deploy command: `npx wrangler preview`. This requires the top-level `"previews": {}` block included in `wrangler.jsonc`.
 3. The included `wrangler.jsonc` sets the worker name, compatibility date and static asset path `./dist`.
 4. Deploy and open the resulting `workers.dev` HTTPS URL in iPhone Safari. Allow microphone access; then Share → Add to Home Screen.
 
