@@ -51,16 +51,25 @@ describe('IndexedDB storage', () => {
   test('can identify incompatible old model vectors without mixing them', async () => {
     const db = await new Promise((resolve, reject) => {
       const request = indexedDB.open(DB_NAME, 1);
+      // Simulate the previous schema, not a brand-new empty database.
+      request.onupgradeneeded = () => {
+        const store = request.result.createObjectStore('examples', { keyPath: 'id' });
+        store.createIndex('label', 'label', { unique: false });
+      };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
-    await new Promise((resolve, reject) => {
-      const tx = db.transaction('examples', 'readwrite');
-      tx.objectStore('examples').put({ id: 'old', label: 'draw', features: [1], createdAt: 10 });
-      tx.oncomplete = resolve;
-      tx.onerror = () => reject(tx.error);
-    });
-    db.close();
+    try {
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction('examples', 'readwrite');
+        tx.objectStore('examples').put({ id: 'old', label: 'draw', features: [1], createdAt: 10 });
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    } finally {
+      // Always close, including on an assertion or transaction failure.
+      db.close();
+    }
     expect(await getOutdatedExampleCount()).toBe(1);
     expect(await getExamples()).toEqual([]);
   });

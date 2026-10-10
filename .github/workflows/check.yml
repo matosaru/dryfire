@@ -14,13 +14,10 @@ jobs:
           node-version: '22'
       - run: npm install --no-audit --no-fund
       - run: npm run test:smoke
+      - run: npm test
+        timeout-minutes: 3
       - run: npm run build
       - run: npm run verify:dist
-      - name: Jest regression assertions
-        # forceExit is temporary while investigating leftover Jest handles in CI;
-        # it still runs the entire test suite and fails on assertion errors.
-        run: npm test -- --verbose --forceExit
-        timeout-minutes: 2
       - uses: actions/upload-artifact@v4
         with:
           name: minified-web-app
