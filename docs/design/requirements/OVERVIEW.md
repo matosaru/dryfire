@@ -4,13 +4,15 @@ This is the permanent entry point for Dry Fire With Ease requirements. Read it b
 
 The authoritative specifications live in [requirements specifications](README.md). The [design catalog](../README.md) links the current visualisations and their recorded approval state.
 
+The [implementation history and remaining plan](../implementation-history.md) tracks delivery after each request, separately from approval and deployment.
+
 | Specification | Scope | Current state |
 | --- | --- | --- |
 | [Core behavior](core.md) | Existing sound learning, recognition, safety, resets, navigation and production delivery | Existing behavior to preserve |
 | [Branding](branding.md) | Dry Fire With Ease display name and existing DF logo extended with WITH EASE | Approved; implemented and locally validated; deployment not verified |
-| [Gun profiles](gun-profiles.md) | First visit, gun names/types, up to five guns and separate training data | User-approved flow; implementation pending |
-| [Drill sessions](drill-sessions.md) | Select/create, configure, start, progress and saved results | Requested scope; detailed interaction proposals in review |
-| [Data persistence](persistence.md) | Refresh/deployment persistence, migration and backups | Persistence requested; cloud synchronization unapproved |
+| [Gun profiles](gun-profiles.md) | First visit, gun names/types, up to five guns and separate training data | Approved; implemented and locally validated; deployment unverified |
+| [Drill sessions](drill-sessions.md) | Select/create, configure, start, progress and saved results | Custom presets implemented; dedicated session runner pending |
+| [Data persistence](persistence.md) | Refresh/deployment persistence, migration and backups | Multi-gun local storage/backups implemented and validated; dedicated sessions pending; cloud synchronization unapproved |
 | [Settings](settings.md) | Noise Filter, Auto Gain, Appearance and Vibration Feedback | Requested; detailed behavior still proposed |
 
 ## Approval and change control

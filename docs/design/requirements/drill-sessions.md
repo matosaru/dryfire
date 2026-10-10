@@ -1,8 +1,8 @@
 # Drill selection, configuration and sessions
 
-Revision: 1.1 · Scope: requested by the user · Implementation: partial
+Revision: 1.2 · Scope: requested by the user · Implementation: partial; custom presets implemented and locally validated (CHG-012), dedicated sessions pending
 
-The current app has built-in drill selection and continuous sequence recognition. A dedicated configurable session runner, custom editor and saved repetition results are not yet implemented.
+The current app has built-in drill selection and continuous sequence recognition. CHG-012 implements a gun-owned custom sequence editor and saved presets. A dedicated configurable session runner and saved repetition results remain pending.
 
 Design: [current Configure / Run / Review mockup](../drill-session-mockup.png). Approval evidence and unresolved details are recorded in [CHG-002](approval-log.md#chg-002--dedicated-drill-sessions), [CHG-004](approval-log.md#chg-004--show-the-sequence-once) and [CHG-005](approval-log.md#chg-005--optional-start-sound-clarification) and [CHG-008](approval-log.md#chg-008--start-sound-approved).
 
@@ -21,6 +21,16 @@ Design: [current Configure / Run / Review mockup](../drill-session-mockup.png). 
 ## Approved start-sound clarification
 
 The user approved **Sound at start** with “Sound at start is ok.” Use **Play a beep when GO appears** as helper text. The setting controls the beep only; it does not enable microphone access, change the delay or replace Start Session. See CHG-008 for the approval record. Other proposed session details below retain their existing status.
+
+## Custom preset implementation slice
+
+DRILL-06 implements the user's earlier explicit instruction that custom drills need a sequence editor and saved presets. The editor accepts a nonblank preset name and a nonempty ordered sequence of the existing `draw`, `rack`, `trigger` and `reload` actions. Repeated actions are allowed; controls can add, remove and reorder actions. Saved presets belong to one gun, can be edited, and are selectable alongside the unchanged built-in drills. Selected drill ownership is preserved after a refresh.
+
+Routine validation trims the title to 1–80 characters and accepts 1–32 actions. Custom stable IDs must not collide with built-in IDs; unknown action IDs and empty sequences are rejected before saving.
+
+Starting a selected preset uses the current explicit, safety-gated continuous recognition flow. This does not implement fixed/random starts, repetition targets, countdown/GO, the approved beep, pause/end rules or dedicated session summaries. Editable session defaults in the design remain proposed; the current custom editor only saves the requested name and action sequence.
+
+Acceptance for this slice: a preset saved for gun A reopens after reload and cannot appear in or affect gun B; editing its name/order updates that preset; repeated actions retain their order; a preset with a blank name or empty sequence cannot be saved; built-in definitions remain intact; only the selected gun's trained model is used during recognition.
 
 ## Proposed interaction details awaiting confirmation
 

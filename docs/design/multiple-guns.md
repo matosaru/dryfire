@@ -1,6 +1,6 @@
 # Multiple guns — proposed front-door flow
 
-The first-visit, library and selected-gun flow was approved by the user. These visualisations describe the accepted proposal. They do not implement gun profiles, custom drill editing, session results or cloud synchronization. Authoritative scope and approval states are in [gun-profiles.md](requirements/gun-profiles.md), [drill-sessions.md](requirements/drill-sessions.md) and [persistence.md](requirements/persistence.md). See the [design catalog](README.md) for reviewed visual revisions.
+The first-visit, library and selected-gun flow was approved by the user. These visualisations describe the accepted proposal. CHG-012 implements and locally validates gun profiles, gun-owned learned sounds/custom presets/recognition history and same-device persistence. Dedicated session results and cloud synchronization remain pending. Authoritative scope and approval states are in [gun-profiles.md](requirements/gun-profiles.md), [drill-sessions.md](requirements/drill-sessions.md) and [persistence.md](requirements/persistence.md). See the [design catalog](README.md) for reviewed visual revisions and [implementation history](implementation-history.md) for publication/deployment evidence.
 
 ## First visit, library and selected-gun Home
 
@@ -12,7 +12,7 @@ The first-visit, library and selected-gun flow was approved by the user. These v
 2. **My Guns** lists up to five saved profiles, their type, sound-readiness state and drill count. An **Add Gun** button remains available until the five-profile limit is reached.
 3. The selected-gun Home dashboard displays its name and type prominently, with a switcher and entries for **Learn Sounds**, **Drills**, **Live Listen** and **History**. All four entries use the selected gun's data.
 4. Remember the selected gun between visits. Returning users open its Home dashboard; the switcher opens My Guns.
-5. At five profiles, replace Add Gun with a clear **5 of 5 guns saved** message and a profile-management link. Edit or delete a profile from management; deleting a gun and its data requires separate confirmation.
+5. At five profiles, show a clear **5 of 5 guns saved** message and prevent a sixth. Additional edit/delete profile-management details are proposals, not part of the current implementation slice; deletion requires separate confirmation if that future scope is approved.
 6. The future free version's one-gun restriction is deferred. These mockups show the requested five-profile capacity without subscriptions or upgrade prompts.
 
 ## Independent sounds, drills and saved sessions
@@ -24,8 +24,8 @@ The first-visit, library and selected-gun flow was approved by the user. These v
 - Show the selected gun's name on Learn, Drills and History so data ownership is always visible.
 - Learned sound samples and classification use only that gun's profiles.
 - Built-in drill definitions can be shared; custom presets, session configuration and results belong to one gun.
-- Custom drill creation supports a name, ordered actions, repeated actions and editable session defaults. The session page uses the previously proposed [Configure / Run / Review flow](drill-session.md).
-- Proposed session detail: prevent switching gun profiles during recording or an active session. Exact end/pause/switch behavior remains to be confirmed; never silently assign results to another gun.
+- Custom drill creation saves a name and ordered actions, including repeated actions. Editable session defaults and the dedicated session page's [Configure / Run / Review flow](drill-session.md) remain separate proposed details.
+- Current ownership safeguard: stop recording/listening before switching guns. Future dedicated-session pause/end/switch rules remain to be confirmed; never silently assign results to another gun.
 - Reset one sound only for the selected gun. Reset all sounds for this gun preserves its session history and every other gun's data. Deleting an entire profile is a separate confirmed action.
 - Gun type is descriptive metadata. The proposal does not silently redefine the app's existing sound identifiers. Sound categories or drill suggestions for different types need to be agreed and validated before implementation.
 

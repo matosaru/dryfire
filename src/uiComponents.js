@@ -98,6 +98,6 @@ export function drillCard({ drill, index, titleFor, onChoose }, doc = document) 
   const header = doc.createElement('div');
   header.className = 'preset-header';
   header.append(icon, heading);
-  card.append(header, textNode(doc, 'p', 'drill-description', drill.steps.length === 1 ? 'Practice consistent trigger press recognition.' : `${drill.steps.length === 2 ? 'Two' : 'Three'}-part sequence.`), steps, actionButton({label:'▶ Start Drill',onClick:onChoose},doc));
+  card.append(header, textNode(doc, 'p', 'drill-description', drill.steps.length === 1 ? 'Practice single-sound recognition.' : `${drill.steps.length}-action sound sequence.`), steps, actionButton({label:'▶ Start Drill',onClick:onChoose},doc));
   return card;
 }

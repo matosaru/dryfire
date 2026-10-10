@@ -1,7 +1,7 @@
 import {
   addEvent, addExample, clearEvents, clearExamples, clearExamplesForLabel, getEvents, getExamples,
   getOutdatedExampleCount, getSetting, normalizeMaxResults, setSetting, trimEvents, verifyEvent,
-  MAX_EXAMPLES_PER_CLASS,
+  MAX_EXAMPLES_PER_CLASS, createGun, getGunSetting, setGunSetting,
 } from '../src/storage.js';
 
 const DB_NAME = 'dryfire-sound-trainer';
@@ -16,7 +16,10 @@ function deleteDatabase() {
 }
 
 describe('IndexedDB storage', () => {
-  beforeEach(deleteDatabase);
+  beforeEach(async () => {
+    await deleteDatabase();
+    await createGun({ name: 'Test gun', type: 'Handguns' });
+  });
   afterAll(deleteDatabase);
 
   test('stores and clears current training vectors', async () => {
@@ -49,6 +52,7 @@ describe('IndexedDB storage', () => {
   });
 
   test('can identify incompatible old model vectors without mixing them', async () => {
+    await deleteDatabase();
     const db = await new Promise((resolve, reject) => {
       const request = indexedDB.open(DB_NAME, 1);
       // Simulate the previous schema, not a brand-new empty database.
@@ -75,9 +79,11 @@ describe('IndexedDB storage', () => {
   });
 
   test('keeps settings with a fallback and normalizes N', async () => {
-    expect(await getSetting('maxResults', 50)).toBe(50);
-    await setSetting('maxResults', 2);
-    expect(await getSetting('maxResults', 50)).toBe(2);
+    expect(await getSetting('appearance', 'system')).toBe('system');
+    await setSetting('appearance', 'dark');
+    expect(await getSetting('appearance', 'system')).toBe('dark');
+    await setGunSetting('maxResults', 2);
+    expect(await getGunSetting('maxResults', 50)).toBe(2);
     expect(normalizeMaxResults(0)).toBe(1);
     expect(normalizeMaxResults(1000)).toBe(500);
     expect(normalizeMaxResults('none')).toBe(50);
@@ -85,7 +91,7 @@ describe('IndexedDB storage', () => {
   });
 
   test('stores events newest first, respecting N and preventing spoofed system fields', async () => {
-    await setSetting('maxResults', 2);
+    await setGunSetting('maxResults', 2);
     const originalNow = Date.now;
     let now = 1000;
     Date.now = () => now++;
@@ -101,7 +107,7 @@ describe('IndexedDB storage', () => {
   });
 
   test('limits concurrent event writes to last N', async () => {
-    await setSetting('maxResults', 3);
+    await setGunSetting('maxResults', 3);
     await Promise.all(Array.from({ length: 12 }, (_, i) => addEvent({ label: 'draw', score: i })));
     expect(await getEvents()).toHaveLength(3);
     await trimEvents(1);
@@ -129,12 +135,15 @@ describe('IndexedDB storage', () => {
 });
 
 describe('portable local backup', () => {
-  beforeEach(deleteDatabase);
+  beforeEach(async () => {
+    await deleteDatabase();
+    await createGun({ name: 'Test gun', type: 'Handguns' });
+  });
   afterAll(deleteDatabase);
 
   test('restores learned examples, verification labels and result limit', async () => {
     const { exportBackup, restoreBackup } = await import('../src/storage.js');
-    await setSetting('maxResults', 2);
+    await setGunSetting('maxResults', 2);
     await addExample('draw', Array(15).fill(0.25));
     const detection = await addEvent({ label: 'draw', score: 63 });
     await verifyEvent(detection.id, 'reload');
@@ -142,12 +151,12 @@ describe('portable local backup', () => {
     expect(backup.format).toBe('sound-trainer-backup');
     await clearExamples();
     await clearEvents();
-    await setSetting('maxResults', 50);
+    await setGunSetting('maxResults', 50);
     const stats = await restoreBackup(backup);
-    expect(stats).toEqual({ examples: 1, events: 1, maxResults: 2 });
+    expect(stats).toEqual({ guns: 1, examples: 1, events: 1, maxResults: 2 });
     expect((await getExamples())[0].features).toHaveLength(15);
     expect((await getEvents())[0].actualLabel).toBe('reload');
-    expect(await getSetting('maxResults', 50)).toBe(2);
+    expect(await getGunSetting('maxResults', 50)).toBe(2);
   });
 
   test('restores newly learned slide-racking samples', async () => {

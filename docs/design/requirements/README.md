@@ -1,8 +1,10 @@
 # Requirements index
 
-Revision: 1.1 · Recorded: 2026-10-10
+Revision: 1.2 · Recorded: 2026-10-10
 
 Start at the [requirements overview](OVERVIEW.md). This directory separates required behavior, proposed details, approvals and implementation status.
+
+Read the [implementation history and remaining plan](../implementation-history.md) for delivered scope and the remaining work after each request.
 
 | File | Purpose |
 | --- | --- |

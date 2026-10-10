@@ -1,3 +1,12 @@
+## Unreleased — multi-gun profiles and custom presets
+
+- Implemented the approved first-use gun name/type form, My Guns library with a five-profile limit, selected-gun switcher and consistent gun ownership on Home, Learn, Drills, Live Listen and History (CHG-012).
+- Added independently owned learned models, recognition history, retention/selected-drill settings and editable saved custom sequences. Preserved the four existing sound identifiers and built-in drill order; stop recording/listening before switching guns.
+- Upgraded the existing IndexedDB database to schema 2 transactionally. Legacy features/history keep IDs, timestamps and verification metadata in a profile requiring user-supplied details. Empty databases start with first-gun setup rather than a fabricated gun.
+- Added validated version-2 whole-library export/restore and compatible version-1 import. Browser imports over 10 MB are rejected before parsing. Compatible current features are exported; outdated legacy vectors remain preserved in the database until confirmed reset.
+- Updated the service-worker cache from v10 to v11. Passed 16 smoke checks, 100 Jest tests, production build and `verify:dist`, plus browser checks for legacy cache/database migration, gun isolation/reload, custom editor, whole-library backups, confirmed resets, retention and 320–768 px layout. Synthetic Chromium capture verified switch guards and stream cleanup. No package-version bump or Cloudflare/real-device success is claimed.
+- Added the ongoing [implementation history and remaining plan](../implementation-history.md) requested by the user (CHG-013). Dedicated timed sessions/repetition summaries, extra browser settings, cloud recovery and the deferred free-plan cap remain separate work.
+
 ## Unreleased — display branding
 
 - Updated the canonical display name to **Dry Fire With Ease** and added **WITH EASE** to the existing orange/white DF header lockup (CHG-011).

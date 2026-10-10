@@ -15,7 +15,7 @@
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="stylesheet" href="/src/styles.css" />
 </head>
-<body>
+<body data-view="loading">
   <main class="app-shell">
     <header class="hero">
       <img class="brand-logo" src="/logo.svg" width="47" height="47" alt="" />
@@ -44,8 +44,37 @@
 
     <p id="appMessage" class="app-message hidden" role="alert"></p>
 
+    <p class="startup-message" role="status">Opening your saved gun profiles…</p>
+
+    <button id="gunSwitcherBtn" class="gun-switcher hidden" type="button" aria-label="Choose a gun">
+      <span class="gun-switcher-copy"><span class="gun-switcher-label">Active gun</span><strong id="activeGunName"></strong><span id="activeGunType"></span></span>
+      <span class="gun-switcher-action">Switch gun <span aria-hidden="true">⌄</span></span>
+    </button>
+
+    <section id="gunSetupView" class="view hidden" aria-labelledby="gunSetupTitle">
+      <div class="gun-page-heading"><h2 id="gunSetupTitle">Add your first gun</h2><p id="gunSetupDescription">Give it a name and choose a type. Its sounds and drills stay separate.</p></div>
+      <form id="gunForm" class="gun-form">
+        <label for="gunName">Gun name<input id="gunName" name="gunName" type="text" required minlength="1" maxlength="80" placeholder="e.g. My handgun" autocomplete="off" /></label>
+        <label for="gunType">Gun type<select id="gunType" name="gunType" required><option value="">Choose a gun type…</option><option value="Handguns">Handguns</option><option value="Rifles and Carbines">Rifles and Carbines</option><option value="Shotguns">Shotguns</option></select></label>
+        <p class="muted small">You can save up to 5 guns.</p>
+        <aside class="storage-card"><span class="storage-symbol" aria-hidden="true">▤</span><div><strong>Saved on this device</strong><p>Gun profiles, learned sounds and drill presets stay here between visits. Use the same app address and browser.</p></div></aside>
+        <button id="saveGunBtn" class="button primary wide-action" type="submit">Save Gun &amp; Continue</button>
+        <button id="cancelGunSetupBtn" class="button secondary wide-action hidden" type="button">Cancel</button>
+      </form>
+      <button id="restoreGunBackupBtn" class="text-button wide-action" type="button">Restore from backup</button>
+    </section>
+
+    <section id="gunsView" class="view hidden" aria-labelledby="gunsTitle">
+      <div class="gun-library-heading"><h2 id="gunsTitle">My Guns</h2><span id="gunCapacity" class="gun-capacity" aria-live="polite">0 of 5 guns saved</span></div>
+      <p class="muted">Choose a gun to open its own sounds and drills.</p>
+      <div id="gunList" class="gun-list"></div>
+      <button id="addGunBtn" class="button secondary wide-action add-gun-button" type="button"><span aria-hidden="true">+</span> Add Gun</button>
+      <aside class="storage-card"><span class="storage-symbol" aria-hidden="true">▤</span><div><strong>Saved on this device</strong><p>Refreshing or updating at this app address keeps your saved data. Export a backup before clearing browser storage.</p><button id="gunLibraryBackupBtn" class="text-button" type="button">Backup &amp; restore <span aria-hidden="true">›</span></button></div></aside>
+    </section>
+
     <section id="homeView" class="view" aria-labelledby="home-title">
       <article class="welcome-card"><h2 id="home-title">Train by sound.</h2><p>Build faster, more consistent<br>mechanical skills.</p><span class="orange-rule"></span></article>
+      <p class="gun-context">Showing data for <strong class="gun-context-name"></strong> only.</p>
       <div class="home-actions">
         <button id="homeLearnBtn" class="dashboard-card" type="button"><span class="dashboard-icon orange"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4"/></svg></span><span><strong>Learn Sounds</strong><small>Learn and recognize<br>each core action sound.</small></span><span class="chevron">›</span></button>
         <button id="homeDrillsBtn" class="dashboard-card" type="button"><span class="dashboard-icon blue"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg></span><span><strong>Drills</strong><small>Combine sounds into<br>realistic sequences.</small></span><span class="chevron">›</span></button>
@@ -59,17 +88,31 @@
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button>
         <div><p class="eyebrow">01 / SOUND PROFILES</p><h2 id="learn-title">Learn Sounds</h2></div>
       </div>
+      <p class="gun-context">Learned sounds for <strong class="gun-context-name"></strong>.</p>
       <p class="muted">Capture at least <strong>3 samples of each type</strong> (8–10 recommended). Each capture gives you a two-second countdown followed by a two-second recording window.</p>
       <div id="modelNotice" class="info-note hidden" role="status"></div>
       <div id="classCards" class="class-grid"></div>
-      <p class="muted small">The animations are illustrative sound cues, not step-by-step handling demonstrations. Resetting one profile leaves the other profiles and recognition history unchanged.</p>
+      <p class="muted small">The animations are illustrative sound cues, not step-by-step handling demonstrations. Resetting one sound keeps this gun's other sounds and history, and every other gun's data.</p>
       <div class="tip"><strong>Recording tip:</strong> Keep the phone in a consistent position, perform just one action per recording, and avoid background noise. Raw audio is not saved—only numeric sound features.</div>
     </section>
 
     <section id="drillsView" class="view hidden" aria-labelledby="drills-title">
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">02 / PRACTICE PRESETS</p><h2 id="drills-title">Drills</h2></div></div>
-      <p class="muted">Select a preset to check a sequence of recognized sounds. You can also use Live Listen without a preset.</p>
-      <div class="segmented-control" aria-label="Drill collection"><span class="selected">Built-in Drills</span><span title="Custom drills are not yet available">Custom · soon</span></div><div id="drillCatalog" class="drill-catalog"></div>
+      <p class="gun-context">Saved presets for <strong class="gun-context-name"></strong>.</p>
+      <p class="muted">Select a built-in preset or save your own sequence of sounds. You can also use Live Listen without a preset.</p>
+      <div class="segmented-control" role="group" aria-label="Drill collection"><button id="builtInDrillsTab" type="button" aria-pressed="true" aria-controls="drillCatalog">Built-in Drills</button><button id="customDrillsTab" type="button" aria-pressed="false" aria-controls="customDrillCatalog">Custom</button></div>
+      <div id="drillCatalog" class="drill-catalog"></div>
+      <button id="newCustomDrillBtn" type="button" class="button secondary wide-action hidden">+ Create Custom Drill</button>
+      <div id="customDrillCatalog" class="drill-catalog hidden"></div>
+      <form id="customDrillForm" class="custom-drill-editor hidden" aria-labelledby="customDrillEditorTitle">
+        <h3 id="customDrillEditorTitle">Create a drill</h3>
+        <label for="customDrillName">Drill name<input id="customDrillName" name="customDrillName" type="text" required minlength="1" maxlength="80" placeholder="Name your drill" autocomplete="off" /></label>
+        <p class="editor-label">Action sequence</p>
+        <ol id="customDrillSteps" class="custom-drill-steps" aria-label="Custom drill action order"></ol>
+        <div class="custom-action-controls"><label for="customAction">Add a sound<select id="customAction"><option value="draw">Draw from holster</option><option value="rack">Rack slide</option><option value="trigger">Trigger pull</option><option value="reload">Change magazine</option></select></label><button id="addCustomActionBtn" class="button secondary" type="button">+ Add Action</button></div>
+        <p class="muted small">Use the arrow buttons to reorder. Sounds can repeat.</p>
+        <div class="custom-editor-actions"><button id="saveCustomDrillBtn" class="button primary" type="submit">Save Drill</button><button id="cancelCustomDrillBtn" class="button secondary" type="button">Cancel</button></div>
+      </form>
       <button id="freeListenBtn" type="button" class="button secondary wide-action">Start free listening →</button>
     </section>
 
@@ -77,6 +120,7 @@
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button>
         <div><p class="eyebrow">03 / REAL-TIME DETECTION</p><h2 id="recognize-title">Live Listen</h2></div>
       </div>
+      <p class="gun-context">Listening uses the learned sounds of <strong class="gun-context-name"></strong>.</p>
       <section class="drill-panel" aria-labelledby="drill-heading">
         <div class="drill-panel-head">
           <div><p class="eyebrow">CURRENT MODE</p><h3 id="drill-heading">Free listening</h3></div>
@@ -144,6 +188,7 @@
 
     <section id="historyView" class="view hidden" aria-labelledby="history-title">
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">04 / LOCAL DATA</p><h2 id="history-title">History</h2></div></div>
+      <p class="gun-context">Recognition results for <strong class="gun-context-name"></strong>.</p>
       <div class="settings-row"><label for="maxResults">Keep last N recognition results</label><input id="maxResults" type="number" min="1" max="500" step="1" value="50" /></div>
       <p class="muted small">Training samples are stored separately. Changing N trims recognition history, not learned sound examples. Label each result to evaluate recognition on your own real-world samples.</p>
       <div class="evaluation-panel" aria-live="polite">
@@ -158,6 +203,7 @@
 
     <section id="settingsView" class="view hidden" aria-labelledby="settings-title">
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">05 / DEVICE &amp; PRIVACY</p><h2 id="settings-title">Settings</h2></div></div>
+      <p class="gun-context">Sound resets affect <strong class="gun-context-name"></strong> only.</p>
       <details class="install-details"><summary>Install on your iPhone <span>›</span></summary><div class="install-card">
         <div class="install-badge">iOS · HOME SCREEN</div>
         <h3>Install on your iPhone</h3>
@@ -167,19 +213,19 @@
       </div>
       </details><div class="settings-group">
         <h3>Learned Sounds</h3>
-        <p class="muted small">For one sound, use Reset on its card in Learn. To erase every learned sound at once, use the button below. Recognition history stays intact.</p>
-        <button id="resetModelBtn" class="button danger" type="button"><span class="settings-action-icon" aria-hidden="true">⏻</span><span>Reset all learned sounds</span><span class="settings-chevron" aria-hidden="true">›</span></button>
+        <p class="muted small">For one sound, use Reset on its card in Learn. The button below erases all learned sounds for the selected gun. Its history and other guns' data stay intact.</p>
+        <button id="resetModelBtn" class="button danger" type="button"><span class="settings-action-icon" aria-hidden="true">⏻</span><span>Reset all sounds for this gun</span><span class="settings-chevron" aria-hidden="true">›</span></button>
       </div>
       <div class="settings-group">
         <h3>Backup &amp; Data</h3>
-        <p class="muted small">Export learned numeric sound features and the saved result history. The backup contains no raw recordings. Keep this file private.</p>
+        <p class="muted small">Export all gun profiles, learned numeric sound features, saved drill presets and recognition history. The backup contains no raw recordings. Keep this file private.</p>
         <div class="settings-actions"><button id="exportBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↑</span><span>Export backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><button id="importBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↓</span><span>Import backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><input id="importFile" type="file" accept="application/json,.json" class="hidden" /></div>
-        <p class="small muted">Import replaces the model and history on this device. Files from another device may perform differently.</p>
+        <p class="small muted">Import replaces saved guns and their training data on this device. Files from another device may perform differently.</p>
       </div>
       <div class="settings-group"><h3>About</h3><p class="muted small">Dry Fire With Ease v0.8.0 · Sound trainer · Private IndexedDB storage · Up to 50 learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
     </section>
 
-    <footer>Microphone access stops when you tap Stop, leave recognition, or the page becomes hidden. Only numeric learned features, predictions and optional verification labels are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.</footer>
+    <footer>Microphone access stops when you tap Stop, leave recognition, or the page becomes hidden. Gun profiles, numeric learned features, custom drills and recognition results are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.</footer>
   </main>
   <script type="module" src="/src/main.js"></script>
 </body>

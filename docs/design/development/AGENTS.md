@@ -11,6 +11,7 @@ Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with C
 - Reuse explicit approval or a specific direct instruction already given in the conversation; do not ask again for unchanged approved scope. Assistant-proposed additions remain proposed until approved. Routine fixes restoring approved behavior do not require a new product approval.
 - Follow [change-process.md](../requirements/change-process.md). Append approval evidence honestly; never infer approval from silence, an uploaded image, a successful push or elapsed time.
 - Keep requirement approval, implementation, validation and deployment status separate. Update specifications, design links and implementation status when relevant behavior changes. Do not mark a mockup as implemented.
+- After every user request that affects project work, update [implementation history and remaining plan](../implementation-history.md). Keep a concise per-request record of delivered scope, remaining work and next steps. Separate approval, code, tests, push and deployment; record only observed success, and preserve earlier history rather than implying every published design is a working feature.
 
 ## Documentation location and provenance
 

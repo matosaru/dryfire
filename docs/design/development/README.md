@@ -4,6 +4,18 @@ Product planning: [Requirements and approvals](../requirements/OVERVIEW.md) · [
 
 The approved display brand is **Dry Fire With Ease**. **Sound Trainer** remains a descriptive subtitle. The existing technical `dryfire` identifiers stay unchanged to preserve local data and deployment compatibility; see [branding requirements](../requirements/branding.md).
 
+See [implementation history and remaining plan](../implementation-history.md) for code, validation, publication and deployment status. The package version remains **0.8.0**; the current update adds the approved gun-profile/custom-preset scope rather than claiming a new release number.
+
+## Gun profiles and saved custom drills
+
+- First use asks for a gun name and one of **Handguns**, **Rifles and Carbines**, or **Shotguns**. Save up to five profiles and use **My Guns** to switch the selected gun. The future free-version one-gun cap is not applied.
+- Learned examples, recognition history, custom sequences and selected drill are owned by a gun. Sound/history resets affect only that gun. Stop recording/listening before switching so in-flight data keeps its original owner.
+- On **Drills**, create or edit a saved custom preset with a name and ordered known actions; repeated actions are supported. Start it through the existing explicit, safety-gated recognition flow. Built-in sequences remain unchanged.
+- IndexedDB schema 2 retains `dryfire-sound-trainer` and preserves legacy data. Existing sounds/history are assigned to one profile requiring the user's name/type; an empty legacy database starts with no fabricated profile. Selection and owned data persist after compatible same-origin reloads/deployments.
+- Export creates a version-2 whole-library backup. Compatible version-1 backups remain readable and restore their legacy data into a profile requiring details. Imports validate before replacing data and reject files over 10 MB. Export excludes outdated feature vectors as before; migration preserves those vectors in the database until the user confirms resetting the relevant sound.
+
+Dedicated fixed/random-timing sessions, countdown/GO/beep, completed/left repetition counts, saved session review and extra audio/appearance/vibration settings remain separate pending work. Recognition-event history does not provide a dedicated session summary. There is no account, cloud recovery or cross-device synchronization.
+
 Offline-first, local sound-learning PWA, compatible with a future Capacitor iOS/Android wrapper. **It is not a signed IPA.** Classifier accuracy is experimental; complete the in-app safety checklist and test on inert/safe equipment before use.
 
 ## Four sounds
@@ -57,7 +69,7 @@ GitHub Actions in `.github/workflows/check.yml` runs the tests and creates a dow
 5. **Single sound test** is intentionally a **one-shot** recording and stops after one event.
 6. Verify each event under History; accuracy includes only verified detections and cannot count missed sounds.
 
-The detector now uses fixed ~10ms frames, faster release/cooldown and bounded pre-roll buffers. It is still energy-based: overlapping sounds or very rapid mechanical sequences may merge; microphone auto gain, echo, distance and background noise can affect accuracy. No audio is uploaded or stored; only derived features and recent detections are kept in IndexedDB. The maximum number of history results is configurable from 1 to 500. Export a backup before changing browsers or uninstalling the Home Screen app.
+The detector now uses fixed ~10ms frames, faster release/cooldown and bounded pre-roll buffers. It is still energy-based: overlapping sounds or very rapid mechanical sequences may merge; microphone auto gain, echo, distance and background noise can affect accuracy. No audio is uploaded or stored; only derived features and recent detections are kept in IndexedDB alongside gun metadata, custom presets and settings. The maximum number of history results is configurable from 1 to 500 independently per gun. Export a backup before changing browsers or uninstalling the Home Screen app.
 
 ## Layout
 
@@ -67,7 +79,7 @@ The detector now uses fixed ~10ms frames, faster release/cooldown and bounded pr
 - `src/classifier.js` — four-class nearest-distance model, unknown rejection
 - `src/storage.js` — IndexedDB, backup/restore, recent-N retention
 - `src/evaluation.js` — manually verified confusion matrix
-- `workers/sw.js` — versioned PWA caching (v7), minified at build
+- `workers/sw.js` — versioned PWA caching (v11), minified at build
 - `tools/verify-dist.mjs` — public-build sanity check
 - `.github/workflows/check.yml` — CI tests + build artifact
 
@@ -76,7 +88,7 @@ See [iPhone installation](INSTALL_ON_IPHONE.md) and [accuracy testing](ACCURACY_
 
 ## Built-in sequence drills (v0.7)
 
-Open **Listen → Training mode** and select one of these presets:
+Open **Drills** and select one of these presets, or a custom preset saved for the selected gun:
 
 | Preset | Expected recognition sequence |
 | --- | --- |

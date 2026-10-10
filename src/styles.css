@@ -257,7 +257,7 @@ body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
 .home-actions{display:grid;grid-template-columns:1fr;gap:12px}.dashboard-card{width:100%;display:flex;align-items:center;gap:20px;text-align:left;color:#f2f4f8;padding:12px;min-height:102px;cursor:pointer}.dashboard-card strong{display:block;font-size:1.04rem;margin-bottom:7px}.dashboard-card small{display:block;color:#bac5d1;font-size:.8rem;line-height:1.4}.dashboard-icon{width:78px;height:78px;display:grid;place-items:center;flex:none;font-size:47px;border-radius:15px}.orange{color:#ff8126;background:#412d20}.blue{color:#43baff;background:#12344a}.green{color:#50da86;background:#203e2e}.purple{color:#b874ff;background:#302641}.chevron{margin-left:auto;font-size:30px;color:#acbac8;font-weight:300}.dashboard-card:disabled{opacity:.65;cursor:not-allowed}
 .home-stats{margin-top:20px}.home-stats article{padding:10px 7px;background:#111a20}.home-stats strong{font-size:1.05rem}.home-stats small{font-size:.64rem}
 .section-head{position:relative;justify-content:center;min-height:36px;margin-bottom:18px}.section-head h2{font-size:1.12rem;text-align:center}.section-head .eyebrow{display:none}.back-button{position:absolute;left:0;top:-5px;background:none;border:0;color:#fff;font-size:35px;padding:0 12px;cursor:pointer}
-body[data-view]:not([data-view="home"]) .hero{display:none}
+body[data-view]:not([data-view="home"]):not([data-view="guns"]):not([data-view="gunSetup"]):not([data-view="loading"]) .hero{display:none}
 .view>.muted{font-size:.78rem;line-height:1.5}.class-grid{grid-template-columns:1fr;gap:12px;margin-top:12px}.class-card{padding:10px;gap:0}.class-card-top{gap:13px;align-items:stretch}.class-preview{width:34%;min-width:95px;max-width:128px;aspect-ratio:4/5;background:#081820}.class-preview img{object-fit:contain}.class-info{display:flex;flex-direction:column;justify-content:center;flex:1}.class-info h3{font-size:.95rem}.class-info>p{font-size:.73rem;line-height:1.35;margin-bottom:7px}.class-info .progress-label{font-size:.65rem!important;color:#a5b6c6!important;margin:3px 0}.progress-track{height:5px;margin:3px 0 10px}.class-actions{gap:7px}.class-actions .button{min-height:34px;padding:6px 9px;border-radius:9px;font-size:.76rem}.button.primary{background:linear-gradient(135deg,#ff983d,#ff751c);color:#16100b;border:1px solid #ffad62}.button.secondary{background:linear-gradient(#29343e,#1c2730);border-color:#35424e}.class-actions .reset-class{font-weight:600}
 .segmented-control{display:flex;padding:3px;border:1px solid #2b3842;border-radius:12px;background:#1b252e;font-size:.72rem}.segmented-control span{flex:1;text-align:center;padding:8px}.segmented-control .selected{border-radius:9px;background:linear-gradient(135deg,#ff9638,#ff751c);color:#15100a;font-weight:750}.segmented-control span:last-child{color:#a4afbc}
 .preset-card{padding:12px;gap:9px}.preset-header{display:flex;align-items:center;gap:13px}.preset-header h3{font-size:.91rem;line-height:1.35}.drill-target{font-size:37px;color:#46baff;line-height:1}.preset-card:nth-child(3) .drill-target{color:#b574f6}.drill-description{font-size:.73rem;color:#b3c0cc;margin:-5px 0 0 50px}.preset-steps{gap:6px;margin-left:46px}.preset-chip{font-size:.65rem;padding:4px 7px;border:1px solid #49c6ff;background:#0b1a24;color:#5aceff}.preset-chip[data-sound="trigger"]{border-color:#ff9231;color:#ff9c42}.preset-chip[data-sound="reload"]{border-color:#c77bff;color:#d19bff}.preset-card .button{min-height:35px;padding:6px;border-radius:8px;font-size:.78rem}
@@ -267,3 +267,96 @@ footer{font-size:.68rem;line-height:1.55;margin-top:20px;color:#8594a4}.tip,.inf
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 .nav-glyph svg{width:24px;height:24px;display:block;margin:auto}.dashboard-icon svg{width:52px;height:52px;stroke-width:1.8}.class-actions .primary,.preset-card .primary{font-variant-emoji:text}.class-preview picture{display:block;height:100%}.class-info .progress-label{line-height:1.3}
 .settings-group>.button,.settings-actions .button{display:flex;align-items:center;gap:13px}.settings-action-icon{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:#303b46;font-size:24px;font-weight:500;flex:none}.danger .settings-action-icon{color:#ff735e;background:#492a29}.settings-chevron{margin-left:auto;color:#a6b4c2;font-size:26px;font-weight:400}
+
+/* Gun profiles use the approved first-visit, library and selected-gun flow. */
+.startup-message { display:none; padding:30px 0; color:#b4c4d2; text-align:center; }
+body[data-view="loading"] .startup-message { display:block; }
+body[data-view="loading"] .view,
+body[data-view="loading"] .tabs,
+body[data-view="loading"] .safety-disclosure,
+body[data-view="loading"] .gun-switcher,
+body[data-view="loading"] footer,
+body[data-view="guns"] .tabs,
+body[data-view="guns"] .safety-disclosure,
+body[data-view="guns"] .gun-switcher,
+body[data-view="gunSetup"] .tabs,
+body[data-view="gunSetup"] .safety-disclosure,
+body[data-view="gunSetup"] .gun-switcher { display:none; }
+body[data-view="loading"] .hero,
+body[data-view="guns"] .hero,
+body[data-view="gunSetup"] .hero { display:flex; }
+body[data-view="guns"] .app-shell,
+body[data-view="gunSetup"] .app-shell { padding-bottom:calc(28px + env(safe-area-inset-bottom)); }
+.gun-switcher { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 15px; margin:0 0 18px; background:linear-gradient(135deg,#1b2833,#101b24); border:1px solid #354c60; border-radius:13px; color:#f2f5f9; text-align:left; cursor:pointer; }
+.gun-switcher-copy { display:grid; gap:4px; min-width:0; }
+.gun-switcher-label { font-size:.63rem; font-weight:700; color:#a5b7ca; text-transform:uppercase; letter-spacing:.09em; }
+.gun-switcher strong { font-size:1rem; line-height:1.35; overflow-wrap:anywhere; }
+#activeGunType { color:#b0c5d9; font-size:.75rem; }
+.gun-switcher-action { flex:none; color:#61bfff; font-size:.7rem; }
+.gun-switcher-action>span { display:block; text-align:right; color:#bfcede; font-size:24px; line-height:1; margin-bottom:4px; }
+.gun-context { border:1px solid #2f414f; border-radius:9px; padding:9px 11px; margin:0 0 15px; color:#b5c8db; font-size:.74rem; line-height:1.5; overflow-wrap:anywhere; }
+.gun-context strong { color:#deebf8; font-weight:650; }
+.gun-page-heading { margin:20px 0 21px; }
+.gun-page-heading h2,.gun-library-heading h2 { font-size:1.65rem; line-height:1.15; letter-spacing:-.035em; margin:0 0 10px; }
+.gun-page-heading p { color:#b5c8db; font-size:.94rem; line-height:1.55; margin-bottom:0; }
+.gun-form { display:grid; gap:17px; }
+.gun-form>label,.custom-drill-editor>label,.custom-action-controls>label { display:grid; gap:8px; color:#eef4fb; font-size:.87rem; }
+.gun-form input,.gun-form select,.custom-drill-editor input,.custom-drill-editor select { width:100%; min-width:0; min-height:49px; padding:12px; background:#101c26; border:1px solid #3b5267; border-radius:10px; color:#edf4fa; font:inherit; font-size:16px; }
+.gun-form input::placeholder,.custom-drill-editor input::placeholder { color:#8fa2b5; }
+.gun-form select,.custom-drill-editor select { appearance:auto; }
+.gun-form>.muted { margin:-3px 0 0; color:#a7bacd; }
+.gun-form .primary { min-height:51px; font-size:.93rem; }
+.storage-card { display:flex; gap:12px; padding:15px; margin:2px 0 5px; border:1px solid #314858; border-radius:13px; background:linear-gradient(135deg,#182630,#111b23); }
+.storage-symbol { display:grid; place-items:center; flex:none; width:42px; height:42px; border-radius:11px; background:#243646; color:#b0c8df; font-size:28px; }
+.storage-card>div { min-width:0; }
+.storage-card strong { display:block; margin:1px 0 6px; color:#f0f4f8; font-size:.87rem; }
+.storage-card p { margin:0; font-size:.73rem; line-height:1.55; color:#aec3d5; }
+.text-button { padding:11px 0; min-height:44px; background:none; border:0; color:#66bfff; font-size:.85rem; cursor:pointer; }
+.gun-library-heading { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin:20px 0 9px; }
+.gun-library-heading h2 { margin:0; }
+.gun-library-heading+.muted { font-size:.85rem; line-height:1.5; margin-bottom:18px; }
+.gun-capacity { padding:6px 9px; border:1px solid #3a5165; border-radius:99px; background:#1b2935; color:#bfd2e7; font-size:.68rem; white-space:nowrap; }
+.gun-list { display:grid; gap:11px; margin:0 0 13px; }
+.gun-card { display:grid; gap:12px; width:100%; min-width:0; padding:14px; text-align:left; border:1px solid #31485b; border-radius:13px; background:linear-gradient(135deg,#1a2935,#111b24); color:#f0f4f8; cursor:pointer; }
+.gun-card[aria-pressed="true"] { border:2px solid #ff8126; padding:13px; background:linear-gradient(135deg,#25303a,#172129); }
+.gun-card-head { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.gun-card-head>:first-child { min-width:0; }
+.gun-card-name { display:block; font-size:1rem; font-weight:750; line-height:1.4; overflow-wrap:anywhere; }
+.gun-card-type { display:block; margin-top:4px; font-size:.79rem; line-height:1.4; color:#b4c9dd; }
+.gun-selected { justify-self:start; background:#ff8126; color:#201409; font-size:.63rem; font-weight:800; border-radius:8px; padding:5px 7px; }
+.gun-card-chevron { color:#becfe0; font-size:27px; line-height:1; }
+.gun-card-status { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; font-size:.71rem; color:#aebfd1; }
+.gun-readiness { color:#ffd264; }
+.gun-readiness.ready { color:#69e5a0; }
+.gun-preset-count { color:#c294f1; }
+.add-gun-button { border-color:#d46f28!important; background:#151f27!important; color:#ff9141!important; min-height:48px; margin-bottom:17px; }
+.add-gun-button>span { margin-right:8px; font-size:25px; line-height:1; vertical-align:-2px; }
+.add-gun-button:disabled { border-color:#465460!important; color:#b8c6d4!important; opacity:1; }
+
+/* Gun-owned custom presets keep the existing continuous drill mode. */
+.segmented-control button { flex:1; min-width:0; min-height:38px; padding:8px 6px; border:0; border-radius:9px; background:none; color:#b5c3d1; font-size:.74rem; cursor:pointer; }
+.segmented-control button[aria-pressed="true"] { background:linear-gradient(135deg,#ff9638,#ff751c); color:#15100a; font-weight:750; }
+#newCustomDrillBtn { margin-top:14px; }
+.custom-drill-editor { display:grid; gap:14px; padding:16px; border:1px solid #344958; border-radius:15px; background:linear-gradient(135deg,#1a2630,#111a21); margin:15px 0; }
+.custom-drill-editor h3 { margin:0; font-size:1.12rem; }
+.custom-drill-editor .editor-label { margin:1px 0 -5px; text-transform:uppercase; color:#b8cbdc; font-size:.7rem; letter-spacing:.07em; }
+.custom-drill-steps { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+.custom-drill-steps>li { display:flex; align-items:center; gap:8px; padding:9px; background:#14222d; border:1px solid #354a5b; border-radius:10px; }
+.custom-step-number { display:grid; place-items:center; width:27px; height:27px; flex:none; background:#23546a; border-radius:50%; color:#c1eeff; font-size:.8rem; font-weight:800; }
+.custom-step-name { flex:1; min-width:0; font-size:.79rem; line-height:1.35; }
+.custom-step-controls { display:flex; gap:4px; flex:none; }
+.custom-step-controls button { width:34px; height:34px; min-height:34px; padding:0; border:1px solid #40566b; background:#1e2e3b; border-radius:7px; color:#e3eef8; cursor:pointer; font-size:1rem; }
+.custom-step-controls button:disabled { opacity:.35; cursor:not-allowed; }
+.custom-action-controls { display:grid; gap:10px; }
+.custom-drill-editor>.muted { margin:0; font-size:.71rem; }
+.custom-editor-actions { display:grid; gap:9px; }
+.custom-drill-editor+.button { margin-top:7px; }
+.gun-switcher:focus-visible,.gun-card:focus-visible,.text-button:focus-visible,.segmented-control button:focus-visible,.gun-form select:focus-visible,.custom-drill-editor select:focus-visible { outline:2px solid #ffad62; outline-offset:3px; }
+@media(max-width:360px) {
+  .gun-switcher { padding:12px; gap:9px; }
+  .gun-switcher-action { font-size:.64rem; }
+  .gun-library-heading h2 { font-size:1.5rem; }
+  .custom-drill-editor { padding:11px; }
+  .custom-step-controls { gap:3px; }
+  .custom-step-controls button { width:29px; }
+}

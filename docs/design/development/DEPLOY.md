@@ -25,6 +25,8 @@ Connect GitHub `matosaru/dryfire`. Build command: `npm run build`; publish direc
 
 ## After updating the hosted app
 
-The updated service-worker cache version is `dryfire-sound-trainer-v10`; the technical cache-name prefix remains unchanged. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples and saved event history remain in IndexedDB unless you manually reset them or delete browser site data. Do not clear site data to refresh the branding.
+The updated service-worker cache version is `dryfire-sound-trainer-v11`; the technical cache-name prefix remains unchanged. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples and saved event history remain in IndexedDB unless you manually reset them or delete browser site data. Do not clear site data to refresh the app.
+
+The current gun-profile update upgrades the existing IndexedDB database to schema 2 without changing its name. An existing learned model/history first prompts for its gun name and type; supplying those details keeps the migrated records. A fresh installation asks for the first gun. Check [implementation history](../implementation-history.md) for the current validation/push/deployment status; a code update in GitHub does not itself establish a successful production deployment.
 
 Training sounds: separate short illustrative waveform GIFs, not firearm-handling tutorials. With iPhone Reduce Motion enabled, the app displays static frames instead.

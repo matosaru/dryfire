@@ -2,11 +2,13 @@
 
 This is the permanent catalog of Dry Fire With Ease design references. Read the linked [requirements](requirements/README.md) before implementing them. Current image links show the latest published draft; approval belongs to the specific reviewed revision recorded in the [approval log](requirements/approval-log.md).
 
+See [implementation history and remaining plan](implementation-history.md) for what each request changed, what is still pending and what has actually been validated, pushed or deployed.
+
 | Design | Current visualisation | Specification | Approval state |
 | --- | --- | --- | --- |
 | Dry Fire With Ease logo lockup | [Actual header](brand-lockup.png), [Home](branding-preview.png) | [Branding](requirements/branding.md) | Approved in CHG-011; implemented and locally validated; deployment not verified |
-| First visit, My Guns and selected-gun Home | [View image](multiple-guns-front-door.png) | [Gun profiles](requirements/gun-profiles.md) | Multi-gun flow approved; not implemented |
-| Gun-specific sounds, custom editor and session history | [View image](multiple-guns-sounds-drills-history.png) | [Gun profiles](requirements/gun-profiles.md), [Drills](requirements/drill-sessions.md), [Persistence](requirements/persistence.md) | Multi-gun flow approved; finer session interactions remain proposed |
+| First visit, My Guns and selected-gun Home | [View image](multiple-guns-front-door.png) | [Gun profiles](requirements/gun-profiles.md) | Approved; implemented and locally validated (CHG-012); deployment unverified |
+| Gun-specific sounds, custom editor and session history | [View image](multiple-guns-sounds-drills-history.png) | [Gun profiles](requirements/gun-profiles.md), [Drills](requirements/drill-sessions.md), [Persistence](requirements/persistence.md) | Gun-owned sounds/presets/recognition history implemented; dedicated session interactions remain pending |
 | Configure, Run and Review | [View image](drill-session-mockup.png) | [Drill sessions](requirements/drill-sessions.md) | Single sequence requested; Sound at start approved; remaining session details in review |
 
 ## Supporting notes
@@ -14,6 +16,7 @@ This is the permanent catalog of Dry Fire With Ease design references. Read the 
 - [Multi-gun proposal and storage explanation](multiple-guns.md)
 - [Drill page proposal and clarified controls](drill-session.md)
 - [Previous implemented reference-design update](development/DESIGN_CHANGES.md)
+- Actual multi-gun implementation captures: [First gun](multigun-implementation-onboarding.png), [My Guns](multigun-implementation-library.png), [selected-gun Home](multigun-implementation-home.png), [custom drill editor](multigun-implementation-custom-drill.png). These are local production-build screenshots; deployment remains separately tracked.
 
 The Markdown specifications are authoritative for behavior. Sample names, times, counts and statuses in images are illustrative. Mockups do not prove that a feature exists or that data is synchronized to a server. When prose and a mockup disagree, record the discrepancy and resolve it through the change process rather than silently choosing a different requirement.
 
