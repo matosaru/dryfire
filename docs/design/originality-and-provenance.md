@@ -16,6 +16,7 @@ This establishes a creation record for the inspected changes. It does **not** pr
 | --- | --- | --- |
 | Original four-screen reference | User-reported ChatGPT generation in a separate project conversation | Earlier prompts and source influences have not been verified. The dark/orange direction and DF concept were intentionally used as a reference. |
 | [Production DF logo](../../public/logo.svg) | Locally authored SVG paths, inspired by the supplied reference | Introduced in commit `c7ecc50`. Locally authored coordinates do not establish trademark clearance. |
+| [Dry Fire With Ease lockup](brand-lockup.png) and [Home screenshot](branding-preview.png) | User-approved text extension; accessible HTML wordmark authored in `index.html` and `src/styles.css` | Implemented on 2026-10-10 under CHG-011, combining the existing SVG monogram with **DRY FIRE** plus **WITH EASE**. Screenshots captured from the local production build in Chromium; no new third-party artwork was introduced. This extension is not evidence of trademark or copyright clearance. |
 | Installation icons | Local raster exports of that SVG on a dark background | [192 px](../../public/icon-192.png), [512 px](../../public/icon-512.png), [Apple touch icon](../../public/apple-touch-icon.png); updated in `c7ecc50`. |
 | Navigation/dashboard icons | Locally authored simple SVG paths and circles in `index.html` | No external icon library or image CDN was detected in the inspected UI. Familiar icon shapes can appear independently in other products. |
 | Sound illustrations and animations | Locally authored SVG illustrations and generated looping GIF frames | Files in `public/motions/`, introduced/replaced in `c7ecc50`. No third-party stock-art pack was used by this collaboration. |
@@ -26,14 +27,15 @@ This establishes a creation record for the inspected changes. It does **not** pr
 
 ## Branding and mockup consistency
 
-- The app's production logo is `public/logo.svg`. Mockup sheets contain different generated DF monograms; those variants are illustrative and are not approved replacements for production branding.
+- The canonical DF monogram is `public/logo.svg`; the full production logo lockup combines it with the HTML wordmark in `index.html` and `src/styles.css`. Mockup sheets contain different generated DF monograms; those variants are illustrative and are not approved replacements for production branding.
+- The canonical display name is now **Dry Fire With Ease**, authorized by the user's direct instruction in CHG-011. The approved logo extension adds **WITH EASE** to the existing DF / DRY FIRE lockup. Saved, reviewed mockups retain their earlier names and are not the latest production wordmark. Coined alternative names suggested in conversation were not adopted.
 - Example gun names such as Glock and Mossberg refer to third-party products. They are illustrative user-entered profile names, not original app branding, manufacturer logos or evidence of endorsement.
 - Phone frames are presentation aids. They are not app artwork to bundle into production.
 - Common visual conventions such as dark cards, orange actions, tabs, countdowns and ordinary navigation symbols do not by themselves establish either copying or exclusivity.
 
 ## What remains unresolved
 
-No reverse-image comparison, comprehensive competitor-design comparison, trademark clearance, or professional rights review has been completed. In particular, the **DRYFIRE** name, DF monogram and reference-derived branding should not be advertised as exclusive or legally cleared based solely on these mockups.
+No reverse-image comparison, comprehensive competitor-design comparison, trademark clearance, or professional rights review has been completed. In particular, the **Dry Fire With Ease** name, earlier **DRYFIRE** name, DF monogram and reference-derived branding should not be advertised as exclusive or legally cleared based solely on these mockups. Extending the display name does not establish clearance.
 
 Before making a commercial clearance claim, establish the original reference's inputs where possible, retain creation records, verify the source/license of any newly bundled artwork or fonts, and review the final name/logo and distinctive artwork in the intended markets. A qualified IP reviewer can assess the relevant evidence and risks; originality alone does not guarantee that no claim can be brought.
 

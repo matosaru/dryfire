@@ -1,4 +1,4 @@
-# Sound Trainer v0.6.0 — Install on iPhone
+# Dry Fire With Ease — Install on iPhone
 
 The app is a PWA (Home Screen web app), **not an IPA/TestFlight build**. Microphone access requires an HTTPS deployment and foreground Safari/Home Screen session.
 

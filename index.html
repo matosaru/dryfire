@@ -6,21 +6,21 @@
   <meta name="theme-color" content="#0a0e11" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Sound Trainer" />
+  <meta name="apple-mobile-web-app-title" content="Dry Fire With Ease" />
+  <meta name="application-name" content="Dry Fire With Ease" />
   <meta name="format-detection" content="telephone=no" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <meta name="description" content="Private, offline-first acoustic training. Learn and recognize four sounds using your device microphone." />
-  <title>Dry Fire Sound Trainer</title>
+  <meta name="description" content="Dry Fire With Ease: private, offline-first acoustic training. Learn and recognize four sounds using your device microphone." />
+  <title>Dry Fire With Ease</title>
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="stylesheet" href="/src/styles.css" />
 </head>
 <body>
   <main class="app-shell">
     <header class="hero">
-      <img class="brand-logo" src="/logo.svg" width="47" height="47" alt="Dry Fire monogram" />
+      <img class="brand-logo" src="/logo.svg" width="47" height="47" alt="" />
       <div class="hero-copy">
-        <p class="brand-eyebrow">DRY<span>FIRE</span></p>
-        <h1>SOUND TRAINER</h1>
+        <h1 class="brand-name" aria-label="Dry Fire With Ease"><span class="brand-eyebrow">DRY <span>FIRE</span></span><span class="brand-tagline">WITH EASE</span></h1>
       </div>
       <div class="header-actions"><div id="statusPill" class="status-pill" role="status" aria-live="polite">Loading…</div><button id="settingsShortcut" class="icon-button" type="button" aria-label="Open settings" title="Settings">⚙</button></div>
     </header>
@@ -176,7 +176,7 @@
         <div class="settings-actions"><button id="exportBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↑</span><span>Export backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><button id="importBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↓</span><span>Import backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><input id="importFile" type="file" accept="application/json,.json" class="hidden" /></div>
         <p class="small muted">Import replaces the model and history on this device. Files from another device may perform differently.</p>
       </div>
-      <div class="settings-group"><h3>About</h3><p class="muted small">Sound Trainer v0.8.0 · Private IndexedDB storage · Up to 50 learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
+      <div class="settings-group"><h3>About</h3><p class="muted small">Dry Fire With Ease v0.8.0 · Sound trainer · Private IndexedDB storage · Up to 50 learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
     </section>
 
     <footer>Microphone access stops when you tap Stop, leave recognition, or the page becomes hidden. Only numeric learned features, predictions and optional verification labels are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.</footer>

@@ -1,3 +1,11 @@
+## Unreleased — display branding
+
+- Updated the canonical display name to **Dry Fire With Ease** and added **WITH EASE** to the existing orange/white DF header lockup (CHG-011).
+- Updated visible/accessibility branding, About text, installation metadata, Capacitor appName and backup download filename; retained stable data, backup-format, package and deployment identifiers.
+- Updated the service-worker cache from v9 to v10. Local Chromium checks confirmed existing learned profiles, history and settings survive the update and reload; existing-format backups still import/export.
+- Passed 16 smoke checks, 48 Jest tests, production build and `verify:dist`; verified the header at 320–1280 px. [Actual header](../brand-lockup.png) and [Home screenshot](../branding-preview.png) show the implemented UI. Cloudflare deployment and real-device installation are not verified.
+- Earlier reviewed mockups and release records retain their historical wording.
+
 ## 0.8.0
 - Redesigned compact iPhone header with stylized DF logo and new app icons.
 - Navigation split into Learn, Drills, and Live Listen; Settings moved to header gear.

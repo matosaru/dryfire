@@ -1,12 +1,13 @@
 # Product requirements and designs
 
-This is the permanent entry point for Dry Fire Sound Trainer requirements. Read it before changing product behavior, navigation, persistence or designs.
+This is the permanent entry point for Dry Fire With Ease requirements. Read it before changing product behavior, navigation, persistence or designs.
 
 The authoritative specifications live in [requirements specifications](README.md). The [design catalog](../README.md) links the current visualisations and their recorded approval state.
 
 | Specification | Scope | Current state |
 | --- | --- | --- |
 | [Core behavior](core.md) | Existing sound learning, recognition, safety, resets, navigation and production delivery | Existing behavior to preserve |
+| [Branding](branding.md) | Dry Fire With Ease display name and existing DF logo extended with WITH EASE | Approved; implemented and locally validated; deployment not verified |
 | [Gun profiles](gun-profiles.md) | First visit, gun names/types, up to five guns and separate training data | User-approved flow; implementation pending |
 | [Drill sessions](drill-sessions.md) | Select/create, configure, start, progress and saved results | Requested scope; detailed interaction proposals in review |
 | [Data persistence](persistence.md) | Refresh/deployment persistence, migration and backups | Persistence requested; cloud synchronization unapproved |

@@ -1,4 +1,4 @@
-# Deploy Sound Trainer v0.7.0 to Netlify
+# Deploy Dry Fire With Ease to Netlify
 
 The repository contains **readable development source**. The public site should serve only Vite's compiled **`dist/` output**, which is minified and excludes the source maps and tests.
 

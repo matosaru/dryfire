@@ -1,4 +1,4 @@
-# Dry Fire Sound Trainer
+# Dry Fire With Ease
 
 All project documentation and designs are maintained in [docs/design](docs/design/README.md).
 

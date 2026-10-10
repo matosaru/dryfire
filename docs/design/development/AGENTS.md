@@ -1,4 +1,4 @@
-# Codex instructions — Dry Fire Sound Trainer
+# Codex instructions — Dry Fire With Ease
 
 ## Project
 Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with Capacitor. It learns four user-recorded acoustic events: `draw` (holster draw), `rack` (slide rack), `trigger` (trigger pull), and `reload` (magazine change). It recognizes sound events in continuous listening and tracks ordered multi-action drills. Training examples and history are local (IndexedDB). Production is hosted as static assets on Cloudflare Workers using `wrangler.jsonc`.
@@ -16,7 +16,7 @@ Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with C
 
 - Keep all full project documentation under `docs/design/`, including requirements, approval history, design assets and development guides. Root README, AGENTS and REQUIREMENTS files are navigation entry points only.
 - Keep design-source and license evidence in [originality-and-provenance.md](../originality-and-provenance.md). AI generation and locally authored paths do not prove trademark/copyright clearance. Do not describe a design as exclusive or legally cleared without evidence.
-- The current app logo is `public/logo.svg`. Monogram variants in mockups are illustrative and do not authorize changing production branding. Any redesign follows the requirements approval process.
+- The canonical display name is **Dry Fire With Ease**; follow [branding.md](../requirements/branding.md). The canonical DF monogram is `public/logo.svg`; the full logo lockup combines that SVG with the accessible HTML wordmark in `index.html` and `src/styles.css`, including WITH EASE. Monogram variants in historical mockups are illustrative and do not authorize changing production branding. Further redesigns follow the requirements approval process.
 
 ## First rule: test BEFORE refactoring
 1. Read the [development guide](README.md), `package.json`, `vite.config.js`, `wrangler.jsonc`, and existing tests.

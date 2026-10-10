@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Dry Fire Sound Trainer",
-  "short_name": "Sound Trainer",
-  "description": "Private, offline sound learning and recognition for safe dry-fire training",
+  "name": "Dry Fire With Ease",
+  "short_name": "Dry Fire With Ease",
+  "description": "Dry Fire With Ease: private, offline sound learning and recognition for safe dry-fire training",
   "categories": ["sports", "utilities"],
   "orientation": "portrait-primary",
   "start_url": "/",

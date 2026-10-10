@@ -25,6 +25,6 @@ Connect GitHub `matosaru/dryfire`. Build command: `npm run build`; publish direc
 
 ## After updating the hosted app
 
-The updated service-worker cache version is `dryfire-sound-trainer-v8`. On iPhone, close and reopen the Home Screen app, or reload the page to pick up the newest cached assets. Learned samples and saved event history remain in IndexedDB unless you manually reset them or delete browser site data.
+The updated service-worker cache version is `dryfire-sound-trainer-v10`; the technical cache-name prefix remains unchanged. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples and saved event history remain in IndexedDB unless you manually reset them or delete browser site data. Do not clear site data to refresh the branding.
 
 Training sounds: separate short illustrative waveform GIFs, not firearm-handling tutorials. With iPhone Reduce Motion enabled, the app displays static frames instead.

@@ -1,13 +1,13 @@
 # Core application behavior
 
-Revision: 1.0 · State: existing behavior to preserve
+Revision: 1.1 · State: existing behavior to preserve; branding extension approved in CHG-011
 
 Evidence: existing repository instructions, implementation and the requested reference-design update. This document is a baseline, not a claim that future features have shipped.
 
 | ID | Requirement |
 | --- | --- |
 | CORE-01 | Provide an offline-first web PWA with readable development sources and bundled production assets. |
-| CORE-02 | Keep Home, Learn, Drills, Live Listen and History navigation, with Settings accessible from the compact header. Preserve the dark/orange reference design, DF branding and app icons. |
+| CORE-02 | Keep Home, Learn, Drills, Live Listen and History navigation, with Settings accessible from the compact header. Preserve the dark/orange reference design and DF monogram; use **Dry Fire With Ease** branding according to [BRAND-01 through BRAND-05](branding.md). |
 | CORE-03 | Preserve four distinct sound identifiers: `draw`, `rack`, `trigger`, `reload`. Display `reload` as magazine change. Do not rename stored identifiers or silently reinterpret learned data. |
 | CORE-04 | Learn at least three examples per required sound; recommend eight to ten. Keep the existing maximum of fifty examples per sound until an approved change replaces it. |
 | CORE-05 | Store derived acoustic features, not playable raw audio. Recognition runs locally. Raw-audio storage or upload is separate, unapproved scope. |

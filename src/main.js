@@ -510,7 +510,7 @@ async function init() {
       const url = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
       const anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = `sound-trainer-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      anchor.download = `dry-fire-with-ease-backup-${new Date().toISOString().slice(0, 10)}.json`;
       document.body.append(anchor);
       anchor.click();
       anchor.remove();

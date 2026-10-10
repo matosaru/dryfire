@@ -1,12 +1,13 @@
 # Requirements index
 
-Revision: 1.0 · Recorded: 2026-10-10
+Revision: 1.1 · Recorded: 2026-10-10
 
 Start at the [requirements overview](OVERVIEW.md). This directory separates required behavior, proposed details, approvals and implementation status.
 
 | File | Purpose |
 | --- | --- |
 | [core.md](core.md) | Preserve the application's existing behavior and data |
+| [branding.md](branding.md) | Approved Dry Fire With Ease name, logo lockup and compatible display-name update |
 | [gun-profiles.md](gun-profiles.md) | Approved multi-gun scope and flow |
 | [drill-sessions.md](drill-sessions.md) | Requested drill-session behavior and proposed interactions |
 | [persistence.md](persistence.md) | Data durability, ownership, migration and backup requirements |

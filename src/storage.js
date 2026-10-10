@@ -203,7 +203,7 @@ export async function exportBackup() {
 /** Validates everything before atomically replacing local model + history. */
 export async function restoreBackup(backup) {
   if (!backup || backup.format !== 'sound-trainer-backup' || backup.version !== 1 || backup.featureVersion !== FEATURE_VERSION) {
-    throw new Error('This file is not a compatible Sound Trainer backup.');
+    throw new Error('This file is not a compatible Dry Fire With Ease backup.');
   }
   if (!Array.isArray(backup.examples) || !Array.isArray(backup.events) || backup.examples.length > MAX_EXAMPLES_PER_CLASS * labels.length || backup.events.length > 500) {
     throw new Error('Backup contains an invalid amount of data.');

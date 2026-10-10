@@ -1,6 +1,8 @@
-# Sound Trainer v0.8.0 — four-action acoustic learning
+# Dry Fire With Ease v0.8.0 — four-action acoustic learning
 
 Product planning: [Requirements and approvals](../requirements/OVERVIEW.md) · [Design catalog](../README.md). Read these before changing product behavior.
+
+The approved display brand is **Dry Fire With Ease**. **Sound Trainer** remains a descriptive subtitle. The existing technical `dryfire` identifiers stay unchanged to preserve local data and deployment compatibility; see [branding requirements](../requirements/branding.md).
 
 Offline-first, local sound-learning PWA, compatible with a future Capacitor iOS/Android wrapper. **It is not a signed IPA.** Classifier accuracy is experimental; complete the in-app safety checklist and test on inert/safe equipment before use.
 
