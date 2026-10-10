@@ -4,7 +4,7 @@ Revision: 1.0 · Scope: user-approved · Implementation: not implemented
 
 Approval evidence: the user requested names/types, up to five guns, separate sounds/drills and refresh/deployment persistence, then said **“approve, but now review”** after receiving the multi-gun design boards. See [CHG-003](approval-log.md#chg-003--multi-gun-flow).
 
-Designs: [front door and library](../design/multiple-guns-front-door.png), [sounds, drills and history](../design/multiple-guns-sounds-drills-history.png).
+Designs: [front door and library](../multiple-guns-front-door.png), [sounds, drills and history](../multiple-guns-sounds-drills-history.png).
 
 | ID | Requirement | State |
 | --- | --- | --- |

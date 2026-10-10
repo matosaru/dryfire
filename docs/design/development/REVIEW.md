@@ -34,7 +34,7 @@ This update extends the reviewed v0.3.0 project. The source was modified and tes
 4. Capacitor WebViews may require native audio plugins and platform-specific permission handling. AudioWorklet support depends on the target OS/WebView.
 5. No lockfile was generated because dependency installation did not complete; run `npm install` locally and commit `package-lock.json`.
 
-See `ACCURACY_TESTING.md` for a practical real-device evaluation protocol.
+See [accuracy-testing protocol](ACCURACY_TESTING.md) for a practical real-device evaluation protocol.
 
 
 ## 2026-10-09 v0.6.0 addendum

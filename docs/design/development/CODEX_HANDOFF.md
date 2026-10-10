@@ -1,6 +1,6 @@
 # Codex handoff — Dry Fire Sound Trainer
 
-Current product scope and approval states are maintained in [REQUIREMENTS.md](REQUIREMENTS.md), [docs/requirements](docs/requirements/README.md) and the [design catalog](docs/design/README.md). Read those first. The v0.8 archive and release notes below are historical context, not instructions to replace the current application or override approved requirements.
+Current product scope and approval states are maintained in [REQUIREMENTS.md](../requirements/OVERVIEW.md), [requirements specifications](../requirements/README.md) and the [design catalog](../README.md). Read those first. The v0.8 archive and release notes below are historical context, not instructions to replace the current application or override approved requirements.
 
 Repository: https://github.com/matosaru/dryfire
 Primary branch: main

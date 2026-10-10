@@ -1,6 +1,6 @@
 # Multiple guns — proposed front-door flow
 
-The first-visit, library and selected-gun flow was approved by the user. These visualisations describe the accepted proposal. They do not implement gun profiles, custom drill editing, session results or cloud synchronization. Authoritative scope and approval states are in [gun-profiles.md](../requirements/gun-profiles.md), [drill-sessions.md](../requirements/drill-sessions.md) and [persistence.md](../requirements/persistence.md). See the [design catalog](README.md) for reviewed visual revisions.
+The first-visit, library and selected-gun flow was approved by the user. These visualisations describe the accepted proposal. They do not implement gun profiles, custom drill editing, session results or cloud synchronization. Authoritative scope and approval states are in [gun-profiles.md](requirements/gun-profiles.md), [drill-sessions.md](requirements/drill-sessions.md) and [persistence.md](requirements/persistence.md). See the [design catalog](README.md) for reviewed visual revisions.
 
 ## First visit, library and selected-gun Home
 

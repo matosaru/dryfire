@@ -2,9 +2,11 @@
 
 Revision: 1.0 · Approved by the user's request to keep designs/specifications sticky and changed requirements documented and approved.
 
+All full specifications, approvals, designs and development documentation live under `docs/design/`. Root files provide entry links. Keep provenance records current when artwork or branding changes.
+
 ## Before implementation
 
-1. Read [REQUIREMENTS.md](../../REQUIREMENTS.md), the relevant specifications, approval log and linked designs.
+1. Read [REQUIREMENTS.md](OVERVIEW.md), the relevant specifications, approval log and linked designs.
 2. Classify the work. A fix that restores approved behavior does not create a new product requirement. Changes to scope, user-visible behavior, data ownership, retention or defaults do.
 3. Write a concrete change in Markdown before implementing a new requirement. Give it a change ID, affected requirement IDs, revised document version, before/after behavior, acceptance criteria and related designs.
 4. If the UI changes, update its design or record why no visual update is needed. Keep existing approved assets accessible in Git history and link an immutable commit to the reviewed revision.

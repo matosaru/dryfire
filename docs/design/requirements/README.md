@@ -2,7 +2,7 @@
 
 Revision: 1.0 · Recorded: 2026-10-10
 
-Start at the repository's [REQUIREMENTS.md](../../REQUIREMENTS.md). This directory separates required behavior, proposed details, approvals and implementation status.
+Start at the [requirements overview](OVERVIEW.md). This directory separates required behavior, proposed details, approvals and implementation status.
 
 | File | Purpose |
 | --- | --- |

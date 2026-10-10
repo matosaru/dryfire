@@ -26,6 +26,6 @@ For behavior changes, run the repository's relevant smoke/Jest checks, productio
 
 ## References
 
-- [Existing implementation and previous validation](../../DESIGN_CHANGES.md)
-- [Repository agent instructions](../../AGENTS.md)
-- [Deployment instructions](../../DEPLOY.md)
+- [Existing implementation and previous validation](../development/DESIGN_CHANGES.md)
+- [Repository agent instructions](../development/AGENTS.md)
+- [Deployment instructions](../development/DEPLOY.md)
