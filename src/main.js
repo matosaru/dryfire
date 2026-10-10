@@ -1,5 +1,6 @@
 import { analyzeRecording, recordFeatureVector, startContinuousListening } from './audio.js';
 import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
+import { soundCard, drillCard } from './uiComponents.js';
 import { ACTUAL_CLASSES, PREDICTED_CLASSES, evaluateEvents } from './evaluation.js';
 import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
 import {
@@ -49,64 +50,24 @@ function renderClassCards() {
   host.replaceChildren();
   const counts = getCounts();
   for (const label of labels) {
-    const meta = labelMeta[label];
     const count = counts[label];
-    const card = document.createElement('article');
-    card.className = `class-card tone-${meta.tone}`;
-    const preview = document.createElement('div');
-    preview.className = 'class-preview';
-    const animation = document.createElement('img');
-    animation.src = `/motions/${label}.svg`;
-    animation.alt = `Looping sound pattern animation for ${meta.title}`;
-    animation.width = 240;
-    animation.height = 140;
-    animation.loading = 'lazy';
-    preview.append(animation);
-    const info = document.createElement('div');
-    info.className = 'class-info';
-    const title = document.createElement('h3');
-    title.textContent = meta.title;
-    const description = document.createElement('p');
-    description.textContent = meta.description;
-    info.append(title,description);
-    const top = document.createElement('div');
-    top.className = 'class-card-top';
-    top.append(preview,info);
-    const progress = document.createElement('p');
-    progress.className = 'progress-label';
-    progress.textContent = `${count} samples · ${count >= RECOMMENDED_EXAMPLES_PER_CLASS ? 'recommended amount reached' : count >= MIN_EXAMPLES_PER_CLASS ? 'ready to recognize' : `${Math.max(0, MIN_EXAMPLES_PER_CLASS-count)} to minimum`}`;
-    const bar = document.createElement('div');
-    bar.className = 'progress-track';
-    const fill = document.createElement('span');
-    fill.style.width = `${Math.min(100,count/RECOMMENDED_EXAMPLES_PER_CLASS*100)}%`;
-    bar.append(fill);
-    const actions = document.createElement('div');
-    actions.className = 'class-actions';
-    const record = document.createElement('button');
-    record.type = 'button';
-    record.className = 'button primary record-example';
-    record.textContent = count >= MAX_EXAMPLES_PER_CLASS ? 'Sample limit reached' : 'Record sample';
-    record.disabled = busy || !!liveSession || livePendingStart || count >= MAX_EXAMPLES_PER_CLASS;
-    record.setAttribute('aria-label',`Record ${meta.title} sample`);
-    record.addEventListener('click',()=>recordExample(label));
-    const reset = document.createElement('button');
-    reset.type = 'button';
-    reset.className = 'button secondary reset-class';
-    reset.textContent = 'Reset';
-    reset.disabled = busy || !!liveSession || livePendingStart || count===0;
-    reset.setAttribute('aria-label',`Reset learned ${meta.title} sounds`);
-    reset.addEventListener('click',()=>resetSoundProfile(label));
-    actions.append(record,reset);
-    card.append(top,progress,bar,actions);
-    host.append(card);
+    host.append(soundCard({
+      label, meta: labelMeta[label], count,
+      maxExamples: MAX_EXAMPLES_PER_CLASS,
+      minExamples: MIN_EXAMPLES_PER_CLASS,
+      recommendedExamples: RECOMMENDED_EXAMPLES_PER_CLASS,
+      locked: busy || !!liveSession || livePendingStart,
+      onRecord: () => recordExample(label),
+      onReset: () => resetSoundProfile(label)
+    }));
   }
-  const ready = labels.every(label=>counts[label]>=MIN_EXAMPLES_PER_CLASS);
+  const ready = labels.every(label => counts[label] >= MIN_EXAMPLES_PER_CLASS);
   $('#trainingSummary').textContent = ready
-    ? `Ready to test · ${labels.map(label=>`${titleFor(label)}: ${counts[label]}`).join(' · ')}`
-    : `Learn at least ${MIN_EXAMPLES_PER_CLASS} examples of each sound before recognition. ${labels.map(label=>`${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
-  $('#listenBtn').disabled = busy || livePendingStart || (!ready&&!liveSession);
+    ? `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`
+    : `Learn at least ${MIN_EXAMPLES_PER_CLASS} examples of each sound before recognition. ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
+  $('#listenBtn').disabled = busy || livePendingStart || (!ready && !liveSession);
   $('#singleShotBtn').disabled = busy || !!liveSession || livePendingStart || !ready;
-  $('#homeExamples').textContent = `${labels.reduce((sum,label)=>sum+counts[label],0)} / ${RECOMMENDED_EXAMPLES_PER_CLASS*labels.length}`;
+  $('#homeExamples').textContent = `${labels.reduce((sum,label) => sum + counts[label], 0)} / ${RECOMMENDED_EXAMPLES_PER_CLASS * labels.length}`;
   $('#homeListenBtn').disabled = busy || !ready;
 }
 
@@ -126,32 +87,16 @@ async function resetSoundProfile(label) {
 function renderDrillCatalog() {
   const host = $('#drillCatalog');
   host.replaceChildren();
-  for (const [index,drill] of DRILLS.entries()) {
-    const card = document.createElement('article');
-    card.className = 'preset-card';
-    const heading = document.createElement('h3');
-    heading.textContent = `${String(index+1).padStart(2,'0')}  ${drill.title}`;
-    const steps = document.createElement('div');
-    steps.className = 'preset-steps';
-    drill.steps.forEach((label,position)=>{
-      if(position){const arrow=document.createElement('span');arrow.setAttribute('aria-hidden','true');arrow.textContent='→';steps.append(arrow);}
-      const chip=document.createElement('span');
-      chip.className='preset-chip';
-      chip.textContent=titleFor(label);
-      steps.append(chip);
-    });
-    const button = document.createElement('button');
-    button.type='button';
-    button.className='button primary';
-    button.textContent='Choose drill →';
-    button.addEventListener('click',()=>{
-      if(busy)return;
-      $('#drillSelect').value=drill.id;
-      resetDrill();
-      switchView('recognize');
-    });
-    card.append(heading,steps,button);
-    host.append(card);
+  for (const [index, item] of DRILLS.entries()) {
+    host.append(drillCard({
+      drill: item, index, titleFor,
+      onChoose: () => {
+        if (busy) return;
+        $('#drillSelect').value = item.id;
+        resetDrill();
+        switchView('recognize');
+      }
+    }));
   }
 }
 
