@@ -272,3 +272,9 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 - Before the fix, the full Node 22.23.3 suite reproduced the reported `resolvePermission is not a function` failure (221 pass / 1 fail). Local Node 24 had passed the same test. Fixed microtask polling was replaced with explicit signals from permission/worklet mocks in three lifecycle tests; all original behavioral assertions remain.
 - After the fix, Node 22 dependency installation, 16 smoke checks, 222 Jest tests / 17 suites, production build and asset verification pass. No application source, requirements/defaults, persisted data or build artifacts changed. No visual revision is needed.
 - GitHub API is still Forbidden; public GitHub HTML is accessible and confirms the reported failure. New-run/publication success is recorded only after observation. Prior local-browser and production/device evidence remain distinct.
+
+### CHG-015 CI fix publication and successful GitHub run — 2026-10-11
+
+- Test fix [`be50b99`](https://github.com/matosaru/dryfire/commit/be50b99) was pushed directly to `main`; the subsequent remote-head check returned `be50b99f7c8534636924091f327602567222a88d`.
+- Public GitHub Actions HTML reports [GitHub Actions run 38130523348](https://github.com/matosaru/dryfire/actions/runs/38130523348) **completed successfully** for that fix. This supersedes the earlier pending/unverified CI status for this revision; the failed older runs remain historical evidence. The API is still Forbidden, but public HTML provided direct status evidence.
+- Updated the delivery tracker, validation record and iPhone checklist with observed successful publication/CI. Cloudflare deployment and physical iPhone accuracy/output remain unverified. This documentation follow-up introduces no application behavior change.

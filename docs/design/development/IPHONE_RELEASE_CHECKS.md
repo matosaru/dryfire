@@ -10,8 +10,9 @@ Application: `https://dryfire.matosaru.workers.dev`. Use the latest CHG-015 impl
 | --- | --- |
 | Source/build acceptance | 222 Jest tests across 17 suites, 16 smoke checks, production build and `verify:dist` passed |
 | Browser acceptance | Nine suites / 40 checks covering modes, actual Learn-to-live compatibility, learning, lifecycle/storage failure, legacy sequences, settings, migration and layouts; see [validation record](PRACTICE_VALIDATION.md) |
+| GitHub Actions / Node 22 | [GitHub Actions run 38130523348](https://github.com/matosaru/dryfire/actions/runs/38130523348) completed successfully for test synchronization fix [`be50b99`](https://github.com/matosaru/dryfire/commit/be50b99); local Node 22 installation/smoke/222-Jest/build/asset workflow also passed |
 | GitHub publication | Implementation [`8b8aec9`](https://github.com/matosaru/dryfire/commit/8b8aec9) pushed to `main`; remote full hash `8b8aec987bacc6be3f9cb76f883d8432ecabdbfb` observed |
-| Production app/build-status access | Workspace CONNECT requests to the app and GitHub API failed with gateway 403 before destination content arrived on 2026-10-11; Git transport remains usable |
+| Production app/build-status access | Workspace CONNECT requests to the app and GitHub API failed with gateway 403 before destination content arrived on 2026-10-11; Git transport and public GitHub Actions HTML remain usable; successful CI observation is recorded above |
 | Cloudflare production deployment | Unverified |
 | Physical iPhone microphone, beep and feedback | Not run; device/browser choice confirmed |
 
