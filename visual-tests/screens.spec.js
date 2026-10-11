@@ -181,6 +181,16 @@ for (const item of cases) {
     const layout = overflow > 0 ? await page.evaluate(() => {
       const width = () => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth);
       const original = width();
+      const control = document.getElementById('progressGroup');
+      const controlStyle = control?.getAttribute('style');
+      const styles = [];
+      if (control) {
+        for (const css of ['overflow:hidden;text-overflow:ellipsis', 'appearance:none', 'display:block']) {
+          control.style.cssText = `${controlStyle || ''};${css}`;
+          styles.push({ css, after: width(), rect: control.getBoundingClientRect().width, scroll: control.scrollWidth });
+        }
+        if (controlStyle === null) control.removeAttribute('style'); else control.setAttribute('style', controlStyle);
+      }
       const suspects = [...new Set(document.querySelectorAll('#historyView > *, .progress-filters, .progress-filters > *, .progress-filters select, #progressContent > *, #historyList, #savedSessions, .confusion-wrap, footer'))];
       const reductions = [];
       for (const node of suspects) {
@@ -190,7 +200,7 @@ for (const item of cases) {
         if (after < original) reductions.push({ tag: node.tagName, id: node.id, class: node.className, after });
         if (style === null) node.removeAttribute('style'); else node.setAttribute('style', style);
       }
-      return { viewport: innerWidth, body: document.body.scrollWidth, root: document.documentElement.scrollWidth, reductions };
+      return { viewport: innerWidth, body: document.body.scrollWidth, root: document.documentElement.scrollWidth, styles, reductions };
     }) : null;
     const offenders = overflow > 0 ? await page.evaluate(() => [...document.querySelectorAll('*')]
       .filter(node => {
