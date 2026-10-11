@@ -89,6 +89,10 @@ function finishAttempt(state, clock, status, reason, current = state.current) {
 }
 export function tickPractice(state, clock) {
   clockValue(clock);
+  if (state.phase === 'result' && state.practiceMode === 'single' && !terminal(state)) {
+    const next = nextPractice(state, clock);
+    return next.phase === 'countdown' && clock.monoNow >= next.countdownEndsAtMs ? activate(next, clock) : next;
+  }
   if (state.phase === 'countdown' && clock.monoNow >= state.countdownEndsAtMs) return activate(state, clock);
   if (!['active', 'closing'].includes(state.phase)) return state;
   if (state.practiceMode === 'par') {
@@ -110,6 +114,7 @@ export function detectPractice(state, { label, score = 0, detectedAtMs } = {}, c
   if (!['active', 'closing'].includes(state.phase) || detectedAtMs < state.cueGuardUntilMs || (state.lastDetectionAtMs !== null && detectedAtMs <= state.lastDetectionAtMs)) return state;
   if (label == null) label = 'unknown';
   if (![...LABELS, 'unknown', 'cue'].includes(label)) throw new TypeError('Invalid detected label.');
+  if (label === 'unknown') return state;
   const continuous = continuousPractice(state.practiceMode);
   const offsetMs = continuous ? state.activeBaseMs + detectedAtMs - state.segmentStartMs : detectedAtMs - state.goAtMs;
   const late = (state.practiceMode === 'par' && offsetMs > state.config.parSeconds * 1000) || (state.practiceMode === 'free' && offsetMs > state.config.durationSeconds * 1000);

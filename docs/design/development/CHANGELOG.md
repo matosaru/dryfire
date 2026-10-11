@@ -1,3 +1,12 @@
+## CHG-017 — Automatic practice, progress, limits and navigation — 2026-10-11
+
+- Single automatically repeats fresh delay/countdown/beep and first-click capture until its target; countdown supports Pause/STOP. Other mode and legacy sequence timing remain intact.
+- History adds comparable per-gun statistics, graphical trends, range/settings filters and an accessible sample table. Unknown input stays transient; older saved observations and intentional calibration remain intact.
+- Enforced the explicitly approved ten-example per-type/category cap and bounds on all eleven numeric controls. Compatible older over-cap profiles/backups remain usable/restorable; UI locks continue honoring caps after unrelated actions.
+- Added app/browser Back/Forward with capture cleanup, durable results and unsaved-state guards. The existing Settings shortcut stays reachable in compact screen headings.
+- Added a clearly visible native safety modal before unconfirmed capture, with explicit acknowledgement, Cancel/Escape, once-only continuation and stale gun/screen protection. Safety remains per page/session with the existing gun-change reset.
+- Cache v15; IndexedDB schema 3, feature version 2, backup format 4 and package 0.8.0 preserved. [Requirements](../requirements/practice-improvements.md), [screens](../README.md), [validation](PRACTICE_VALIDATION.md) and [delivery tracker](../implementation-history.md) record separate publication/CI/production/device evidence.
+
 ## CHG-016 — Practice STOP, microphone input and recognition corrections — 2026-10-11
 
 - Replaced persistent GO with functional STOP during practice; the real input-level indicator sits below STOP. Stopping releases capture and saves partial results. Countdown, pause/resume/next and external-cue timing retain their behavior.

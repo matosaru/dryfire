@@ -16,6 +16,8 @@ The [implementation history and remaining plan](../implementation-history.md) tr
 | [Settings](settings.md) | Noise Filter, Auto Gain, Appearance and Vibration Feedback | Approved; implemented and locally validated; physical-device/deployment verification separate |
 | [Trigger-first practice](practice-modes.md) | Optional non-trigger sounds, rejection calibration, six practice modes and STOP/input display | CHG-015 implemented; CHG-016 corrected layout approved, implemented and locally validated; publication/production/device evidence in implementation history |
 
+The [CHG-017 improvements](practice-improvements.md) and complete limit table are explicitly approved: automatic Single cycles, history charts/statistics, transient unknown input, historical navigation and visible safety confirmation. Delivery evidence remains in the implementation tracker.
+
 ## Approval and change control
 
 - Follow the [requirements change process](change-process.md).

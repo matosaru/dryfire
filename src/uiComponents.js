@@ -22,6 +22,7 @@ export function soundCard({
 }, doc = document) {
   const card = doc.createElement('article');
   card.className = `class-card tone-${meta.tone}`;
+  card.setAttribute('data-sound-label', label);
 
   const preview = doc.createElement('div');
   preview.className = 'class-preview';
@@ -45,11 +46,11 @@ export function soundCard({
   top.className = 'class-card-top';
   top.append(preview, info);
 
-  const summary = count >= recommendedExamples
+  const summary = count >= maxExamples ? 'limit reached · existing samples kept' : count >= recommendedExamples
     ? 'recommended amount reached'
     : count >= minExamples ? 'ready to recognize'
       : `${Math.max(0, minExamples - count)} to minimum`;
-  const progress = textNode(doc, 'p', 'progress-label', `${count} samples · ${summary}`);
+  const progress = textNode(doc, 'p', 'progress-label', `${count} / ${maxExamples} samples · ${summary}`);
   const bar = doc.createElement('div');
   bar.className = 'progress-track';
   const fill = doc.createElement('span');

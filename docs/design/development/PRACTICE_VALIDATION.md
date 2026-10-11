@@ -96,3 +96,38 @@ Current candidate assets: `index-BbyURu6D.js`, `index-DCikZBm2.css`, cache **v14
 ### CHG-016 source publication and CI outcome
 
 Implementation [`34d3136`](https://github.com/matosaru/dryfire/commit/34d3136) pushed successfully to `main`; `git ls-remote` returned `34d3136f9a5e4366924802b729adfbfcb6c3284a`, matching local HEAD. Public GitHub Actions HTML reports [run 38132660138](https://github.com/matosaru/dryfire/actions/runs/38132660138) **completed successfully**; design publication [run 38132328710](https://github.com/matosaru/dryfire/actions/runs/38132328710) also completed successfully. A fresh production request still failed at the workspace CONNECT gateway with 403 before app content arrived; this does not establish a failed deployment. The corrected physical iPhone behavior remains unverified after the user's reported missed triggers. This follow-up updates documentation only; no further source or data changes occurred after the validated implementation.
+
+## CHG-017 — Automatic repetitions, progress, limits, navigation and safety
+
+Date: 2026-10-11. Scope: [approved revision 1.2](../requirements/practice-improvements.md). The complete numeric/recording table was explicitly approved before cap edits or an application-code push. The visible safety modal and automatic continuation were directly requested; no new approval gate remains.
+
+The fresh Node **22.23.3** baseline passed installation, **227 Jest tests / 17 suites**, **16 smoke checks**, build and `verify:dist`. Regression fixtures preceded the automatic engine, unknown-retention and atomic recording-cap changes. Browser integration reproduced and corrected a pending-start countdown render that dereferenced an absent state, and a generic busy-state toggle that re-enabled capped Train after clearing unrelated history. A stale-owner safety regression also failed before correcting confirmation so another gun/screen cannot inherit the old intent's acknowledgement.
+
+Final source validation passes **257 Jest tests / 21 suites**, **16 smoke checks**, production build and minified-asset verification. Coverage includes fresh automatic Single timing/first-click behavior, external cues, unknown filtering, concurrent positive/calibration caps, older over-cap backup preservation, all eleven numeric boundaries/invalid values, independently expected statistics/comparability/trend/misses/intervals/ranges, navigation/rollback and safety cancel/stale-owner behavior. Existing recognition/rejection, storage, ownership and lifecycle assertions remain.
+
+Functional browser evidence uses synthetic PCM through the actual detector/classifier, actual IndexedDB and native dialog/history APIs in Chromium. It establishes software behavior, not physical iPhone accuracy, audible output or vibration. **All seven browser suites / 46 checks pass with zero page errors.** Publication/CI/production evidence remains separate and is recorded in the delivery tracker. Fixtures generate portable session records with the real engine; progress expectations are calculated independently.
+
+| Suite | Checks | Scope |
+| --- | --- | --- |
+| Automatic flow, safety, navigation, progress and old caps | 17 | Ten fresh random countdowns/ten beep calls/ten first-click outcomes without Next; countdown input ignored; Pause/Resume/STOP; modal before permission, Cancel/Escape, once-only continuation for Practice/Learn/Listen/legacy, refresh reset; Settings Back to Learn, saved-review Back to History, browser capture cleanup/Forward/dedup/gun fallback; four-session independently expected medians/trend, table/range/par misses and both mobile themes; preserved twelve-example backups with disabled new Train including after unrelated history clear |
+| Six modes/external cue/backup | 8 | All six finish with correct counts/outcomes; durable refreshed review/gun isolation; cue starts timing without a shot; actual format-4 download restores exactly |
+| Capture/storage failure/navigation | 7 | Pending permission cleanup, overlapping Pause/End, quota failure/Not Saved, in-app and browser navigation guard/position restoration, durable Retry, saved mode preferences and scoped full reset |
+| Legacy ordered sequences | 5 | Existing defaults, reviewed numeric constraints, pre-GO exclusion, transient unknowns/known out-of-order partials, ordered splits, Pause/Resume/refresh review and ownership |
+| Database/cache upgrade | 2 | Schema-2-to-3 preservation; old cache v14 replaced by v15 while IndexedDB remains identical and controlled refresh preserves data |
+| Actual Learn-to-live | 2 | Three actual two-second Train captures recognize a later short louder click without retraining; actual cue/reset calibration starts a cue without a shot, rejects reset and counts only trigger |
+| Numeric controls and live unknown filtering | 5 | All eleven min/max/step/hint contracts; invalid/boundary/range GUI validation; invalid retention cannot write/trim; transient unknown input cannot add/verify history while known trigger still persists |
+
+Actual screen captures: [countdown](../practice-automatic-countdown.png), [safety](../practice-safety-modal.png), [cap/preserved old profile](../practice-recording-limits.png), [Dark progress](../practice-progress-dark.png), [Light progress](../practice-progress-light.png). Counts, dates, gun names and timing values are test fixtures. Earlier reviewed screenshots remain unchanged.
+
+| Artifact | CHG-016 raw/gzip kB | CHG-017 raw/gzip kB |
+| --- | --- | --- |
+| HTML | 39.41 / 9.40 | 41.12 / 9.78 |
+| CSS | 51.14 / 11.12 | 53.44 / 11.56 |
+| Main JavaScript | 124.68 / 37.01 | 137.84 / 41.53 |
+| AudioWorklet | 0.71 / 0.36 | 0.71 / 0.36 |
+| Service worker | 1.34 / 0.69 | 1.34 / 0.69 |
+| Detector chunk | 1.83 / 0.98 | 1.83 / 0.98 |
+
+Final candidate: **`index-COAdyFJp.js`**, **`index-BD_QvldW.css`**, cache **v15**. No new dependencies, schema migration, feature rewrite or package-version change: schema **3**, features **2**, backup **4**, package **0.8.0**. Statistics are derived from existing saved sessions; new unknown detections are transient, while old records and intentional calibration remain intact. New caps do not delete older examples.
+
+The user reports the previous update looks better; structured physical iPhone accuracy/cue/vibration results remain unverified. Publication, GitHub CI and Cloudflare production are separate evidence; see [delivery tracker](../implementation-history.md) and [iPhone checks](IPHONE_RELEASE_CHECKS.md).

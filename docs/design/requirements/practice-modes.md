@@ -1,8 +1,10 @@
 # Trigger-first practice — consolidated implementation plan
 
-Revision: 1.3 · Changes: CHG-015/016 · Scope: authorized for automatic implementation · Implementation: CHG-015 published in [`8b8aec9`](https://github.com/matosaru/dryfire/commit/8b8aec9); CHG-016 implemented, locally validated and published in [`34d3136`](https://github.com/matosaru/dryfire/commit/34d3136), designs in [`9b24b7d`](https://github.com/matosaru/dryfire/commit/9b24b7d); CI/production/device acceptance remain separate in the delivery tracker
+Revision: 1.5 · Changes: CHG-015/016/017 · Scope: authorized for automatic implementation · Implementation: CHG-015 published in [`8b8aec9`](https://github.com/matosaru/dryfire/commit/8b8aec9); CHG-016 implemented, locally validated and published in [`34d3136`](https://github.com/matosaru/dryfire/commit/34d3136), designs in [`9b24b7d`](https://github.com/matosaru/dryfire/commit/9b24b7d); CI/production/device acceptance remain separate in the delivery tracker
 
 Evidence, 2026-10-11: the user requested **“other sounds then trigger pull recognition to be optional”** and **“all the practice modes”**, then instructed **“adjust the final plan, try to optimise the steps”** and **“after plan is adjusted, proceed with next steps… stop confirming each step, do all steps automatically, i will verify final changes in an app and give a feedback.”** This authorizes completing the consolidated plan below and choosing routine implementation details without repeated confirmation. It supersedes the earlier proposal to seek separate confirmation for each detailed choice. Changes remain documented; approvals are not inferred from silence.
+
+CHG-017 supersedes the manual Single Next behavior below with automatic fresh-delay/countdown/signal cycles. See [the approved revision-1.2 plan](practice-improvements.md) for progress charts, transient unknown input, navigation, safety modal and the explicitly approved limit table. Par/Reload manual Next behavior remains unchanged.
 
 ## Outcome and compatibility
 
@@ -15,7 +17,7 @@ The shipped CHG-014 runner remains available for legacy built-in/custom sequence
 | ID | Requirement |
 | --- | --- |
 | PRACTICE-01 | Trigger recognition is sufficient for trigger-based practice. Other positive sound types are optional; only a mode/sequence's referenced events are prerequisites |
-| PRACTICE-02 | An accepted firing-mechanism click counts one shot. Reset/handling/background/cue sounds must not count as additional shots; retain accurate rejected/unknown observations |
+| PRACTICE-02 | An accepted firing-mechanism click counts one shot. Reset/handling/background/cue sounds must not count as additional shots; provide transient rejected/unknown feedback without adding new durable unknown records (CHG-017); retain older observations |
 | PRACTICE-03 | Provide safety/readiness, configurable ready delay/start cue, acoustic timing feedback, repetition/reset flow and durable review |
 | PRACTICE-04 | Single trigger press: start-signal-to-click timing per repetition |
 | PRACTICE-05 | Repeated trigger presses: accepted click count and consecutive intervals |

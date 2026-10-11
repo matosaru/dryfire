@@ -1,6 +1,6 @@
 # Persistence, migration and backups
 
-Revision: 1.3 · Scope: approved including CHG-014 sessions and CHG-015 practice/calibration · Implementation: schema 3 and version-4 compatible backups implemented; deployment verification separate
+Revision: 1.4 · Scope: approved including CHG-014/015 storage and CHG-017 retention/limits · Implementation: schema 3 and version-4 compatible backups implemented; deployment verification separate
 
 | ID | Requirement | State |
 | --- | --- | --- |
@@ -8,6 +8,8 @@ Revision: 1.3 · Scope: approved including CHG-014 sessions and CHG-015 practice
 | DATA-02 | Keep each gun's sounds, drills and results independently owned and queryable. | Approved multi-gun scope |
 | DATA-03 | Preserve compatible existing learned profiles, history and backups during upgrades. | Existing constraint |
 | DATA-04 | Do not erase session history through sound reset or ordinary recent-detection trimming/clearing. | Approved; CHG-014 |
+
+CHG-017 now caps new recordings at **10 per positive type and calibration category per gun**, while compatible older over-cap backups/profiles remain usable and restorable. New unknown/unmatched input is transient; previous unknown history remains intact. Recent recognized retention is the reviewed 1–500 range; session history is not trimmed. Schema 3, features 2 and backup format 4 remain unchanged. See [approved improvements](practice-improvements.md). The dated migration plans below preserve historical requirements, including their former recording cap.
 
 ## Current behavior and limits
 

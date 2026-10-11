@@ -1,6 +1,6 @@
 # Requirements index
 
-Revision: 1.5 · Recorded: 2026-10-11
+Revision: 1.6 · Recorded: 2026-10-11
 
 Start at the [requirements overview](OVERVIEW.md). This directory separates required behavior, proposed details, approvals and implementation status.
 
@@ -16,6 +16,7 @@ Read the [implementation history and remaining plan](../implementation-history.m
 | [settings.md](settings.md) | Approved browser-backed preferences and defaults |
 | [next-implementation.md](next-implementation.md) | Approved CHG-014 revision 1.0 timed-session/settings plan |
 | [practice-modes.md](practice-modes.md) | Implemented CHG-015 optional-sound/six-mode plan and directly approved CHG-016 recognition/STOP/input correction; delivery tracked separately |
+| [practice-improvements.md](practice-improvements.md) | CHG-017 automatic Single/progress/unknown/navigation work; explicitly approved recording/numeric bounds |
 | [approval-log.md](approval-log.md) | Approval evidence and changes requiring confirmation |
 | [change-process.md](change-process.md) | How specifications and designs stay synchronized |
 

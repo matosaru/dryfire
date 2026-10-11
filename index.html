@@ -25,7 +25,15 @@
       <div class="header-actions"><div id="statusPill" class="status-pill" role="status" aria-live="polite">Loading…</div><button id="settingsShortcut" class="icon-button" type="button" aria-label="Open settings" title="Settings">⚙</button></div>
     </header>
 
-    <details class="safety-disclosure"><summary>Safety check <span>Required before recording</span></summary><section class="safety-card" aria-labelledby="safety-title">
+    <dialog id="safetyModal" class="safety-modal" aria-labelledby="safetyModalTitle" aria-describedby="safetyModalDescription">
+      <h2 id="safetyModalTitle">Confirm safety before practice</h2>
+      <p id="safetyModalDescription">Verify the firearm is unloaded, remove live ammunition from the practice area, and use a safe direction and backstop.</p>
+      <p class="muted small">The microphone cannot verify these checks. Confirmation applies to this app session.</p>
+      <label class="checkbox-row"><input id="safetyModalAck" type="checkbox" /> I have completed the safety check.</label>
+      <button id="safetyConfirmBtn" class="button primary wide-action" type="button" disabled>Confirm &amp; continue</button>
+      <button id="safetyCancelBtn" class="button secondary wide-action" type="button">Cancel</button>
+    </dialog>
+    <details class="safety-disclosure"><summary>Safety check <span id="safetySummaryState">Required before recording</span></summary><section class="safety-card" aria-labelledby="safety-title">
       <div class="safety-icon" aria-hidden="true">!</div>
       <div>
         <h2 id="safety-title">Safety first</h2>
@@ -85,7 +93,7 @@
     </section>
 
     <section id="learnView" class="view hidden" aria-labelledby="learn-title">
-      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button>
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button>
         <div><p class="eyebrow">01 / SOUND PROFILES</p><h2 id="learn-title">Learn Sounds</h2></div>
       </div>
       <p class="gun-context">Learned sounds for <strong class="gun-context-name"></strong>.</p>
@@ -99,7 +107,7 @@
     </section>
 
     <section id="drillsView" class="view hidden" aria-labelledby="drills-title">
-      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">02 / PRACTICE PRESETS</p><h2 id="drills-title">Drills</h2></div></div>
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button><div><p class="eyebrow">02 / PRACTICE PRESETS</p><h2 id="drills-title">Drills</h2></div></div>
       <p class="gun-context">Saved presets for <strong class="gun-context-name"></strong>.</p>
       <h3>Dry-fire practice</h3><p class="muted">Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.</p>
       <div id="practiceCatalog" class="drill-catalog"></div>
@@ -121,7 +129,7 @@
     </section>
 
     <section id="practiceView" class="view hidden" aria-labelledby="practice-title">
-      <div class="section-head"><button id="practiceBackBtn" type="button" class="back-button" aria-label="Back to Drills">‹</button><h2 id="practice-title">Practice</h2></div>
+      <div class="section-head"><button id="practiceBackBtn" type="button" class="back-button" aria-label="Back to previous screen">‹</button><h2 id="practice-title">Practice</h2></div>
       <p class="gun-context">Practice for <strong class="gun-context-name"></strong>.</p>
       <div id="practiceSteps" class="preset-steps" aria-label="Required sounds"></div>
       <div id="practiceConfigure">
@@ -134,7 +142,7 @@
           <div id="practiceAppTiming" class="session-delay-card"><label class="session-field" for="practiceDelayMode"><span>Ready delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label>
             <label id="practiceFixedRow" class="session-field hidden" for="practiceFixedDelay"><span>Delay seconds</span><input id="practiceFixedDelay" type="number" min="0" max="30" step="0.1" value="3" required inputmode="decimal" /></label>
             <div id="practiceRandomFields" class="session-delay-range"><label class="session-field" for="practiceMinDelay"><span>Minimum seconds</span><input id="practiceMinDelay" type="number" min="0" max="30" step="0.1" value="2" required inputmode="decimal" /></label><label class="session-field" for="practiceMaxDelay"><span>Maximum seconds</span><input id="practiceMaxDelay" type="number" min="0" max="30" step="0.1" value="5" required inputmode="decimal" /></label></div>
-            <label class="preference-toggle" for="practiceStartSound"><span><strong>Sound at start</strong><small>Play one beep when practice starts.</small></span><input id="practiceStartSound" type="checkbox" role="switch" checked /></label>
+            <label class="preference-toggle" for="practiceStartSound"><span><strong>Sound at start</strong><small>Play a beep at each repetition start.</small></span><input id="practiceStartSound" type="checkbox" role="switch" checked /></label>
           </div>
         </fieldset><p id="practiceCueNote" class="muted small"></p><p id="practiceReadiness" class="session-readiness" role="status"></p><button id="practiceLearnBtn" class="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" class="button primary wide-action" type="submit">Start Practice</button></form>
       </div>
@@ -161,7 +169,7 @@
     </section>
 
     <section id="sessionView" class="view hidden" aria-labelledby="session-title">
-      <div class="section-head"><button id="sessionBackBtn" type="button" class="back-button" aria-label="Back to Drills">‹</button><h2 id="session-title">Drill Session</h2></div>
+      <div class="section-head"><button id="sessionBackBtn" type="button" class="back-button" aria-label="Back to previous screen">‹</button><h2 id="session-title">Drill Session</h2></div>
       <p class="gun-context">Session for <strong class="gun-context-name"></strong>.</p>
       <p id="sessionPresetName" class="session-preset-name"></p>
       <ol id="sessionSteps" class="drill-steps session-sequence" aria-label="Ordered sound sequence"></ol>
@@ -216,7 +224,7 @@
     </section>
 
     <section id="recognizeView" class="view hidden" aria-labelledby="recognize-title">
-      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button>
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button>
         <div><p class="eyebrow">03 / REAL-TIME DETECTION</p><h2 id="recognize-title">Live Listen</h2></div>
       </div>
       <p class="gun-context">Listening uses the learned sounds of <strong class="gun-context-name"></strong>.</p>
@@ -286,24 +294,28 @@
     </section>
 
     <section id="historyView" class="view hidden" aria-labelledby="history-title">
-      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">04 / LOCAL DATA</p><h2 id="history-title">History</h2></div></div>
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button><div><p class="eyebrow">04 / LOCAL DATA</p><h2 id="history-title">History</h2></div></div>
       <p class="gun-context">Saved results for <strong class="gun-context-name"></strong>.</p>
+      <section class="practice-progress-section" aria-labelledby="progressTitle"><h3 id="progressTitle">Practice progress</h3>
+        <div class="progress-filters"><label for="progressGroup">Compare drill / settings<select id="progressGroup" aria-label="Comparable drill and settings"></select></label><label for="progressRange">Time range<select id="progressRange"><option value="0">All saved sessions</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select></label></div>
+        <div id="progressContent"></div><p class="muted small">Trends describe recognized audio timing. Compare similar microphone placement and conditions; faster timing does not measure aim or movement.</p>
+      </section>
       <section class="saved-sessions-section" aria-labelledby="savedSessionsTitle"><h3 id="savedSessionsTitle">Drill sessions</h3><p class="muted small">Open a session to review completed and interrupted repetitions. Sessions stay saved when recent detections are trimmed or cleared.</p><div id="savedSessions" class="session-result-list"></div></section>
       <h3 class="recognition-history-heading">Recent recognition results</h3>
       <div class="settings-row"><label for="maxResults">Keep last N recognition results</label><input id="maxResults" type="number" min="1" max="500" step="1" value="50" /></div>
       <p class="muted small">Changing N trims recent recognition history; learned sounds and saved drill sessions stay intact. Label each result to evaluate recognition on your own real-world samples.</p>
       <div class="evaluation-panel" aria-live="polite">
-        <h3>Recognition quality · verified events only</h3>
+        <h3>Retained recognition checks · verified events only</h3>
         <div class="eval-stats"><div><strong id="verifiedCount">0</strong><span>Verified</span></div><div><strong id="accuracyPct">—</strong><span>Accuracy</span></div><div><strong id="falsePositivePct">—</strong><span>Other-sound false positives</span></div></div>
         <div id="confusionTable" class="confusion-wrap"></div>
-        <p class="small muted">Accuracy is based solely on the manually verified events retained on this device. It cannot measure missed sounds or events that were never detected.</p>
+        <p class="small muted">New unknown detections are not saved. These checks cover manually verified retained events only; they cannot measure missed sounds or an overall false-count rate.</p>
       </div>
       <div id="historyList" class="history-list"></div>
       <button id="clearHistoryBtn" class="button secondary" type="button">Clear history</button>
     </section>
 
     <section id="settingsView" class="view hidden" aria-labelledby="settings-title">
-      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">05 / DEVICE &amp; PRIVACY</p><h2 id="settings-title">Settings</h2></div></div>
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button><div><p class="eyebrow">05 / DEVICE &amp; PRIVACY</p><h2 id="settings-title">Settings</h2></div></div>
       <p class="gun-context">Sound resets affect <strong class="gun-context-name"></strong> only.</p>
       <details class="install-details"><summary>Install on your iPhone <span>›</span></summary><div class="install-card">
         <div class="install-badge">iOS · HOME SCREEN</div>
@@ -335,7 +347,7 @@
         <label class="preference-toggle" for="vibrationFeedback"><span><strong>Vibration Feedback</strong><small id="vibrationStatus" role="status">Checking browser support…</small></span><input id="vibrationFeedback" type="checkbox" role="switch" aria-describedby="vibrationStatus" /></label>
         <p class="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
       </div>
-      <div class="settings-group"><h3>About</h3><p class="muted small">Dry Fire With Ease v0.8.0 · Sound trainer · Private IndexedDB storage · Up to 50 learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
+      <div class="settings-group"><h3>About</h3><p class="muted small">Dry Fire With Ease v0.8.0 · Sound trainer · Private IndexedDB storage · Up to 10 new learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
     </section>
 
     <footer>Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.</footer>

@@ -13,11 +13,12 @@ describe('one practice engine supports all modes', () => {
     expect(() => normalizePracticeConfig({ repetitions: 0 })).toThrow();
     expect(() => normalizePracticeConfig({ parSeconds: .05 })).toThrow();
   });
-  test('single counts exactly once then explicitly waits for the next repetition', () => {
+  test('single automatically starts a fresh delay after the first accepted click', () => {
     let s = event(start(), 'trigger', 300);
     expect(s).toMatchObject({ phase: 'result', completed: 1, shots: 1, remaining: 1 });
     expect(event(s, 'trigger', 500)).toBe(s);
-    s = tickPractice(nextPractice(s, clock(700)), clock(700));
+    s = tickPractice(s, clock(700));
+    expect(s).toMatchObject({ phase: 'active', goAtMs: 700, completed: 1 });
     s = event(s, 'trigger', 1000);
     expect(s).toMatchObject({ status: 'completed', phase: 'review', shots: 2 });
   });
@@ -25,7 +26,7 @@ describe('one practice engine supports all modes', () => {
     let s = event(start(), 'unknown', 100);
     s = event(s, 'rack', 200);
     expect(s.shots).toBe(0);
-    expect(s.current.detections).toHaveLength(2);
+    expect(s.current.detections).toHaveLength(1);
   });
   test.each(['repeated', 'control'])('%s continuously records distinct clicks and intervals', mode => {
     let s = event(start(mode), 'trigger', 200);
@@ -104,6 +105,38 @@ describe('one practice engine supports all modes', () => {
     expect(() => validatePracticeRecord({ ...record, shots: 55 }, gun.id)).toThrow();
     expect(() => validatePracticeRecord(record, 'other-gun')).toThrow();
   });
+});
+
+test('automatic Single samples a fresh random delay, ignores waiting clicks and stops at its target', () => {
+  let s = createPractice({ id: 'automatic', gun, mode: 'single', config: { repetitions: 2, randomMinSeconds: 1, randomMaxSeconds: 3 }, ...clock(0) });
+  s = tickPractice(s, clock(1000));
+  s = event(s, 'trigger', 1300);
+  const finished = structuredClone(s.repetitions[0]);
+  s = tickPractice(s, { ...clock(1500), randomValue: 1 });
+  expect(s).toMatchObject({ phase: 'countdown', countdownEndsAtMs: 4500, completed: 1, remaining: 1 });
+  expect(event(s, 'trigger', 2000)).toBe(s);
+  expect(tickPractice(s, clock(4400))).toBe(s);
+  s = tickPractice(s, clock(4500));
+  s = event(s, 'trigger', 4800);
+  expect(s).toMatchObject({ phase: 'review', shots: 2, completed: 2, remaining: 0 });
+  expect(s.repetitions[0]).toEqual(finished);
+  expect(s.repetitions[1].elapsedMs).toBe(300);
+  expect(tickPractice(s, clock(9000))).toBe(s);
+});
+
+test('automatic Single with an external cue waits for a fresh cue without an app countdown', () => {
+  let s = event(event(start('single', { startSource: 'external' }), 'cue', 100), 'trigger', 500);
+  s = tickPractice(s, clock(700));
+  expect(s).toMatchObject({ phase: 'await-cue', shots: 1 });
+  expect(event(s, 'trigger', 800)).toBe(s);
+  s = event(event(s, 'cue', 1000), 'trigger', 1300);
+  expect(s).toMatchObject({ phase: 'review', shots: 2 });
+});
+
+test('unknown and rejected inputs do not alter durable practice records', () => {
+  const s = start('single');
+  for (const label of ['unknown', null]) expect(event(s, label, 100)).toBe(s);
+  expect(toPracticeRecord(s).currentAttempt.detections).toEqual([]);
 });
 
 test('portable results reject contradictory shot outcomes and future result timestamps', () => {

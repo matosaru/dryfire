@@ -82,20 +82,20 @@ describe('timed session progression', () => {
     expect(state.current.attempt).toBe(2);
   });
 
-  test('unknown and out-of-order events are retained without completing a repetition', () => {
+  test('unknown events are not retained; known out-of-order events remain reviewable', () => {
     let state = start();
     state = detect(state, 'rack', 100);
     state = detect(state, null, 150);
-    expect(state.current).toMatchObject({ stepIndex: 1, unknown: 1, incorrect: 0 });
+    expect(state.current).toMatchObject({ stepIndex: 1, unknown: 0, incorrect: 0 });
     state = detect(state, 'draw', 200);
-    expect(state.current).toMatchObject({ stepIndex: 0, unknown: 1, incorrect: 1, stepTimings: [] });
+    expect(state.current).toMatchObject({ stepIndex: 0, unknown: 0, incorrect: 1, stepTimings: [] });
     state = detect(state, 'rack', 250);
     state = detect(state, 'rack', 300);
     expect(state.current).toMatchObject({ stepIndex: 1, incorrect: 2, stepTimings: [{ label: 'rack', offsetMs: 300, splitMs: 300 }] });
     expect(state).toMatchObject({ completed: 0, remaining: 10 });
     state = detect(state, 'trigger', 500);
-    expect(state.repetitions[0]).toMatchObject({ status: 'completed', unknown: 1, incorrect: 2 });
-    expect(state.repetitions[0].detections.map(event => event.outcome)).toEqual(['matched', 'unknown', 'incorrect', 'matched', 'incorrect', 'completed']);
+    expect(state.repetitions[0]).toMatchObject({ status: 'completed', unknown: 0, incorrect: 2 });
+    expect(state.repetitions[0].detections.map(event => event.outcome)).toEqual(['matched', 'incorrect', 'matched', 'incorrect', 'completed']);
   });
 
   test('repeated actions complete in order and timestamp splits exclude asynchronous processing latency', () => {
@@ -239,7 +239,7 @@ describe('pause, termination and durable snapshots', () => {
     expect(recovered).toMatchObject({ status: 'interrupted', endReason: 'refresh', endedAt: epoch + 5000, completed: 1, remaining: 1, currentAttempt: null });
     expect(recovered.repetitions).toHaveLength(2);
     expect(recovered.repetitions[0]).toEqual(original.repetitions[0]);
-    expect(recovered.repetitions[1]).toMatchObject({ status: 'partial', unknown: 1, reason: 'refresh', elapsedMs: 100 });
+    expect(recovered.repetitions[1]).toMatchObject({ status: 'partial', unknown: 0, reason: 'refresh', elapsedMs: 0 });
     expect(original.currentAttempt).not.toBeNull();
     expect(recovered.revision).toBe(original.revision + 1);
     expect(engine.recoverSessionRecord(recovered, epoch + 6000)).toEqual(recovered);

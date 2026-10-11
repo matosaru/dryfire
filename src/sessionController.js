@@ -7,6 +7,7 @@ import {
 } from './drillSession.js';
 import { getGunSetting, setGunSetting, saveSession, getSessions } from './storage.js';
 import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
+import { readNumberInput } from './inputLimits.js';
 
 const $ = selector => document.querySelector(selector);
 const node = (tag, text, className = '') => {
@@ -18,7 +19,7 @@ const node = (tag, text, className = '') => {
 const seconds = ms => Number.isFinite(ms) ? `${(ms / 1000).toFixed(2)} s` : '—';
 
 /** Dedicated timed sessions; free listening retains its own capture lifecycle. */
-export function createSessionController({ getContext, titleFor, ensureSafe, onNavigate,
+export function createSessionController({ getContext, titleFor, ensureSafe, onNavigate, onBack,
   onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord }) {
   let selection = null;
   let state = null;
@@ -41,6 +42,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   let saveError = null;
   let readToken = 0;
   let lastAnnouncement = '';
+  let routeKey = null;
 
   const locked = () => pending || saving || finishing || !!interruption || !!state && state.phase !== 'review';
   const times = () => ({ monoNow: clock(), epochNow: Date.now(), randomValue: Math.random() });
@@ -55,7 +57,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     const numeric = selector => {
       const value = $(selector).value.trim();
       if (!value) throw new TypeError('Enter the repetition count and valid start delays.');
-      return Number(value);
+      return readNumberInput($(selector));
     };
     return normalizeSessionConfig({
       repetitions: numeric('#sessionRepetitions'),
@@ -86,9 +88,9 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     try { readConfig(); } catch (error) { invalid = error.message; }
     $('#sessionReadiness').textContent = missing.length
       ? `Train at least ${MIN_EXAMPLES_PER_CLASS} examples of ${missing.map(titleFor).join(', ')} for this gun.`
-      : invalid || (!$('#safetyAck').checked ? 'Confirm the safety check above before starting.' : 'Sounds trained and safety confirmed. Ready to start.');
+      : invalid || (!$('#safetyAck').checked ? 'Sounds ready. Start opens safety confirmation.' : 'Sounds trained and safety confirmed. Ready to start.');
     $('#sessionLearnBtn').classList.toggle('hidden', !missing.length);
-    $('#sessionStartBtn').disabled = pending || locked() || missing.length > 0 || !!invalid || !$('#safetyAck').checked || !context.gun || context.gun.needsDetails;
+    $('#sessionStartBtn').disabled = pending || locked() || missing.length > 0 || !!invalid || !context.gun || context.gun.needsDetails;
     const random = $('#sessionDelayMode').value === 'random';
     $('#fixedDelayFields').classList.toggle('hidden', random);
     $('#randomDelayFields').classList.toggle('hidden', !random);
@@ -304,7 +306,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   }
 
   async function start(resuming = false) {
-    if (pending || finishing || saving || interruption || (locked() && !resuming) || !ensureSafe()) return;
+    if (pending || finishing || saving || interruption || (locked() && !resuming) || !ensureSafe(() => start(resuming))) return;
     const context = getContext();
     if (!context.gun || !selection.steps.every(label => trainingCounts(context.examples)[label] >= MIN_EXAMPLES_PER_CLASS)) { updateReadiness(); return; }
     const config = resuming ? state.config : readConfig();
@@ -404,7 +406,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     savedRevision = null; saveError = null;
     try { fillConfig(saved); } catch { fillConfig(DEFAULT_SESSION_CONFIG); }
     changed();
-    onNavigate('session');
+    routeKey = crypto.randomUUID(); onNavigate('session');
     $('#session-title').setAttribute('tabindex', '-1'); $('#session-title').focus();
   }
 
@@ -413,7 +415,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     state = null; review = structuredClone(record); saveError = null; savedRevision = null;
     selection = { id: record.drillId, title: record.drillTitle, steps: [...record.drillSteps] };
     fillConfig(record.config);
-    changed(); onNavigate('session');
+    routeKey = crypto.randomUUID(); changed(); onNavigate('session');
   }
 
   async function renderSavedSessions(gunId) {
@@ -430,6 +432,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
       button.addEventListener('click', () => record.kind === 'practice' ? onPracticeRecord(record) : showRecord(record));
       card.append(node('strong', record.drillTitle), button); host.append(card);
     }
+    return records;
   }
 
   const retrySaveButton = node('button', 'Retry saving results', 'button secondary wide-action hidden');
@@ -453,7 +456,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   $('#pauseSessionBtn').addEventListener('click', () => pause().catch(onError));
   $('#resumeSessionBtn').addEventListener('click', () => start(true).catch(onError));
   $('#endSessionBtn').addEventListener('click', () => interrupt().catch(onError));
-  $('#sessionBackBtn').addEventListener('click', () => { interrupt('navigation').then(() => onNavigate('drills')).catch(onError); });
+  $('#sessionBackBtn').addEventListener('click', () => onBack());
   $('#backToDrillsBtn').addEventListener('click', () => onNavigate('drills'));
   $('#sessionLearnBtn').addEventListener('click', () => onNavigate('learn'));
   $('#repeatSessionBtn').addEventListener('click', () => {
@@ -462,6 +465,6 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   });
   $('#safetyAck').addEventListener('change', updateReadiness);
 
-  return { open, showRecord, interrupt, renderSavedSessions, refresh: render, locked, flush: () => configQueue,
-    reset() { if (!locked()) { readToken += 1; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
+  return { open, showRecord, interrupt, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => configQueue,
+    reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

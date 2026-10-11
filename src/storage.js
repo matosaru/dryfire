@@ -1,4 +1,5 @@
 import { FEATURE_VERSION } from './audio.js';
+import { parseNumberInput } from './inputLimits.js';
 import { isFeatureVector, labels } from './classifier.js';
 import { ACTUAL_CLASSES } from './evaluation.js';
 import { getDrill, normalizeCustomDrill } from './drills.js';
@@ -16,7 +17,9 @@ const GUN_SETTINGS = 'gunSettings';
 const SESSIONS = 'sessions';
 const ACTIVE_GUN = 'activeGunId';
 const STORES = [EXAMPLES, EVENTS, SETTINGS, GUNS, GUN_SETTINGS, SESSIONS];
-export const MAX_EXAMPLES_PER_CLASS = 50;
+export const MAX_EXAMPLES_PER_CLASS = 10;
+// Older compatible libraries remain restorable without deleting their samples.
+const MAX_COMPATIBLE_EXAMPLES_PER_CLASS = 50;
 export const MAX_GUNS = 5;
 export const GUN_TYPES = Object.freeze(['Handguns', 'Rifles and Carbines', 'Shotguns']);
 
@@ -294,6 +297,7 @@ const sortedEvents = rows => rows.sort((a, b) => b.createdAt - a.createdAt || b.
 const DRILL_OUTCOMES = ['matched', 'completed', 'incorrect', 'unknown'];
 
 export async function addEvent(event, gunId) {
+  if (!labels.includes(event?.label)) return null;
   const owner = await resolveGunId(gunId, true);
   const drill = event.drillId ? getDrill(event.drillId, await getCustomDrills(owner)) : null;
   const validDrill = drill && DRILL_OUTCOMES.includes(event.drillOutcome) && Number.isInteger(event.drillPosition) &&
@@ -376,7 +380,7 @@ export async function setGunSetting(key, value, gunId) {
   if (typeof key !== 'string' || !key) throw new TypeError('Invalid gun setting.');
   const owner = await resolveGunId(gunId, true);
   if (key === 'customDrills') value = validateCustomDrills(value);
-  if (key === 'maxResults') value = normalizeMaxResults(value);
+  if (key === 'maxResults') value = parseNumberInput(value, 'maxResults');
   value = validatePracticeSetting(key, value);
   if (key === 'selectedDrill' && value !== null && value !== '' && !getDrill(value, await getCustomDrills(owner))) {
     throw new TypeError('Selected drill is not available for this gun.');
@@ -412,7 +416,9 @@ export async function addCalibrationExample(kind, features, gunId) {
     const request = store.get([owner, 'calibrationExamples']);
     request.onsuccess = () => {
       try {
-        const rows = normalizeCalibration([...(request.result?.value ?? []), row]);
+        const previous = normalizeCalibration(request.result?.value ?? []);
+        if (previous.filter(item => item.kind === kind).length >= MAX_EXAMPLES_PER_CLASS) throw new Error(`Maximum ${MAX_EXAMPLES_PER_CLASS} calibration examples per category reached.`);
+        const rows = normalizeCalibration([...previous, row]);
         store.put({ gunId: owner, key: 'calibrationExamples', value: rows }); context.result = row;
       } catch (error) { context.fail(error); }
     };
@@ -675,7 +681,7 @@ function validateBackup(backup) {
   }
   const v1 = backup.version === 1;
   if (!Array.isArray(backup.examples) || !Array.isArray(backup.events) ||
-      backup.examples.length > MAX_EXAMPLES_PER_CLASS * labels.length * (v1 ? 1 : MAX_GUNS) ||
+      backup.examples.length > MAX_COMPATIBLE_EXAMPLES_PER_CLASS * labels.length * (v1 ? 1 : MAX_GUNS) ||
       backup.events.length > 500 * (v1 ? 1 : MAX_GUNS)) {
     throw new Error('Backup contains an invalid amount of data.');
   }
@@ -733,7 +739,7 @@ function validateBackup(backup) {
     if (!gunIds.has(gunId)) throw new Error('Backup contains a learned sample with an unknown gun owner.');
     const identity = JSON.stringify([gunId, row.label]);
     const count = (counts.get(identity) ?? 0) + 1;
-    if (count > MAX_EXAMPLES_PER_CLASS) throw new Error('Too many examples of one sound.');
+    if (count > MAX_COMPATIBLE_EXAMPLES_PER_CLASS) throw new Error('Too many examples of one sound.');
     counts.set(identity, count);
     if (typeof row.id !== 'string' || !row.id || exampleIds.has(row.id)) throw new Error('Invalid or duplicated backup ID.');
     exampleIds.add(row.id);

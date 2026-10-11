@@ -20,7 +20,7 @@ The next verification target is iPhone Safari/Home Screen. Use the [release chec
 
 On **Learn**, record three Trigger pull examples (eight to ten recommended). Draw, Rack and Magazine are optional and have per-gun recognition controls; existing trained optional sounds initially remain enabled. Only events used by a mode/sequence are required.
 
-- **Single trigger press:** signal-to-click timing, then explicit Next repetition after preparing again.
+- **Single trigger press:** signal-to-click timing, then automatic fresh countdown and signal until the target is reached (CHG-017).
 - **Repeated trigger presses:** one signal, accepted click target and intervals.
 - **Par-time:** recognized in-time clicks or explicit misses; late clicks do not count as in-time shots.
 - **Trigger control:** mean/min/max/spread of detected click intervals. Microphone timing cannot grade movement or aiming.
@@ -42,7 +42,7 @@ See [practice requirements](../requirements/practice-modes.md), [release validat
 These features are implemented and locally validated under CHG-014; [implementation history](../implementation-history.md) records source/browser evidence and publication/deployment separately.
 
 - Select a built-in/custom drill, configure repetitions and fixed/random delay, confirm safety/training readiness, and press **Start Session**. Defaults: 10 repetitions, fixed 3 seconds, optional sound Off; Random initially offers 2–5 seconds. Bounds: 1–100 repetitions, 0–30-second delays in tenths, minimum no greater than maximum.
-- Microphone acquisition precedes the countdown. Each repetition gets a fresh delay/visual GO. Only a complete detected ordered sequence increments Completed; unknown/out-of-order events remain reviewable. A completed result displays for one second before automatic progression.
+- Microphone acquisition precedes the countdown. Each repetition gets a fresh delay/visual GO. Only a complete detected ordered sequence increments Completed; known out-of-order events remain reviewable; new unknown input is transient (older saved rows remain readable). A completed result displays for one second before automatic progression.
 - Pause releases capture and saves a partial attempt; Resume reacquires capture with a fresh countdown. Running/paused sessions lock gun switching. End/navigation/backgrounding/capture failure records incomplete/interrupted status; reload opens durable results without automatically restarting the microphone.
 - **Sound at start** optionally synthesizes a beep at GO. A disclosed 300 ms detector-input guard excludes the cue; very fast sounds inside it may be missed. Silent mode has no guard. Reported intervals are sound-detection timings, not verified physical actions.
 - Saved session/repetition review reopens from the selected gun's History. Preset edits, sound resets and recent-recognition trimming/clearing do not erase those separate snapshots.
@@ -148,3 +148,7 @@ For step-by-step hosting instructions (GitHub + Netlify or manual Netlify Drop),
 - Per-sound **Reset** button deletes only that class's learned examples. Settings → **Reset all learned sounds** removes all four classes, preserving recognition history. History has an independent clear control. All deletions ask for confirmation.
 - No audio feature format or IndexedDB version change: existing compatible models and history remain intact.
 - Deploy via Cloudflare Workers Builds, Pages, or Netlify; see [DEPLOY.md](DEPLOY.md).
+
+## CHG-017 improvements
+
+[Approved requirements](../requirements/practice-improvements.md) cover automatic Single repetitions, comparable gun-owned History statistics/chart/table, ten new recordings per type/category, reviewed numeric limits, transient unknown input, app/browser navigation and once-per-page safety confirmation that resumes the original action. [Current captures](../README.md) and [validation](PRACTICE_VALIDATION.md) distinguish local source/browser checks from publication, Cloudflare and physical iPhone results. Cache v15 updates the application without changing IndexedDB schema 3, feature version 2 or backup format 4. Older compatible over-cap profiles remain usable/exportable/restorable; no automatic truncation is introduced.

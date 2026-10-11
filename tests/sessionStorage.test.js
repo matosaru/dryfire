@@ -278,7 +278,7 @@ test('real custom sequence snapshots preserve unknown/out-of-order detections an
   }
   state = pauseSession(state, { monoNow: 450, epochNow: 1450 });
   await saveSession(toSessionRecord(state), gun.id);
-  expect(state.repetitions[0]).toMatchObject({ status: 'partial', unknown: 1, incorrect: 1, ordinal: 1 });
+  expect(state.repetitions[0]).toMatchObject({ status: 'partial', unknown: 0, incorrect: 1, ordinal: 1 });
   state = resumeSession(state, { monoNow: 500, epochNow: 1500 });
   state = tickSession(state, { monoNow: 500, epochNow: 1500 });
   state = recordSessionDetection(state, { label: 'draw', score: 85, detectedAtMs: 600 }, { monoNow: 600, epochNow: 1600 });

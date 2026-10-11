@@ -1,16 +1,17 @@
 # iPhone release checks — trigger-first practice
 
-Updated: 2026-10-11. Target confirmed by the user: **iPhone Safari and the Home Screen app**. This verifies CHG-016, CHG-015 and the retained CHG-014 sequences/settings; it adds no product scope. The user authorized automatic implementation and will review the final app, so no per-step confirmation is pending.
+Updated: 2026-10-11. Target confirmed by the user: **iPhone Safari and the Home Screen app**. This verifies CHG-017, CHG-016, CHG-015 and the retained CHG-014 sequences/settings; it adds no product scope. The user authorized automatic implementation and will review the final app, so no per-step confirmation is pending.
 
-Application: `https://dryfire.matosaru.workers.dev`. Use the latest CHG-016 implementation commit in [implementation history](../implementation-history.md). The older `6119b8f` contains sequences/settings but predates the six practice modes. `8b8aec9` predates STOP/input feedback and the latest recognition corrections. Package version **0.8.0** alone does not identify the current update.
+Application: `https://dryfire.matosaru.workers.dev`. Use the latest CHG-017 implementation commit in [implementation history](../implementation-history.md). The older `6119b8f` contains sequences/settings but predates the six practice modes. `8b8aec9` predates STOP/input feedback and the latest recognition corrections. Package version **0.8.0** alone does not identify the current update.
 
-User feedback, 2026-10-11: trigger pulls were reported missed during a practice mode. Exact Safari/Home Screen context and deployed revision were not provided. CHG-016 corrections are implemented and locally validated; source is published in `34d3136` and the corrected build's device checks remain unverified. This report does not mark unrelated hardware checks passed.
+User feedback, 2026-10-11: trigger pulls were reported missed during a practice mode. Exact Safari/Home Screen context and deployed revision were not provided. CHG-016 corrections are implemented and locally validated; source is published in `34d3136` and the corrected build's device checks remain unverified. The user subsequently reported the app looks better, without structured accuracy/output measurements. This does not mark unrelated hardware checks passed.
 
 ## Current evidence
 
 | Check | Observed result |
 | --- | --- |
-| Source/build acceptance | CHG-016: 227 Jest tests across 17 suites, 16 smoke checks, production build and `verify:dist` passed |
+| Source/build acceptance / CHG-017 | 257 Jest tests across 21 suites, 16 smoke checks, production build and `verify:dist` passed; seven browser suites/46 checks also pass; publication results are recorded in the delivery tracker |
+| Prior source/build acceptance | CHG-016: 227 Jest tests across 17 suites, 16 smoke checks, production build and `verify:dist` passed |
 | Browser acceptance | CHG-016: seven suites / 35 checks covering STOP/input feedback, actual early Train → louder live click, modes, lifecycle/storage failure, legacy sequences, settings and migration; see [validation record](PRACTICE_VALIDATION.md) |
 | GitHub Actions / CHG-016 | [Run 38132660138](https://github.com/matosaru/dryfire/actions/runs/38132660138) completed successfully for source `34d3136`; source/build workflow includes smoke, 227 Jest and minified build/asset verification |
 | Prior CI synchronization fix / Node 22 | [GitHub Actions run 38130523348](https://github.com/matosaru/dryfire/actions/runs/38130523348) completed successfully for test synchronization fix [`be50b99`](https://github.com/matosaru/dryfire/commit/be50b99); local Node 22 installation/smoke/222-Jest/build/asset workflow also passed |
@@ -21,11 +22,11 @@ User feedback, 2026-10-11: trigger pulls were reported missed during a practice 
 
 ## Confirm production
 
-1. Cloudflare → Workers & Pages → **dryfire** → Deployments: record the latest successful **production** deployment's commit and ID. It must include the latest CHG-016 implementation commit or a descendant. A preview is separate.
+1. Cloudflare → Workers & Pages → **dryfire** → Deployments: record the latest successful **production** deployment's commit and ID. It must include the latest CHG-017 implementation commit or a descendant. A preview is separate.
 2. Production branch `main`, build `npm run build`, deploy `npx wrangler deploy`, assets `dist/`. Branch preview uses `npx wrangler preview`. See [deployment guide](DEPLOY.md).
 3. On **Learn**, Trigger is the primary card; Optional sounds and Improve recognition are expandable. On **Drills**, six practice cards appear above the preserved sequence presets/custom editor. These visible features distinguish this update from CHG-014.
-4. Reload or close/reopen the Home Screen app after the updated service worker activates. Expected cache: **dryfire-sound-trainer-v14**. Do not clear site data to fetch the update.
-5. The validated CHG-016 build uses `index-BbyURu6D.js`, `index-DCikZBm2.css` and cache v14. Active practice must show **STOP** above the microphone indicator. Rebuilds may produce other hashes; a successful production deployment commit is the source evidence.
+4. Reload or close/reopen the Home Screen app after the updated service worker activates. Expected cache: **dryfire-sound-trainer-v15**. Do not clear site data to fetch the update.
+5. The validated CHG-017 build uses `index-COAdyFJp.js`, `index-BD_QvldW.css` and cache v15. Active practice must show **STOP** above the microphone indicator. Rebuilds may produce other hashes; a successful production deployment commit is the source evidence.
 
 Direct workspace verification remains blocked by the network gateway. Required additive destinations are `dryfire.matosaru.workers.dev` and `api.github.com`; retain existing allowlist entries. Unknown environment settings were not overwritten. Git authentication already works; no replacement GitHub token is needed for repository operations.
 
@@ -41,12 +42,14 @@ Use **Pass**, **Fail**, **Unavailable** or **Not run**, plus a short observation
 | Trigger-only readiness | Single/Repeated/Par/Control/Free start with 3 Trigger examples; optional untrained sounds do not block them | Not run | Not run |
 | Calibration/rejection | Reset/noise examples save only for this gun; isolated reset/handling/speech/clap/cue trials add no shots. Separately record false counts and missed intended clicks | Not run | Not run |
 | STOP and microphone input | Active practice shows STOP above a real audio level; quiet/no arriving input is honest; STOP releases the mic and saves partial results; pause clears input | Not run | Not run |
-| Single | 2 repetitions; each signal gives one signal-to-click result; Next starts a fresh ready delay | Not run | Not run |
+| Safety modal | Unconfirmed Start/Train/Listen opens safety before mic permission; Cancel stays stopped; checked Confirm continues once; refresh asks again | Not run | Not run |
+| Progress/navigation/limits | Per-gun statistics/chart/table persist; Back/Forward stop/save capture; new recordings cap at 10; older over-cap profiles survive | Not run | Not run |
+| Single | 10 repetitions automatically; fresh random countdown and audible beep per repetition, first recognized click only, no manual Next | Not run | Not run |
 | Repeated/Control | One signal, distinct accepted clicks, count target and consecutive interval statistics; microphone alone does not grade movement | Not run | Not run |
 | Par-time | In-time onset counts; absent/late click is a miss without an in-time shot. Finishing status allows captured audio to finish segmenting | Not run | Not run |
 | Reload | Only two chosen endpoint calibrations required; order and between-event split saved; handling is never a shot | Not run | Not run |
 | Free | Accepted click total and active duration; limit/End saves review; paused time excluded | Not run | Not run |
-| App cue On/Off | On emits one audible beep per signal; cue alone adds no shot. Off is silent with visual GO. Record placement/latency and very fast clicks | Not run | Not run |
+| App cue On/Off | On emits one audible beep per signal; cue alone adds no shot. Off is silent with the visual STOP/listening state. Record placement/latency and very fast clicks | Not run | Not run |
 | External cue | 3 cue examples required; waits for the calibrated beep; cue starts acoustic timing without an app beep/shot | Not run | Not run |
 | Pause/Resume/End/background | Capture releases; partial results retained; fresh signal on Resume; reopening never automatically reacquires the microphone | Not run | Not run |
 | Random/fixed timing | Saved choices honored; each discrete repetition gets a fresh bounded ready delay | Not run | Not run |

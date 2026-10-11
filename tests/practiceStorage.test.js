@@ -1,4 +1,4 @@
-import { addCalibrationExample, clearCalibrationExamples, clearExamples, createGun, exportBackup, getCalibrationExamples, getSession, getSessions, recoverInterruptedSessions, restoreBackup, saveSession, setGunSetting } from '../src/storage.js';
+import { addExample, getExamples, addCalibrationExample, clearCalibrationExamples, clearExamples, createGun, exportBackup, getCalibrationExamples, getSession, getSessions, recoverInterruptedSessions, restoreBackup, saveSession, setGunSetting } from '../src/storage.js';
 import { createPractice, tickPractice, detectPractice, toPracticeRecord } from '../src/practiceSession.js';
 const removeDb = () => new Promise((resolve, reject) => {
   const request = indexedDB.deleteDatabase('dryfire-sound-trainer'); request.onsuccess = resolve; request.onerror = () => reject(request.error);
@@ -28,6 +28,17 @@ test('calibration is independently owned, limited, validated and selectively res
   await expect(setGunSetting('calibrationExamples', [{ kind: 'reset', features: [NaN] }], a.id)).rejects.toThrow();
   await expect(setGunSetting('enabledSoundLabels', ['made-up'], a.id)).rejects.toThrow();
 });
+test('new rejection calibration is limited to ten per category without sharing caps across guns', async () => {
+  const a = await createGun({ name: 'A', type: 'Handguns' }), b = await createGun({ name: 'B', type: 'Shotguns' });
+  const features = Array(15).fill(.2);
+  const attempts = await Promise.allSettled(Array.from({ length: 12 }, () => addCalibrationExample('noise', features, a.id)));
+  expect(attempts.filter(row => row.status === 'fulfilled')).toHaveLength(10);
+  expect(await getCalibrationExamples(a.id)).toHaveLength(10);
+  await addCalibrationExample('reset', features, a.id);
+  await addCalibrationExample('noise', features, b.id);
+  expect(await getCalibrationExamples(b.id)).toHaveLength(1);
+});
+
 test('format4 round-trips practice/calibration and rejects malformed data atomically', async () => {
   const a = await createGun({ name: 'A', type: 'Handguns' });
   await addCalibrationExample('noise', Array(15).fill(.3), a.id);
@@ -39,6 +50,24 @@ test('format4 round-trips practice/calibration and rejects malformed data atomic
   const bad = structuredClone(backup); bad.sessions[0].shots = 400;
   await expect(restoreBackup(bad)).rejects.toThrow();
   expect(await getSession(backup.sessions[0].id, a.id)).toEqual(backup.sessions[0]);
+});
+
+test('older over-cap profiles and calibration restore and export intact while new recording is blocked', async () => {
+  const gun = await createGun({ name: 'Older profile', type: 'Handguns' });
+  await addExample('trigger', Array(15).fill(.2), gun.id);
+  await addCalibrationExample('reset', Array(15).fill(.3), gun.id);
+  const backup = await exportBackup();
+  backup.examples = Array.from({ length: 12 }, (_, i) => ({ ...backup.examples[0], id: `old-example-${i}` }));
+  const calibration = backup.gunSettings.find(row => row.key === 'calibrationExamples');
+  calibration.value = Array.from({ length: 12 }, (_, i) => ({ ...calibration.value[0], id: `old-calibration-${i}` }));
+  await restoreBackup(backup);
+  expect(await getExamples(gun.id)).toHaveLength(12);
+  expect(await getCalibrationExamples(gun.id)).toHaveLength(12);
+  await expect(addExample('trigger', Array(15).fill(.4), gun.id)).rejects.toThrow(/maximum|limit/i);
+  await expect(addCalibrationExample('reset', Array(15).fill(.4), gun.id)).rejects.toThrow(/maximum|limit/i);
+  const exported = await exportBackup();
+  expect(exported.examples).toHaveLength(12);
+  expect(exported.gunSettings.find(row => row.key === 'calibrationExamples').value).toHaveLength(12);
 });
 test('running practice recovers as interrupted without erasing its partial', async () => {
   const gun = await createGun({ name: 'A', type: 'Handguns' });

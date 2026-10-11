@@ -117,6 +117,7 @@ export function recordSessionDetection(state, { label, score, detectedAtMs } = {
   const predicted = label == null || label === 'unknown' ? 'unknown' : label;
   if (!LABELS.includes(predicted) && predicted !== 'unknown') throw new TypeError('Invalid detected sound.');
   if (!Number.isFinite(score) || score < 0 || score > 100) throw new TypeError('Invalid sound-detection score.');
+  if (predicted === 'unknown') return state;
   const offsetMs = detectedAtMs - state.goAtMs;
   if (state.current.detections.length && offsetMs <= state.current.detections.at(-1).offsetMs) return state;
   const catalog = [{ id: state.drillId, title: state.drillTitle, steps: state.drillSteps }];

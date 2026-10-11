@@ -7,19 +7,21 @@ import { PRACTICE_MODES, practiceMode, normalizePracticeConfig, practiceLabels, 
   toPracticeRecord, practiceStatistics, PRACTICE_CUE_GUARD_MS } from './practiceSession.js';
 import { getGunSetting, setGunSetting, saveSession } from './storage.js';
 import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
+import { readNumberInput } from './inputLimits.js';
 
 const $ = id => document.getElementById(id);
 const node = (tag, text, className = '') => { const element = document.createElement(tag); element.textContent = text; element.className = className; return element; };
 const seconds = value => Number.isFinite(value) ? `${(value / 1000).toFixed(2)} s` : '—';
 
 /** Six modes share one capture lifecycle, engine, configuration and durable review. */
-export function createPracticeController({ getContext, titleFor, ensureSafe, onNavigate, onChange, onError, onStatus,
+export function createPracticeController({ getContext, titleFor, ensureSafe, onNavigate, onBack, onChange, onError, onStatus,
   onProcessing, vibrationEnabled, onVibration }) {
   let mode = 'single', state = null, review = null, microphone = null, cue = null, abortCapture = null;
   let pending = false, saving = false, closing = false, saveError = null, savedRevision = null;
   let operation = 0, captureToken = 0, readToken = 0, timer = null, tickQueued = false, interruption = null;
   let inputLevel = 0, inputSeen = false, inputAt = 0, inputStartedAt = 0, holdLevelUntil = 0, inputFeedback = '';
   let clock = () => 0, queue = Promise.resolve(), configQueue = Promise.resolve();
+  let routeKey = null;
   const locked = () => pending || saving || closing || !!interruption || !!saveError || !!state && state.phase !== 'review';
   const times = () => ({ monoNow: clock(), epochNow: Date.now(), randomValue: Math.random() });
   const changed = () => { render(); onChange(); };
@@ -58,7 +60,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       if (!used) return defaults[key];
       const text = $(id).value.trim();
       if (!text) throw new TypeError('Complete the visible practice settings.');
-      return Number(text);
+      return readNumberInput($(id));
     };
     return normalizePracticeConfig({
       repetitions: number('practiceRepetitions', 'repetitions', mode !== 'free'),
@@ -98,10 +100,10 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const missingCue = external && compatibleCalibration(context.calibration || []).filter(row => row.kind === 'cue').length < MIN_EXAMPLES_PER_CLASS;
     if (missing.length) message = `Learn 3 compatible examples of ${missing.map(titleFor).join(', ')}. Other sounds are optional.`;
     else if (missingCue) message = 'Learn 3 external-beep examples under Improve recognition in Learn.';
-    else if (!message) message = !$('safetyAck').checked ? 'Confirm the safety check before starting.' : 'Required sounds ready. Start when you are ready.';
+    else if (!message) message = !$('safetyAck').checked ? 'Sounds ready. Start opens safety confirmation.' : 'Required sounds ready. Start when you are ready.';
     $('practiceReadiness').textContent = message;
     $('practiceLearnBtn').classList.toggle('hidden', !missing.length && !missingCue);
-    $('practiceStartBtn').disabled = locked() || context.available === false || missing.length > 0 || missingCue || !config || !$('safetyAck').checked || !context.gun || context.gun.needsDetails;
+    $('practiceStartBtn').disabled = locked() || context.available === false || missing.length > 0 || missingCue || !config || !context.gun || context.gun.needsDetails;
     $('practiceCueNote').textContent = external ? 'Waiting for your calibrated beep starts the acoustic timer. The app does not play a second cue.'
       : $('practiceStartSound').checked ? 'Beep mode excludes the first 0.08 s after start. Very fast clicks in that window may be missed; physical speaker latency varies.' : 'Silent start: STOP and the microphone indicator appear when the timer starts.';
     $('practiceSteps').replaceChildren(...required.map(label => node('span', titleFor(label), 'preset-chip')));
@@ -160,7 +162,8 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const phase = pending ? 'connecting' : state?.phase;
     $('practiceRun').dataset.phase = phase || 'idle';
     const showInput = phase === 'active' || phase === 'await-cue';
-    $('practiceStopBtn').classList.toggle('hidden', !showInput);
+    const showStop = showInput || phase === 'countdown';
+    $('practiceStopBtn').classList.toggle('hidden', !showStop);
     $('practiceStopBtn').disabled = !!interruption || closing;
     $('practiceLevelPanel').classList.toggle('hidden', !showInput);
     $('practiceSignal').classList.toggle('hidden', showInput);
@@ -168,15 +171,16 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       : ({ connecting: '…', 'await-cue': 'WAIT', result: 'NEXT', paused: 'PAUSED', closing: 'TIME' }[phase] || '—');
     $('practiceSignal').textContent = signal;
     $('practiceSignal').classList.toggle('is-paused', phase === 'paused');
-    $('practiceAnnouncement').textContent = ({ connecting: 'Connecting microphone…', countdown: 'Get ready.', active: mode === 'reload' ? 'Practice started. Follow the selected events in order.' : 'Practice started. Listening for trigger clicks.',
-      'await-cue': 'Listening for your calibrated external beep.', result: 'Reset when ready, then choose Next repetition.', paused: 'Microphone released. Resume starts with a fresh signal.', closing: 'Time limit reached. Finishing audio captured before the deadline.' }[phase] || '');
+    const countdownText = phase === 'countdown' ? `Next signal in ${Math.max(0, (state.countdownEndsAtMs - clock()) / 1000).toFixed(1)} s. Get ready.` : '';
+    $('practiceAnnouncement').textContent = ({ connecting: 'Connecting microphone…', countdown: countdownText, active: mode === 'reload' ? 'Practice started. Follow the selected events in order.' : 'Practice started. Listening for trigger clicks.',
+      'await-cue': 'Listening for your calibrated external beep.', result: mode === 'single' ? 'Click saved. Preparing the next signal automatically.' : 'Reset when ready, then choose Next repetition.', paused: 'Microphone released. Resume starts with a fresh signal.', closing: 'Time limit reached. Finishing audio captured before the deadline.' }[phase] || '');
     $('practiceMicrophone').textContent = microphone ? '● Microphone connected' : 'Microphone inactive';
     $('practiceInputFeedback').textContent = inputFeedback;
     renderInput();
     $('practicePauseBtn').classList.toggle('hidden', phase === 'paused'); $('practicePauseBtn').disabled = pending || saving || !!interruption;
     $('practiceResumeBtn').classList.toggle('hidden', phase !== 'paused'); $('practiceResumeBtn').disabled = pending || saving || !!interruption;
-    $('practiceNextBtn').classList.toggle('hidden', phase !== 'result'); $('practiceNextBtn').disabled = pending || saving || !!interruption;
-    $('practiceEndBtn').classList.toggle('hidden', showInput);
+    $('practiceNextBtn').classList.toggle('hidden', phase !== 'result' || mode === 'single'); $('practiceNextBtn').disabled = pending || saving || !!interruption;
+    $('practiceEndBtn').classList.toggle('hidden', showStop);
     $('practiceEndBtn').disabled = !!interruption || closing;
     const latest = state?.repetitions.filter(row => row.status !== 'partial').at(-1);
     $('practiceLatest').replaceChildren(latest ? details(latest) : node('p', 'Recognized clicks and repetition outcomes appear here.', 'muted small'));
@@ -226,7 +230,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   }
   function startTimer() {
     stopTimer(); timer = setInterval(() => {
-      if (tickQueued || pending || !state || ['paused', 'review', 'result'].includes(state.phase)) return;
+      if (tickQueued || pending || !state || ['paused', 'review'].includes(state.phase) || state.phase === 'result' && mode !== 'single') return;
       tickQueued = true;
       enqueue(async () => { if (state && !pending) await apply(tickPractice(state, times())); render(); })
         .catch(() => {}).finally(() => { tickQueued = false; });
@@ -262,7 +266,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     microphone = session; clock = session.nowMs; return session;
   }
   async function start(resuming = false) {
-    if (pending || saving || interruption || closing || saveError || (locked() && !resuming) || !ensureSafe()) return;
+    if (pending || saving || interruption || closing || saveError || (locked() && !resuming) || !ensureSafe(() => start(resuming))) return;
     const context = structuredClone(getContext()), config = resuming ? state.config : readConfig();
     if (context.available === false) return;
     const counts = trainingCounts(context.examples);
@@ -292,7 +296,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     finally { if (token === operation) { pending = false; changed(); } }
   }
   async function next() {
-    if (pending || saving || closing || interruption || saveError || state?.phase !== 'result' || !ensureSafe()) return;
+    if (pending || saving || closing || interruption || saveError || state?.phase !== 'result' || !ensureSafe(() => next())) return;
     const token = ++operation; pending = true; changed();
     const preparing = state.config.soundAtStart && state.config.startSource === 'app' ? cue?.prepare() : Promise.resolve(true);
     try {
@@ -322,13 +326,13 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const token = ++readToken, owner = getContext().gun?.id;
     await configQueue; const saved = await getGunSetting('practiceConfig', {}, owner);
     if (token !== readToken || owner !== getContext().gun?.id || locked() || getContext().available === false) return;
-    mode = id; state = null; review = null; saveError = null; savedRevision = null;
+    routeKey = crypto.randomUUID(); mode = id; state = null; review = null; saveError = null; savedRevision = null;
     try { fillConfig(config || saved[id] || {}); } catch { fillConfig({}); }
     changed(); onNavigate('practice'); $('practice-title').setAttribute('tabindex', '-1'); $('practice-title').focus();
   }
   function showRecord(record) {
     if (locked() || record.gunId !== getContext().gun?.id || record.kind !== 'practice') return;
-    mode = record.practiceMode; state = null; review = structuredClone(record); saveError = null; savedRevision = null;
+    routeKey = crypto.randomUUID(); mode = record.practiceMode; state = null; review = structuredClone(record); saveError = null; savedRevision = null;
     fillConfig(record.config); changed(); onNavigate('practice');
   }
   function renderCatalog() {
@@ -354,12 +358,12 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   $('practiceNextBtn').addEventListener('click', () => next().catch(onError));
   $('practiceEndBtn').addEventListener('click', () => interrupt().catch(onError));
   $('practiceStopBtn').addEventListener('click', () => interrupt().catch(onError));
-  $('practiceBackBtn').addEventListener('click', () => interrupt('navigation').then(() => onNavigate('drills')).catch(onError));
+  $('practiceBackBtn').addEventListener('click', () => onBack());
   $('practiceDoneBtn').addEventListener('click', () => { if (!locked()) onNavigate('drills'); });
   $('practiceLearnBtn').addEventListener('click', () => onNavigate('learn'));
   $('practiceRepeatBtn').addEventListener('click', () => { const record = state ? toPracticeRecord(state) : review; if (record) open(record.practiceMode, record.config).catch(onError); });
   $('practiceRetryBtn').addEventListener('click', () => { enqueue(persist).then(changed).catch(onError); });
   $('safetyAck').addEventListener('change', () => { if (!state && !review) configure(); });
-  return { open, showRecord, interrupt, locked, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => configQueue,
-    reset() { if (!locked()) { readToken++; state = null; review = null; saveError = null; savedRevision = null; } } };
+  return { open, showRecord, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => configQueue,
+    reset() { if (!locked()) { readToken++; routeKey = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

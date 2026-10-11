@@ -1,6 +1,6 @@
 # Drill selection, configuration and sessions
 
-Revision: 1.4 · Scope: CHG-014 delivered; CHG-015 optional readiness/practice extension authorized · Implementation: legacy sequences and six practice modes implemented; deployment/device evidence separate
+Revision: 1.5 · Scope: CHG-014 delivered; CHG-015 optional readiness/practice extension authorized · Implementation: legacy sequences and six practice modes implemented; deployment/device evidence separate
 
 The current app has built-in/custom drill selection, separate free listening and the approved configurable session runner with durable repetition results/start cue. CHG-014 is implemented and locally validated on 2026-10-11; GitHub publication, production deployment and physical-device verification remain separately tracked in [implementation history](../implementation-history.md).
 
@@ -17,6 +17,8 @@ Design: [current Configure / Run / Review mockup](../drill-session-mockup.png). 
 | DRILL-07 | Keep the full sequence visible once. Use **Drill Session** as the generic heading and a single ordered sequence strip. Timing splits inside a result are separate information. | Explicitly requested revision |
 | DRILL-08 | Label reported timings as sound-detection timings. Do not imply verification of physical actions. | Existing accuracy constraint |
 | DRILL-09 | **Sound at start** controls only a short beep when GO appears. On plays the beep; off starts silently. The visual countdown and GO remain present in both modes. | Approved by the user |
+
+CHG-017 additionally approves the safety modal, consistent numeric bounds and no new durable unknown-detection records, while preserving known out-of-order results and older session snapshots. The automatic Single behavior belongs to the separate practice engine; legacy sequence progression remains unchanged. See [approved improvements](practice-improvements.md).
 
 ## Approved start-sound clarification
 

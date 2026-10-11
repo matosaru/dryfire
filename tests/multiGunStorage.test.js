@@ -242,14 +242,14 @@ test.each([
 test('per-class example capacity is atomic and does not consume another gun’s capacity', async () => {
   const a = await makeGun('A');
   const b = await makeGun('B');
-  const writes = await Promise.allSettled(Array.from({ length: 53 }, () => addExample('draw', features, a.id)));
-  expect(writes.filter(write => write.status === 'fulfilled')).toHaveLength(50);
+  const writes = await Promise.allSettled(Array.from({ length: 13 }, () => addExample('draw', features, a.id)));
+  expect(writes.filter(write => write.status === 'fulfilled')).toHaveLength(10);
   expect(writes.filter(write => write.status === 'rejected')).toHaveLength(3);
-  expect(await getExamples(a.id)).toHaveLength(50);
+  expect(await getExamples(a.id)).toHaveLength(10);
   await addExample('draw', features, b.id);
   await addExample('rack', features, a.id);
   expect(await getExamples(b.id)).toHaveLength(1);
-  expect(await getExamples(a.id)).toHaveLength(51);
+  expect(await getExamples(a.id)).toHaveLength(11);
 });
 
 

@@ -22,6 +22,19 @@ describe('IndexedDB storage', () => {
   });
   afterAll(deleteDatabase);
 
+  test('unknown predictions do not create durable events or trim known history', async () => {
+    const known = await addEvent({ label: 'trigger', score: 90 });
+    for (const label of [null, 'unknown']) expect(await addEvent({ label, score: 0 })).toBeNull();
+    expect(await getEvents()).toEqual([known]);
+  });
+
+  test('approved recording cap is ten and concurrent attempts cannot exceed it', async () => {
+    expect(MAX_EXAMPLES_PER_CLASS).toBe(10);
+    const attempts = await Promise.allSettled(Array.from({ length: 12 }, () => addExample('trigger', [0.1, 0.2])));
+    expect(attempts.filter(result => result.status === 'fulfilled')).toHaveLength(10);
+    expect(await getExamples()).toHaveLength(10);
+  });
+
   test('stores and clears current training vectors', async () => {
     await addExample('draw', [0.1, 0.2]);
     await addExample('trigger', [0.9, 1.0]);
@@ -130,7 +143,7 @@ describe('IndexedDB storage', () => {
   });
 
   test('exports bounded per-class capacity', () => {
-    expect(MAX_EXAMPLES_PER_CLASS).toBe(50);
+    expect(MAX_EXAMPLES_PER_CLASS).toBe(10);
   });
 });
 

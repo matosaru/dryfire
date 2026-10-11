@@ -306,3 +306,27 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 - Public GitHub HTML reports [Test and build run 38132660138](https://github.com/matosaru/dryfire/actions/runs/38132660138) **completed successfully** for that source revision. The preceding design/documentation [run 38132328710](https://github.com/matosaru/dryfire/actions/runs/38132328710) also passed. Local acceptance remains 227 Jest/17 suites, 16 smoke/build/asset and seven browser suites/35 checks.
 - Design catalog/specification, history and iPhone checklist now identify published STOP/input behavior, source commit/cache v14 and observed CI success. No new product scope or source changes are introduced by this delivery-record follow-up.
 - Fresh production HTTPS access again returned workspace CONNECT gateway 403 before app content. Cloudflare deployment and corrected physical iPhone accuracy remain unverified; no deployment or hardware success is inferred.
+
+## CHG-017 — Automatic Single, progress history, unknown filtering, navigation and proposed limits
+
+- Date: 2026-10-11. Specification: [practice-improvements.md](practice-improvements.md), revision 1.0; affected PRACTICE-03/04/10/14, DRILL-05, CORE history/navigation and new UPDATE-01–05/LIMIT-01–03.
+- User feedback: **“i did tested, now looks better.”** This is a qualitative app observation, not an instrumented device/deployment certificate.
+- Direct instructions: automatic single-trigger countdown/beep/first-click cycles until the repetition count; statistical/graphical progress history; **“Do not record unknown sounds”**; historical/logical navigation; **“Plan all this work. Update a plan. And lets start implementing.”** UPDATE-01–05 are approved for implementation under existing automatic-work authorization.
+- Explicit gate: **“before adding limitations and pushing a code, give me suggested limitations on each inputs for approval.”** The audited 11-control numeric table and proposed 10-per-type/per-category recording policy are documented, **pending approval**. Do not implement limits or push application code until the user approves the concrete table; independent authorized work may proceed locally. This gate comes from the user's instruction, not an inferred skill rule.
+- Existing compatible data/history is retained; no automatic deletion of over-cap examples, old unknown detections or calibration is approved. No new cloud account, free-plan cap, raw-audio storage or camera/sensor scope is introduced.
+
+### CHG-017 numeric/recording limits explicitly approved — 2026-10-11
+
+- User reply: **“Approve all proposed limits”** to the full recording/category/numeric table, including all 11 numeric controls, the 10-per-type/per-category caps, same-origin ownership and preservation of existing over-cap examples/backups.
+- [practice-improvements.md](practice-improvements.md), revision 1.1, records the exact approved bounds. The previously requested limit/code-push gate is resolved before limit implementation; no further step confirmation is needed.
+- UPDATE-01–05 and LIMIT-01–03 are now approved for automatic implementation, final validation and direct-main publication. Existing data is retained and no unrelated deferred scope is added.
+
+### CHG-017 visible safety modal added by direct instruction — 2026-10-11
+
+- User explicitly requested **“adding modal window to confirm safety once, if it was not confirmed, and after a confirmation, proceed with drills and other actions.”** UPDATE-06 is approved for automatic implementation alongside UPDATE-01–05 and approved LIMIT-01–03.
+- Revision 1.2 addition to [practice-improvements.md](practice-improvements.md) defines the accessible modal, once-per-page-session acknowledgement, cancellation, automatic continuation of the original action and stale-owner guard before source edits. Existing checklist and no persistent waiver/no microphone safety verification behavior remain.
+- No additional approval is requested. Implementation/acceptance/publication will be recorded after observation.
+
+### CHG-017 — release preparation requested, 2026-10-11
+
+The user explicitly instructed **“proceed with push, update documentation and screen images.”** Revision 1.2, the separately approved complete limit table and directly requested safety modal are implemented. Final local evidence: 257 Node 22 Jest tests / 21 suites, 16 smoke checks, build/asset verification and seven browser suites / 46 checks pass with zero page errors. Five actual production-build captures are linked in the [design catalog](../README.md); older reviewed images remain preserved. This records implementation/validation and authorization to publish, not user testing of the new release or observed production deployment. Publication/CI results are appended separately after observation.
