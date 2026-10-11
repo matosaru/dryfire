@@ -386,3 +386,11 @@ The user clarified **“deleting a gun, should clear all its data”** and **“
 ### CHG-020 local validation — 2026-10-11
 
 Approved single-gun/all-owned-data deletion and separate recognition/session clearing are implemented. Node 22 final evidence: 270 Jest / 23 suites, 16 smoke/build/asset checks, and 16 browser checks with zero page errors. Ownership, rollback, cancellation, selected/last/nonselected deletion, stale navigation/reads, delayed-write rejection, refreshed logs/charts and real exported-backup restoration passed using synthetic local fixtures. Eight changed/new actual images bring the current catalog to 41; five prior images are retained in the archive. Source/requirements/design/architecture publication and external CI will be recorded separately after observation; no production data was cleared.
+
+### CHG-020 publication observed — 2026-10-11
+
+The authorized complete changes were published directly to `main` in [`7240e2c`](https://github.com/matosaru/dryfire/commit/7240e2c); successful push and matching remote hash **7240e2cb9cc9ff0cd577662eefec9fdddbed2292** were observed. New requirements retain their direct user authorization; publication is not additional approval of deferred scope or a Cloudflare/device result.
+
+### CHG-020 source CI observed — 2026-10-11
+
+[GitHub Actions run 38144631311](https://github.com/matosaru/dryfire/actions/runs/38144631311) **completed successfully** for the authorized published source `7240e2c`, observed via public GitHub HTML. Documentation, Node 22 smoke/Jest, production build and minified assets are included. This records validation/publication rather than new approval; Cloudflare and physical-device outcomes remain unverified.

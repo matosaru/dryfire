@@ -10,7 +10,8 @@ User feedback, 2026-10-11: trigger pulls were reported missed during a practice 
 
 | Check | Observed result |
 | --- | --- |
-| Source/build acceptance / CHG-020 | 270 Jest / 23 suites, 16 smoke/build/assets and 16 focused browser checks pass; 41 current captures, updated requirements/tree, publication pending |
+| GitHub publication / CHG-020 | [`7240e2c`](https://github.com/matosaru/dryfire/commit/7240e2c) pushed to main; full remote hash matched; [GitHub Actions run 38144631311](https://github.com/matosaru/dryfire/actions/runs/38144631311) completed successfully for source `7240e2c` |
+| Source/build acceptance / CHG-020 | 270 Jest / 23 suites, 16 smoke/build/assets and 16 focused browser checks pass; 41 current captures, updated requirements/tree, source published in `7240e2c` |
 | GitHub publication / CHG-019 | [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18) pushed to main; full remote hash observed; [GitHub Actions run 38140861127](https://github.com/matosaru/dryfire/actions/runs/38140861127) completed successfully |
 | Source/build acceptance / CHG-019 | 261 Jest / 22 suites, 16 smoke/build/assets, docs checks, two browser suites / 11 checks and 38 current captures pass; pixel-diff CI and physical-device tests remain separate |
 | Source/build acceptance / CHG-017 | 257 Jest tests across 21 suites, 16 smoke checks, production build and `verify:dist` passed; seven browser suites/46 checks also pass; publication results are recorded in the delivery tracker |
