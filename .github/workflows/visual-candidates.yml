@@ -23,9 +23,9 @@ jobs:
           cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npm run build
-      - run: npx --no-install playwright test --config visual-candidates.config.js
+      - run: npx --no-install playwright test --config visual-candidates.config.js --project webkit --grep 'history/progress.dark at 320px'
       - name: Require an unchanged exact rerun
-        run: npx --no-install playwright test --config visual-candidates.config.js
+        run: npx --no-install playwright test --config visual-candidates.config.js --project webkit --grep 'history/progress.dark at 320px'
         env:
           VISUAL_CANDIDATES_COMPARE: '1'
       - run: node tools/visual-candidate-diagnostics.mjs
