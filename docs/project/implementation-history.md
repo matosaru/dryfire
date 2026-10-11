@@ -171,3 +171,9 @@ Source, requirements, organized current/historical designs, registry/tree/checke
 ### CHG-018/019 source CI observed — 2026-10-11
 
 [GitHub Actions run 38140861127](https://github.com/matosaru/dryfire/actions/runs/38140861127) completed successfully for published source `aacdb18`, observed through public GitHub HTML. The workflow includes the new documentation check, Node 22 smoke/Jest, production build and asset verification. A fresh production request still returned workspace CONNECT 403 before app content; Cloudflare deployment and physical iPhone acceptance remain unverified. This documentation follow-up changes publication records and stable screenshot/source references only; application assets remain identical to the validated source release.
+
+### Old Cloudflare log review — 2026-10-11
+
+The user reported a Cloudflare log dated October 9 for version 0.7.0, then confirmed that it was an old deployment. Its Vite build succeeded and its Wrangler deploy failed while parsing `vite.config.js`. Repository history shows the static-assets configuration was added on October 10 in `ee2d4b6`, with preview support added in `c7ecc50`; both are included in current `main`. No current deployment failure has been established from that log, so no application/configuration fix is inferred or applied.
+
+Remote `main` was observed at `cbd23be91278de5b41390bf35d3edb3879c69a36`, matching the local checkout. [GitHub Actions run 38141063696](https://github.com/matosaru/dryfire/actions/runs/38141063696) **completed successfully** for that commit, observed through public GitHub HTML. The deployment guide now identifies cache v16 and explains how to check the latest production build/commit rather than an older log or the reused 0.8.0 package version. A fresh request to the production URL again returned workspace CONNECT 403 before app content arrived. Production verification remains the next step; this access result does not establish a Cloudflare failure.
