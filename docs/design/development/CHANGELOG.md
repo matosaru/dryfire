@@ -1,3 +1,7 @@
+## CI test synchronization fix — 2026-10-11
+
+- Reproduced the reported audio lifecycle failure under Node 22. Replaced fixed microtask waits with explicit permission/worklet mock request signals in three tests, preserving their snapshot/abort/cleanup assertions. Complete Node 22 dependency/smoke/222-Jest/build/asset validation passes; application code and generated assets remain unchanged.
+
 ## Unreleased — trigger-first practice and six modes
 
 - Implemented CHG-015 under the user's explicit automatic-work instruction: optional non-trigger sounds and mode/sequence-specific readiness, one-class distance rejection, reset/noise/cue evidence and saved per-gun optional recognition controls.

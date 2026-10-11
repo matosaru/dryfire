@@ -10,6 +10,17 @@ let stream;
 let mediaDevices;
 
 function node() { return { connect: jest.fn(), disconnect: jest.fn() }; }
+function deferredCall(mock) {
+  let notifyRequested;
+  let resolve;
+  const requested = new Promise(notify => { notifyRequested = notify; });
+  const result = new Promise(finish => { resolve = finish; });
+  mock.mockImplementation(() => {
+    notifyRequested();
+    return result;
+  });
+  return { requested, resolve };
+}
 function samples(seconds, sounds = []) {
   const pcm = new Float32Array(seconds * rate);
   for (let i = 0; i < pcm.length; i++) {
@@ -49,14 +60,13 @@ afterEach(() => {
 });
 
 test('captures a processing snapshot before asynchronous microphone permission', async () => {
-  let resolvePermission;
-  mediaDevices.getUserMedia.mockImplementation(() => new Promise(resolve => { resolvePermission = resolve; }));
+  const permission = deferredCall(mediaDevices.getUserMedia);
   const preferences = { noiseFilter: true, autoGain: true };
   const pending = startContinuousListening({ onEvent() {}, audioPreferences: preferences });
   preferences.noiseFilter = false;
   preferences.autoGain = false;
-  for (let i = 0; i < 20 && !resolvePermission; i++) await Promise.resolve();
-  resolvePermission(stream);
+  await permission.requested;
+  permission.resolve(stream);
   const session = await pending;
   expect(mediaDevices.getUserMedia.mock.calls[0][0].audio).toMatchObject({ noiseSuppression: true, autoGainControl: true });
   await session.stop();
@@ -74,13 +84,12 @@ test('reports actual continuous-track processing and does not apply live constra
 });
 
 test('abort during pending permission closes a late stream before creating Web Audio', async () => {
-  let resolvePermission;
-  mediaDevices.getUserMedia.mockImplementation(() => new Promise(resolve => { resolvePermission = resolve; }));
+  const permission = deferredCall(mediaDevices.getUserMedia);
   const controller = new AbortController();
   const pending = startContinuousListening({ onEvent() {}, signal: controller.signal });
-  for (let i = 0; i < 20 && !resolvePermission; i++) await Promise.resolve();
+  await permission.requested;
   controller.abort();
-  resolvePermission(stream);
+  permission.resolve(stream);
   await expect(pending).rejects.toMatchObject({ name: 'AbortError' });
   expect(track.stop).toHaveBeenCalledTimes(1);
   expect(contexts).toHaveLength(0);
@@ -111,15 +120,15 @@ test('cancellation from a processing report does not open a new recording contex
 });
 
 test('abort while the worklet loads releases acquired resources and prevents fallback startup', async () => {
-  let finishModule;
-  globalThis.AudioContext.prototype.audioWorklet = { addModule: jest.fn(() => new Promise(resolve => { finishModule = resolve; })) };
+  globalThis.AudioContext.prototype.audioWorklet = { addModule: jest.fn() };
+  const module = deferredCall(globalThis.AudioContext.prototype.audioWorklet.addModule);
   globalThis.AudioWorkletNode = class { constructor() { throw new Error('Must not construct an aborted node'); } };
   const controller = new AbortController();
   const pending = startContinuousListening({ onEvent() {}, signal: controller.signal });
-  for (let i = 0; i < 20 && !finishModule; i++) await Promise.resolve();
+  await module.requested;
   controller.abort();
   expect(track.stop).toHaveBeenCalledTimes(1);
-  finishModule();
+  module.resolve();
   await expect(pending).rejects.toMatchObject({ name: 'AbortError' });
   expect(nodes).toHaveLength(0);
   expect(contexts[0].close).toHaveBeenCalledTimes(1);

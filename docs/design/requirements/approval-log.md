@@ -265,3 +265,10 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 - All final local checks pass: 222 Jest tests / 17 suites, 16 smoke checks, production build/asset verification, nine browser suites / 40 checks and local documentation links/diff validation. Earlier candidate records remain unchanged.
 - Post-push GitHub Actions query returned Forbidden; production app HTTPS returned workspace CONNECT gateway 403 before destination content. External GitHub check status, Cloudflare deployment and physical iPhone results remain unverified. These access failures are not reported as failed app tests or a failed deployment.
 - Requirements/history/device checklist now record the observed implementation publication. This follow-up changes delivery documentation only; no new product scope or source change is introduced.
+
+### CHG-015 CI regression follow-up — 2026-10-11
+
+- Evidence: the user requested **“check test build failure”** with [GitHub job 114441525944](https://github.com/matosaru/dryfire/actions/runs/38129781080/job/114441525944), then supplied the precise failing log. This is a routine test correction within approved scope and needs no additional product approval.
+- Before the fix, the full Node 22.23.3 suite reproduced the reported `resolvePermission is not a function` failure (221 pass / 1 fail). Local Node 24 had passed the same test. Fixed microtask polling was replaced with explicit signals from permission/worklet mocks in three lifecycle tests; all original behavioral assertions remain.
+- After the fix, Node 22 dependency installation, 16 smoke checks, 222 Jest tests / 17 suites, production build and asset verification pass. No application source, requirements/defaults, persisted data or build artifacts changed. No visual revision is needed.
+- GitHub API is still Forbidden; public GitHub HTML is accessible and confirms the reported failure. New-run/publication success is recorded only after observation. Prior local-browser and production/device evidence remain distinct.
