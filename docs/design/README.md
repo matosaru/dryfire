@@ -34,7 +34,7 @@ This table is generated from the [screen registry](../architecture/screen-map.js
 
 ## Historical references and validation
 
-[Archived proposals and reviewed releases](archive/README.md) preserve 27 distinct earlier PNGs and original layout notes. They are not current production designs and may show older branding, limits or controls. Immutable approved commit links remain in the approval log.
+[Archived proposals and reviewed releases](archive/README.md) preserve 85 historical PNGs and original layout notes. They are not current production designs and may show older branding, limits or controls. Immutable approved commit links remain in the approval log.
 
 Markdown and image correspondence was checked against the current controls: ten-per-type new recordings with old profiles preserved; automatic Single countdowns; STOP/microphone placement; comparable History charts/table; once-per-page safety modal; navigation history; per-gun and per-device preferences; Edit with data preservation; illustrated gun types; distinct sound/all-library reset with cancellation and backup recovery. The legacy sequence runner intentionally retains its GO status and separate controls. CHG-018 reorganizes evidence; CHG-019 implements the user-directed edit/selector/reset corrections.
 

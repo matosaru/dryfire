@@ -48,5 +48,13 @@
     "observedDigest": "sha256:2599fec07035091cfa5bcef0645efd58a0f88a0b987fa16e3ffa5475e4dcaf91"
   },
   "deployment": "not verified",
-  "physicalIPhone": "not verified"
+  "physicalIPhone": "not verified",
+  "unchangedIndependentRerun": {
+    "run": "https://github.com/matosaru/dryfire/actions/runs/38162033363",
+    "sourceCommit": "5d86aeeba0984382a6aa95dfb9f33328ad77f9a5",
+    "evidence": "Public GitHub run success and 118-passed annotation; same application and test configuration, with main merge synchronization and delivery documentation only.",
+    "browserChecks": 118,
+    "intentionalDefectProbe": "passed",
+    "artifactDigest": "sha256:51d2e48af64d7e64e9793ea49fa82a7aff4a84b53d9e79df7f7ede8d158034cc"
+  }
 }
