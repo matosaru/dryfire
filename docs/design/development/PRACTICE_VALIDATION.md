@@ -131,3 +131,7 @@ Actual screen captures: [countdown](../practice-automatic-countdown.png), [safet
 Final candidate: **`index-COAdyFJp.js`**, **`index-BD_QvldW.css`**, cache **v15**. No new dependencies, schema migration, feature rewrite or package-version change: schema **3**, features **2**, backup **4**, package **0.8.0**. Statistics are derived from existing saved sessions; new unknown detections are transient, while old records and intentional calibration remain intact. New caps do not delete older examples.
 
 The user reports the previous update looks better; structured physical iPhone accuracy/cue/vibration results remain unverified. Publication, GitHub CI and Cloudflare production are separate evidence; see [delivery tracker](../implementation-history.md) and [iPhone checks](IPHONE_RELEASE_CHECKS.md).
+
+### CHG-017 source publication and CI
+
+Implementation/design/specification commit [`b29837a`](https://github.com/matosaru/dryfire/commit/b29837a) was pushed successfully to `main`; the observed remote hash `b29837a000a875b571218d5911717d83a34bd2ed` matched local HEAD. [GitHub Actions run 38138057437](https://github.com/matosaru/dryfire/actions/runs/38138057437) **completed successfully**, observed via public GitHub HTML. A fresh production request failed at the workspace CONNECT gateway with 403 before app content arrived; production deployment remains unverified. Final source and build remain the validated candidate above; subsequent edits record delivery evidence only.

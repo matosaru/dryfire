@@ -330,3 +330,11 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 ### CHG-017 — release preparation requested, 2026-10-11
 
 The user explicitly instructed **“proceed with push, update documentation and screen images.”** Revision 1.2, the separately approved complete limit table and directly requested safety modal are implemented. Final local evidence: 257 Node 22 Jest tests / 21 suites, 16 smoke checks, build/asset verification and seven browser suites / 46 checks pass with zero page errors. Five actual production-build captures are linked in the [design catalog](../README.md); older reviewed images remain preserved. This records implementation/validation and authorization to publish, not user testing of the new release or observed production deployment. Publication/CI results are appended separately after observation.
+
+### CHG-017 — publication observed, 2026-10-11
+
+The authorized code, revised specifications and five actual screenshots were pushed directly to `main` in [`b29837a`](https://github.com/matosaru/dryfire/commit/b29837a). Push success and the matching full remote hash `b29837a000a875b571218d5911717d83a34bd2ed` were observed. This is publication evidence, not a new approval or proof of Cloudflare/device acceptance. New CI is being checked; a fresh production request remains blocked by gateway CONNECT 403.
+
+### CHG-017 — source CI observed, 2026-10-11
+
+[GitHub Actions run 38138057437](https://github.com/matosaru/dryfire/actions/runs/38138057437) **completed successfully** for published source `b29837a`, observed via public GitHub HTML. The workflow runs Node 22 smoke/Jest/build/minified-asset verification. This is CI evidence, not Cloudflare deployment or physical-device/user acceptance. No further source changes were made after the validated publication; this follow-up records outcomes in documentation.

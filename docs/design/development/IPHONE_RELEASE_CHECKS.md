@@ -11,6 +11,7 @@ User feedback, 2026-10-11: trigger pulls were reported missed during a practice 
 | Check | Observed result |
 | --- | --- |
 | Source/build acceptance / CHG-017 | 257 Jest tests across 21 suites, 16 smoke checks, production build and `verify:dist` passed; seven browser suites/46 checks also pass; publication results are recorded in the delivery tracker |
+| GitHub publication / CHG-017 | Code, requirements and five screens published to `main` in [`b29837a`](https://github.com/matosaru/dryfire/commit/b29837a), matching remote hash observed; [GitHub Actions run 38138057437](https://github.com/matosaru/dryfire/actions/runs/38138057437) completed successfully |
 | Prior source/build acceptance | CHG-016: 227 Jest tests across 17 suites, 16 smoke checks, production build and `verify:dist` passed |
 | Browser acceptance | CHG-016: seven suites / 35 checks covering STOP/input feedback, actual early Train → louder live click, modes, lifecycle/storage failure, legacy sequences, settings and migration; see [validation record](PRACTICE_VALIDATION.md) |
 | GitHub Actions / CHG-016 | [Run 38132660138](https://github.com/matosaru/dryfire/actions/runs/38132660138) completed successfully for source `34d3136`; source/build workflow includes smoke, 227 Jest and minified build/asset verification |
