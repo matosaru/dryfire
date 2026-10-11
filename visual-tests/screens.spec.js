@@ -170,7 +170,13 @@ for (const item of cases) {
     if (item.screen === 'learn') expect(await page.locator('#learnView img').first().evaluate(image => image.currentSrc)).toMatch(/\.svg$/);
     const overflow = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth) - innerWidth);
     const offenders = overflow > 0 ? await page.evaluate(() => [...document.querySelectorAll('*')]
-      .filter(node => node.checkVisibility() && node.getBoundingClientRect().right > innerWidth)
+      .filter(node => {
+        if (!node.checkVisibility() || node.getBoundingClientRect().right <= innerWidth) return false;
+        for (let parent = node.parentElement; parent; parent = parent.parentElement) {
+          if (['auto', 'scroll', 'hidden', 'clip'].includes(getComputedStyle(parent).overflowX) && parent.getBoundingClientRect().right <= innerWidth) return false;
+        }
+        return true;
+      })
       .map(node => ({ tag: node.tagName, id: node.id, class: node.getAttribute('class'), right: node.getBoundingClientRect().right,
         parent: node.parentElement?.className, text: node.textContent?.trim().slice(0, 70) }))
       .sort((a, b) => b.right - a.right).slice(0, 20)) : [];
