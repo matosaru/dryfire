@@ -1,6 +1,6 @@
 # Trigger-first practice — consolidated implementation plan
 
-Revision: 1.1 · Change: CHG-015 · Scope: authorized for automatic implementation · Implementation: implemented; final release acceptance/publication recorded in the delivery tracker
+Revision: 1.1 · Change: CHG-015 · Scope: authorized for automatic implementation · Implementation: implemented, locally validated and published in [`8b8aec9`](https://github.com/matosaru/dryfire/commit/8b8aec9); production/device acceptance remains separate in the delivery tracker
 
 Evidence, 2026-10-11: the user requested **“other sounds then trigger pull recognition to be optional”** and **“all the practice modes”**, then instructed **“adjust the final plan, try to optimise the steps”** and **“after plan is adjusted, proceed with next steps… stop confirming each step, do all steps automatically, i will verify final changes in an app and give a feedback.”** This authorizes completing the consolidated plan below and choosing routine implementation details without repeated confirmation. It supersedes the earlier proposal to seek separate confirmation for each detailed choice. Changes remain documented; approvals are not inferred from silence.
 
