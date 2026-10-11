@@ -1,5 +1,5 @@
 {
-  "commit": "6ef95a217d8dadb8a215ce42cd21702106ce4573",
+  "commit": "dbf8687659122be4737174b84e665a8bd47a3a8c",
   "environment": {
     "playwrightVersion": "1.58.2",
     "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
@@ -18,18 +18,18 @@
   "architecture": "x64",
   "node": "v22.23.3",
   "hashes": {
-    "index.html": "6b8bdd03744324a917299a42f21a1813579f8bffdbe1ab629b688fc46604aaf9",
-    "src/styles.css": "41088ff01a250f9334f3be268a9e4058cd6d2ef102a4ee3c53e331f6c1e915c2",
+    "index.html": "8fceaa5c9a2220ea8128869944d0a1706768180f7d3627e51c03e4c838817519",
+    "src/styles.css": "9006d52af81603115ccfe9ee75bd8fa9274d7860670ea7d7dacd5bf7d9264692",
     "src/main.js": "921f48402b8387ac76eba9cffdecb2833fa7865116909b3a5387960672add71d",
     "package-lock.json": "bbec9e88c11e1e6cb909888a6f09d98bae9a6cd431428de3c31a7ff6cc90fec7",
     "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
   },
   "assetHashes": {
-    "index.html": "9ab98752cf67694cd8b820e0528116d6c5f4f371482066eb83c26f464dc96ada",
+    "index.html": "4886c596aad9347eba69a4addb2650ed6fbb3e6efd925017374268084b85da35",
     "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
-    "sw.js": "f3b91fdd7ff2fc10e09b09bceee6f0df788a8f593e5788b397bae44050da2483",
+    "sw.js": "6c8062924b4a314fa12a6395d79ae85ced63b0f3a5dfee162228833548f348b9",
     "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
-    "assets/index-BIK6zAZa.js": "6f5dd6dd8d49029fa86a2d76e58c4c109d621dce37f5ff1d9c3869df91f8ff45",
-    "assets/index-CAEHHNrl.css": "199d1306386447bf8e8986e9f36ba7ee9a0ea6dabf85528d5e4abbed3eb83bba"
+    "assets/index-B9znaSMA.css": "172a403547424bfa88da1cc88283f1e277b5260df69d5ad263ec165376be8eb8",
+    "assets/index-DliH4Wp0.js": "6f5dd6dd8d49029fa86a2d76e58c4c109d621dce37f5ff1d9c3869df91f8ff45"
   }
 }
