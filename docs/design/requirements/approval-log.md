@@ -278,3 +278,18 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 - Test fix [`be50b99`](https://github.com/matosaru/dryfire/commit/be50b99) was pushed directly to `main`; the subsequent remote-head check returned `be50b99f7c8534636924091f327602567222a88d`.
 - Public GitHub Actions HTML reports [GitHub Actions run 38130523348](https://github.com/matosaru/dryfire/actions/runs/38130523348) **completed successfully** for that fix. This supersedes the earlier pending/unverified CI status for this revision; the failed older runs remain historical evidence. The API is still Forbidden, but public HTML provided direct status evidence.
 - Updated the delivery tracker, validation record and iPhone checklist with observed successful publication/CI. Cloudflare deployment and physical iPhone accuracy/output remain unverified. This documentation follow-up introduces no application behavior change.
+
+## CHG-016 — Practice trigger recognition and microphone display
+
+- Date: 2026-10-11. Affected IDs: PRACTICE-02/03/11/14, CORE-07/09; specification [practice-modes.md](practice-modes.md), revision 1.2.
+- Evidence: user reported **“i tested the app, trigger pulls are not recognised”**, identified **“During a practice mode”**, and explicitly requested **“add indicator”** and replacement of the persistent GO display with a visible microphone-level indicator after start. Existing automatic-work authorization remains in force.
+- State: **Approved by direct instruction**. The concrete Run design and acceptance are documented before UI source edits. Recognition corrections restore existing approved behavior; a new confirmation is not required.
+- Before source fixes, regressions reproduced missed early Learn clicks, modest gain changes, a quiet Learn-accepted click not being segmented, and a room-background mismatch. Earlier 222-test/CI success did not establish field accuracy. The user reports a device recognition failure; its precise deployed revision/context is not inferred.
+- No deletion/retraining of saved profiles, automatic removal of rejection calibration, raw-audio storage, cloud account or changes to practice counts/timing are authorized by this correction. Physical-device and deployment acceptance remain separate. Final implementation/browser/publication evidence will be appended after observation.
+
+### CHG-016 corrected layout and design publication request — 2026-10-11
+
+- Evidence: the user corrected the initial layout with **“nom replace GO with STOP, after it started, and add microphone indicator bellow”**, then instructed **“prepare a design, add designs to github.”**
+- State: **Approved by direct instruction**. Revision 1.3 of [practice-modes.md](practice-modes.md) and [the concrete Run design](../practice-input-design.md) document STOP above the real microphone meter before the corrected source edits. The prior entry remains the history of the superseded initial request.
+- STOP uses existing End Practice capture-release and durable partial-result behavior. It is shown during active practice/external-cue waiting; the duplicate bottom End Practice action is hidden then. Countdown, pause/resume/next, timing, sound-at-start settings and gun-owned storage retain their approved semantics.
+- Design publication and automatic implementation are explicitly authorized; no new confirmation is pending. Browser captures and test/publication evidence will be appended only after observation. Physical iPhone recognition remains a reported issue awaiting verification of the corrected build.

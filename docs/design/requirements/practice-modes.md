@@ -1,6 +1,6 @@
 # Trigger-first practice — consolidated implementation plan
 
-Revision: 1.1 · Change: CHG-015 · Scope: authorized for automatic implementation · Implementation: implemented, locally validated and published in [`8b8aec9`](https://github.com/matosaru/dryfire/commit/8b8aec9); production/device acceptance remains separate in the delivery tracker
+Revision: 1.3 · Changes: CHG-015/016 · Scope: authorized for automatic implementation · Implementation: CHG-015 published in [`8b8aec9`](https://github.com/matosaru/dryfire/commit/8b8aec9); CHG-016 correction in progress; production/device acceptance remains separate in the delivery tracker
 
 Evidence, 2026-10-11: the user requested **“other sounds then trigger pull recognition to be optional”** and **“all the practice modes”**, then instructed **“adjust the final plan, try to optimise the steps”** and **“after plan is adjusted, proceed with next steps… stop confirming each step, do all steps automatically, i will verify final changes in an app and give a feedback.”** This authorizes completing the consolidated plan below and choosing routine implementation details without repeated confirmation. It supersedes the earlier proposal to seek separate confirmation for each detailed choice. Changes remain documented; approvals are not inferred from silence.
 
@@ -27,6 +27,7 @@ The shipped CHG-014 runner remains available for legacy built-in/custom sequence
 | PRACTICE-11 | Test labelled positive and rejection examples, including resets, noise and cues. Measure real-device false counts and missed clicks separately; synthetic checks are not field accuracy |
 | PRACTICE-12 | Keep existing safety acknowledgement and accurate acoustic limits: no verification of unloaded status, aim or safe movement |
 | PRACTICE-13 | An optional calibrated external electronic beep may start the timer; it never counts as a shot |
+| PRACTICE-14 | Replace GO with a functional STOP button once practice starts; place the real microphone-level indicator below STOP. STOP releases capture and saves partial results using existing End Practice behavior. Countdown remains before the start; inactive/paused/ended capture must not imply live input. Show heard-but-unmatched feedback without counting a shot |
 
 ## Concrete defaults and mode behavior
 
@@ -69,3 +70,15 @@ Reuse the approved dark/orange brand, light/system settings, shared cards and Co
 4. **Production/device evidence:** verify deployment when gateway/dashboard evidence becomes available; use the confirmed iPhone Safari/Home Screen target. Hardware observations remain separate from local checks. User reviews final app and supplies feedback; no repeated step confirmations.
 
 The user's third-party-app reference is context, not verified benchmarking or permission to copy artwork. No competitor assets are used. Specifications and implementation history remain under `docs/design`.
+
+## CHG-016 — User feedback: missed triggers and visible microphone input
+
+Approved direct instruction, 2026-10-11: the user reported **“trigger pulls are not recognised”** during a practice mode, then stated **“add indicator”** and **“after a starts it leaves GO button visible, make this button change to microphone level indicator, so it clearly be visible.”** This explicitly authorizes the display correction under the existing automatic-work instruction; no further confirmation is needed.
+
+Corrected direct instruction, 2026-10-11: **“nom replace GO with STOP, after it started, and add microphone indicator bellow”**, followed by **“prepare a design, add designs to github.”** This supersedes the earlier meter-in-place-of-GO layout and authorizes its implementation and design publication without another confirmation.
+
+Design revision: keep the existing Configure / Run / Review layout, gun context, counters, orange brand and timing rules. Before start, the central panel shows countdown/connection. Once active, replace the central GO circle with a prominent orange **STOP** button. Directly below STOP, show a microphone icon/label, input-level bar and numeric relative level driven by captured PCM. STOP ends capture and saves completed and partial results; hide the duplicate bottom End Practice action while STOP is visible. Pause remains below the latest result. External-cue waiting also shows STOP and input while retaining its waiting explanation; timing starts only on the calibrated cue. Pause/result/finishing show their explicit state and do not present an active meter. The active screen marks the start in silent mode; app beep scheduling is unchanged. Expose matched versus heard-but-unmatched feedback so the user can distinguish received audio from recognition. No fake animated input, probability label or raw-audio persistence. Capture stops/reset states clear the level. See the [revised Run design](../practice-input-design.md); preserve earlier approved screenshots.
+
+Recognition corrections within PRACTICE-02/11: preserve all saved feature-version-2 examples, normalize microphone gain for comparison, ignore the click's arbitrary position within its recording window, account for the half-frame alignment of brief clicks, retain captured room background in compatible streaming windows and align the detector's minimum peak with accepted Learn captures. Distance rejection and calibrated-negative vetoes remain; near-identical reset/press sounds may still be rejected together. These restore intended recognition rather than changing shot-count semantics.
+
+Acceptance: expected-failing early-capture, gain-change, quiet-click and room-noise regressions pass; distinct reset/noise/cue and ambiguous-negative rejection remain tested; a short input spike appears on the meter; pause/end stop input and clear the display; a saved legacy model works without retraining; all six practice modes/mobile themes use the same input display; updated service-worker cache preserves IndexedDB. Real iPhone accuracy/deployment are recorded separately from synthetic checks. Preserve earlier approved screens; add the revised actual Run capture to the design catalog after validation. Implementation: in progress.

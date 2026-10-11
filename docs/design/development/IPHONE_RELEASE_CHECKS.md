@@ -4,6 +4,8 @@ Updated: 2026-10-11. Target confirmed by the user: **iPhone Safari and the Home 
 
 Application: `https://dryfire.matosaru.workers.dev`. Use the latest CHG-015 implementation commit in [implementation history](../implementation-history.md). The older `6119b8f` contains sequences/settings but predates the six practice modes. Package version **0.8.0** alone does not identify the current update.
 
+User feedback, 2026-10-11: trigger pulls were reported missed during a practice mode. Exact Safari/Home Screen context and deployed revision were not provided. CHG-016 corrections are in progress; the corrected build's device checks remain unverified. This report does not mark unrelated hardware checks passed.
+
 ## Current evidence
 
 | Check | Observed result |
