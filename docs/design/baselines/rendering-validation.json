@@ -1,0 +1,224 @@
+{
+  "run": "https://github.com/matosaru/dryfire/actions/runs/38156093738",
+  "configurationCommit": "76a32bae272ddd4af88edf676226e5e010ec9888",
+  "scope": "Chromium shared/safety-modal.dark at 390px; generation and ten unchanged comparisons; full comparison pending",
+  "chromiumLaunchArgs": [
+    "--disable-gpu",
+    "--disable-skia-runtime-opts",
+    "--force-color-profile=srgb"
+  ],
+  "validation": {
+    "source": "76a32bae272ddd4af88edf676226e5e010ec9888",
+    "stats": {
+      "startTime": "2026-10-11T16:36:07.931Z",
+      "duration": 23020.876,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "errors": [],
+    "failures": []
+  },
+  "build": {
+    "commit": "76a32bae272ddd4af88edf676226e5e010ec9888",
+    "environment": {
+      "playwrightVersion": "1.58.2",
+      "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+      "platform": "linux/amd64",
+      "locale": "en-US",
+      "timezoneId": "UTC",
+      "clock": "2026-10-11T11:00:00.000Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "deviceScaleFactor": 1,
+      "maxDiffPixels": 0
+    },
+    "platform": "linux",
+    "architecture": "x64",
+    "node": "v22.23.3",
+    "hashes": {
+      "index.html": "8fceaa5c9a2220ea8128869944d0a1706768180f7d3627e51c03e4c838817519",
+      "src/styles.css": "a172416e624e9fb251457813f1875402b9bcaded8bfa61c2797a6789b499d355",
+      "src/main.js": "921f48402b8387ac76eba9cffdecb2833fa7865116909b3a5387960672add71d",
+      "package-lock.json": "bbec9e88c11e1e6cb909888a6f09d98bae9a6cd431428de3c31a7ff6cc90fec7",
+      "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+    },
+    "assetHashes": {
+      "index.html": "f7cdf5c59935caf2c08ccbed69ebf7332ba5252f29bce030a0ce9deafb496586",
+      "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+      "sw.js": "099a60f840e68618703df0ab651b7c711ee4550d9a8e661765bc30196a2180f2",
+      "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+      "assets/index-BYvuC0SI.js": "6f5dd6dd8d49029fa86a2d76e58c4c109d621dce37f5ff1d9c3869df91f8ff45",
+      "assets/index-C1qBKdUV.css": "a7e23bbafb06afe55c1d7771a6807852488626a7c52485e1d148bfdda5b2bc57"
+    }
+  },
+  "fullSet": {
+    "run": "https://github.com/matosaru/dryfire/actions/runs/38161376789",
+    "validation": {
+      "source": "f561721c6775dc415b540c3308686e4f047530a8",
+      "stats": {
+        "startTime": "2026-10-11T17:52:50.181Z",
+        "duration": 36273.426999999996,
+        "expected": 59,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "errors": [],
+      "failures": []
+    },
+    "build": {
+      "commit": "f561721c6775dc415b540c3308686e4f047530a8",
+      "environment": {
+        "playwrightVersion": "1.58.2",
+        "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+        "platform": "linux/amd64",
+        "chromiumLaunchArgs": [
+          "--disable-gpu",
+          "--disable-skia-runtime-opts",
+          "--force-color-profile=srgb"
+        ],
+        "locale": "en-US",
+        "timezoneId": "UTC",
+        "clock": "2026-10-11T11:00:00.000Z",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "deviceScaleFactor": 1,
+        "maxDiffPixels": 0
+      },
+      "platform": "linux",
+      "architecture": "x64",
+      "node": "v22.23.3",
+      "hashes": {
+        "index.html": "8fceaa5c9a2220ea8128869944d0a1706768180f7d3627e51c03e4c838817519",
+        "src/styles.css": "a172416e624e9fb251457813f1875402b9bcaded8bfa61c2797a6789b499d355",
+        "src/main.js": "921f48402b8387ac76eba9cffdecb2833fa7865116909b3a5387960672add71d",
+        "package-lock.json": "bbec9e88c11e1e6cb909888a6f09d98bae9a6cd431428de3c31a7ff6cc90fec7",
+        "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+      },
+      "assetHashes": {
+        "index.html": "f7cdf5c59935caf2c08ccbed69ebf7332ba5252f29bce030a0ce9deafb496586",
+        "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+        "sw.js": "099a60f840e68618703df0ab651b7c711ee4550d9a8e661765bc30196a2180f2",
+        "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+        "assets/index-BYvuC0SI.js": "6f5dd6dd8d49029fa86a2d76e58c4c109d621dce37f5ff1d9c3869df91f8ff45",
+        "assets/index-C1qBKdUV.css": "a7e23bbafb06afe55c1d7771a6807852488626a7c52485e1d148bfdda5b2bc57"
+      }
+    },
+    "reviewedDifferences": [
+      {
+        "path": "gun-setup/add-gun.dark.390.png",
+        "pixels": 1,
+        "bounds": [
+          215,
+          269,
+          216,
+          270
+        ],
+        "maximumChannelDelta": 1
+      },
+      {
+        "path": "history/data-table.dark.390.png",
+        "pixels": 2,
+        "bounds": [
+          28,
+          7,
+          228,
+          10
+        ],
+        "maximumChannelDelta": 1
+      },
+      {
+        "path": "history/progress.dark.390.png",
+        "pixels": 1,
+        "bounds": [
+          225,
+          1283,
+          226,
+          1284
+        ],
+        "maximumChannelDelta": 1
+      },
+      {
+        "path": "learn/optional-sounds.dark.390.png",
+        "pixels": 1,
+        "bounds": [
+          81,
+          976,
+          82,
+          977
+        ],
+        "maximumChannelDelta": 1
+      },
+      {
+        "path": "live-listen/ready.dark.390.png",
+        "pixels": 1,
+        "bounds": [
+          339,
+          290,
+          340,
+          291
+        ],
+        "maximumChannelDelta": 1
+      },
+      {
+        "path": "practice/configure-par.dark.390.png",
+        "pixels": 1,
+        "bounds": [
+          104,
+          457,
+          105,
+          458
+        ],
+        "maximumChannelDelta": 1
+      },
+      {
+        "path": "practice/configure-single.dark.320.png",
+        "pixels": 1,
+        "bounds": [
+          231,
+          927,
+          232,
+          928
+        ],
+        "maximumChannelDelta": 1
+      },
+      {
+        "path": "session/review.dark.390.png",
+        "pixels": 1,
+        "bounds": [
+          339,
+          6,
+          340,
+          7
+        ],
+        "maximumChannelDelta": 1
+      },
+      {
+        "path": "settings/sounds-reset.dark.390.png",
+        "pixels": 1,
+        "bounds": [
+          136,
+          291,
+          137,
+          292
+        ],
+        "maximumChannelDelta": 1
+      }
+    ]
+  },
+  "independentComparison": {
+    "run": "https://github.com/matosaru/dryfire/actions/runs/38161376738",
+    "result": "110 passed, 8 single-pixel comparison failures; software flags do not guarantee identical color rounding across CI runners"
+  },
+  "resolution": {
+    "comparisonThreshold": 0.005,
+    "maxDiffPixels": 0,
+    "note": "Use Playwright perceptual color distance for documented sub-8-bit rounding; no layout/content masks, no allowed pixels above this distance, no retries or automatic baseline updates. Software overrides removed; ordinary pinned browser rendering retained."
+  }
+}

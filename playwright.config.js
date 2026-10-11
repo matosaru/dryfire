@@ -11,10 +11,10 @@ export default defineConfig({
   outputDir: results,
   globalSetup: './visual-tests/metadata.js',
   reporter: [['line'], ...(process.env.CI && !probe ? [['github']] : []), ['html', { open: 'never', outputFolder: probe ? 'playwright-probe-report' : 'playwright-report' }], ['json', { outputFile: `${results}/results.json` }]],
-  expect: { timeout: 5000, toHaveScreenshot: { maxDiffPixels: environment.maxDiffPixels, threshold: 0, animations: 'disabled', caret: 'hide', scale: 'css' } },
+  expect: { timeout: 5000, toHaveScreenshot: { maxDiffPixels: environment.maxDiffPixels, threshold: environment.comparisonThreshold, animations: 'disabled', caret: 'hide', scale: 'css' } },
   use: { baseURL: 'http://127.0.0.1:4175', viewport: environment.viewport, deviceScaleFactor: environment.deviceScaleFactor,
     locale: environment.locale, timezoneId: environment.timezoneId, colorScheme: 'dark', contextOptions: { reducedMotion: 'reduce' },
     serviceWorkers: 'block', trace: 'retain-on-failure', screenshot: 'only-on-failure' },
-  projects: [{ name: 'chromium', use: { browserName: 'chromium', launchOptions: { args: environment.chromiumLaunchArgs } } }, { name: 'webkit', use: { browserName: 'webkit' } }],
+  projects: [{ name: 'chromium', use: { browserName: 'chromium' } }, { name: 'webkit', use: { browserName: 'webkit' } }],
   webServer: { command: 'npm run preview -- --host 127.0.0.1 --port 4175 --strictPort', url: 'http://127.0.0.1:4175', reuseExistingServer: false, timeout: 20000 },
 });
