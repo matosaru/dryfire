@@ -1,8 +1,8 @@
 {
-  "source": "dbf8687659122be4737174b84e665a8bd47a3a8c",
+  "source": "cdbf88da3c5519aa715bf5c96f75c7ad93a67154",
   "stats": {
-    "startTime": "2026-10-11T15:56:18.862Z",
-    "duration": 4525.054,
+    "startTime": "2026-10-11T15:58:26.955Z",
+    "duration": 4742.981,
     "expected": 0,
     "skipped": 0,
     "unexpected": 1,
@@ -15,7 +15,7 @@
       "browser": "webkit",
       "status": "failed",
       "errors": [
-        "Error: Horizontal overflow: {\"viewport\":320,\"body\":370,\"root\":370,\"reductions\":[{\"tag\":\"SECTION\",\"id\":\"\",\"class\":\"practice-progress-section\",\"after\":320},{\"tag\":\"DIV\",\"id\":\"\",\"class\":\"progress-filters\",\"after\":320},{\"tag\":\"LABEL\",\"id\":\"\",\"class\":\"\",\"after\":320},{\"tag\":\"SELECT\",\"id\":\"progressGroup\",\"class\":\"\",\"after\":320}]}; visible offenders: []\n\nexpect(received).toBeLessThanOrEqual(expected)\n\nExpected: <= 0\nReceived:    50\n\n  204 |         parent: node.parentElement?.className, text: node.textContent?.trim().slice(0, 70) }))\n  205 |       .sort((a, b) => b.right - a.right).slice(0, 20)) : [];\n> 206 |     expect(overflow, `Horizontal overflow: ${JSON.stringify(layout)}; visible offenders: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);\n      |                                                                                                                         ^\n  207 |     expect(errors, 'Unexpected browser errors').toEqual([]);\n  208 |     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });\n  209 |     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });\n    at /__w/dryfire/dryfire/visual-tests/screens.spec.js:206:121"
+        "Error: Horizontal overflow: {\"viewport\":320,\"body\":370,\"root\":370,\"styles\":[{\"css\":\"overflow:hidden;text-overflow:ellipsis\",\"after\":370,\"rect\":254,\"scroll\":253},{\"css\":\"appearance:none\",\"after\":365,\"rect\":254,\"scroll\":253},{\"css\":\"display:block\",\"after\":370,\"rect\":254,\"scroll\":253}],\"reductions\":[{\"tag\":\"SECTION\",\"id\":\"\",\"class\":\"practice-progress-section\",\"after\":320},{\"tag\":\"DIV\",\"id\":\"\",\"class\":\"progress-filters\",\"after\":320},{\"tag\":\"LABEL\",\"id\":\"\",\"class\":\"\",\"after\":320},{\"tag\":\"SELECT\",\"id\":\"progressGroup\",\"class\":\"\",\"after\":320}]}; visible offenders: []\n\nexpect(received).toBeLessThanOrEqual(expected)\n\nExpected: <= 0\nReceived:    50\n\n  214 |         parent: node.parentElement?.className, text: node.textContent?.trim().slice(0, 70) }))\n  215 |       .sort((a, b) => b.right - a.right).slice(0, 20)) : [];\n> 216 |     expect(overflow, `Horizontal overflow: ${JSON.stringify(layout)}; visible offenders: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);\n      |                                                                                                                         ^\n  217 |     expect(errors, 'Unexpected browser errors').toEqual([]);\n  218 |     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });\n  219 |     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });\n    at /__w/dryfire/dryfire/visual-tests/screens.spec.js:216:121"
       ]
     }
   ]
