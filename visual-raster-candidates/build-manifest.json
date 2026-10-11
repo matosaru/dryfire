@@ -1,9 +1,14 @@
 {
-  "commit": "76a32bae272ddd4af88edf676226e5e010ec9888",
+  "commit": "f561721c6775dc415b540c3308686e4f047530a8",
   "environment": {
     "playwrightVersion": "1.58.2",
     "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
     "platform": "linux/amd64",
+    "chromiumLaunchArgs": [
+      "--disable-gpu",
+      "--disable-skia-runtime-opts",
+      "--force-color-profile=srgb"
+    ],
     "locale": "en-US",
     "timezoneId": "UTC",
     "clock": "2026-10-11T11:00:00.000Z",
