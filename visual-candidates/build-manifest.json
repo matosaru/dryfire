@@ -1,5 +1,5 @@
 {
-  "commit": "cdbf88da3c5519aa715bf5c96f75c7ad93a67154",
+  "commit": "02807be0076e758d235de7e56976d01ef9b59d55",
   "environment": {
     "playwrightVersion": "1.58.2",
     "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
