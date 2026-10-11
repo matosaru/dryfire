@@ -37,6 +37,8 @@ The supplied October 9 log used app version 0.7.0 and failed while Wrangler pars
 
 The current source release includes gun editing/deletion, illustrated gun-type selectors, separate history/session clearing and the clarified Settings resets. Cache v17 is supporting evidence of the updated web assets, but the successful Cloudflare production build and its commit are the deployment evidence. Package version 0.8.0 is shared by several releases and cannot identify the latest change on its own.
 
+If JavaScript/CSS in a browser Network response appears unminified, use the [response comparison checklist](MINIFICATION.md). It lists the locally verified asset filenames/body hashes and distinguishes response bytes, display wrapping and transport compression. The exact deployed URL/body must be checked before attributing the difference to DevTools or an older deployment.
+
 The timed-session update upgrades the same IndexedDB database to schema 3 and adds separate saved sessions. Trigger-first practice reuses schema 3; its whole-library backup format is version 4, accepting compatible versions 1–3. The previous gun-profile migration still asks for details only when compatible legacy data has no completed gun name/type. A fresh installation asks for the first gun. Check [implementation history](../project/implementation-history.md) for current validation/push/deployment status; a code update in GitHub does not itself establish a successful production deployment.
 
 Training sounds: separate short illustrative waveform GIFs, not firearm-handling tutorials. With iPhone Reduce Motion enabled, the app displays static frames instead.

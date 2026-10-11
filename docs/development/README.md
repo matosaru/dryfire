@@ -87,6 +87,8 @@ npm run preview
 
 The `dist/` directory contains optimized **minified** JS/CSS bundles, the app HTML, the audio worklet, manifest and icons. It does **not** copy `src/`, test sources, or `.map` source maps. Vite 8 uses the Oxc JS minifier, Lightning CSS minifier, and `sourcemap: false`; see `vite.config.js`. For backwards compatibility `npm run build:static` now invokes the same Vite build (it **no longer** deploys human-readable source).
 
+See the [minification audit and browser response checks](MINIFICATION.md) for current asset names/sizes, measured alternative compressors and how to compare an actual deployed response with the local build. All current production JavaScript/CSS files have one nonempty physical line; local build verification and Cloudflare publication are separate checks.
+
 Upload **only `dist/`** to Netlify Drop, or configure Netlify to build from the GitHub source repo:
 
 - Build command: `npm run build`
@@ -115,7 +117,7 @@ The detector now uses fixed ~10ms frames, faster release/cooldown and bounded pr
 - `src/practiceSession.js` / `src/practiceController.js` — shared six-mode logic, capture lifecycle and saved review
 - `src/storage.js` — owned IndexedDB, backup/restore, durable sessions and recent-N retention
 - `src/evaluation.js` — manually verified confusion matrix
-- `workers/sw.js` — versioned PWA caching (v14), minified at build
+- `workers/sw.js` — versioned PWA caching (v17), minified at build
 - `tools/verify-dist.mjs` — public-build sanity check
 - `.github/workflows/check.yml` — CI tests + build artifact
 
