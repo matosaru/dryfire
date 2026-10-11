@@ -1,7 +1,7 @@
 # Codex instructions — Dry Fire With Ease
 
 ## Project
-Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with Capacitor. It learns four user-recorded acoustic events: `draw` (holster draw), `rack` (slide rack), `trigger` (trigger pull), and `reload` (magazine change). It recognizes sound events in continuous listening and tracks ordered multi-action drills. Training examples and history are local (IndexedDB). Production is hosted as static assets on Cloudflare Workers using `wrangler.jsonc`.
+Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with Capacitor. Trigger-click practice needs only `trigger`; optional `draw`, `rack` and `reload` retain their stable identifiers. Six practice modes share one engine, while existing ordered built-in/custom sequences remain available. Optional reset/noise/cue calibration supplies rejection evidence; only calibrated external-cue mode requires cue examples. Features, gun-owned preferences and legacy/practice history stay in IndexedDB schema 3; current backup format 4 restores compatible formats 1–3. Production is hosted as static assets on Cloudflare Workers using `wrangler.jsonc`.
 
 ## Persistent requirements and approved designs
 

@@ -12,8 +12,9 @@ The [implementation history and remaining plan](../implementation-history.md) tr
 | [Branding](branding.md) | Dry Fire With Ease display name and existing DF logo extended with WITH EASE | Approved; implemented and locally validated; deployment not verified |
 | [Gun profiles](gun-profiles.md) | First visit, gun names/types, up to five guns and separate training data | Approved; implemented and locally validated; deployment unverified |
 | [Drill sessions](drill-sessions.md) | Select/create, configure, start, progress and saved results | Approved; custom presets/timed sessions/results implemented and locally validated; deployment unverified |
-| [Data persistence](persistence.md) | Refresh/deployment persistence, migration and backups | Multi-gun/session storage and version-3 compatible backups implemented and locally validated; cloud unapproved |
+| [Data persistence](persistence.md) | Refresh/deployment persistence, migration and backups | Multi-gun/session storage and version-4 backups with compatible formats 1–3 implemented; cloud unapproved |
 | [Settings](settings.md) | Noise Filter, Auto Gain, Appearance and Vibration Feedback | Approved; implemented and locally validated; physical-device/deployment verification separate |
+| [Trigger-first practice](practice-modes.md) | Optional non-trigger sounds, rejection calibration and all six practice modes | CHG-015 authorized and implemented; release evidence in implementation history; production/device verification separate |
 
 ## Approval and change control
 
@@ -24,4 +25,4 @@ The [implementation history and remaining plan](../implementation-history.md) tr
 - Previously granted approval remains valid for its recorded scope. Do not request it again unless that scope changes.
 - New assistant-proposed product requirements must be documented and approved by the user before implementation. A specific direct instruction from the user can supply that approval; record it accurately.
 
-The one-gun free-version limit is explicitly deferred. Accounts, cloud synchronization, raw-audio storage and new sound categories are not implicitly authorized by the current designs.
+The one-gun free-version limit is explicitly deferred. Accounts, cloud synchronization, raw-audio storage and further sound taxonomies are not implicitly authorized. CHG-015 explicitly adds optional derived reset/noise/cue calibration; it does not change the four positive action identifiers.

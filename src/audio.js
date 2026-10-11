@@ -308,7 +308,13 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
       if (detectionArmed) {
         // Gate by captured sample time, not delivery time: delayed chunks may contain the cue.
         const skip = Math.max(0, armedAfterFrame - startFrame);
-        if (skip < samples.length) detector.push(samples.subarray(skip), startFrame + skip);
+        if (skip < samples.length) {
+          // Silence the guarded prefix without shifting the 10 ms analysis frames.
+          // Truncation at an arbitrary sample changed later event feature windows.
+          const gated = skip > 0 ? samples.slice() : samples;
+          if (skip > 0) gated.fill(0, 0, skip);
+          detector.push(gated, startFrame);
+        }
       }
       const now = Date.now();
       if (now - lastLevelAt >= 100) {

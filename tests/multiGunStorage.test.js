@@ -185,7 +185,7 @@ test('current backup restores the complete library and active selection', async 
   await setSetting('appearance', 'dark');
   await setActiveGun(a.id);
   const backup = await exportBackup();
-  expect(backup).toMatchObject({ format: 'sound-trainer-backup', version: 3, activeGunId: a.id });
+  expect(backup).toMatchObject({ format: 'sound-trainer-backup', version: 4, activeGunId: a.id });
   expect(backup.guns).toHaveLength(2);
   expect(backup.examples).toHaveLength(2);
   await removeDb();

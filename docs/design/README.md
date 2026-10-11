@@ -10,6 +10,7 @@ See [implementation history and remaining plan](implementation-history.md) for w
 | First visit, My Guns and selected-gun Home | [View image](multiple-guns-front-door.png) | [Gun profiles](requirements/gun-profiles.md) | Approved; implemented and locally validated (CHG-012); deployment unverified |
 | Gun-specific sounds, custom editor and session history | [View image](multiple-guns-sounds-drills-history.png) | [Gun profiles](requirements/gun-profiles.md), [Drills](requirements/drill-sessions.md), [Persistence](requirements/persistence.md) | Gun-owned sounds/presets/recognition and dedicated session history implemented and locally validated |
 | Configure, Run and Review | [View image](drill-session-mockup.png) | [Drill sessions](requirements/drill-sessions.md), [approved implementation plan](requirements/next-implementation.md) | Approved; implemented and locally validated under CHG-014; deployment unverified |
+| Trigger-first learning and six practice modes | [Learn](practice-implementation-learn.png), [Modes](practice-implementation-catalog.png), [Configure](practice-implementation-configure.png), [Run](practice-implementation-run.png), [Review](practice-implementation-review.png), [Light](practice-implementation-light.png) | [Practice requirements](requirements/practice-modes.md), [validation](development/PRACTICE_VALIDATION.md) | CHG-015 authorized for automatic implementation; actual locally validated UI for final user feedback; deployment/device evidence separate |
 
 ## Supporting notes
 
@@ -33,6 +34,7 @@ Do not remove approved design history. Revised images must be accompanied by rev
 - [Development guide](development/README.md) and [agent instructions](development/AGENTS.md)
 - [Cloudflare deployment](development/DEPLOY.md) and [Netlify deployment](development/NETLIFY_DEPLOY.md)
 - [iPhone installation](development/INSTALL_ON_IPHONE.md) and [device accuracy testing](development/ACCURACY_TESTING.md)
+- [Current iPhone deployment and release checks](development/IPHONE_RELEASE_CHECKS.md)
 - [Changelog](development/CHANGELOG.md), [historical engineering review](development/REVIEW.md) and [historical handoff](development/CODEX_HANDOFF.md)
 
 All full project documentation is stored in this folder and its subfolders. The repository-root README, AGENTS and REQUIREMENTS files are short entry-point links for GitHub visitors, agents and existing bookmarks.

@@ -1,4 +1,5 @@
-import { analyzeRecording, startContinuousListening } from './audio.js';
+import { startContinuousListening } from './audio.js';
+import { recognizeRecording } from './recognition.js';
 import { classify, labels, MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
 import {
   DEFAULT_SESSION_CONFIG, normalizeSessionConfig, createSession, tickSession,
@@ -18,7 +19,7 @@ const seconds = ms => Number.isFinite(ms) ? `${(ms / 1000).toFixed(2)} s` : '—
 
 /** Dedicated timed sessions; free listening retains its own capture lifecycle. */
 export function createSessionController({ getContext, titleFor, ensureSafe, onNavigate,
-  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration }) {
+  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord }) {
   let selection = null;
   let state = null;
   let review = null;
@@ -80,7 +81,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if (!selection) return;
     const context = getContext();
     const counts = trainingCounts(context.examples);
-    const missing = labels.filter(label => counts[label] < MIN_EXAMPLES_PER_CLASS);
+    const missing = [...new Set(selection.steps)].filter(label => counts[label] < MIN_EXAMPLES_PER_CLASS);
     let invalid = '';
     try { readConfig(); } catch (error) { invalid = error.message; }
     $('#sessionReadiness').textContent = missing.length
@@ -288,9 +289,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
         const detectedAtMs = timing?.onsetMs;
         enqueue(async () => {
           if (capture !== captureToken || pending || state?.phase !== 'active') return;
-          let analyzed;
-          try { analyzed = analyzeRecording(pcm, sampleRate); } catch { return; }
-          const prediction = classify(context.examples, analyzed.features);
+          let prediction;
+          try { prediction = recognizeRecording(context.examples, pcm, sampleRate, { enabledLabels: [...new Set(state.drillSteps)], negativeExamples: context.calibration || [] }); } catch { return; }
           if (!prediction) throw new Error('No compatible learned sound model is available.');
           await apply(recordSessionDetection(state, { label: prediction.label, score: prediction.score,
             detectedAtMs: Number.isFinite(detectedAtMs) ? detectedAtMs : clock() }, times()));
@@ -306,7 +306,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   async function start(resuming = false) {
     if (pending || finishing || saving || interruption || (locked() && !resuming) || !ensureSafe()) return;
     const context = getContext();
-    if (!context.gun || !labels.every(label => trainingCounts(context.examples)[label] >= MIN_EXAMPLES_PER_CLASS)) { updateReadiness(); return; }
+    if (!context.gun || !selection.steps.every(label => trainingCounts(context.examples)[label] >= MIN_EXAMPLES_PER_CLASS)) { updateReadiness(); return; }
     const config = resuming ? state.config : readConfig();
     const snapshot = { ...context, gun: { ...context.gun }, examples: structuredClone(context.examples), audioPreferences: { ...context.audioPreferences } };
     const token = ++operation;
@@ -424,9 +424,10 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if (!records.length) host.append(node('p', 'No saved drill sessions for this gun yet.', 'empty-state'));
     for (const record of records) {
       const card = node('article', '', 'saved-session-card');
-      const button = node('button', `${new Date(record.startedAt).toLocaleString()} · ${record.completed}/${record.config.repetitions} · ${record.status}`, 'button secondary wide-action');
+      const count = record.kind === 'practice' ? `${record.shots} shots · ${record.completed} attempts` : `${record.completed}/${record.config.repetitions}`;
+      const button = node('button', `${new Date(record.startedAt).toLocaleString()} · ${count} · ${record.status}`, 'button secondary wide-action');
       button.type = 'button';
-      button.addEventListener('click', () => showRecord(record));
+      button.addEventListener('click', () => record.kind === 'practice' ? onPracticeRecord(record) : showRecord(record));
       card.append(node('strong', record.drillTitle), button); host.append(card);
     }
   }

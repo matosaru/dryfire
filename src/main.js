@@ -1,8 +1,11 @@
 import { analyzeRecording, recordFeatureVector, startContinuousListening } from './audio.js';
+import { recognizeRecording } from './recognition.js';
 import { DRILLS, advanceDrill, createDrillState, getDrill, normalizeCustomDrill } from './drills.js';
 import { soundCard, drillCard } from './uiComponents.js';
 import { ACTUAL_CLASSES, PREDICTED_CLASSES, evaluateEvents } from './evaluation.js';
 import { createSessionController } from './sessionController.js';
+import { createPracticeController } from './practiceController.js';
+import { normalizeEnabledLabels, initialEnabledLabels, recognitionOptions } from './calibration.js';
 import { normalizeAudioPreferences, getAudioCapabilities } from './audioPreferences.js';
 import { getVibrationCapability } from './feedback.js';
 import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
@@ -12,6 +15,7 @@ import {
   getGuns, createGun, updateGun, getActiveGun, setActiveGun, MAX_GUNS,
   getGunSetting, setGunSetting, getCustomDrills, saveCustomDrill,
   getSetting, setSetting, recoverInterruptedSessions,
+  getCalibrationExamples, addCalibrationExample, clearCalibrationExamples,
 } from './storage.js';
 
 const labelMeta = {
@@ -47,6 +51,12 @@ let vibrationRejected = false;
 let processingReport = null;
 let preferencePending = false;
 let sessionController = null;
+let practiceController = null;
+let calibration = [];
+let enabledSoundLabels = ['trigger'];
+const triggerReady = () => getCounts().trigger >= MIN_EXAMPLES_PER_CLASS;
+const practiceContext = () => ({ gun: activeGun, examples, calibration, sensitivity: $('#sensitivity').value, audioPreferences,
+  available: !busy && !profileLoading && !preferencePending && !liveSession && !livePendingStart && !sessionController?.locked() });
 
 const darkPreference = window.matchMedia?.('(prefers-color-scheme: dark)');
 function applyAppearance() {
@@ -90,7 +100,7 @@ function ownerId() {
   if (!activeGun || activeGun.needsDetails) throw new Error('Add your gun name and type before training.');
   return activeGun.id;
 }
-function profileLocked() { return busy || profileLoading || preferencePending || !!liveSession || livePendingStart || !!sessionController?.locked(); }
+function profileLocked() { return busy || profileLoading || preferencePending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!practiceController?.locked(); }
 function currentDrill(id) { return getDrill(id, customDrills); }
 function renderGunControls() {
   $('#gunSwitcherBtn').disabled = profileLocked();
@@ -109,6 +119,7 @@ function renderGunControls() {
 
 async function loadActiveGun() {
   sessionController?.reset();
+  practiceController?.reset();
   activeGun = await getActiveGun();
   guns = await getGuns();
   const id = activeGun?.id;
@@ -123,6 +134,9 @@ async function loadActiveGun() {
   const savedDrill = id ? await getGunSetting('selectedDrill', '', id) : '';
   selectedTimedDrillId = currentDrill(savedDrill) ? savedDrill : '';
   audioPreferences = normalizeAudioPreferences(id ? await getGunSetting('audioPreferences', {}, id) : {});
+  calibration = id ? await getCalibrationExamples(id) : [];
+  const storedLabels = id ? await getGunSetting('enabledSoundLabels', null, id) : null;
+  enabledSoundLabels = storedLabels ? normalizeEnabledLabels(storedLabels) : initialEnabledLabels(examples);
   processingReport = null;
   await loadDevicePreferences();
   const select = $('#drillSelect');
@@ -181,7 +195,8 @@ async function renderGunLibrary() {
     card.setAttribute('aria-pressed', String(gun.id === activeGun?.id));
     const name = document.createElement('strong'); name.className = 'gun-card-name'; name.textContent = gun.name || 'Existing gun — add details';
     const type = document.createElement('span'); type.className = 'gun-card-type'; type.textContent = gun.type || 'Choose gun type';
-    const state = document.createElement('span'); state.className = `gun-readiness${readySounds === labels.length ? ' ready' : ''}`; state.textContent = `${readySounds} / 4 sounds ready · ${samples.length} samples`;
+    const triggerTrained = trainingCounts(samples).trigger >= MIN_EXAMPLES_PER_CLASS;
+    const state = document.createElement('span'); state.className = `gun-readiness${triggerTrained ? ' ready' : ''}`; state.textContent = `${triggerTrained ? 'Trigger ready' : 'Learn trigger'} · ${readySounds - (triggerTrained ? 1 : 0)} optional sounds ready · ${samples.length} samples`;
     const presetCount = document.createElement('span'); presetCount.className = 'gun-preset-count'; presetCount.textContent = `${presets.length} custom presets`;
     const heading = document.createElement('span'); heading.className = 'gun-card-head';
     const details = document.createElement('span'); details.append(name, type); heading.append(details);
@@ -200,6 +215,7 @@ async function selectGunProfile(id) {
   try {
     await eventQueue;
     await sessionController.flush();
+    await practiceController.flush();
     await setActiveGun(id);
     await loadActiveGun();
     $('#safetyAck').checked = false;
@@ -329,27 +345,73 @@ function getCounts() { return trainingCounts(examples); }
 function renderClassCards() {
   const host = $('#classCards');
   host.replaceChildren();
+  const optionalHost = $('#optionalClassCards');
+  optionalHost.replaceChildren();
   const counts = getCounts();
-  for (const label of labels) {
+  for (const label of ['trigger', ...labels.filter(label => label !== 'trigger')]) {
     const count = counts[label];
-    host.append(soundCard({
+    (label === 'trigger' ? host : optionalHost).append(soundCard({
       label, meta: labelMeta[label], count,
       maxExamples: MAX_EXAMPLES_PER_CLASS,
       minExamples: MIN_EXAMPLES_PER_CLASS,
       recommendedExamples: RECOMMENDED_EXAMPLES_PER_CLASS,
       locked: profileLocked(),
       onRecord: () => recordExample(label),
-      onReset: () => resetSoundProfile(label)
+      onReset: () => resetSoundProfile(label), optional: label !== 'trigger', enabled: enabledSoundLabels.includes(label),
+      onToggle: enabled => toggleOptionalSound(label, enabled)
     }));
   }
-  const ready = !!activeGun && !activeGun.needsDetails && labels.every(label => counts[label] >= MIN_EXAMPLES_PER_CLASS);
+  const ready = !!activeGun && !activeGun.needsDetails && triggerReady();
   $('#trainingSummary').textContent = ready
     ? `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`
-    : `Learn at least ${MIN_EXAMPLES_PER_CLASS} examples of each sound before recognition. ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
-  $('#listenBtn').disabled = busy || livePendingStart || !!sessionController?.locked() || (!ready && !liveSession);
+    : `Learn at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before trigger practice. Other sound types are optional.`;
+  $('#listenBtn').disabled = busy || livePendingStart || !!sessionController?.locked() || !!practiceController?.locked() || (!ready && !liveSession);
   $('#singleShotBtn').disabled = profileLocked() || !ready;
-  $('#homeExamples').textContent = `${labels.reduce((sum,label) => sum + counts[label], 0)} / ${RECOMMENDED_EXAMPLES_PER_CLASS * labels.length}`;
+  $('#homeExamples').textContent = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
   $('#homeListenBtn').disabled = busy || !ready;
+  renderCalibrationCards();
+}
+
+async function toggleOptionalSound(label, enabled) {
+  if (profileLocked() || label === 'trigger') return;
+  preferencePending = true;
+  const previous = enabledSoundLabels;
+  try {
+    enabledSoundLabels = normalizeEnabledLabels(enabled ? [...new Set([...enabledSoundLabels, label])] : enabledSoundLabels.filter(item => item !== label));
+    renderLiveButton(); renderClassCards();
+    await setGunSetting('enabledSoundLabels', enabledSoundLabels, ownerId());
+  } catch (error) { enabledSoundLabels = previous; showError(error); }
+  finally { preferencePending = false; renderLiveButton(); renderClassCards(); }
+}
+function renderCalibrationCards() {
+  const host = $('#calibrationCards'); host.replaceChildren();
+  const definitions = [['reset','Trigger reset clicks','Examples of clicks that must not count as a shot.'],['noise','Other noise / handling','Background and handling sounds to reject.'],['cue','External start beep','Required only for the External beep start option.']];
+  for (const [kind, title, description] of definitions) {
+    const count = calibration.filter(row => row.kind === kind).length;
+    const card = document.createElement('article'); card.className = 'calibration-card';
+    const heading = document.createElement('h3'); heading.textContent = title;
+    const text = document.createElement('p'); text.className = 'muted small'; text.textContent = `${description} ${count} / 50 samples.`;
+    const actions = document.createElement('div'); actions.className = 'class-actions';
+    const record = document.createElement('button'); record.type = 'button'; record.className = 'button primary'; record.textContent = 'Train'; record.disabled = profileLocked() || count >= 50;
+    record.dataset.calibrationKind = kind;
+    record.addEventListener('click', () => recordCalibration(kind));
+    const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'button secondary'; reset.textContent = 'Reset'; reset.disabled = profileLocked() || !count;
+    reset.addEventListener('click', async () => {
+      if (profileLocked() || !confirm(`Remove ${title} calibration for this gun? Learned action sounds and all history stay saved.`)) return;
+      setBusy(true);
+      try { await clearCalibrationExamples(kind, ownerId()); calibration = await getCalibrationExamples(ownerId()); }
+      catch (error) { showError(error); } finally { setBusy(false); renderClassCards(); }
+    });
+    actions.append(record, reset); card.append(heading, text, actions); host.append(card);
+  }
+}
+async function recordCalibration(kind) {
+  const gunId = ownerId();
+  await capture(async () => {
+    const features = await recordFeatureVector(setStatus, { audioPreferences, onProcessing: reportAudioProcessing });
+    await addCalibrationExample(kind, features, gunId); calibration = await getCalibrationExamples(gunId);
+    setStatus('Calibration saved'); renderClassCards();
+  });
 }
 
 async function resetSoundProfile(label) {
@@ -378,21 +440,26 @@ function renderDrillCatalog() {
 }
 
 function switchView(name) {
-  if (busy || profileLoading || !['home','learn','drills','session','recognize','history','settings','guns','gunSetup'].includes(name)) return;
+  if (busy || profileLoading || !['home','learn','drills','session','practice','recognize','history','settings','guns','gunSetup'].includes(name)) return;
+  if (name !== 'practice' && practiceController?.hasUnsavedResults()) {
+    showError(new Error('Practice results are not saved. Keep this review open and retry saving.'));
+    return;
+  }
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings'].includes(name)) { openGunSetup(activeGun); return; }
   if (liveSession || livePendingStart) void stopLive();
   if (name !== 'session' && sessionController?.locked()) sessionController.interrupt('navigation').catch(showError);
+  if (name !== 'practice' && practiceController?.locked()) practiceController.interrupt('navigation').catch(showError);
   if (name === 'recognize') { $('#drillSelect').value = ''; resetDrill(); }
   activeView=name;
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
   document.querySelectorAll('.tab').forEach(tab=>{
-    const selected=tab.dataset.view===(name==='session'?'drills':name);
+    const selected=tab.dataset.view===(['session','practice'].includes(name)?'drills':name);
     tab.classList.toggle('active',selected);
     if(selected)tab.setAttribute('aria-current','page');
     else tab.removeAttribute('aria-current');
   });
-  for(const view of ['home','learn','drills','session','recognize','history','settings','guns','gunSetup']) $('#'+view+'View').classList.toggle('hidden',view!==name);
+  for(const view of ['home','learn','drills','session','practice','recognize','history','settings','guns','gunSetup']) $('#'+view+'View').classList.toggle('hidden',view!==name);
   $('#settingsShortcut').classList.toggle('active',name==='settings');
   if(name==='settings')$('#settingsShortcut').setAttribute('aria-current','page');
   else $('#settingsShortcut').removeAttribute('aria-current');
@@ -531,8 +598,8 @@ function showRecognition(result, event) {
   renderDistances(result.distances);
 }
 
-async function savePrediction(features, token = null, gunId = ownerId()) {
-  const result = classify(examples, features);
+async function savePrediction(features, token = null, gunId = ownerId(), prediction = undefined) {
+  const result = prediction === undefined ? classify(examples, features, recognitionOptions(calibration, enabledSoundLabels)) : prediction;
   if (!result) throw new Error('No valid training data found.');
   if (token !== null && token !== liveToken) return;
   const drillMatch = token !== null ? recordDrillPrediction(result) : null;
@@ -564,9 +631,9 @@ async function savePrediction(features, token = null, gunId = ownerId()) {
 }
 
 async function recognize() {
-  if (!labels.every(label => getCounts()[label] >= MIN_EXAMPLES_PER_CLASS)) {
+  if (!triggerReady()) {
     switchView('learn');
-    setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} examples for all four sounds before trying recognition.`);
+    setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before trying recognition. Other sound types are optional.`);
     return;
   }
   const gunId = ownerId();
@@ -578,7 +645,7 @@ async function recognize() {
 
 function renderLiveButton() {
   const listening = !!liveSession;
-  const timed = !!sessionController?.locked();
+  const timed = !!sessionController?.locked() || !!practiceController?.locked();
   $('#listenBtn').textContent = listening ? 'Stop listening' : 'Start continuous listening';
   $('#listeningIndicator').textContent = listening ? '● Microphone active — listening for the next sound' : (livePendingStart ? 'Connecting microphone…' : 'Microphone inactive');
   $('#listeningIndicator').classList.toggle('is-live', listening);
@@ -586,7 +653,7 @@ function renderLiveButton() {
   $('#sensitivity').disabled = listening || livePendingStart || profileLoading || timed;
   $('#drillSelect').disabled = listening || livePendingStart || profileLoading || timed;
   $('#resetDrillBtn').disabled = listening || livePendingStart;
-  const ready = labels.every(label => getCounts()[label] >= MIN_EXAMPLES_PER_CLASS);
+  const ready = triggerReady();
   $('#listenBtn').disabled = busy || profileLoading || livePendingStart || timed || (!ready && !listening);
   $('#singleShotBtn').disabled = listening || busy || profileLoading || livePendingStart || timed || !ready;
   document.querySelectorAll('.record-example, .reset-class, #resetModelBtn, #clearHistoryBtn').forEach(button => {
@@ -594,6 +661,8 @@ function renderLiveButton() {
   });
   renderGunControls();
   renderPreferences();
+  practiceController?.refresh();
+  document.querySelectorAll('#practiceCatalog button').forEach(button => { button.disabled = profileLocked(); });
 }
 
 async function stopLive() {
@@ -612,9 +681,9 @@ async function stopLive() {
 async function toggleLive() {
   if (liveSession) { await stopLive(); return; }
   if (profileLocked() || !activeGun || activeGun.needsDetails || !ensureSafe()) return;
-  if (!labels.every(label => getCounts()[label] >= MIN_EXAMPLES_PER_CLASS)) {
+  if (!triggerReady()) {
     switchView('learn');
-    setMessage(`Learn at least ${MIN_EXAMPLES_PER_CLASS} examples of all four sounds first.`);
+    setMessage(`Learn at least ${MIN_EXAMPLES_PER_CLASS} trigger examples first. Other sounds are optional.`);
     return;
   }
   const token = ++liveToken;
@@ -642,14 +711,14 @@ async function toggleLive() {
         // Serialize classification/database writes while audio capture continues.
         eventQueue = eventQueue.then(async () => {
           if (token !== liveToken) return;
-          let analyzed;
-          try { analyzed = analyzeRecording(pcm, sampleRate); }
+          let prediction;
+          try { prediction = recognizeRecording(examples, pcm, sampleRate, recognitionOptions(calibration, enabledSoundLabels)); }
           catch (error) {
             ignoredEventCount += 1;
             $('#eventCounter').textContent = `${sessionEventCount} detected · ${ignoredEventCount} discarded`;
             return;
           } // Ignore clipped/unclear candidate transients without stopping.
-          await savePrediction(analyzed.features, token, gunId);
+          await savePrediction(null, token, gunId, prediction);
         }).catch(error => {
           if (token === liveToken) showError(error);
         });
@@ -777,12 +846,17 @@ async function renderHistory() {
 }
 
 async function init() {
+  practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView,
+    onError: showError, onStatus: setStatus, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
+    vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
+  practiceController.renderCatalog();
   sessionController = createSessionController({
-    getContext: () => ({ gun: activeGun, examples, sensitivity: $('#sensitivity').value, audioPreferences }),
+    getContext: practiceContext,
     titleFor, ensureSafe, onNavigate: switchView, onError: showError, onStatus: setStatus,
     onChange: () => { renderLiveButton(); renderClassCards(); },
     onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
     onVibration: reportVibration,
+    onPracticeRecord: record => practiceController.showRecord(record),
   });
   darkPreference?.addEventListener?.('change', () => { if (appearance === 'system') applyAppearance(); });
   $('#appearance').addEventListener('change', async () => {
@@ -843,6 +917,7 @@ async function init() {
   $('#exportBtn').addEventListener('click', async () => {
     try {
       await sessionController.flush();
+      await practiceController.flush();
       const data = JSON.stringify(await exportBackup(), null, 2);
       const url = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
       const anchor = document.createElement('a');
@@ -866,6 +941,7 @@ async function init() {
     try {
       await eventQueue;
       await sessionController.flush();
+      await practiceController.flush();
       const result = await restoreBackup(JSON.parse(await file.text()));
       await loadActiveGun();
       await renderHistory();
@@ -891,14 +967,17 @@ async function init() {
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && (liveSession || livePendingStart)) void stopLive();
     if (document.hidden && sessionController.locked()) sessionController.interrupt('background').catch(showError);
+    if (document.hidden && practiceController.locked()) practiceController.interrupt('background').catch(showError);
   });
   window.addEventListener('pagehide', () => {
     if (liveSession || livePendingStart) void stopLive();
     if (sessionController.locked()) sessionController.interrupt('pagehide').catch(() => {});
+    if (practiceController.locked()) practiceController.interrupt('pagehide').catch(() => {});
   });
   $('#safetyAck').addEventListener('change', () => {
     if (!$('#safetyAck').checked && (liveSession || livePendingStart)) void stopLive();
     if (!$('#safetyAck').checked && sessionController.locked()) sessionController.interrupt('safety-check').catch(showError);
+    if (!$('#safetyAck').checked && practiceController.locked()) practiceController.interrupt('safety-check').catch(showError);
   });
   $('#resetModelBtn').addEventListener('click', async () => {
     if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Delete all learned sounds for ${activeGun.name}? Other guns and all recognition history will be kept.`)) return;
@@ -906,6 +985,7 @@ async function init() {
     try {
       await clearExamples(ownerId());
       examples = [];
+      calibration = [];
       $('#modelNotice').classList.add('hidden');
       setStatus('All learned sounds reset');
       setMessage(`All learned sounds for ${activeGun.name} were reset. Other guns and recognition history were kept.`);
@@ -945,7 +1025,10 @@ async function init() {
   if (!activeGun || activeGun.needsDetails) openGunSetup(activeGun);
   else switchView('home');
   const recoveredForGun = recovered.find(record => record.gunId === activeGun?.id);
-  if (recoveredForGun && !activeGun?.needsDetails) sessionController.showRecord(recoveredForGun);
+  if (recoveredForGun && !activeGun?.needsDetails) {
+    if (recoveredForGun.kind === 'practice') practiceController.showRecord(recoveredForGun);
+    else sessionController.showRecord(recoveredForGun);
+  }
   setStatus('Ready');
 }
 

@@ -1,6 +1,6 @@
 # Persistence, migration and backups
 
-Revision: 1.2 · Scope: approved including CHG-014 durable sessions/preferences · Implementation: multi-gun/session storage and compatible backups implemented and locally validated; deployment verification separate
+Revision: 1.3 · Scope: approved including CHG-014 sessions and CHG-015 practice/calibration · Implementation: schema 3 and version-4 compatible backups implemented; deployment verification separate
 
 | ID | Requirement | State |
 | --- | --- | --- |
@@ -71,3 +71,13 @@ Accounts, authenticated cloud backup, cross-device synchronization and server-si
 4. Completed sessions survive recent-detection trimming and sound-profile resets.
 5. A complete backup can restore owned data without mixing guns; malformed backups cannot partially erase the current database.
 6. UI wording distinguishes **Saved on this device** from any future genuinely verified cloud synchronization.
+
+## Authorized trigger-first practice extension — CHG-015
+
+The [consolidated practice specification](practice-modes.md) implements the user's explicit automatic-work instruction. Reuse **schema 3** and the owned sessions/settings stores, preserving old records without a destructive migration.
+
+- Practice records discriminate `kind: practice` and snapshot mode, gun, configuration, accepted shots, resolved/remaining attempts, misses/partials, captured audio offsets and intervals. Validate identities, timing/outcome/count proofs and immutable snapshots before writes/restoration. Last-durable-snapshot recovery opens interrupted Review without capture.
+- Gun-owned settings hold typed `practiceConfig`, `enabledSoundLabels` and `calibrationExamples`. Derived reset/noise/cue examples contain no playable audio; compatible examples are used as rejection evidence. Trigger remains enabled; old trained optional sounds start enabled to preserve existing behavior.
+- Export **backup format 4** with legacy and practice records, calibration and preferences. Accept compatible formats **1, 2 and 3**. Whole-library replacement is confirmed and atomic; invalid practice data must not partially replace the current library. Preserve the existing 10 MB import limit.
+- Full sound reset atomically clears positive and rejection/cue features only for the selected gun; all saved practice/legacy results, mode presets and other guns survive. Category resets preserve the other categories. Recent-recognition retention/clear remains independent of saved sessions.
+- Serialize saves and preserve unsaved outcomes in Review with an honest Retry action. Prevent leaving that unsaved review; browser shutdown can retain only previously durable data. This is local persistence, not cloud recovery.

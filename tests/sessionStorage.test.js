@@ -86,7 +86,7 @@ test('schema-two upgrade creates separate session store and preserves models, ev
   expect(await getGunSetting('noiseFilter', false, gun.id)).toBe(true);
   expect(await getSetting('appearance', 'dark')).toBe('light');
   expect(await getSetting('vibrationFeedback', false)).toBe(true);
-  expect((await exportBackup()).version).toBe(3);
+  expect((await exportBackup()).version).toBe(4);
 });
 
 test('owned session snapshots remain separate after active selection and preset changes', async () => {
@@ -178,7 +178,7 @@ test('sessions remain untrimmed and sort newest first', async () => {
   expect((await getSessions(gun.id)).map(row => row.id)).toEqual(Array.from({ length: 8 }, (_, i) => `session-${7 - i}`));
 });
 
-test('version-three whole-library backup restores all gun-owned sessions and preferences', async () => {
+test('current whole-library backup restores all gun-owned sessions and preferences', async () => {
   const a = await makeGun('A');
   const b = await makeGun('B');
   const first = completedSession(a);
@@ -187,7 +187,7 @@ test('version-three whole-library backup restores all gun-owned sessions and pre
   await saveSession(first, a.id); await saveSession(second, b.id);
   await setGunSetting('autoGain', true, b.id); await setSetting('appearance', 'system');
   const backup = await exportBackup();
-  expect(backup).toMatchObject({ version: 3, sessions: expect.arrayContaining([first, second]) });
+  expect(backup).toMatchObject({ version: 4, sessions: expect.arrayContaining([first, second]) });
   await removeDb();
   expect(await restoreBackup(backup)).toMatchObject({ guns: 2, sessions: 2 });
   expect(await getSessions(a.id)).toEqual([first]); expect(await getSessions(b.id)).toEqual([second]);

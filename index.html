@@ -10,7 +10,7 @@
   <meta name="application-name" content="Dry Fire With Ease" />
   <meta name="format-detection" content="telephone=no" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <meta name="description" content="Dry Fire With Ease: private, offline-first acoustic training. Learn and recognize four sounds using your device microphone." />
+  <meta name="description" content="Dry Fire With Ease: private, offline-first trigger-click practice, optional mechanical sound learning and saved sessions for each gun." />
   <title>Dry Fire With Ease</title>
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="stylesheet" href="/src/styles.css" />
@@ -89,9 +89,11 @@
         <div><p class="eyebrow">01 / SOUND PROFILES</p><h2 id="learn-title">Learn Sounds</h2></div>
       </div>
       <p class="gun-context">Learned sounds for <strong class="gun-context-name"></strong>.</p>
-      <p class="muted">Capture at least <strong>3 samples of each type</strong> (8–10 recommended). Each capture gives you a two-second countdown followed by a two-second recording window.</p>
+      <p class="muted">Start with <strong>3 Trigger pull samples</strong> (8–10 recommended). Other sound types are optional. Each capture gives you a two-second countdown followed by a two-second recording window.</p>
       <div id="modelNotice" class="info-note hidden" role="status"></div>
       <div id="classCards" class="class-grid"></div>
+      <details class="optional-sounds"><summary>Optional sounds <span>For handling and sequence drills</span></summary><div id="optionalClassCards" class="class-grid"></div></details>
+      <details class="optional-sounds"><summary>Improve recognition <span>Reset, noise and external cue calibration</span></summary><p class="muted small">Optional rejection examples help avoid false shot counts. Very similar press/reset clicks can remain ambiguous; verify matches yourself. External-beep practice needs 3 cue samples.</p><div id="calibrationCards" class="class-grid"></div></details>
       <p class="muted small">The animations are illustrative sound cues, not step-by-step handling demonstrations. Resetting one sound keeps this gun's other sounds and history, and every other gun's data.</p>
       <div class="tip"><strong>Recording tip:</strong> Keep the phone in a consistent position, perform just one action per recording, and avoid background noise. Raw audio is not saved—only numeric sound features.</div>
     </section>
@@ -99,7 +101,9 @@
     <section id="drillsView" class="view hidden" aria-labelledby="drills-title">
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">02 / PRACTICE PRESETS</p><h2 id="drills-title">Drills</h2></div></div>
       <p class="gun-context">Saved presets for <strong class="gun-context-name"></strong>.</p>
-      <p class="muted">Select a built-in preset or save your own sequence of sounds. You can also use Live Listen without a preset.</p>
+      <h3>Dry-fire practice</h3><p class="muted">Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.</p>
+      <div id="practiceCatalog" class="drill-catalog"></div>
+      <h3 class="practice-section-title">Sequence drills</h3><p class="muted small">These require only the sounds in their sequence. Create your own or choose a built-in preset.</p>
       <div class="segmented-control" role="group" aria-label="Drill collection"><button id="builtInDrillsTab" type="button" aria-pressed="true" aria-controls="drillCatalog">Built-in Drills</button><button id="customDrillsTab" type="button" aria-pressed="false" aria-controls="customDrillCatalog">Custom</button></div>
       <div id="drillCatalog" class="drill-catalog"></div>
       <button id="newCustomDrillBtn" type="button" class="button secondary wide-action hidden">+ Create Custom Drill</button>
@@ -114,6 +118,34 @@
         <div class="custom-editor-actions"><button id="saveCustomDrillBtn" class="button primary" type="submit">Save Drill</button><button id="cancelCustomDrillBtn" class="button secondary" type="button">Cancel</button></div>
       </form>
       <button id="freeListenBtn" type="button" class="button secondary wide-action">Start free listening →</button>
+    </section>
+
+    <section id="practiceView" class="view hidden" aria-labelledby="practice-title">
+      <div class="section-head"><button id="practiceBackBtn" type="button" class="back-button" aria-label="Back to Drills">‹</button><h2 id="practice-title">Practice</h2></div>
+      <p class="gun-context">Practice for <strong class="gun-context-name"></strong>.</p>
+      <div id="practiceSteps" class="preset-steps" aria-label="Required sounds"></div>
+      <div id="practiceConfigure">
+        <form id="practiceConfigForm" class="session-config-form"><fieldset id="practiceConfigFields" class="session-config-fields"><legend>Practice setup</legend>
+          <label id="practiceCountRow" class="session-field" for="practiceRepetitions"><span id="practiceCountLabel">Repetitions</span><input id="practiceRepetitions" type="number" min="1" max="100" step="1" value="10" required inputmode="numeric" /></label>
+          <label id="practiceDurationRow" class="session-field hidden" for="practiceDuration"><span>Active seconds</span><input id="practiceDuration" type="number" min="1" max="3600" step="1" value="60" required inputmode="numeric" /></label>
+          <label id="practiceParRow" class="session-field hidden" for="practicePar"><span>Par time (seconds)</span><input id="practicePar" type="number" min="0.1" max="30" step="0.1" value="1.5" required inputmode="decimal" /></label>
+          <div id="practiceReloadFields" class="session-delay-card hidden"><label class="session-field" for="practiceReloadStart"><span>First event</span><select id="practiceReloadStart"><option value="rack">Rack slide</option><option value="reload">Change magazine</option><option value="draw">Draw from holster</option><option value="trigger">Trigger pull</option></select></label><label class="session-field" for="practiceReloadEnd"><span>Second event</span><select id="practiceReloadEnd"><option value="reload">Change magazine</option><option value="rack">Rack slide</option><option value="draw">Draw from holster</option><option value="trigger">Trigger pull</option></select></label></div>
+          <label class="session-field" for="practiceStartSource"><span>Start signal</span><select id="practiceStartSource"><option value="app">App signal</option><option value="external">Calibrated external beep</option></select></label>
+          <div id="practiceAppTiming" class="session-delay-card"><label class="session-field" for="practiceDelayMode"><span>Ready delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label>
+            <label id="practiceFixedRow" class="session-field hidden" for="practiceFixedDelay"><span>Delay seconds</span><input id="practiceFixedDelay" type="number" min="0" max="30" step="0.1" value="3" required inputmode="decimal" /></label>
+            <div id="practiceRandomFields" class="session-delay-range"><label class="session-field" for="practiceMinDelay"><span>Minimum seconds</span><input id="practiceMinDelay" type="number" min="0" max="30" step="0.1" value="2" required inputmode="decimal" /></label><label class="session-field" for="practiceMaxDelay"><span>Maximum seconds</span><input id="practiceMaxDelay" type="number" min="0" max="30" step="0.1" value="5" required inputmode="decimal" /></label></div>
+            <label class="preference-toggle" for="practiceStartSound"><span><strong>Sound at start</strong><small>Play one beep at GO.</small></span><input id="practiceStartSound" type="checkbox" role="switch" checked /></label>
+          </div>
+        </fieldset><p id="practiceCueNote" class="muted small"></p><p id="practiceReadiness" class="session-readiness" role="status"></p><button id="practiceLearnBtn" class="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" class="button primary wide-action" type="submit">Start Practice</button></form>
+      </div>
+      <div id="practiceRun" class="hidden">
+        <div class="practice-counters"><div><span id="practiceCompletedLabel">Attempts</span><strong id="practiceCompleted">0</strong></div><div><span>Shots</span><strong id="practiceShots">0</strong></div><div><span id="practiceRemainingLabel">Left</span><strong id="practiceRemaining">10</strong></div></div>
+        <div class="session-countdown-panel"><div id="practiceSignal" class="session-countdown" role="timer" aria-live="off">—</div><p id="practiceAnnouncement" class="session-announcement" role="status"></p><p id="practiceMicrophone" class="listening-indicator" role="status"></p><p class="muted small">Active time <strong id="practiceElapsed">0.00 s</strong></p></div>
+        <div id="practiceLatest" class="session-result-card"></div>
+        <div class="session-run-actions"><button id="practicePauseBtn" class="button secondary" type="button">Pause</button><button id="practiceResumeBtn" class="button primary hidden" type="button">Resume</button><button id="practiceNextBtn" class="button primary hidden" type="button">Next repetition</button><button id="practiceEndBtn" class="button secondary" type="button">End Practice</button></div>
+      </div>
+      <div id="practiceReview" class="hidden"><section class="session-review-card"><h3 id="practiceReviewStatus">Practice review</h3><div id="practiceSummary"></div><p id="practiceSaved" class="session-saved-note"></p><button id="practiceRetryBtn" type="button" class="button secondary wide-action hidden">Retry saving results</button></section><div id="practiceResults" class="session-result-list"></div><button id="practiceRepeatBtn" type="button" class="button primary wide-action">Repeat Practice</button><button id="practiceDoneBtn" type="button" class="button secondary wide-action">Back to Drills</button></div>
+      <p class="muted small session-timing-note">Timings describe detected audio. The app cannot verify physical actions, aim, movement or unloaded status.</p>
     </section>
 
     <section id="sessionView" class="view hidden" aria-labelledby="session-title">
@@ -270,7 +302,7 @@
       </div>
       </details><div class="settings-group">
         <h3>Learned Sounds</h3>
-        <p class="muted small">For one sound, use Reset on its card in Learn. The button below erases all learned sounds for the selected gun. Its history and other guns' data stay intact.</p>
+        <p class="muted small">For one sound, use Reset on its card in Learn. Full reset erases this gun's learned sounds and reset/noise/beep calibration. Its saved results and other guns' data stay intact.</p>
         <button id="resetModelBtn" class="button danger" type="button"><span class="settings-action-icon" aria-hidden="true">⏻</span><span>Reset all sounds for this gun</span><span class="settings-chevron" aria-hidden="true">›</span></button>
       </div>
       <div class="settings-group">

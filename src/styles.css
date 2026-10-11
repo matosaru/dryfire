@@ -555,3 +555,22 @@ html[data-theme="light"] .session-countdown.is-paused { border-color:#627f94; }
 html[data-theme="light"] .session-progress progress { background:#d9e4ec; }
 html[data-theme="light"] .session-progress progress::-webkit-progress-bar { background:#d9e4ec; }
 html[data-theme="light"] :is(button,input,select,summary):focus-visible { outline-color:#ad4a04; }
+/* Trigger-first learning and practice use the existing session surfaces. */
+.optional-sounds { border: 1px solid var(--session-border); border-radius: 16px; padding: 16px; margin: 18px 0; }
+.optional-sounds > summary { cursor: pointer; min-height: 44px; font-weight: 700; }
+.optional-sounds > summary span { display: block; font-size: .75rem; font-weight: 400; color: var(--session-muted); margin-top: 6px; }
+.optional-sounds .class-grid { margin-top: 16px; }
+.optional-sound-control { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: .8rem; }
+.optional-sound-control input { width: 20px; height: 20px; accent-color: var(--accent-orange); }
+.calibration-card { background: var(--session-surface); border: 1px solid var(--session-border); border-radius: 14px; padding: 16px; }
+.calibration-card h3 { margin: 0 0 8px; }
+.calibration-card .class-actions { margin-top: 12px; }
+.practice-section-title { margin-top: 32px; }
+.practice-mode-tag { color: var(--accent-orange); font-size: .75rem; font-weight: 700; }
+.practice-counters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px 12px; border: 1px solid var(--session-border); background: var(--session-surface); border-radius: 16px; text-align: center; margin: 18px 0; }
+.practice-counters strong { display: block; font-size: 1.8rem; }
+.practice-counters span { color: var(--session-muted); font-size: .8rem; }
+#practiceSteps { margin-bottom: 20px; flex-wrap: wrap; }
+#practiceReview > .button { margin-top: 12px; }
+#practiceResults { margin-top: 18px; }
+#practiceConfigFields select { max-width: 100%; }

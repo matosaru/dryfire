@@ -1,12 +1,14 @@
-# Device accuracy-testing protocol (v0.4.0)
+# Device accuracy-testing protocol
 
 This is a *manual* acoustic validation protocol. The code includes an accuracy summary over confirmed **detected** events, but there is **no supplied real-world labelled dataset** and no claimed field accuracy. Automated tests use synthetic waveforms only.
+
+For the current trigger-first practice release, also complete the [iPhone release checks](IPHONE_RELEASE_CHECKS.md). This protocol measures recognition accuracy; it does not establish production deployment or physical feedback by itself.
 
 ## Initial setup
 
 1. Deploy to HTTPS or install a debug Android/iOS build. Allow microphone permission, confirm audio source availability.
 2. Follow the safety checklist; use only verified unloaded equipment with ammunition removed and safe direction/backstop.
-3. Fix one consistent phone placement. Record at least 8 training examples **per class** in Learn.
+3. Fix one consistent phone placement. Record at least 8 Trigger examples in Learn. Train optional positive classes only when used; add separate reset/noise rejection examples when possible. Keep test examples distinct from calibration.
 4. Start live listening and choose **Normal** sensitivity. Try a quiet room first.
 5. Prepare a written list of **unseen** events to perform. Do not evaluate on recordings you used to train.
 
@@ -18,6 +20,9 @@ This is a *manual* acoustic validation protocol. The code includes an accuracy s
 | Slide-racking audio | 10 | Detected count, predicted class, manual truth |
 | Magazine-change audio | 10 | Detected count, predicted class, manual truth |
 | Trigger-click audio | 10 | Detected count, predicted class, manual truth |
+| Trigger reset clicks | 10 | Any false shot counts and legitimate trigger clicks rejected after calibration |
+| Background / handling / speech / footsteps / claps | 10 each | Any false shot counts; record detected and missed events separately |
+| App start beep and external electronic beep | 10 each | Cue alone must add no shot; record whether a configured calibrated external cue starts timing |
 | Background / other sounds | 10 | Whether event is detected, and if so, predicted class |
 | Silence for two minutes | 0 | Number of unsolicited detected events |
 
@@ -27,7 +32,8 @@ Perform these in a safe and controlled training environment. For recognition eva
 
 - **Accuracy:** manually confirmed correct predictions divided by all verified detected events.
 - **Confusion matrix:** which actual class was confused for which prediction, including Unknown.
-- **Other-sound false positive fraction:** number of verified *Other* events classified as one of the 3 known classes / all detected, verified *Other* events.
+- **Other-sound false positive fraction:** number of verified *Other* events classified as one of the 4 known classes / all detected, verified *Other* events.
+- **False shot count:** separately count accepted shots during reset/handling/noise/cue-only trials, including duplicate counts for one true press. Mode results alone cannot establish the physical source of a sound.
 - **Missed event rate:** **not calculated by the app**. Separately track `expected events - detected events` (and false multiple detections). A class can have a high app accuracy even when many expected sounds never trigger segmentation.
 - **False detections during silence:** separately record the number per listening hour (app currently does not compute this).
 

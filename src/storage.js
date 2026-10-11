@@ -3,6 +3,8 @@ import { isFeatureVector, labels } from './classifier.js';
 import { ACTUAL_CLASSES } from './evaluation.js';
 import { getDrill, normalizeCustomDrill } from './drills.js';
 import { normalizeSessionConfig, recoverSessionRecord } from './drillSession.js';
+import { normalizePracticeConfig, practiceMode, validatePracticeRecord, recoverPracticeRecord } from './practiceSession.js';
+import { normalizeCalibration, compatibleCalibration, normalizeEnabledLabels, CALIBRATION_KINDS } from './calibration.js';
 
 const DB_NAME = 'dryfire-sound-trainer';
 const DB_VERSION = 3;
@@ -120,7 +122,7 @@ function withTransaction(storeNames, mode, action) {
 
 /** Recheck ownership inside the write so library replacement cannot race it. */
 function withOwnedTransaction(owner, storeName, action) {
-  return withTransaction([GUNS, storeName], 'readwrite', (tx, context) => {
+  return withTransaction([GUNS, ...(Array.isArray(storeName) ? storeName : [storeName])], 'readwrite', (tx, context) => {
     const request = tx.objectStore(GUNS).get(owner);
     request.onsuccess = () => {
       if (!request.result) { context.fail(new Error('Gun profile no longer exists. Retry with the current library.')); return; }
@@ -270,7 +272,16 @@ async function clearOwnedRows(storeName, gunId, predicate = () => true) {
 }
 
 export async function clearExamples(gunId) {
-  await clearOwnedRows(EXAMPLES, gunId);
+  const owner = await resolveGunId(gunId, true);
+  await withOwnedTransaction(owner, [EXAMPLES, GUN_SETTINGS], tx => {
+    const request = tx.objectStore(EXAMPLES).index('gunId').openCursor(IDBKeyRange.only(owner));
+    request.onsuccess = () => {
+      const cursor = request.result;
+      if (!cursor) return;
+      cursor.delete(); cursor.continue();
+    };
+    tx.objectStore(GUN_SETTINGS).delete([owner, 'calibrationExamples']);
+  });
 }
 
 /** Delete one learned sound for one gun, preserving every gun's history. */
@@ -366,11 +377,59 @@ export async function setGunSetting(key, value, gunId) {
   const owner = await resolveGunId(gunId, true);
   if (key === 'customDrills') value = validateCustomDrills(value);
   if (key === 'maxResults') value = normalizeMaxResults(value);
+  value = validatePracticeSetting(key, value);
   if (key === 'selectedDrill' && value !== null && value !== '' && !getDrill(value, await getCustomDrills(owner))) {
     throw new TypeError('Selected drill is not available for this gun.');
   }
   await withOwnedTransaction(owner, GUN_SETTINGS, tx => {
     tx.objectStore(GUN_SETTINGS).put({ gunId: owner, key, value });
+  });
+}
+
+function validatePracticeSetting(key, value) {
+  if (key === 'calibrationExamples') return normalizeCalibration(value);
+  if (key === 'enabledSoundLabels') return normalizeEnabledLabels(value);
+  if (key === 'practiceConfig') {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError('Invalid practice settings.');
+    return Object.fromEntries(Object.entries(value).map(([mode, config]) => {
+      if (!practiceMode(mode)) throw new TypeError('Invalid practice mode.');
+      return [mode, normalizePracticeConfig(config)];
+    }));
+  }
+  return value;
+}
+
+export async function getCalibrationExamples(gunId) {
+  return compatibleCalibration(normalizeCalibration(await getGunSetting('calibrationExamples', [], gunId)));
+}
+
+export async function addCalibrationExample(kind, features, gunId) {
+  if (!CALIBRATION_KINDS.includes(kind) || !validFeatures(features) || features.length !== 15) throw new TypeError('Invalid calibration example.');
+  const owner = await resolveGunId(gunId, true);
+  const row = { id: crypto.randomUUID(), kind, features: [...features], featureVersion: FEATURE_VERSION, createdAt: Date.now() };
+  return withOwnedTransaction(owner, GUN_SETTINGS, (tx, context) => {
+    const store = tx.objectStore(GUN_SETTINGS);
+    const request = store.get([owner, 'calibrationExamples']);
+    request.onsuccess = () => {
+      try {
+        const rows = normalizeCalibration([...(request.result?.value ?? []), row]);
+        store.put({ gunId: owner, key: 'calibrationExamples', value: rows }); context.result = row;
+      } catch (error) { context.fail(error); }
+    };
+  });
+}
+
+export async function clearCalibrationExamples(kind, gunId) {
+  if (kind !== null && !CALIBRATION_KINDS.includes(kind)) throw new TypeError('Invalid calibration category.');
+  const owner = await resolveGunId(gunId, true);
+  return withOwnedTransaction(owner, GUN_SETTINGS, (tx, context) => {
+    const store = tx.objectStore(GUN_SETTINGS), request = store.get([owner, 'calibrationExamples']);
+    request.onsuccess = () => {
+      try {
+        const rows = normalizeCalibration(request.result?.value ?? []).filter(row => kind !== null && row.kind !== kind);
+        store.put({ gunId: owner, key: 'calibrationExamples', value: rows });
+      } catch (error) { context.fail(error); }
+    };
   });
 }
 
@@ -472,6 +531,7 @@ function validateAttempt(value, record, isCurrent) {
 
 /** Strict portable records exclude raw audio and runtime timer handles. */
 function validateSession(value, owner) {
+  if (value?.kind === 'practice') return validatePracticeRecord(value, owner);
   if (!value || typeof value.id !== 'string' || !value.id || value.gunId !== owner ||
       typeof value.drillId !== 'string' || !value.drillId || value.drillId.length > 80 ||
       typeof value.drillTitle !== 'string' || !value.drillTitle.trim() || value.drillTitle.length > 80 ||
@@ -539,7 +599,7 @@ export async function saveSession(record, gunId) {
       const previous = request.result;
       if (previous) {
         if (previous.gunId !== owner) { context.fail(new Error('Saved session belongs to another gun.')); return; }
-        const immutable = ['gunName', 'gunType', 'drillId', 'drillTitle', 'drillSteps', 'config', 'startedAt'];
+        const immutable = ['kind', 'practiceMode', 'gunName', 'gunType', 'drillId', 'drillTitle', 'drillSteps', 'config', 'startedAt'];
         if (immutable.some(key => JSON.stringify(previous[key]) !== JSON.stringify(row[key]))) {
           context.fail(new Error('A saved session snapshot cannot be changed.')); return;
         }
@@ -567,7 +627,8 @@ export async function recoverInterruptedSessions(gunId) {
         const recovered = [];
         for (const record of request.result) {
           if (!['running', 'paused'].includes(record.status)) continue;
-          const row = validateSession(recoverSessionRecord(record, Date.now()), owner);
+          const recover = record.kind === 'practice' ? recoverPracticeRecord : recoverSessionRecord;
+          const row = validateSession(recover(record, Date.now()), owner);
           store.put(row); recovered.push(row);
         }
         context.result = sortSessions(recovered);
@@ -587,7 +648,7 @@ export async function exportBackup() {
         snapshot[name] = request.result;
         if (--pending) return;
         context.result = {
-          format: 'sound-trainer-backup', version: 3, featureVersion: FEATURE_VERSION,
+          format: 'sound-trainer-backup', version: 4, featureVersion: FEATURE_VERSION,
           exportedAt: new Date().toISOString(), guns: snapshot[GUNS],
           activeGunId: snapshot[SETTINGS].find(row => row.key === ACTIVE_GUN)?.value ?? null,
           settings: Object.fromEntries(snapshot[SETTINGS].filter(row => row.key !== ACTIVE_GUN && row.key !== 'maxResults').map(row => [row.key, row.value])),
@@ -609,7 +670,7 @@ function isJsonValue(value, depth = 0) {
 }
 
 function validateBackup(backup) {
-  if (!backup || backup.format !== 'sound-trainer-backup' || ![1, 2, 3].includes(backup.version) || backup.featureVersion !== FEATURE_VERSION) {
+  if (!backup || backup.format !== 'sound-trainer-backup' || ![1, 2, 3, 4].includes(backup.version) || backup.featureVersion !== FEATURE_VERSION) {
     throw new Error('This file is not a compatible Dry Fire With Ease backup.');
   }
   const v1 = backup.version === 1;
@@ -653,6 +714,7 @@ function validateBackup(backup) {
     let value = structuredClone(row.value);
     if (row.key === 'customDrills') value = validateCustomDrills(value);
     if (row.key === 'maxResults') value = normalizeMaxResults(value);
+    value = validatePracticeSetting(row.key, value);
     return { gunId: row.gunId, key: row.key, value };
   });
   const presetCatalogs = new Map(safeGunSettings.filter(row => row.key === 'customDrills').map(row => [row.gunId, row.value]));
@@ -719,7 +781,7 @@ function validateBackup(backup) {
     const max = normalizeMaxResults(safeGunSettings.find(row => row.gunId === gun.id && row.key === 'maxResults')?.value ?? 50);
     events.push(...sortedEvents(safeEvents.filter(row => row.gunId === gun.id)).slice(0, max));
   }
-  const sessionRows = backup.version === 3 ? backup.sessions ?? [] : [];
+  const sessionRows = backup.version >= 3 ? backup.sessions ?? [] : [];
   if (!Array.isArray(sessionRows)) throw new Error('Backup contains invalid saved sessions.');
   const sessionIds = new Set();
   const sessions = Array.from(sessionRows, row => {

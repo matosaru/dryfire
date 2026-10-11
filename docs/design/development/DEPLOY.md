@@ -4,7 +4,7 @@ The repository holds **editable source**. Only `dist/` is deployed as the minifi
 
 ## Cloudflare Workers Builds (matches your existing build logs)
 
-1. Extract `dryfire-source-v0.8.0.zip` and update the contents of the GitHub repository `matosaru/dryfire` (do not upload the ZIP itself as a project file).
+1. Use the connected GitHub repository `matosaru/dryfire`, production branch `main`. Select the latest implementation commit in [implementation history](../implementation-history.md); a successful production build must include that commit or a descendant. The older `6119b8f` contains timed sequences/settings but predates the six practice modes.
 2. In Cloudflare dashboard → Workers & Pages → `dryfire` → Settings → Build, use:
    - Build command: `npm run build`
    - Deploy command: `npx wrangler deploy`
@@ -25,8 +25,10 @@ Connect GitHub `matosaru/dryfire`. Build command: `npm run build`; publish direc
 
 ## After updating the hosted app
 
-The updated service-worker cache version is `dryfire-sound-trainer-v12`; the technical cache-name prefix remains unchanged. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
+Use the [iPhone release checklist](IPHONE_RELEASE_CHECKS.md) to record the production commit and test Safari/Home Screen sessions, settings and retained data. Its current results distinguish completed local checks from unverified production/device checks.
 
-The timed-session update upgrades the same IndexedDB database to schema 3 and adds separate saved sessions; its whole-library backup format is version 3, accepting versions 1 and 2. The previous gun-profile migration still asks for details only when compatible legacy data has no completed gun name/type. A fresh installation asks for the first gun. Check [implementation history](../implementation-history.md) for current validation/push/deployment status; a code update in GitHub does not itself establish a successful production deployment.
+The updated service-worker cache version is `dryfire-sound-trainer-v13`; the technical cache-name prefix remains unchanged. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
+
+The timed-session update upgrades the same IndexedDB database to schema 3 and adds separate saved sessions. Trigger-first practice reuses schema 3; its whole-library backup format is version 4, accepting compatible versions 1–3. The previous gun-profile migration still asks for details only when compatible legacy data has no completed gun name/type. A fresh installation asks for the first gun. Check [implementation history](../implementation-history.md) for current validation/push/deployment status; a code update in GitHub does not itself establish a successful production deployment.
 
 Training sounds: separate short illustrative waveform GIFs, not firearm-handling tutorials. With iPhone Reduce Motion enabled, the app displays static frames instead.

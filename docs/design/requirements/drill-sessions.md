@@ -1,6 +1,6 @@
 # Drill selection, configuration and sessions
 
-Revision: 1.3 · Scope: approved including CHG-014 detailed choices · Implementation: custom presets and dedicated sessions implemented and locally validated; publication/deployment tracked separately
+Revision: 1.4 · Scope: CHG-014 delivered; CHG-015 optional readiness/practice extension authorized · Implementation: legacy sequences and six practice modes implemented; deployment/device evidence separate
 
 The current app has built-in/custom drill selection, separate free listening and the approved configurable session runner with durable repetition results/start cue. CHG-014 is implemented and locally validated on 2026-10-11; GitHub publication, production deployment and physical-device verification remain separately tracked in [implementation history](../implementation-history.md).
 
@@ -47,6 +47,10 @@ The user explicitly replied **“proceed”** after publication of [CHG-014 revi
 - Review shows saved repetition details, Repeat Session and Back to Drills. Selected-gun History reopens sessions. Sound reset and recent-recognition trimming/clearing preserve them. Vibration, when explicitly enabled and supported, is requested at GO/completion according to [settings.md](settings.md).
 
 Exact approved scope is in [next-implementation.md](next-implementation.md); separate cloud/free-cap/profile-deletion/new-taxonomy scope remains excluded. Approval does not establish implementation or device validation.
+
+## CHG-015 extension
+
+The [consolidated practice plan](practice-modes.md) adds six modes and makes non-trigger classes optional. For sequence drills, readiness depends on the referenced steps instead of all four classes; preserve ordered definitions and old results. CHG-014's all-four rule above records its historical delivered behavior, not a new requirement overriding this explicitly authorized correction. New practice defaults and cue policy are recorded separately and do not rewrite old session snapshots.
 
 ## Acceptance criteria for requested scope
 

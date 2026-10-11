@@ -1,3 +1,11 @@
+## Unreleased — trigger-first practice and six modes
+
+- Implemented CHG-015 under the user's explicit automatic-work instruction: optional non-trigger sounds and mode/sequence-specific readiness, one-class distance rejection, reset/noise/cue evidence and saved per-gun optional recognition controls.
+- Added one shared engine/controller for Single, Repeated, Par-time, Trigger control (interval consistency), Reload endpoints and timed Free practice. New practice defaults to random 2–5 seconds/beep On; legacy sequence defaults remain unchanged. Calibrated external cue starts acoustic timing without adding a shot.
+- Saved per-gun mode configuration, hit/miss/partial outcomes and captured-onset timing; pause excludes paused intervals, refresh reopens durable interrupted review, storage failure retains accessible Not Saved/Retry. Fixed rapid double-Next cancellation and cue-gate frame alignment.
+- Reused schema 3/feature version 2; export format 4 accepts compatible formats 1–3 and preserves old sessions. Full sound reset atomically clears only the selected gun's positive/rejection/cue features while preserving results. Cache v13; package remains 0.8.0.
+- 222 Jest/17 suites, 16 smoke checks, production build/asset verification and nine browser suites (40 checks) pass. Actual UI captures and [validation](PRACTICE_VALIDATION.md) are retained. GitHub publication is tracked in [implementation history](../implementation-history.md); Cloudflare and physical iPhone accuracy/output remain separately unverified.
+
 ## Unreleased — timed sessions and working browser settings
 
 - Integrated approved CHG-014 Configure/Run/Review, per-gun repetition/fixed/random configuration, microphone-before-countdown, visual GO, complete/left progress and optional guarded start beep.

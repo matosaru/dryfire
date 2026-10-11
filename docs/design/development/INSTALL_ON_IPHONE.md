@@ -2,6 +2,8 @@
 
 The app is a PWA (Home Screen web app), **not an IPA/TestFlight build**. Microphone access requires an HTTPS deployment and foreground Safari/Home Screen session.
 
+The existing production app is `https://dryfire.matosaru.workers.dev`. Open that URL in Safari and use **Share → Add to Home Screen → Add**. Check the [deployment and iPhone release checklist](IPHONE_RELEASE_CHECKS.md) for the latest implementation and actual device validation; production status remains separately verified.
+
 ## Deploy from source (Netlify or another static host)
 
 1. On your PC, install Node.js 22+ and run `npm install` in the project folder.

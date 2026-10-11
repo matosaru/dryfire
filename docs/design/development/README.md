@@ -1,10 +1,12 @@
-# Dry Fire With Ease v0.8.0 — four-action acoustic learning
+# Dry Fire With Ease — trigger-first practice and optional sound learning
 
 Product planning: [Requirements and approvals](../requirements/OVERVIEW.md) · [Design catalog](../README.md). Read these before changing product behavior.
 
 The approved display brand is **Dry Fire With Ease**. **Sound Trainer** remains a descriptive subtitle. The existing technical `dryfire` identifiers stay unchanged to preserve local data and deployment compatibility; see [branding requirements](../requirements/branding.md).
 
-See [implementation history and remaining plan](../implementation-history.md) for code, validation, publication and deployment status. The package version remains **0.8.0**; the current update implements locally validated gun profiles, timed sessions and working browser settings rather than claiming a new release number. GitHub publication, production deployment and physical-device verification are tracked separately.
+See [implementation history and remaining plan](../implementation-history.md) for code, validation, publication and deployment status. The package version remains **0.8.0**; the current update adds trigger-first readiness, rejection calibration and six practice modes alongside gun profiles, timed sequences and browser settings. The implementation commit/cache identify this update. GitHub publication, production deployment and physical-device verification are tracked separately.
+
+The next verification target is iPhone Safari/Home Screen. Use the [release checklist](IPHONE_RELEASE_CHECKS.md) to record production deployment and actual device results without repeating or relabeling completed synthetic acceptance.
 
 ## Gun profiles and saved custom drills
 
@@ -12,9 +14,28 @@ See [implementation history and remaining plan](../implementation-history.md) fo
 - Learned examples, recognition history, custom sequences and selected drill are owned by a gun. Sound/history resets affect only that gun. Stop recording/listening before switching so in-flight data keeps its original owner.
 - On **Drills**, create or edit a saved custom preset with a name and ordered known actions; repeated actions are supported. **Start Drill** opens its explicit, safety-gated session configuration. Built-in sequences remain unchanged.
 - IndexedDB schema 3 retains `dryfire-sound-trainer` and adds durable saved sessions alongside gun-owned data. Existing legacy sounds/history are assigned to one profile requiring the user's name/type; an empty legacy database starts with no fabricated profile. Selection and owned data persist after compatible same-origin reloads/deployments.
-- Export creates a version-3 whole-library backup including sessions/preferences. Versions 1 and 2 remain readable; version-1 data restores into a profile requiring details and older backups contain no saved sessions. Imports validate before atomic replacement, disclose replacing sessions and reject files over 10 MB. Export excludes outdated feature vectors as before; migration preserves those vectors until a confirmed relevant-sound reset.
+- Export creates a version-4 whole-library backup including legacy/practice sessions, calibration and preferences. Compatible versions 1–3 remain readable; version-1 data restores into a profile requiring details and older backups contain no saved sessions. Imports validate before atomic replacement, disclose replacing sessions and reject files over 10 MB. Export excludes outdated feature vectors as before; migration preserves those vectors until a confirmed relevant-sound reset.
 
-## Timed sessions and working settings
+## Six practice modes
+
+On **Learn**, record three Trigger pull examples (eight to ten recommended). Draw, Rack and Magazine are optional and have per-gun recognition controls; existing trained optional sounds initially remain enabled. Only events used by a mode/sequence are required.
+
+- **Single trigger press:** signal-to-click timing, then explicit Next repetition after preparing again.
+- **Repeated trigger presses:** one signal, accepted click target and intervals.
+- **Par-time:** recognized in-time clicks or explicit misses; late clicks do not count as in-time shots.
+- **Trigger control:** mean/min/max/spread of detected click intervals. Microphone timing cannot grade movement or aiming.
+- **Reload:** two selected calibrated endpoints in order, with the interval in saved timing splits. Handling events do not count as shots.
+- **Free:** accepted clicks and active duration until the limit or End.
+
+Shared Configure/Run/Review stores configuration and outcomes separately for each gun. New defaults are 10 repetitions/clicks, random 2–5 seconds, beep On, par 1.5 seconds, free 60 active seconds and Rack → Magazine reload endpoints. Fixed delay remains available. Pause releases capture; Resume starts a fresh signal and intervals never span paused time. New practice uses a disclosed **80 ms** cue guard; legacy sequences retain **300 ms**. Deadlines judge captured onset and allow up to two seconds to finish segmenting audio already captured in time.
+
+Under **Improve recognition**, optional reset/noise examples help reject false shots. Calibrated external-beep start needs three cue examples, waits for that cue and starts an acoustic timer without an app beep. Similar press/reset clicks can remain ambiguous; rejection may also miss an intended click. Numeric scores are heuristic. No field accuracy is established by synthetic checks.
+
+Results reopen from gun-owned History. Storage failure stops capture, keeps unsaved Review/Retry accessible and prevents leaving that review until saved. Refresh recovers the last durable snapshot without automatically starting the microphone. Full sound reset clears that gun's positive/reset/noise/cue features while preserving results and other guns.
+
+See [practice requirements](../requirements/practice-modes.md), [release validation](PRACTICE_VALIDATION.md) and [actual UI captures](../README.md).
+
+## Legacy timed sequences and working settings
 
 These features are implemented and locally validated under CHG-014; [implementation history](../implementation-history.md) records source/browser evidence and publication/deployment separately.
 
@@ -30,16 +51,16 @@ There is no account, cloud recovery or cross-device synchronization. Physical mi
 
 Offline-first, local sound-learning PWA, compatible with a future Capacitor iOS/Android wrapper. **It is not a signed IPA.** Classifier accuracy is experimental; complete the in-app safety checklist and test on inert/safe equipment before use.
 
-## Four sounds
+## Primary and optional action sounds
 
 | What you record | Stable storage ID | Notes |
 |---|---|---|
-| Draw from holster | `draw` | Capture an isolated presentation sound |
-| Rack slide | `rack` | New separate class (no previous examples exist) |
-| Trigger pull | `trigger` | Capture the dry click |
+| Draw from holster | `draw` | Optional; required only by sequences that use it |
+| Rack slide | `rack` | Optional; required only by modes/sequences that use it |
+| Trigger pull | `trigger` | Primary trigger-based practice calibration |
 | Change magazine | `reload` | Keeps previous `reload` profile IDs for backwards compatibility |
 
-**Important migration:** old `reload` examples are interpreted as *magazine changes*. If you previously recorded slide-racking as `reload`, reset learned sounds and collect correct examples for all four categories. Old recorded history and backups remain readable.
+**Important migration:** old `reload` examples are interpreted as *magazine changes*. If you previously recorded slide-racking as `reload`, reset learned sounds and collect correct examples for the categories you use. Old recorded history and backups remain readable.
 
 ## Development (human-readable code)
 
@@ -75,8 +96,8 @@ GitHub Actions in `.github/workflows/check.yml` runs the tests and creates a dow
 ## Live sound testing
 
 1. Open the HTTPS site on your iPhone in Safari and Add to Home Screen.
-2. Confirm the safety check and record **at least 3** examples for each of the **four** classes (8–10 recommended).
-3. Open **Listen → Start continuous listening**. Watch for the green **Microphone active** indicator.
+2. Confirm the safety check and record **at least 3 Trigger pull** examples (8–10 recommended). Other classes are optional; record a referenced class before using it in a mode/sequence.
+3. Open **Live Listen → Start continuous listening**. Watch for the green **Microphone active** indicator.
 4. Perform **separate, clearly audible actions** with a short quiet gap between them. A session timeline records each separate detection; the microphone stays on until you press **Stop** or hide the app.
 5. **Single sound test** is intentionally a **one-shot** recording and stops after one event.
 6. Verify each event under History; accuracy includes only verified detections and cannot count missed sounds.
@@ -88,10 +109,11 @@ The detector now uses fixed ~10ms frames, faster release/cooldown and bounded pr
 - `src/main.js` — views, four labels, continuous session state and timeline
 - `src/audio.js` — microphone and feature extraction, worklet from `workers/pcm-capture.worklet.js`
 - `src/eventDetector.js` — streaming segmentation
-- `src/classifier.js` — four-class nearest-distance model, unknown rejection
-- `src/storage.js` — IndexedDB, backup/restore, recent-N retention
+- `src/classifier.js` / `src/calibration.js` / `src/recognition.js` — single/multiple-class similarity, optional-label and rejection/cue evidence
+- `src/practiceSession.js` / `src/practiceController.js` — shared six-mode logic, capture lifecycle and saved review
+- `src/storage.js` — owned IndexedDB, backup/restore, durable sessions and recent-N retention
 - `src/evaluation.js` — manually verified confusion matrix
-- `workers/sw.js` — versioned PWA caching (v12), minified at build
+- `workers/sw.js` — versioned PWA caching (v13), minified at build
 - `tools/verify-dist.mjs` — public-build sanity check
 - `.github/workflows/check.yml` — CI tests + build artifact
 
@@ -109,14 +131,14 @@ Open **Drills** and select one of these presets, or a custom preset saved for th
 | Magazine change, trigger pull | Change magazine → Trigger pull |
 | Draw, magazine change, trigger pull | Draw from holster → Change magazine → Trigger pull |
 
-Confirm the safety checklist and train all four acoustic classes. **Start Drill** opens configuration; **Start Session** begins the timed flow described above. Out-of-order known detections reset partial recognition and unknown sounds never advance it. Completed repetitions, partial attempts and detected timings are saved in the selected gun's dedicated session review. **Live Listen → Start continuous listening** remains free listening; it does not silently start a timed drill or reuse its configuration.
+Confirm the safety checklist and train only the acoustic classes referenced by the selected sequence. **Start Drill** opens configuration; **Start Session** begins the timed flow described above. Out-of-order known detections reset partial recognition and unknown sounds never advance it. Completed repetitions, partial attempts and detected timings are saved in the selected gun's dedicated session review. **Live Listen → Start continuous listening** remains free listening; it does not silently start a timed drill or reuse its configuration.
 
 **Caution:** These are *classifier-inferred* sequence completions, not measurements of physical action completion or performance. The classifier can miss, merge, or mislabel sounds. Keep actions safely separated for reliable segmentation. The microphone operates only in the foreground.
 
 For step-by-step hosting instructions (GitHub + Netlify or manual Netlify Drop), read [Netlify deployment](NETLIFY_DEPLOY.md).
 
 
-## Version 0.8.0 — interface refresh
+## Historical version 0.8.0 — interface refresh
 
 - Compact header and angular **DF** logo inspired by the dark/olive reference image; matching installed-app icons.
 - Main navigation: **Home / Learn / Drills / Live Listen / History**, with Settings in the top-right gear.

@@ -1,6 +1,6 @@
 # Core application behavior
 
-Revision: 1.1 · State: existing behavior to preserve; branding extension approved in CHG-011
+Revision: 1.2 · State: existing compatibility behavior to preserve; CHG-015 optional-sound correction authorized
 
 Evidence: existing repository instructions, implementation and the requested reference-design update. This document is a baseline, not a claim that future features have shipped.
 
@@ -19,6 +19,10 @@ Evidence: existing repository instructions, implementation and the requested ref
 | CORE-11 | Learning animations must have a reduced-motion alternative. Labels, focus states and disabled-state explanations must remain understandable. |
 | CORE-12 | Preserve existing built-in drill sequences and their order. A design-only update must not silently replace the recognition engine or data format. |
 | CORE-13 | Deploy only minified `dist/`, including bundled service worker and audio worklet, without raw source modules or source maps. Keep the static-assets Wrangler configuration and `previews` block needed by branch previews. |
+
+## Authorized optional-sound correction
+
+The user's CHG-015 instruction supersedes all-four training prerequisites for trigger-based practice. [practice-modes.md](practice-modes.md) records the implemented mode-aware readiness, negative/cue calibration and six modes. Stable four-class identifiers and compatible data are retained; enabling optional recognition is separate from deleting calibration. Validation, publication and deployment are recorded separately in [implementation history](../implementation-history.md).
 
 ## Validation
 

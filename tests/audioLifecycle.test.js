@@ -179,3 +179,25 @@ test('default continuous listening still emits successive sounds until explicitl
   expect(nodes[0].onaudioprocess).toBeNull();
   expect(track.stop).toHaveBeenCalledTimes(1);
 });
+
+test('a cue gate inside a PCM chunk preserves the later genuine event signature', async () => {
+  const { createEventDetector } = await import('../src/eventDetector.js');
+  const { analyzeRecording } = await import('../src/audio.js');
+  const { classify } = await import('../src/classifier.js');
+  const pcm = samples(.8, [[.2, .12]]);
+  let expected;
+  createEventDetector(rate, data => { expected = analyzeRecording(data, rate).features; }).push(pcm, rate);
+  globalThis.AudioContext.prototype.audioWorklet = { addModule: jest.fn(async () => {}) };
+  globalThis.AudioWorkletNode = class {
+    constructor() { Object.assign(this, node(), { port: { onmessage: null } }); nodes.push(this); }
+  };
+  let actual;
+  const session = await startContinuousListening({ detectionEnabled: false, onEvent: data => { actual = analyzeRecording(data, rate).features; } });
+  contexts[0].currentTime = 1.002;
+  session.armDetection({ guardMs: 80 });
+  nodes[0].port.onmessage({ data: { samples: pcm, startFrame: rate } });
+  const positives = Array.from({ length: 3 }, () => ({ label: 'trigger', features: expected }));
+  expect(classify(positives, actual, { enabledLabels: ['trigger'] }).label).toBe('trigger');
+  expect(actual).toEqual(expected);
+  await session.stop();
+});

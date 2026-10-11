@@ -18,7 +18,7 @@ export function actionButton({ label, className = 'button primary', disabled = f
 }
 export function soundCard({
   label, meta, count, maxExamples, minExamples, recommendedExamples, locked,
-  onRecord, onReset
+  onRecord, onReset, optional = false, enabled = false, onToggle
 }, doc = document) {
   const card = doc.createElement('article');
   card.className = `class-card tone-${meta.tone}`;
@@ -40,7 +40,7 @@ export function soundCard({
 
   const info = doc.createElement('div');
   info.className = 'class-info';
-  info.append(textNode(doc, 'h3', '', meta.title), textNode(doc, 'p', '', meta.description));
+  info.append(textNode(doc, 'p', 'eyebrow', optional ? 'OPTIONAL SOUND' : 'PRIMARY SOUND'), textNode(doc, 'h3', '', meta.title), textNode(doc, 'p', '', meta.description));
   const top = doc.createElement('div');
   top.className = 'class-card-top';
   top.append(preview, info);
@@ -75,6 +75,12 @@ export function soundCard({
     }, doc)
   );
   info.append(progress, bar, actions);
+  if (optional && onToggle) {
+    const control = textNode(doc, 'label', 'optional-sound-control', '');
+    const input = doc.createElement('input'); input.type = 'checkbox'; input.checked = enabled; input.disabled = locked;
+    input.setAttribute('aria-label', `Recognize ${meta.title} when trained`);
+    input.addEventListener('change', () => onToggle(input.checked)); control.append(input, textNode(doc, 'span', '', 'Recognize when trained')); info.append(control);
+  }
   card.append(top);
   return card;
 }

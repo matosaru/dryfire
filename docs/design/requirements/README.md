@@ -1,6 +1,6 @@
 # Requirements index
 
-Revision: 1.3 · Recorded: 2026-10-10
+Revision: 1.4 · Recorded: 2026-10-11
 
 Start at the [requirements overview](OVERVIEW.md). This directory separates required behavior, proposed details, approvals and implementation status.
 
@@ -15,6 +15,7 @@ Read the [implementation history and remaining plan](../implementation-history.m
 | [persistence.md](persistence.md) | Data durability, ownership, migration and backup requirements |
 | [settings.md](settings.md) | Approved browser-backed preferences and defaults |
 | [next-implementation.md](next-implementation.md) | Approved CHG-014 revision 1.0 timed-session/settings plan |
+| [practice-modes.md](practice-modes.md) | Authorized and implemented CHG-015 optional-sound/six-mode plan; final delivery tracked separately |
 | [approval-log.md](approval-log.md) | Approval evidence and changes requiring confirmation |
 | [change-process.md](change-process.md) | How specifications and designs stay synchronized |
 
