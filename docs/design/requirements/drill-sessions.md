@@ -1,18 +1,18 @@
 # Drill selection, configuration and sessions
 
-Revision: 1.2 · Scope: requested by the user · Implementation: partial; custom presets implemented and locally validated (CHG-012), dedicated sessions pending
+Revision: 1.3 · Scope: approved including CHG-014 detailed choices · Implementation: custom presets and dedicated sessions implemented and locally validated; publication/deployment tracked separately
 
-The current app has built-in drill selection and continuous sequence recognition. CHG-012 implements a gun-owned custom sequence editor and saved presets. A dedicated configurable session runner and saved repetition results remain pending.
+The current app has built-in/custom drill selection, separate free listening and the approved configurable session runner with durable repetition results/start cue. CHG-014 is implemented and locally validated on 2026-10-11; GitHub publication, production deployment and physical-device verification remain separately tracked in [implementation history](../implementation-history.md).
 
-Design: [current Configure / Run / Review mockup](../drill-session-mockup.png). Approval evidence and unresolved details are recorded in [CHG-002](approval-log.md#chg-002--dedicated-drill-sessions), [CHG-004](approval-log.md#chg-004--show-the-sequence-once) and [CHG-005](approval-log.md#chg-005--optional-start-sound-clarification) and [CHG-008](approval-log.md#chg-008--start-sound-approved).
+Design: [current Configure / Run / Review mockup](../drill-session-mockup.png). Approval evidence is recorded in [CHG-002](approval-log.md#chg-002--dedicated-drill-sessions), [CHG-004](approval-log.md#chg-004--show-the-sequence-once), [CHG-005](approval-log.md#chg-005--optional-start-sound-clarification), [CHG-008](approval-log.md#chg-008--start-sound-approved) and the appended CHG-014 confirmation. The [approved implementation plan](next-implementation.md) records the concrete reviewed controls/defaults without replacing that visual direction.
 
 | ID | Requirement | State |
 | --- | --- | --- |
-| DRILL-01 | Once required sounds are trained, allow the user to select a built-in drill or create a custom drill, then start it. | Requested |
-| DRILL-02 | Provide an editable drill configuration and an explicit Start button. | Requested |
-| DRILL-03 | Allow fixed or random timing until a drill begins. | Requested |
-| DRILL-04 | Display completed and remaining drill counts. | Requested |
-| DRILL-05 | Store and show information after each completed repetition. Results remain available to the user afterward. | Requested |
+| DRILL-01 | Once required sounds are trained, allow the user to select a built-in drill or create a custom drill, then start it. | Approved; CHG-014 |
+| DRILL-02 | Provide an editable drill configuration and an explicit Start button. | Approved; CHG-014 |
+| DRILL-03 | Allow fixed or random timing until a drill begins. | Approved; CHG-014 |
+| DRILL-04 | Display completed and remaining drill counts. | Approved; CHG-014 |
+| DRILL-05 | Store and show information after each completed repetition. Results remain available to the user afterward. | Approved; CHG-014 |
 | DRILL-06 | Custom drills have an editable action sequence and saved presets belonging to the selected gun. | Requested |
 | DRILL-07 | Keep the full sequence visible once. Use **Drill Session** as the generic heading and a single ordered sequence strip. Timing splits inside a result are separate information. | Explicitly requested revision |
 | DRILL-08 | Label reported timings as sound-detection timings. Do not imply verification of physical actions. | Existing accuracy constraint |
@@ -20,7 +20,7 @@ Design: [current Configure / Run / Review mockup](../drill-session-mockup.png). 
 
 ## Approved start-sound clarification
 
-The user approved **Sound at start** with “Sound at start is ok.” Use **Play a beep when GO appears** as helper text. The setting controls the beep only; it does not enable microphone access, change the delay or replace Start Session. See CHG-008 for the approval record. Other proposed session details below retain their existing status.
+The user approved **Sound at start** with “Sound at start is ok.” Use **Play a beep when GO appears** as helper text. The setting controls the beep only; it does not enable microphone access, change the delay or replace Start Session. See CHG-008 for the original approval and CHG-014 for the approved default/cue guard below.
 
 ## Custom preset implementation slice
 
@@ -28,21 +28,25 @@ DRILL-06 implements the user's earlier explicit instruction that custom drills n
 
 Routine validation trims the title to 1–80 characters and accepts 1–32 actions. Custom stable IDs must not collide with built-in IDs; unknown action IDs and empty sequences are rejected before saving.
 
-Starting a selected preset uses the current explicit, safety-gated continuous recognition flow. This does not implement fixed/random starts, repetition targets, countdown/GO, the approved beep, pause/end rules or dedicated session summaries. Editable session defaults in the design remain proposed; the current custom editor only saves the requested name and action sequence.
+CHG-012 starting a selected preset used the explicit, safety-gated continuous recognition flow. That delivery did not implement fixed/random starts, repetition targets, countdown/GO, beep, pause/end rules or dedicated session summaries. CHG-014 implements those separately approved session features; the custom preset editor continues saving the name and action sequence, while session configuration is saved for its gun.
 
 Acceptance for this slice: a preset saved for gun A reopens after reload and cannot appear in or affect gun B; editing its name/order updates that preset; repeated actions retain their order; a preset with a blank name or empty sequence cannot be saved; built-in definitions remain intact; only the selected gun's trained model is used during recognition.
 
-## Proposed interaction details awaiting confirmation
+## Approved Configure, Run and Review behavior
 
-- Use one page with **Configure**, **Run** and **Review** states.
-- Allow a repetition target, fixed delay or random minimum/maximum, with clear numeric validation. The mockup's ten repetitions and two-to-five-second delay are examples, not mandated defaults.
-- Apply a new delay before each repetition, show a countdown and a visual **GO**, and advance automatically after displaying a completed result.
-- Lock configuration while a session is running. Offer Pause and End Session, with explicit interruption/resume rules.
-- Save session identity, selected gun, expected sequence, start/end timestamps, each repetition's outcome, detections, sound-detection timings and unknown/out-of-order events.
-- Show a final summary, expandable repetition records, Repeat Session and Back to Drills. Save incomplete sessions accurately rather than reporting them as completed.
-- Provide a selected-gun custom editor with a name, ordered actions, repeated actions, reorder/remove controls and editable session defaults.
+The user explicitly replied **“proceed”** after publication of [CHG-014 revision 1.0](https://github.com/matosaru/dryfire/blob/ebac22b/docs/design/requirements/next-implementation.md). These choices are approved rather than inferred from earlier mockup publication.
 
-These details must receive explicit approval before they are treated as fixed requirements. The user requesting publication of the revised mockup authorizes publication; it does not approve every proposed interaction.
+- Retain the selected gun/current brand and **Configure**, **Run**, **Review** states. Use the heading **Drill Session** and one ordered full-sequence strip. Review timing splits are separate measured information.
+- Default to **10 repetitions**, **fixed 3-second delay**, **Sound at start Off**. Switching to Random initially offers **2–5 seconds**. Validate repetitions 1–100, delays 0–30 seconds in tenths, and random minimum no greater than maximum. Save configuration for the selected gun.
+- Start requires the existing safety checklist and at least three compatible examples of each of the four sound classes. Explain missing training and link to Learn. Acquire the microphone before the first countdown.
+- Apply a fresh fixed/random delay before every repetition, show countdown and **GO**, display a completed result for one second, then advance automatically. Finish at the target. Only a complete detected ordered sequence increases Completed/decreases Left; unknown sounds never advance, and known out-of-order sounds reset partial recognition and are retained for review.
+- Lock configuration and gun switching while running or paused. Pause releases the microphone and abandons the unfinished attempt without increasing Completed; retain its partial outcome. Resume reacquires the microphone and starts that repetition with a fresh countdown. Completed results remain saved.
+- End, leaving the session, backgrounding, microphone failure or refresh saves incomplete/interrupted status accurately. Refresh opens saved results and never automatically restarts the microphone. Recover abrupt shutdown from the last durable snapshot.
+- Optional beep plays when visual GO appears; silent mode also shows GO. In beep mode suppress/reset detector input during a **300 ms cue guard** to exclude the synthetic cue; report that very fast sounds in this guard may be missed. Timings still start at visual GO; silent mode has no guard.
+- Save gun/drill identity and title/sequence/configuration snapshots, timestamps/status, completed/partial outcomes, detected events, unknown/out-of-order counts and relative sound-detection timings/splits. Later preset edits do not rewrite past sessions. Persist completed results before advancing.
+- Review shows saved repetition details, Repeat Session and Back to Drills. Selected-gun History reopens sessions. Sound reset and recent-recognition trimming/clearing preserve them. Vibration, when explicitly enabled and supported, is requested at GO/completion according to [settings.md](settings.md).
+
+Exact approved scope is in [next-implementation.md](next-implementation.md); separate cloud/free-cap/profile-deletion/new-taxonomy scope remains excluded. Approval does not establish implementation or device validation.
 
 ## Acceptance criteria for requested scope
 

@@ -11,9 +11,9 @@ The [implementation history and remaining plan](../implementation-history.md) tr
 | [Core behavior](core.md) | Existing sound learning, recognition, safety, resets, navigation and production delivery | Existing behavior to preserve |
 | [Branding](branding.md) | Dry Fire With Ease display name and existing DF logo extended with WITH EASE | Approved; implemented and locally validated; deployment not verified |
 | [Gun profiles](gun-profiles.md) | First visit, gun names/types, up to five guns and separate training data | Approved; implemented and locally validated; deployment unverified |
-| [Drill sessions](drill-sessions.md) | Select/create, configure, start, progress and saved results | Custom presets implemented; dedicated session runner pending |
-| [Data persistence](persistence.md) | Refresh/deployment persistence, migration and backups | Multi-gun local storage/backups implemented and validated; dedicated sessions pending; cloud synchronization unapproved |
-| [Settings](settings.md) | Noise Filter, Auto Gain, Appearance and Vibration Feedback | Requested; detailed behavior still proposed |
+| [Drill sessions](drill-sessions.md) | Select/create, configure, start, progress and saved results | Approved; custom presets/timed sessions/results implemented and locally validated; deployment unverified |
+| [Data persistence](persistence.md) | Refresh/deployment persistence, migration and backups | Multi-gun/session storage and version-3 compatible backups implemented and locally validated; cloud unapproved |
+| [Settings](settings.md) | Noise Filter, Auto Gain, Appearance and Vibration Feedback | Approved; implemented and locally validated; physical-device/deployment verification separate |
 
 ## Approval and change control
 

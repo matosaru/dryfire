@@ -1,6 +1,6 @@
 # Multiple guns — proposed front-door flow
 
-The first-visit, library and selected-gun flow was approved by the user. These visualisations describe the accepted proposal. CHG-012 implements and locally validates gun profiles, gun-owned learned sounds/custom presets/recognition history and same-device persistence. Dedicated session results and cloud synchronization remain pending. Authoritative scope and approval states are in [gun-profiles.md](requirements/gun-profiles.md), [drill-sessions.md](requirements/drill-sessions.md) and [persistence.md](requirements/persistence.md). See the [design catalog](README.md) for reviewed visual revisions and [implementation history](implementation-history.md) for publication/deployment evidence.
+The first-visit, library and selected-gun flow was approved by the user. These visualisations describe the accepted proposal. CHG-012 implements and locally validates gun profiles, gun-owned learned sounds/custom presets/recognition history and same-device persistence. CHG-014 implements and locally validates detailed timed sessions/results and browser preferences; cloud synchronization remains outside scope. Authoritative scope and approval states are in [gun-profiles.md](requirements/gun-profiles.md), [drill-sessions.md](requirements/drill-sessions.md) and [persistence.md](requirements/persistence.md). See the [design catalog](README.md) for reviewed visual revisions and [implementation history](implementation-history.md) for publication/deployment evidence.
 
 ## First visit, library and selected-gun Home
 
@@ -24,8 +24,8 @@ The first-visit, library and selected-gun flow was approved by the user. These v
 - Show the selected gun's name on Learn, Drills and History so data ownership is always visible.
 - Learned sound samples and classification use only that gun's profiles.
 - Built-in drill definitions can be shared; custom presets, session configuration and results belong to one gun.
-- Custom drill creation saves a name and ordered actions, including repeated actions. Editable session defaults and the dedicated session page's [Configure / Run / Review flow](drill-session.md) remain separate proposed details.
-- Current ownership safeguard: stop recording/listening before switching guns. Future dedicated-session pause/end/switch rules remain to be confirmed; never silently assign results to another gun.
+- Custom drill creation saves a name and ordered actions, including repeated actions. CHG-014 separately approves per-gun session configuration and the dedicated page's [Configure / Run / Review flow](drill-session.md).
+- Ownership safeguard: stop recording/listening before switching guns; during the dedicated session, running/paused states keep switching locked until the session ends. CHG-014 specifies pause/release/resume and accurate interruption; never silently assign results to another gun.
 - Reset one sound only for the selected gun. Reset all sounds for this gun preserves its session history and every other gun's data. Deleting an entire profile is a separate confirmed action.
 - Gun type is descriptive metadata. The proposal does not silently redefine the app's existing sound identifiers. Sound categories or drill suggestions for different types need to be agreed and validated before implementation.
 

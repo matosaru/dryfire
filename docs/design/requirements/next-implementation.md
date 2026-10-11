@@ -1,10 +1,10 @@
-# Timed sessions and working settings — implementation proposal
+# Timed sessions and working settings — approved implementation plan
 
-Revision: 1.0 · Change: CHG-014 · Date: 2026-10-10 · State: **Proposed; awaiting confirmation of the choices below**
+Revision: 1.0 · Change: CHG-014 · Approval date: 2026-10-10 · State: **Approved; implemented and locally validated on 2026-10-11; publication/deployment tracked separately**
 
-The user instructed **“proceed with next steps”** after the multi-gun delivery. Timed starts, progress, saved repetition results, the start beep and the four settings are already requested or approved. This proposal resolves their remaining defaults and interruption behavior; it does not reopen existing approvals.
+The user instructed **“proceed with next steps”** after the multi-gun delivery, then explicitly replied **“proceed”** to the confirmation of this published revision. Timed starts, progress, saved repetition results, the start beep and the four settings were already requested or approved; the latest reply approves the remaining defaults and interruption behavior below. See the appended CHG-014 approval evidence in [approval-log.md](approval-log.md) and the [immutable reviewed proposal](https://github.com/matosaru/dryfire/blob/ebac22b/docs/design/requirements/next-implementation.md).
 
-Affected requirements: DRILL-01–05, DRILL-07–09, DATA-01–04 and SET-01–05. Existing [drill](drill-sessions.md), [persistence](persistence.md) and [settings](settings.md) specifications remain authoritative until this revision is confirmed.
+Affected requirements: DRILL-01–05, DRILL-07–09, DATA-01–04 and SET-01–05. The authoritative [drill](drill-sessions.md), [persistence](persistence.md) and [settings](settings.md) specifications now incorporate these approved choices. Approval does not establish code completion, publication, deployment or real-device verification.
 
 ## Configure, Run and Review
 

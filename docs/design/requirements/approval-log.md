@@ -167,3 +167,49 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 - A single bundled confirmation was requested for the still-proposed detailed choices; no answer has been received. Existing feature/beep approvals are retained and not requested again.
 - Read-only session-logic, data migration/backups, UI and browser-capability reviews were prepared. No application code was changed pending the required confirmation of new proposed behavior.
 - A fresh Chromium visit to the supplied live URL was again blocked before app content arrived (`ERR_TUNNEL_CONNECTION_FAILED`). Deployment remains unverified; no real user site data was touched.
+
+### CHG-014 approval confirmation and implementation start — 2026-10-10
+
+- Approval evidence: after the assistant published [revision 1.0 in `ebac22b`](https://github.com/matosaru/dryfire/blob/ebac22b/docs/design/requirements/next-implementation.md) and requested confirmation of its detailed choices, the user explicitly replied **“proceed”**. This approves that exact proposal; earlier pending entries remain historical evidence and are not rewritten.
+- State: **Approved; implementation in progress**. Drill specification revision 1.3, settings revision 1.1 and persistence revision 1.2 incorporate the concrete choices. No new confirmation is needed for unchanged approved scope.
+- Approved session behavior: Configure/Run/Review, one sequence strip, default 10 repetitions/fixed 3 seconds/random 2–5 seconds, validated 1–100 repetitions and 0–30-second delays in tenths, microphone-before-countdown, fresh delay per repetition, one-second result display, pause/abort partial attempt/release mic/fresh-countdown resume, accurate interruption recovery/review, durable owned snapshots and approved Off-by-default start beep with a disclosed 300 ms cue guard.
+- Approved settings: per-gun Off-by-default Noise Filter/Auto Gain applied on next capture with supported/track-confirmed reporting and echo cancellation off; device-wide Dark/Light/System appearance, Dark initially; device-wide Off-by-default vibration requested at GO/completion only when supported. Samples are preserved when settings change.
+- Engineering record: same database identity, schema 3 adds an owned sessions store, revisioned serialized durable snapshots and owning-gun read guards; backup version 3 includes sessions/preferences and accepts versions 1/2. Replacement confirmation discloses that older backups have no sessions. Validate the whole payload before atomic replacement; no automatic session trimming.
+- Design: preserve the reviewed [Configure/Run/Review mockup](https://github.com/matosaru/dryfire/blob/3f90e38/docs/design/drill-session-mockup.png) and current brand. The approved published plan contains the clarified text/control layout; no unrelated visual redraw or monogram change is introduced.
+- Baseline repeated after confirmation: dependency installation, 16 smoke checks, 100 Jest tests, production build and `verify:dist` passed. Main raw/gzip kB unchanged: HTML 23.48/6.36, CSS 31.42/7.65, JavaScript 55.48/17.66.
+- Excluded scope remains free-plan cap, gun deletion, new sound taxonomy, cloud/accounts/raw audio and signed native releases. Final code, tests, GitHub publication, production deployment and physical-device verification remain separately recorded outcomes.
+
+### CHG-014 resumed implementation/status update — 2026-10-11
+
+- The user requested status and instructed continuation after work was interrupted by the session usage limit. This resumes the already approved revision 1.0; it does not change defaults/scope or require approval again.
+- State: **Approved; implementation in progress**. Local session/settings/storage/audio/UI components and regression checks are partially written, but end-to-end integration/final acceptance/publication are incomplete. The earlier passing baseline is not reported as final validation of these changes.
+- Remaining delivery work: finish integration, verify durable sessions and compatible migrations/backups, run final source/build/browser capability/layout checks, then record observed GitHub publication separately. Cloudflare and real-device verification remain unverified until evidence is available.
+
+### CHG-014 storage-component update — 2026-10-11
+
+- Schema 3 adds the separate owned sessions store and stable read/write/recovery APIs, strict snapshot/revision validation, immutable configuration/completed-attempt history and durable interrupted-session recovery. No session trimming or deletion is added; sound/history resets preserve results.
+- Version-3 backups include sessions/global/per-gun preferences; versions 1/2 remain accepted with no sessions and validated atomic replacement. Version-1 restore preserves unrelated current global preferences; versions 2/3 restore the backed-up globals.
+- 59 targeted storage checks pass, including snapshots from the actual session engine for GO/completion/pause/resume/out-of-order/unknown/microphone failure/recovery/import. This is component validation; final application integration, browser acceptance and publication remain pending.
+
+### CHG-014 storage regression extension — 2026-10-11
+
+- Two further malformed-completion/detection/split-proof regressions were added and passed. The final targeted storage count is **61**, including actual session-engine interoperability. The earlier 59-check record remains the observed intermediate result; broad-suite/browser delivery is still tracked separately.
+
+### CHG-014 integrated-candidate source validation — 2026-10-11
+
+- The approved session/settings/storage/audio/UI components are integrated in the local candidate. It passes **16 smoke checks, 186 Jest tests across 13 suites, production build and `verify:dist`**; diff whitespace checks pass.
+- Five new expected-failing ownership regressions preceded the fix and now pass, preventing delayed owned writes from creating records for a gun removed by whole-library replacement. This does not add profile deletion as a product feature.
+- Candidate schema/backup/cache versions are 3/3/v12; package remains 0.8.0. Current sizes/assets and actual local screenshots are recorded in [implementation history](../implementation-history.md) and the [catalog](../README.md).
+- Initial browser session/settings/cue checks pass, but final preservation/race/current-production-bundle acceptance remains in progress. No final acceptance, GitHub implementation publication, physical-device or Cloudflare deployment claim is established by this source-validation update.
+
+### CHG-014 final implementation/local acceptance — 2026-10-11
+
+- State: **Implemented and locally validated**. Existing approval evidence and earlier partial/pending records remain unchanged; no CHG-014 feature is intentionally left unimplemented.
+- Delivered the exact approved session/settings plan: Configure/Run/Review, fixed/random per-repetition timing, readiness/Start/countdown/GO, completed/left progress, guarded optional beep, pause/reacquire/resume/interruption, durable gun-owned repetition review and compatible version-3 backups, per-gun next-capture Noise Filter/Auto Gain, device-wide Dark/Light/System and optional supported GO/completion vibration.
+- Final source/build verification: **16 smoke checks and 186 Jest tests across 13 suites**, production build, `verify:dist` and diff checks pass. The total is 202 source checks; [implementation history](../implementation-history.md) records exact final sizes/assets. Schema 3, backup 3 and cache v12 retain package version 0.8.0 and the existing database/deployment identities.
+- **Six final-browser acceptance suites pass with zero page errors** against `index-7Rq6OCKv.js`: sessions; settings/cue/capability fallbacks; preservation/backups; interruption/storage-failure races; database/cache migration; random timing/readiness/microphone failures. Synthetic PCM traverses actual segmentation/classification rather than bypassing the recognizer.
+- Observed ordered completions, unknown/out-of-order handling, pause/resume partials, refresh recovery, fresh bounded random countdowns, captured-time beep guard, microphone disconnect/denial and untrained-gun own-Learn routing pass. Slow/pending capture cancellation and forced storage failure/Retry pass; saved configuration/history/results stay owned by the selected gun.
+- Actual IndexedDB schema-2-to-3 upgrade preserves existing IDs/values; controlled cache-v11-to-v12 refresh preserves local data. Version-1/2/3 restoration, atomic invalid import rejection, immutable preset snapshots and session preservation through sound/history resets pass. Browser preference/theme/capability states and vibration success/false/absent-API paths pass.
+- Final screenshots are real local production-build captures: [Configure](../session-implementation-configure.png), [Run](../session-implementation-run.png), [Review](../session-implementation-review.png), [Dark settings](../settings-implementation-dark.png), [Light settings](../settings-implementation-light.png). They were visually checked and retain the approved layout/brand; no new external artwork was added.
+- GitHub implementation push is pending; append its observed commit/publication afterward. Cloudflare verification remains blocked by the execution gateway: a new 2026-10-11 request returned HTTP 403 before production app content arrived. This is an access limit, not a site-failure conclusion.
+- Physical microphone/recognition accuracy, audible beep, physical vibration and signed native release remain unverified. Next steps are observed publication/production-commit verification and real-device validation; free-plan cap/cloud/profile deletion/new taxonomies remain deferred or unapproved separate scope.

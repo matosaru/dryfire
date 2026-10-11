@@ -2,16 +2,18 @@ import { FEATURE_VERSION } from './audio.js';
 import { isFeatureVector, labels } from './classifier.js';
 import { ACTUAL_CLASSES } from './evaluation.js';
 import { getDrill, normalizeCustomDrill } from './drills.js';
+import { normalizeSessionConfig, recoverSessionRecord } from './drillSession.js';
 
 const DB_NAME = 'dryfire-sound-trainer';
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 const EXAMPLES = 'examples';
 const EVENTS = 'events';
 const SETTINGS = 'settings';
 const GUNS = 'guns';
 const GUN_SETTINGS = 'gunSettings';
+const SESSIONS = 'sessions';
 const ACTIVE_GUN = 'activeGunId';
-const STORES = [EXAMPLES, EVENTS, SETTINGS, GUNS, GUN_SETTINGS];
+const STORES = [EXAMPLES, EVENTS, SETTINGS, GUNS, GUN_SETTINGS, SESSIONS];
 export const MAX_EXAMPLES_PER_CLASS = 50;
 export const MAX_GUNS = 5;
 export const GUN_TYPES = Object.freeze(['Handguns', 'Rifles and Carbines', 'Shotguns']);
@@ -81,6 +83,11 @@ function openDb() {
       if (!db.objectStoreNames.contains(GUN_SETTINGS)) {
         db.createObjectStore(GUN_SETTINGS, { keyPath: ['gunId', 'key'] });
       }
+      if (!db.objectStoreNames.contains(SESSIONS)) {
+        const store = db.createObjectStore(SESSIONS, { keyPath: 'id' });
+        store.createIndex('gunId', 'gunId', { unique: false });
+        store.createIndex('startedAt', 'startedAt', { unique: false });
+      }
       for (const name of [EXAMPLES, EVENTS, GUN_SETTINGS]) {
         const store = tx.objectStore(name);
         if (!store.indexNames.contains('gunId')) store.createIndex('gunId', 'gunId', { unique: false });
@@ -109,6 +116,18 @@ function withTransaction(storeNames, mode, action) {
     try { action(tx, context); }
     catch (error) { context.fail(error); }
   }).finally(() => db.close()));
+}
+
+/** Recheck ownership inside the write so library replacement cannot race it. */
+function withOwnedTransaction(owner, storeName, action) {
+  return withTransaction([GUNS, storeName], 'readwrite', (tx, context) => {
+    const request = tx.objectStore(GUNS).get(owner);
+    request.onsuccess = () => {
+      if (!request.result) { context.fail(new Error('Gun profile no longer exists. Retry with the current library.')); return; }
+      try { action(tx, context); }
+      catch (error) { context.fail(error); }
+    };
+  });
 }
 
 function requestToPromise(request) {
@@ -215,7 +234,7 @@ export async function addExample(label, features, gunId) {
   if (!labels.includes(label) || !validFeatures(features)) throw new TypeError('Invalid label or audio feature vector.');
   const owner = await resolveGunId(gunId, true);
   const row = { id: crypto.randomUUID(), gunId: owner, label, features: [...features], featureVersion: FEATURE_VERSION, createdAt: Date.now() };
-  return withTransaction(EXAMPLES, 'readwrite', (tx, context) => {
+  return withOwnedTransaction(owner, EXAMPLES, (tx, context) => {
     const store = tx.objectStore(EXAMPLES);
     const request = store.index('gunId').getAll(owner);
     request.onsuccess = () => {
@@ -238,7 +257,7 @@ export async function getOutdatedExampleCount(gunId) {
 
 async function clearOwnedRows(storeName, gunId, predicate = () => true) {
   const owner = await resolveGunId(gunId, true);
-  await withTransaction(storeName, 'readwrite', tx => {
+  await withOwnedTransaction(owner, storeName, tx => {
     const store = tx.objectStore(storeName);
     const request = store.index('gunId').openCursor(IDBKeyRange.only(owner));
     request.onsuccess = () => {
@@ -277,7 +296,7 @@ export async function addEvent(event, gunId) {
       drillCompleted: event.drillOutcome === 'completed' } : {}),
   };
   const max = normalizeMaxResults(await getGunSetting('maxResults', 50, owner));
-  await withTransaction(EVENTS, 'readwrite', tx => {
+  await withOwnedTransaction(owner, EVENTS, tx => {
     const store = tx.objectStore(EVENTS);
     store.put(row);
     const request = store.index('gunId').getAll(owner);
@@ -294,7 +313,7 @@ export async function verifyEvent(id, actualLabel, gunId) {
     throw new TypeError('Invalid recognition event or actual sound label.');
   }
   const owner = await resolveGunId(gunId, true);
-  return withTransaction(EVENTS, 'readwrite', (tx, context) => {
+  return withOwnedTransaction(owner, EVENTS, (tx, context) => {
     const store = tx.objectStore(EVENTS);
     const request = store.get(id);
     request.onsuccess = () => {
@@ -319,7 +338,7 @@ export async function clearEvents(gunId) {
 export async function trimEvents(maxResults, gunId) {
   const owner = await resolveGunId(gunId, true);
   const max = normalizeMaxResults(maxResults);
-  await withTransaction(EVENTS, 'readwrite', tx => {
+  await withOwnedTransaction(owner, EVENTS, tx => {
     const store = tx.objectStore(EVENTS);
     const request = store.index('gunId').getAll(owner);
     request.onsuccess = () => {
@@ -350,7 +369,7 @@ export async function setGunSetting(key, value, gunId) {
   if (key === 'selectedDrill' && value !== null && value !== '' && !getDrill(value, await getCustomDrills(owner))) {
     throw new TypeError('Selected drill is not available for this gun.');
   }
-  await withTransaction(GUN_SETTINGS, 'readwrite', tx => {
+  await withOwnedTransaction(owner, GUN_SETTINGS, tx => {
     tx.objectStore(GUN_SETTINGS).put({ gunId: owner, key, value });
   });
 }
@@ -373,7 +392,7 @@ export async function getCustomDrills(gunId) {
 export async function saveCustomDrill(drill, gunId) {
   const owner = await resolveGunId(gunId, true);
   const row = normalizeCustomDrill({ ...drill, id: drill?.id ?? `custom-${crypto.randomUUID()}` });
-  return withTransaction(GUN_SETTINGS, 'readwrite', (tx, context) => {
+  return withOwnedTransaction(owner, GUN_SETTINGS, (tx, context) => {
     const store = tx.objectStore(GUN_SETTINGS);
     const request = store.get([owner, 'customDrills']);
     request.onsuccess = () => {
@@ -384,6 +403,174 @@ export async function saveCustomDrill(drill, gunId) {
         else presets[existing] = row;
         store.put({ gunId: owner, key: 'customDrills', value: presets });
         context.result = row;
+      } catch (error) { context.fail(error); }
+    };
+  });
+}
+
+const SESSION_STATUSES = ['running', 'paused', 'completed', 'ended', 'interrupted'];
+const TERMINAL_SESSION_STATUSES = ['completed', 'ended', 'interrupted'];
+const sortSessions = rows => rows.sort((a, b) => b.startedAt - a.startedAt || b.id.localeCompare(a.id));
+const finiteNonnegative = value => typeof value === 'number' && Number.isFinite(value) && value >= 0;
+const nullableTime = value => value === null || finiteNonnegative(value);
+const reasonValue = value => value === null || (typeof value === 'string' && !!value.trim());
+
+function invalidSession(message) {
+  throw new TypeError(`Invalid saved drill session: ${message}.`);
+}
+
+function validateAttempt(value, record, isCurrent) {
+  const steps = record.drillSteps;
+  const statuses = isCurrent ? ['waiting', 'active'] : ['completed', 'partial'];
+  if (!value || !Number.isInteger(value.attempt) || value.attempt < 1 ||
+      !Number.isInteger(value.ordinal) || value.ordinal < 1 || value.ordinal > record.config.repetitions ||
+      !statuses.includes(value.status) || !finiteNonnegative(value.startedAt) || value.startedAt < record.startedAt ||
+      !nullableTime(value.goAt) || !nullableTime(value.endedAt) || !nullableTime(value.elapsedMs) || !reasonValue(value.reason) ||
+      !Number.isInteger(value.unknown) || value.unknown < 0 || !Number.isInteger(value.incorrect) || value.incorrect < 0 ||
+      !Array.isArray(value.detections) || !Array.isArray(value.stepTimings)) invalidSession('invalid repetition outcome');
+  if ((value.goAt !== null && value.goAt < value.startedAt) ||
+      (value.endedAt !== null && value.endedAt < value.startedAt) ||
+      (isCurrent && value.endedAt !== null) || (!isCurrent && value.endedAt === null) ||
+      (isCurrent && value.reason !== null) || (value.status === 'waiting' && value.goAt !== null) ||
+      (value.status === 'active' && value.goAt === null)) invalidSession('invalid repetition timestamps');
+  let lastOffset = -1;
+  const detections = Array.from(value.detections, item => {
+    if (!item || ![...labels, 'unknown'].includes(item.label) || !finiteNonnegative(item.score) || item.score > 100 ||
+        !finiteNonnegative(item.offsetMs) || item.offsetMs < lastOffset || !DRILL_OUTCOMES.includes(item.outcome) ||
+        !Number.isInteger(item.position) || item.position < 0 || item.position >= steps.length ||
+        ((item.label === 'unknown') !== (item.outcome === 'unknown')) ||
+        (['matched', 'completed'].includes(item.outcome) && item.label !== steps[item.position]) ||
+        (item.outcome === 'completed' && item.position !== steps.length - 1)) invalidSession('invalid saved sound detection');
+    lastOffset = item.offsetMs;
+    return { label: item.label, score: item.score, offsetMs: item.offsetMs, outcome: item.outcome, position: item.position };
+  });
+  if (value.unknown !== detections.filter(item => item.outcome === 'unknown').length ||
+      value.incorrect !== detections.filter(item => item.outcome === 'incorrect').length) invalidSession('incorrect repetition counters');
+  let previousOffset = 0;
+  const stepTimings = Array.from(value.stepTimings, (item, index) => {
+    if (!item || index >= steps.length || item.label !== steps[index] || !finiteNonnegative(item.offsetMs) ||
+        item.offsetMs < previousOffset || !finiteNonnegative(item.splitMs) ||
+        Math.abs(item.splitMs - (item.offsetMs - previousOffset)) > 0.000001) invalidSession('invalid sound-detection timing splits');
+    if (!detections.some(detection => detection.label === item.label && detection.offsetMs === item.offsetMs)) {
+      invalidSession('timing split has no matching sound detection');
+    }
+    previousOffset = item.offsetMs;
+    return { label: item.label, offsetMs: item.offsetMs, splitMs: item.splitMs };
+  });
+  if (value.status === 'waiting' && (detections.length || stepTimings.length || value.elapsedMs !== null)) invalidSession('detections before GO');
+  if (value.goAt === null && (detections.length || stepTimings.length || value.elapsedMs !== null)) invalidSession('timings without a GO signal');
+  if (value.elapsedMs !== null && value.elapsedMs < Math.max(lastOffset, previousOffset)) invalidSession('elapsed time precedes detections');
+  if (value.status === 'completed') {
+    if (stepTimings.length !== steps.length || value.goAt === null || value.elapsedMs === null ||
+        Math.abs(value.elapsedMs - previousOffset) > 0.000001 || ![null, 'completed'].includes(value.reason) ||
+        detections.at(-1)?.outcome !== 'completed' || detections.at(-1)?.offsetMs !== value.elapsedMs) invalidSession('incomplete sequence reported as completed');
+  } else if (stepTimings.length >= steps.length) invalidSession('complete sequence reported as partial');
+  return { attempt: value.attempt, ordinal: value.ordinal, status: value.status, startedAt: value.startedAt,
+    goAt: value.goAt, endedAt: value.endedAt, reason: value.reason, elapsedMs: value.elapsedMs,
+    unknown: value.unknown, incorrect: value.incorrect, detections, stepTimings };
+}
+
+/** Strict portable records exclude raw audio and runtime timer handles. */
+function validateSession(value, owner) {
+  if (!value || typeof value.id !== 'string' || !value.id || value.gunId !== owner ||
+      typeof value.drillId !== 'string' || !value.drillId || value.drillId.length > 80 ||
+      typeof value.drillTitle !== 'string' || !value.drillTitle.trim() || value.drillTitle.length > 80 ||
+      !Array.isArray(value.drillSteps) || !value.drillSteps.length || value.drillSteps.length > 32 ||
+      !Array.from(value.drillSteps).every(label => labels.includes(label)) ||
+      !Number.isInteger(value.revision) || value.revision < 0 || !SESSION_STATUSES.includes(value.status) ||
+      !finiteNonnegative(value.startedAt) || !finiteNonnegative(value.updatedAt) || value.updatedAt < value.startedAt ||
+      !nullableTime(value.endedAt) || !reasonValue(value.endReason) || !Array.isArray(value.repetitions) ||
+      !Number.isInteger(value.completed) || !Number.isInteger(value.remaining)) invalidSession('invalid identity, status or fields');
+  validGunDetails(value.gunName, value.gunType);
+  if (!value.config || typeof value.config !== 'object' || Array.isArray(value.config)) invalidSession('invalid configuration snapshot');
+  const config = normalizeSessionConfig(value.config);
+  if (Object.keys(config).some(key => value.config[key] !== config[key])) invalidSession('invalid configuration snapshot');
+  if (value.completed < 0 || value.completed > config.repetitions || value.remaining !== config.repetitions - value.completed) {
+    invalidSession('incorrect completed and remaining counts');
+  }
+  const terminal = TERMINAL_SESSION_STATUSES.includes(value.status);
+  if ((terminal && value.endedAt === null) || (!terminal && value.endedAt !== null) ||
+      (value.endedAt !== null && value.endedAt < value.startedAt) ||
+      (value.status === 'completed' && value.remaining !== 0) ||
+      (terminal && value.currentAttempt !== null) || (value.status === 'paused' && value.currentAttempt !== null)) invalidSession('invalid final session status');
+  const record = { id: value.id, gunId: owner, gunName: value.gunName, gunType: value.gunType,
+    drillId: value.drillId, drillTitle: value.drillTitle, drillSteps: [...value.drillSteps], config,
+    revision: value.revision, startedAt: value.startedAt, updatedAt: value.updatedAt, endedAt: value.endedAt,
+    status: value.status, endReason: value.endReason, completed: value.completed, remaining: value.remaining,
+    repetitions: [], currentAttempt: null };
+  let completed = 0;
+  let previousAttempt = 0;
+  record.repetitions = Array.from(value.repetitions, item => {
+    const attempt = validateAttempt(item, record, false);
+    if (attempt.attempt <= previousAttempt || attempt.ordinal !== completed + 1) invalidSession('invalid repetition order');
+    previousAttempt = attempt.attempt;
+    if (attempt.status === 'completed') completed += 1;
+    return attempt;
+  });
+  if (completed !== record.completed) invalidSession('completed count does not match saved repetitions');
+  if (value.currentAttempt !== null) {
+    const current = validateAttempt(value.currentAttempt, record, true);
+    if (current.attempt <= previousAttempt || current.ordinal !== completed + 1 || record.remaining === 0) invalidSession('invalid active repetition');
+    record.currentAttempt = current;
+  }
+  return record;
+}
+
+export async function getSessions(gunId) {
+  return sortSessions(await getOwnedRows(SESSIONS, await resolveGunId(gunId)));
+}
+
+export async function getSession(id, gunId) {
+  if (typeof id !== 'string' || !id) throw new TypeError('Invalid saved session ID.');
+  const owner = await resolveGunId(gunId);
+  if (!owner) return null;
+  const row = await getRow(SESSIONS, id);
+  return row?.gunId === owner ? row : null;
+}
+
+/** Revision guards protect durable results from delayed asynchronous writes. */
+export async function saveSession(record, gunId) {
+  const owner = await resolveGunId(gunId, true);
+  const row = validateSession(record, owner);
+  return withOwnedTransaction(owner, SESSIONS, (tx, context) => {
+    const store = tx.objectStore(SESSIONS);
+    const request = store.get(row.id);
+    request.onsuccess = () => {
+      const previous = request.result;
+      if (previous) {
+        if (previous.gunId !== owner) { context.fail(new Error('Saved session belongs to another gun.')); return; }
+        const immutable = ['gunName', 'gunType', 'drillId', 'drillTitle', 'drillSteps', 'config', 'startedAt'];
+        if (immutable.some(key => JSON.stringify(previous[key]) !== JSON.stringify(row[key]))) {
+          context.fail(new Error('A saved session snapshot cannot be changed.')); return;
+        }
+        if (row.revision <= previous.revision) { context.result = previous; return; }
+        if (TERMINAL_SESSION_STATUSES.includes(previous.status) || row.completed < previous.completed ||
+            previous.repetitions.some((attempt, index) => JSON.stringify(attempt) !== JSON.stringify(row.repetitions[index]))) {
+          context.fail(new Error('Saved session results cannot be rewritten or reopened.')); return;
+        }
+      }
+      store.put(row);
+      context.result = row;
+    };
+  });
+}
+
+/** Recover the last durable snapshot; never restart capture automatically. */
+export async function recoverInterruptedSessions(gunId) {
+  const owner = await resolveGunId(gunId);
+  if (!owner) return [];
+  return withOwnedTransaction(owner, SESSIONS, (tx, context) => {
+    const store = tx.objectStore(SESSIONS);
+    const request = store.index('gunId').getAll(owner);
+    request.onsuccess = () => {
+      try {
+        const recovered = [];
+        for (const record of request.result) {
+          if (!['running', 'paused'].includes(record.status)) continue;
+          const row = validateSession(recoverSessionRecord(record, Date.now()), owner);
+          store.put(row); recovered.push(row);
+        }
+        context.result = sortSessions(recovered);
       } catch (error) { context.fail(error); }
     };
   });
@@ -400,12 +587,12 @@ export async function exportBackup() {
         snapshot[name] = request.result;
         if (--pending) return;
         context.result = {
-          format: 'sound-trainer-backup', version: 2, featureVersion: FEATURE_VERSION,
+          format: 'sound-trainer-backup', version: 3, featureVersion: FEATURE_VERSION,
           exportedAt: new Date().toISOString(), guns: snapshot[GUNS],
           activeGunId: snapshot[SETTINGS].find(row => row.key === ACTIVE_GUN)?.value ?? null,
           settings: Object.fromEntries(snapshot[SETTINGS].filter(row => row.key !== ACTIVE_GUN && row.key !== 'maxResults').map(row => [row.key, row.value])),
           gunSettings: snapshot[GUN_SETTINGS], examples: snapshot[EXAMPLES].filter(currentExample),
-          events: sortedEvents(snapshot[EVENTS]),
+          events: sortedEvents(snapshot[EVENTS]), sessions: sortSessions(snapshot[SESSIONS]),
         };
       };
     }
@@ -422,7 +609,7 @@ function isJsonValue(value, depth = 0) {
 }
 
 function validateBackup(backup) {
-  if (!backup || backup.format !== 'sound-trainer-backup' || ![1, 2].includes(backup.version) || backup.featureVersion !== FEATURE_VERSION) {
+  if (!backup || backup.format !== 'sound-trainer-backup' || ![1, 2, 3].includes(backup.version) || backup.featureVersion !== FEATURE_VERSION) {
     throw new Error('This file is not a compatible Dry Fire With Ease backup.');
   }
   const v1 = backup.version === 1;
@@ -532,7 +719,17 @@ function validateBackup(backup) {
     const max = normalizeMaxResults(safeGunSettings.find(row => row.gunId === gun.id && row.key === 'maxResults')?.value ?? 50);
     events.push(...sortedEvents(safeEvents.filter(row => row.gunId === gun.id)).slice(0, max));
   }
-  return { guns: safeGuns, activeGunId, settings: structuredClone(settings), gunSettings: safeGunSettings, examples: safeExamples, events };
+  const sessionRows = backup.version === 3 ? backup.sessions ?? [] : [];
+  if (!Array.isArray(sessionRows)) throw new Error('Backup contains invalid saved sessions.');
+  const sessionIds = new Set();
+  const sessions = Array.from(sessionRows, row => {
+    if (!row || !gunIds.has(row.gunId)) throw new Error('Backup contains a saved session with an unknown gun owner.');
+    const record = validateSession(row, row.gunId);
+    if (sessionIds.has(record.id)) throw new Error('Backup contains duplicated saved session IDs.');
+    sessionIds.add(record.id);
+    return record;
+  });
+  return { guns: safeGuns, activeGunId, settings: structuredClone(settings), gunSettings: safeGunSettings, examples: safeExamples, events, sessions };
 }
 
 /** Validate the entire library before one atomic replacement transaction. */
@@ -540,7 +737,7 @@ export async function restoreBackup(backup) {
   const data = validateBackup(backup);
   await withTransaction(STORES, 'readwrite', tx => {
     for (const name of STORES) {
-      if (name !== SETTINGS || backup.version === 2) tx.objectStore(name).clear();
+      if (name !== SETTINGS || backup.version >= 2) tx.objectStore(name).clear();
     }
     if (backup.version === 1) {
       tx.objectStore(SETTINGS).delete(ACTIVE_GUN);
@@ -549,10 +746,11 @@ export async function restoreBackup(backup) {
     for (const row of data.guns) tx.objectStore(GUNS).put(row);
     for (const row of data.examples) tx.objectStore(EXAMPLES).put(row);
     for (const row of data.events) tx.objectStore(EVENTS).put(row);
+    for (const row of data.sessions) tx.objectStore(SESSIONS).put(row);
     for (const row of data.gunSettings) tx.objectStore(GUN_SETTINGS).put(row);
     for (const [key, value] of Object.entries(data.settings)) tx.objectStore(SETTINGS).put({ key, value });
     if (data.activeGunId) tx.objectStore(SETTINGS).put({ key: ACTIVE_GUN, value: data.activeGunId });
   });
-  return { guns: data.guns.length, examples: data.examples.length, events: data.events.length,
+  return { guns: data.guns.length, examples: data.examples.length, events: data.events.length, sessions: data.sessions.length,
     maxResults: normalizeMaxResults(data.gunSettings.find(row => row.gunId === data.activeGunId && row.key === 'maxResults')?.value ?? 50) };
 }

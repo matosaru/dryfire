@@ -153,7 +153,7 @@ describe('portable local backup', () => {
     await clearEvents();
     await setGunSetting('maxResults', 50);
     const stats = await restoreBackup(backup);
-    expect(stats).toEqual({ guns: 1, examples: 1, events: 1, maxResults: 2 });
+    expect(stats).toEqual({ guns: 1, examples: 1, events: 1, sessions: 0, maxResults: 2 });
     expect((await getExamples())[0].features).toHaveLength(15);
     expect((await getEvents())[0].actualLabel).toBe('reload');
     expect(await getGunSetting('maxResults', 50)).toBe(2);

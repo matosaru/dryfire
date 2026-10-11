@@ -1,24 +1,26 @@
 # Audio, appearance and feedback settings
 
-Revision: 1.0 · Scope: requested · Implementation: not implemented
+Revision: 1.1 · Scope: approved including CHG-014 detailed choices · Implementation: implemented and locally validated on 2026-10-11; physical-device/deployment verification separate
 
-User evidence: **“after a publish, proceed with”** custom presets and working Noise Filter, Auto Gain, Appearance and Vibration Feedback controls, connected to browser capabilities and stored preferences. Environment publication was a sequencing condition; this specification does not claim it occurred.
+User evidence: **“after a publish, proceed with”** working browser controls; the subsequent implementation was published in `b19aa4d`. The user now explicitly replied **“proceed”** to the detailed settings/session proposal published in `ebac22b`, approving CHG-014 revision 1.0. This records GitHub publication, not Cloudflare deployment.
 
 | ID | Requirement | State |
 | --- | --- | --- |
-| SET-01 | Provide a working Noise Filter control connected to supported browser audio processing. | Requested |
-| SET-02 | Provide a working Auto Gain control connected to supported browser audio processing. | Requested |
-| SET-03 | Provide an Appearance control that changes the app's presentation. | Requested |
-| SET-04 | Provide Vibration Feedback connected to actual device/browser support. | Requested |
-| SET-05 | Persist preferences across refreshes and compatible app updates. Explain unsupported capabilities accurately rather than displaying nonfunctional controls. | Requested |
+| SET-01 | Provide a working Noise Filter control connected to supported browser audio processing. | Approved; CHG-014 |
+| SET-02 | Provide a working Auto Gain control connected to supported browser audio processing. | Approved; CHG-014 |
+| SET-03 | Provide an Appearance control that changes the app's presentation. | Approved; CHG-014 |
+| SET-04 | Provide Vibration Feedback connected to actual device/browser support. | Approved; CHG-014 |
+| SET-05 | Persist preferences across refreshes and compatible app updates. Explain unsupported capabilities accurately rather than displaying nonfunctional controls. | Approved; CHG-014 |
 
-## Proposed details awaiting confirmation
+## Approved ownership, defaults and capability behavior
 
-- Noise Filter maps to supported `noiseSuppression` constraints. Auto Gain maps to supported `autoGainControl` constraints. The existing capture defaults disable both; do not silently change a learned model's capture behavior.
-- Explain that browser processing can affect sound recognition and may require collecting compatible samples again. Exact defaults and whether preferences are per gun or global remain to be specified.
-- Appearance offers System, Dark and Light, with accessible contrast and persisted selection. These exact options are proposed rather than approved.
-- Vibration defaults and triggering events must be agreed. Disable or mark unsupported where the browser does not provide usable vibration; do not assume iPhone Safari supports it.
-- Define whether changes apply to the next recording/session or restart an active capture. Do not silently alter settings in the middle of a session.
+These choices are approved in the [immutable CHG-014 proposal](https://github.com/matosaru/dryfire/blob/ebac22b/docs/design/requirements/next-implementation.md); confirmation is appended in [approval-log.md](approval-log.md).
+
+- Noise Filter and Auto Gain are **per-gun**, initially **Off**, preserving current capture behavior. Request supported `noiseSuppression`/`autoGainControl` on the next training, test, free-listen or drill capture. Echo cancellation remains off. Changes never alter an active capture.
+- Clearly report unsupported controls or settings that the acquired audio track does not confirm, while keeping core capture usable. Explain that changing processing can affect recognition and may require fresh examples; preference changes themselves never delete samples.
+- Appearance is **device-wide**, with **Dark** initially, **Light** and **System**. System follows the device preference. All choices retain readable controls and persist through refresh.
+- Vibration Feedback is **device-wide**, initially **Off**. When enabled and supported, request a short vibration at **GO** and **repetition completion**. Mark unavailable when the API is absent or returns failure; do not claim iPhone support or physical verification from browser tests.
+- Include these preferences in whole-library backup/restore and retain same-origin persistence. Accounts/cloud synchronization remain outside this implementation.
 
 ## Acceptance criteria
 

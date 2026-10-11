@@ -37,7 +37,7 @@ The database upgrade preserves existing single-profile data in one profile that 
 
 Routine form validation trims names, accepts 1–80 characters and requires one of the exact three approved type labels without a silently chosen default.
 
-Profile deletion, the deferred free-plan cap, cloud synchronization, dedicated session results and fixed/random session timing are excluded from this slice. Existing recognition history is scoped to each gun; it must not be presented as the still-pending dedicated session-review feature. Exact editable session defaults remain proposed in the drill specification.
+Profile deletion, the deferred free-plan cap, cloud synchronization, dedicated session results and fixed/random session timing were excluded from the CHG-012 slice. CHG-014 separately approves and implements detailed sessions/configuration/results; current status is in the drill specification and tracker. Recognition-event history remains distinct from that dedicated session feature. Profile deletion/free cap/cloud remain excluded.
 
 ## Acceptance criteria
 

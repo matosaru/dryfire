@@ -51,6 +51,24 @@ export function createEventDetector(sampleRate, onEvent, options = {}) {
   let stopped = false;
   let partial = new Float32Array(frameSamples);
   let partialLength = 0;
+  let nextFrame = 0;
+  let partialStartFrame = 0;
+  let onsetFrame = 0;
+  let endedFrame = 0;
+
+  function reset() {
+    preRoll = [];
+    preRollLength = 0;
+    chunks = [];
+    eventLength = 0;
+    quietSamples = 0;
+    cooldown = 0;
+    active = false;
+    holdUntilQuiet = false;
+    partial = new Float32Array(frameSamples);
+    partialLength = 0;
+    // Keep the adaptive noise floor and clock. A reset must never undo stop().
+  }
 
   function appendPreRoll(frame) {
     preRoll.push(frame);
@@ -78,7 +96,7 @@ export function createEventDetector(sampleRate, onEvent, options = {}) {
     }
     // The consumer is responsible for asynchronous classification. Segmentation
     // never awaits it and therefore remains ready for the following sound.
-    onEvent(pcm, sampleRate);
+    onEvent(pcm, sampleRate, { onsetMs: onsetFrame / sampleRate * 1000, endedMs: endedFrame / sampleRate * 1000 });
   }
 
   function endEvent(atLimit = false) {
@@ -93,12 +111,13 @@ export function createEventDetector(sampleRate, onEvent, options = {}) {
     preRollLength = 0;
   }
 
-  function processFrame(frame) {
+  function processFrame(frame, startFrame) {
     const { rms, peak } = summarize(frame);
     const threshold = Math.max(config.absoluteFloor, noiseFloor * config.noiseMultiplier);
     const loud = rms >= threshold && peak >= config.peakFloor;
 
     if (active) {
+      endedFrame = startFrame + frame.length;
       chunks.push(frame);
       eventLength += frame.length;
       quietSamples = loud ? 0 : quietSamples + frame.length;
@@ -118,6 +137,8 @@ export function createEventDetector(sampleRate, onEvent, options = {}) {
       return;
     }
     if (loud && cooldown === 0) {
+      onsetFrame = startFrame;
+      endedFrame = startFrame + frame.length;
       active = true;
       chunks = [...preRoll, frame];
       eventLength = preRollLength + frame.length;
@@ -131,16 +152,23 @@ export function createEventDetector(sampleRate, onEvent, options = {}) {
     appendPreRoll(frame);
   }
 
-  function push(buffer) {
+  function push(buffer, startFrame = nextFrame) {
     if (stopped || !(buffer instanceof Float32Array) || !buffer.length) return;
+    if (!Number.isFinite(startFrame) || startFrame < 0) return;
+    startFrame = Math.round(startFrame);
+    // Gaps/cue gates must not stitch stale pre-roll or partial audio to new input.
+    if (startFrame !== nextFrame) reset();
+    nextFrame = startFrame + buffer.length;
     let offset = 0;
     while (offset < buffer.length) {
+      if (stopped) break;
+      if (partialLength === 0) partialStartFrame = startFrame + offset;
       const take = Math.min(frameSamples - partialLength, buffer.length - offset);
       partial.set(buffer.subarray(offset, offset + take), partialLength);
       partialLength += take;
       offset += take;
       if (partialLength === frameSamples) {
-        processFrame(partial);
+        processFrame(partial, partialStartFrame);
         partial = new Float32Array(frameSamples);
         partialLength = 0;
       }
@@ -149,14 +177,12 @@ export function createEventDetector(sampleRate, onEvent, options = {}) {
 
   return {
     push,
+    reset,
     get noiseFloor() { return noiseFloor; },
     get active() { return active; },
     stop() {
       stopped = true;
-      chunks = [];
-      preRoll = [];
-      active = false;
-      partialLength = 0;
+      reset();
     },
   };
 }

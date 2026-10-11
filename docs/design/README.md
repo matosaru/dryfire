@@ -8,8 +8,8 @@ See [implementation history and remaining plan](implementation-history.md) for w
 | --- | --- | --- | --- |
 | Dry Fire With Ease logo lockup | [Actual header](brand-lockup.png), [Home](branding-preview.png) | [Branding](requirements/branding.md) | Approved in CHG-011; implemented and locally validated; deployment not verified |
 | First visit, My Guns and selected-gun Home | [View image](multiple-guns-front-door.png) | [Gun profiles](requirements/gun-profiles.md) | Approved; implemented and locally validated (CHG-012); deployment unverified |
-| Gun-specific sounds, custom editor and session history | [View image](multiple-guns-sounds-drills-history.png) | [Gun profiles](requirements/gun-profiles.md), [Drills](requirements/drill-sessions.md), [Persistence](requirements/persistence.md) | Gun-owned sounds/presets/recognition history implemented; dedicated session interactions remain pending |
-| Configure, Run and Review | [View image](drill-session-mockup.png) | [Drill sessions](requirements/drill-sessions.md) | Single sequence requested; Sound at start approved; remaining session details in review |
+| Gun-specific sounds, custom editor and session history | [View image](multiple-guns-sounds-drills-history.png) | [Gun profiles](requirements/gun-profiles.md), [Drills](requirements/drill-sessions.md), [Persistence](requirements/persistence.md) | Gun-owned sounds/presets/recognition and dedicated session history implemented and locally validated |
+| Configure, Run and Review | [View image](drill-session-mockup.png) | [Drill sessions](requirements/drill-sessions.md), [approved implementation plan](requirements/next-implementation.md) | Approved; implemented and locally validated under CHG-014; deployment unverified |
 
 ## Supporting notes
 
@@ -17,6 +17,7 @@ See [implementation history and remaining plan](implementation-history.md) for w
 - [Drill page proposal and clarified controls](drill-session.md)
 - [Previous implemented reference-design update](development/DESIGN_CHANGES.md)
 - Actual multi-gun implementation captures: [First gun](multigun-implementation-onboarding.png), [My Guns](multigun-implementation-library.png), [selected-gun Home](multigun-implementation-home.png), [custom drill editor](multigun-implementation-custom-drill.png). These are local production-build screenshots; deployment remains separately tracked.
+- Actual locally validated session/settings captures: [Configure](session-implementation-configure.png), [Run](session-implementation-run.png), [Review](session-implementation-review.png), [Dark settings](settings-implementation-dark.png), [Light settings](settings-implementation-light.png). GitHub publication/Cloudflare deployment is tracked separately.
 
 The Markdown specifications are authoritative for behavior. Sample names, times, counts and statuses in images are illustrative. Mockups do not prove that a feature exists or that data is synchronized to a server. When prose and a mockup disagree, record the discrepancy and resolve it through the change process rather than silently choosing a different requirement.
 

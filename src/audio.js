@@ -2,6 +2,8 @@
  * Microphone adapter: only this module touches Web Audio and MediaDevices.
  * Pure analysis helpers below are usable in Jest/Node without a microphone.
  */
+import { normalizeAudioPreferences, getAudioCapabilities, buildAudioConstraints, inspectAudioProcessing } from './audioPreferences.js';
+
 export const FEATURE_VERSION = 2;
 export const RECORD_MS = 2000;
 const PREP_SECONDS = 2;
@@ -118,13 +120,34 @@ export function analyzeRecording(samples, sampleRate) {
   };
 }
 
-function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+function throwIfAborted(signal) {
+  if (!signal?.aborted) return;
+  const error = new Error('Audio capture was cancelled.');
+  error.name = 'AbortError';
+  throw error;
+}
+
+function sleep(ms, signal) {
+  throwIfAborted(signal);
+  return new Promise((resolve, reject) => {
+    const aborted = () => {
+      clearTimeout(timer);
+      signal?.removeEventListener('abort', aborted);
+      try { throwIfAborted(signal); } catch (error) { reject(error); }
+    };
+    const timer = setTimeout(() => { signal?.removeEventListener('abort', aborted); resolve(); }, ms);
+    signal?.addEventListener('abort', aborted, { once: true });
+  });
+}
 
 /**
  * The ScriptProcessor path is a WebView-compatible MVP fallback; a native
  * AudioWorklet/PCM plugin is the next step for low-latency streaming detection.
  */
-export async function recordFeatureVector(onState = () => {}) {
+export async function recordFeatureVector(onState = () => {}, { audioPreferences, onProcessing = () => {}, signal } = {}) {
+  const preferences = normalizeAudioPreferences(audioPreferences);
+  const capabilities = getAudioCapabilities();
+  throwIfAborted(signal);
   if (!globalThis.navigator?.mediaDevices?.getUserMedia) {
     throw new Error('Microphone access requires HTTPS or localhost and a compatible browser.');
   }
@@ -136,14 +159,28 @@ export async function recordFeatureVector(onState = () => {}) {
   let source;
   let processor;
   let silentOutput;
+  let closePromise;
+  const onAbort = () => { void cleanup(); };
+  function cleanup() {
+    if (closePromise) return closePromise;
+    signal?.removeEventListener('abort', onAbort);
+    if (processor) { processor.onaudioprocess = null; try { processor.disconnect(); } catch {} }
+    if (source) { try { source.disconnect(); } catch {} }
+    if (silentOutput) { try { silentOutput.disconnect(); } catch {} }
+    stream?.getTracks().forEach(track => track.stop());
+    closePromise = context && context.state !== 'closed' ? context.close().catch(() => {}) : Promise.resolve();
+    return closePromise;
+  }
   try {
     onState('Requesting microphone permission…');
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
-      video: false,
-    });
+    stream = await navigator.mediaDevices.getUserMedia(buildAudioConstraints(preferences, capabilities));
+    throwIfAborted(signal);
+    onProcessing(inspectAudioProcessing(stream.getAudioTracks()[0], preferences, capabilities));
+    throwIfAborted(signal);
     context = new AudioContextClass();
+    signal?.addEventListener('abort', onAbort, { once: true });
     if (context.state === 'suspended') await context.resume();
+    throwIfAborted(signal);
     source = context.createMediaStreamSource(stream);
     if (typeof context.createScriptProcessor !== 'function') {
       throw new Error('This WebView does not support PCM recording. Native audio capture is required.');
@@ -157,7 +194,7 @@ export async function recordFeatureVector(onState = () => {}) {
 
     for (let remaining = PREP_SECONDS; remaining >= 1; remaining -= 1) {
       onState(`Get ready… ${remaining}`);
-      await sleep(1000);
+      await sleep(1000, signal);
     }
     const chunks = [];
     processor.onaudioprocess = event => {
@@ -169,7 +206,8 @@ export async function recordFeatureVector(onState = () => {}) {
       }
     };
     onState('Recording… one sound now');
-    await sleep(RECORD_MS);
+    await sleep(RECORD_MS, signal);
+    throwIfAborted(signal);
     processor.onaudioprocess = null;
     onState('Analysing sound…');
     const length = chunks.reduce((total, chunk) => total + chunk.length, 0);
@@ -184,11 +222,7 @@ export async function recordFeatureVector(onState = () => {}) {
     }
     throw error;
   } finally {
-    if (processor) { processor.onaudioprocess = null; try { processor.disconnect(); } catch {} }
-    if (source) { try { source.disconnect(); } catch {} }
-    if (silentOutput) { try { silentOutput.disconnect(); } catch {} }
-    stream?.getTracks().forEach(track => track.stop());
-    if (context && context.state !== 'closed') { try { await context.close(); } catch {} }
+    await cleanup();
   }
 }
 
@@ -197,7 +231,11 @@ export async function recordFeatureVector(onState = () => {}) {
  * AudioWorklet is preferred; ScriptProcessor is an explicitly documented fallback.
  * All raw PCM stays in transient memory, and no audio is played or uploaded.
  */
-export async function startContinuousListening({ onEvent, onLevel = () => {}, onState = () => {}, onError = () => {}, sensitivity = 'normal' } = {}) {
+export async function startContinuousListening({ onEvent, onLevel = () => {}, onState = () => {}, onError = () => {}, sensitivity = 'normal',
+  audioPreferences, onProcessing = () => {}, signal, detectionEnabled = true } = {}) {
+  const preferences = normalizeAudioPreferences(audioPreferences);
+  const capabilities = getAudioCapabilities();
+  throwIfAborted(signal);
   if (typeof onEvent !== 'function') throw new TypeError('onEvent callback is required.');
   if (!globalThis.navigator?.mediaDevices?.getUserMedia) {
     throw new Error('Microphone requires HTTPS/localhost and permission.');
@@ -205,6 +243,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   const AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext;
   if (!AudioContextClass) throw new Error('Web Audio is unavailable on this device.');
   const { createEventDetector } = await import('./eventDetector.js');
+  throwIfAborted(signal);
   const noiseMultiplier = { high: 3.5, normal: 5, low: 7 }[sensitivity] ?? 5;
   let stream, context, source, node, output;
   let running = true;
@@ -212,11 +251,29 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   let detector;
   let lastLevelAt = 0;
   let closePromise;
+  let detectionArmed = detectionEnabled !== false;
+  let armedAfterFrame = 0;
+  const onAbort = () => { void stop(); };
+
+  function armDetection({ guardMs = 0 } = {}) {
+    if (stopped || !context || context.state === 'closed') return false;
+    detector.reset();
+    detectionArmed = true;
+    const guard = Number.isFinite(guardMs) ? Math.max(0, guardMs) : 0;
+    armedAfterFrame = Math.ceil((context.currentTime + guard / 1000) * context.sampleRate);
+    return true;
+  }
+
+  function disarmDetection() {
+    detectionArmed = false;
+    detector?.reset();
+  }
 
   async function stop() {
     if (closePromise) return closePromise;
     stopped = true;
     running = false;
+    signal?.removeEventListener('abort', onAbort);
     detector?.stop();
     if (node) {
       if ('onaudioprocess' in node) node.onaudioprocess = null;
@@ -233,19 +290,26 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
 
   try {
     onState('Requesting microphone access…');
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }, video: false,
-    });
+    stream = await navigator.mediaDevices.getUserMedia(buildAudioConstraints(preferences, capabilities));
+    throwIfAborted(signal);
     if (stopped) throw new Error('Listening stopped.');
     context = new AudioContextClass();
+    signal?.addEventListener('abort', onAbort, { once: true });
     if (context.state === 'suspended') await context.resume();
+    throwIfAborted(signal);
+    onProcessing(inspectAudioProcessing(stream.getAudioTracks()[0], preferences, capabilities));
+    throwIfAborted(signal);
     detector = createEventDetector(context.sampleRate, onEvent, { noiseMultiplier });
     source = context.createMediaStreamSource(stream);
     output = context.createGain();
     output.gain.value = 0;
-    const onChunk = samples => {
-      if (!running) return;
-      detector.push(samples);
+    const onChunk = (samples, startFrame) => {
+      if (!running || !(samples instanceof Float32Array) || !samples.length || !Number.isFinite(startFrame)) return;
+      if (detectionArmed) {
+        // Gate by captured sample time, not delivery time: delayed chunks may contain the cue.
+        const skip = Math.max(0, armedAfterFrame - startFrame);
+        if (skip < samples.length) detector.push(samples.subarray(skip), startFrame + skip);
+      }
       const now = Date.now();
       if (now - lastLevelAt >= 100) {
         lastLevelAt = now;
@@ -257,11 +321,14 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
 
     if (context.audioWorklet && typeof globalThis.AudioWorkletNode === 'function') {
       try {
-        await context.audioWorklet.addModule(import.meta.env.DEV ? '/workers/pcm-capture.worklet.js' : '/pcm-capture.worklet.js');
+        await context.audioWorklet.addModule(import.meta.env?.DEV ? '/workers/pcm-capture.worklet.js' : '/pcm-capture.worklet.js');
+        throwIfAborted(signal);
+        if (stopped) throw new Error('Listening stopped.');
         node = new AudioWorkletNode(context, 'pcm-capture', { numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [1] });
-        node.port.onmessage = event => onChunk(event.data);
+        node.port.onmessage = event => onChunk(event.data?.samples, event.data?.startFrame);
         onState('Live listening (AudioWorklet)');
       } catch (error) {
+        if (signal?.aborted || stopped) throw error;
         console.warn('AudioWorklet failed; trying compatibility recorder:', error);
       }
     }
@@ -272,7 +339,12 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
       node = context.createScriptProcessor(2048, 1, 1);
       node.onaudioprocess = event => {
         for (let c = 0; c < event.outputBuffer.numberOfChannels; c++) event.outputBuffer.getChannelData(c).fill(0);
-        onChunk(new Float32Array(event.inputBuffer.getChannelData(0)));
+        const samples = new Float32Array(event.inputBuffer.getChannelData(0));
+        const duration = samples.length / context.sampleRate;
+        const playbackTime = Number.isFinite(event.playbackTime) ? event.playbackTime : context.currentTime;
+        // Input was captured before the output buffer's playback time.
+        const startFrame = Math.max(0, Math.round((playbackTime - duration) * context.sampleRate));
+        onChunk(samples, startFrame);
       };
       onState('Live listening (compatibility mode)');
     }
@@ -282,7 +354,8 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     stream.getAudioTracks().forEach(track => {
       track.onended = () => { if (!stopped) { onError(new Error('Microphone disconnected.')); void stop(); } };
     });
-    return { stop };
+    throwIfAborted(signal);
+    return { stop, armDetection, disarmDetection, nowMs: () => context.currentTime * 1000 };
   } catch (error) {
     await stop();
     if (error?.name === 'NotAllowedError' || error?.name === 'PermissionDeniedError') {

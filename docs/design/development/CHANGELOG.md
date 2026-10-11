@@ -1,3 +1,12 @@
+## Unreleased — timed sessions and working browser settings
+
+- Integrated approved CHG-014 Configure/Run/Review, per-gun repetition/fixed/random configuration, microphone-before-countdown, visual GO, complete/left progress and optional guarded start beep.
+- Added pause/release/resume with a fresh countdown, accurate interruption/reload review and durable owned session/repetition snapshots. Preset edits, sound/history reset and recent-recognition retention do not rewrite/delete sessions.
+- Added per-gun next-capture Noise Filter/Auto Gain with supported/unconfirmed reporting, device-wide Dark/Light/System appearance and optional supported GO/completion vibration. Defaults preserve audio processing Off, Dark theme and vibration/beep Off.
+- Schema 3 adds separate owned sessions; backup format 3 includes sessions/preferences and restores compatible versions 1/2 atomically with explicit session replacement disclosure. The service-worker cache is v12; package remains 0.8.0.
+- Passed 16 smoke checks, 186 Jest tests across 13 suites, build/`verify:dist` and six final browser suites with zero page errors. Coverage includes actual segmentation/classification with synthetic PCM, interruption/storage-failure races, immutable review snapshots, schema-2-to-3/cache-v11-to-v12 migration, version-1/2/3 backups and capability fallbacks. Five ownership regressions failed before the fix and now pass, protecting delayed writes when a library restore removes the original owning gun. GitHub implementation publication remains pending.
+- Actual local captures: [Configure](../session-implementation-configure.png), [Run](../session-implementation-run.png), [Review](../session-implementation-review.png), [Dark settings](../settings-implementation-dark.png), [Light settings](../settings-implementation-light.png). No physical-device/Cloudflare deployment success is claimed.
+
 ## Unreleased — multi-gun profiles and custom presets
 
 - Implemented the approved first-use gun name/type form, My Guns library with a five-profile limit, selected-gun switcher and consistent gun ownership on Home, Learn, Drills, Live Listen and History (CHG-012).

@@ -171,7 +171,7 @@ test('custom presets/configuration and event sequence snapshots remain isolated 
   expect(await getGunSetting('drillConfig', null, b.id)).toBeNull();
 });
 
-test('version-two backup restores the complete library and active selection', async () => {
+test('current backup restores the complete library and active selection', async () => {
   const a = await makeGun('A');
   const b = await createGun({ name: 'B', type: 'Shotguns' });
   await addExample('draw', features, a.id);
@@ -185,7 +185,7 @@ test('version-two backup restores the complete library and active selection', as
   await setSetting('appearance', 'dark');
   await setActiveGun(a.id);
   const backup = await exportBackup();
-  expect(backup).toMatchObject({ format: 'sound-trainer-backup', version: 2, activeGunId: a.id });
+  expect(backup).toMatchObject({ format: 'sound-trainer-backup', version: 3, activeGunId: a.id });
   expect(backup.guns).toHaveLength(2);
   expect(backup.examples).toHaveLength(2);
   await removeDb();
@@ -270,4 +270,56 @@ test.each([null, ''])('preserves free listening choice %p through whole-library 
   const restored = await exportBackup();
   expect(restored.gunSettings.find(row => row.key === 'selectedDrill').value).toBe(selection);
   if (selection === '') expect(await getGunSetting('selectedDrill', 'trigger-only')).toBe('');
+});
+
+/** Hold the write-opening request after its earlier ownership read succeeds. */
+async function replaceLibraryDuringPendingWrite(action, gatedOpen = 2) {
+  const originalOpen = indexedDB.open.bind(indexedDB);
+  let calls = 0;
+  let release;
+  let announce;
+  const gated = new Promise(resolve => { announce = resolve; });
+  indexedDB.open = (...args) => {
+    if (++calls !== gatedOpen) return originalOpen(...args);
+    let actual;
+    const request = {
+      get result() { return actual?.result; },
+      get error() { return actual?.error; },
+      get transaction() { return actual?.transaction; },
+    };
+    release = () => {
+      actual = originalOpen(...args);
+      for (const name of ['onsuccess', 'onerror', 'onblocked', 'onupgradeneeded']) actual[name] = event => request[name]?.(event);
+    };
+    announce();
+    return request;
+  };
+  try {
+    const outcome = action().then(value => ({ value }), error => ({ error }));
+    await gated;
+    indexedDB.open = originalOpen;
+    await restoreBackup({ format: 'sound-trainer-backup', version: 3, featureVersion: 2,
+      guns: [], activeGunId: null, settings: {}, gunSettings: [], examples: [], events: [], sessions: [] });
+    release();
+    return await outcome;
+  } finally { indexedDB.open = originalOpen; }
+}
+
+test.each([
+  ['preference', gun => setGunSetting('audioPreferences', { noiseFilter: true, autoGain: false }, gun.id), 2],
+  ['learned sample', gun => addExample('draw', features, gun.id), 2],
+  ['recognition event', gun => addEvent({ label: 'draw', score: 80 }, gun.id), 4],
+  ['custom preset', gun => saveCustomDrill({ title: 'Practice', steps: ['trigger'] }, gun.id), 2],
+])('pending %s write cannot create orphaned gun data after library replacement', async (_, action, gatedOpen) => {
+  const gun = await makeGun('Old owner');
+  const outcome = await replaceLibraryDuringPendingWrite(() => action(gun), gatedOpen);
+  expect(outcome.error).toBeInstanceOf(Error);
+  expect(outcome.error.message).toMatch(/gun|owner|profile/i);
+  const backup = await exportBackup();
+  expect(backup.guns).toEqual([]);
+  expect(backup.gunSettings).toEqual([]);
+  expect(backup.examples).toEqual([]);
+  expect(backup.events).toEqual([]);
+  expect(backup.sessions).toEqual([]);
+  await expect(restoreBackup(backup)).resolves.toMatchObject({ guns: 0 });
 });

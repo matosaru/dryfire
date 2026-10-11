@@ -16,6 +16,36 @@ function feed(detector, seconds, events = [], chunkSize = 256, ambient = 0) {
 }
 
 describe('automatic sound segmentation', () => {
+  test('capture onset timestamps stay independent of callback chunk sizes', () => {
+    const results = [128, 256, 2048].map(chunkSize => {
+      const found = [];
+      const detector = createEventDetector(rate, (_pcm, _rate, timing) => found.push(timing));
+      const audio = new Float32Array(rate);
+      for (let i = 1600; i < 2400; i++) audio[i] = 0.35 * Math.sin(i / 3);
+      for (let i = 0; i < audio.length; i += chunkSize) detector.push(audio.slice(i, i + chunkSize), rate * 4 + i);
+      return found;
+    });
+    expect(results[0]).toHaveLength(1);
+    expect(results[0][0].onsetMs).toBe(4200);
+    expect(results[1]).toEqual(results[0]);
+    expect(results[2]).toEqual(results[0]);
+  });
+
+  test('reset discards unfinished audio; reset never revives a stopped detector', () => {
+    const found = [];
+    const detector = createEventDetector(rate, pcm => found.push(pcm));
+    feed(detector, 0.25, [[0.2, 0.05]]);
+    detector.reset();
+    feed(detector, 0.5);
+    expect(found).toHaveLength(0);
+    feed(detector, 1, [[0.2, 0.1]]);
+    expect(found).toHaveLength(1);
+    detector.stop();
+    detector.reset();
+    feed(detector, 1, [[0.2, 0.1]]);
+    expect(found).toHaveLength(1);
+  });
+
   test('does not emit events for quiet room tone', () => {
     const found = [];
     const detector = createEventDetector(rate, pcm => found.push(pcm));

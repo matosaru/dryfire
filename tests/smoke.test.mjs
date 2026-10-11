@@ -72,6 +72,7 @@ test('AudioWorklet produces output-muted chunks without external dependencies', 
     AudioWorkletProcessor: class { constructor() { this.port = { postMessage: x => messages.push(x) }; } },
     registerProcessor: (_, klass) => { processorClass = klass; },
     Float32Array,
+    currentFrame: 6400,
   };
   vm.runInNewContext(readFileSync(new URL('../workers/pcm-capture.worklet.js', import.meta.url), 'utf8'), scope);
   const processor = new processorClass();
@@ -80,9 +81,17 @@ test('AudioWorklet produces output-muted chunks without external dependencies', 
     const destination = new Float32Array(128).fill(1);
     assert.equal(processor.process([[source]], [[destination]]), true);
     assert.ok(destination.every(value => value === 0));
+    scope.currentFrame += 128;
   }
   assert.equal(messages.length, 1);
-  assert.equal(messages[0].length, 1024);
+  assert.equal(messages[0].samples.length, 1024);
+  assert.equal(messages[0].startFrame, 6400);
+  assert.ok(messages[0].samples.every(value => Math.abs(value - 0.4) < 0.000001));
+  for (let i = 0; i < 8; i++) {
+    processor.process([[new Float32Array(128).fill(0.2)]], [[new Float32Array(128)]]);
+    scope.currentFrame += 128;
+  }
+  assert.equal(messages[1].startFrame, 7424);
 });
 
 

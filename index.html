@@ -116,6 +116,61 @@
       <button id="freeListenBtn" type="button" class="button secondary wide-action">Start free listening →</button>
     </section>
 
+    <section id="sessionView" class="view hidden" aria-labelledby="session-title">
+      <div class="section-head"><button id="sessionBackBtn" type="button" class="back-button" aria-label="Back to Drills">‹</button><h2 id="session-title">Drill Session</h2></div>
+      <p class="gun-context">Session for <strong class="gun-context-name"></strong>.</p>
+      <p id="sessionPresetName" class="session-preset-name"></p>
+      <ol id="sessionSteps" class="drill-steps session-sequence" aria-label="Ordered sound sequence"></ol>
+
+      <div id="sessionConfigure">
+        <form id="sessionConfigForm" class="session-config-form">
+          <fieldset id="sessionConfigFields" class="session-config-fields">
+            <legend>Session setup</legend>
+            <label class="session-field session-repetition-field" for="sessionRepetitions"><span>Repetitions</span><input id="sessionRepetitions" name="repetitions" type="number" min="1" max="100" step="1" value="10" required inputmode="numeric" /></label>
+            <div class="session-delay-card">
+              <label class="session-field" for="sessionDelayMode"><span>Start delay</span><select id="sessionDelayMode" name="delayMode"><option value="fixed">Fixed</option><option value="random">Random</option></select></label>
+              <div id="fixedDelayFields"><label class="session-field" for="sessionFixedDelay"><span>Delay in seconds</span><input id="sessionFixedDelay" name="fixedDelay" type="number" min="0" max="30" step="0.1" value="3" required inputmode="decimal" /></label></div>
+              <div id="randomDelayFields" class="session-delay-range hidden">
+                <label class="session-field" for="sessionMinDelay"><span>Minimum seconds</span><input id="sessionMinDelay" name="minDelay" type="number" min="0" max="30" step="0.1" value="2" required inputmode="decimal" /></label>
+                <label class="session-field" for="sessionMaxDelay"><span>Maximum seconds</span><input id="sessionMaxDelay" name="maxDelay" type="number" min="0" max="30" step="0.1" value="5" required inputmode="decimal" /></label>
+              </div>
+              <p class="muted small">A fresh delay before every repetition.</p>
+            </div>
+            <label class="preference-toggle session-sound-toggle" for="sessionStartSound"><span><strong>Sound at start</strong><small>Play a beep when GO appears.</small></span><input id="sessionStartSound" name="startSound" type="checkbox" role="switch" aria-describedby="sessionCueGuardNote" /></label>
+            <p id="sessionCueGuardNote" class="muted small hidden">With the beep on, detection waits 0.3 seconds after GO to exclude the cue. Very fast sounds in that window may be missed.</p>
+          </fieldset>
+          <p id="sessionReadiness" class="session-readiness" role="status">Checking training and safety readiness…</p>
+          <button id="sessionLearnBtn" type="button" class="button secondary wide-action hidden">Learn missing sounds</button>
+          <button id="sessionStartBtn" type="submit" class="button primary wide-action">Start Session</button>
+        </form>
+        <p class="muted small session-timing-note">Timings describe detected sounds, not verified physical actions.</p>
+      </div>
+
+      <div id="sessionRun" class="hidden">
+        <div class="session-progress" aria-label="Session progress">
+          <div><span>Completed</span><strong id="sessionCompletedCount">0</strong></div>
+          <progress id="sessionProgressMeter" max="10" value="0" aria-label="Completed repetitions"></progress>
+          <div><span>Left</span><strong id="sessionLeftCount">10</strong></div>
+        </div>
+        <div class="session-countdown-panel">
+          <p class="eyebrow">Current repetition</p>
+          <div id="sessionCountdown" class="session-countdown" role="timer" aria-live="off">—</div>
+          <p id="sessionAnnouncement" class="session-announcement" role="status" aria-live="polite">Get ready…</p>
+          <p id="sessionMicrophoneStatus" class="listening-indicator" role="status">Microphone inactive</p>
+        </div>
+        <section class="session-latest" aria-labelledby="sessionLatestTitle"><h3 id="sessionLatestTitle">Latest repetition</h3><div id="sessionLatestResult" class="session-result-card"><p class="muted small">Your completed repetition will appear here.</p></div></section>
+        <div class="session-run-actions"><button id="pauseSessionBtn" type="button" class="button secondary">Pause</button><button id="resumeSessionBtn" type="button" class="button primary hidden">Resume</button><button id="endSessionBtn" type="button" class="button secondary">End Session</button></div>
+        <p class="muted small session-timing-note">Pause releases the microphone and restarts the unfinished repetition with a fresh countdown on Resume.</p>
+      </div>
+
+      <div id="sessionReview" class="hidden">
+        <section class="session-review-card" aria-labelledby="sessionReviewStatus"><h3 id="sessionReviewStatus">Session review</h3><div id="sessionReviewSummary"></div><p class="session-saved-note">Saved on this device</p></section>
+        <section class="session-records" aria-labelledby="sessionRecordsTitle"><h3 id="sessionRecordsTitle">Repetition results</h3><div id="sessionResultList" class="session-result-list"></div></section>
+        <div class="session-review-actions"><button id="repeatSessionBtn" type="button" class="button primary wide-action">Repeat Session</button><button id="backToDrillsBtn" type="button" class="button secondary wide-action">Back to Drills</button></div>
+        <p class="muted small session-timing-note">Times reflect sound detection. The app cannot verify physical actions or whether a firearm is unloaded.</p>
+      </div>
+    </section>
+
     <section id="recognizeView" class="view hidden" aria-labelledby="recognize-title">
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button>
         <div><p class="eyebrow">03 / REAL-TIME DETECTION</p><h2 id="recognize-title">Live Listen</h2></div>
@@ -188,9 +243,11 @@
 
     <section id="historyView" class="view hidden" aria-labelledby="history-title">
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to Home">‹</button><div><p class="eyebrow">04 / LOCAL DATA</p><h2 id="history-title">History</h2></div></div>
-      <p class="gun-context">Recognition results for <strong class="gun-context-name"></strong>.</p>
+      <p class="gun-context">Saved results for <strong class="gun-context-name"></strong>.</p>
+      <section class="saved-sessions-section" aria-labelledby="savedSessionsTitle"><h3 id="savedSessionsTitle">Drill sessions</h3><p class="muted small">Open a session to review completed and interrupted repetitions. Sessions stay saved when recent detections are trimmed or cleared.</p><div id="savedSessions" class="session-result-list"></div></section>
+      <h3 class="recognition-history-heading">Recent recognition results</h3>
       <div class="settings-row"><label for="maxResults">Keep last N recognition results</label><input id="maxResults" type="number" min="1" max="500" step="1" value="50" /></div>
-      <p class="muted small">Training samples are stored separately. Changing N trims recognition history, not learned sound examples. Label each result to evaluate recognition on your own real-world samples.</p>
+      <p class="muted small">Changing N trims recent recognition history; learned sounds and saved drill sessions stay intact. Label each result to evaluate recognition on your own real-world samples.</p>
       <div class="evaluation-panel" aria-live="polite">
         <h3>Recognition quality · verified events only</h3>
         <div class="eval-stats"><div><strong id="verifiedCount">0</strong><span>Verified</span></div><div><strong id="accuracyPct">—</strong><span>Accuracy</span></div><div><strong id="falsePositivePct">—</strong><span>Other-sound false positives</span></div></div>
@@ -218,14 +275,26 @@
       </div>
       <div class="settings-group">
         <h3>Backup &amp; Data</h3>
-        <p class="muted small">Export all gun profiles, learned numeric sound features, saved drill presets and recognition history. The backup contains no raw recordings. Keep this file private.</p>
+        <p class="muted small">Export all gun profiles, learned numeric sound features, drill presets, recognition history, saved sessions and preferences. The backup contains no raw recordings. Keep this file private.</p>
         <div class="settings-actions"><button id="exportBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↑</span><span>Export backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><button id="importBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↓</span><span>Import backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><input id="importFile" type="file" accept="application/json,.json" class="hidden" /></div>
-        <p class="small muted">Import replaces saved guns and their training data on this device. Files from another device may perform differently.</p>
+        <p class="small muted">Import replaces saved guns, sounds, history, presets, sessions and preferences on this device. Older backups contain no saved sessions. Files from another device may perform differently.</p>
+      </div>
+      <div class="settings-group preference-group">
+        <h3>Audio processing · this gun</h3>
+        <label class="preference-toggle" for="noiseFilter"><span><strong>Noise Filter</strong><small id="noiseFilterStatus" role="status">Checking browser support…</small></span><input id="noiseFilter" type="checkbox" role="switch" aria-describedby="noiseFilterStatus" /></label>
+        <label class="preference-toggle" for="autoGainControl"><span><strong>Auto Gain</strong><small id="autoGainStatus" role="status">Checking browser support…</small></span><input id="autoGainControl" type="checkbox" role="switch" aria-describedby="autoGainStatus" /></label>
+        <p class="muted small">Changes apply to the next capture. Audio processing may affect recognition and require fresh examples; it never deletes your learned sounds.</p>
+      </div>
+      <div class="settings-group preference-group">
+        <h3>Appearance &amp; feedback · this device</h3>
+        <label class="preference-select" for="appearance"><span>Appearance</span><select id="appearance"><option value="dark">Dark</option><option value="light">Light</option><option value="system">System</option></select></label>
+        <label class="preference-toggle" for="vibrationFeedback"><span><strong>Vibration Feedback</strong><small id="vibrationStatus" role="status">Checking browser support…</small></span><input id="vibrationFeedback" type="checkbox" role="switch" aria-describedby="vibrationStatus" /></label>
+        <p class="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
       </div>
       <div class="settings-group"><h3>About</h3><p class="muted small">Dry Fire With Ease v0.8.0 · Sound trainer · Private IndexedDB storage · Up to 50 learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
     </section>
 
-    <footer>Microphone access stops when you tap Stop, leave recognition, or the page becomes hidden. Gun profiles, numeric learned features, custom drills and recognition results are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.</footer>
+    <footer>Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.</footer>
   </main>
   <script type="module" src="/src/main.js"></script>
 </body>
