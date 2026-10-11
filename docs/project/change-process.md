@@ -48,4 +48,4 @@ Keep one current screenshot path per screen/state/theme, and move superseded rev
 
 ## Branch publication policy
 
-CHG-024: new work goes to the existing `dev` branch first, with source and screenshot CI there. Keep validated commits on `dev` until promotion to `main` is explicitly requested. The earlier no-PR preference remains applicable. Record the tested commit/run and any deployment separately; do not treat a dev push as production publication. Historical direct-main delivery records remain evidence of the earlier authorized workflow.
+CHG-025 supersedes the earlier direct-main/no-PR policy. Follow [branching-strategy.md](branching-strategy.md): `feature/*` → PR to `dev` → reviewed release PR to `main`; urgent `hotfix/*` → PR to `main` → synchronization PR to `dev`. The user owns production promotion. Require `validate`/`screenshots` and current base branches. Never push directly to `main`, bypass checks, or assume a policy JSON file enables GitHub enforcement. The deployment workflow stays opt-in until the owner configures secrets, environments and the production reviewer. Record actual tested, published and deployed commits separately.

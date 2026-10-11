@@ -1,0 +1,74 @@
+name: Deploy tested Cloudflare assets
+on:
+  workflow_run:
+    workflows: ['Test and build']
+    types: [completed]
+    branches: [main, dev]
+permissions:
+  contents: read
+  actions: read
+  deployments: write
+concurrency:
+  group: cloudflare-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: >-
+      ${{ vars.CLOUDFLARE_DEPLOYMENTS_ENABLED == 'true' &&
+          github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.event == 'push' &&
+          github.event.workflow_run.head_repository.full_name == github.repository &&
+          (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'dev') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: ${{ github.event.workflow_run.head_branch == 'main' && 'production' || 'development' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: minified-web-app
+          path: dist/
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - run: npm run verify:dist
+      - name: Skip superseded branch commits
+        id: revision
+        env:
+          DEPLOY_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          TESTED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          deployment_revision="$(git ls-remote origin "refs/heads/$DEPLOY_BRANCH" | cut -f1)"
+          if [ "$deployment_revision" = "$TESTED_SHA" ]; then
+            printf 'current=true\n' >> "$GITHUB_OUTPUT"
+          else
+            printf 'current=false\n' >> "$GITHUB_OUTPUT"
+            echo '::notice::Skipping a superseded tested commit; the current branch will deploy after its CI passes.'
+          fi
+      - name: Deploy the tested artifact to its environment
+        if: steps.revision.outputs.current == 'true'
+        env:
+          DEPLOY_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          TESTED_SHA: ${{ github.event.workflow_run.head_sha }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo '::error::Cloudflare deployment secrets are missing from this GitHub environment.'
+            exit 1
+          fi
+          if [ "$DEPLOY_BRANCH" = 'dev' ]; then
+            npm run deploy:development
+            deployment_worker='dryfire-dev'
+          else
+            npm run deploy:production
+            deployment_worker='dryfire'
+          fi
+          printf 'Deployed tested commit `%s` from `%s` to Worker `%s`.\n' "$TESTED_SHA" "$DEPLOY_BRANCH" "$deployment_worker" >> "$GITHUB_STEP_SUMMARY"

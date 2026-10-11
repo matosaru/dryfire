@@ -55,7 +55,7 @@ Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with C
 - Do not commit `node_modules/`, `dist/` or secrets.
 
 ## Delivery and deployments
-- CHG-024: use the existing `dev` branch for new changes and validate there before promotion. The user's earlier no-PR instruction still applies; leave `main` for an explicitly requested promotion. Include tests performed, blocked validations, build sizes, risks and outstanding iPhone checks in the delivery record.
+- CHG-025: follow [branching-strategy.md](../project/branching-strategy.md): feature branches from `dev` use PRs into `dev`; production uses a reviewed `dev` → `main` PR owned by the user. Hotfixes start from `main`, enter by PR and synchronize back to `dev`. Never push directly to `main`. Earlier no-PR instructions are superseded. Include tested/published commits and blocked server-protection/deployment/device validation in the delivery record.
 - CI should run `docs:check`, smoke tests, Jest, production build, and `verify:dist`.
 - Cloudflare project: `dryfire`; `wrangler.jsonc` controls static asset deployment from `./dist`.
 - Never claim a GitHub push, Cloudflare deployment, or real-device verification succeeded without observing success.

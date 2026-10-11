@@ -10,14 +10,18 @@ To serve the existing Worker, use Cloudflare **Workers & Pages → dryfire → S
 
 ## Development and production branches
 
-CHG-024: publish new changes to `dev` first and run CI there. `main` remains the production branch; merge/promote only when explicitly requested. If enabling Cloudflare development previews, use the non-production preview command below and verify the build is for `dev`; do not change the production branch to `dev`. A dev preview uses a separate origin/library and cannot verify production deployment.
+CHG-025 adopts [the branching/release strategy](../project/branching-strategy.md): features use PRs into `dev`; stable releases use reviewed PRs into `main`. `main` targets production Worker `dryfire`, `dev` targets staging Worker `dryfire-dev`. Both application/CI branches were synchronized at `f1c4241`; preparation of the policy does not bind new domains or create a staging deployment.
 
-## Cloudflare Workers Builds (matches your existing build logs)
+The opt-in GitHub deployment workflow downloads the exact artifact from a successful source/screenshot CI push run and uses GitHub environments `development` / `production`. The production environment must have a required reviewer. It stays disabled until the owner sets protections, secrets and `CLOUDFLARE_DEPLOYMENTS_ENABLED=true`; see [owner setup](../project/branching-strategy.md#development-and-production-deployment). Disable the existing Cloudflare Git auto-deployment path when adopting this workflow so it cannot bypass those checks/approval. Its current external settings remain unverified.
+
+Pinned Wrangler commands are `npm run deploy:development` and `npm run deploy:production`. `npm run deploy:check` packages both configurations without uploading them. The production name/asset path and schema 3 / backup 4 are retained; staging uses a separate origin and local browser library.
+
+## Existing Cloudflare Workers Builds (historical deployment path)
 
 1. Use the connected GitHub repository `matosaru/dryfire`, production branch `main`. Select the latest implementation commit in [implementation history](../project/implementation-history.md); a successful production build must include that commit or a descendant. The older `6119b8f` contains timed sequences/settings but predates the six practice modes.
 2. In Cloudflare dashboard → Workers & Pages → `dryfire` → Settings → Build, use:
    - Build command: `npm run build`
-   - Deploy command: `npx wrangler deploy`
+   - Deploy command: `npm run deploy:production`
    - Repository root as working directory; production branch `main`.
    - Preview/non-production deploy command: `npx wrangler preview`. This requires the top-level `"previews": {}` block included in `wrangler.jsonc`.
 3. The included `wrangler.jsonc` sets the worker name, compatibility date and static asset path `./dist`.
