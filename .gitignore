@@ -9,3 +9,5 @@ playwright-report/
 test-results/
 playwright-probe-report/
 test-results-probe/
+
+.wrangler/

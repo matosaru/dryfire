@@ -1,5 +1,7 @@
 # Dry Fire With Ease — trigger-first practice and optional sound learning
 
+Repository workflow: [main/dev branching, PR protection and test-gated deployments](../project/branching-strategy.md).
+
 Product planning: [Requirements and approvals](../requirements/README.md) · [Design catalog](../design/README.md). Read these before changing product behavior.
 
 The approved display brand is **Dry Fire With Ease**. **Sound Trainer** remains a descriptive subtitle. The existing technical `dryfire` identifiers stay unchanged to preserve local data and deployment compatibility; see [branding requirements](../requirements/branding.md).
