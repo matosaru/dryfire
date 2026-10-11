@@ -1,6 +1,6 @@
 # Keeping designs and implementation aligned
 
-2026-10-11 · current coverage: ten screens, one shared safety dialog and 42 reviewed app captures. CHG-021 adds 106 separate Chromium/WebKit baseline images and twelve browser interaction checks. Pinned rendering and an unchanged 118-check rerun passed; all 106 baselines are reviewed and fingerprinted. Permanent comparison/probe CI is being published to `dev`; final CI evidence is recorded in the [delivery tracker](../project/implementation-history.md).
+2026-10-11 · current coverage: ten screens, one shared safety dialog and 42 reviewed app captures. CHG-021 adds 106 separate Chromium/WebKit baseline images and twelve browser interaction checks. Pinned rendering and an unchanged 118-check rerun passed; all 106 baselines are reviewed and fingerprinted. Permanent comparison/probe CI passes on `dev` in [run 38161894476](https://github.com/matosaru/dryfire/actions/runs/38161894476); evidence and remaining deployment/device work are recorded in the [delivery tracker](../project/implementation-history.md).
 
 ## Current traceable evidence
 

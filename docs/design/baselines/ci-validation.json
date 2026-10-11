@@ -1,0 +1,52 @@
+{
+  "run": "https://github.com/matosaru/dryfire/actions/runs/38161894476",
+  "sourceCommit": "bfda2b77138d21f6d4591a92ce15df88070f6d98",
+  "observedDate": "2026-10-11",
+  "evidence": "Public GitHub run success, 118-passed Playwright annotation, successful comparison/probe/upload steps; source validation job success.",
+  "environment": {
+    "playwrightVersion": "1.58.2",
+    "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+    "platform": "linux/amd64",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "clock": "2026-10-11T11:00:00.000Z",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "maxDiffPixels": 0,
+    "comparisonThreshold": 0.005
+  },
+  "browserChecks": 118,
+  "baselineImages": 106,
+  "interactionChecks": 12,
+  "intentionalDefectProbe": {
+    "expectedComparisonFailures": 2,
+    "browsers": [
+      "chromium",
+      "webkit"
+    ],
+    "requiredAttachments": [
+      "expected.png",
+      "actual.png",
+      "diff.png"
+    ],
+    "result": "passed"
+  },
+  "sourceValidation": {
+    "jestTests": 281,
+    "jestSuites": 23,
+    "smokeChecks": 16,
+    "documentation": "passed",
+    "productionBuild": "passed",
+    "minifiedAssets": "passed"
+  },
+  "artifact": {
+    "name": "screenshot-checks",
+    "retentionDays": 14,
+    "observedDigest": "sha256:2599fec07035091cfa5bcef0645efd58a0f88a0b987fa16e3ffa5475e4dcaf91"
+  },
+  "deployment": "not verified",
+  "physicalIPhone": "not verified"
+}
