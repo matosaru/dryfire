@@ -185,7 +185,7 @@ for (const item of cases) {
       const controlStyle = control?.getAttribute('style');
       const styles = [];
       if (control) {
-        for (const css of ['overflow:hidden;text-overflow:ellipsis', 'appearance:none', 'display:block']) {
+        for (const css of ['contain:paint', 'contain:inline-size', 'position:relative', 'max-width:100%;width:100%;overflow:clip', 'appearance:none;contain:paint']) {
           control.style.cssText = `${controlStyle || ''};${css}`;
           styles.push({ css, after: width(), rect: control.getBoundingClientRect().width, scroll: control.scrollWidth });
         }
