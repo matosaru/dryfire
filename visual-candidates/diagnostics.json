@@ -1,9 +1,9 @@
 {
-  "source": "6c01f23eccdee5f9cc86271d3d998b4f2fdb36e3",
+  "source": "6ef95a217d8dadb8a215ce42cd21702106ce4573",
   "stats": {
-    "startTime": "2026-10-11T15:46:00.028Z",
-    "duration": 134693.346,
-    "expected": 115,
+    "startTime": "2026-10-11T15:52:41.551Z",
+    "duration": 7765.960999999999,
+    "expected": 0,
     "skipped": 0,
     "unexpected": 1,
     "flaky": 0
@@ -15,7 +15,7 @@
       "browser": "webkit",
       "status": "failed",
       "errors": [
-        "Error: Horizontal overflow: []\n\nexpect(received).toBeLessThanOrEqual(expected)\n\nExpected: <= 0\nReceived:    50\n\n  190 |         parent: node.parentElement?.className, text: node.textContent?.trim().slice(0, 70) }))\n  191 |       .sort((a, b) => b.right - a.right).slice(0, 20)) : [];\n> 192 |     expect(overflow, `Horizontal overflow: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);\n      |                                                                           ^\n  193 |     expect(errors, 'Unexpected browser errors').toEqual([]);\n  194 |     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });\n  195 |     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });\n    at /__w/dryfire/dryfire/visual-tests/screens.spec.js:192:75"
+        "Error: Horizontal overflow: {\"viewport\":320,\"body\":370,\"root\":370,\"reductions\":[{\"tag\":\"SECTION\",\"id\":\"\",\"class\":\"practice-progress-section\",\"after\":320}]}; visible offenders: []\n\nexpect(received).toBeLessThanOrEqual(expected)\n\nExpected: <= 0\nReceived:    50\n\n  204 |         parent: node.parentElement?.className, text: node.textContent?.trim().slice(0, 70) }))\n  205 |       .sort((a, b) => b.right - a.right).slice(0, 20)) : [];\n> 206 |     expect(overflow, `Horizontal overflow: ${JSON.stringify(layout)}; visible offenders: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);\n      |                                                                                                                         ^\n  207 |     expect(errors, 'Unexpected browser errors').toEqual([]);\n  208 |     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });\n  209 |     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });\n    at /__w/dryfire/dryfire/visual-tests/screens.spec.js:206:121"
       ]
     }
   ]
