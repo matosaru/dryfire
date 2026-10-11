@@ -414,3 +414,7 @@ The user explicitly instructed **“proceed with 1 point, Add screenshot checks 
 ### CHG-024 — Resolve main/dev conflicts on dev
 
 2026-10-11: the user reported **“DEV branch now have conflicts with main branch”** and instructed **“review and fix conflicts”**. Synchronize by merging current `main` into `dev`, retaining the reviewed baselines and newer dev-only workflow. This is a routine repository correction under the existing dev-first/direct-push authorization, not permission to promote dev to main. The obsolete automated screenshot candidates on main are superseded; preserve application behavior and saved data. Record validation and publication separately in the delivery tracker.
+
+### CHG-021 — Engineering validation policy refinement
+
+2026-10-11: fixed-container reruns pass on one host, while independent GitHub hosts show isolated gradient/shadow rounding (maximum observed channel delta 1). Software overrides did not establish cross-host bit identity and are removed. Under the existing screenshot-CI authorization, [engineering revision 1.1](../development/VISUAL_TESTS.md) documents Playwright perceptual distance 0.005 with zero allowed pixels above it, retaining reviewed PNGs, no masks/retries/auto-updates and the deliberate visible-defect proof. This is an explained test-environment choice, not new product scope or a claim that the user separately approved this numeric threshold. Final comparison/probe outcomes are recorded separately.
