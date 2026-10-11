@@ -1,0 +1,13 @@
+{
+  "source": "76a32bae272ddd4af88edf676226e5e010ec9888",
+  "stats": {
+    "startTime": "2026-10-11T16:36:07.931Z",
+    "duration": 23020.876,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "failures": []
+}
