@@ -28,7 +28,8 @@ jobs:
         run: npx --no-install playwright test --config visual-candidates.config.js
         env:
           VISUAL_CANDIDATES_COMPARE: '1'
-      - run: cp test-results/build-manifest.json visual-candidates/build-manifest.json
+      - run: node tools/visual-candidate-diagnostics.mjs
+        if: always()
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -40,6 +41,7 @@ jobs:
           retention-days: 14
           if-no-files-found: error
       - name: Publish candidates for review, not accepted baselines
+        if: ${{ !cancelled() }}
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$GITHUB_SHA"

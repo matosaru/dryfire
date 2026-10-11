@@ -10,7 +10,7 @@ export default defineConfig({
   updateSnapshots: 'none', snapshotPathTemplate: '{testDir}/../docs/design/baselines/{projectName}/{arg}{ext}',
   outputDir: results,
   globalSetup: './visual-tests/metadata.js',
-  reporter: [['line'], ['html', { open: 'never', outputFolder: probe ? 'playwright-probe-report' : 'playwright-report' }], ['json', { outputFile: `${results}/results.json` }]],
+  reporter: [['line'], ...(process.env.CI && !probe ? [['github']] : []), ['html', { open: 'never', outputFolder: probe ? 'playwright-probe-report' : 'playwright-report' }], ['json', { outputFile: `${results}/results.json` }]],
   expect: { timeout: 5000, toHaveScreenshot: { maxDiffPixels: environment.maxDiffPixels, threshold: 0, animations: 'disabled', caret: 'hide', scale: 'css' } },
   use: { baseURL: 'http://127.0.0.1:4175', viewport: environment.viewport, deviceScaleFactor: environment.deviceScaleFactor,
     locale: environment.locale, timezoneId: environment.timezoneId, colorScheme: 'dark', contextOptions: { reducedMotion: 'reduce' },
