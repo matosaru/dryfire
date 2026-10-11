@@ -410,3 +410,7 @@ The user explicitly instructed **“proceed with 1 point, Add screenshot checks 
 ## CHG-024 — Develop on the existing dev branch first
 
 2026-10-11: direct instruction **“i created a separate dev branch, i want new changes first go to DEV branch”**. Remote discovery confirms its exact case is `dev`. Subsequent work is committed/pushed there and tested before any separately requested production promotion. This supersedes earlier direct-main authorization for subsequent work; the no-PR preference remains in force. Update repository instructions, CI branch triggers and the delivery tracker. Existing publications and an already-running initial-candidate job predate this instruction; they are recorded rather than rewritten.
+
+### CHG-024 — Resolve main/dev conflicts on dev
+
+2026-10-11: the user reported **“DEV branch now have conflicts with main branch”** and instructed **“review and fix conflicts”**. Synchronize by merging current `main` into `dev`, retaining the reviewed baselines and newer dev-only workflow. This is a routine repository correction under the existing dev-first/direct-push authorization, not permission to promote dev to main. The obsolete automated screenshot candidates on main are superseded; preserve application behavior and saved data. Record validation and publication separately in the delivery tracker.
