@@ -4,5 +4,14 @@
   "previews": {},
   "assets": {
     "directory": "./dist"
+  },
+  "env": {
+    "dev": {
+      "name": "dryfire-dev",
+      "assets": {
+        "directory": "./dist"
+      },
+      "workers_dev": true
+    }
   }
 }
