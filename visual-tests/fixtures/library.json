@@ -1,0 +1,1433 @@
+{
+  "format": "sound-trainer-backup",
+  "version": 4,
+  "featureVersion": 2,
+  "exportedAt": "2026-10-11T11:00:00.000Z",
+  "guns": [
+    {
+      "id": "qa-gun-a",
+      "name": "QA Handgun",
+      "type": "Handguns",
+      "needsDetails": false,
+      "createdAt": 1791111600000
+    },
+    {
+      "id": "qa-gun-b",
+      "name": "QA Carbine",
+      "type": "Rifles and Carbines",
+      "needsDetails": false,
+      "createdAt": 1791198000000
+    },
+    {
+      "id": "qa-gun-c",
+      "name": "QA Shotgun",
+      "type": "Shotguns",
+      "needsDetails": false,
+      "createdAt": 1791284400000
+    }
+  ],
+  "activeGunId": "qa-gun-a",
+  "settings": {
+    "appearance": "dark",
+    "vibrationFeedback": false
+  },
+  "gunSettings": [
+    {
+      "gunId": "qa-gun-a",
+      "key": "maxResults",
+      "value": 42
+    },
+    {
+      "gunId": "qa-gun-b",
+      "key": "maxResults",
+      "value": 17
+    },
+    {
+      "gunId": "qa-gun-a",
+      "key": "customDrills",
+      "value": [
+        {
+          "id": "custom-qa-a",
+          "title": "QA saved sequence",
+          "steps": [
+            "draw",
+            "reload",
+            "trigger"
+          ]
+        }
+      ]
+    },
+    {
+      "gunId": "qa-gun-a",
+      "key": "calibrationExamples",
+      "value": [
+        {
+          "id": "cal-reset-0",
+          "kind": "reset",
+          "features": [
+            0.038271849189369454,
+            0.03924898676370681,
+            0.026720778486318902,
+            0.08485281389834444,
+            0.015665228269935088,
+            0.017305193228495327,
+            0.003336113427856547,
+            0.03753127606338615,
+            0.06260869425276051,
+            0.05994326105882136,
+            0.11999999731779099,
+            0.11999999731779099,
+            0.08485281389834444,
+            0.3181818181818182,
+            0.43478260869565216
+          ],
+          "featureVersion": 2,
+          "createdAt": 1720000000200
+        },
+        {
+          "id": "cal-cue-0",
+          "kind": "cue",
+          "features": [
+            0.04600732700072968,
+            0.03982691292845132,
+            0.06572670679682842,
+            0.08485281360839161,
+            0.023471940903133565,
+            0.02169929842906003,
+            0.026688907422852376,
+            0.045871559633027525,
+            0.07285677428756442,
+            0.05860596497235809,
+            0.11999999731779099,
+            0.11999999731779099,
+            0.08485281360839161,
+            0.25925925925925924,
+            0.5357142857142857
+          ],
+          "featureVersion": 2,
+          "createdAt": 1720000000200
+        },
+        {
+          "id": "cal-cue-1",
+          "kind": "cue",
+          "features": [
+            0.04600732700072968,
+            0.03982691292845132,
+            0.06572670679682842,
+            0.08485281360839161,
+            0.023471940903133565,
+            0.02169929842906003,
+            0.026688907422852376,
+            0.045871559633027525,
+            0.07285677428756442,
+            0.05860596497235809,
+            0.11999999731779099,
+            0.11999999731779099,
+            0.08485281360839161,
+            0.25925925925925924,
+            0.5357142857142857
+          ],
+          "featureVersion": 2,
+          "createdAt": 1720000000201
+        },
+        {
+          "id": "cal-cue-2",
+          "kind": "cue",
+          "features": [
+            0.04600732700072968,
+            0.03982691292845132,
+            0.06572670679682842,
+            0.08485281360839161,
+            0.023471940903133565,
+            0.02169929842906003,
+            0.026688907422852376,
+            0.045871559633027525,
+            0.07285677428756442,
+            0.05860596497235809,
+            0.11999999731779099,
+            0.11999999731779099,
+            0.08485281360839161,
+            0.25925925925925924,
+            0.5357142857142857
+          ],
+          "featureVersion": 2,
+          "createdAt": 1720000000202
+        }
+      ]
+    }
+  ],
+  "examples": [
+    {
+      "id": "qa-gun-a-draw-0",
+      "gunId": "qa-gun-a",
+      "label": "draw",
+      "featureVersion": 2,
+      "features": [
+        0.017242443428862064,
+        0.014903152144222175,
+        0.024418803040923275,
+        0.03215743099374023,
+        0.0036935541522697484,
+        0.0034056013172778393,
+        0.004170141784820684,
+        0.007506255212677231,
+        0.027321339318794862,
+        0.02197727624017384,
+        0.04499996080994606,
+        0.04500000178813934,
+        0.03230581731149213,
+        0.3333333333333333,
+        0.5357142857142857
+      ],
+      "createdAt": 1720000000000
+    },
+    {
+      "id": "qa-gun-a-draw-1",
+      "gunId": "qa-gun-a",
+      "label": "draw",
+      "featureVersion": 2,
+      "features": [
+        0.017242443428862064,
+        0.014903152144222175,
+        0.024418803040923275,
+        0.03215743099374023,
+        0.0036935541522697484,
+        0.0034056013172778393,
+        0.004170141784820684,
+        0.007506255212677231,
+        0.027321339318794862,
+        0.02197727624017384,
+        0.04499996080994606,
+        0.04500000178813934,
+        0.03230581731149213,
+        0.3333333333333333,
+        0.5357142857142857
+      ],
+      "createdAt": 1720000000001
+    },
+    {
+      "id": "qa-gun-a-draw-2",
+      "gunId": "qa-gun-a",
+      "label": "draw",
+      "featureVersion": 2,
+      "features": [
+        0.017242443428862064,
+        0.014903152144222175,
+        0.024418803040923275,
+        0.03215743099374023,
+        0.0036935541522697484,
+        0.0034056013172778393,
+        0.004170141784820684,
+        0.007506255212677231,
+        0.027321339318794862,
+        0.02197727624017384,
+        0.04499996080994606,
+        0.04500000178813934,
+        0.03230581731149213,
+        0.3333333333333333,
+        0.5357142857142857
+      ],
+      "createdAt": 1720000000002
+    },
+    {
+      "id": "qa-gun-b-draw-0",
+      "gunId": "qa-gun-b",
+      "label": "draw",
+      "featureVersion": 2,
+      "features": [
+        0.017242443428862064,
+        0.014903152144222175,
+        0.024418803040923275,
+        0.03215743099374023,
+        0.0036935541522697484,
+        0.0034056013172778393,
+        0.004170141784820684,
+        0.007506255212677231,
+        0.027321339318794862,
+        0.02197727624017384,
+        0.04499996080994606,
+        0.04500000178813934,
+        0.03230581731149213,
+        0.3333333333333333,
+        0.5357142857142857
+      ],
+      "createdAt": 1720000000000
+    },
+    {
+      "id": "qa-gun-b-draw-1",
+      "gunId": "qa-gun-b",
+      "label": "draw",
+      "featureVersion": 2,
+      "features": [
+        0.017242443428862064,
+        0.014903152144222175,
+        0.024418803040923275,
+        0.03215743099374023,
+        0.0036935541522697484,
+        0.0034056013172778393,
+        0.004170141784820684,
+        0.007506255212677231,
+        0.027321339318794862,
+        0.02197727624017384,
+        0.04499996080994606,
+        0.04500000178813934,
+        0.03230581731149213,
+        0.3333333333333333,
+        0.5357142857142857
+      ],
+      "createdAt": 1720000000001
+    },
+    {
+      "id": "qa-gun-b-draw-2",
+      "gunId": "qa-gun-b",
+      "label": "draw",
+      "featureVersion": 2,
+      "features": [
+        0.017242443428862064,
+        0.014903152144222175,
+        0.024418803040923275,
+        0.03215743099374023,
+        0.0036935541522697484,
+        0.0034056013172778393,
+        0.004170141784820684,
+        0.007506255212677231,
+        0.027321339318794862,
+        0.02197727624017384,
+        0.04499996080994606,
+        0.04500000178813934,
+        0.03230581731149213,
+        0.3333333333333333,
+        0.5357142857142857
+      ],
+      "createdAt": 1720000000002
+    },
+    {
+      "id": "qa-gun-a-rack-0",
+      "gunId": "qa-gun-a",
+      "label": "rack",
+      "featureVersion": 2,
+      "features": [
+        0.036030981089831875,
+        0.027916040022046444,
+        0.05987209852196767,
+        0.06015295327058292,
+        0.019391159299416177,
+        0.015970880850771203,
+        0.03336113427856547,
+        0.03419516263552961,
+        0.055781148141250014,
+        0.040371431065601475,
+        0.08500000089406967,
+        0.08500000089406967,
+        0.0603351626014229,
+        0.25806451612903225,
+        0.59375
+      ],
+      "createdAt": 1720000000000
+    },
+    {
+      "id": "qa-gun-a-rack-1",
+      "gunId": "qa-gun-a",
+      "label": "rack",
+      "featureVersion": 2,
+      "features": [
+        0.036030981089831875,
+        0.027916040022046444,
+        0.05987209852196767,
+        0.06015295327058292,
+        0.019391159299416177,
+        0.015970880850771203,
+        0.03336113427856547,
+        0.03419516263552961,
+        0.055781148141250014,
+        0.040371431065601475,
+        0.08500000089406967,
+        0.08500000089406967,
+        0.0603351626014229,
+        0.25806451612903225,
+        0.59375
+      ],
+      "createdAt": 1720000000001
+    },
+    {
+      "id": "qa-gun-a-rack-2",
+      "gunId": "qa-gun-a",
+      "label": "rack",
+      "featureVersion": 2,
+      "features": [
+        0.036030981089831875,
+        0.027916040022046444,
+        0.05987209852196767,
+        0.06015295327058292,
+        0.019391159299416177,
+        0.015970880850771203,
+        0.03336113427856547,
+        0.03419516263552961,
+        0.055781148141250014,
+        0.040371431065601475,
+        0.08500000089406967,
+        0.08500000089406967,
+        0.0603351626014229,
+        0.25806451612903225,
+        0.59375
+      ],
+      "createdAt": 1720000000002
+    },
+    {
+      "id": "qa-gun-b-rack-0",
+      "gunId": "qa-gun-b",
+      "label": "rack",
+      "featureVersion": 2,
+      "features": [
+        0.036030981089831875,
+        0.027916040022046444,
+        0.05987209852196767,
+        0.06015295327058292,
+        0.019391159299416177,
+        0.015970880850771203,
+        0.03336113427856547,
+        0.03419516263552961,
+        0.055781148141250014,
+        0.040371431065601475,
+        0.08500000089406967,
+        0.08500000089406967,
+        0.0603351626014229,
+        0.25806451612903225,
+        0.59375
+      ],
+      "createdAt": 1720000000000
+    },
+    {
+      "id": "qa-gun-b-rack-1",
+      "gunId": "qa-gun-b",
+      "label": "rack",
+      "featureVersion": 2,
+      "features": [
+        0.036030981089831875,
+        0.027916040022046444,
+        0.05987209852196767,
+        0.06015295327058292,
+        0.019391159299416177,
+        0.015970880850771203,
+        0.03336113427856547,
+        0.03419516263552961,
+        0.055781148141250014,
+        0.040371431065601475,
+        0.08500000089406967,
+        0.08500000089406967,
+        0.0603351626014229,
+        0.25806451612903225,
+        0.59375
+      ],
+      "createdAt": 1720000000001
+    },
+    {
+      "id": "qa-gun-b-rack-2",
+      "gunId": "qa-gun-b",
+      "label": "rack",
+      "featureVersion": 2,
+      "features": [
+        0.036030981089831875,
+        0.027916040022046444,
+        0.05987209852196767,
+        0.06015295327058292,
+        0.019391159299416177,
+        0.015970880850771203,
+        0.03336113427856547,
+        0.03419516263552961,
+        0.055781148141250014,
+        0.040371431065601475,
+        0.08500000089406967,
+        0.08500000089406967,
+        0.0603351626014229,
+        0.25806451612903225,
+        0.59375
+      ],
+      "createdAt": 1720000000002
+    },
+    {
+      "id": "qa-gun-a-trigger-0",
+      "gunId": "qa-gun-a",
+      "label": "trigger",
+      "featureVersion": 2,
+      "features": [
+        0.020732228736907003,
+        0.021258265077095505,
+        0.014534441953086048,
+        0.04596194109125811,
+        0.048663741523733546,
+        0.05378174704418889,
+        0.010842368640533779,
+        0.11676396997497915,
+        0.033913042234337845,
+        0.032469265941640624,
+        0.06499999761581421,
+        0.06499999761581421,
+        0.04596194109125811,
+        0.3181818181818182,
+        0.43478260869565216
+      ],
+      "createdAt": 1720000000000
+    },
+    {
+      "id": "qa-gun-a-trigger-1",
+      "gunId": "qa-gun-a",
+      "label": "trigger",
+      "featureVersion": 2,
+      "features": [
+        0.020732228736907003,
+        0.021258265077095505,
+        0.014534441953086048,
+        0.04596194109125811,
+        0.048663741523733546,
+        0.05378174704418889,
+        0.010842368640533779,
+        0.11676396997497915,
+        0.033913042234337845,
+        0.032469265941640624,
+        0.06499999761581421,
+        0.06499999761581421,
+        0.04596194109125811,
+        0.3181818181818182,
+        0.43478260869565216
+      ],
+      "createdAt": 1720000000001
+    },
+    {
+      "id": "qa-gun-a-trigger-2",
+      "gunId": "qa-gun-a",
+      "label": "trigger",
+      "featureVersion": 2,
+      "features": [
+        0.020732228736907003,
+        0.021258265077095505,
+        0.014534441953086048,
+        0.04596194109125811,
+        0.048663741523733546,
+        0.05378174704418889,
+        0.010842368640533779,
+        0.11676396997497915,
+        0.033913042234337845,
+        0.032469265941640624,
+        0.06499999761581421,
+        0.06499999761581421,
+        0.04596194109125811,
+        0.3181818181818182,
+        0.43478260869565216
+      ],
+      "createdAt": 1720000000002
+    },
+    {
+      "id": "qa-gun-b-trigger-0",
+      "gunId": "qa-gun-b",
+      "label": "trigger",
+      "featureVersion": 2,
+      "features": [
+        0.020732228736907003,
+        0.021258265077095505,
+        0.014534441953086048,
+        0.04596194109125811,
+        0.048663741523733546,
+        0.05378174704418889,
+        0.010842368640533779,
+        0.11676396997497915,
+        0.033913042234337845,
+        0.032469265941640624,
+        0.06499999761581421,
+        0.06499999761581421,
+        0.04596194109125811,
+        0.3181818181818182,
+        0.43478260869565216
+      ],
+      "createdAt": 1720000000000
+    },
+    {
+      "id": "qa-gun-b-trigger-1",
+      "gunId": "qa-gun-b",
+      "label": "trigger",
+      "featureVersion": 2,
+      "features": [
+        0.020732228736907003,
+        0.021258265077095505,
+        0.014534441953086048,
+        0.04596194109125811,
+        0.048663741523733546,
+        0.05378174704418889,
+        0.010842368640533779,
+        0.11676396997497915,
+        0.033913042234337845,
+        0.032469265941640624,
+        0.06499999761581421,
+        0.06499999761581421,
+        0.04596194109125811,
+        0.3181818181818182,
+        0.43478260869565216
+      ],
+      "createdAt": 1720000000001
+    },
+    {
+      "id": "qa-gun-b-trigger-2",
+      "gunId": "qa-gun-b",
+      "label": "trigger",
+      "featureVersion": 2,
+      "features": [
+        0.020732228736907003,
+        0.021258265077095505,
+        0.014534441953086048,
+        0.04596194109125811,
+        0.048663741523733546,
+        0.05378174704418889,
+        0.010842368640533779,
+        0.11676396997497915,
+        0.033913042234337845,
+        0.032469265941640624,
+        0.06499999761581421,
+        0.06499999761581421,
+        0.04596194109125811,
+        0.3181818181818182,
+        0.43478260869565216
+      ],
+      "createdAt": 1720000000002
+    },
+    {
+      "id": "qa-gun-a-reload-0",
+      "gunId": "qa-gun-a",
+      "label": "reload",
+      "featureVersion": 2,
+      "features": [
+        0.07234381904184922,
+        0.05168033040811511,
+        0.1131370848901498,
+        0.11313708489014983,
+        0.010770880495651142,
+        0.008150763265252084,
+        0.01751459549624687,
+        0.01751459549624687,
+        0.10971357864992959,
+        0.07427644394650766,
+        0.1599999964237213,
+        0.1599999964237213,
+        0.11313708489014983,
+        0.23529411764705882,
+        0.6285714285714286
+      ],
+      "createdAt": 1720000000000
+    },
+    {
+      "id": "qa-gun-a-reload-1",
+      "gunId": "qa-gun-a",
+      "label": "reload",
+      "featureVersion": 2,
+      "features": [
+        0.07234381904184922,
+        0.05168033040811511,
+        0.1131370848901498,
+        0.11313708489014983,
+        0.010770880495651142,
+        0.008150763265252084,
+        0.01751459549624687,
+        0.01751459549624687,
+        0.10971357864992959,
+        0.07427644394650766,
+        0.1599999964237213,
+        0.1599999964237213,
+        0.11313708489014983,
+        0.23529411764705882,
+        0.6285714285714286
+      ],
+      "createdAt": 1720000000001
+    },
+    {
+      "id": "qa-gun-a-reload-2",
+      "gunId": "qa-gun-a",
+      "label": "reload",
+      "featureVersion": 2,
+      "features": [
+        0.07234381904184922,
+        0.05168033040811511,
+        0.1131370848901498,
+        0.11313708489014983,
+        0.010770880495651142,
+        0.008150763265252084,
+        0.01751459549624687,
+        0.01751459549624687,
+        0.10971357864992959,
+        0.07427644394650766,
+        0.1599999964237213,
+        0.1599999964237213,
+        0.11313708489014983,
+        0.23529411764705882,
+        0.6285714285714286
+      ],
+      "createdAt": 1720000000002
+    },
+    {
+      "id": "qa-gun-b-reload-0",
+      "gunId": "qa-gun-b",
+      "label": "reload",
+      "featureVersion": 2,
+      "features": [
+        0.07234381904184922,
+        0.05168033040811511,
+        0.1131370848901498,
+        0.11313708489014983,
+        0.010770880495651142,
+        0.008150763265252084,
+        0.01751459549624687,
+        0.01751459549624687,
+        0.10971357864992959,
+        0.07427644394650766,
+        0.1599999964237213,
+        0.1599999964237213,
+        0.11313708489014983,
+        0.23529411764705882,
+        0.6285714285714286
+      ],
+      "createdAt": 1720000000000
+    },
+    {
+      "id": "qa-gun-b-reload-1",
+      "gunId": "qa-gun-b",
+      "label": "reload",
+      "featureVersion": 2,
+      "features": [
+        0.07234381904184922,
+        0.05168033040811511,
+        0.1131370848901498,
+        0.11313708489014983,
+        0.010770880495651142,
+        0.008150763265252084,
+        0.01751459549624687,
+        0.01751459549624687,
+        0.10971357864992959,
+        0.07427644394650766,
+        0.1599999964237213,
+        0.1599999964237213,
+        0.11313708489014983,
+        0.23529411764705882,
+        0.6285714285714286
+      ],
+      "createdAt": 1720000000001
+    },
+    {
+      "id": "qa-gun-b-reload-2",
+      "gunId": "qa-gun-b",
+      "label": "reload",
+      "featureVersion": 2,
+      "features": [
+        0.07234381904184922,
+        0.05168033040811511,
+        0.1131370848901498,
+        0.11313708489014983,
+        0.010770880495651142,
+        0.008150763265252084,
+        0.01751459549624687,
+        0.01751459549624687,
+        0.10971357864992959,
+        0.07427644394650766,
+        0.1599999964237213,
+        0.1599999964237213,
+        0.11313708489014983,
+        0.23529411764705882,
+        0.6285714285714286
+      ],
+      "createdAt": 1720000000002
+    }
+  ],
+  "events": [
+    {
+      "id": "qa-history-a",
+      "gunId": "qa-gun-a",
+      "label": "trigger",
+      "score": 91,
+      "actualLabel": "trigger",
+      "createdAt": 1791712800000
+    },
+    {
+      "id": "qa-history-b",
+      "gunId": "qa-gun-b",
+      "label": "rack",
+      "score": 85,
+      "actualLabel": "reload",
+      "createdAt": 1791709200000
+    }
+  ],
+  "sessions": [
+    {
+      "kind": "practice",
+      "practiceMode": "single",
+      "id": "progress-0",
+      "gunId": "qa-gun-a",
+      "gunName": "QA Handgun",
+      "gunType": "Handguns",
+      "drillId": "practice-single",
+      "drillTitle": "Single trigger press",
+      "drillSteps": [
+        "trigger"
+      ],
+      "config": {
+        "repetitions": 3,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 60,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "revision": 12,
+      "startedAt": 1791198000000,
+      "updatedAt": 1791198013700,
+      "endedAt": 1791198013700,
+      "endReason": "target",
+      "status": "completed",
+      "completed": 3,
+      "remaining": 0,
+      "shots": 3,
+      "elapsedMs": 3000,
+      "repetitions": [
+        {
+          "attempt": 1,
+          "ordinal": 1,
+          "status": "hit",
+          "startedAt": 1791198003500,
+          "goAt": 1791198003500,
+          "endedAt": 1791198004500,
+          "reason": "recognized",
+          "elapsedMs": 1000,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 1000,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 1000,
+              "splitMs": 1000
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "ordinal": 2,
+          "status": "hit",
+          "startedAt": 1791198008100,
+          "goAt": 1791198008100,
+          "endedAt": 1791198009100,
+          "reason": "recognized",
+          "elapsedMs": 1000,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 1000,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 1000,
+              "splitMs": 1000
+            }
+          ]
+        },
+        {
+          "attempt": 3,
+          "ordinal": 3,
+          "status": "hit",
+          "startedAt": 1791198012700,
+          "goAt": 1791198012700,
+          "endedAt": 1791198013700,
+          "reason": "recognized",
+          "elapsedMs": 1000,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 1000,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 1000,
+              "splitMs": 1000
+            }
+          ]
+        }
+      ],
+      "currentAttempt": null
+    },
+    {
+      "kind": "practice",
+      "practiceMode": "single",
+      "id": "progress-1",
+      "gunId": "qa-gun-a",
+      "gunName": "QA Handgun",
+      "gunType": "Handguns",
+      "drillId": "practice-single",
+      "drillTitle": "Single trigger press",
+      "drillSteps": [
+        "trigger"
+      ],
+      "config": {
+        "repetitions": 3,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 60,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "revision": 12,
+      "startedAt": 1791284400000,
+      "updatedAt": 1791284413400,
+      "endedAt": 1791284413400,
+      "endReason": "target",
+      "status": "completed",
+      "completed": 3,
+      "remaining": 0,
+      "shots": 3,
+      "elapsedMs": 2700,
+      "repetitions": [
+        {
+          "attempt": 1,
+          "ordinal": 1,
+          "status": "hit",
+          "startedAt": 1791284403500,
+          "goAt": 1791284403500,
+          "endedAt": 1791284404400,
+          "reason": "recognized",
+          "elapsedMs": 900,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 900,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 900,
+              "splitMs": 900
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "ordinal": 2,
+          "status": "hit",
+          "startedAt": 1791284408000,
+          "goAt": 1791284408000,
+          "endedAt": 1791284408900,
+          "reason": "recognized",
+          "elapsedMs": 900,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 900,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 900,
+              "splitMs": 900
+            }
+          ]
+        },
+        {
+          "attempt": 3,
+          "ordinal": 3,
+          "status": "hit",
+          "startedAt": 1791284412500,
+          "goAt": 1791284412500,
+          "endedAt": 1791284413400,
+          "reason": "recognized",
+          "elapsedMs": 900,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 900,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 900,
+              "splitMs": 900
+            }
+          ]
+        }
+      ],
+      "currentAttempt": null
+    },
+    {
+      "kind": "practice",
+      "practiceMode": "single",
+      "id": "progress-2",
+      "gunId": "qa-gun-a",
+      "gunName": "QA Handgun",
+      "gunType": "Handguns",
+      "drillId": "practice-single",
+      "drillTitle": "Single trigger press",
+      "drillSteps": [
+        "trigger"
+      ],
+      "config": {
+        "repetitions": 3,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 60,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "revision": 12,
+      "startedAt": 1791370800000,
+      "updatedAt": 1791370813100,
+      "endedAt": 1791370813100,
+      "endReason": "target",
+      "status": "completed",
+      "completed": 3,
+      "remaining": 0,
+      "shots": 3,
+      "elapsedMs": 2400,
+      "repetitions": [
+        {
+          "attempt": 1,
+          "ordinal": 1,
+          "status": "hit",
+          "startedAt": 1791370803500,
+          "goAt": 1791370803500,
+          "endedAt": 1791370804300,
+          "reason": "recognized",
+          "elapsedMs": 800,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 800,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 800,
+              "splitMs": 800
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "ordinal": 2,
+          "status": "hit",
+          "startedAt": 1791370807900,
+          "goAt": 1791370807900,
+          "endedAt": 1791370808700,
+          "reason": "recognized",
+          "elapsedMs": 800,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 800,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 800,
+              "splitMs": 800
+            }
+          ]
+        },
+        {
+          "attempt": 3,
+          "ordinal": 3,
+          "status": "hit",
+          "startedAt": 1791370812300,
+          "goAt": 1791370812300,
+          "endedAt": 1791370813100,
+          "reason": "recognized",
+          "elapsedMs": 800,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 800,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 800,
+              "splitMs": 800
+            }
+          ]
+        }
+      ],
+      "currentAttempt": null
+    },
+    {
+      "kind": "practice",
+      "practiceMode": "single",
+      "id": "progress-3",
+      "gunId": "qa-gun-a",
+      "gunName": "QA Handgun",
+      "gunType": "Handguns",
+      "drillId": "practice-single",
+      "drillTitle": "Single trigger press",
+      "drillSteps": [
+        "trigger"
+      ],
+      "config": {
+        "repetitions": 3,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 60,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "revision": 12,
+      "startedAt": 1791457200000,
+      "updatedAt": 1791457212800,
+      "endedAt": 1791457212800,
+      "endReason": "target",
+      "status": "completed",
+      "completed": 3,
+      "remaining": 0,
+      "shots": 3,
+      "elapsedMs": 2100,
+      "repetitions": [
+        {
+          "attempt": 1,
+          "ordinal": 1,
+          "status": "hit",
+          "startedAt": 1791457203500,
+          "goAt": 1791457203500,
+          "endedAt": 1791457204200,
+          "reason": "recognized",
+          "elapsedMs": 700,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 700,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 700,
+              "splitMs": 700
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "ordinal": 2,
+          "status": "hit",
+          "startedAt": 1791457207800,
+          "goAt": 1791457207800,
+          "endedAt": 1791457208500,
+          "reason": "recognized",
+          "elapsedMs": 700,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 700,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 700,
+              "splitMs": 700
+            }
+          ]
+        },
+        {
+          "attempt": 3,
+          "ordinal": 3,
+          "status": "hit",
+          "startedAt": 1791457212100,
+          "goAt": 1791457212100,
+          "endedAt": 1791457212800,
+          "reason": "recognized",
+          "elapsedMs": 700,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 700,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 700,
+              "splitMs": 700
+            }
+          ]
+        }
+      ],
+      "currentAttempt": null
+    },
+    {
+      "kind": "practice",
+      "practiceMode": "par",
+      "id": "par-progress",
+      "gunId": "qa-gun-a",
+      "gunName": "QA Handgun",
+      "gunType": "Handguns",
+      "drillId": "practice-par",
+      "drillTitle": "Par-time practice",
+      "drillSteps": [
+        "trigger"
+      ],
+      "config": {
+        "repetitions": 3,
+        "delayMode": "fixed",
+        "fixedDelaySeconds": 0,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": false,
+        "startSource": "app",
+        "durationSeconds": 60,
+        "parSeconds": 1,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "revision": 10,
+      "startedAt": 1791543600000,
+      "updatedAt": 1791543606500,
+      "endedAt": 1791543606500,
+      "endReason": "target",
+      "status": "completed",
+      "completed": 3,
+      "remaining": 0,
+      "shots": 1,
+      "elapsedMs": 6500,
+      "repetitions": [
+        {
+          "attempt": 1,
+          "ordinal": 1,
+          "status": "hit",
+          "startedAt": 1791543600000,
+          "goAt": 1791543600000,
+          "endedAt": 1791543600300,
+          "reason": "recognized",
+          "elapsedMs": 300,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 300,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 300,
+              "splitMs": 300
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "ordinal": 2,
+          "status": "miss",
+          "startedAt": 1791543600300,
+          "goAt": 1791543600300,
+          "endedAt": 1791543603400,
+          "reason": "no-click",
+          "elapsedMs": 3100,
+          "intervalMs": null,
+          "detections": [],
+          "stepTimings": []
+        },
+        {
+          "attempt": 3,
+          "ordinal": 3,
+          "status": "miss",
+          "startedAt": 1791543603400,
+          "goAt": 1791543603400,
+          "endedAt": 1791543606500,
+          "reason": "no-click",
+          "elapsedMs": 3100,
+          "intervalMs": null,
+          "detections": [],
+          "stepTimings": []
+        }
+      ],
+      "currentAttempt": null
+    },
+    {
+      "kind": "practice",
+      "practiceMode": "single",
+      "id": "qa-foreign-session",
+      "gunId": "qa-gun-b",
+      "gunName": "QA Carbine",
+      "gunType": "Rifles and Carbines",
+      "drillId": "practice-single",
+      "drillTitle": "Single trigger press",
+      "drillSteps": [
+        "trigger"
+      ],
+      "config": {
+        "repetitions": 3,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 60,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "revision": 12,
+      "startedAt": 1791630000000,
+      "updatedAt": 1791630013700,
+      "endedAt": 1791630013700,
+      "endReason": "target",
+      "status": "completed",
+      "completed": 3,
+      "remaining": 0,
+      "shots": 3,
+      "elapsedMs": 3000,
+      "repetitions": [
+        {
+          "attempt": 1,
+          "ordinal": 1,
+          "status": "hit",
+          "startedAt": 1791630003500,
+          "goAt": 1791630003500,
+          "endedAt": 1791630004500,
+          "reason": "recognized",
+          "elapsedMs": 1000,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 1000,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 1000,
+              "splitMs": 1000
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "ordinal": 2,
+          "status": "hit",
+          "startedAt": 1791630008100,
+          "goAt": 1791630008100,
+          "endedAt": 1791630009100,
+          "reason": "recognized",
+          "elapsedMs": 1000,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 1000,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 1000,
+              "splitMs": 1000
+            }
+          ]
+        },
+        {
+          "attempt": 3,
+          "ordinal": 3,
+          "status": "hit",
+          "startedAt": 1791630012700,
+          "goAt": 1791630012700,
+          "endedAt": 1791630013700,
+          "reason": "recognized",
+          "elapsedMs": 1000,
+          "intervalMs": null,
+          "detections": [
+            {
+              "label": "trigger",
+              "score": 99,
+              "offsetMs": 1000,
+              "outcome": "shot"
+            }
+          ],
+          "stepTimings": [
+            {
+              "label": "trigger",
+              "offsetMs": 1000,
+              "splitMs": 1000
+            }
+          ]
+        }
+      ],
+      "currentAttempt": null
+    }
+  ]
+}

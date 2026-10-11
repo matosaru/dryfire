@@ -394,3 +394,7 @@ The authorized complete changes were published directly to `main` in [`7240e2c`]
 ### CHG-020 source CI observed — 2026-10-11
 
 [GitHub Actions run 38144631311](https://github.com/matosaru/dryfire/actions/runs/38144631311) **completed successfully** for the authorized published source `7240e2c`, observed via public GitHub HTML. Documentation, Node 22 smoke/Jest, production build and minified assets are included. This records validation/publication rather than new approval; Cloudflare and physical-device outcomes remain unverified.
+
+## CHG-021 — Repeatable visual regression CI
+
+The user explicitly instructed **“proceed with 1 point, Add screenshot checks to CI: repeatable test data, Chromium/WebKit baselines, and downloadable images showing differences.”** on 2026-10-11. [Revision 1.0 acceptance criteria](../development/VISUAL_TESTS.md) record the requested engineering scope before test/dependency/CI implementation. Existing design states drive coverage; application behavior, public routes, saved-data formats and product defaults remain unchanged. Browser-specific baselines and a reproducible rendering environment are authorized implementation choices. No repeated step approval is required. Validation, baseline review, direct-main publication and CI outcomes are tracked separately; this instruction does not approve unrelated SEO, native or commercial implementation.
