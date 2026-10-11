@@ -406,3 +406,7 @@ The user explicitly instructed **“proceed with 1 point, Add screenshot checks 
 ## CHG-023 — Copyright notice and registered-domain record
 
 2026-10-11: the user instructed **“i registered easydryfire.com and easydryfire.app domains. Add copyright information to this app. Domains registered on claudfare”**. This directly authorizes BRAND-06 in [branding](../requirements/branding.md): a shared footer notice using the existing display brand and 2026, plus the domain record/deployment instructions. The [shared layout](../design/screens/shared/README.md) and all affected captures are updated. No different legal entity, trademark clearance, license change, live domain binding or deployment is inferred. Existing direct-main publication authorization applies.
+
+## CHG-024 — Develop on the existing dev branch first
+
+2026-10-11: direct instruction **“i created a separate dev branch, i want new changes first go to DEV branch”**. Remote discovery confirms its exact case is `dev`. Subsequent work is committed/pushed there and tested before any separately requested production promotion. This supersedes earlier direct-main authorization for subsequent work; the no-PR preference remains in force. Update repository instructions, CI branch triggers and the delivery tracker. Existing publications and an already-running initial-candidate job predate this instruction; they are recorded rather than rewritten.

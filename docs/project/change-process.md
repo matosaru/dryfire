@@ -45,3 +45,7 @@ Approval logs are append-only. Correct an inaccurate entry through a new correct
 For every screen, state, navigation, visible-control or default change, update the corresponding functional specification and screen Markdown/captures. Review `docs/architecture/screen-map.json`, refresh its reviewed-source fingerprints only after reviewing affected screens, and run `npm run docs:generate` followed by `npm run docs:check`. Regeneration updates the tree/catalog from the registry; it does not establish design approval or prove screenshot accuracy. See [the maintenance procedure](../architecture/README.md).
 
 Keep one current screenshot path per screen/state/theme, and move superseded revisions to the change-numbered archive if needed. Retain immutable reviewed links. Do not keep duplicate current indexes or byte-identical current images. Document shared modals and inline editors as states rather than fabricated public URLs.
+
+## Branch publication policy
+
+CHG-024: new work goes to the existing `dev` branch first, with source and screenshot CI there. Keep validated commits on `dev` until promotion to `main` is explicitly requested. The earlier no-PR preference remains applicable. Record the tested commit/run and any deployment separately; do not treat a dev push as production publication. Historical direct-main delivery records remain evidence of the earlier authorized workflow.

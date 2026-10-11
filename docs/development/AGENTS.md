@@ -55,7 +55,7 @@ Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with C
 - Do not commit `node_modules/`, `dist/` or secrets.
 
 ## Delivery and deployments
-- Use a feature branch and pull request for nontrivial changes; include tests performed, any blocked validations, before/after build sizes, risks, and any manual iPhone checks still required.
+- CHG-024: use the existing `dev` branch for new changes and validate there before promotion. The user's earlier no-PR instruction still applies; leave `main` for an explicitly requested promotion. Include tests performed, blocked validations, build sizes, risks and outstanding iPhone checks in the delivery record.
 - CI should run `docs:check`, smoke tests, Jest, production build, and `verify:dist`.
 - Cloudflare project: `dryfire`; `wrangler.jsonc` controls static asset deployment from `./dist`.
 - Never claim a GitHub push, Cloudflare deployment, or real-device verification succeeded without observing success.
