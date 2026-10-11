@@ -9,7 +9,7 @@
 export const DETECTOR_DEFAULTS = Object.freeze({
   absoluteFloor: 0.008,
   noiseMultiplier: 5,
-  peakFloor: 0.022,
+  peakFloor: 0.012,
   preRollMs: 85,
   releaseMs: 100,
   maxEventMs: 1550,

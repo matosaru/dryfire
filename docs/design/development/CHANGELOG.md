@@ -1,3 +1,10 @@
+## CHG-016 — Practice STOP, microphone input and recognition corrections — 2026-10-11
+
+- Replaced persistent GO with functional STOP during practice; the real input-level indicator sits below STOP. Stopping releases capture and saves partial results. Countdown, pause/resume/next and external-cue timing retain their behavior.
+- Added brief-peak visibility and recognized/heard-but-unmatched feedback; inactive input is cleared. No raw audio is stored.
+- Corrected gain, early recording position, short-frame alignment, room-background and quiet-click compatibility without rewriting stored profiles; distance and negative-evidence rejection remain.
+- Published revised dark/light Run captures and revision-1.3 requirements. Final Node 22 checks: 227 Jest/17 suites, 16 smoke, build/asset verification; seven browser suites/35 checks pass. Cache v14 preserves schema-3 data; physical iPhone/Cloudflare evidence remains separate in the delivery tracker.
+
 ## CI test synchronization fix — 2026-10-11
 
 - Reproduced the reported audio lifecycle failure under Node 22. Replaced fixed microtask waits with explicit permission/worklet mock request signals in three tests, preserving their snapshot/abort/cleanup assertions. Complete Node 22 dependency/smoke/222-Jest/build/asset validation passes; application code and generated assets remain unchanged.

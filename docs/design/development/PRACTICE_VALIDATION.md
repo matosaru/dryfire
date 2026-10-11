@@ -59,3 +59,36 @@ Cloudflare app and GitHub API requests remain blocked at the workspace network g
 The user supplied [GitHub job 114441525944](https://github.com/matosaru/dryfire/actions/runs/38129781080/job/114441525944) and its failing log. Before the fix, the full suite reproduced the same failure under Node **22.23.3**: 221 passed / 1 failed, `resolvePermission is not a function` in the first audio lifecycle test. The unchanged test passed under local Node 24.19.0. The fixed-count microtask loop could finish before the asynchronous event-detector import reached the permission mock.
 
 Three lifecycle tests now await explicit signals from the mocked permission/worklet calls before releasing them or aborting. Original preference snapshot, cancellation and cleanup assertions remain intact. No application code, saved-data behavior or requirements changed. After the fix, the complete CI command sequence passes with Node 22.23.3: dependency installation, 16 smoke checks, 222 Jest tests / 17 suites, production build and `verify:dist`. Build hashes/sizes remain unchanged. GitHub API access remains Forbidden; public GitHub HTML is accessible and confirms the reported job failed. Test fix [`be50b99`](https://github.com/matosaru/dryfire/commit/be50b99) was pushed to `main`; the observed remote hash was `be50b99f7c8534636924091f327602567222a88d`. Public Actions HTML reports [GitHub Actions run 38130523348](https://github.com/matosaru/dryfire/actions/runs/38130523348) **completed successfully**. The delivery tracker records this observed CI success separately from Cloudflare/device checks.
+
+## CHG-016 — STOP, microphone feedback and missed-trigger regressions
+
+Date: 2026-10-11. [Revision 1.3](../requirements/practice-modes.md) records the user's corrected STOP-above-meter instruction and automatic-work authorization. The [Dark](../practice-stop-microphone-dark.png)/[Light](../practice-stop-microphone-light.png) design captures and [layout](../practice-input-design.md) are published in [`9b24b7d`](https://github.com/matosaru/dryfire/commit/9b24b7d); push and matching remote main hash were observed. Source publication and physical-device acceptance remain separately tracked.
+
+The post-CI-fix Node 22 baseline passed 222 Jest/17 suites, 16 smoke checks, build and asset verification before this correction. Regression fixtures then reproduced four missed-trigger conditions before their fixes: a Learn click near 80 ms, a ±20% volume change, a quiet Learn-accepted click filtered before classification, and room-background mismatch. A fifth regression reproduced a brief PCM spike being missed between 100 ms level reports. The old Run candidate also failed the browser check for a missing microphone indicator. These are reproduced compatibility/display faults; they do not establish which fault caused the user's device report.
+
+Final source checks pass on Node **22.23.3**: **227 Jest tests / 17 suites**, **16 smoke checks**, production build and `verify:dist`. The original rejection assertions remain intact. Saved version-2 profiles are compared without data replacement, arbitrary recording position and gain are normalized, brief frame offsets and captured background are handled, and the live peak floor aligns with the accepted Learn peak. Distance rejection and calibrated-negative vetoes remain enabled. Meter reports retain genuine short peaks, then clear on stop/pause; no raw audio is stored.
+
+Seven browser suites / **35 checks** pass with zero page errors:
+
+| Suite | Checks | Observed evidence |
+| --- | --- | --- |
+| STOP/input design | 5 | Countdown to STOP, meter below STOP, real unmatched input without shots, recognized input, pause/release/fresh resume, stopped partial results, both themes at 320/390/768 px and retained results after refresh |
+| Actual Learn-to-live | 2 | Three actual two-second Train captures with a click at 80 ms recognize a later approximately 20% louder streaming click without retraining; actual cue/reset calibration starts timing without counting cue/reset and counts the intended trigger |
+| Six modes/cue/backup | 8 | Correct counts/results in all six modes, durable review and gun isolation; external cue starts without a shot; format-4 export restores the exact database |
+| Legacy sequences | 5 | Preserved readiness/defaults/order, unknown/out-of-order handling, pause/resume, captured-input gate, durable splits, refresh recovery and gun isolation |
+| Settings/legacy cues | 6 | Saved constraints/theme/preferences, confirmed and unsupported capability reports, beep/input exclusion and supported/absent/rejected vibration behavior |
+| Database/cache | 2 | Schema-2-to-3 preservation and cache-v13-to-v14 activation/controlled reload without changing IndexedDB data |
+| Capture/storage lifecycle | 7 | Late permission cleanup, overlapping interruption, quota failure/accessible Retry, durable settings and scoped resets without deleting histories |
+
+The first combined mode run was interrupted by an HTTP response failure while the concurrent build temporarily replaced `dist/`. A complete rerun after the build finished passed; it is not reported as an app recognition failure. Calibration acceptance uses an acoustically distinct reset (900 Hz versus 2800 Hz trigger), since an amplitude-only difference is no longer sound identity. The separate near-identical reset/trigger unit regression remains conservatively unknown; it was not removed or relabelled as accurate discrimination.
+
+| Artifact | CHG-015 raw/gzip kB | CHG-016 raw/gzip kB |
+| --- | --- | --- |
+| HTML | 38.26 / 9.11 | 39.41 / 9.40 |
+| CSS | 49.90 / 10.90 | 51.14 / 11.12 |
+| Main JavaScript | 122.67 / 36.27 | 124.68 / 37.01 |
+| AudioWorklet | 0.71 / 0.36 | 0.71 / 0.36 |
+| Service worker | 1.34 / 0.69 | 1.34 / 0.69 |
+| Detector chunk | 1.83 / 0.98 | 1.83 / 0.98 |
+
+Current candidate assets: `index-BbyURu6D.js`, `index-DCikZBm2.css`, cache **v14**. IndexedDB schema **3**, feature version **2**, backup format **4** and package **0.8.0** are unchanged. Old validation/asset records above remain historical. Synthetic success establishes functional regression coverage; physical iPhone click discrimination, audible cues and Cloudflare deployment remain unverified after the user's reported misses. See [release checks](IPHONE_RELEASE_CHECKS.md).

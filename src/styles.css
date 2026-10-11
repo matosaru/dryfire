@@ -574,3 +574,15 @@ html[data-theme="light"] :is(button,input,select,summary):focus-visible { outlin
 #practiceReview > .button { margin-top: 12px; }
 #practiceResults { margin-top: 18px; }
 #practiceConfigFields select { max-width: 100%; }
+.practice-stop { display: grid; place-items: center; width: 116px; height: 116px; border-radius: 50%; margin: 4px 0 12px; font-size: 1.65rem; font-weight: 800; letter-spacing: .04em; }
+.practice-level-panel { width: min(300px, 100%); padding: 4px 0; }
+.practice-level-label { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 8px 0 12px; color: var(--session-text); font-size: .75rem; font-weight: 700; letter-spacing: .04em; }
+.practice-mic-icon { width: 22px; height: 22px; color: var(--session-positive); }
+.practice-level-track { height: 22px; width: 100%; overflow: hidden; border: 1px solid var(--session-border); border-radius: 8px; background: var(--session-surface); }
+.practice-level-fill { height: 100%; width: 0; background: linear-gradient(90deg, #34b780, #74e6a8); transition: width .1s ease; }
+.practice-level-value { display: flex; align-items: baseline; justify-content: center; gap: 8px; margin: 8px 0 4px; }
+.practice-level-value strong { font-size: 1.5rem; font-variant-numeric: tabular-nums; color: var(--session-text); }
+.practice-level-value span { font-size: .75rem; color: var(--session-muted); }
+.practice-input-feedback { color: var(--session-muted); font-size: .78rem; line-height: 1.5; margin: 10px 0 0; }
+.practice-input-feedback:empty { display: none; }
+@media (prefers-reduced-motion: reduce) { .practice-level-fill { transition: none; } }

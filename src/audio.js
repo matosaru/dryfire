@@ -250,6 +250,8 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   let stopped = false;
   let detector;
   let lastLevelAt = 0;
+  let pendingLevel = 0;
+  let pendingActivity = false;
   let closePromise;
   let detectionArmed = detectionEnabled !== false;
   let armedAfterFrame = 0;
@@ -316,12 +318,16 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
           detector.push(gated, startFrame);
         }
       }
+      let energy = 0;
+      for (let i = 0; i < samples.length; i++) energy += samples[i] ** 2;
+      pendingLevel = Math.max(pendingLevel, Math.min(100, Math.round(1000 * Math.sqrt(energy / samples.length))));
+      pendingActivity ||= detector.active;
       const now = Date.now();
       if (now - lastLevelAt >= 100) {
         lastLevelAt = now;
-        let energy = 0;
-        for (let i = 0; i < samples.length; i++) energy += samples[i] ** 2;
-        onLevel(Math.min(100, Math.round(1000 * Math.sqrt(energy / samples.length))), detector.active);
+        onLevel(pendingLevel, pendingActivity);
+        pendingLevel = 0;
+        pendingActivity = false;
       }
     };
 

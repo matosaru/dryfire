@@ -14,11 +14,23 @@ export function recognitionFeatures(samples, sampleRate) {
     if (sum > energy) { energy = sum; loudest = start; }
   }
   // Learn analyses a 0.8 s window with its dominant frame at 35%.
-  // Supply the missing silence around a short segment using the same framing.
-  const padded = new Float32Array(width);
-  const leading = Math.max(0, Math.floor(width * .35) - loudest);
-  padded.set(samples.subarray(0, width - leading), leading);
-  return [original, extractFeatures(padded, sampleRate)];
+  // Extend the quieter captured background around the short event. Inserting
+  // artificial silence changed the profile of a click recorded in a real room.
+  const backgroundLength = Math.min(samples.length, Math.floor(sampleRate * .08));
+  const prefix = samples.subarray(0, backgroundLength);
+  const suffix = samples.subarray(samples.length - backgroundLength);
+  const energyOf = data => data.reduce((sum, value) => sum + value * value, 0);
+  const background = energyOf(prefix) < energyOf(suffix) ? prefix : suffix;
+  // The detector uses 10 ms frames and an 85 ms pre-roll. Account for the
+  // half-frame offset when a brief click is placed on Learn's 25 ms grid.
+  const variants = [-.005, 0, .005].map(offset => {
+    const padded = new Float32Array(width);
+    for (let i = 0; i < width; i++) padded[i] = background[i % background.length];
+    const leading = Math.max(0, Math.floor(width * .35 + sampleRate * offset) - loudest);
+    padded.set(samples.subarray(0, width - leading), leading);
+    return extractFeatures(padded, sampleRate);
+  });
+  return [original, ...variants];
 }
 
 export function selectRecognition(predictions) {

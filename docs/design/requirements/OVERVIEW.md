@@ -14,7 +14,7 @@ The [implementation history and remaining plan](../implementation-history.md) tr
 | [Drill sessions](drill-sessions.md) | Select/create, configure, start, progress and saved results | Approved; custom presets/timed sessions/results implemented and locally validated; deployment unverified |
 | [Data persistence](persistence.md) | Refresh/deployment persistence, migration and backups | Multi-gun/session storage and version-4 backups with compatible formats 1–3 implemented; cloud unapproved |
 | [Settings](settings.md) | Noise Filter, Auto Gain, Appearance and Vibration Feedback | Approved; implemented and locally validated; physical-device/deployment verification separate |
-| [Trigger-first practice](practice-modes.md) | Optional non-trigger sounds, rejection calibration and all six practice modes | CHG-015 authorized and implemented; release evidence in implementation history; production/device verification separate |
+| [Trigger-first practice](practice-modes.md) | Optional non-trigger sounds, rejection calibration, six practice modes and STOP/input display | CHG-015 implemented; CHG-016 corrected layout approved, implemented and locally validated; publication/production/device evidence in implementation history |
 
 ## Approval and change control
 

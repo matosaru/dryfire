@@ -189,6 +189,25 @@ test('default continuous listening still emits successive sounds until explicitl
   expect(track.stop).toHaveBeenCalledTimes(1);
 });
 
+test('the level indicator retains a short click between throttled updates', async () => {
+  jest.useFakeTimers();
+  jest.setSystemTime(1000);
+  globalThis.AudioContext.prototype.audioWorklet = { addModule: jest.fn(async () => {}) };
+  globalThis.AudioWorkletNode = class {
+    constructor() { Object.assign(this, node(), { port: { onmessage: null } }); nodes.push(this); }
+  };
+  const onLevel = jest.fn();
+  const session = await startContinuousListening({ onEvent() {}, onLevel });
+  const push = (amplitude, startFrame) => nodes[0].port.onmessage({ data: { samples: new Float32Array(128).fill(amplitude), startFrame } });
+  push(0, 0);
+  jest.advanceTimersByTime(25);
+  push(.025, 128);
+  jest.advanceTimersByTime(75);
+  push(0, 256);
+  expect(onLevel.mock.calls.at(-1)[0]).toBeGreaterThan(0);
+  await session.stop();
+});
+
 test('a cue gate inside a PCM chunk preserves the later genuine event signature', async () => {
   const { createEventDetector } = await import('../src/eventDetector.js');
   const { analyzeRecording } = await import('../src/audio.js');

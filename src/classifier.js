@@ -18,18 +18,31 @@ function euclidean(a, b) {
   return Math.sqrt(squared);
 }
 
+function comparisonFeatures(vector) {
+  if (vector.length !== 15) return vector;
+  // Version-2 amplitude statistics describe microphone gain as well as the sound.
+  // Compare their shape relative to the event's dominant frame energy; stored
+  // vectors remain untouched. The dominant frame's position in a recording is
+  // not an acoustic identity feature or a reaction-time measurement.
+  const gain = vector[12] > 0 ? vector[12] : 1;
+  return vector.map((value, index) => index === 13 ? 0
+    : index < 4 || (index >= 8 && index <= 12) ? value / gain : value);
+}
+
 function normalizeTraining(examples, candidate, negatives = []) {
   const dims = candidate.length;
+  const vectors = examples.map(item => comparisonFeatures(item.features));
   const means = new Array(dims).fill(0);
   const scales = new Array(dims).fill(1);
   for (let d = 0; d < dims; d += 1) {
-    means[d] = examples.reduce((s, item) => s + item.features[d], 0) / examples.length;
-    const variance = examples.reduce((s, item) => s + (item.features[d] - means[d]) ** 2, 0) / examples.length;
+    means[d] = vectors.reduce((s, vector) => s + vector[d], 0) / vectors.length;
+    const variance = vectors.reduce((s, vector) => s + (vector[d] - means[d]) ** 2, 0) / vectors.length;
     // Do not allow near-constant features to dominate the distance.
     scales[d] = Math.max(Math.sqrt(variance), Math.abs(means[d]) * 0.05, 0.005);
   }
   const transform = vector => vector.map((value, i) => (value - means[i]) / scales[i]);
-  return { examples: examples.map(e => ({ label: e.label, vector: transform(e.features) })), candidate: transform(candidate), negatives: negatives.map(e => transform(e.features)) };
+  return { examples: examples.map((e, index) => ({ label: e.label, vector: transform(vectors[index]) })),
+    candidate: transform(comparisonFeatures(candidate)), negatives: negatives.map(e => transform(comparisonFeatures(e.features))) };
 }
 
 function averageNearest(distances, count = 3) {

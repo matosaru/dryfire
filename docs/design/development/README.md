@@ -33,6 +33,8 @@ Under **Improve recognition**, optional reset/noise examples help reject false s
 
 Results reopen from gun-owned History. Storage failure stops capture, keeps unsaved Review/Retry accessible and prevents leaving that review until saved. Refresh recovers the last durable snapshot without automatically starting the microphone. Full sound reset clears that gun's positive/reset/noise/cue features while preserving results and other guns.
 
+Active practice shows **STOP** in place of GO, with the captured microphone level below it. STOP releases capture and saves partial results; Pause/Resume and Next repetition remain available in their corresponding states. Heard-but-unmatched feedback distinguishes receiving audio from recognizing a shot. [The revised Run design](../practice-input-design.md) documents both themes.
+
 See [practice requirements](../requirements/practice-modes.md), [release validation](PRACTICE_VALIDATION.md) and [actual UI captures](../README.md).
 
 ## Legacy timed sequences and working settings
@@ -113,7 +115,7 @@ The detector now uses fixed ~10ms frames, faster release/cooldown and bounded pr
 - `src/practiceSession.js` / `src/practiceController.js` — shared six-mode logic, capture lifecycle and saved review
 - `src/storage.js` — owned IndexedDB, backup/restore, durable sessions and recent-N retention
 - `src/evaluation.js` — manually verified confusion matrix
-- `workers/sw.js` — versioned PWA caching (v13), minified at build
+- `workers/sw.js` — versioned PWA caching (v14), minified at build
 - `tools/verify-dist.mjs` — public-build sanity check
 - `.github/workflows/check.yml` — CI tests + build artifact
 
