@@ -3,6 +3,11 @@
     "playwrightVersion": "1.58.2",
     "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
     "platform": "linux/amd64",
+    "chromiumLaunchArgs": [
+      "--disable-gpu",
+      "--disable-skia-runtime-opts",
+      "--force-color-profile=srgb"
+    ],
     "locale": "en-US",
     "timezoneId": "UTC",
     "clock": "2026-10-11T11:00:00.000Z",
@@ -270,7 +275,7 @@
       "height": 2120
     },
     "chromium/shared/safety-modal.dark.390.png": {
-      "sha256": "7548460a8a4c309c9ef9c1b3b2c768f8512ebca9941f832464524ef5a72406f5",
+      "sha256": "02a373623b8232b59eb979c64b9ff7423499af5982aeb33c4414ad3a93c50381",
       "width": 390,
       "height": 844
     },

@@ -19,6 +19,8 @@ Implementation, validation and publication status are recorded in [the delivery 
 
 [Dev collection run 38154941386](https://github.com/matosaru/dryfire/actions/runs/38154941386), source `4861613`, passes all **118 checks** during generation and again during an unchanged exact comparison. All 106 browser PNGs have been visually reviewed against the linked screen requirements/current captures. The [initial validation record](../design/baselines/initial-validation.json) and [build/environment manifest](../design/baselines/initial-build-manifest.json) retain that provenance. The temporary candidate workflow/configuration/folder are removed after promotion; CI now compares the reviewed references without regenerating them.
 
+The first permanent run caught one Chromium native-dialog shadow pixel. Chromium now uses the software-rendering arguments recorded in `environment.json`, disabling GPU and Skia runtime optimization paths and fixing the color profile to sRGB. Ten unchanged dialog comparisons passed in [the pinned investigation](https://github.com/matosaru/dryfire/actions/runs/38156093738); the single changed pixel was reviewed before updating its reference. Full-set comparison and candidate review are pending. WebKit flags and the zero-pixel threshold stay unchanged.
+
 The managed workspace can use system Chromium for debugging, but its active network policy blocks the pinned image blob redirect to `westcentralus.data.mcr.microsoft.com`. An additive network/setup draft is saved for environment review/save/publish; it is not active merely because it was saved. Pinned rendering was therefore performed in GitHub’s fixed container. System-browser captures are not substituted as canonical baselines.
 
 ## Running and reviewing checks
