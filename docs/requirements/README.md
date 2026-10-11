@@ -11,7 +11,7 @@ This is the single current functional index. Markdown requirements define behavi
 | [Gun profiles](gun-profiles.md) | Names/types, up to five guns and independent owned data | Implemented, including CHG-019 Edit/type images and CHG-020 single-gun/all-owned-data deletion |
 | [Drill sessions](drill-sessions.md) | Built-in/custom sequence editor, Configure / Run / Review | Implemented |
 | [Practice modes](practice-modes.md) | Trigger-first learning, six modes, current run/STOP/microphone behavior | Implemented |
-| [Practice start timing](practice-start.md) | CHG-022 actual microphone readiness, early Single failures and louder cue | Implemented locally; publication/device evidence in the delivery tracker |
+| [Practice start timing](practice-start.md) | CHG-022 actual microphone readiness, early Single failures and louder cue | Implemented and pushed; source CI passes, device/deployment evidence in the delivery tracker |
 | [Practice improvements and input limits](practice-improvements.md) | UPDATE-01–06 and LIMIT-01–03: automatic Single, charts, unknown filtering, screen history, safety modal and complete approved bounds | Implemented |
 | [Persistence](persistence.md) | Local durability, migrations, backups and ownership | Implemented: schema 3 / backup 4; compatible backups and CHG-020 separate recognition/session clearing |
 | [Settings](settings.md) | Browser-backed audio preferences, themes and supported vibration | Implemented; physical iPhone capability checks remain separate |

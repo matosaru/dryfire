@@ -178,30 +178,6 @@ for (const item of cases) {
     });
     if (item.screen === 'learn') expect(await page.locator('#learnView img').first().evaluate(image => image.currentSrc)).toMatch(/\.svg$/);
     const overflow = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth) - innerWidth);
-    const layout = overflow > 0 ? await page.evaluate(() => {
-      const width = () => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth);
-      const original = width();
-      const control = document.getElementById('progressGroup');
-      const controlStyle = control?.getAttribute('style');
-      const styles = [];
-      if (control) {
-        for (const css of ['contain:paint', 'contain:inline-size', 'position:relative', 'max-width:100%;width:100%;overflow:clip', 'appearance:none;contain:paint']) {
-          control.style.cssText = `${controlStyle || ''};${css}`;
-          styles.push({ css, after: width(), rect: control.getBoundingClientRect().width, scroll: control.scrollWidth });
-        }
-        if (controlStyle === null) control.removeAttribute('style'); else control.setAttribute('style', controlStyle);
-      }
-      const suspects = [...new Set(document.querySelectorAll('#historyView > *, .progress-filters, .progress-filters > *, .progress-filters select, #progressContent > *, #historyList, #savedSessions, .confusion-wrap, footer'))];
-      const reductions = [];
-      for (const node of suspects) {
-        const style = node.getAttribute('style');
-        node.style.setProperty('display', 'none', 'important');
-        const after = width();
-        if (after < original) reductions.push({ tag: node.tagName, id: node.id, class: node.className, after });
-        if (style === null) node.removeAttribute('style'); else node.setAttribute('style', style);
-      }
-      return { viewport: innerWidth, body: document.body.scrollWidth, root: document.documentElement.scrollWidth, styles, reductions };
-    }) : null;
     const offenders = overflow > 0 ? await page.evaluate(() => [...document.querySelectorAll('*')]
       .filter(node => {
         if (!node.checkVisibility() || node.getBoundingClientRect().right <= innerWidth) return false;
@@ -213,7 +189,7 @@ for (const item of cases) {
       .map(node => ({ tag: node.tagName, id: node.id, class: node.getAttribute('class'), right: node.getBoundingClientRect().right,
         parent: node.parentElement?.className, text: node.textContent?.trim().slice(0, 70) }))
       .sort((a, b) => b.right - a.right).slice(0, 20)) : [];
-    expect(overflow, `Horizontal overflow: ${JSON.stringify(layout)}; visible offenders: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);
+    expect(overflow, `Horizontal overflow ${overflow}px; visible offenders: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);
     expect(errors, 'Unexpected browser errors').toEqual([]);
     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });
     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });

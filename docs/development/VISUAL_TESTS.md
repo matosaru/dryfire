@@ -19,7 +19,7 @@ Implementation, validation and publication status are recorded in [the delivery 
 
 The managed workspace can run system Chromium for state-harness debugging, but cannot download the pinned rendering image: its blob download redirects to `westcentralus.data.mcr.microsoft.com`, outside the active allowlist. An additive environment-network draft is saved but has not been published. System-browser captures are temporary and cannot become canonical baselines.
 
-The temporary **Collect initial visual candidates** workflow renders the 104 candidates in the pinned GitHub container, requires an unchanged exact rerun, and publishes only `visual-candidates/` for inspection. No candidate is an accepted baseline. After review against the linked requirements/designs, promote the images to the browser baseline folders, record their fingerprint manifest and remove the collection workflow/configuration and candidate folder. The permanent comparison workflow must reject missing baselines and may never regenerate them.
+The temporary **Collect initial visual candidates** workflow renders the 106 candidates in the pinned GitHub container, requires an unchanged exact rerun, and publishes only `visual-candidates/` for inspection. No candidate is an accepted baseline. After review against the linked requirements/designs, promote the images to the browser baseline folders, record their fingerprint manifest and remove the collection workflow/configuration and candidate folder. The permanent comparison workflow must reject missing baselines and may never regenerate them.
 
 ## Running and reviewing checks
 
@@ -52,4 +52,4 @@ npm run test:visual:docker
 
 Commit the reviewed PNGs and manifest with the intentional change. `--write` records evidence hashes; it does not perform or replace visual review. New states come from the screen registry; add their state preparation/assertions to `visual-tests/screens.spec.js`. Do not loosen the zero-pixel threshold to hide unexplained differences. Changing Playwright/image/locale/scale requires review of both complete reference sets. Application screen evidence/source fingerprints and architecture still follow [their maintenance procedure](../architecture/README.md).
 
-Initial delivery status: the harness, commands and report workflow are prepared; pinned candidate review/promotion and final CI acceptance remain in progress. The CHG-022 early-review state extends the set to 106 screenshots; ten additional browser checks verify microphone startup/cancellation/timeouts/early outcomes and zero-delay progression.
+Initial delivery status: the harness, commands and report workflow are prepared; pinned candidate review/promotion and final CI acceptance remain in progress. The CHG-022 early-review state extends the set to 106 screenshots; twelve additional browser checks verify microphone startup/cancellation/timeouts/early outcomes and zero-delay progression, plus native History filtering at 320 px.

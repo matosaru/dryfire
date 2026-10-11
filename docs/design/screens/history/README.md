@@ -10,7 +10,7 @@ Per-gun comparable drill/settings and time-range filters, session count/mean/med
 
 Validation and publication: [CHG-020 delivery evidence](../../../project/implementation-history.md#chg-020--local-acceptance-2026-10-11).
 
-CHG-021 browser check: at 320 px, the progress-filter grid uses one explicitly shrinkable column and native selectors stay within the card. Tables may scroll inside their containers; the page must not scroll horizontally. This restores the existing mobile layout without hiding controls or changing filtering/data. Browser-specific narrow-width evidence is maintained with the [screenshot baselines](../../baselines/README.md).
+CHG-021 browser check: at 320 px, the progress-filter grid uses one explicitly shrinkable column and native selectors stay within the card. Paint containment on these native selectors prevents their long option text from expanding the page in WebKit; all option labels, native arrows, focus and selection remain available. Tables may scroll inside their containers; the page must not scroll horizontally. Browser-specific narrow-width evidence and filtering checks are maintained with the [screenshot baselines](../../baselines/README.md).
 
 Functional specifications: [core](../../../requirements/core.md) · [practice-improvements](../../../requirements/practice-improvements.md) · [persistence](../../../requirements/persistence.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 
@@ -30,4 +30,4 @@ Captured from the current local production build in Chromium at a 390 px mobile 
 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
 
-CHG-021 narrow-browser correction: explicitly keep the closed progress data table out of layout, while open data and recognition tables retain their own horizontal scrolling. This targets WebKit closed-details overflow without clipping the whole page. Pinned-browser verification remains pending.
+CHG-021 diagnosis: reversible layout probes isolated the overflow to the native comparison selector, not the closed chart-data table. Selector paint containment reduces the measured page width from 370 to 320 px in the pinned WebKit diagnostic. Full unchanged rendering and filter interaction verification follow; no whole-page clipping is used.
