@@ -26,6 +26,8 @@ The user's CHG-015 instruction supersedes all-four training prerequisites for tr
 
 ## Validation
 
+CHG-021 screenshot acceptance covers 320 px mobile width in Chromium and WebKit. Native History selectors must remain inside their cards and keep their options usable; wide data tables scroll within their own containers rather than widening the page. Correcting browser-specific overflow restores the existing mobile layout and does not change filters, results or storage.
+
 For behavior changes, run the repository's relevant smoke/Jest checks, production build and `verify:dist`, plus meaningful functional checks. A synthetic audio test does not verify real-device microphone behavior or classifier accuracy. Documentation-only edits do not require rerunning the application suite.
 
 ## References

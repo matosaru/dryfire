@@ -10,6 +10,8 @@ Per-gun comparable drill/settings and time-range filters, session count/mean/med
 
 Validation and publication: [CHG-020 delivery evidence](../../../project/implementation-history.md#chg-020--local-acceptance-2026-10-11).
 
+CHG-021 browser check: at 320 px, the progress-filter grid uses one explicitly shrinkable column and native selectors stay within the card. Tables may scroll inside their containers; the page must not scroll horizontally. This restores the existing mobile layout without hiding controls or changing filtering/data. Browser-specific narrow-width evidence is maintained with the [screenshot baselines](../../baselines/README.md).
+
 Functional specifications: [core](../../../requirements/core.md) · [practice-improvements](../../../requirements/practice-improvements.md) · [persistence](../../../requirements/persistence.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 
 ## Current visual references

@@ -43,7 +43,9 @@ async function prepare(page, item) {
     const response = await route.fetch();
     const svg = (await response.text()).replace(/<animate\b[^>]*\/>/g, '')
       .replace('animation:cue 2s ease-in-out infinite', 'animation:none');
-    await route.fulfill({ response, body: svg, contentType: 'image/svg+xml' });
+    const headers = { ...response.headers(), 'content-length': String(Buffer.byteLength(svg)) };
+    delete headers['content-encoding'];
+    await route.fulfill({ response, headers, body: svg, contentType: 'image/svg+xml' });
   });
   await page.clock.install({ time: new Date(environment.clock) });
   await page.clock.pauseAt(new Date(environment.clock));
@@ -164,7 +166,10 @@ for (const item of cases) {
     });
     if (item.screen === 'learn') expect(await page.locator('#learnView img').first().evaluate(image => image.currentSrc)).toMatch(/\.svg$/);
     const overflow = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth) - innerWidth);
-    expect(overflow, 'Horizontal overflow').toBeLessThanOrEqual(0);
+    const offenders = overflow > 0 ? await page.evaluate(() => [...document.querySelectorAll('[id],select,svg')]
+      .filter(node => node.checkVisibility() && node.getBoundingClientRect().right > innerWidth)
+      .map(node => ({ tag: node.tagName, id: node.id, class: node.getAttribute('class'), right: node.getBoundingClientRect().right })).slice(0, 20)) : [];
+    expect(overflow, `Horizontal overflow: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);
     expect(errors, 'Unexpected browser errors').toEqual([]);
     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });
     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });

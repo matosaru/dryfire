@@ -598,9 +598,9 @@ html[data-theme="light"] :is(button,input,select,summary):focus-visible { outlin
 .safety-modal .button { margin-top: 10px; }
 .practice-progress-section { border: 1px solid var(--session-border); background: var(--session-surface); border-radius: 16px; padding: 16px; margin: 20px 0; }
 .practice-progress-section h3 { margin-top: 0; }
-.progress-filters { display: grid; gap: 12px; }
+.progress-filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .progress-filters label { display: grid; gap: 8px; font-size: .8rem; color: var(--session-muted); min-width: 0; }
-.progress-filters select { min-width: 0; width: 100%; min-height: 44px; padding: 10px; border: 1px solid var(--session-border); border-radius: 10px; background: var(--session-surface-raised); color: var(--session-text); font-size: 1rem; }
+.progress-filters select { min-width: 0; width: 100%; max-width: 100%; min-height: 44px; padding: 10px; border: 1px solid var(--session-border); border-radius: 10px; background: var(--session-surface-raised); color: var(--session-text); font-size: 1rem; }
 .progress-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
 .progress-stats > div { padding: 12px; border: 1px solid var(--session-border); border-radius: 12px; }
 .progress-stats span { display: block; font-size: .72rem; color: var(--session-muted); }
