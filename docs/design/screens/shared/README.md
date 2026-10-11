@@ -2,7 +2,7 @@
 
 CHG-023 shared footer: every functional screen retains its data/microphone disclosure, followed by **© 2026 Dry Fire With Ease. All rights reserved.** in the same readable footer style. It wraps naturally on narrow screens and supports the existing Dark/Light themes. The notice belongs to the shared page layout; it creates no new screen or public route. Current captures are refreshed with the footer; the modal still uses the same acknowledgement/continuation rules.
 
-Current implemented layout · CHG-018 coverage audit · 2026-10-11 · CHG-023 local source revision; exact reviewed file hashes are in the registry
+Current implemented layout · CHG-018 coverage audit · 2026-10-11 · CHG-023 source published in [`dbf8687`](https://github.com/matosaru/dryfire/commit/dbf8687); exact reviewed file hashes are in the registry
 
 Entry: Any unconfirmed action that would acquire microphone capture. App anchor: `safetyModal`. This is a state of the same `/` web app, not a separate indexable URL.
 

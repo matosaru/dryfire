@@ -15,11 +15,11 @@ CHG-021 · revision 1.0 · directly authorized on 2026-10-11 by the user's instr
 
 Implementation, validation and publication status are recorded in [the delivery tracker](../project/implementation-history.md). Existing current designs remain reviewed visual references; these per-browser baselines are reproducible test artifacts rather than a second competing design catalog.
 
-## Initial collection status
+## Accepted rendering evidence
 
-The managed workspace can run system Chromium for state-harness debugging, but cannot download the pinned rendering image: its blob download redirects to `westcentralus.data.mcr.microsoft.com`, outside the active allowlist. An additive environment-network draft is saved but has not been published. System-browser captures are temporary and cannot become canonical baselines.
+[Dev collection run 38154941386](https://github.com/matosaru/dryfire/actions/runs/38154941386), source `4861613`, passes all **118 checks** during generation and again during an unchanged exact comparison. All 106 browser PNGs have been visually reviewed against the linked screen requirements/current captures. The [initial validation record](../design/baselines/initial-validation.json) and [build/environment manifest](../design/baselines/initial-build-manifest.json) retain that provenance. The temporary candidate workflow/configuration/folder are removed after promotion; CI now compares the reviewed references without regenerating them.
 
-The temporary **Collect initial visual candidates** workflow (now targeting `dev` under CHG-024) renders the 106 candidates in the pinned GitHub container, requires an unchanged exact rerun, and publishes only `visual-candidates/` for inspection. No candidate is an accepted baseline. After review against the linked requirements/designs, promote the images to the browser baseline folders, record their fingerprint manifest and remove the collection workflow/configuration and candidate folder. The permanent comparison workflow must reject missing baselines and may never regenerate them.
+The managed workspace can use system Chromium for debugging, but its active network policy blocks the pinned image blob redirect to `westcentralus.data.mcr.microsoft.com`. An additive network/setup draft is saved for environment review/save/publish; it is not active merely because it was saved. Pinned rendering was therefore performed in GitHub’s fixed container. System-browser captures are not substituted as canonical baselines.
 
 ## Running and reviewing checks
 
@@ -52,4 +52,4 @@ npm run test:visual:docker
 
 Commit the reviewed PNGs and manifest with the intentional change. `--write` records evidence hashes; it does not perform or replace visual review. New states come from the screen registry; add their state preparation/assertions to `visual-tests/screens.spec.js`. Do not loosen the zero-pixel threshold to hide unexplained differences. Changing Playwright/image/locale/scale requires review of both complete reference sets. Application screen evidence/source fingerprints and architecture still follow [their maintenance procedure](../architecture/README.md).
 
-Initial delivery status: the harness, commands and report workflow are prepared; pinned candidate review/promotion and final CI acceptance remain in progress. The CHG-022 early-review state extends the set to 106 screenshots; twelve additional browser checks verify microphone startup/cancellation/timeouts/early outcomes and zero-delay progression, plus native History filtering at 320 px.
+Delivery status: reviewed baseline coverage is complete and the permanent comparison/artifact/probe workflow is being published to `dev`. Final workflow acceptance is recorded after observation in the delivery tracker. There are **106 screenshots plus twelve browser checks**: ten for microphone readiness, cancellation, missing-input timeout, saved early outcomes and zero-delay progression, and two for native History filtering at 320 px.
