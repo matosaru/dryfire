@@ -1,8 +1,8 @@
-name: Collect initial visual candidates
+name: Verify software rendering repeatability
 on:
   push:
-    branches: [main]
-    paths: ['playwright.config.js', 'visual-tests/**', 'visual-candidates.config.js', '.github/workflows/visual-candidates.yml']
+    branches: [dev]
+    paths: ['visual-raster.config.js', '.github/workflows/visual-raster.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -23,30 +23,31 @@ jobs:
           cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npm run build
-      - run: npx --no-install playwright test --config visual-candidates.config.js
+      - run: npx --no-install playwright test --config visual-raster.config.js
       - name: Require an unchanged exact rerun
-        run: npx --no-install playwright test --config visual-candidates.config.js
+        run: npx --no-install playwright test --config visual-raster.config.js
         env:
           VISUAL_CANDIDATES_COMPARE: '1'
-      - run: node tools/visual-candidate-diagnostics.mjs
+      - run: node tools/visual-raster-diagnostics.mjs
         if: always()
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: initial-visual-candidate-report
+          name: software-rendering-investigation
           path: |
             playwright-report/
             test-results/
-            visual-candidates/
+            visual-raster-candidates/
           retention-days: 14
           if-no-files-found: error
       - name: Publish candidates for review, not accepted baselines
         if: ${{ !cancelled() }}
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$GITHUB_SHA"
+          test "$GITHUB_REF_NAME" = 'dev'
+          test "$(git ls-remote origin refs/heads/dev | cut -f1)" = "$GITHUB_SHA"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add visual-candidates/
-          git commit -m 'test: collect unreviewed Chromium and WebKit screenshot candidates'
-          git push origin HEAD:main
+          git add visual-raster-candidates/
+          git commit -m 'test: collect software renderer repeatability evidence'
+          git push origin HEAD:dev

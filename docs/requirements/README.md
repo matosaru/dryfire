@@ -1,13 +1,13 @@
 # Functional requirements
 
-Revision 1.8 · CHG-020 gun/history/session deletion · 2026-10-11
+Revision 1.10 · CHG-022 practice start / CHG-023 copyright · 2026-10-11
 
 This is the single current functional index. Markdown requirements define behavior; [screen designs](../design/README.md) define layouts and provide actual visual evidence. Approval, implementation and deployment are tracked separately in the [project plan](../project/implementation-history.md).
 
 | Specification | Authoritative scope | Current application status |
 | --- | --- | --- |
 | [Core](core.md) | Learning, recognition, safety, resets and navigation invariants | Implemented |
-| [Branding](branding.md) | Dry Fire With Ease display name and DF / WITH EASE lockup | Implemented |
+| [Branding](branding.md) | Dry Fire With Ease display name, DF / WITH EASE lockup and shared copyright | Implemented |
 | [Gun profiles](gun-profiles.md) | Names/types, up to five guns and independent owned data | Implemented, including CHG-019 Edit/type images and CHG-020 single-gun/all-owned-data deletion |
 | [Drill sessions](drill-sessions.md) | Built-in/custom sequence editor, Configure / Run / Review | Implemented |
 | [Practice modes](practice-modes.md) | Trigger-first learning, six modes, current run/STOP/microphone behavior | Implemented |

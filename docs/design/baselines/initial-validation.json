@@ -1,0 +1,18 @@
+{
+  "reviewedOn": "2026-10-11",
+  "source": "4861613206e8b84fa5a933571b35cdce9e94aeb5",
+  "branch": "dev",
+  "run": "https://github.com/matosaru/dryfire/actions/runs/38154941386",
+  "checks": 118,
+  "images": 106,
+  "generation": "passed",
+  "unchangedComparison": {
+    "startTime": "2026-10-11T16:22:16.140Z",
+    "duration": 128354.946,
+    "expected": 118,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "review": "All 106 browser images reviewed against screen requirements/current captures using paired full-layout overviews and entry/footer detail; two changed final candidates inspected separately. Browser-native control/typography differences retain separate baselines."
+}

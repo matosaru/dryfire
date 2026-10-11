@@ -1,8 +1,10 @@
 name: Test and build
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
+permissions:
+  contents: read
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -12,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
       - run: npm run docs:check
       - run: npm run test:smoke
       - run: npm test
@@ -23,4 +25,38 @@ jobs:
         with:
           name: minified-web-app
           path: dist/
+          if-no-files-found: error
+  screenshots:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      options: --ipc=host
+    env:
+      VISUAL_IMAGE: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - run: npm run verify:dist
+      - name: Require reviewed baseline coverage and fingerprints
+        run: npm run visual:review
+      - name: Compare Chromium and WebKit screenshots
+        run: npm run test:visual
+      - name: Prove visible defects fail and produce difference images
+        run: npm run visual:probe
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshot-checks
+          path: |
+            playwright-report/
+            test-results/
+            playwright-probe-report/
+            test-results-probe/
+          retention-days: 14
           if-no-files-found: error

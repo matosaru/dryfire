@@ -78,10 +78,12 @@ async function prepare(page, item) {
     case 'home': break;
     case 'guns':
       await page.locator('#gunSwitcherBtn').click(); await visible(page, 'gunsView');
+      await expect(page.locator('#gunList .gun-profile')).toHaveCount(3);
       if (item.state.startsWith('deleted')) {
         await page.locator('[data-delete-gun-id="qa-gun-b"]').click();
         await expect(page.locator('[data-delete-gun-id="qa-gun-b"]')).toHaveCount(0);
         await expect(page.locator('#gunCapacity')).toContainText('2 of');
+        await expect(page.locator('#gunList .gun-profile')).toHaveCount(2);
       }
       break;
     case 'learn':
@@ -92,6 +94,8 @@ async function prepare(page, item) {
       break;
     case 'drills':
       await tab(page, 'drills');
+      await expect(page.locator('[data-practice-mode]')).toHaveCount(6);
+      await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(4);
       if (item.state.startsWith('custom')) await page.locator('#customDrillsTab').click();
       if (item.state.startsWith('custom-editor')) {
         await page.locator('#newCustomDrillBtn').click(); await page.locator('#customDrillName').fill('Draw and press');
@@ -163,12 +167,6 @@ for (const item of cases) {
     await page.setViewportSize({ width: item.width, height: environment.viewport.height });
     await prepare(page, item);
     await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
-    // Extend the viewport for complete content; fixed navigation then sits at its bottom.
-    // The native safety modal keeps the mobile viewport to validate its real positioning.
-    if (item.screen !== 'safety') {
-      const height = await page.evaluate(() => Math.max(innerHeight, document.documentElement.scrollHeight));
-      await page.setViewportSize({ width: item.width, height });
-    }
     await page.evaluate(async () => {
       await document.fonts.ready;
       const images = [...document.images].filter(image => image.checkVisibility() && image.currentSrc);
@@ -176,6 +174,12 @@ for (const item of cases) {
       for (const image of images) image.loading = 'eager';
       await Promise.all(images.map(image => image.decode()));
     });
+    // Measure only after all asserted records, fonts and illustrations are ready.
+    // The native safety modal keeps the mobile viewport to validate its real positioning.
+    if (item.screen !== 'safety') {
+      const height = await page.evaluate(() => Math.max(innerHeight, document.documentElement.scrollHeight));
+      await page.setViewportSize({ width: item.width, height });
+    }
     if (item.screen === 'learn') expect(await page.locator('#learnView img').first().evaluate(image => image.currentSrc)).toMatch(/\.svg$/);
     const overflow = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth) - innerWidth);
     const offenders = overflow > 0 ? await page.evaluate(() => [...document.querySelectorAll('*')]

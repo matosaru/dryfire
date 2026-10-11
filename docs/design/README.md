@@ -40,4 +40,4 @@ Markdown and image correspondence was checked against the current controls: ten-
 
 Run `npm run docs:generate` and `npm run docs:check` after a screen change. The checker enforces coverage, source-review fingerprints, paths, local Markdown links and current-image uniqueness; human review must still confirm that changed layouts match the screenshots and approved behavior.
 
-[Keeping screenshots and implementation aligned](visual-validation.md) describes current checks and the pending per-browser pixel-regression workflow.
+[Keeping screenshots and implementation aligned](visual-validation.md) describes source-aware checks and the CHG-021 per-browser pixel-regression workflow; acceptance evidence is in the delivery tracker.

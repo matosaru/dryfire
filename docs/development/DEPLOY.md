@@ -8,6 +8,10 @@ The user reports `easydryfire.com` and `easydryfire.app` are registered on Cloud
 
 To serve the existing Worker, use Cloudflare **Workers & Pages → dryfire → Settings → Domains & Routes → Add → Custom Domain**, add the desired domain(s), and wait for Cloudflare's DNS/TLS setup to become active. Domain registration alone does not route traffic to the app. Choose a primary public app origin before updating canonical SEO/manifest information or adding redirects. Preserve the `workers.dev` address during migration so existing users can export their backups: IndexedDB belongs to its origin, and a new domain needs an explicit backup import to access that saved library. Deploying new code at the same origin preserves it.
 
+## Development and production branches
+
+CHG-024: publish new changes to `dev` first and run CI there. `main` remains the production branch; merge/promote only when explicitly requested. If enabling Cloudflare development previews, use the non-production preview command below and verify the build is for `dev`; do not change the production branch to `dev`. A dev preview uses a separate origin/library and cannot verify production deployment.
+
 ## Cloudflare Workers Builds (matches your existing build logs)
 
 1. Use the connected GitHub repository `matosaru/dryfire`, production branch `main`. Select the latest implementation commit in [implementation history](../project/implementation-history.md); a successful production build must include that commit or a descendant. The older `6119b8f` contains timed sequences/settings but predates the six practice modes.
@@ -33,7 +37,7 @@ Connect GitHub `matosaru/dryfire`. Build command: `npm run build`; publish direc
 
 Use the [iPhone release checklist](IPHONE_RELEASE_CHECKS.md) to record the production commit and test Safari/Home Screen sessions, settings and retained data. Its current results distinguish completed local checks from unverified production/device checks.
 
-The current service-worker cache version is `dryfire-sound-trainer-v17`; the technical cache-name prefix remains unchanged. Active practice displays STOP with the microphone level below it. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
+The current service-worker cache version is `dryfire-sound-trainer-v21`; the technical cache-name prefix remains unchanged. Active practice displays STOP with the microphone level below it. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
 
 ## Verify the current production build
 

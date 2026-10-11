@@ -7,3 +7,11 @@ Files follow `<browser>/<screen>/<state>.<theme>.<width>.png`, for example `chro
 The browser package/container, locale/timezone, fixed clock, device scale and comparison policy are pinned in [environment.json](../../../visual-tests/environment.json). Synthetic feature-only gun/history data lives in [library.json](../../../visual-tests/fixtures/library.json). Acceptance and maintenance instructions are in [VISUAL_TESTS.md](../../development/VISUAL_TESTS.md).
 
 New or changed baseline images require review of the corresponding requirements, design and app-rendered controls. Normal tests and CI must never automatically update expected PNGs. Updating the renderer requires regenerating and reviewing both browser sets in the new pinned environment. Current reviewed screenshots remain preserved; do not copy them over browser baselines generated with different fixtures/renderers.
+
+## Initial reviewed set
+
+106 PNGs (53 states/widths per browser) were reviewed on 2026-10-11 against the screen specifications and current implementation captures. [Collection run 38154941386](https://github.com/matosaru/dryfire/actions/runs/38154941386) on `dev` passed generation and an unchanged **118-check** rerun. [Initial validation](initial-validation.json) and [source/build metadata](initial-build-manifest.json) preserve that evidence. [manifest.json](manifest.json) records every accepted image’s dimensions and SHA-256; `visual:review` requires exact coverage and matching fingerprints. This records engineering review under the user’s screenshot-CI authorization, not a new product proposal or physical-device result.
+
+## Chromium software-rendering correction
+
+The first permanent comparison caught one pixel on the native safety dialog shadow at 390 px. Fixed Chromium software rendering, disabled Skia runtime optimizations and sRGB are now explicit launch arguments in the environment manifest. [Investigation run 38156093738](https://github.com/matosaru/dryfire/actions/runs/38156093738) passed generation and ten unchanged exact comparisons. Its reviewed candidate changes exactly that pixel; no controls are masked and the zero-pixel policy is retained. [Evidence](software-renderer-validation.json) preserves the original configuration/source/build record. Full-set comparison/review in the corrected renderer is pending; WebKit rendering is unchanged.
