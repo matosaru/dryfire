@@ -213,3 +213,9 @@ Recorded: 2026-10-10. This initial ledger records available conversation evidenc
 - Final screenshots are real local production-build captures: [Configure](../session-implementation-configure.png), [Run](../session-implementation-run.png), [Review](../session-implementation-review.png), [Dark settings](../settings-implementation-dark.png), [Light settings](../settings-implementation-light.png). They were visually checked and retain the approved layout/brand; no new external artwork was added.
 - GitHub implementation push is pending; append its observed commit/publication afterward. Cloudflare verification remains blocked by the execution gateway: a new 2026-10-11 request returned HTTP 403 before production app content arrived. This is an access limit, not a site-failure conclusion.
 - Physical microphone/recognition accuracy, audible beep, physical vibration and signed native release remain unverified. Next steps are observed publication/production-commit verification and real-device validation; free-plan cap/cloud/profile deletion/new taxonomies remain deferred or unapproved separate scope.
+
+### CHG-014 publication update — 2026-10-11
+
+- State: **Published to GitHub `main`** in [`6119b8f`](https://github.com/matosaru/dryfire/commit/6119b8f). `git push origin HEAD:main` completed successfully, and the subsequent remote-head check returned `6119b8fd86c6538f85d2a89d6a16df5f370ab8ba` for `refs/heads/main`.
+- Includes the approved timed sessions, durable repetition review, schema/backup compatibility, working settings, regression checks, final implementation screenshots and synchronized requirements/history. The user previously instructed direct merging without a PR; that existing authorization was retained.
+- This records observed publication and introduces no product-scope change. Cloudflare production deployment and physical-device verification remain unverified; no user site data was cleared.
