@@ -92,3 +92,7 @@ The first combined mode run was interrupted by an HTTP response failure while th
 | Detector chunk | 1.83 / 0.98 | 1.83 / 0.98 |
 
 Current candidate assets: `index-BbyURu6D.js`, `index-DCikZBm2.css`, cache **v14**. IndexedDB schema **3**, feature version **2**, backup format **4** and package **0.8.0** are unchanged. Old validation/asset records above remain historical. Synthetic success establishes functional regression coverage; physical iPhone click discrimination, audible cues and Cloudflare deployment remain unverified after the user's reported misses. See [release checks](IPHONE_RELEASE_CHECKS.md).
+
+### CHG-016 source publication and CI outcome
+
+Implementation [`34d3136`](https://github.com/matosaru/dryfire/commit/34d3136) pushed successfully to `main`; `git ls-remote` returned `34d3136f9a5e4366924802b729adfbfcb6c3284a`, matching local HEAD. Public GitHub Actions HTML reports [run 38132660138](https://github.com/matosaru/dryfire/actions/runs/38132660138) **completed successfully**; design publication [run 38132328710](https://github.com/matosaru/dryfire/actions/runs/38132328710) also completed successfully. A fresh production request still failed at the workspace CONNECT gateway with 403 before app content arrived; this does not establish a failed deployment. The corrected physical iPhone behavior remains unverified after the user's reported missed triggers. This follow-up updates documentation only; no further source or data changes occurred after the validated implementation.

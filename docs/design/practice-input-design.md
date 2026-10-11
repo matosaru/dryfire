@@ -22,6 +22,6 @@ The images below are actual captures of the locally verified production-build ca
 | --- | --- |
 | ![STOP with microphone indicator below, dark appearance](practice-stop-microphone-dark.png) | ![STOP with microphone indicator below, light appearance](practice-stop-microphone-light.png) |
 
-Five browser checks pass with zero page errors: countdown-to-STOP transition, real input/unmatched feedback, pause/resume/STOP with saved partial results, both themes at 320/390/768 px, and retained results after refresh. STOP is 116 × 116 px; the meter follows it vertically. Older approved Run captures remain preserved in the catalog. Final source/GitHub/production evidence is maintained in the delivery tracker.
+Five browser checks pass with zero page errors: countdown-to-STOP transition, real input/unmatched feedback, pause/resume/STOP with saved partial results, both themes at 320/390/768 px, and retained results after refresh. STOP is 116 × 116 px; the meter follows it vertically. Older approved Run captures remain preserved in the catalog. Matching implementation and recognition corrections are published to main in [`34d3136`](https://github.com/matosaru/dryfire/commit/34d3136). Final CI/production/device evidence is maintained in the delivery tracker.
 
 The layout uses the app's existing brand and locally authored HTML/CSS/SVG; no third-party application artwork was imported.

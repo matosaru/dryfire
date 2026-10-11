@@ -4,7 +4,7 @@ Updated: 2026-10-11. Target confirmed by the user: **iPhone Safari and the Home 
 
 Application: `https://dryfire.matosaru.workers.dev`. Use the latest CHG-016 implementation commit in [implementation history](../implementation-history.md). The older `6119b8f` contains sequences/settings but predates the six practice modes. `8b8aec9` predates STOP/input feedback and the latest recognition corrections. Package version **0.8.0** alone does not identify the current update.
 
-User feedback, 2026-10-11: trigger pulls were reported missed during a practice mode. Exact Safari/Home Screen context and deployed revision were not provided. CHG-016 corrections are implemented and locally validated; source publication is tracked separately and the corrected build's device checks remain unverified. This report does not mark unrelated hardware checks passed.
+User feedback, 2026-10-11: trigger pulls were reported missed during a practice mode. Exact Safari/Home Screen context and deployed revision were not provided. CHG-016 corrections are implemented and locally validated; source is published in `34d3136` and the corrected build's device checks remain unverified. This report does not mark unrelated hardware checks passed.
 
 ## Current evidence
 
@@ -12,8 +12,9 @@ User feedback, 2026-10-11: trigger pulls were reported missed during a practice 
 | --- | --- |
 | Source/build acceptance | CHG-016: 227 Jest tests across 17 suites, 16 smoke checks, production build and `verify:dist` passed |
 | Browser acceptance | CHG-016: seven suites / 35 checks covering STOP/input feedback, actual early Train → louder live click, modes, lifecycle/storage failure, legacy sequences, settings and migration; see [validation record](PRACTICE_VALIDATION.md) |
-| GitHub Actions / Node 22 | [GitHub Actions run 38130523348](https://github.com/matosaru/dryfire/actions/runs/38130523348) completed successfully for test synchronization fix [`be50b99`](https://github.com/matosaru/dryfire/commit/be50b99); local Node 22 installation/smoke/222-Jest/build/asset workflow also passed |
-| GitHub publication | Revised design [`9b24b7d`](https://github.com/matosaru/dryfire/commit/9b24b7d) pushed to `main`, matching remote head observed. CHG-016 source publication/CI are tracked in implementation history; CHG-015 remains published in `8b8aec9` |
+| GitHub Actions / CHG-016 | [Run 38132660138](https://github.com/matosaru/dryfire/actions/runs/38132660138) completed successfully for source `34d3136`; source/build workflow includes smoke, 227 Jest and minified build/asset verification |
+| Prior CI synchronization fix / Node 22 | [GitHub Actions run 38130523348](https://github.com/matosaru/dryfire/actions/runs/38130523348) completed successfully for test synchronization fix [`be50b99`](https://github.com/matosaru/dryfire/commit/be50b99); local Node 22 installation/smoke/222-Jest/build/asset workflow also passed |
+| GitHub publication | Revised design [`9b24b7d`](https://github.com/matosaru/dryfire/commit/9b24b7d) pushed to `main`, matching remote head observed. CHG-016 source published in [`34d3136`](https://github.com/matosaru/dryfire/commit/34d3136), matching remote hash observed; [new run 38132660138](https://github.com/matosaru/dryfire/actions/runs/38132660138) completed successfully. CHG-015 remains published in `8b8aec9` |
 | Production app/build-status access | Workspace CONNECT requests to the app and GitHub API failed with gateway 403 before destination content arrived on 2026-10-11; Git transport and public GitHub Actions HTML remain usable; successful CI observation is recorded above |
 | Cloudflare production deployment | Unverified |
 | Physical iPhone microphone, beep and feedback | Not run; device/browser choice confirmed |
