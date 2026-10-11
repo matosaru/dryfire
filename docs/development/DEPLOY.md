@@ -2,6 +2,12 @@
 
 The repository holds **editable source**. Only `dist/` is deployed as the minified website.
 
+## Registered custom domains
+
+The user reports `easydryfire.com` and `easydryfire.app` are registered on Cloudflare (2026-10-11). The current documented app origin remains `https://dryfire.matosaru.workers.dev/`; no custom-domain binding has been verified or changed by the copyright update.
+
+To serve the existing Worker, use Cloudflare **Workers & Pages → dryfire → Settings → Domains & Routes → Add → Custom Domain**, add the desired domain(s), and wait for Cloudflare's DNS/TLS setup to become active. Domain registration alone does not route traffic to the app. Choose a primary public app origin before updating canonical SEO/manifest information or adding redirects. Preserve the `workers.dev` address during migration so existing users can export their backups: IndexedDB belongs to its origin, and a new domain needs an explicit backup import to access that saved library. Deploying new code at the same origin preserves it.
+
 ## Cloudflare Workers Builds (matches your existing build logs)
 
 1. Use the connected GitHub repository `matosaru/dryfire`, production branch `main`. Select the latest implementation commit in [implementation history](../project/implementation-history.md); a successful production build must include that commit or a descendant. The older `6119b8f` contains timed sequences/settings but predates the six practice modes.

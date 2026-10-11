@@ -181,7 +181,7 @@ for (const item of cases) {
     const layout = overflow > 0 ? await page.evaluate(() => {
       const width = () => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth);
       const original = width();
-      const suspects = [...new Set(document.querySelectorAll('#historyView > *, #progressContent > *, #historyList, #savedSessions, .confusion-wrap, footer'))];
+      const suspects = [...new Set(document.querySelectorAll('#historyView > *, .progress-filters, .progress-filters > *, .progress-filters select, #progressContent > *, #historyList, #savedSessions, .confusion-wrap, footer'))];
       const reductions = [];
       for (const node of suspects) {
         const style = node.getAttribute('style');

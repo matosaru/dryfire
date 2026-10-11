@@ -1,6 +1,6 @@
 # Drill Session design
 
-Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · published source [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
+Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · CHG-023 local footer revision; earlier feature baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
 Entry: Start Drill on a built-in/custom sequence, or History review. App anchor: `sessionView`. This is a state of the same `/` web app, not a separate indexable URL.
 

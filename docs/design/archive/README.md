@@ -9,6 +9,7 @@ Earlier approved/generated references and earlier implementation captures are re
 | CHG-012 | Implemented first-gun, gun library, Home and custom editor captures |
 | CHG-014 | [Session proposal notes](chg-014/drill-session.md), generated Configure/Run/Review board and implemented sequence/settings states |
 | CHG-015 | Initial trigger-first/six-mode implementation captures |
+| CHG-023 | Forty-two prior current captures, before the shared copyright footer |
 | CHG-022 | Eleven prior Practice captures, before microphone readiness / countdown input / early-miss review |
 | CHG-016 | [STOP/input design notes](chg-016/practice-input.md) and Dark/Light captures |
 | CHG-019 | Five superseded My Guns/History captures before the CHG-020 Delete and separate clear controls |
@@ -19,3 +20,5 @@ CHG-018 moved 27 distinct PNGs into organized paths; a SHA-256 audit found no by
 CHG-020 retains five superseded CHG-019 current captures, for 32 archived PNGs. Current images are registered separately; the archive is historical evidence.
 
 CHG-022 retains eleven superseded Practice captures, bringing the archive to 43 PNGs.
+
+CHG-023 retains 42 prior current captures, bringing the archive to 85 PNGs.

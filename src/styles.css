@@ -77,6 +77,7 @@ h2,h3,p { margin-top:0; }
 .history-item span { color:#ff9b56; font-size:1.12rem; font-weight:800; }
 .app-message { border:1px solid #a9633c; color:#ffc6a1; border-radius:12px; background:#352014; padding:14px; margin-bottom:16px; }
 footer { padding-top:20px; border-top:1px solid #253139; font-size:.79rem; line-height:1.55; }
+.copyright { margin: 12px 0 0; }
 button:focus-visible,input:focus-visible { outline:3px solid #ffb77f; outline-offset:3px; }
 @media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; } .status-pill { margin-left:77px; } }
 @media(max-width:420px){ .hero { gap:12px; } .brand-mark { height:47px; width:47px; } .hero-copy { min-width:0; width:calc(100% - 62px); } .status-pill { margin-left:0; } .settings-row { align-items:flex-start; flex-direction:column; } }

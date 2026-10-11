@@ -461,9 +461,9 @@
     }
   ],
   "reviewedSources": {
-    "index.html": "6b8bdd03744324a917299a42f21a1813579f8bffdbe1ab629b688fc46604aaf9",
+    "index.html": "8fceaa5c9a2220ea8128869944d0a1706768180f7d3627e51c03e4c838817519",
     "src/main.js": "921f48402b8387ac76eba9cffdecb2833fa7865116909b3a5387960672add71d",
-    "src/styles.css": "41088ff01a250f9334f3be268a9e4058cd6d2ef102a4ee3c53e331f6c1e915c2",
+    "src/styles.css": "9006d52af81603115ccfe9ee75bd8fa9274d7860670ea7d7dacd5bf7d9264692",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
     "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
@@ -477,6 +477,7 @@
     "CHG-019",
     "CHG-020",
     "CHG-021",
-    "CHG-022"
+    "CHG-022",
+    "CHG-023"
   ]
 }

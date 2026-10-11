@@ -1,6 +1,6 @@
 # Home design
 
-Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · published source [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
+Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · CHG-023 local footer revision; earlier feature baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
 Entry: After gun selection/setup and returning visits. App anchor: `homeView`. This is a state of the same `/` web app, not a separate indexable URL.
 

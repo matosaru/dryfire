@@ -1,6 +1,6 @@
 # Site and screen tree
 
-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-11; application source baseline `7240e2c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-11; application source baseline `7240e2c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
 
 ## Public site
 
