@@ -61,4 +61,6 @@ Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with C
 - Never claim a GitHub push, Cloudflare deployment, or real-device verification succeeded without observing success.
 
 ## Current handoff
+
+CHG-026: the [web commercial roadmap](../project/web-commercial-plan.md) is **planning only**, per the latest explicit instruction to commit plans on a feature branch and not begin implementations. Native releases are deferred. Use the [forward requirements](../requirements/web-commercial.md), commercial/cloud/review/preview documents and exact approval evidence; do not implement paid gates, pricing, accounts, cloud uploads or Contact/SEO routes until the user later starts implementation. Read-only research and documentation validation remain authorized.
 See the [historical handoff](CODEX_HANDOFF.md) for the requested v0.8 UI update, production minification audit, and regression-test-first refactor task.

@@ -1,6 +1,6 @@
 # Functional requirements
 
-Revision 1.10 · CHG-022 practice start / CHG-023 copyright · 2026-10-11
+Revision 1.11 · CHG-026 forward web commercial planning · 2026-10-11
 
 This is the single current functional index. Markdown requirements define behavior; [screen designs](../design/README.md) define layouts and provide actual visual evidence. Approval, implementation and deployment are tracked separately in the [project plan](../project/implementation-history.md).
 
@@ -15,6 +15,7 @@ This is the single current functional index. Markdown requirements define behavi
 | [Practice improvements and input limits](practice-improvements.md) | UPDATE-01–06 and LIMIT-01–03: automatic Single, charts, unknown filtering, screen history, safety modal and complete approved bounds | Implemented |
 | [Persistence](persistence.md) | Local durability, migrations, backups and ownership | Implemented: schema 3 / backup 4; compatible backups and CHG-020 separate recognition/session clearing |
 | [Settings](settings.md) | Browser-backed audio preferences, themes and supported vibration | Implemented; physical iPhone capability checks remain separate |
+| [Web commercial preparation](web-commercial.md) | Contact/SEO, review, simple Free/Pro, account/cloud recovery, billing, dev/production QA and later paid candidates | Planning/analysis requested; price/allocation/providers/data policies proposed; product features not implemented; native releases deferred |
 
 CHG-020 is implemented locally with 270 Jest / 23 suites, 16 smoke/build/assets and 16 focused browser checks passing. Updated My Guns/History designs and the architecture cover the single-gun Delete and separate clear actions; source published in [`7240e2c`](https://github.com/matosaru/dryfire/commit/7240e2c); [GitHub Actions run 38144631311](https://github.com/matosaru/dryfire/actions/runs/38144631311) completed successfully; deployment/device evidence is tracked separately. Prior corrections are published in [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18), with 261 Jest / 22 suites, 16 smoke/build/assets and 11 focused browser checks passing locally. Prior source baseline: [`b29837a`](https://github.com/matosaru/dryfire/commit/b29837a). Its 257 Jest tests / 21 suites, 16 smoke checks, seven browser suites / 46 checks and GitHub CI passed. Local screenshots and CI do not establish Cloudflare deployment or physical microphone accuracy.
 
@@ -28,4 +29,4 @@ CHG-020 is implemented locally with 270 Jest / 23 suites, 16 smoke/build/assets 
 
 ## Deferred scope
 
-One-gun free-tier enforcement, accounts/cloud synchronization, cross-device recovery, raw-audio storage and camera/sensor movement analysis remain deferred or unapproved. CHG-019 authorizes explicit whole-library reset, while CHG-020 now directly approves individual gun deletion and saved-session clearing (implemented and locally validated). The SEO package is a prepared proposal; public pages/routes and production metadata have not been added by this documentation update.
+CHG-026 moves one-gun commercial limits, accounts/cloud recovery and later synchronization into the requested planning/analysis roadmap; the final rules and backend implementation remain proposed/unimplemented. Sharing, new gun-type sounds and camera/sensor movement analysis are later paid candidates. Raw-audio/video upload is not authorized. Native iPhone/Android release is explicitly deferred. CHG-019/020 resets/deletion remain implemented. Contact/public SEO routes and production metadata remain unimplemented; the current plan/specification does not change shipped screens or free features.
