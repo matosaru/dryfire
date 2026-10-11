@@ -27,6 +27,7 @@ async function startPractice(page, countdown = false) {
   await page.locator('#practiceStartBtn').click();
   await confirmSafety(page);
   await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase', 'countdown');
+  await expect(page.locator('#practicePauseBtn')).toBeEnabled();
   if (!countdown) { await page.clock.runFor(80); await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase', 'active'); }
 }
 async function emit(page, label = 'trigger') {
@@ -113,7 +114,9 @@ async function prepare(page, item) {
       await page.locator('#sessionStartSound').uncheck();
       if (item.state.startsWith('review')) { await page.locator('#sessionRepetitions').fill('1'); await page.locator('#sessionRepetitions').dispatchEvent('change'); }
       await page.locator('#sessionStartBtn').click(); await confirmSafety(page);
-      await page.clock.runFor(80); await expect(page.locator('#sessionCountdown')).toHaveText('GO');
+      await expect(page.locator('#sessionCountdown')).toHaveText('GO');
+      await expect(page.locator('#pauseSessionBtn')).toBeEnabled();
+      await page.clock.runFor(80);
       if (item.state.startsWith('paused')) { await page.locator('#pauseSessionBtn').click(); await expect(page.locator('#sessionCountdown')).toHaveText('Paused'); }
       if (item.state.startsWith('review')) {
         await emit(page); await expect(page.locator('#sessionCompletedCount')).toHaveText('1');
@@ -166,9 +169,11 @@ for (const item of cases) {
     });
     if (item.screen === 'learn') expect(await page.locator('#learnView img').first().evaluate(image => image.currentSrc)).toMatch(/\.svg$/);
     const overflow = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth) - innerWidth);
-    const offenders = overflow > 0 ? await page.evaluate(() => [...document.querySelectorAll('[id],select,svg')]
+    const offenders = overflow > 0 ? await page.evaluate(() => [...document.querySelectorAll('*')]
       .filter(node => node.checkVisibility() && node.getBoundingClientRect().right > innerWidth)
-      .map(node => ({ tag: node.tagName, id: node.id, class: node.getAttribute('class'), right: node.getBoundingClientRect().right })).slice(0, 20)) : [];
+      .map(node => ({ tag: node.tagName, id: node.id, class: node.getAttribute('class'), right: node.getBoundingClientRect().right,
+        parent: node.parentElement?.className, text: node.textContent?.trim().slice(0, 70) }))
+      .sort((a, b) => b.right - a.right).slice(0, 20)) : [];
     expect(overflow, `Horizontal overflow: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);
     expect(errors, 'Unexpected browser errors').toEqual([]);
     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });
