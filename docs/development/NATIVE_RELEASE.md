@@ -1,5 +1,7 @@
 # Release as an iPhone or Android app
 
+**Deferred by CHG-026, 2026-10-11:** the user instructed **“I want to skip native apps for now”**. Keep this guide as future reference; the [active roadmap](../project/web-commercial-plan.md) covers web/PWA only. Do not generate native projects, implement store billing or submit to stores under the current plan.
+
 Prepared 2026-10-11. Recommended route: **Capacitor with the built web app bundled inside its WebView**. Keep the PWA available separately. A WebView shell is a valid technical approach, but packaging alone does not prove microphone/backup reliability or App Store acceptance.
 
 ## What the repository already has

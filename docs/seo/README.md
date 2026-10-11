@@ -2,6 +2,25 @@
 
 Prepared for CHG-018 · 2026-10-11 · **Proposed; not applied to the application or deployed.**
 
+CHG-026 requests Contact and public SEO in the [forward web plan](../project/web-commercial-plan.md). Existing templates remain preparatory; their current Worker canonical is not changed until final routing/domain design and origin-data migration are specified. Do not publish the example paid price or make account/cloud claims before those features exist.
+
+## Planned public topology — CHG-026
+
+Working routing proposal, **not implemented or added to the current generated site tree**:
+
+| Candidate location | Proposed public content | Indexing/privacy rule |
+| --- | --- | --- |
+| `easydryfire.com/` | Clear landing page with useful free dry-fire explanation and Open app action | Public initial HTML without microphone/sign-in; one canonical |
+| `/features/` and `/help/` on the marketing origin | Real capabilities, calibration/device help, safety/timing limits | Only shipped capabilities; no invented accuracy claims |
+| `/contact/` plus Contact in app navigation | `easydryfire@gmail.com`, Email support action and copy-address fallback | Free/Pro/anonymous access; no automatic gun/history/audio attachment |
+| `/pricing/` | One Free/Pro comparison after offer approval | Publish only actual price/benefits; no charging for roadmap items |
+| `/privacy/` and `/terms/` | Real trader/contact, data purposes/retention and consumer/billing terms | Match implemented services and Lithuania/target-market obligations |
+| `easydryfire.app/` | Existing PWA plus later reviewed account/backup/billing states | Personal/account/session views noindex; device data never public sitemap content |
+
+The user registered both domains, but bindings and deployed origin behavior are unverified. Preserve the current Worker URL and existing libraries until users can explicitly export/link/restore to any new origin; `.com`, `.app` and the Worker origin have distinct IndexedDB storage. Contact can start with `mailto:` and a copy fallback, avoiding a new server email form/spam service. Verify iPhone behavior when no mail client is configured and never claim mailto sent a message.
+
+Define final routes/designs before application changes, maintain real HTTP 404/redirect/content types and then update the architecture registry/tree and screenshots. Only deployed public canonical 200 pages enter sitemap; preview/dev return noindex. Account APIs/private pages are excluded and protected independently—robots rules are not access control. Existing root-only crawl templates remain drafts, not the final proposed multipage sitemap.
+
 ## Current audit
 
 The production origin supplied by the user is `https://dryfire.matosaru.workers.dev/`. Source has one public URL; app navigation uses same-URL history states. Gun Setup, Learn, Practice, History and Settings are not separately crawlable pages. Do not advertise invented URLs such as `/practice/` in a sitemap.

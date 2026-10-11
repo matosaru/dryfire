@@ -2,6 +2,10 @@
 
 Repository workflow: [main/dev branching, PR protection and test-gated deployments](../project/branching-strategy.md).
 
+Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with dev/production verification.
+
+[Public-Free/private-full-preview testing](free-preview-testing.md) proposes owner testing before billing. The latest instruction is planning only; build profiles, gates and account settings are not implemented by these documents.
+
 Product planning: [Requirements and approvals](../requirements/README.md) · [Design catalog](../design/README.md). Read these before changing product behavior.
 
 The approved display brand is **Dry Fire With Ease**. **Sound Trainer** remains a descriptive subtitle. The existing technical `dryfire` identifiers stay unchanged to preserve local data and deployment compatibility; see [branding requirements](../requirements/branding.md).

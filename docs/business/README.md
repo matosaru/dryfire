@@ -1,7 +1,10 @@
 # Product and monetization planning
 
-- [Monetization guide](monetization.md): proposed tiers, pricing experiments, payment/entitlement work and launch sequence.
-- [iPhone/Android release guide](../development/NATIVE_RELEASE.md): Capacitor packaging, device checks, signing and store submission.
+- [Monetization analysis](monetization.md): one Free/Pro offer, Lithuania/Europe obligations, provider choices, existing-user protection and dev/production testing.
+- [Competitor research](competitor-analysis.md): candidate comparison, source/access evidence and pending live pricing verification.
+- [Cloud architecture proposal](../architecture/cloud-services-proposal.md): auth/storage alternatives, owned backups, recovery, deletion and later synchronization.
+- [Web commercial roadmap](../project/web-commercial-plan.md): current ordered work and completion gates.
+- [iPhone/Android release guide](../development/NATIVE_RELEASE.md): retained for later; native releases are deferred by CHG-026.
 - [Implementation history and remaining plan](../project/implementation-history.md): what is implemented versus proposed.
 
-Guides do not implement pricing, purchase flows, one-gun enforcement or store releases. Functional scope changes remain documented and authorized separately from publishing advice.
+These documents do not implement pricing, accounts, purchase flows, cloud storage or one-gun enforcement. Current custom drills, five-gun capacity and basic graphs remain free; proposed commercial rules need a concrete reviewed specification before application changes.
