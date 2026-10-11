@@ -1,6 +1,6 @@
 # Gun profiles and front-door page
 
-Revision: 1.2 · Scope: user-approved · Implementation: implemented and locally validated (CHG-012); publication/deployment tracked separately
+Revision: 1.3 · Scope: user-approved · Implementation: implemented and locally validated (CHG-012); publication/deployment tracked separately
 
 Approval evidence: the user requested names/types, up to five guns, separate sounds/drills and refresh/deployment persistence, then said **“approve, but now review”** after receiving the multi-gun design boards. See [CHG-003](../project/approval-log.md#chg-003--multi-gun-flow).
 
@@ -29,13 +29,13 @@ The user directly requested modifying existing guns and type images in selectors
 | GUN-10 | My Guns offers a separate reachable Edit action for every saved profile. Prefill the existing name/type; Save updates the same ID and retains all owned examples, calibration, presets, configuration and history. Cancel changes nothing. Editing a different profile does not implicitly switch the active gun; save returns to My Guns with updated details. | Approved by direct instruction, CHG-019 |
 | GUN-11 | Show locally authored, distinct Handgun / Rifle-Carbine / Shotgun illustrations in type choices, gun library and active selector. Keep exact readable type labels, accessible selection and Dark/Light contrast. A profile without a type shows a neutral placeholder rather than a guessed firearm. | Approved by direct instruction, CHG-019 |
 
-Changing the name/type is descriptive, not a calibration migration. Keep existing gun ownership and data; historical session name/type snapshots remain historical. Editing is locked during active capture or unsaved-session recovery. Setup uses the same supported type value as backup/storage; images cannot introduce new persisted identifiers. Individual gun deletion remains proposed; CHG-019 separately approves explicit Settings all-library reset.
+Changing the name/type is descriptive, not a calibration migration. Keep existing gun ownership and data; historical session name/type snapshots remain historical. Editing is locked during active capture or unsaved-session recovery. Setup uses the same supported type value as backup/storage; images cannot introduce new persisted identifiers. CHG-020 directly authorizes individual deletion as specified below; CHG-019 separately approves explicit Settings all-library reset.
 
 ## Supporting design details
 
 The following are documented proposals, not additional approval claims:
 
-- Individual profile deletion remains proposed; approved editing is defined above. Deleting a single gun and all its data would require a distinct confirmed action.
+- CHG-020 now authorizes individual profile deletion through the distinct confirmed action below.
 - At capacity show **5 of 5 guns saved** instead of an unexplained disabled Add Gun control.
 - Prevent switching ownership during recording or an active drill. Exact behavior for pausing, ending and switching must be resolved with the session specification.
 - Gun type initially identifies the profile; it does not silently change existing sound identifiers. Type-specific sound taxonomies or new default drill sets require an approved specification change.
@@ -48,7 +48,7 @@ The database upgrade preserves existing single-profile data in one profile that 
 
 Routine form validation trims names, accepts 1–80 characters and requires one of the exact three approved type labels without a silently chosen default.
 
-Profile deletion, the deferred free-plan cap, cloud synchronization, dedicated session results and fixed/random session timing were excluded from the CHG-012 slice. CHG-014 separately approves and implements detailed sessions/configuration/results; current status is in the drill specification and tracker. Recognition-event history remains distinct from that dedicated session feature. Individual profile deletion/free cap/cloud remain excluded. The separate whole-library reset requested in CHG-019 is defined in Settings.
+Profile deletion, the deferred free-plan cap, cloud synchronization, dedicated session results and fixed/random session timing were excluded from the CHG-012 slice. CHG-014 separately approves and implements detailed sessions/configuration/results; current status is in the drill specification and tracker. Recognition-event history remains distinct from that dedicated session feature. CHG-020 now authorizes individual profile deletion; free cap/cloud remain excluded. The separate whole-library reset requested in CHG-019 is defined in Settings.
 
 ## Acceptance criteria
 
@@ -60,3 +60,13 @@ Profile deletion, the deferred free-plan cap, cloud synchronization, dedicated s
 6. Existing compatible data is migrated without loss as described in [persistence.md](persistence.md).
 
 7. Edit both selected and nonselected profiles, cancel or save, and reload: preserve identity, selection and all owned data while updating the intended name/type and visible illustration.
+
+## Confirmed gun deletion — CHG-020
+
+| ID | Requirement | State |
+| --- | --- | --- |
+| GUN-12 | My Guns offers Delete beside Edit for each profile. Confirmation names the gun and discloses deletion of its learned/calibration sounds, presets/configuration, recognition history and saved practice/sequence sessions, with backup guidance. Cancel changes nothing. Confirm removes that gun and all its owned records atomically; other guns and device preferences survive. | Approved by direct instruction, 2026-10-11; implemented and locally validated |
+
+Deletion is locked during recording, active/paused drills, saving, unsaved Review or other library work. Delete a nonselected gun without changing selection. Delete the selected gun and select the oldest remaining profile (creation time, then ID); delete the last gun and open first-gun setup. Clear stale selected-gun results/controller context and reject pending writes whose owner was deleted. The freed slot can be reused; same-origin refresh and backup export reflect the deletion. A compatible backup taken before deletion can restore it. No user data is deleted merely by deployment.
+
+Acceptance: test selected/nonselected/last-profile deletion and cancellation, full owned-store cleanup and preservation of other guns/global preferences, rollback on transaction failure, no orphaned delayed writes, refreshed capacity and reload, and restore from a pre-deletion backup. Current design: [My Guns](../design/screens/guns/README.md).

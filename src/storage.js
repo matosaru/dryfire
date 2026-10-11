@@ -197,6 +197,32 @@ export async function updateGun(id, { name, type } = {}) {
   });
 }
 
+/** Confirmed single-profile deletion; ownership and selection change atomically. */
+export async function deleteGun(id) {
+  if (typeof id !== 'string' || !id) throw new TypeError('Invalid gun profile.');
+  await withTransaction(STORES, 'readwrite', (tx, context) => {
+    const store = tx.objectStore(GUNS);
+    const request = store.getAll();
+    request.onsuccess = () => {
+      if (!request.result.some(gun => gun.id === id)) { context.fail(new Error('Gun profile not found.')); return; }
+      const remaining = request.result.filter(gun => gun.id !== id)
+        .sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id));
+      const settings = tx.objectStore(SETTINGS);
+      const selection = settings.get(ACTIVE_GUN);
+      selection.onsuccess = () => {
+        try {
+          for (const name of [EXAMPLES, EVENTS, GUN_SETTINGS, SESSIONS]) deleteOwnedRows(tx, context, name, id);
+          store.delete(id);
+          if (selection.result?.value === id) {
+            if (remaining.length) settings.put({ key: ACTIVE_GUN, value: remaining[0].id });
+            else settings.delete(ACTIVE_GUN);
+          }
+        } catch (error) { context.fail(error); }
+      };
+    };
+  });
+}
+
 /** Explicitly confirmed UI action: atomically clear only this application's stores. */
 export async function resetLibrary() {
   await withTransaction(STORES, 'readwrite', tx => {
@@ -269,16 +295,19 @@ export async function getOutdatedExampleCount(gunId) {
 
 async function clearOwnedRows(storeName, gunId, predicate = () => true) {
   const owner = await resolveGunId(gunId, true);
-  await withOwnedTransaction(owner, storeName, tx => {
-    const store = tx.objectStore(storeName);
-    const request = store.index('gunId').openCursor(IDBKeyRange.only(owner));
-    request.onsuccess = () => {
+  await withOwnedTransaction(owner, storeName, (tx, context) => deleteOwnedRows(tx, context, storeName, owner, predicate));
+}
+
+function deleteOwnedRows(tx, context, storeName, owner, predicate = () => true) {
+  const request = tx.objectStore(storeName).index('gunId').openCursor(IDBKeyRange.only(owner));
+  request.onsuccess = () => {
+    try {
       const cursor = request.result;
       if (!cursor) return;
       if (predicate(cursor.value)) cursor.delete();
       cursor.continue();
-    };
-  });
+    } catch (error) { context.fail(error); }
+  };
 }
 
 export async function clearExamples(gunId) {
@@ -591,6 +620,10 @@ function validateSession(value, owner) {
 
 export async function getSessions(gunId) {
   return sortSessions(await getOwnedRows(SESSIONS, await resolveGunId(gunId)));
+}
+
+export async function clearSessions(gunId) {
+  await clearOwnedRows(SESSIONS, gunId);
 }
 
 export async function getSession(id, gunId) {

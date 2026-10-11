@@ -418,9 +418,9 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     routeKey = crypto.randomUUID(); changed(); onNavigate('session');
   }
 
-  async function renderSavedSessions(gunId) {
+  async function renderSavedSessions(gunId, isCurrent = () => true) {
     const records = gunId ? await getSessions(gunId) : [];
-    if (gunId !== getContext().gun?.id) return;
+    if (gunId !== getContext().gun?.id || !isCurrent()) return;
     const host = $('#savedSessions');
     host.replaceChildren();
     if (!records.length) host.append(node('p', 'No saved drill sessions for this gun yet.', 'empty-state'));
@@ -465,6 +465,6 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   });
   $('#safetyAck').addEventListener('change', updateReadiness);
 
-  return { open, showRecord, interrupt, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => configQueue,
+  return { open, showRecord, interrupt, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

@@ -633,7 +633,11 @@ html[data-theme="light"] :is(button,input,select,summary):focus-visible { outlin
 .gun-profile:has(.gun-card[aria-pressed="true"]) { border:2px solid #ff8126; }
 .gun-profile .gun-card,.gun-profile .gun-card[aria-pressed="true"] { border:0; border-radius:0; padding:14px; background:none; }
 .gun-card-details { flex:1; min-width:0; }
-.edit-gun { display:block; width:100%; min-height:44px; padding:10px 14px; border-top:1px solid #31485b; text-align:right; }
+.gun-profile-actions { display:flex; border-top:1px solid #31485b; }
+.gun-profile-actions .text-button { flex:1; min-height:44px; padding:10px 14px; text-align:center; }
+.delete-gun { color:#ffb3a5; border-left:1px solid #31485b; }
+html[data-theme="light"] .gun-profile-actions { border-color:#c5d2de; }
+html[data-theme="light"] .delete-gun { color:#993b2c; border-color:#c5d2de; }
 #soundResetOutcome:empty { display:none; }
 html[data-theme="light"] :is(.gun-profile,.gun-type-choice) { color:#182936; background:#fff; border-color:#c5d2de; }
 html[data-theme="light"] .gun-type-choices legend { color:#243d51; }

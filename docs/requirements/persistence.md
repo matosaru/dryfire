@@ -1,6 +1,6 @@
 # Persistence, migration and backups
 
-Revision: 1.5 · Scope: approved including CHG-014/015 storage and CHG-017 retention/limits · Implementation: schema 3 and version-4 compatible backups implemented; deployment verification separate
+Revision: 1.6 · Scope: approved including CHG-014/015 storage and CHG-017 retention/limits · Implementation: schema 3 and version-4 compatible backups implemented; deployment verification separate
 
 | ID | Requirement | State |
 | --- | --- | --- |
@@ -87,3 +87,14 @@ The [consolidated practice specification](practice-modes.md) implements the user
 ## User-requested whole-library reset — CHG-019
 
 The separately confirmed [SET-06 action](settings.md#explicit-data-reset--chg-019) clears all six app stores in one readwrite transaction. An aborted transaction must retain the full library. No schema/version migration or origin-wide browser-storage wipe is added. Ordinary per-sound/full-sound reset and recent-history trimming continue preserving profiles and saved sessions. Compatible external backups remain restorable after full reset.
+
+## Explicit history and session deletion — CHG-020
+
+| ID | Requirement | State |
+| --- | --- | --- |
+| DATA-05 | History labels the existing action **Clear recognition history**. Confirmed clearing removes only the selected gun's recent recognized-event rows, then immediately clears the visible recognition log, latest prediction/verification, Live Listen timeline/counts and recognition statistics. Saved sessions/progress and all learned sounds remain intact. | Direct user report; correction of approved behavior |
+| DATA-06 | History provides a separate **Clear saved sessions** action beside the saved-session section. Confirmation names the selected gun, includes both practice and sequence sessions and explains that their progress statistics will be removed. Cancel changes nothing. Confirm deletes only that gun's saved sessions, clears stale Review context and immediately refreshes session cards, filters/charts/statistics to their empty state. Learned sounds, presets/settings, recognition history and other guns survive. | Approved by direct instruction, 2026-10-11; implemented and locally validated |
+
+Flush queued event/configuration work before confirmed deletion, snapshot the intended owner, and block the controls while capture, saving, unsaved Review or library operations are active. Earlier async reads must not restore stale deleted rows on screen. Deleted Review routes resolve to the drill catalog rather than displaying stale results. A storage failure reports an error without claiming success; successful deletion persists through reload and export. No automatic retention or schema/backup-format change is introduced. GUN-12 deletion also removes all owned stores in one atomic transaction.
+
+Acceptance: clear recognition events and verify both visible logs/counts plus storage; preserve saved sessions/progress. Clear mixed practice/sequence sessions and verify cards/charts/Review after reload; preserve recognition/learned data and another gun's sessions. Test cancel, write/transaction failure, stale navigation/read handling and new sessions after clearing. Current design: [History](../design/screens/history/README.md).

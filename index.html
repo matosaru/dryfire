@@ -306,7 +306,7 @@
         <div class="progress-filters"><label for="progressGroup">Compare drill / settings<select id="progressGroup" aria-label="Comparable drill and settings"></select></label><label for="progressRange">Time range<select id="progressRange"><option value="0">All saved sessions</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select></label></div>
         <div id="progressContent"></div><p class="muted small">Trends describe recognized audio timing. Compare similar microphone placement and conditions; faster timing does not measure aim or movement.</p>
       </section>
-      <section class="saved-sessions-section" aria-labelledby="savedSessionsTitle"><h3 id="savedSessionsTitle">Drill sessions</h3><p class="muted small">Open a session to review completed and interrupted repetitions. Sessions stay saved when recent detections are trimmed or cleared.</p><div id="savedSessions" class="session-result-list"></div></section>
+      <section class="saved-sessions-section" aria-labelledby="savedSessionsTitle"><h3 id="savedSessionsTitle">Drill sessions</h3><p class="muted small">Open a session to review completed and interrupted repetitions. Clear saved sessions removes this gun’s practice and sequence results and progress statistics; learned sounds and recognition history stay saved.</p><button id="clearSessionsBtn" class="button danger" type="button">Clear saved sessions</button><p id="sessionsClearOutcome" class="muted small" role="status"></p><div id="savedSessions" class="session-result-list"></div></section>
       <h3 class="recognition-history-heading">Recent recognition results</h3>
       <div class="settings-row"><label for="maxResults">Keep last N recognition results</label><input id="maxResults" type="number" min="1" max="500" step="1" value="50" /></div>
       <p class="muted small">Changing N trims recent recognition history; learned sounds and saved drill sessions stay intact. Label each result to evaluate recognition on your own real-world samples.</p>
@@ -317,7 +317,8 @@
         <p class="small muted">New unknown detections are not saved. These checks cover manually verified retained events only; they cannot measure missed sounds or an overall false-count rate.</p>
       </div>
       <div id="historyList" class="history-list"></div>
-      <button id="clearHistoryBtn" class="button secondary" type="button">Clear history</button>
+      <button id="clearHistoryBtn" class="button secondary" type="button">Clear recognition history</button>
+      <p id="historyClearOutcome" class="muted small" role="status"></p>
     </section>
 
     <section id="settingsView" class="view hidden" aria-labelledby="settings-title">

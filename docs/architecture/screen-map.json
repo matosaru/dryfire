@@ -1,7 +1,7 @@
 {
   "version": 1,
   "reviewedOn": "2026-10-11",
-  "sourceBaseline": "aacdb1856c0167698dc5294e53ff5db5a3563863",
+  "sourceBaseline": "4ccdf263e987d852a09b7810172b537ac90c7e27",
   "publicOrigin": "https://dryfire.matosaru.workers.dev",
   "publicPaths": [
     "/"
@@ -18,7 +18,7 @@
         "docs/requirements/gun-profiles.md",
         "docs/requirements/persistence.md"
       ],
-      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, five-gun capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, five-gun capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
       "states": [
         {
           "key": "first-gun.dark",
@@ -81,7 +81,7 @@
         "docs/requirements/gun-profiles.md",
         "docs/requirements/persistence.md"
       ],
-      "notes": "Illustrated library cards show gun name/type, readiness, selected status and capacity out of five. Each has separate Select and Edit actions; no nested buttons. Add opens the illustrated type form. Editing retains all owned data and selection; switching loads only the selected gun\u2019s model/history. Backup & restore remains accessible.",
+      "notes": "Illustrated per-gun cards show readiness, selection and capacity. Separate Select, Edit and Delete actions; confirmed single-gun deletion removes all its owned sounds/calibration/presets/settings/recognition/session data atomically. Preserve other guns/device preferences, choose the oldest remaining gun when deleting selection, or open setup after the last gun. Cancel changes nothing; active/unsaved work locks actions.",
       "states": [
         {
           "key": "library.dark",
@@ -94,6 +94,12 @@
           "anchor": "gunList",
           "label": "Illustrated library, Light",
           "image": "docs/design/screens/guns/library.light.png"
+        },
+        {
+          "key": "deleted.dark",
+          "anchor": "gunList",
+          "label": "After single-gun deletion",
+          "image": "docs/design/screens/guns/deleted.dark.png"
         }
       ],
       "design": "docs/design/screens/guns/README.md"
@@ -110,7 +116,7 @@
         "docs/requirements/practice-modes.md",
         "docs/requirements/practice-improvements.md"
       ],
-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
       "states": [
         {
           "key": "overview.dark",
@@ -185,7 +191,7 @@
         "docs/requirements/practice-improvements.md",
         "docs/requirements/persistence.md"
       ],
-      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
         {
           "key": "configure-single.dark",
@@ -353,7 +359,7 @@
         "docs/requirements/practice-improvements.md",
         "docs/requirements/persistence.md"
       ],
-      "notes": "Per-gun comparable drill/settings and time-range filters, session count/mean/median/spread, trend chart and accessible data table. Saved legacy/practice cards reopen their respective Review. Recent retained recognition checks have explicit verified-only limitations and last-N control (1\u2013500). Clearing/trimming recent recognition results preserves saved sessions and learned sounds. No comparable data shows an honest empty/insufficient state.",
+      "notes": "Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
       "states": [
         {
           "key": "progress.dark",
@@ -372,6 +378,18 @@
           "anchor": "progressContent",
           "label": "Progress charts, Light",
           "image": "docs/design/screens/history/progress.light.png"
+        },
+        {
+          "key": "recognition-cleared.dark",
+          "anchor": "historyClearOutcome",
+          "label": "Recognition history cleared, sessions retained",
+          "image": "docs/design/screens/history/recognition-cleared.dark.png"
+        },
+        {
+          "key": "sessions-cleared.dark",
+          "anchor": "sessionsClearOutcome",
+          "label": "Saved sessions cleared, recognition retained",
+          "image": "docs/design/screens/history/sessions-cleared.dark.png"
         }
       ],
       "design": "docs/design/screens/history/README.md"
@@ -436,19 +454,20 @@
     }
   ],
   "reviewedSources": {
-    "index.html": "54c6228ea217d2a46cac003c490af9c23b2483f8fc6a543f274b26c30e24f525",
-    "src/main.js": "82c8a49f466c4ce6d808313a2016c0d619be3d68b500a19a7d95174afb0a77e4",
-    "src/styles.css": "6779910f58e1d6a510c7783a59a4d3cf7fd246374779356d513bb33abc79fe7b",
+    "index.html": "6b8bdd03744324a917299a42f21a1813579f8bffdbe1ab629b688fc46604aaf9",
+    "src/main.js": "921f48402b8387ac76eba9cffdecb2833fa7865116909b3a5387960672add71d",
+    "src/styles.css": "bed27a985b620bb74b4c2556fd8b16483a9d1ce17af0a028fe6851df6faa1499",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "d4fd39ba673973fa6d7aa1db5b87ccbf9f5d294efce9d66124cd11aa27da0c80",
-    "src/practiceController.js": "4435e304c2060f99b511983d769150380ebc740f92a5e36fdf606226962779bd",
-    "src/sessionController.js": "41620f45b8d73c144a4026fd13baa3612c72d66ba44d14b48547808d8b969b24",
+    "src/practiceController.js": "aa78e1f6c93847d42e8cb95c9978555341cdcc027128d777fe1cafe0b09a0513",
+    "src/sessionController.js": "ea077ffa2ecd0b63fe1e2b5660106e3a3e64da6f8f964a62787352e6be2b99a6",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/progressView.js": "9f94fa76c62f9cd35478b73522b89b31a0a5b7ac70ff0d0535dc71b07e5ec016",
     "src/inputLimits.js": "0e7be09afb1e9f6b652f6837d4f3dac3400db56cc21575642013da29a539864d"
   },
   "implementationChanges": [
     "CHG-017",
-    "CHG-019"
+    "CHG-019",
+    "CHG-020"
   ]
 }

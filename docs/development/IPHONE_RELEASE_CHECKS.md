@@ -1,8 +1,8 @@
 # iPhone release checks — trigger-first practice
 
-Updated: 2026-10-11. Target confirmed by the user: **iPhone Safari and the Home Screen app**. This verifies CHG-019 gun editing/reset controls and CHG-017, CHG-016, CHG-015 and the retained CHG-014 sequences/settings; it adds no product scope. The user authorized automatic implementation and will review the final app, so no per-step confirmation is pending.
+Updated: 2026-10-11. Target confirmed by the user: **iPhone Safari and the Home Screen app**. This verifies CHG-020 single-gun/all-owned-data deletion and separate history/session clearing, CHG-019 gun editing/reset controls and CHG-017, CHG-016, CHG-015 and the retained CHG-014 sequences/settings; it adds no product scope. The user authorized automatic implementation and will review the final app, so no per-step confirmation is pending.
 
-Application: `https://dryfire.matosaru.workers.dev`. Use the latest CHG-019 implementation commit in [implementation history](../project/implementation-history.md). The older `6119b8f` contains sequences/settings but predates the six practice modes. `8b8aec9` predates STOP/input feedback and the latest recognition corrections. Package version **0.8.0** alone does not identify the current update.
+Application: `https://dryfire.matosaru.workers.dev`. Use the latest CHG-020 implementation commit in [implementation history](../project/implementation-history.md). The older `6119b8f` contains sequences/settings but predates the six practice modes. `8b8aec9` predates STOP/input feedback and the latest recognition corrections. Package version **0.8.0** alone does not identify the current update.
 
 User feedback, 2026-10-11: trigger pulls were reported missed during a practice mode. Exact Safari/Home Screen context and deployed revision were not provided. CHG-016 corrections are implemented and locally validated; source is published in `34d3136` and the corrected build's device checks remain unverified. The user subsequently reported the app looks better, without structured accuracy/output measurements. This does not mark unrelated hardware checks passed.
 
@@ -10,6 +10,7 @@ User feedback, 2026-10-11: trigger pulls were reported missed during a practice 
 
 | Check | Observed result |
 | --- | --- |
+| Source/build acceptance / CHG-020 | 270 Jest / 23 suites, 16 smoke/build/assets and 16 focused browser checks pass; 41 current captures, updated requirements/tree, publication pending |
 | GitHub publication / CHG-019 | [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18) pushed to main; full remote hash observed; [GitHub Actions run 38140861127](https://github.com/matosaru/dryfire/actions/runs/38140861127) completed successfully |
 | Source/build acceptance / CHG-019 | 261 Jest / 22 suites, 16 smoke/build/assets, docs checks, two browser suites / 11 checks and 38 current captures pass; pixel-diff CI and physical-device tests remain separate |
 | Source/build acceptance / CHG-017 | 257 Jest tests across 21 suites, 16 smoke checks, production build and `verify:dist` passed; seven browser suites/46 checks also pass; publication results are recorded in the delivery tracker |
@@ -25,7 +26,7 @@ User feedback, 2026-10-11: trigger pulls were reported missed during a practice 
 
 ## Confirm production
 
-1. Cloudflare → Workers & Pages → **dryfire** → Deployments: record the latest successful **production** deployment's commit and ID. It must include the latest CHG-019 implementation commit or a descendant. A preview is separate.
+1. Cloudflare → Workers & Pages → **dryfire** → Deployments: record the latest successful **production** deployment's commit and ID. It must include the latest CHG-020 implementation commit or a descendant. A preview is separate.
 2. Production branch `main`, build `npm run build`, deploy `npx wrangler deploy`, assets `dist/`. Branch preview uses `npx wrangler preview`. See [deployment guide](DEPLOY.md).
 3. On **Learn**, Trigger is the primary card; Optional sounds and Improve recognition are expandable. On **Drills**, six practice cards appear above the preserved sequence presets/custom editor. These visible features distinguish this update from CHG-014.
 4. Reload or close/reopen the Home Screen app after the updated service worker activates. Expected cache: **dryfire-sound-trainer-v16**. Do not clear site data to fetch the update.
@@ -61,6 +62,8 @@ Use **Pass**, **Fail**, **Unavailable** or **Not run**, plus a short observation
 | Audio settings | Supported Noise Filter/Auto Gain saved per gun and applied next capture with truthful track reports; unavailable controls do not block capture | Not run | Not run |
 | Appearance/feedback | Dark/Light/System persist; physical vibration checked separately where available; Safari may lack vibration API | Not run | Not run |
 | Permission denial | Editable configuration and clear error, no invented result or stuck gun lock; retry after permission restoration | Not run | Not run |
+| Delete one gun | Cancel retains everything; confirmed deletion removes only that gun and all its owned records, chooses a remaining gun or opens setup, and frees a slot | Not run | Not run |
+| Clear recognition/session history | Separate actions refresh their logs/statistics immediately, retain other guns, persist after refresh and invalidate deleted Review routes | Not run | Not run |
 | Whole-library backup | Version 4 includes all guns, legacy/practice results, calibration and preferences; file retained in Files | Not run | Not run |
 
 New beep mode excludes the first **80 ms** after scheduled GO; legacy sequences retain **300 ms**. Acoustic onset, output latency and segmentation precision limit reaction timing. Similar press/reset sounds can remain ambiguous and conservative rejection can miss an intended press. No acoustic detection verifies unloaded status, aim or safe movement. The [accuracy protocol](ACCURACY_TESTING.md) separates false shot counts and missed clicks from software behavior.

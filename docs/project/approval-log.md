@@ -370,3 +370,19 @@ Authorized source/docs/screens/guides were pushed directly to `main` in [`aacdb1
 ### CHG-018/019 source CI observed — 2026-10-11
 
 [GitHub Actions run 38140861127](https://github.com/matosaru/dryfire/actions/runs/38140861127) **completed successfully** for source `aacdb18`, observed through public GitHub HTML. The workflow runs documentation checks, Node 22 smoke/Jest/build/asset verification. Fresh production HTTPS again failed at the workspace CONNECT gateway with 403 before destination content; deployment and physical-device acceptance remain unverified. No new product scope or app source edit is introduced by this publication-record follow-up.
+
+## CHG-020 — Gun deletion and clear recognition/session history
+
+- Date: 2026-10-11. Exact user instruction: **“i need a possibility to delete a gun”**, **“clear drill history is not working, not updating / deleting a log”**, **“I want a possibility to clear drill sessions.”** This explicitly authorizes implementation; no additional step approval is needed.
+- Affected requirements: GUN-12, DATA-05 and DATA-06; gun-profile revision 1.3 and persistence revision 1.6. Individual gun deletion supersedes the earlier deferral for this requested scope only.
+- Concrete behavior/design: My Guns adds separate Edit/Delete controls; confirmed deletion names its complete owned-data scope, preserves other guns/device preferences, repairs selection or opens first-gun setup. History separates Clear recognition history from Clear saved sessions, confirms gun-specific scope and immediately refreshes corresponding logs/statistics. Clearing sessions resets stale Review context; clearing recognition also clears its visible Live Listen log. Cancel changes nothing, active/unsaved operations lock destructive actions, and queued writes/ownership are guarded.
+- Design revisions: [My Guns](../design/screens/guns/README.md), [History](../design/screens/history/README.md). Actual production-build captures, architecture registry/tree and delivery plan must be updated after implementation; no new public routes are added.
+- Acceptance includes ownership isolation, transaction rollback, delayed-write rejection for deleted owners, stale read/navigation handling, selected/nonselected/last deletion, cancellation, refresh/export/backup restoration and repeated clearing/new practice. Baseline dependency installation, 261 Jest / 22 suites, 16 smoke checks, build and minified-asset checks passed under Node 22 before source edits. Implementation, publication and production/device evidence remain separate.
+
+### CHG-020 scope clarification and publication instruction — 2026-10-11
+
+The user clarified **“deleting a gun, should clear all its data”** and **“you should be able to delete a single gun also”**, confirming the documented GUN-12 owned-data scope and per-profile action. The user then instructed **“prepare all changes, push them”**. Proceed with complete validation, requirements/design/plan updates and direct-main publication under the existing no-PR instruction; no repeated step approval is required. This does not authorize automatically deleting production data or claim deployment success.
+
+### CHG-020 local validation — 2026-10-11
+
+Approved single-gun/all-owned-data deletion and separate recognition/session clearing are implemented. Node 22 final evidence: 270 Jest / 23 suites, 16 smoke/build/asset checks, and 16 browser checks with zero page errors. Ownership, rollback, cancellation, selected/last/nonselected deletion, stale navigation/reads, delayed-write rejection, refreshed logs/charts and real exported-backup restoration passed using synthetic local fixtures. Eight changed/new actual images bring the current catalog to 41; five prior images are retained in the archive. Source/requirements/design/architecture publication and external CI will be recorded separately after observation; no production data was cleared.

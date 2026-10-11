@@ -16,7 +16,7 @@ import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLAS
 import {
   addExample, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
   addEvent, getEvents, verifyEvent, clearEvents, trimEvents, normalizeMaxResults, MAX_EXAMPLES_PER_CLASS, exportBackup, restoreBackup,
-  getGuns, createGun, updateGun, getActiveGun, setActiveGun, MAX_GUNS, resetLibrary,
+  getGuns, createGun, updateGun, deleteGun, getActiveGun, setActiveGun, MAX_GUNS, resetLibrary, clearSessions,
   getGunSetting, setGunSetting, getCustomDrills, saveCustomDrill,
   getSetting, setSetting, recoverInterruptedSessions,
   getCalibrationExamples, addCalibrationExample, clearCalibrationExamples,
@@ -61,6 +61,9 @@ let practiceController = null;
 let safetyGate = null;
 let progressView = null;
 let screenNavigation = null;
+let historyRenderToken = 0;
+let homeRenderToken = 0;
+let gunLibraryToken = 0;
 let calibration = [];
 let enabledSoundLabels = ['trigger'];
 const triggerReady = () => getCounts().trigger >= MIN_EXAMPLES_PER_CLASS;
@@ -109,7 +112,7 @@ function ownerId() {
   if (!activeGun || activeGun.needsDetails) throw new Error('Add your gun name and type before training.');
   return activeGun.id;
 }
-function profileLocked() { return busy || profileLoading || preferencePending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!practiceController?.locked(); }
+function profileLocked() { return busy || profileLoading || preferencePending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked(); }
 function currentDrill(id) { return getDrill(id, customDrills); }
 function renderGunControls() {
   $('#gunSwitcherBtn').disabled = profileLocked();
@@ -123,6 +126,9 @@ function renderGunControls() {
     ? `${examples.length} learned samples · ${calibration.length} calibration samples for ${activeGun.name}`
     : 'Choose a gun before resetting its learned sounds.';
   $('#resetLibraryBtn').disabled = profileLocked();
+  $('#addGunBtn').disabled = profileLocked() || guns.length >= MAX_GUNS;
+  document.querySelectorAll('.gun-card, [data-edit-gun-id], [data-delete-gun-id]').forEach(button => { button.disabled = profileLocked(); });
+  for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) $('#'+id).disabled = profileLocked() || !activeGun || activeGun.needsDetails;
   document.querySelectorAll('.gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
   document.querySelectorAll('.gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
   if (!activeGun || activeGun.needsDetails) document.querySelectorAll('#resetModelBtn, #clearHistoryBtn, #verifyLatestBtn').forEach(button => { button.disabled = true; });
@@ -132,6 +138,9 @@ function renderGunControls() {
 }
 
 async function loadActiveGun() {
+  historyRenderToken += 1;
+  homeRenderToken += 1;
+  gunLibraryToken += 1;
   sessionController?.reset();
   practiceController?.reset();
   activeGun = await getActiveGun();
@@ -162,6 +171,10 @@ async function loadActiveGun() {
   $('#predictionEmpty').classList.remove('hidden');
   $('#sessionTimeline').replaceChildren();
   $('#eventCounter').textContent = '0 detected · 0 discarded';
+  sessionEventCount = 0;
+  ignoredEventCount = 0;
+  $('#historyClearOutcome').textContent = '';
+  $('#sessionsClearOutcome').textContent = '';
   customEditorId = null;
   customSteps = [];
   $('#customDrillForm').reset();
@@ -195,20 +208,25 @@ function openGunSetup(gun = null) {
 }
 
 async function renderGunLibrary() {
-  guns = await getGuns();
+  const token = ++gunLibraryToken;
+  const library = await getGuns();
+  if (token !== gunLibraryToken) return;
+  guns = library;
   $('#gunCapacity').textContent = `${guns.length} of ${MAX_GUNS} guns saved · Saved on this device`;
-  $('#addGunBtn').disabled = guns.length >= MAX_GUNS;
+  $('#addGunBtn').disabled = profileLocked() || guns.length >= MAX_GUNS;
   $('#addGunBtn').textContent = guns.length >= MAX_GUNS ? '5 of 5 guns saved' : '+ Add gun';
   const host = $('#gunList');
   host.replaceChildren();
   for (const gun of guns) {
     const samples = await getExamples(gun.id);
     const presets = await getCustomDrills(gun.id);
+    if (token !== gunLibraryToken) return;
     const readySounds = Object.values(trainingCounts(samples)).filter(count => count >= MIN_EXAMPLES_PER_CLASS).length;
     const card = document.createElement('button');
     card.type = 'button';
     card.className = 'gun-card';
     card.dataset.gunId = gun.id;
+    card.disabled = profileLocked();
     card.setAttribute('aria-pressed', String(gun.id === activeGun?.id));
     const name = document.createElement('strong'); name.className = 'gun-card-name'; name.textContent = gun.name || 'Existing gun — add details';
     const type = document.createElement('span'); type.className = 'gun-card-type'; type.textContent = gun.type || 'Choose gun type';
@@ -227,8 +245,43 @@ async function renderGunLibrary() {
     edit.setAttribute('aria-label', `Edit ${gun.name || 'existing gun'}`);
     edit.disabled = profileLocked();
     edit.addEventListener('click', () => openGunSetup(gun));
-    profile.append(card, edit); host.append(profile);
+    const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'text-button delete-gun'; remove.textContent = 'Delete gun'; remove.dataset.deleteGunId = gun.id;
+    remove.setAttribute('aria-label', `Delete ${gun.name || 'existing gun'}`);
+    remove.disabled = profileLocked();
+    remove.addEventListener('click', () => deleteGunProfile(gun).catch(showError));
+    const actions = document.createElement('div'); actions.className = 'gun-profile-actions'; actions.append(edit, remove);
+    profile.append(card, actions); host.append(profile);
   }
+}
+
+async function flushLibraryWork() {
+  await eventQueue;
+  await sessionController.flush();
+  await practiceController.flush();
+  if (sessionController.hasUnsavedResults() || practiceController.hasUnsavedResults()) {
+    throw new Error('Session results are not saved. Retry saving before deleting data.');
+  }
+}
+
+async function deleteGunProfile(gun) {
+  if (profileLocked() || !confirm(`Delete ${gun.name || 'this gun'} and ALL its data? This removes its learned sounds, calibration, custom drills, settings, recognition history and saved practice/sequence sessions. Other guns stay saved. Export a backup first; this cannot be undone without one.`)) return;
+  const wasSelected = activeGun?.id === gun.id;
+  setBusy(true);
+  gunLibraryToken += 1;
+  try {
+    await flushLibraryWork();
+    await deleteGun(gun.id);
+    if (wasSelected) {
+      await loadActiveGun();
+      $('#safetyAck').checked = false;
+      $('#safetyAck').dispatchEvent(new Event('change'));
+    } else guns = await getGuns();
+    setBusy(false);
+    if (!activeGun || activeGun.needsDetails) openGunSetup(activeGun);
+    else { switchView('guns'); await renderGunLibrary(); }
+    setStatus('Gun deleted');
+    setMessage(`${gun.name || 'Gun'} and all its data were deleted. ${activeGun ? 'Other guns were kept.' : 'Add a new gun to continue.'}`);
+  } finally { setBusy(false); }
 }
 
 async function selectGunProfile(id) {
@@ -829,20 +882,23 @@ function renderEvaluation(events) {
 }
 
 async function renderHome() {
+  const token = ++homeRenderToken;
   const gunId = activeGun?.id;
   const rows = gunId ? await getEvents(gunId) : [];
-  if (gunId !== activeGun?.id) return;
+  if (token !== homeRenderToken || gunId !== activeGun?.id) return;
   const stats = evaluateEvents(rows);
   $('#homeEvents').textContent = String(rows.length);
   $('#homeAccuracy').textContent = stats.accuracy === null ? '—' : `${Math.round(stats.accuracy * 100)}%`;
 }
 
 async function renderHistory() {
+  const token = ++historyRenderToken;
   const gunId = activeGun?.id;
+  const isCurrent = () => token === historyRenderToken && gunId === activeGun?.id;
   const rows = gunId ? await getEvents(gunId) : [];
-  if (gunId !== activeGun?.id) return;
-  const sessions = await sessionController.renderSavedSessions(gunId);
-  if (gunId !== activeGun?.id) return;
+  if (!isCurrent()) return;
+  const sessions = await sessionController.renderSavedSessions(gunId, isCurrent);
+  if (!isCurrent()) return;
   progressView.render(sessions || [], gunId);
   renderEvaluation(rows);
   $('#homeEvents').textContent = String(rows.length);
@@ -1071,17 +1127,44 @@ async function init() {
     } catch (error) { showError(error); setBusy(false); }
   });
   $('#clearHistoryBtn').addEventListener('click', async () => {
-    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Delete recognition history for ${activeGun.name}? Other guns and learned sounds will be kept.`)) return;
+    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Clear recognition history for ${activeGun.name}? Saved drill sessions, progress statistics, learned sounds and other guns will be kept.`)) return;
+    const gunId = ownerId();
     setBusy(true);
+    historyRenderToken += 1;
+    homeRenderToken += 1;
     try {
-      await clearEvents(ownerId());
+      await flushLibraryWork();
+      await clearEvents(gunId);
       latestEventId = null;
+      sessionEventCount = 0;
+      ignoredEventCount = 0;
       $('#predictionCard').classList.add('hidden');
       $('#predictionEmpty').classList.remove('hidden');
+      $('#sessionTimeline').replaceChildren();
+      $('#eventCounter').textContent = '0 detected · 0 discarded';
+      resetDrill();
       await renderHistory();
-      setStatus('History cleared');
+      await renderHome();
+      setStatus('Recognition history cleared');
+      $('#historyClearOutcome').textContent = `Recognition history for ${activeGun.name} was cleared. Saved sessions and learned sounds were kept.`;
     }
     catch (error) { showError(error); }
+    finally { setBusy(false); }
+  });
+  $('#clearSessionsBtn').addEventListener('click', async () => {
+    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Clear ALL saved practice and sequence sessions for ${activeGun.name}? Their results and progress statistics will be deleted. Learned sounds, custom drills, settings, recognition history and other guns will be kept. Export a backup first; this cannot be undone without one.`)) return;
+    const gunId = ownerId();
+    setBusy(true);
+    historyRenderToken += 1;
+    try {
+      await flushLibraryWork();
+      await clearSessions(gunId);
+      sessionController.reset();
+      practiceController.reset();
+      await renderHistory();
+      setStatus('Saved sessions cleared');
+      $('#sessionsClearOutcome').textContent = `Saved sessions and progress statistics for ${activeGun.name} were cleared. Learned sounds and recognition history were kept.`;
+    } catch (error) { showError(error); }
     finally { setBusy(false); }
   });
   $('#maxResults').addEventListener('change', async event => {

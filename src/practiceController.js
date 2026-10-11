@@ -364,6 +364,6 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   $('practiceRepeatBtn').addEventListener('click', () => { const record = state ? toPracticeRecord(state) : review; if (record) open(record.practiceMode, record.config).catch(onError); });
   $('practiceRetryBtn').addEventListener('click', () => { enqueue(persist).then(changed).catch(onError); });
   $('safetyAck').addEventListener('change', () => { if (!state && !review) configure(); });
-  return { open, showRecord, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => configQueue,
+  return { open, showRecord, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken++; routeKey = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

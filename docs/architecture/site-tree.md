@@ -1,6 +1,6 @@
 # Site and screen tree
 
-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-11; application source baseline `aacdb18`, with CHG-017 / CHG-019 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-11; application source baseline `4ccdf26`, with CHG-017 / CHG-019 / CHG-020 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
 
 ## Public site
 
@@ -33,13 +33,13 @@ The tree describes primary destinations, not a restriction on Back/Forward. Sett
 | --- | --- | --- | --- | --- | --- |
 | Gun setup | `gunSetupView` | First visit without a gun; Add/Edit from My Guns | `first-gun.dark`, `add-gun.dark`, `edit-gun.dark`, `edit-gun.light` | [Design](../design/screens/gun-setup/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md) |
 | Home | `homeView` | After gun selection/setup and returning visits | `overview.dark` | [Design](../design/screens/home/README.md) | [core](../requirements/core.md), [branding](../requirements/branding.md), [gun-profiles](../requirements/gun-profiles.md) |
-| My Guns | `gunsView` | Active-gun switcher | `library.dark`, `library.light` | [Design](../design/screens/guns/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md) |
+| My Guns | `gunsView` | Active-gun switcher | `library.dark`, `library.light`, `deleted.dark` | [Design](../design/screens/guns/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md) |
 | Learn Sounds | `learnView` | Learn tab, Home card or missing-sound link | `overview.dark`, `optional-sounds.dark`, `calibration.dark`, `recording-limit.dark` | [Design](../design/screens/learn/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |
 | Drills | `drillsView` | Drills tab, Home card or review completion | `catalog.dark`, `custom.dark`, `custom-editor.dark` | [Design](../design/screens/drills/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-modes](../requirements/practice-modes.md) |
 | Practice | `practiceView` | Six mode cards or saved practice review in History | `configure-single.dark`, `configure-repeated.dark`, `configure-par.dark`, `configure-control.dark`, `configure-reload.dark`, `configure-free.dark`, `countdown.dark`, `active.dark`, `active.light`, `paused.dark`, `review.dark` | [Design](../design/screens/practice/README.md) | [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
 | Drill Session | `sessionView` | Start Drill on a built-in/custom sequence, or History review | `configure.dark`, `active.dark`, `paused.dark`, `review.dark` | [Design](../design/screens/session/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
 | Live Listen | `recognizeView` | Live Listen tab, Home card or Start free listening | `ready.dark`, `listening.dark` | [Design](../design/screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |
-| History | `historyView` | History tab or Home card | `progress.dark`, `data-table.dark`, `progress.light` | [Design](../design/screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
+| History | `historyView` | History tab or Home card | `progress.dark`, `data-table.dark`, `progress.light`, `recognition-cleared.dark`, `sessions-cleared.dark` | [Design](../design/screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
 | Settings | `settingsView` | Settings gear in each screen heading; backup/restore links | `overview.dark`, `overview.light`, `sounds-reset.dark` | [Design](../design/screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md) |
 | Safety confirmation | `safetyModal` | Any unconfirmed action that would acquire microphone capture | `safety-modal.dark` | [Design](../design/screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
 
@@ -52,6 +52,10 @@ The tree describes primary destinations, not a restriction on Back/Forward. Sett
 `Drills → Sequence Configure → Safety if needed → Countdown/GO → Ordered sounds → Saved repetition → Fresh countdown → Review`. Pause/Resume and interruption preserve durable results.
 
 `History → Saved Practice/Sequence Review`; Back returns to the visited screen. Native/browser Back/Forward cleanly end active capture and validate gun/context ownership. Refresh preserves local data but never automatically acquires a microphone.
+
+`My Guns → Delete one gun → Confirm → Remaining gun library or first-gun setup`; atomically delete all records owned by that gun, preserving other guns/device preferences. Cancel keeps all data.
+
+`History → Clear recognition history or Clear saved sessions → Confirm → Refreshed corresponding log/statistics`; separate scopes preserve other data and guns. Deleted Review contexts resolve to Drills.
 
 `Any capture action → Safety modal if unconfirmed → Confirm & continue original action or Cancel`. Page-session safety acknowledgement resets on refresh or gun change.
 
