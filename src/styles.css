@@ -78,6 +78,29 @@ h2,h3,p { margin-top:0; }
 .app-message { border:1px solid #a9633c; color:#ffc6a1; border-radius:12px; background:#352014; padding:14px; margin-bottom:16px; }
 footer { padding-top:20px; border-top:1px solid #253139; font-size:.79rem; line-height:1.55; }
 .copyright { margin: 12px 0 0; }
+
+/* About uses the same app shell and local themes without practice controls. */
+body[data-view="about"] :is(.tabs,.safety-disclosure,.gun-switcher) { display:none; }
+body[data-view="about"] .app-shell { padding-bottom:calc(28px + env(safe-area-inset-bottom)); }
+.about-intro { text-align:center; padding:24px 8px 12px; }
+.about-intro img { display:block; margin:0 auto 14px; }
+.about-intro .brand-logo { width:64px; height:64px; }
+.about-name { font-size:1rem; font-weight:750; margin-bottom:5px; }
+.about-intro h3 { font-size:1.8rem; letter-spacing:-.025em; line-height:1.12; margin:22px 0 14px; }
+.about-intro>p:last-child { color:#a8b5bd; font-size:.9rem; line-height:1.6; }
+.about-card { padding:20px; margin:14px 0; border:1px solid #2c3741; border-radius:15px; background:linear-gradient(135deg,#1d262e,#141c23); }
+.about-card h3,.about-limits h3 { font-size:.95rem; margin-bottom:12px; }
+.about-card p,.about-card ol { color:#b8c5cf; font-size:.86rem; line-height:1.6; }
+.about-card ol { padding-left:22px; }
+.about-card li { padding-left:4px; margin-bottom:7px; }
+.about-card p:last-child { margin-bottom:0; }
+.about-email { display:block; padding:12px 0; color:#ffad62; font-size:1rem; font-weight:700; overflow-wrap:anywhere; text-underline-offset:4px; }
+.about-email:focus-visible { outline:2px solid #ffad62; outline-offset:3px; border-radius:4px; }
+.about-contact .small { font-size:.74rem; margin-top:7px; }
+.about-limits { padding:14px 8px 0; }
+html[data-theme="light"] .about-card { background:#fff; border-color:#c5d2de; }
+html[data-theme="light"] :is(.about-intro>p:last-child,.about-card p,.about-card ol) { color:#4a6276; }
+html[data-theme="light"] .about-email { color:#a34706; }
 button:focus-visible,input:focus-visible { outline:3px solid #ffb77f; outline-offset:3px; }
 @media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; } .status-pill { margin-left:77px; } }
 @media(max-width:420px){ .hero { gap:12px; } .brand-mark { height:47px; width:47px; } .hero-copy { min-width:0; width:calc(100% - 62px); } .status-pill { margin-left:0; } .settings-row { align-items:flex-start; flex-direction:column; } }

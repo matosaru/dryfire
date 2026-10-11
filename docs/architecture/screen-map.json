@@ -411,9 +411,10 @@
       "requirements": [
         "docs/requirements/settings.md",
         "docs/requirements/core.md",
-        "docs/requirements/persistence.md"
+        "docs/requirements/persistence.md",
+        "docs/requirements/about.md"
       ],
-      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install/About explain local-data and microphone limits.",
+      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. About & contact opens the dedicated About screen, including before gun setup; device capability status stays visible.",
       "states": [
         {
           "key": "overview.dark",
@@ -435,6 +436,36 @@
         }
       ],
       "design": "docs/design/screens/settings/README.md"
+    },
+    {
+      "id": "about",
+      "folder": "about",
+      "domId": "aboutView",
+      "title": "About & contact",
+      "parent": "settings",
+      "entry": "Settings → About & contact, including before gun setup",
+      "requirements": [
+        "docs/requirements/about.md",
+        "docs/requirements/core.md",
+        "docs/requirements/branding.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage and backup explanation, selectable mailto contact and safety/recognition limits. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Practice navigation and gun switcher are hidden.",
+      "states": [
+        {
+          "key": "overview.dark",
+          "anchor": "aboutView",
+          "label": "About, Dark",
+          "image": "docs/design/screens/about/overview.dark.png"
+        },
+        {
+          "key": "overview.light",
+          "anchor": "aboutView",
+          "label": "About, Light",
+          "image": "docs/design/screens/about/overview.light.png"
+        }
+      ],
+      "design": "docs/design/screens/about/README.md"
     }
   ],
   "shared": [
@@ -461,9 +492,9 @@
     }
   ],
   "reviewedSources": {
-    "index.html": "8fceaa5c9a2220ea8128869944d0a1706768180f7d3627e51c03e4c838817519",
-    "src/main.js": "921f48402b8387ac76eba9cffdecb2833fa7865116909b3a5387960672add71d",
-    "src/styles.css": "a172416e624e9fb251457813f1875402b9bcaded8bfa61c2797a6789b499d355",
+    "index.html": "fc1847a42c00480c03a682b1ce11c126ab640fb9fd8a4a4fb370bcda9f7f5d8e",
+    "src/main.js": "b8c114c0a58a47655f20044bad7fb29f42e467d0f3f1b6ff1c8855101ab65eed",
+    "src/styles.css": "b9fd550212c59afd4cfb02ac84d5b81403b353f87c7f530a3ae0358fa13399df",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
     "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
@@ -478,6 +509,7 @@
     "CHG-020",
     "CHG-021",
     "CHG-022",
-    "CHG-023"
+    "CHG-023",
+    "CHG-027 About and email contact"
   ]
 }

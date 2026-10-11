@@ -1,6 +1,6 @@
 # Site and application architecture
 
-The [site tree](site-tree.md) is generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. The app has one public address, `/`; its ten functional screens are history-backed UI states, not separate server routes or indexable pages.
+The [site tree](site-tree.md) is generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. The app has one public address, `/`; its eleven functional screens, including CHG-027 About/email contact, are history-backed UI states, not separate server routes or indexable pages.
 
 CHG-026 adds a separate [future cloud-services proposal](cloud-services-proposal.md) and [planned public topology](../seo/README.md#planned-public-topology--chg-026). These are not implemented routes or registry entries. Add Contact/account/public-page states to the maintained tree only when code and reviewed designs exist.
 

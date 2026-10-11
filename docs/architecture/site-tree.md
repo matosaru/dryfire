@@ -1,6 +1,6 @@
 # Site and screen tree
 
-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-11; application source baseline `7240e2c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-11; application source baseline `7240e2c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
 
 ## Public site
 
@@ -21,6 +21,7 @@ Canonical production origin: `https://dryfire.matosaru.workers.dev/`. **One impl
 │   ├── Live Listen [recognize]
 │   ├── History [history]
 │   └── Settings [settings]
+│       └── About & contact [about]
 └── Shared capture gate
     └── Safety confirmation dialog
 ```
@@ -40,7 +41,8 @@ The tree describes primary destinations, not a restriction on Back/Forward. Sett
 | Drill Session | `sessionView` | Start Drill on a built-in/custom sequence, or History review | `configure.dark`, `active.dark`, `paused.dark`, `review.dark` | [Design](../design/screens/session/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
 | Live Listen | `recognizeView` | Live Listen tab, Home card or Start free listening | `ready.dark`, `listening.dark` | [Design](../design/screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |
 | History | `historyView` | History tab or Home card | `progress.dark`, `data-table.dark`, `progress.light`, `recognition-cleared.dark`, `sessions-cleared.dark` | [Design](../design/screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
-| Settings | `settingsView` | Settings gear in each screen heading; backup/restore links | `overview.dark`, `overview.light`, `sounds-reset.dark` | [Design](../design/screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md) |
+| Settings | `settingsView` | Settings gear in each screen heading; backup/restore links | `overview.dark`, `overview.light`, `sounds-reset.dark` | [Design](../design/screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [about](../requirements/about.md) |
+| About & contact | `aboutView` | Settings → About & contact, including before gun setup | `overview.dark`, `overview.light` | [Design](../design/screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md) |
 | Safety confirmation | `safetyModal` | Any unconfirmed action that would acquire microphone capture | `safety-modal.dark` | [Design](../design/screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
 
 ## State transitions

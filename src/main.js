@@ -525,21 +525,21 @@ function renderDrillCatalog() {
 function routeFor(name) { return { view: name, gunId: activeGun?.id || null,
   context: name === 'practice' ? practiceController?.routeKey() : name === 'session' ? sessionController?.routeKey() : null }; }
 function resolveRoute(route) {
-  if (!activeGun || activeGun.needsDetails) return routeFor(['gunSetup', 'guns', 'settings'].includes(route.view) ? route.view : 'gunSetup');
+  if (!activeGun || activeGun.needsDetails) return routeFor(['gunSetup', 'guns', 'settings', 'about'].includes(route.view) ? route.view : 'gunSetup');
   if (route.gunId !== activeGun.id) return routeFor('home');
   if (route.view === 'practice' && (!practiceController?.routeKey() || route.context !== practiceController.routeKey())) return routeFor('drills');
   if (route.view === 'session' && (!sessionController?.routeKey() || route.context !== sessionController.routeKey())) return routeFor('drills');
-  return routeFor(['home','learn','drills','session','practice','recognize','history','settings','guns','gunSetup'].includes(route.view) ? route.view : 'home');
+  return routeFor(['home','learn','drills','session','practice','recognize','history','settings','about','guns','gunSetup'].includes(route.view) ? route.view : 'home');
 }
 function switchView(name) { return screenNavigation ? screenNavigation.navigate(routeFor(name)) : displayView(name); }
 function goBack(fallback = 'home') { return screenNavigation ? screenNavigation.back(routeFor(fallback)) : switchView(fallback); }
 function displayView(name) {
-  if (busy || profileLoading || !['home','learn','drills','session','practice','recognize','history','settings','guns','gunSetup'].includes(name)) return;
+  if (busy || profileLoading || !['home','learn','drills','session','practice','recognize','history','settings','about','guns','gunSetup'].includes(name)) return;
   if (name !== 'practice' && practiceController?.hasUnsavedResults()) {
     showError(new Error('Practice results are not saved. Keep this review open and retry saving.'));
     return;
   }
-  if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings'].includes(name)) { openGunSetup(activeGun); return; }
+  if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about'].includes(name)) { openGunSetup(activeGun); return; }
   if (name === 'recognize') { $('#drillSelect').value = ''; resetDrill(); }
   activeView=name;
   document.body.dataset.view = name;
@@ -554,7 +554,7 @@ function displayView(name) {
     if(selected)tab.setAttribute('aria-current','page');
     else tab.removeAttribute('aria-current');
   });
-  for(const view of ['home','learn','drills','session','practice','recognize','history','settings','guns','gunSetup']) $('#'+view+'View').classList.toggle('hidden',view!==name);
+  for(const view of ['home','learn','drills','session','practice','recognize','history','settings','about','guns','gunSetup']) $('#'+view+'View').classList.toggle('hidden',view!==name);
   $('#settingsShortcut').classList.toggle('active',name==='settings');
   if(name==='settings')$('#settingsShortcut').setAttribute('aria-current','page');
   else $('#settingsShortcut').removeAttribute('aria-current');
@@ -1020,6 +1020,7 @@ async function init() {
   document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => goBack()));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
   $('#settingsShortcut').addEventListener('click', () => switchView('settings'));
+  $('#aboutBtn').addEventListener('click', () => switchView('about'));
   $('#changeDrillBtn').addEventListener('click', () => switchView('drills'));
   $('#freeListenBtn').addEventListener('click', () => { if (!profileLocked()) switchView('recognize'); });
   renderDrillCatalog();

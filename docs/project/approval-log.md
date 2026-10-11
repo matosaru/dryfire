@@ -440,3 +440,12 @@ The user explicitly instructed **“proceed with 1 point, Add screenshot checks 
 The user asks **“How to change this at the moment, so my public website would not have all the features ? but i would be able to check them ?”**. [Public Free/private preview](../development/free-preview-testing.md) records a concrete proposal: public Free artifact, protected full dev artifact, data-preserving transition, both profiles in CI and later trusted staff production entitlement. No final paid allocation or account setting is inferred from this question.
 
 The user then instructs **“prepare plans, and commit plans to a feature branch”** and **“do not yet start any implementations”**. This is the controlling execution limit for this iteration, superseding earlier automatic implementation instructions for these new features. Commit/publish documentation and observed research only; do not start app, auth/cloud/billing, gating, deployment or dependency remediation. Existing implemented screens/assets/data remain unchanged.
+
+## CHG-027 — About page and confirmed email
+
+- Evidence: **“also start creating aboutpage, suggest page text. and add easydryfire@gmail.com as a contact email. create this as a separate feature branch”**.
+- Scope: ABOUT-01–04 in [About requirements](../requirements/about.md). Dedicated informational app screen from Settings, accessible without a saved gun, proposed accurate current-feature copy and user-initiated email link.
+- Authorization: direct implementation instruction for this slice, after the CHG-026 pause. Exact editorial copy is suggested for review, not asserted as word-for-word approved. No other commercial/SEO/account/cloud/paywall implementation is authorized by this request.
+- Branch: `feature/about-contact-page`, created from current `origin/dev` (`7b8e72a`). Use a PR into dev; user owns production promotion.
+
+Later release instruction for this request: **“i want you to merge changes to dev and main, do this automatically, i will be out from computer. Just this time”**, followed by **“prepare a feature, and proceed with changes merge”**. This grants one-time ownership of feature/dev/main promotion after checks pass. Preserve PR/check gates and branch protections; it does not authorize forcing a protected branch, disabling checks or permanently enabling automatic production merges. GitHub API access from this workspace currently returns `Forbidden`; complete the feature and use available authorized GitHub automation if possible, recording any remaining access block accurately.

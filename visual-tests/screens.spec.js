@@ -152,6 +152,11 @@ async function prepare(page, item) {
       await page.locator('#settingsShortcut').click(); await visible(page, 'settingsView');
       if (item.state.startsWith('sounds-reset')) { await page.locator('#resetModelBtn').click(); await expect(page.locator('#soundResetOutcome')).toContainText('reset'); await expect(page.locator('#soundResetSummary')).toContainText('0 learned samples'); }
       break;
+    case 'about':
+      await page.locator('#settingsShortcut').click(); await visible(page, 'settingsView');
+      await page.locator('#aboutBtn').click(); await visible(page, 'aboutView');
+      await expect(page.getByRole('link', { name: 'easydryfire@gmail.com', exact: true })).toHaveAttribute('href', 'mailto:easydryfire@gmail.com');
+      break;
     case 'safety':
       await practice(page); await page.locator('#practiceStartBtn').click();
       await expect(page.locator('#safetyConfirmBtn')).toBeDisabled();
