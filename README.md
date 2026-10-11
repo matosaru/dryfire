@@ -1,11 +1,13 @@
 # Dry Fire With Ease
 
-All project documentation and designs are maintained in [docs/design](docs/design/README.md).
+An offline-first microphone-based dry-fire practice app, with gun-specific calibration and saved results.
 
-[What is done and what remains](docs/design/implementation-history.md) tracks implementation, checks, GitHub publication and deployment after each request.
+- [Documentation packages](docs/README.md)
+- [Implementation history and remaining plan](docs/project/implementation-history.md)
+- [Functional requirements](docs/requirements/README.md)
+- [Current designs and screen coverage](docs/design/README.md)
+- [Site architecture tree](docs/architecture/site-tree.md)
+- [SEO proposal](docs/seo/README.md)
+- [Development and deployment](docs/development/README.md)
 
-- [Development guide](docs/design/development/README.md)
-- [Requirements and approval states](docs/design/requirements/OVERVIEW.md)
-- [Designs, specifications and provenance](docs/design/README.md)
-
-This root file is a navigation entry point. Use the linked documents for the complete specifications.
+[Monetization guide](docs/business/monetization.md) · [iPhone/Android app release](docs/development/NATIVE_RELEASE.md)

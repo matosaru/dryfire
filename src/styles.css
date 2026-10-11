@@ -617,3 +617,26 @@ html[data-theme="light"] :is(button,input,select,summary):focus-visible { outlin
 .progress-data :is(th,td) { padding: 8px; border-bottom: 1px solid var(--session-border); text-align: left; }
 .section-head.has-settings h2 { padding: 0 38px; }
 .section-head > .icon-button { position: absolute; right: 0; top: -5px; min-height: 44px; min-width: 44px; padding: 0 5px; cursor: pointer; }
+
+/* Gun illustrations and separately operable Edit controls. */
+.gun-type-image { display:block; object-fit:contain; flex:none; width:78px; height:50px; border-radius:8px; background:#101b24; }
+.gun-switcher-copy { flex:1; }
+.gun-switcher-image { width:68px; height:46px; }
+.gun-type-choices { display:grid; gap:9px; margin:0; padding:0; border:0; min-width:0; }
+.gun-type-choices legend { color:#eef4fb; font-size:.87rem; margin-bottom:8px; }
+.gun-type-choice { display:flex; align-items:center; gap:12px; padding:9px 12px; border:1px solid #3b5267; border-radius:10px; background:#101c26; color:#edf4fa; cursor:pointer; }
+.gun-type-choice>span { flex:1; min-width:0; font-size:.87rem; }
+.gun-type-choice input { flex:none; width:18px; min-height:18px; height:18px; padding:0; accent-color:#ff8126; }
+.gun-type-choice:has(input:checked) { border:2px solid #ff8126; padding:8px 11px; background:#28241e; }
+.gun-type-choice:has(input:focus-visible) { outline:2px solid #ffad62; outline-offset:3px; }
+.gun-profile { min-width:0; border:1px solid #31485b; border-radius:13px; background:linear-gradient(135deg,#1a2935,#111b24); overflow:hidden; }
+.gun-profile:has(.gun-card[aria-pressed="true"]) { border:2px solid #ff8126; }
+.gun-profile .gun-card,.gun-profile .gun-card[aria-pressed="true"] { border:0; border-radius:0; padding:14px; background:none; }
+.gun-card-details { flex:1; min-width:0; }
+.edit-gun { display:block; width:100%; min-height:44px; padding:10px 14px; border-top:1px solid #31485b; text-align:right; }
+#soundResetOutcome:empty { display:none; }
+html[data-theme="light"] :is(.gun-profile,.gun-type-choice) { color:#182936; background:#fff; border-color:#c5d2de; }
+html[data-theme="light"] .gun-type-choices legend { color:#243d51; }
+html[data-theme="light"] .gun-type-choice:has(input:checked) { background:#fff3e8; border-color:#d96613; }
+html[data-theme="light"] .gun-profile:has(.gun-card[aria-pressed="true"]) { border-color:#d96613; }
+@media (max-width:350px) { .gun-switcher-image { width:52px; height:40px; } .gun-card-head .gun-type-image { width:58px; height:42px; } }

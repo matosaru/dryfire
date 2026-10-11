@@ -1,5 +1,5 @@
 # Requirements
 
-The permanent requirements index has moved to [docs/design/requirements/OVERVIEW.md](docs/design/requirements/OVERVIEW.md).
+The authoritative [functional requirements package](docs/requirements/README.md) contains approved behavior and stable requirement IDs.
 
-[Designs and documentation](docs/design/README.md) · [Approval log](docs/design/requirements/approval-log.md)
+[Current designs](docs/design/README.md) · [Change process](docs/project/change-process.md) · [Approval log](docs/project/approval-log.md)

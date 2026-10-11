@@ -1,43 +1,43 @@
-# Designs and project documentation
+# Current designs
 
-This is the permanent catalog of Dry Fire With Ease design references. Read the linked [requirements](requirements/README.md) before implementing them. Current image links show the latest published draft; approval belongs to the specific reviewed revision recorded in the [approval log](requirements/approval-log.md).
+Visual package for Dry Fire With Ease. [Functional requirements](../requirements/README.md) own behavior; [approval history](../project/approval-log.md) records authorization; [delivery plan](../project/implementation-history.md) owns implementation/publication status.
 
-See [implementation history and remaining plan](implementation-history.md) for what each request changed, what is still pending and what has actually been validated, pushed or deployed.
+Current references below are actual local production-build captures of the CHG-019 candidate based on source `b29837a`, audited against its screen controls and current specifications on 2026-10-11. Ten functional screens, all six Practice configurations, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples.
 
-| Design | Current visualisation | Specification | Approval state |
-| --- | --- | --- | --- |
-| Dry Fire With Ease logo lockup | [Actual header](brand-lockup.png), [Home](branding-preview.png) | [Branding](requirements/branding.md) | Approved in CHG-011; implemented and locally validated; deployment not verified |
-| First visit, My Guns and selected-gun Home | [View image](multiple-guns-front-door.png) | [Gun profiles](requirements/gun-profiles.md) | Approved; implemented and locally validated (CHG-012); deployment unverified |
-| Gun-specific sounds, custom editor and session history | [View image](multiple-guns-sounds-drills-history.png) | [Gun profiles](requirements/gun-profiles.md), [Drills](requirements/drill-sessions.md), [Persistence](requirements/persistence.md) | Gun-owned sounds/presets/recognition and dedicated session history implemented and locally validated |
-| Configure, Run and Review | [View image](drill-session-mockup.png) | [Drill sessions](requirements/drill-sessions.md), [approved implementation plan](requirements/next-implementation.md) | Approved; implemented and locally validated under CHG-014; deployment unverified |
-| Trigger-first learning and six practice modes | [Learn](practice-implementation-learn.png), [Modes](practice-implementation-catalog.png), [Configure](practice-implementation-configure.png), [Run](practice-implementation-run.png), [Review](practice-implementation-review.png), [Light](practice-implementation-light.png) | [Practice requirements](requirements/practice-modes.md), [validation](development/PRACTICE_VALIDATION.md) | CHG-015 authorized for automatic implementation; actual locally validated UI for final user feedback; deployment/device evidence separate |
-| Automatic Single repetitions and safety confirmation | [Countdown](practice-automatic-countdown.png), [Safety modal](practice-safety-modal.png), [Recording cap](practice-recording-limits.png) | [CHG-017 requirements](requirements/practice-improvements.md) | Directly requested; numeric limits explicitly approved; actual local production captures; published in `b29837a`; new GitHub CI passed; Cloudflare/device evidence tracked separately |
-| History statistics and progress charts | [Dark](practice-progress-dark.png), [Light](practice-progress-light.png) | [Progress design](requirements/practice-improvements.md#progress-and-visual-design) | Approved by direct instruction; implemented with comparable per-gun results and accessible table; test fixture values are illustrative |
-| Revised Practice Run: STOP with microphone input below | [Dark](practice-stop-microphone-dark.png), [Light](practice-stop-microphone-light.png) | [Run layout](practice-input-design.md), [PRACTICE-14 / CHG-016](requirements/practice-modes.md) | Approved by corrected direct instruction; locally verified captures; matching implementation published in `34d3136`; CI/deployment/device evidence tracked separately |
+## File naming and ownership
 
-## Supporting notes
+- Current screen text: `screens/<screen>/README.md`.
+- Current screenshots: `screens/<screen>/<state>.<theme>.png`, lowercase kebab case; themes `dark` and `light`. `configure-single.dark.png` identifies a mode-specific form. Shared modal: `screens/shared/safety-modal.dark.png`.
+- Earlier reviewed evidence: `archive/chg-NNN/<screen>/<state>.png`. Older filenames without theme suffixes retain their historical meaning and cannot be used as current captures.
+- Source artwork stays in `public/`; the canonical monogram is [logo.svg](../../public/logo.svg). [Provenance](originality-and-provenance.md) records origin and limits of evidence.
+- Keep one current path per screen/state/theme. Avoid duplicate current indexes/images; retain different historical revisions rather than treating their repetition across releases as duplicate evidence.
 
-- [Multi-gun proposal and storage explanation](multiple-guns.md)
-- [Drill page proposal and clarified controls](drill-session.md)
-- [Previous implemented reference-design update](development/DESIGN_CHANGES.md)
-- Actual multi-gun implementation captures: [First gun](multigun-implementation-onboarding.png), [My Guns](multigun-implementation-library.png), [selected-gun Home](multigun-implementation-home.png), [custom drill editor](multigun-implementation-custom-drill.png). These are local production-build screenshots; deployment remains separately tracked.
-- Actual locally validated session/settings captures: [Configure](session-implementation-configure.png), [Run](session-implementation-run.png), [Review](session-implementation-review.png), [Dark settings](settings-implementation-dark.png), [Light settings](settings-implementation-light.png). GitHub publication/Cloudflare deployment is tracked separately.
+## Current screen coverage
 
-The Markdown specifications are authoritative for behavior. Sample names, times, counts and statuses in images are illustrative. Mockups do not prove that a feature exists or that data is synchronized to a server. When prose and a mockup disagree, record the discrepancy and resolve it through the change process rather than silently choosing a different requirement.
+<!-- screen-coverage:start -->
+| Screen / shared gate | Current layout and captures | Requirements |
+| --- | --- | --- |
+| Gun setup | [4 state/theme references](screens/gun-setup/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md) |
+| Home | [1 state/theme references](screens/home/README.md) | [core](../requirements/core.md), [branding](../requirements/branding.md), [gun-profiles](../requirements/gun-profiles.md) |
+| My Guns | [2 state/theme references](screens/guns/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md) |
+| Learn Sounds | [4 state/theme references](screens/learn/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |
+| Drills | [3 state/theme references](screens/drills/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-modes](../requirements/practice-modes.md) |
+| Practice | [11 state/theme references](screens/practice/README.md) | [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
+| Drill Session | [4 state/theme references](screens/session/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
+| Live Listen | [2 state/theme references](screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |
+| History | [3 state/theme references](screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
+| Settings | [3 state/theme references](screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md) |
+| Safety confirmation | [1 state/theme references](screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
+<!-- screen-coverage:end -->
 
-The saved flow mockups retain their reviewed older Dry Fire / Sound Trainer lockups. CHG-011 approves **Dry Fire With Ease** for current production branding; those snapshots remain evidence of their reviewed flow, not the latest production wordmark. Generated monogram variants in them are illustrative.
+This table is generated from the [screen registry](../architecture/screen-map.json). Its [site tree](../architecture/site-tree.md) records entry paths and internal states. Capture links belong to each screen document rather than a flat image dump.
 
-Do not remove approved design history. Revised images must be accompanied by revised specifications and a recorded approval state; use Git's immutable commits to preserve the reviewed version.
+## Historical references and validation
 
-## Specifications and development guides
+[Archived proposals and reviewed releases](archive/README.md) preserve 27 distinct earlier PNGs and original layout notes. They are not current production designs and may show older branding, limits or controls. Immutable approved commit links remain in the approval log.
 
-- [Requirements overview](requirements/OVERVIEW.md) and [specification index](requirements/README.md)
-- [Approval history](requirements/approval-log.md) and [change process](requirements/change-process.md)
-- [Originality and asset provenance](originality-and-provenance.md)
-- [Development guide](development/README.md) and [agent instructions](development/AGENTS.md)
-- [Cloudflare deployment](development/DEPLOY.md) and [Netlify deployment](development/NETLIFY_DEPLOY.md)
-- [iPhone installation](development/INSTALL_ON_IPHONE.md) and [device accuracy testing](development/ACCURACY_TESTING.md)
-- [Current iPhone deployment and release checks](development/IPHONE_RELEASE_CHECKS.md)
-- [Changelog](development/CHANGELOG.md), [historical engineering review](development/REVIEW.md) and [historical handoff](development/CODEX_HANDOFF.md)
+Markdown and image correspondence was checked against the current controls: ten-per-type new recordings with old profiles preserved; automatic Single countdowns; STOP/microphone placement; comparable History charts/table; once-per-page safety modal; navigation history; per-gun and per-device preferences; Edit with data preservation; illustrated gun types; distinct sound/all-library reset with cancellation and backup recovery. The legacy sequence runner intentionally retains its GO status and separate controls. CHG-018 reorganizes evidence; CHG-019 implements the user-directed edit/selector/reset corrections.
 
-All full project documentation is stored in this folder and its subfolders. The repository-root README, AGENTS and REQUIREMENTS files are short entry-point links for GitHub visitors, agents and existing bookmarks.
+Run `npm run docs:generate` and `npm run docs:check` after a screen change. The checker enforces coverage, source-review fingerprints, paths, local Markdown links and current-image uniqueness; human review must still confirm that changed layouts match the screenshots and approved behavior.
+
+[Keeping screenshots and implementation aligned](visual-validation.md) describes current checks and the pending per-browser pixel-regression workflow.

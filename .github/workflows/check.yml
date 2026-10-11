@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-audit --no-fund
+      - run: npm run docs:check
       - run: npm run test:smoke
       - run: npm test
         timeout-minutes: 3

@@ -15,7 +15,10 @@
     "test:coverage": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --coverage",
     "test:smoke": "node --test tests/smoke.test.mjs tests/installable.test.mjs",
     "build:static": "npm run build",
-    "verify:dist": "node tools/verify-dist.mjs"
+    "verify:dist": "node tools/verify-dist.mjs",
+    "docs:check": "node tools/verify-docs.mjs",
+    "docs:generate": "node tools/verify-docs.mjs --write",
+    "docs:review": "node tools/verify-docs.mjs --review"
   },
   "dependencies": {
     "@capacitor/core": "^8.0.0"

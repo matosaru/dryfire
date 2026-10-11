@@ -1,0 +1,24 @@
+# Site and application architecture
+
+The [site tree](site-tree.md) is generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. The app has one public address, `/`; its ten functional screens are history-backed UI states, not separate server routes or indexable pages.
+
+## Maintain after each change
+
+1. Update the affected [functional requirements](../requirements/README.md) and record changed-scope authorization using the [change process](../project/change-process.md).
+2. Change the corresponding `docs/design/screens/<screen>/README.md` and actual local production-build captures. Retain superseded reviewed revisions in Git/archive. Review visible controls, state labels, numeric limits, themes and ownership against the source.
+3. Update registry screen/state IDs, hierarchy, entry points and requirement/design/image paths. Add a new real public path only when its implementation and scope are authorized. Do not put inline forms or dialogs in the sitemap.
+4. After reviewing affected screens, refresh the hashes in `reviewedSources` with `npm run docs:review`. This command records the current UI/navigation source hashes; it does not approve a design or capture images. Do not use it just to suppress a failing check.
+5. Run `npm run docs:generate` to regenerate the tree and coverage table, then `npm run docs:check`. Commit the registry, tree, specifications, screenshots and implementation-history update with the change. CI runs the same checker.
+
+The checker compares all HTML root views and the six source-defined modes to the registry, checks required DOM anchors and reviewed-source fingerprints, validates current design/capture links and naming, detects byte-identical current PNGs, and verifies generated tree/catalog content. It checks local file/heading links across repository Markdown, including the archive. It cannot prove that a new screenshot looks right; visual review remains required.
+
+## Data and execution boundaries
+
+- `index.html` declares screens; `src/main.js` connects controls and active gun context. `src/screenNavigation.js` maintains app/browser Back/Forward and guards stale contexts.
+- `src/practiceSession.js` / `src/practiceController.js` own the six-mode engine and Configure/Run/Review. `src/drillSession.js` / `src/sessionController.js` preserve ordered sequence sessions.
+- Microphone capture and segmentation run through `src/audio.js`, the AudioWorklet and event detector; calibrated numeric features feed local recognition. No raw audio is durably recorded/uploaded.
+- `src/storage.js` uses IndexedDB schema 3; backup format 4 restores compatible older formats. Gun profiles own examples, presets, calibration/settings and saved sessions. Appearance/vibration are device-wide. Same-origin refresh/deployment preserves stored data; clearing browser storage or changing origin can lose access. Use exported backups for recovery.
+- History derives comparable progress locally. It does not synchronize another device or measure aim, unloaded status or physical technique.
+- Vite emits minified static assets to `dist/`; Cloudflare Workers serves them. The PWA service worker caches the app shell; internal navigation is not a multipage website.
+
+See [persistence requirements](../requirements/persistence.md), [deployment](../development/DEPLOY.md) and the [SEO proposal](../seo/README.md) for boundaries and remaining work.

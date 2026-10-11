@@ -55,6 +55,7 @@
     <p class="startup-message" role="status">Opening your saved gun profiles…</p>
 
     <button id="gunSwitcherBtn" class="gun-switcher hidden" type="button" aria-label="Choose a gun">
+      <img id="activeGunImage" class="gun-type-image gun-switcher-image" src="/gun-types/unknown.svg" width="96" height="56" alt="" />
       <span class="gun-switcher-copy"><span class="gun-switcher-label">Active gun</span><strong id="activeGunName"></strong><span id="activeGunType"></span></span>
       <span class="gun-switcher-action">Switch gun <span aria-hidden="true">⌄</span></span>
     </button>
@@ -63,7 +64,12 @@
       <div class="gun-page-heading"><h2 id="gunSetupTitle">Add your first gun</h2><p id="gunSetupDescription">Give it a name and choose a type. Its sounds and drills stay separate.</p></div>
       <form id="gunForm" class="gun-form">
         <label for="gunName">Gun name<input id="gunName" name="gunName" type="text" required minlength="1" maxlength="80" placeholder="e.g. My handgun" autocomplete="off" /></label>
-        <label for="gunType">Gun type<select id="gunType" name="gunType" required><option value="">Choose a gun type…</option><option value="Handguns">Handguns</option><option value="Rifles and Carbines">Rifles and Carbines</option><option value="Shotguns">Shotguns</option></select></label>
+        <input id="gunType" name="gunType" type="hidden" value="" />
+        <fieldset id="gunTypeChoices" class="gun-type-choices"><legend>Gun type</legend>
+          <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/handgun.svg" width="96" height="56" alt="" /><span>Handguns</span><input type="radio" name="gunTypeChoice" value="Handguns" required /></label>
+          <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/rifle.svg" width="96" height="56" alt="" /><span>Rifles and Carbines</span><input type="radio" name="gunTypeChoice" value="Rifles and Carbines" required /></label>
+          <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/shotgun.svg" width="96" height="56" alt="" /><span>Shotguns</span><input type="radio" name="gunTypeChoice" value="Shotguns" required /></label>
+        </fieldset>
         <p class="muted small">You can save up to 5 guns.</p>
         <aside class="storage-card"><span class="storage-symbol" aria-hidden="true">▤</span><div><strong>Saved on this device</strong><p>Gun profiles, learned sounds and drill presets stay here between visits. Use the same app address and browser.</p></div></aside>
         <button id="saveGunBtn" class="button primary wide-action" type="submit">Save Gun &amp; Continue</button>
@@ -327,7 +333,9 @@
       </details><div class="settings-group">
         <h3>Learned Sounds</h3>
         <p class="muted small">For one sound, use Reset on its card in Learn. Full reset erases this gun's learned sounds and reset/noise/beep calibration. Its saved results and other guns' data stay intact.</p>
+        <p id="soundResetSummary" class="muted small" role="status"></p>
         <button id="resetModelBtn" class="button danger" type="button"><span class="settings-action-icon" aria-hidden="true">⏻</span><span>Reset all sounds for this gun</span><span class="settings-chevron" aria-hidden="true">›</span></button>
+        <p id="soundResetOutcome" class="small" role="status"></p>
       </div>
       <div class="settings-group">
         <h3>Backup &amp; Data</h3>
@@ -347,6 +355,7 @@
         <label class="preference-toggle" for="vibrationFeedback"><span><strong>Vibration Feedback</strong><small id="vibrationStatus" role="status">Checking browser support…</small></span><input id="vibrationFeedback" type="checkbox" role="switch" aria-describedby="vibrationStatus" /></label>
         <p class="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
       </div>
+      <div class="settings-group"><h3>Delete local app data</h3><p class="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" class="button danger wide-action" type="button">Delete all guns &amp; app data</button></div>
       <div class="settings-group"><h3>About</h3><p class="muted small">Dry Fire With Ease v0.8.0 · Sound trainer · Private IndexedDB storage · Up to 10 new learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
     </section>
 

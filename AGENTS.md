@@ -1,7 +1,7 @@
 # Repository instructions
 
-Read and follow the full [agent instructions](docs/design/development/AGENTS.md) before work; those instructions apply repository-wide. Shell commands and source paths there refer to the repository root.
+Read the repository-wide [agent instructions](docs/development/AGENTS.md), [functional requirements](docs/requirements/README.md), [approval log](docs/project/approval-log.md) and [design catalog](docs/design/README.md) before work. Preserve saved user data and reuse existing explicit approvals.
 
-Also read [requirements](docs/design/requirements/OVERVIEW.md), the [approval log](docs/design/requirements/approval-log.md) and the [design catalog](docs/design/README.md). Follow the documented approval process for requirement changes and preserve saved user data.
+Full documentation belongs in the appropriate package under `docs/`; the [documentation index](docs/README.md) defines ownership. CHG-018 supersedes the older all-under-`docs/design/` rule.
 
-All full project documentation belongs under `docs/design/`. Root README, AGENTS and REQUIREMENTS files are navigation entry points only.
+For a screen, state, navigation or visible-control change, update its requirement/design, review the [screen registry](docs/architecture/screen-map.json), then run `npm run docs:generate` and `npm run docs:check`. Follow the [maintenance procedure](docs/architecture/README.md). Keep the implementation history current after every request; do not equate publication with deployment.

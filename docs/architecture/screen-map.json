@@ -1,0 +1,454 @@
+{
+  "version": 1,
+  "reviewedOn": "2026-10-11",
+  "sourceBaseline": "b29837a000a875b571218d5911717d83a34bd2ed",
+  "publicOrigin": "https://dryfire.matosaru.workers.dev",
+  "publicPaths": [
+    "/"
+  ],
+  "screens": [
+    {
+      "id": "gunSetup",
+      "folder": "gun-setup",
+      "domId": "gunSetupView",
+      "title": "Gun setup",
+      "parent": null,
+      "entry": "First visit without a gun; Add/Edit from My Guns",
+      "requirements": [
+        "docs/requirements/gun-profiles.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, five-gun capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+      "states": [
+        {
+          "key": "first-gun.dark",
+          "anchor": "gunForm",
+          "label": "First gun",
+          "image": "docs/design/screens/gun-setup/first-gun.dark.png"
+        },
+        {
+          "key": "add-gun.dark",
+          "anchor": "gunForm",
+          "label": "Add or edit gun",
+          "image": "docs/design/screens/gun-setup/add-gun.dark.png"
+        },
+        {
+          "key": "edit-gun.dark",
+          "anchor": "gunForm",
+          "label": "Edit existing gun, Dark",
+          "image": "docs/design/screens/gun-setup/edit-gun.dark.png"
+        },
+        {
+          "key": "edit-gun.light",
+          "anchor": "gunForm",
+          "label": "Edit existing gun, Light",
+          "image": "docs/design/screens/gun-setup/edit-gun.light.png"
+        }
+      ],
+      "design": "docs/design/screens/gun-setup/README.md"
+    },
+    {
+      "id": "home",
+      "folder": "home",
+      "domId": "homeView",
+      "title": "Home",
+      "parent": null,
+      "entry": "After gun selection/setup and returning visits",
+      "requirements": [
+        "docs/requirements/core.md",
+        "docs/requirements/branding.md",
+        "docs/requirements/gun-profiles.md"
+      ],
+      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations.",
+      "states": [
+        {
+          "key": "overview.dark",
+          "anchor": "homeView",
+          "label": "Dashboard",
+          "image": "docs/design/screens/home/overview.dark.png"
+        }
+      ],
+      "design": "docs/design/screens/home/README.md"
+    },
+    {
+      "id": "guns",
+      "folder": "guns",
+      "domId": "gunsView",
+      "title": "My Guns",
+      "parent": "home",
+      "entry": "Active-gun switcher",
+      "requirements": [
+        "docs/requirements/gun-profiles.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Illustrated library cards show gun name/type, readiness, selected status and capacity out of five. Each has separate Select and Edit actions; no nested buttons. Add opens the illustrated type form. Editing retains all owned data and selection; switching loads only the selected gun’s model/history. Backup & restore remains accessible.",
+      "states": [
+        {
+          "key": "library.dark",
+          "anchor": "gunList",
+          "label": "Gun library",
+          "image": "docs/design/screens/guns/library.dark.png"
+        },
+        {
+          "key": "library.light",
+          "anchor": "gunList",
+          "label": "Illustrated library, Light",
+          "image": "docs/design/screens/guns/library.light.png"
+        }
+      ],
+      "design": "docs/design/screens/guns/README.md"
+    },
+    {
+      "id": "learn",
+      "folder": "learn",
+      "domId": "learnView",
+      "title": "Learn Sounds",
+      "parent": "home",
+      "entry": "Learn tab, Home card or missing-sound link",
+      "requirements": [
+        "docs/requirements/core.md",
+        "docs/requirements/practice-modes.md",
+        "docs/requirements/practice-improvements.md"
+      ],
+      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "states": [
+        {
+          "key": "overview.dark",
+          "anchor": "classCards",
+          "label": "Trigger-first learning",
+          "image": "docs/design/screens/learn/overview.dark.png"
+        },
+        {
+          "key": "optional-sounds.dark",
+          "anchor": "optionalClassCards",
+          "label": "Optional action sounds",
+          "image": "docs/design/screens/learn/optional-sounds.dark.png"
+        },
+        {
+          "key": "calibration.dark",
+          "anchor": "calibrationCards",
+          "label": "Rejection and external-cue calibration",
+          "image": "docs/design/screens/learn/calibration.dark.png"
+        },
+        {
+          "key": "recording-limit.dark",
+          "anchor": "classCards",
+          "label": "Preserved old profile above the new cap",
+          "image": "docs/design/screens/learn/recording-limit.dark.png"
+        }
+      ],
+      "design": "docs/design/screens/learn/README.md"
+    },
+    {
+      "id": "drills",
+      "folder": "drills",
+      "domId": "drillsView",
+      "title": "Drills",
+      "parent": "home",
+      "entry": "Drills tab, Home card or review completion",
+      "requirements": [
+        "docs/requirements/drill-sessions.md",
+        "docs/requirements/practice-modes.md"
+      ],
+      "notes": "Six practice cards precede the preserved sequence catalog. Built-in / Custom tabs select sequence presets. The inline custom editor has a title, ordered action list, add/remove/reorder controls, Save and Cancel. A preset is owned by the active gun and uses the existing four event identifiers. The editor is a screen state, not another public route.",
+      "states": [
+        {
+          "key": "catalog.dark",
+          "anchor": "practiceCatalog",
+          "label": "Practice modes and built-in sequences",
+          "image": "docs/design/screens/drills/catalog.dark.png"
+        },
+        {
+          "key": "custom.dark",
+          "anchor": "customDrillCatalog",
+          "label": "Saved custom sequences",
+          "image": "docs/design/screens/drills/custom.dark.png"
+        },
+        {
+          "key": "custom-editor.dark",
+          "anchor": "customDrillForm",
+          "label": "Create or edit a sequence",
+          "image": "docs/design/screens/drills/custom-editor.dark.png"
+        }
+      ],
+      "design": "docs/design/screens/drills/README.md"
+    },
+    {
+      "id": "practice",
+      "folder": "practice",
+      "domId": "practiceView",
+      "title": "Practice",
+      "parent": "drills",
+      "entry": "Six mode cards or saved practice review in History",
+      "requirements": [
+        "docs/requirements/practice-modes.md",
+        "docs/requirements/practice-improvements.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+      "states": [
+        {
+          "key": "configure-single.dark",
+          "anchor": "practiceConfigure",
+          "label": "Configure single",
+          "image": "docs/design/screens/practice/configure-single.dark.png"
+        },
+        {
+          "key": "configure-repeated.dark",
+          "anchor": "practiceConfigure",
+          "label": "Configure repeated",
+          "image": "docs/design/screens/practice/configure-repeated.dark.png"
+        },
+        {
+          "key": "configure-par.dark",
+          "anchor": "practiceConfigure",
+          "label": "Configure par",
+          "image": "docs/design/screens/practice/configure-par.dark.png"
+        },
+        {
+          "key": "configure-control.dark",
+          "anchor": "practiceConfigure",
+          "label": "Configure control",
+          "image": "docs/design/screens/practice/configure-control.dark.png"
+        },
+        {
+          "key": "configure-reload.dark",
+          "anchor": "practiceConfigure",
+          "label": "Configure reload",
+          "image": "docs/design/screens/practice/configure-reload.dark.png"
+        },
+        {
+          "key": "configure-free.dark",
+          "anchor": "practiceConfigure",
+          "label": "Configure free",
+          "image": "docs/design/screens/practice/configure-free.dark.png"
+        },
+        {
+          "key": "countdown.dark",
+          "anchor": "practiceRun",
+          "label": "Fresh ready countdown",
+          "image": "docs/design/screens/practice/countdown.dark.png"
+        },
+        {
+          "key": "active.dark",
+          "anchor": "practiceRun",
+          "label": "Listening with STOP and microphone",
+          "image": "docs/design/screens/practice/active.dark.png"
+        },
+        {
+          "key": "active.light",
+          "anchor": "practiceRun",
+          "label": "Light theme listening",
+          "image": "docs/design/screens/practice/active.light.png"
+        },
+        {
+          "key": "paused.dark",
+          "anchor": "practiceRun",
+          "label": "Paused microphone inactive",
+          "image": "docs/design/screens/practice/paused.dark.png"
+        },
+        {
+          "key": "review.dark",
+          "anchor": "practiceReview",
+          "label": "Saved practice review",
+          "image": "docs/design/screens/practice/review.dark.png"
+        }
+      ],
+      "modes": [
+        "single",
+        "repeated",
+        "par",
+        "control",
+        "reload",
+        "free"
+      ],
+      "additionalStates": [
+        "Connecting; cancel/end remains available",
+        "External-cue waiting; live input until calibrated cue starts timing",
+        "Finishing a deadline; late events rejected by onset time",
+        "Manual Next for Par/Reload only",
+        "Saving error; Retry and navigation recovery guard"
+      ],
+      "design": "docs/design/screens/practice/README.md"
+    },
+    {
+      "id": "session",
+      "folder": "session",
+      "domId": "sessionView",
+      "title": "Drill Session",
+      "parent": "drills",
+      "entry": "Start Drill on a built-in/custom sequence, or History review",
+      "requirements": [
+        "docs/requirements/drill-sessions.md",
+        "docs/requirements/practice-improvements.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Keep the ordered sequence visible once. Configure exposes repetitions (default ten), fixed/random delay (default fixed three seconds), Sound at start (default Off), readiness and Start Session. Require only referenced sound types. Run shows completed/left, countdown/GO, latest repetition and Pause/Resume/End. Legacy GO is a status; the Practice STOP correction does not replace this runner. Each ordered completion is saved and followed by a fresh countdown. Review shows totals and repetition/split details, Repeat Session and Back to Drills.",
+      "states": [
+        {
+          "key": "configure.dark",
+          "anchor": "sessionConfigure",
+          "label": "Configure sequence",
+          "image": "docs/design/screens/session/configure.dark.png"
+        },
+        {
+          "key": "active.dark",
+          "anchor": "sessionRun",
+          "label": "Active sequence",
+          "image": "docs/design/screens/session/active.dark.png"
+        },
+        {
+          "key": "paused.dark",
+          "anchor": "sessionRun",
+          "label": "Paused sequence",
+          "image": "docs/design/screens/session/paused.dark.png"
+        },
+        {
+          "key": "review.dark",
+          "anchor": "sessionReview",
+          "label": "Saved sequence review",
+          "image": "docs/design/screens/session/review.dark.png"
+        }
+      ],
+      "design": "docs/design/screens/session/README.md"
+    },
+    {
+      "id": "recognize",
+      "folder": "live-listen",
+      "domId": "recognizeView",
+      "title": "Live Listen",
+      "parent": "home",
+      "entry": "Live Listen tab, Home card or Start free listening",
+      "requirements": [
+        "docs/requirements/core.md",
+        "docs/requirements/practice-modes.md",
+        "docs/requirements/practice-improvements.md"
+      ],
+      "notes": "Free-listening/sequence selection, current event and score, level/waveform, single sound test and continuous Start/Stop controls. Continuous capture remains active through separate events until stopped or left. Unknown input stays transient; accepted known results can be verified in History. Microphone level does not establish that a click was recognized.",
+      "states": [
+        {
+          "key": "ready.dark",
+          "anchor": "recognizeView",
+          "label": "Ready to listen",
+          "image": "docs/design/screens/live-listen/ready.dark.png"
+        },
+        {
+          "key": "listening.dark",
+          "anchor": "listeningIndicator",
+          "label": "Continuous listening",
+          "image": "docs/design/screens/live-listen/listening.dark.png"
+        }
+      ],
+      "design": "docs/design/screens/live-listen/README.md"
+    },
+    {
+      "id": "history",
+      "folder": "history",
+      "domId": "historyView",
+      "title": "History",
+      "parent": "home",
+      "entry": "History tab or Home card",
+      "requirements": [
+        "docs/requirements/core.md",
+        "docs/requirements/practice-improvements.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Per-gun comparable drill/settings and time-range filters, session count/mean/median/spread, trend chart and accessible data table. Saved legacy/practice cards reopen their respective Review. Recent retained recognition checks have explicit verified-only limitations and last-N control (1–500). Clearing/trimming recent recognition results preserves saved sessions and learned sounds. No comparable data shows an honest empty/insufficient state.",
+      "states": [
+        {
+          "key": "progress.dark",
+          "anchor": "progressContent",
+          "label": "Progress charts, Dark",
+          "image": "docs/design/screens/history/progress.dark.png"
+        },
+        {
+          "key": "data-table.dark",
+          "anchor": "progressContent",
+          "label": "Accessible chart data table",
+          "image": "docs/design/screens/history/data-table.dark.png"
+        },
+        {
+          "key": "progress.light",
+          "anchor": "progressContent",
+          "label": "Progress charts, Light",
+          "image": "docs/design/screens/history/progress.light.png"
+        }
+      ],
+      "design": "docs/design/screens/history/README.md"
+    },
+    {
+      "id": "settings",
+      "folder": "settings",
+      "domId": "settingsView",
+      "title": "Settings",
+      "parent": "home",
+      "entry": "Settings gear in each screen heading; backup/restore links",
+      "requirements": [
+        "docs/requirements/settings.md",
+        "docs/requirements/core.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install/About explain local-data and microphone limits.",
+      "states": [
+        {
+          "key": "overview.dark",
+          "anchor": "settingsView",
+          "label": "Settings, Dark",
+          "image": "docs/design/screens/settings/overview.dark.png"
+        },
+        {
+          "key": "overview.light",
+          "anchor": "settingsView",
+          "label": "Settings, Light",
+          "image": "docs/design/screens/settings/overview.light.png"
+        },
+        {
+          "key": "sounds-reset.dark",
+          "anchor": "soundResetOutcome",
+          "label": "Completed selected-gun sound reset",
+          "image": "docs/design/screens/settings/sounds-reset.dark.png"
+        }
+      ],
+      "design": "docs/design/screens/settings/README.md"
+    }
+  ],
+  "shared": [
+    {
+      "id": "safety",
+      "folder": "shared",
+      "domId": "safetyModal",
+      "title": "Safety confirmation",
+      "entry": "Any unconfirmed action that would acquire microphone capture",
+      "requirements": [
+        "docs/requirements/core.md",
+        "docs/requirements/practice-improvements.md"
+      ],
+      "notes": "Native accessible modal with explicit safety text, acknowledgement checkbox, disabled Confirm & continue until checked and Cancel. Confirm resumes the original action exactly once; Cancel or changed context does not start capture. Acknowledgement is page-session-local, resets on refresh or gun change, and is never a permanent waiver. The disclosure remains available for reviewing the checklist.",
+      "states": [
+        {
+          "key": "safety-modal.dark",
+          "anchor": "safetyModal",
+          "label": "Unconfirmed capture action",
+          "image": "docs/design/screens/shared/safety-modal.dark.png"
+        }
+      ],
+      "design": "docs/design/screens/shared/README.md"
+    }
+  ],
+  "reviewedSources": {
+    "index.html": "54c6228ea217d2a46cac003c490af9c23b2483f8fc6a543f274b26c30e24f525",
+    "src/main.js": "82c8a49f466c4ce6d808313a2016c0d619be3d68b500a19a7d95174afb0a77e4",
+    "src/styles.css": "6779910f58e1d6a510c7783a59a4d3cf7fd246374779356d513bb33abc79fe7b",
+    "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
+    "src/practiceSession.js": "d4fd39ba673973fa6d7aa1db5b87ccbf9f5d294efce9d66124cd11aa27da0c80",
+    "src/practiceController.js": "4435e304c2060f99b511983d769150380ebc740f92a5e36fdf606226962779bd",
+    "src/sessionController.js": "41620f45b8d73c144a4026fd13baa3612c72d66ba44d14b48547808d8b969b24",
+    "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
+    "src/progressView.js": "9f94fa76c62f9cd35478b73522b89b31a0a5b7ac70ff0d0535dc71b07e5ec016",
+    "src/inputLimits.js": "0e7be09afb1e9f6b652f6837d4f3dac3400db56cc21575642013da29a539864d"
+  },
+  "implementationChanges": [
+    "CHG-017",
+    "CHG-019"
+  ]
+}

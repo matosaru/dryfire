@@ -16,7 +16,7 @@ import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLAS
 import {
   addExample, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
   addEvent, getEvents, verifyEvent, clearEvents, trimEvents, normalizeMaxResults, MAX_EXAMPLES_PER_CLASS, exportBackup, restoreBackup,
-  getGuns, createGun, updateGun, getActiveGun, setActiveGun, MAX_GUNS,
+  getGuns, createGun, updateGun, getActiveGun, setActiveGun, MAX_GUNS, resetLibrary,
   getGunSetting, setGunSetting, getCustomDrills, saveCustomDrill,
   getSetting, setSetting, recoverInterruptedSessions,
   getCalibrationExamples, addCalibrationExample, clearCalibrationExamples,
@@ -29,6 +29,8 @@ const labelMeta = {
   reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple', short: 'MG' },
 };
 const $ = selector => document.querySelector(selector);
+const gunTypeImages = { Handguns: 'handgun', 'Rifles and Carbines': 'rifle', Shotguns: 'shotgun' };
+function gunImagePath(type) { return `/gun-types/${gunTypeImages[type] || 'unknown'}.svg`; }
 let examples = [];
 let busy = false;
 let activeView = 'home';
@@ -116,6 +118,11 @@ function renderGunControls() {
   $('#gunSwitcherBtn').setAttribute('aria-label', activeGun?.name ? `Switch gun. Selected: ${activeGun.name}, ${activeGun.type || 'type not set'}` : 'Choose a gun');
   $('#activeGunName').textContent = activeGun?.name || 'Your gun';
   $('#activeGunType').textContent = activeGun?.type || 'Add profile details';
+  $('#activeGunImage').src = gunImagePath(activeGun?.type);
+  $('#soundResetSummary').textContent = activeGun && !activeGun.needsDetails
+    ? `${examples.length} learned samples · ${calibration.length} calibration samples for ${activeGun.name}`
+    : 'Choose a gun before resetting its learned sounds.';
+  $('#resetLibraryBtn').disabled = profileLocked();
   document.querySelectorAll('.gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
   document.querySelectorAll('.gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
   if (!activeGun || activeGun.needsDetails) document.querySelectorAll('#resetModelBtn, #clearHistoryBtn, #verifyLatestBtn').forEach(button => { button.disabled = true; });
@@ -175,10 +182,13 @@ function openGunSetup(gun = null) {
   $('#gunForm').reset();
   $('#gunName').value = gun?.name ?? '';
   $('#gunType').value = gun?.type ?? '';
-  $('#gunSetupTitle').textContent = gun?.needsDetails ? 'Name your existing gun' : gun ? 'Gun details' : 'Add your gun';
+  document.querySelectorAll('[name="gunTypeChoice"]').forEach(input => { input.checked = input.value === gun?.type; });
+  $('#gunSetupTitle').textContent = gun?.needsDetails ? 'Name your existing gun' : gun ? 'Edit gun' : guns.length ? 'Add your gun' : 'Add your first gun';
   $('#gunSetupDescription').textContent = gun?.needsDetails
     ? 'Your learned sounds and recognition history have been preserved together. Add the name and type of the gun they belong to.'
+    : gun ? 'Update the name or type. This gun’s learned sounds, presets and history stay saved.'
     : 'Give this gun a name and type. Its learned sounds, presets and history will be saved separately on this device.';
+  $('#saveGunBtn').textContent = gun ? 'Save Changes' : 'Save Gun & Continue';
   $('#cancelGunSetupBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
   switchView('gunSetup');
   $('#gunName').focus();
@@ -206,12 +216,18 @@ async function renderGunLibrary() {
     const state = document.createElement('span'); state.className = `gun-readiness${triggerTrained ? ' ready' : ''}`; state.textContent = `${triggerTrained ? 'Trigger ready' : 'Learn trigger'} · ${readySounds - (triggerTrained ? 1 : 0)} optional sounds ready · ${samples.length} samples`;
     const presetCount = document.createElement('span'); presetCount.className = 'gun-preset-count'; presetCount.textContent = `${presets.length} custom presets`;
     const heading = document.createElement('span'); heading.className = 'gun-card-head';
-    const details = document.createElement('span'); details.append(name, type); heading.append(details);
+    const image = document.createElement('img'); image.className = 'gun-type-image'; image.src = gunImagePath(gun.type); image.width = 96; image.height = 56; image.alt = '';
+    const details = document.createElement('span'); details.className = 'gun-card-details'; details.append(name, type); heading.append(image, details);
     if (gun.id === activeGun?.id) { const selected = document.createElement('span'); selected.className = 'gun-selected'; selected.textContent = 'Selected'; heading.append(selected); }
     const status = document.createElement('span'); status.className = 'gun-card-status'; status.append(state, presetCount);
     card.append(heading, status);
     card.addEventListener('click', () => selectGunProfile(gun.id).catch(showError));
-    host.append(card);
+    const profile = document.createElement('article'); profile.className = 'gun-profile';
+    const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'text-button edit-gun'; edit.textContent = 'Edit gun'; edit.dataset.editGunId = gun.id;
+    edit.setAttribute('aria-label', `Edit ${gun.name || 'existing gun'}`);
+    edit.disabled = profileLocked();
+    edit.addEventListener('click', () => openGunSetup(gun));
+    profile.append(card, edit); host.append(profile);
   }
 }
 
@@ -241,11 +257,13 @@ async function submitGun(event) {
   setBusy(true);
   $('#saveGunBtn').disabled = true;
   try {
-    if (setupGunId) { await updateGun(setupGunId, {name, type}); await setActiveGun(setupGunId); }
+    const editing = !!setupGunId;
+    const completingLegacy = editing && activeGun?.id === setupGunId && activeGun.needsDetails;
+    if (editing) await updateGun(setupGunId, {name, type});
     else await createGun({name, type});
     await loadActiveGun();
     setBusy(false);
-    switchView('home');
+    switchView(editing && !completingLegacy ? 'guns' : 'home');
     setStatus('Gun saved');
   } catch (error) { showError(error); }
   finally { setBusy(false); $('#saveGunBtn').disabled = false; }
@@ -931,6 +949,7 @@ async function init() {
     });
   }
   $('#gunForm').addEventListener('submit', event => { submitGun(event).catch(showError); });
+  document.querySelectorAll('[name="gunTypeChoice"]').forEach(input => input.addEventListener('change', () => { if (input.checked) $('#gunType').value = input.value; }));
   $('#gunSwitcherBtn').addEventListener('click', () => { if (!profileLocked()) switchView('guns'); });
   $('#addGunBtn').addEventListener('click', () => openGunSetup());
   $('#cancelGunSetupBtn').addEventListener('click', () => switchView('guns'));
@@ -1024,7 +1043,7 @@ async function init() {
     if (!$('#safetyAck').checked && practiceController.locked()) practiceController.interrupt('safety-check').catch(showError);
   });
   $('#resetModelBtn').addEventListener('click', async () => {
-    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Delete all learned sounds for ${activeGun.name}? Other guns and all recognition history will be kept.`)) return;
+    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Reset all learned sounds and reset/noise/beep calibration for ${activeGun.name}? Gun profiles, presets, saved sessions, recognition history and other guns will be kept.`)) return;
     setBusy(true);
     try {
       await clearExamples(ownerId());
@@ -1033,8 +1052,23 @@ async function init() {
       $('#modelNotice').classList.add('hidden');
       setStatus('All learned sounds reset');
       setMessage(`All learned sounds for ${activeGun.name} were reset. Other guns and recognition history were kept.`);
+      $('#soundResetOutcome').textContent = `All learned sounds and calibration for ${activeGun.name} were reset. Saved guns, presets and history were kept.`;
+      renderDrillCatalog();
+      renderCustomCatalog();
+      await renderHome();
     } catch (error) { showError(error); }
     finally { setBusy(false); renderClassCards(); }
+  });
+  $('#resetLibraryBtn').addEventListener('click', async () => {
+    if (profileLocked() || !confirm('Delete ALL guns and app data from this browser? This removes every gun, learned sound, calibration, preset, setting, recognition result and saved session. Export a backup first. This cannot be undone without a backup.')) return;
+    setBusy(true);
+    try {
+      await eventQueue;
+      await sessionController.flush();
+      await practiceController.flush();
+      await resetLibrary();
+      window.location.reload();
+    } catch (error) { showError(error); setBusy(false); }
   });
   $('#clearHistoryBtn').addEventListener('click', async () => {
     if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Delete recognition history for ${activeGun.name}? Other guns and learned sounds will be kept.`)) return;

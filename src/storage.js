@@ -197,6 +197,13 @@ export async function updateGun(id, { name, type } = {}) {
   });
 }
 
+/** Explicitly confirmed UI action: atomically clear only this application's stores. */
+export async function resetLibrary() {
+  await withTransaction(STORES, 'readwrite', tx => {
+    for (const name of STORES) tx.objectStore(name).clear();
+  });
+}
+
 export async function setActiveGun(id) {
   if (typeof id !== 'string' || !id) throw new TypeError('Invalid gun profile.');
   return withTransaction([GUNS, SETTINGS], 'readwrite', (tx, context) => {
