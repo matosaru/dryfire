@@ -246,29 +246,49 @@
       "height": 2323
     },
     "chromium/settings/overview.dark.390.png": {
-      "sha256": "b601da1ccb36812298580cc8a803dac4caf2d79a8612472eae06057960e42b7c",
+      "sha256": "1f23e63cbdec32850f58dc29bf3615e755f52b0a352fdd45960013921d87e706",
       "width": 390,
-      "height": 1979
+      "height": 1978
     },
     "chromium/settings/overview.dark.320.png": {
-      "sha256": "897dba259726d4492628980458d5820dd6b801f0d5cf5fc3dfa95ea6f7d33e32",
+      "sha256": "c56657ac3b48b6716683c5b25178fe56d9d561f308e8ff2354186a1af9658bcd",
       "width": 320,
-      "height": 2182
+      "height": 2163
     },
     "chromium/settings/overview.light.390.png": {
-      "sha256": "a64bdbe2399923fa71acad13ffe4cb7b1243f496e62ae457a8b15f12af729536",
+      "sha256": "7a5b459145c03d225903fb37a9453424a13cf5cbefe1dbea1465be7839824ae8",
       "width": 390,
-      "height": 1979
+      "height": 1978
     },
     "chromium/settings/overview.light.320.png": {
-      "sha256": "c063d1941391bec6f34f02fb7dafc024dd2d28849835f3d1ac9a56d957afdc68",
+      "sha256": "ad3003c77b59073d92de28f13f017b216531c0b81512584a791975e99babfcfd",
       "width": 320,
-      "height": 2182
+      "height": 2163
     },
     "chromium/settings/sounds-reset.dark.390.png": {
-      "sha256": "279e95cef936a37563edc040b51b09fe12062e72529c6f94dccfbf36bd99d613",
+      "sha256": "51b2219eb64a2d943fab78179c6e83ee55d33933cc8df49ca5c45eb208f262af",
       "width": 390,
-      "height": 2120
+      "height": 2118
+    },
+    "chromium/about/overview.dark.390.png": {
+      "sha256": "c7f5c15b6fafdc35c4538d53e40fa3370ed86996f516f938793a9c5d70baed4b",
+      "width": 390,
+      "height": 1442
+    },
+    "chromium/about/overview.dark.320.png": {
+      "sha256": "2504394e4d0ffa577e2f70a16fcc9b3ac750ac9f96dac5d726bac5be04a80ae5",
+      "width": 320,
+      "height": 1580
+    },
+    "chromium/about/overview.light.390.png": {
+      "sha256": "2e42466d09cd073f477923dbc9f87cf67adc81d48bae1be90605879cfca44be2",
+      "width": 390,
+      "height": 1442
+    },
+    "chromium/about/overview.light.320.png": {
+      "sha256": "2b046a10cb70e7484a59418626ef277130fba535d43e4c57662170cf0456c8ac",
+      "width": 320,
+      "height": 1580
     },
     "chromium/shared/safety-modal.dark.390.png": {
       "sha256": "7548460a8a4c309c9ef9c1b3b2c768f8512ebca9941f832464524ef5a72406f5",
@@ -511,29 +531,49 @@
       "height": 2326
     },
     "webkit/settings/overview.dark.390.png": {
-      "sha256": "1bd286dbec81f61ac5197b2c20024754ce4fee2ad60bd454f1c973bc96c1556c",
+      "sha256": "66504941688d60b200e16eb087d9eb3cb5625f6a1c9aaaed2fcd208b4233bae0",
       "width": 390,
-      "height": 1978
+      "height": 1983
     },
     "webkit/settings/overview.dark.320.png": {
-      "sha256": "86ac02d7cb8bb499a72851fee6935a882c64bb81c353ed12e1f5f1dfc52d6e40",
+      "sha256": "2067a6a0b189fb53995c66f69faa0cd92a24e89925adccab3d69ee4ac7ab0fd3",
       "width": 320,
-      "height": 2175
+      "height": 2163
     },
     "webkit/settings/overview.light.390.png": {
-      "sha256": "098b49fce5add4a9cc6b29deeb539dbc1644384e84117948c7b83a6dec3a3ff5",
+      "sha256": "6874c0685ab4c61865e80fc01c4dbc0bd8ff44da4c152a919f1666c209cd7ed3",
       "width": 390,
-      "height": 1978
+      "height": 1983
     },
     "webkit/settings/overview.light.320.png": {
-      "sha256": "da98ab0e92c1b9969ac9379f15025f7ad243cc84df497dfb7d5fce78504416e7",
+      "sha256": "88852e40762f943cbd418760d6b8fc838748d7fbbb8ffdad469c398fc0ce85a3",
       "width": 320,
-      "height": 2175
+      "height": 2163
     },
     "webkit/settings/sounds-reset.dark.390.png": {
-      "sha256": "ade6d488d43fc3da3b47cf46db5fc7c605c3a50dcb0a7c9c8d7db087a78c8068",
+      "sha256": "3ba5794d13b0e58bbe01243d88efd877536d55189ea0f997fcadb26d1c54cf15",
       "width": 390,
-      "height": 2117
+      "height": 2122
+    },
+    "webkit/about/overview.dark.390.png": {
+      "sha256": "fc6dc7dfd839e72cad8d48a9855b387a5de32187367e6b04ed2eca2070eaa85d",
+      "width": 390,
+      "height": 1432
+    },
+    "webkit/about/overview.dark.320.png": {
+      "sha256": "464992540783f940c44cda1ca2b9bd254036cd1bfaca58d654abf029a9c3abb0",
+      "width": 320,
+      "height": 1567
+    },
+    "webkit/about/overview.light.390.png": {
+      "sha256": "5d12a38f9d883ccdedb7bc74abf014c2adcfe2e134143e6c5d4971cd9a35681d",
+      "width": 390,
+      "height": 1432
+    },
+    "webkit/about/overview.light.320.png": {
+      "sha256": "281a161aeba3bdf91d53e5d94a8d8de1f9385ac3a1b40a9dbaa484da5965d439",
+      "width": 320,
+      "height": 1567
     },
     "webkit/shared/safety-modal.dark.390.png": {
       "sha256": "cb1d5813dc28c6eba20afd8141e4b712af34914f86cd51cde8edaa8346c3c361",

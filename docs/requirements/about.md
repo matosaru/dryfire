@@ -1,6 +1,6 @@
 # About and email contact
 
-Revision 1.0 · CHG-027 · Implementation requested on 2026-10-11; exact editorial copy is proposed for user review on the feature branch.
+Revision 1.0 · CHG-027 · Implemented and locally/browser validated on 2026-10-11; exact editorial copy is proposed for user review. Publication, promotion and deployment are tracked separately.
 
 User instruction: **“also start creating aboutpage, suggest page text. and add easydryfire@gmail.com as a contact email. create this as a separate feature branch”**. This specifically starts the About/contact slice after the CHG-026 implementation pause. Other commercial, account, cloud, paywall and SEO implementations remain paused.
 

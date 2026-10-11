@@ -19,4 +19,4 @@ Functional specifications and proposed copy: [About](../../../requirements/about
 | About, Dark | [overview.dark.png](overview.dark.png) | `aboutView` |
 | About, Light | [overview.light.png](overview.light.png) | `aboutView` |
 
-Capture review and rendering evidence are recorded in the delivery tracker. Actual production-build captures show the proposed page; publication does not establish Cloudflare deployment or physical microphone accuracy.
+Actual production-build references use the pinned Chromium renderer at 390 px. Both themes and 320/390 px images were reviewed in Chromium and WebKit; [collection and unchanged-comparison evidence](../../baselines/about-validation.json) and [build/source manifest](../../baselines/about-build-manifest.json) retain provenance. Publication does not establish Cloudflare deployment or physical microphone accuracy.
