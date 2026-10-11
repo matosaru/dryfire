@@ -614,6 +614,7 @@ html[data-theme="light"] :is(button,input,select,summary):focus-visible { outlin
 .progress-data { overflow-x: auto; margin-top: 16px; }
 .progress-data summary { min-height: 44px; cursor: pointer; font-size: .85rem; }
 .progress-data table { width: 100%; border-collapse: collapse; font-size: .75rem; }
+.progress-data:not([open]) table { display: none; }
 .progress-data :is(th,td) { padding: 8px; border-bottom: 1px solid var(--session-border); text-align: left; }
 .section-head.has-settings h2 { padding: 0 38px; }
 .section-head > .icon-button { position: absolute; right: 0; top: -5px; min-height: 44px; min-width: 44px; padding: 0 5px; cursor: pointer; }

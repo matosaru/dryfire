@@ -1,6 +1,6 @@
 # Practice design
 
-Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · published source [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
+Current implemented layout · CHG-022 microphone/start corrections · 2026-10-11 · local source revision; previous published baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
 Entry: Six mode cards or saved practice review in History. App anchor: `practiceView`. This is a state of the same `/` web app, not a separate indexable URL.
 
@@ -11,6 +11,8 @@ Configure exposes only mode-relevant count/duration/par/endpoints, app/external 
 Other required states: Connecting; cancel/end remains available; External-cue waiting; live input until calibrated cue starts timing; Finishing a deadline; late events rejected by onset time; Manual Next for Par/Reload only; Saving error; Retry and navigation recovery guard.
 
 Functional specifications: [practice-modes](../../../requirements/practice-modes.md) · [practice-improvements](../../../requirements/practice-improvements.md) · [persistence](../../../requirements/persistence.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
+
+CHG-022 implemented revision: Connecting waits for actual incoming audio before countdown. Countdown retains seconds/STOP and adds the live microphone meter below; GO keeps the same STOP/meter. Single early clicks produce **Miss · early trigger** in the latest result and saved Review, followed automatically by a fresh delay until the target. Configure explains that input is monitored before the beep and that the device volume controls audible output. The timing/data rules and acceptance criteria are in [practice-start](../../../requirements/practice-start.md); The actual production-build captures below show this revision. Earlier captures are retained under CHG-022 in the archive.
 
 ## Current visual references
 
@@ -28,6 +30,7 @@ Functional specifications: [practice-modes](../../../requirements/practice-modes
 | Listening with STOP and microphone | [`active.dark.png`](active.dark.png) | `practiceRun` |
 | Light theme listening | [`active.light.png`](active.light.png) | `practiceRun` |
 | Paused microphone inactive | [`paused.dark.png`](paused.dark.png) | `practiceRun` |
+| Early-trigger failed review | [`early-review.dark.png`](early-review.dark.png) | `practiceReview` |
 | Saved practice review | [`review.dark.png`](review.dark.png) | `practiceReview` |
 
 Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.

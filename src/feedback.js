@@ -45,7 +45,7 @@ export function createStartCuePlayer() {
       oscillator.frequency.value = 880;
       const at = context.currentTime;
       gain.gain.setValueAtTime(0, at);
-      gain.gain.linearRampToValueAtTime(0.06, at + 0.006);
+      gain.gain.linearRampToValueAtTime(0.45, at + 0.006);
       gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.09);
       oscillator.connect(gain);
       gain.connect(context.destination);

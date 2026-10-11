@@ -229,3 +229,49 @@ test('a cue gate inside a PCM chunk preserves the later genuine event signature'
   expect(actual).toEqual(expected);
   await session.stop();
 });
+
+test.each(['worklet', 'compatibility'])('%s readiness requires arriving PCM, not permission alone', async path => {
+  if (path === 'worklet') {
+    globalThis.AudioContext.prototype.audioWorklet = { addModule: jest.fn(async () => {}) };
+    globalThis.AudioWorkletNode = class { constructor() { Object.assign(this, node(), { port: { onmessage: null } }); nodes.push(this); } };
+  }
+  const session = await startContinuousListening({ onEvent() {}, detectionEnabled: false });
+  let ready = false;
+  const waiting = session.waitForInput().then(() => { ready = true; });
+  await Promise.resolve(); expect(ready).toBe(false);
+  const deliver = length => {
+    const pcm = new Float32Array(length);
+    if (path === 'worklet') nodes[0].port.onmessage({ data: { samples: pcm, startFrame: rate } });
+    else nodes[0].onaudioprocess({ playbackTime: 1 + length / rate, inputBuffer: { getChannelData: () => pcm },
+      outputBuffer: { numberOfChannels: 1, getChannelData: () => new Float32Array(length) } });
+  };
+  deliver(rate * .05); await Promise.resolve(); expect(ready).toBe(false);
+  deliver(rate * .05); await waiting; expect(ready).toBe(true);
+  await session.stop();
+});
+
+test('readiness timeout reports missing input; stopping and aborting reject pending waits', async () => {
+  jest.useFakeTimers();
+  const controller = new AbortController();
+  const session = await startContinuousListening({ onEvent() {}, signal: controller.signal });
+  const timeout = expect(session.waitForInput()).rejects.toThrow(/audio input/i);
+  await jest.advanceTimersByTimeAsync(5000); await timeout;
+  const cancelled = expect(session.waitForInput()).rejects.toMatchObject({ name: 'AbortError' });
+  controller.abort(); await cancelled;
+  expect(track.stop).toHaveBeenCalledTimes(1);
+  await expect(session.waitForInput()).rejects.toMatchObject({ name: 'AbortError' });
+});
+
+test('cue suppression retains an in-flight early onset and the first 200 ms click', async () => {
+  globalThis.AudioContext.prototype.audioWorklet = { addModule: jest.fn(async () => {}) };
+  globalThis.AudioWorkletNode = class { constructor() { Object.assign(this, node(), { port: { onmessage: null } }); nodes.push(this); } };
+  const found = [];
+  const session = await startContinuousListening({ detectionEnabled: false, onEvent: (_pcm, _rate, timing) => found.push(timing) });
+  session.armDetection();
+  nodes[0].port.onmessage({ data: { samples: samples(.2, [[.17, .03]]), startFrame: rate } });
+  contexts[0].currentTime = 1.2;
+  session.suppressDetection({ guardMs: 80 });
+  nodes[0].port.onmessage({ data: { samples: samples(.8, [[0, .08], [.2, .08]]), startFrame: rate * 1.2 } });
+  expect(found.map(x => Math.round(x.onsetMs))).toEqual([1170, 1400]);
+  await session.stop();
+});

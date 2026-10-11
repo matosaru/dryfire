@@ -55,7 +55,7 @@ function delay(config, randomValue = 0) {
 function ready(state, clock) {
   return change(state, clock, { status: 'running', phase: state.config.startSource === 'external' ? 'await-cue' : 'countdown',
     current: attempt(state, clock), countdownEndsAtMs: clock.monoNow + delay(state.config, clock.randomValue),
-    goAtMs: null, segmentStartMs: null, cueGuardUntilMs: null, lastDetectionAtMs: null });
+    goAtMs: null, readyAtMs: clock.monoNow, segmentStartMs: null, cueGuardUntilMs: null, lastDetectionAtMs: null });
 }
 function activate(state, clock, onset = clock.monoNow) {
   return change(state, clock, { phase: 'active', countdownEndsAtMs: null, goAtMs: onset, segmentStartMs: onset,
@@ -78,7 +78,7 @@ export function practiceElapsed(state, monoNow) {
 }
 function finishAttempt(state, clock, status, reason, current = state.current) {
   const elapsedMs = state.goAtMs === null ? null : Math.max(0, clock.monoNow - state.goAtMs);
-  const row = { ...current, status, reason, elapsedMs: current.elapsedMs ?? elapsedMs, endedAt: clock.epochNow };
+  const row = { ...current, status, reason, elapsedMs: reason === 'early' ? null : current.elapsedMs ?? elapsedMs, endedAt: clock.epochNow };
   const completed = state.completed + (status === 'partial' ? 0 : 1);
   const done = state.practiceMode !== 'free' && completed === state.config.repetitions;
   return change(state, clock, { current: null, repetitions: [...state.repetitions, row], completed,
@@ -110,6 +110,16 @@ export function tickPractice(state, clock) {
 export function detectPractice(state, { label, score = 0, detectedAtMs } = {}, clock) {
   clockValue(clock);
   if (!finite(detectedAtMs) || detectedAtMs > clock.monoNow || !finite(score) || score > 100) throw new TypeError('Invalid captured detection.');
+  if (state.practiceMode === 'single' && ['countdown', 'active'].includes(state.phase) && state.config.startSource === 'app' && label === 'trigger') {
+    // A delayed timer has not played GO yet. Its earliest possible start is now.
+    const reference = state.goAtMs ?? Math.max(state.countdownEndsAtMs, clock.monoNow);
+    if (detectedAtMs < state.readyAtMs) return state;
+    if (state.phase === 'countdown' || detectedAtMs < reference) {
+      return finishAttempt(state, clock, 'miss', 'early', { ...state.current, detections: [
+        { label, score, offsetMs: detectedAtMs - reference, outcome: 'early' },
+      ], stepTimings: [] });
+    }
+  }
   if (state.phase === 'await-cue') return label === 'cue' ? activate(state, clock, detectedAtMs) : state;
   if (!['active', 'closing'].includes(state.phase) || detectedAtMs < state.cueGuardUntilMs || (state.lastDetectionAtMs !== null && detectedAtMs <= state.lastDetectionAtMs)) return state;
   if (label == null) label = 'unknown';
@@ -165,7 +175,7 @@ export function endPractice(state, { reason = 'ended', interrupted = false, comp
     elapsedMs: practiceElapsed(state, clock.monoNow), segmentStartMs: null, goAtMs: null, countdownEndsAtMs: null });
 }
 export function toPracticeRecord(state) {
-  const { phase, current, countdownEndsAtMs, goAtMs, segmentStartMs, cueGuardUntilMs, lastDetectionAtMs, activeBaseMs, lastShotOffsetMs, ...record } = state;
+  const { phase, current, countdownEndsAtMs, goAtMs, readyAtMs, segmentStartMs, cueGuardUntilMs, lastDetectionAtMs, activeBaseMs, lastShotOffsetMs, ...record } = state;
   return structuredClone({ ...record, currentAttempt: current });
 }
 export function recoverPracticeRecord(record, now) {
@@ -197,6 +207,7 @@ export function validatePracticeRecord(value, owner) {
   const rows = [...value.repetitions, ...(value.currentAttempt ? [value.currentAttempt] : [])];
   for (const row of rows) {
     const current = row === value.currentAttempt;
+    const early = !current && row?.status === 'miss' && row.reason === 'early' && value.practiceMode === 'single' && config.startSource === 'app';
     if (!row || !Number.isInteger(row.attempt) || row.attempt <= attemptNumber || row.ordinal !== completed + 1 ||
         !(current ? ['waiting', 'active'] : ['hit', 'miss', 'partial']).includes(row.status) ||
         !finite(row.startedAt) || row.startedAt < value.startedAt || row.startedAt > value.updatedAt ||
@@ -206,10 +217,11 @@ export function validatePracticeRecord(value, owner) {
         (current ? row.endedAt !== null || row.reason !== null || (row.status === 'waiting' ? row.goAt !== null : row.goAt === null)
           : !finite(row.endedAt) || row.endedAt < (row.goAt ?? row.startedAt) || row.endedAt > value.updatedAt || typeof row.reason !== 'string')) fail();
     attemptNumber = row.attempt;
-    let offset = -1;
+    let offset = -Infinity;
     for (const detection of row.detections) {
       if (![...LABELS, 'unknown', 'cue'].includes(detection.label) || !finite(detection.score) || detection.score > 100 ||
-          !finite(detection.offsetMs) || detection.offsetMs <= offset || !['shot', 'handling', 'ignored', 'late'].includes(detection.outcome) ||
+          !(early ? Number.isFinite(detection.offsetMs) && detection.offsetMs <= 0 && detection.label === 'trigger' && detection.outcome === 'early' : finite(detection.offsetMs)) ||
+          detection.offsetMs <= offset || !['shot', 'handling', 'ignored', 'late', ...(early ? ['early'] : [])].includes(detection.outcome) ||
           (detection.outcome === 'shot' && (detection.label !== 'trigger' || !value.drillSteps.includes('trigger'))) ||
           (detection.outcome === 'handling' && !['draw', 'rack', 'reload'].includes(detection.label))) fail();
       if (detection.outcome === 'shot') shots++;
@@ -222,9 +234,11 @@ export function validatePracticeRecord(value, owner) {
           !row.detections.some(x => x.label === timing.label && x.offsetMs === timing.offsetMs && ['shot', 'handling'].includes(x.outcome))) fail();
       previous = timing.offsetMs;
     });
-    if (row.goAt === null && (row.detections.length || row.stepTimings.length || row.elapsedMs !== null)) fail();
+    if (early && (row.detections.length !== 1 || row.stepTimings.length || row.elapsedMs !== null || row.intervalMs !== null)) fail();
+    if (row.reason === 'early' && !early) fail();
+    if (!early && row.goAt === null && (row.detections.length || row.stepTimings.length || row.elapsedMs !== null)) fail();
     if (row.status === 'hit' && (row.stepTimings.length !== value.drillSteps.length || row.elapsedMs !== previous)) fail();
-    if (row.status === 'miss' && (value.practiceMode !== 'par' || row.stepTimings.length)) fail();
+    if (row.status === 'miss' && ((!early && value.practiceMode !== 'par') || row.stepTimings.length)) fail();
     if (['hit', 'miss'].includes(row.status)) completed++;
   }
   if (value.completed !== completed || value.shots !== shots ||

@@ -16,8 +16,9 @@ async function confirmSafety(page) {
   await page.locator('#safetyConfirmBtn').click();
   await expect(page.locator('#safetyModal')).not.toBeVisible();
 }
-async function startPractice(page, countdown = false) {
+async function startPractice(page, countdown = false, repetitions) {
   await practice(page);
+  if (repetitions) { await page.locator('#practiceRepetitions').fill(String(repetitions)); await page.locator('#practiceRepetitions').dispatchEvent('change'); }
   if (!countdown) {
     await page.locator('#practiceDelayMode').selectOption('fixed');
     await page.locator('#practiceFixedDelay').fill('0');
@@ -99,6 +100,12 @@ async function prepare(page, item) {
       break;
     case 'practice':
       if (item.state.startsWith('configure-')) { await practice(page, item.state.split('.')[0].replace('configure-', '')); break; }
+      if (item.state.startsWith('early-review')) {
+        await startPractice(page, true, 1); await emit(page);
+        await expect(page.locator('#practiceReview')).toBeVisible();
+        await expect(page.locator('#practiceResults')).toContainText('Miss · early trigger');
+        await expect(page.locator('#practiceSaved')).toHaveText('Saved on this device'); break;
+      }
       if (item.state.startsWith('review')) {
         await tab(page, 'history'); await page.locator('#savedSessions .saved-session-card').filter({ hasText: 'Single trigger press' }).first().getByRole('button').click();
         await expect(page.locator('#practiceSaved')).toHaveText('Saved on this device'); break;
@@ -116,10 +123,12 @@ async function prepare(page, item) {
       await page.locator('#sessionStartBtn').click(); await confirmSafety(page);
       await expect(page.locator('#sessionCountdown')).toHaveText('GO');
       await expect(page.locator('#pauseSessionBtn')).toBeEnabled();
+      const sessionGo = await page.evaluate(() => window.__visualAudio.nowMs());
       await page.clock.runFor(80);
       if (item.state.startsWith('paused')) { await page.locator('#pauseSessionBtn').click(); await expect(page.locator('#sessionCountdown')).toHaveText('Paused'); }
       if (item.state.startsWith('review')) {
-        await emit(page); await expect(page.locator('#sessionCompletedCount')).toHaveText('1');
+        await page.clock.runFor(1000); await page.evaluate(go => window.__visualAudio.emit('trigger', go + 500), sessionGo);
+        await expect(page.locator('#sessionCompletedCount')).toHaveText('1');
         await expect(page.locator('#sessionAnnouncement')).toHaveText('Repetition completed and saved.');
         await page.clock.runFor(1100); await visible(page, 'sessionReview');
         await expect(page.locator('#sessionReview .session-saved-note')).toContainText('Saved');

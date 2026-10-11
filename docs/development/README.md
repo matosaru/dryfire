@@ -69,13 +69,15 @@ Offline-first, local sound-learning PWA, compatible with a future Capacitor iOS/
 Requires **Node.js 22+**.
 
 ```bash
-npm install
+npm ci
 npm run dev
 npm run test:smoke
 npm test
 ```
 
 Your maintainable source lives in `src/`, `public/`, `index.html`, tests in `tests/`, and Vite configuration in `vite.config.js`. Commit these files to GitHub; `dist/` is intentionally ignored.
+
+The committed npm lockfile pins dependencies. [Screenshot checks](VISUAL_TESTS.md) add a separate deterministic browser harness in `visual-tests/`, with reviewed Chromium/WebKit references in the design package. Use the pinned container for comparisons and baseline updates so local system fonts/browser versions cannot silently replace CI references.
 
 ## Production: minified files only
 

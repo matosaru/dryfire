@@ -107,14 +107,14 @@ describe('one practice engine supports all modes', () => {
   });
 });
 
-test('automatic Single samples a fresh random delay, ignores waiting clicks and stops at its target', () => {
+test('automatic Single samples a fresh random delay and stops at its target', () => {
   let s = createPractice({ id: 'automatic', gun, mode: 'single', config: { repetitions: 2, randomMinSeconds: 1, randomMaxSeconds: 3 }, ...clock(0) });
   s = tickPractice(s, clock(1000));
   s = event(s, 'trigger', 1300);
   const finished = structuredClone(s.repetitions[0]);
   s = tickPractice(s, { ...clock(1500), randomValue: 1 });
   expect(s).toMatchObject({ phase: 'countdown', countdownEndsAtMs: 4500, completed: 1, remaining: 1 });
-  expect(event(s, 'trigger', 2000)).toBe(s);
+  expect(event(s, 'unknown', 2000)).toBe(s);
   expect(tickPractice(s, clock(4400))).toBe(s);
   s = tickPractice(s, clock(4500));
   s = event(s, 'trigger', 4800);
@@ -122,6 +122,49 @@ test('automatic Single samples a fresh random delay, ignores waiting clicks and 
   expect(s.repetitions[0]).toEqual(finished);
   expect(s.repetitions[1].elapsedMs).toBe(300);
   expect(tickPractice(s, clock(9000))).toBe(s);
+});
+
+test.each([200, 500])('the first trigger %i ms after the beep counts', offset => {
+  let s = createPractice({ id: 'first', gun, config: { repetitions: 1, fixedDelaySeconds: 1, delayMode: 'fixed' }, ...clock(0) });
+  s = tickPractice(s, clock(1000));
+  s = event(s, 'trigger', 1000 + offset);
+  expect(s).toMatchObject({ status: 'completed', shots: 1, completed: 1 });
+  expect(s.repetitions[0].elapsedMs).toBe(offset);
+});
+
+test.each([false, true])('a captured early Single click fails even when callback follows GO: %s', delayed => {
+  let s = createPractice({ id: 'early', gun, config: { repetitions: 2, fixedDelaySeconds: 1, delayMode: 'fixed' }, ...clock(0) });
+  if (delayed) s = tickPractice(s, clock(1000));
+  s = detectPractice(s, { label: 'trigger', score: 90, detectedAtMs: 800 }, clock(delayed ? 1200 : 900));
+  expect(s).toMatchObject({ phase: 'result', shots: 0, completed: 1, remaining: 1 });
+  expect(s.repetitions[0]).toMatchObject({ status: 'miss', reason: 'early', elapsedMs: null, stepTimings: [],
+    detections: [{ label: 'trigger', outcome: 'early', offsetMs: -200 }] });
+  const record = validatePracticeRecord(toPracticeRecord(s), gun.id);
+  expect(record.repetitions[0].reason).toBe('early');
+  s = tickPractice(s, clock(1400));
+  expect(s).toMatchObject({ phase: 'countdown', countdownEndsAtMs: 2400 });
+  expect(detectPractice(s, { label: 'trigger', score: 90, detectedAtMs: 800 }, clock(1500))).toBe(s);
+  s = event(tickPractice(s, clock(2400)), 'trigger', 2600);
+  expect(s).toMatchObject({ phase: 'review', completed: 2, shots: 1 });
+  expect(validatePracticeRecord(toPracticeRecord(s), gun.id).completed).toBe(2);
+});
+
+test('countdown handling/unknown inputs do not fail Single; corrupt early data is rejected', () => {
+  const s = createPractice({ id: 'early', gun, config: { repetitions: 1, fixedDelaySeconds: 1, delayMode: 'fixed' }, ...clock(0) });
+  for (const label of ['unknown', 'rack', 'cue']) expect(event(s, label, 500)).toBe(s);
+  const record = toPracticeRecord(event(s, 'trigger', 500));
+  expect(validatePracticeRecord(record, gun.id).shots).toBe(0);
+  for (const change of [row => { row.detections[0].offsetMs = 100; }, row => { row.reason = 'no-click'; }, row => { row.elapsedMs = 500; }, row => { row.detections[0].label = 'rack'; }]) {
+    const bad = structuredClone(record); change(bad.repetitions[0]);
+    expect(() => validatePracticeRecord(bad, gun.id)).toThrow();
+  }
+});
+
+test('an overdue countdown is still pre-start until GO has actually been activated', () => {
+  const waiting = createPractice({ id: 'overdue', gun, config: { repetitions: 1, delayMode: 'fixed', fixedDelaySeconds: 1 }, ...clock(0) });
+  const result = detectPractice(waiting, { label: 'trigger', score: 90, detectedAtMs: 1100 }, clock(1200));
+  expect(result).toMatchObject({ status: 'completed', shots: 0, completed: 1 });
+  expect(validatePracticeRecord(toPracticeRecord(result), gun.id).repetitions[0]).toMatchObject({ reason: 'early', goAt: null });
 });
 
 test('automatic Single with an external cue waits for a fresh cue without an app countdown', () => {

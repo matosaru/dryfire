@@ -189,7 +189,8 @@
       "requirements": [
         "docs/requirements/practice-modes.md",
         "docs/requirements/practice-improvements.md",
-        "docs/requirements/persistence.md"
+        "docs/requirements/persistence.md",
+        "docs/requirements/practice-start.md"
       ],
       "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
@@ -258,6 +259,12 @@
           "anchor": "practiceReview",
           "label": "Saved practice review",
           "image": "docs/design/screens/practice/review.dark.png"
+        },
+        {
+          "anchor": "practiceReview",
+          "label": "Saved Single early-trigger miss",
+          "image": "docs/design/screens/practice/early-review.dark.png",
+          "key": "early-review.dark"
         }
       ],
       "modes": [
@@ -456,10 +463,10 @@
   "reviewedSources": {
     "index.html": "6b8bdd03744324a917299a42f21a1813579f8bffdbe1ab629b688fc46604aaf9",
     "src/main.js": "921f48402b8387ac76eba9cffdecb2833fa7865116909b3a5387960672add71d",
-    "src/styles.css": "c8b680736ac05ea489c96c1c867375a9573f42b831ab4e67c28f682f40e6e920",
+    "src/styles.css": "41088ff01a250f9334f3be268a9e4058cd6d2ef102a4ee3c53e331f6c1e915c2",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
-    "src/practiceSession.js": "d4fd39ba673973fa6d7aa1db5b87ccbf9f5d294efce9d66124cd11aa27da0c80",
-    "src/practiceController.js": "aa78e1f6c93847d42e8cb95c9978555341cdcc027128d777fe1cafe0b09a0513",
+    "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
+    "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
     "src/sessionController.js": "ea077ffa2ecd0b63fe1e2b5660106e3a3e64da6f8f964a62787352e6be2b99a6",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/progressView.js": "9f94fa76c62f9cd35478b73522b89b31a0a5b7ac70ff0d0535dc71b07e5ec016",
@@ -469,6 +476,7 @@
     "CHG-017",
     "CHG-019",
     "CHG-020",
-    "CHG-021"
+    "CHG-021",
+    "CHG-022"
   ]
 }

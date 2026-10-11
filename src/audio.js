@@ -255,14 +255,41 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   let closePromise;
   let detectionArmed = detectionEnabled !== false;
   let armedAfterFrame = 0;
+  let inputFrames = 0;
+  let suppressedFrames = null;
+  const inputWaiters = new Set();
   const onAbort = () => { void stop(); };
+
+  function waitForInput({ timeoutMs = 5000 } = {}) {
+    if (stopped) return Promise.reject(Object.assign(new Error('Audio capture was cancelled.'), { name: 'AbortError' }));
+    if (inputFrames >= context.sampleRate * .1 && context.state === 'running') return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const waiter = {
+        finish(error) {
+          clearTimeout(waiter.timer); inputWaiters.delete(waiter);
+          if (error) reject(error); else resolve();
+        },
+      };
+      waiter.timer = setTimeout(() => waiter.finish(new Error('No audio input arriving. Check microphone permission and try again.')), timeoutMs);
+      inputWaiters.add(waiter);
+    });
+  }
 
   function armDetection({ guardMs = 0 } = {}) {
     if (stopped || !context || context.state === 'closed') return false;
     detector.reset();
+    suppressedFrames = null;
     detectionArmed = true;
     const guard = Number.isFinite(guardMs) ? Math.max(0, guardMs) : 0;
     armedAfterFrame = Math.ceil((context.currentTime + guard / 1000) * context.sampleRate);
+    return true;
+  }
+
+  // Preserve a click already being segmented before GO; mute only the cue interval.
+  function suppressDetection({ guardMs = 0 } = {}) {
+    if (stopped || !context || !detectionArmed) return false;
+    const start = Math.floor(context.currentTime * context.sampleRate);
+    suppressedFrames = [start, start + Math.ceil(Math.max(0, guardMs) / 1000 * context.sampleRate)];
     return true;
   }
 
@@ -275,6 +302,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     if (closePromise) return closePromise;
     stopped = true;
     running = false;
+    for (const waiter of inputWaiters) waiter.finish(Object.assign(new Error('Audio capture was cancelled.'), { name: 'AbortError' }));
     signal?.removeEventListener('abort', onAbort);
     detector?.stop();
     if (node) {
@@ -307,14 +335,21 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     output.gain.value = 0;
     const onChunk = (samples, startFrame) => {
       if (!running || !(samples instanceof Float32Array) || !samples.length || !Number.isFinite(startFrame)) return;
+      if (context.state === 'running') {
+        inputFrames += samples.length;
+        if (inputFrames >= context.sampleRate * .1) for (const waiter of inputWaiters) waiter.finish();
+      }
       if (detectionArmed) {
         // Gate by captured sample time, not delivery time: delayed chunks may contain the cue.
         const skip = Math.max(0, armedAfterFrame - startFrame);
         if (skip < samples.length) {
           // Silence the guarded prefix without shifting the 10 ms analysis frames.
           // Truncation at an arbitrary sample changed later event feature windows.
-          const gated = skip > 0 ? samples.slice() : samples;
+          const cueStart = suppressedFrames ? Math.max(0, suppressedFrames[0] - startFrame) : samples.length;
+          const cueEnd = suppressedFrames ? Math.min(samples.length, suppressedFrames[1] - startFrame) : 0;
+          const gated = skip > 0 || cueEnd > cueStart ? samples.slice() : samples;
           if (skip > 0) gated.fill(0, 0, skip);
+          if (cueEnd > cueStart) gated.fill(0, cueStart, cueEnd);
           detector.push(gated, startFrame);
         }
       }
@@ -367,7 +402,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
       track.onended = () => { if (!stopped) { onError(new Error('Microphone disconnected.')); void stop(); } };
     });
     throwIfAborted(signal);
-    return { stop, armDetection, disarmDetection, nowMs: () => context.currentTime * 1000 };
+    return { stop, armDetection, disarmDetection, suppressDetection, waitForInput, nowMs: () => context.currentTime * 1000 };
   } catch (error) {
     await stop();
     if (error?.name === 'NotAllowedError' || error?.name === 'PermissionDeniedError') {

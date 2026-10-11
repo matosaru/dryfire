@@ -1,0 +1,13 @@
+# Practice start validation
+
+CHG-022 · 2026-10-11 · [Requirements](../requirements/practice-start.md) · [Screens](../design/screens/practice/README.md) · [Delivery status](../project/implementation-history.md)
+
+Before application edits, the existing Node 22 install, 270 Jest / 23 suites, 16 smoke tests, build and minified-asset checks passed. Nine newly added readiness/early-result/cue regressions failed against the old behavior before implementation. The final unit suite passes **281 tests / 23 suites**. Portable early results save and round-trip through format-4 backup restoration; the IndexedDB schema and example format are unchanged.
+
+Five local Chromium browser scenarios exercise the built application with synthetic microphone input: no countdown before arriving PCM; STOP/meter present during countdown; cancel cannot start capture later; five-second missing-input error releases capture; early Single failure saves, advances automatically and survives refresh; the first 200 ms click is accepted; and successive zero-delay repetitions re-arm. Unit tests also cover the first 500 ms click, callbacks delivered after GO, an overdue countdown that has not actually started, worklet/fallback readiness, abort and cue suppression preserving an in-flight early event. Twenty focused Practice/History states/widths were captured and reviewed; the complete pinned two-browser check is recorded separately when observed.
+
+The shared cue now peaks at gain **0.45** instead of **0.06**, retaining the bounded 880 Hz envelope. This validates generated amplitude and cleanup rather than actual phone loudness. The 80 ms cue exclusion remains disclosed. Preparation waits for 100 ms of actual PCM and releases capture on timeout, stop, navigation or interruption. No raw PCM is persisted or uploaded.
+
+Twelve current Practice captures include the new early-miss Review; eleven prior images remain under the CHG-022 archive. Source cache v19 retains user data and updates the app shell. Local build, minified workers and documentation/source fingerprints are checked; publication, GitHub CI, Cloudflare deployment and physical iPhone observations are distinct evidence.
+
+For the user's iPhone Safari / Home Screen check: verify the countdown starts only after microphone preparation; the meter is present before the beep; a recognized pre-beep click creates a miss without a shot; subsequent automatic attempts restart; the first 0.2–0.5-second click after a beep is recognized; and the beep is audible at the chosen device volume. Similar trigger/reset sounds, speaker latency, room acoustics and phone processing remain physical validation concerns.

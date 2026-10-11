@@ -11,13 +11,14 @@ afterEach(() => {
 test('cue preparation is explicit; GO schedules a bounded tone and close releases resources', async () => {
   const oscillators = [];
   const contexts = [];
+  const gains = [];
   globalThis.AudioContext = class {
     constructor() { this.state = 'suspended'; this.currentTime = 2; contexts.push(this); }
     async resume() { this.state = 'running'; }
     async close() { this.state = 'closed'; }
-    createGain() { return { connect() {}, disconnect: jest.fn(), gain: {
+    createGain() { const gain = { connect() {}, disconnect: jest.fn(), gain: {
       setValueAtTime: jest.fn(), linearRampToValueAtTime: jest.fn(), exponentialRampToValueAtTime: jest.fn(),
-    } }; }
+    } }; gains.push(gain); return gain; }
     createOscillator() { const oscillator = { frequency: {}, connect() {}, disconnect: jest.fn(), start: jest.fn(), stop: jest.fn() }; oscillators.push(oscillator); return oscillator; }
   };
   const player = createStartCuePlayer();
@@ -26,6 +27,7 @@ test('cue preparation is explicit; GO schedules a bounded tone and close release
   expect(player.play()).toBe(true);
   expect(oscillators[0].start).toHaveBeenCalledWith(2);
   expect(oscillators[0].stop.mock.calls[0][0] - 2).toBeLessThan(0.3);
+  expect(gains[0].gain.linearRampToValueAtTime).toHaveBeenCalledWith(0.45, 2.006);
   await player.close();
   expect(contexts[0].state).toBe('closed');
   expect(player.play()).toBe(false);

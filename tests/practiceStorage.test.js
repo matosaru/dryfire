@@ -11,6 +11,15 @@ function record(gun) {
   s = detectPractice(s, { label: 'trigger', score: 90, detectedAtMs: 300 }, { monoNow: 400, epochNow: 1400 });
   return toPracticeRecord(s);
 }
+test('early Single misses round-trip through saved history and backup without a shot', async () => {
+  const gun = await createGun({ name: 'Early fixture', type: 'Handguns' });
+  const s = createPractice({ id: 'early-test', gun, config: { ...config, fixedDelaySeconds: 1 }, monoNow: 0, epochNow: 1000 });
+  const result = toPracticeRecord(detectPractice(s, { label: 'trigger', score: 90, detectedAtMs: 500 }, { monoNow: 700, epochNow: 1700 }));
+  await saveSession(result, gun.id);
+  await restoreBackup(await exportBackup());
+  expect(await getSession(result.id, gun.id)).toEqual(result);
+  expect(result).toMatchObject({ completed: 1, shots: 0, repetitions: [{ reason: 'early', status: 'miss' }] });
+});
 test('practice records persist with owner and immutable snapshot checks', async () => {
   const a = await createGun({ name: 'A', type: 'Handguns' }), b = await createGun({ name: 'B', type: 'Shotguns' });
   const saved = record(a); await saveSession(saved, a.id);
