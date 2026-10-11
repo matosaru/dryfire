@@ -1,6 +1,6 @@
 # Safety confirmation design
 
-Current implemented layout · CHG-018 coverage audit · 2026-10-11 · application baseline [`b29837a`](https://github.com/matosaru/dryfire/commit/b29837a) plus CHG-019; exact reviewed file hashes are in the registry
+Current implemented layout · CHG-018 coverage audit · 2026-10-11 · published source [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
 Entry: Any unconfirmed action that would acquire microphone capture. App anchor: `safetyModal`. This is a state of the same `/` web app, not a separate indexable URL.
 

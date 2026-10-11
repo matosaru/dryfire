@@ -362,3 +362,11 @@ The authorized code, revised specifications and five actual screenshots were pus
 Current requirements/layouts are organized and reconciled, 38 current actual captures cover all ten views and the shared modal, and 27 distinct historical PNGs are retained. Editing/type-image/reset changes are implemented under the direct user requests above. Final Node 22 evidence: 261 Jest / 22 suites, 16 smoke checks, build/minified-asset verification, documentation checks and two browser suites / 11 checks pass with zero page errors. Four negative documentation fixtures correctly fail, and restored files pass. This is local validation, not publication or production-device evidence.
 
 The user additionally requested browser support information, how to ensure exact screenshot matching, **“a guide… on how to monetize the project”**, and **“how to deploy as iphone or android app (can be webview inside app)”**. Linked capability, visual-regression, monetization and Capacitor release guides address that scope. Native builds/signing/store submission, payment/tier enforcement, SEO deployment and visual pixel CI remain prepared/proposed steps rather than falsely recorded implementations. No production data was cleared. Publication/CI will be appended after observation.
+
+### CHG-018/019 publication observed — 2026-10-11
+
+Authorized source/docs/screens/guides were pushed directly to `main` in [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18). Push and matching remote hash `aacdb1856c0167698dc5294e53ff5db5a3563863` were observed. This is publication evidence, not approval of proposed SEO/payment/native product scope or proof of production/iPhone results. CI observation is recorded separately.
+
+### CHG-018/019 source CI observed — 2026-10-11
+
+[GitHub Actions run 38140861127](https://github.com/matosaru/dryfire/actions/runs/38140861127) **completed successfully** for source `aacdb18`, observed through public GitHub HTML. The workflow runs documentation checks, Node 22 smoke/Jest/build/asset verification. Fresh production HTTPS again failed at the workspace CONNECT gateway with 403 before destination content; deployment and physical-device acceptance remain unverified. No new product scope or app source edit is introduced by this publication-record follow-up.

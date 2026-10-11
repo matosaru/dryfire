@@ -10,6 +10,7 @@ User feedback, 2026-10-11: trigger pulls were reported missed during a practice 
 
 | Check | Observed result |
 | --- | --- |
+| GitHub publication / CHG-019 | [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18) pushed to main; full remote hash observed; [GitHub Actions run 38140861127](https://github.com/matosaru/dryfire/actions/runs/38140861127) completed successfully |
 | Source/build acceptance / CHG-019 | 261 Jest / 22 suites, 16 smoke/build/assets, docs checks, two browser suites / 11 checks and 38 current captures pass; pixel-diff CI and physical-device tests remain separate |
 | Source/build acceptance / CHG-017 | 257 Jest tests across 21 suites, 16 smoke checks, production build and `verify:dist` passed; seven browser suites/46 checks also pass; publication results are recorded in the delivery tracker |
 | GitHub publication / CHG-017 | Code, requirements and five screens published to `main` in [`b29837a`](https://github.com/matosaru/dryfire/commit/b29837a), matching remote hash observed; [GitHub Actions run 38138057437](https://github.com/matosaru/dryfire/actions/runs/38138057437) completed successfully |
@@ -28,7 +29,7 @@ User feedback, 2026-10-11: trigger pulls were reported missed during a practice 
 2. Production branch `main`, build `npm run build`, deploy `npx wrangler deploy`, assets `dist/`. Branch preview uses `npx wrangler preview`. See [deployment guide](DEPLOY.md).
 3. On **Learn**, Trigger is the primary card; Optional sounds and Improve recognition are expandable. On **Drills**, six practice cards appear above the preserved sequence presets/custom editor. These visible features distinguish this update from CHG-014.
 4. Reload or close/reopen the Home Screen app after the updated service worker activates. Expected cache: **dryfire-sound-trainer-v16**. Do not clear site data to fetch the update.
-5. The validated CHG-019 candidate uses `index-DmVX2P9a.js`, `index-BnRnKXQS.css` and cache v16. Active practice must show **STOP** above the microphone indicator. Rebuilds may produce other hashes; a successful production deployment commit is the source evidence.
+5. The validated CHG-019 build uses `index-DmVX2P9a.js`, `index-BnRnKXQS.css` and cache v16. Active practice must show **STOP** above the microphone indicator. Rebuilds may produce other hashes; a successful production deployment commit is the source evidence.
 
 Direct workspace verification remains blocked by the network gateway. Required additive destinations are `dryfire.matosaru.workers.dev` and `api.github.com`; retain existing allowlist entries. Unknown environment settings were not overwritten. Git authentication already works; no replacement GitHub token is needed for repository operations.
 

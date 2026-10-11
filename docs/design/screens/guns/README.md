@@ -1,6 +1,6 @@
 # My Guns design
 
-Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · application baseline [`b29837a`](https://github.com/matosaru/dryfire/commit/b29837a) plus the CHG-019 candidate; exact reviewed file hashes are in the registry
+Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · published source [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
 Entry: Active-gun switcher. App anchor: `gunsView`. This is a state of the same `/` web app, not a separate indexable URL.
 

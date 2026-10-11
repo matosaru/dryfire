@@ -2,7 +2,7 @@
 
 Visual package for Dry Fire With Ease. [Functional requirements](../requirements/README.md) own behavior; [approval history](../project/approval-log.md) records authorization; [delivery plan](../project/implementation-history.md) owns implementation/publication status.
 
-Current references below are actual local production-build captures of the CHG-019 candidate based on source `b29837a`, audited against its screen controls and current specifications on 2026-10-11. Ten functional screens, all six Practice configurations, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples.
+Current references below are actual local production-build captures of published source `aacdb18`, audited against its screen controls and current specifications on 2026-10-11. Ten functional screens, all six Practice configurations, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples.
 
 ## File naming and ownership
 

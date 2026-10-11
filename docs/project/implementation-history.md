@@ -1,6 +1,6 @@
 # Implementation history and remaining plan
 
-**Latest delivery — CHG-018 documentation and CHG-019 gun/reset corrections, 2026-10-11:** completed locally and validated, ready for authorized direct-main publication. Documentation has separate functional/design/architecture/development/project/SEO/business packages, one requirements index, a generated screen tree and CI documentation checks. The current catalog covers ten screens, all six practice configurations, the custom editor/safety modal and **38 distinct captures**; **27 historical PNGs** remain archived without rewriting immutable approval evidence. Current specifications correct superseded 50-example/manual-Single prose.
+**Latest delivery — CHG-018 documentation and CHG-019 gun/reset corrections, 2026-10-11:** completed, locally validated and published directly to `main` in [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18). Push success and matching full remote hash were observed. Documentation has separate functional/design/architecture/development/project/SEO/business packages, one requirements index, a generated screen tree and CI documentation checks. The current catalog covers ten screens, all six practice configurations, the custom editor/safety modal and **38 distinct captures**; **27 historical PNGs** remain archived without rewriting immutable approval evidence. Current specifications correct superseded 50-example/manual-Single prose.
 
 Gun management now has separate Edit/Select actions, prefilled illustrated type choices, images in the library/active selector, and identity/data-preserving updates. Settings has verifiable selected-gun sound reset plus a separately confirmed atomic **Delete all guns & app data** action with backup guidance. Cancellation changes nothing, and exported backup recovery is verified. Prior source review found existing sound-reset storage logic; the correction adds clear counts/outcomes and the previously missing whole-library action rather than claiming it was previously implemented.
 
@@ -98,9 +98,9 @@ This records outcomes without rewriting the original approval evidence. Related 
 
 | Order | Work | Status / next action |
 | --- | --- | --- |
-| 1 | CHG-018 documentation packages, deduplicated current indexes, screen/state catalog and maintainable architecture | **Done locally**; 10 screens / 38 current captures, 27 archived; source/link/coverage checks pass and run in CI |
-| 2 | CHG-019 gun editing, illustrated selectors and explicit Settings resets | **Done locally**; regression/browser/data recovery checks pass; publish with docs |
-| 3 | GitHub publication and new CI | **Next: publish directly to main**, then record remote hash and observed Actions result |
+| 1 | CHG-018 documentation packages, deduplicated current indexes, screen/state catalog and maintainable architecture | **Done and published**; 10 screens / 38 current captures, 27 archived; source/link/coverage checks pass and run in CI |
+| 2 | CHG-019 gun editing, illustrated selectors and explicit Settings resets | **Done and published**; regression/browser/data recovery checks pass in `aacdb18` |
+| 3 | GitHub publication and new CI | **Published to main in `aacdb18`**; matching remote hash observed; [GitHub Actions run 38140861127](https://github.com/matosaru/dryfire/actions/runs/38140861127) **completed successfully** for source `aacdb18` |
 | 4 | Exact repeatable visual comparison | **Not implemented yet**: commit deterministic fixtures/capture harness and separate Chromium/WebKit pixel baselines, add failing visual-diff CI; see visual-validation workflow |
 | 5 | Production and actual iPhone acceptance | **Unverified**: check deployed commit/cache v16, physical Safari/Home Screen microphone/beep, reset/edit and backup recovery; workspace Cloudflare access remains blocked |
 | 6 | SEO implementation | **Prepared proposal complete**; metadata/crawl templates and public copy ready; public content/routes, deployment/Search Console/indexing remain unapplied/unverified |
@@ -163,3 +163,11 @@ Implementation, requirements and five screenshots were pushed directly to `main`
 The user requested documentation separation, organized design paths, matching specifications/functional screens, a maintainable architecture tree and prepared SEO, then reported inaccessible editing, missing type images and Settings resets. During implementation the user asked about Safari capability support, exact screenshot matching, monetization and native iPhone/Android deployment. Every request is addressed above and linked in the appropriate package; pixel-CI and native/payment/SEO execution are clearly distinguished from prepared guidance.
 
 No real user's production data was reset. All destructive checks used local synthetic fixtures, and restore-after-reset was observed. The generic gun-type SVGs were authored locally and their provenance recorded. Documentation validation rejects missing views, broken links, stale trees and duplicated current images. GitHub publication and deployed-device results are recorded separately below after observation.
+
+### CHG-018/019 publication observed — 2026-10-11
+
+Source, requirements, organized current/historical designs, registry/tree/checker, SEO proposal and business/native guides were pushed directly to `main` in [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18). Full remote hash `aacdb1856c0167698dc5294e53ff5db5a3563863` matched local HEAD and the worktree was clean. [GitHub Actions run 38140861127](https://github.com/matosaru/dryfire/actions/runs/38140861127) **completed successfully**, observed through public GitHub HTML; no Cloudflare or physical-device success is inferred.
+
+### CHG-018/019 source CI observed — 2026-10-11
+
+[GitHub Actions run 38140861127](https://github.com/matosaru/dryfire/actions/runs/38140861127) completed successfully for published source `aacdb18`, observed through public GitHub HTML. The workflow includes the new documentation check, Node 22 smoke/Jest, production build and asset verification. A fresh production request still returned workspace CONNECT 403 before app content; Cloudflare deployment and physical iPhone acceptance remain unverified. This documentation follow-up changes publication records and stable screenshot/source references only; application assets remain identical to the validated source release.
