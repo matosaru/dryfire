@@ -70,7 +70,7 @@
           <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/rifle.svg" width="96" height="56" alt="" /><span>Rifles and Carbines</span><input type="radio" name="gunTypeChoice" value="Rifles and Carbines" required /></label>
           <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/shotgun.svg" width="96" height="56" alt="" /><span>Shotguns</span><input type="radio" name="gunTypeChoice" value="Shotguns" required /></label>
         </fieldset>
-        <p class="muted small">You can save up to 5 guns.</p>
+        <p id="gunCapacityNotice" class="muted small">Create one gun profile. Existing saved profiles remain available.</p>
         <aside class="storage-card"><span class="storage-symbol" aria-hidden="true">▤</span><div><strong>Saved on this device</strong><p>Gun profiles, learned sounds and drill presets stay here between visits. Use the same app address and browser.</p></div></aside>
         <button id="saveGunBtn" class="button primary wide-action" type="submit">Save Gun &amp; Continue</button>
         <button id="cancelGunSetupBtn" class="button secondary wide-action hidden" type="button">Cancel</button>
@@ -81,6 +81,7 @@
     <section id="gunsView" class="view hidden" aria-labelledby="gunsTitle">
       <div class="gun-library-heading"><h2 id="gunsTitle">My Guns</h2><span id="gunCapacity" class="gun-capacity" aria-live="polite">0 of 5 guns saved</span></div>
       <p class="muted">Choose a gun to open its own sounds and drills.</p>
+      <p id="gunCreationNotice" class="muted small hidden">This public version creates one gun. Existing saved profiles are kept.</p>
       <div id="gunList" class="gun-list"></div>
       <button id="addGunBtn" class="button secondary wide-action add-gun-button" type="button"><span aria-hidden="true">+</span> Add Gun</button>
       <aside class="storage-card"><span class="storage-symbol" aria-hidden="true">▤</span><div><strong>Saved on this device</strong><p>Refreshing or updating at this app address keeps your saved data. Export a backup before clearing browser storage.</p><button id="gunLibraryBackupBtn" class="text-button" type="button">Backup &amp; restore <span aria-hidden="true">›</span></button></div></aside>
@@ -117,7 +118,7 @@
       <p class="gun-context">Saved presets for <strong class="gun-context-name"></strong>.</p>
       <h3>Dry-fire practice</h3><p class="muted">Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.</p>
       <div id="practiceCatalog" class="drill-catalog"></div>
-      <h3 class="practice-section-title">Sequence drills</h3><p class="muted small">These require only the sounds in their sequence. Create your own or choose a built-in preset.</p>
+      <h3 class="practice-section-title">Sequence drills</h3><p id="sequenceDescription" class="muted small">Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.</p>
       <div class="segmented-control" role="group" aria-label="Drill collection"><button id="builtInDrillsTab" type="button" aria-pressed="true" aria-controls="drillCatalog">Built-in Drills</button><button id="customDrillsTab" type="button" aria-pressed="false" aria-controls="customDrillCatalog">Custom</button></div>
       <div id="drillCatalog" class="drill-catalog"></div>
       <button id="newCustomDrillBtn" type="button" class="button secondary wide-action hidden">+ Create Custom Drill</button>
@@ -302,7 +303,7 @@
     <section id="historyView" class="view hidden" aria-labelledby="history-title">
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button><div><p class="eyebrow">04 / LOCAL DATA</p><h2 id="history-title">History</h2></div></div>
       <p class="gun-context">Saved results for <strong class="gun-context-name"></strong>.</p>
-      <section class="practice-progress-section" aria-labelledby="progressTitle"><h3 id="progressTitle">Practice progress</h3>
+      <section id="progressSection" class="practice-progress-section" aria-labelledby="progressTitle" data-preview-only><h3 id="progressTitle">Practice progress</h3>
         <div class="progress-filters"><label for="progressGroup">Compare drill / settings<select id="progressGroup" aria-label="Comparable drill and settings"></select></label><label for="progressRange">Time range<select id="progressRange"><option value="0">All saved sessions</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select></label></div>
         <div id="progressContent"></div><p class="muted small">Trends describe recognized audio timing. Compare similar microphone placement and conditions; faster timing does not measure aim or movement.</p>
       </section>
@@ -371,7 +372,7 @@
       <section class="about-card" aria-labelledby="aboutRoutineTitle">
         <h3 id="aboutRoutineTitle">A simple practice routine</h3>
         <ol><li>Learn your trigger click.</li><li>Choose a practice mode or drill.</li><li>Follow the start signal and review your saved results.</li></ol>
-        <p>Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.</p>
+        <p id="aboutFeatureSummary">Learn your trigger click, choose a built-in practice mode and review saved timing results. Other sound categories are optional unless your drill uses them.</p>
       </section>
       <section class="about-card" aria-labelledby="aboutDataTitle">
         <h3 id="aboutDataTitle">Saved on your device</h3>

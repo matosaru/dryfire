@@ -82,7 +82,7 @@ async function prepare(page, item) {
       if (item.state.startsWith('deleted')) {
         await page.locator('[data-delete-gun-id="qa-gun-b"]').click();
         await expect(page.locator('[data-delete-gun-id="qa-gun-b"]')).toHaveCount(0);
-        await expect(page.locator('#gunCapacity')).toContainText('2 of');
+        await expect(page.locator('#gunCapacity')).toContainText(item.edition === 'public' ? '2 saved guns' : '2 of');
         await expect(page.locator('#gunList .gun-profile')).toHaveCount(2);
       }
       break;
@@ -100,6 +100,11 @@ async function prepare(page, item) {
       if (item.state.startsWith('custom-editor')) {
         await page.locator('#newCustomDrillBtn').click(); await page.locator('#customDrillName').fill('Draw and press');
         for (const label of ['draw', 'trigger']) { await page.locator('#customAction').selectOption(label); await page.locator('#addCustomActionBtn').click(); }
+      }
+      if (item.state.startsWith('edit-custom')) {
+        await page.locator('#customDrillsTab').click();
+        await page.locator('#customDrillCatalog').getByRole('button', { name: 'Edit sequence' }).click();
+        await expect(page.locator('#customDrillName')).toHaveValue('QA saved sequence');
       }
       break;
     case 'practice':

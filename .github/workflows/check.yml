@@ -28,6 +28,10 @@ jobs:
           path: dist/
           if-no-files-found: error
   screenshots:
+    strategy:
+      fail-fast: false
+      matrix:
+        edition: [public, preview]
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     container:
@@ -35,6 +39,8 @@ jobs:
       options: --ipc=host
     env:
       VISUAL_IMAGE: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      APP_EDITION: ${{ matrix.edition }}
+      VISUAL_EDITION: ${{ matrix.edition }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -43,7 +49,7 @@ jobs:
           cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npm run build
-      - run: npm run verify:dist
+      - run: npm run verify:dist -- --edition=${{ matrix.edition }}
       - name: Require reviewed baseline coverage and fingerprints
         run: npm run visual:review
       - name: Compare Chromium and WebKit screenshots
@@ -53,7 +59,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: screenshot-checks
+          name: screenshot-checks-${{ matrix.edition }}
           path: |
             playwright-report/
             test-results/

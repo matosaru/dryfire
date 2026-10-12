@@ -1,5 +1,7 @@
 # Monetization analysis and proposal
 
+CHG-032 current public availability is governed by [build editions](../requirements/build-editions.md): no new custom creation/additional-gun creation/advanced graphs publicly; full preview retains them. Existing data/preset editing/use/export/restore remain available. This overrides earlier all-free availability statements for these actions without implementing billing or deleting data. Publication/deployment are tracked separately.
+
 CHG-026 · revision 2.0 · 2026-10-11 · **Analysis requested; no price, paywall, provider or cloud retention rule approved/implemented.** Business location: Lithuania. Initial markets: Europe; define the exact EU/EEA/non-EU country list before launch. Native apps/store billing are deferred.
 
 ## One clear offer

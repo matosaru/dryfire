@@ -1,10 +1,18 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const dist = new URL('../dist/', import.meta.url);
 const distPath = fileURLToPath(dist);
 const html = await readFile(new URL('index.html', dist), 'utf8');
+const expectedEdition = process.argv.find(arg => arg.startsWith('--edition='))?.slice('--edition='.length) ?? 'public';
+const edition = JSON.parse(await readFile(new URL('edition.json', dist), 'utf8'));
+if (edition.sourceRevision !== execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim()) throw new Error('Artifact source revision does not match this checkout.');
+if (!['public', 'preview'].includes(expectedEdition) || edition.edition !== expectedEdition ||
+    !html.includes(`data-build-edition="${expectedEdition}"`) || !/^[a-f0-9]{40}$/.test(edition.sourceRevision) || !/^[a-f0-9]{64}$/.test(edition.sourceDigest)) {
+  throw new Error('Build edition or source metadata does not match the requested artifact.');
+}
 if (html.includes('/src/main.js') || html.includes('/src/styles.css')) {
   throw new Error('The deploy directory contains unbundled development sources. Run npm run build.');
 }
@@ -17,6 +25,7 @@ if (files.some(path => path.endsWith('.map') || path.startsWith('src/') || path.
 }
 for (const file of files.filter(path => path.endsWith('.js'))) {
   const js = await readFile(join(distPath, file), 'utf8');
+  if (expectedEdition === 'public' && js.includes('progress-chart')) throw new Error('Optional chart implementation leaked into the public build.');
   if (js.includes('function renderClassCards()') || js.includes('function startContinuousListening(') || js.includes('class PcmCaptureProcessor extends AudioWorkletProcessor')) {
     throw new Error('Development code signatures detected in published JS; verify minifier settings.');
   }
@@ -24,4 +33,4 @@ for (const file of files.filter(path => path.endsWith('.js'))) {
 for (const worker of ['sw.js', 'pcm-capture.worklet.js']) {
   if (!files.includes(worker)) throw new Error(`Missing bundled worker ${worker}`);
 }
-console.log('Production assets verified: minified app + workers, no src/ modules or source maps.');
+console.log(`${expectedEdition} assets verified: minified app + workers, matching edition/source metadata, no src/ modules or source maps.`);

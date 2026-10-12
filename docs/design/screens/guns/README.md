@@ -1,5 +1,7 @@
 # My Guns design
 
+CHG-032 public availability: show every saved gun with Select/Edit/Delete and type illustration, including restored legacy libraries. Hide Add after the first gun and explain the one-new-gun limit while retaining all existing profiles/recovery. Full preview retains five-gun creation. [Edition specification](../../../requirements/build-editions.md).
+
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
 
 CHG-030 typography revision: primary Dark text uses `#FFFFFF` throughout this screen and neutral controls. Secondary/footer/accent colors and Light values remain. The [shared typography design](../shared/README.md) and [SET-07](../../../requirements/settings.md) define the palette; [current capture/build review](../../baselines/white-primary-validation.json) records the passing pinned runs; publication is tracked separately.

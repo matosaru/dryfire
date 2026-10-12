@@ -1,10 +1,11 @@
 import { analyzeRecording, recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
-import { DRILLS, advanceDrill, createDrillState, getDrill, normalizeCustomDrill } from './drills.js';
+import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
 import { soundCard, drillCard } from './uiComponents.js';
 import { configureNumberInputs, readNumberInput } from './inputLimits.js';
 import { createSafetyGate } from './safetyGate.js';
-import { createProgressView } from './progressView.js';
+import { CAPABILITIES } from './buildEdition.js';
+import { createCustomDrillEditor } from './optional/customDrillEditor.js';
 import { createScreenNavigation } from './screenNavigation.js';
 import { ACTUAL_CLASSES, PREDICTED_CLASSES, evaluateEvents } from './evaluation.js';
 import { createSessionController } from './sessionController.js';
@@ -46,8 +47,7 @@ let guns = [];
 let activeGun = null;
 let customDrills = [];
 let setupGunId = null;
-let customEditorId = null;
-let customSteps = [];
+let customEditor = null;
 let profileLoading = false;
 let selectedTimedDrillId = '';
 let audioPreferences = normalizeAudioPreferences();
@@ -126,7 +126,8 @@ function renderGunControls() {
     ? `${examples.length} learned samples · ${calibration.length} calibration samples for ${activeGun.name}`
     : 'Choose a gun before resetting its learned sounds.';
   $('#resetLibraryBtn').disabled = profileLocked();
-  $('#addGunBtn').disabled = profileLocked() || guns.length >= MAX_GUNS;
+  $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
+  $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= 1);
   document.querySelectorAll('.gun-card, [data-edit-gun-id], [data-delete-gun-id]').forEach(button => { button.disabled = profileLocked(); });
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) $('#'+id).disabled = profileLocked() || !activeGun || activeGun.needsDetails;
   document.querySelectorAll('.gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
@@ -175,10 +176,7 @@ async function loadActiveGun() {
   ignoredEventCount = 0;
   $('#historyClearOutcome').textContent = '';
   $('#sessionsClearOutcome').textContent = '';
-  customEditorId = null;
-  customSteps = [];
-  $('#customDrillForm').reset();
-  $('#customDrillSteps').replaceChildren();
+  customEditor?.reset();
   selectDrillCollection(false);
   renderGunControls();
   renderClassCards();
@@ -191,6 +189,7 @@ async function loadActiveGun() {
 
 function openGunSetup(gun = null) {
   if (profileLocked()) return;
+  if (!gun && guns.length >= CAPABILITIES.gunCreationLimit) { setMessage('This version cannot create another gun. Existing saved guns remain available.'); return; }
   setupGunId = gun?.id ?? null;
   $('#gunForm').reset();
   $('#gunName').value = gun?.name ?? '';
@@ -212,8 +211,12 @@ async function renderGunLibrary() {
   const library = await getGuns();
   if (token !== gunLibraryToken) return;
   guns = library;
-  $('#gunCapacity').textContent = `${guns.length} of ${MAX_GUNS} guns saved · Saved on this device`;
-  $('#addGunBtn').disabled = profileLocked() || guns.length >= MAX_GUNS;
+  $('#gunCapacity').textContent = CAPABILITIES.edition === 'public'
+    ? `${guns.length} saved gun${guns.length === 1 ? '' : 's'}`
+    : `${guns.length} of ${MAX_GUNS} guns saved · Saved on this device`;
+  $('#gunCreationNotice').classList.toggle('hidden', CAPABILITIES.edition !== 'public');
+  $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
+  $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= 1);
   $('#addGunBtn').textContent = guns.length >= MAX_GUNS ? '5 of 5 guns saved' : '+ Add gun';
   const host = $('#gunList');
   host.replaceChildren();
@@ -313,7 +316,7 @@ async function submitGun(event) {
     const editing = !!setupGunId;
     const completingLegacy = editing && activeGun?.id === setupGunId && activeGun.needsDetails;
     if (editing) await updateGun(setupGunId, {name, type});
-    else await createGun({name, type});
+    else await createGun({name, type}, { maxGuns: CAPABILITIES.gunCreationLimit });
     await loadActiveGun();
     setBusy(false);
     switchView(editing && !completingLegacy ? 'guns' : 'home');
@@ -323,10 +326,13 @@ async function submitGun(event) {
 }
 
 function selectDrillCollection(custom) {
+  if (custom && !CAPABILITIES.customDrillCreation && !customDrills.length) custom = false;
+  $('#customDrillsTab').classList.toggle('hidden', !CAPABILITIES.customDrillCreation && !customDrills.length);
+  $('#builtInDrillsTab').parentElement.classList.toggle('hidden', !CAPABILITIES.customDrillCreation && !customDrills.length);
   $('#builtInDrillsTab').setAttribute('aria-pressed', String(!custom));
   $('#customDrillsTab').setAttribute('aria-pressed', String(custom));
   $('#drillCatalog').classList.toggle('hidden', custom);
-  $('#newCustomDrillBtn').classList.toggle('hidden', !custom);
+  $('#newCustomDrillBtn').classList.toggle('hidden', !custom || !CAPABILITIES.customDrillCreation);
   $('#customDrillCatalog').classList.toggle('hidden', !custom);
   $('#customDrillForm').classList.add('hidden');
 }
@@ -349,55 +355,17 @@ function renderCustomCatalog() {
   if (!customDrills.length) { const empty = document.createElement('p'); empty.className = 'empty-state'; empty.textContent = 'No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.'; host.append(empty); }
   for (const [index, drill] of customDrills.entries()) {
     const card = drillCard({drill, index, titleFor, onChoose: () => chooseDrill(drill.id)});
-    const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'button secondary'; edit.textContent = 'Edit sequence'; edit.addEventListener('click', () => openCustomEditor(drill)); card.append(edit); host.append(card);
+    const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'button secondary'; edit.textContent = 'Edit sequence'; edit.addEventListener('click', () => customEditor.open(drill)); card.append(edit); host.append(card);
   }
 }
-function openCustomEditor(drill = null) {
-  if (profileLocked() || !activeGun || activeGun.needsDetails) return;
-  customEditorId = drill?.id ?? null;
-  customSteps = [...(drill?.steps ?? [])];
-  $('#customDrillName').value = drill?.title ?? '';
-  $('#customDrillEditorTitle').textContent = drill ? 'Edit drill' : 'Create a drill';
-  $('#customDrillForm').classList.remove('hidden');
-  renderCustomSteps();
-  $('#customDrillName').focus();
-}
-function renderCustomSteps() {
-  const host = $('#customDrillSteps'); host.replaceChildren();
-  customSteps.forEach((label, index) => {
-    const item = document.createElement('li'); item.className = 'custom-step';
-    const name = document.createElement('span'); name.className = 'custom-step-name'; name.textContent = `${index + 1}. ${titleFor(label)}`;
-    const controls = document.createElement('span'); controls.className = 'custom-step-controls';
-    for (const [action, text, disabled] of [['up', '↑', index === 0], ['down', '↓', index === customSteps.length - 1], ['remove', '×', false]]) {
-      const button = document.createElement('button'); button.type = 'button'; button.textContent = text; button.disabled = disabled; button.dataset.stepAction = action;
-      button.setAttribute('aria-label', `${action === 'remove' ? 'Remove' : 'Move ' + action} action ${index + 1}`);
-      button.addEventListener('click', () => { if (profileLocked()) return; if (action === 'remove') customSteps.splice(index, 1); else { const to = index + (action === 'up' ? -1 : 1); [customSteps[index], customSteps[to]] = [customSteps[to], customSteps[index]]; } renderCustomSteps(); });
-      controls.append(button);
-    }
-    item.append(name, controls); host.append(item);
-  });
-  $('#addCustomActionBtn').disabled = customSteps.length >= 32;
-  $('#saveCustomDrillBtn').disabled = customSteps.length === 0;
-}
-async function submitCustomDrill(event) {
-  event.preventDefault();
-  if (profileLocked()) return;
-  const gunId = ownerId();
-  setBusy(true);
-  try {
-    const drill = normalizeCustomDrill({id: customEditorId || `custom-${crypto.randomUUID()}`, title: $('#customDrillName').value, steps: customSteps});
-    await saveCustomDrill(drill, gunId);
-    customDrills = await getCustomDrills(gunId);
-    const selected = $('#drillSelect').value;
-    const select = $('#drillSelect'); select.replaceChildren(new Option('Free listening (no sequence)', ''));
-    for (const definition of [...DRILLS, ...customDrills]) select.add(new Option(definition.title, definition.id));
-    select.value = selected;
-    renderCustomCatalog();
-    resetDrill();
-    $('#customDrillForm').classList.add('hidden');
-    setMessage(`Custom drill saved for ${activeGun.name}.`);
-  } catch (error) { showError(error); }
-  finally { setBusy(false); }
+async function saveEditedCustomDrill(drill, gunId) {
+  await saveCustomDrill(drill, gunId);
+  customDrills = await getCustomDrills(gunId);
+  const selected = $('#drillSelect').value;
+  const select = $('#drillSelect'); select.replaceChildren(new Option('Free listening (no sequence)', ''));
+  for (const definition of [...DRILLS, ...customDrills]) select.add(new Option(definition.title, definition.id));
+  select.value = selected;
+  renderCustomCatalog(); resetDrill();
 }
 
 function titleFor(label) { return labelMeta[label]?.title ?? 'Unknown sound'; }
@@ -904,7 +872,7 @@ async function renderHistory() {
   if (!isCurrent()) return;
   const sessions = await sessionController.renderSavedSessions(gunId, isCurrent);
   if (!isCurrent()) return;
-  progressView.render(sessions || [], gunId);
+  progressView?.render(sessions || [], gunId);
   renderEvaluation(rows);
   $('#homeEvents').textContent = String(rows.length);
   const host = $('#historyList');
@@ -959,7 +927,12 @@ async function renderHistory() {
 
 async function init() {
   configureNumberInputs(document);
-  progressView = createProgressView(document);
+  if (typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__) {
+    const { createProgressView } = await import('./optional/progressView.js');
+    progressView = createProgressView(document);
+  }
+  customEditor = createCustomDrillEditor({ doc: document, capabilities: CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
+    titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
   screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute,
     show: route => displayView(route.view), canLeave: () => !busy && !profileLoading && !preferencePending && !practiceController?.hasUnsavedResults() && !sessionController?.hasUnsavedResults(),
     beforeLeave: async () => { safetyGate?.cancel(); if (liveSession || livePendingStart) await stopLive();
@@ -1017,10 +990,6 @@ async function init() {
   for (const id of ['restoreGunBackupBtn', 'gunLibraryBackupBtn']) $('#'+id).addEventListener('click', () => switchView('settings'));
   $('#builtInDrillsTab').addEventListener('click', () => selectDrillCollection(false));
   $('#customDrillsTab').addEventListener('click', () => selectDrillCollection(true));
-  $('#newCustomDrillBtn').addEventListener('click', () => openCustomEditor());
-  $('#addCustomActionBtn').addEventListener('click', () => { if (profileLocked()) return; if (customSteps.length < 32) customSteps.push($('#customAction').value); renderCustomSteps(); });
-  $('#cancelCustomDrillBtn').addEventListener('click', () => $('#customDrillForm').classList.add('hidden'));
-  $('#customDrillForm').addEventListener('submit', event => { submitCustomDrill(event).catch(showError); });
   document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
   document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => goBack()));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));

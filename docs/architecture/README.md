@@ -25,3 +25,7 @@ The checker compares all HTML root views and the six source-defined modes to the
 - Vite emits minified static assets to `dist/`; Cloudflare Workers serves them. The PWA service worker caches the app shell; internal navigation is not a multipage website.
 
 See [persistence requirements](../requirements/persistence.md), [deployment](../development/DEPLOY.md) and the [SEO proposal](../seo/README.md) for boundaries and remaining work.
+
+## Build editions — CHG-032/033
+
+[Edition requirements](../requirements/build-editions.md) control temporary public creation/graph availability while preserving data. Registry states may declare `edition: public` or `edition: preview`; an omitted value means shared. Current shared captures use public, and edition-specific browser references cover both outputs. The [edition guide](../development/free-preview-testing.md) records commands, retained optional source, legacy data and the unverified hosted-preview protection prerequisite. About/Contact keep the fixed five-item navigation in either edition. No public server paths or storage schemas are added.

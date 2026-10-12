@@ -4,6 +4,9 @@ import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 export default async function metadata(config) {
   const env = JSON.parse(readFileSync('visual-tests/environment.json'));
+  const edition = process.env.VISUAL_EDITION ?? 'public';
+  const build = JSON.parse(readFileSync('dist/edition.json'));
+  if (build.edition !== edition) throw new Error('Visual-test edition does not match the built artifact.');
   const version = JSON.parse(readFileSync('node_modules/@playwright/test/package.json')).version;
   if (version !== env.playwrightVersion) throw new Error(`Expected Playwright ${env.playwrightVersion}, got ${version}`);
   if (process.env.CI && process.env.VISUAL_IMAGE !== env.image) throw new Error('CI rendering image differs from reviewed baselines.');
@@ -15,5 +18,5 @@ export default async function metadata(config) {
   const assetHashes = Object.fromEntries(assets.map(file => [file, createHash('sha256').update(readFileSync(`dist/${file}`)).digest('hex')]));
   const output = config.projects[0].outputDir;
   mkdirSync(output, { recursive: true });
-  writeFileSync(resolve(output, 'build-manifest.json'), JSON.stringify({ commit, environment: env, platform: process.platform, architecture: process.arch, node: process.version, hashes, assetHashes }, null, 2) + '\n');
+  writeFileSync(resolve(output, 'build-manifest.json'), JSON.stringify({ commit, edition, build, environment: env, platform: process.platform, architecture: process.arch, node: process.version, hashes, assetHashes }, null, 2) + '\n');
 }

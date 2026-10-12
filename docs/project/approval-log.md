@@ -484,3 +484,18 @@ The user subsequently directs **“update the screenshots with the link”** and
 - Scope: ABOUT-05 / CONTACT-04 and [shared footer](../design/screens/shared/README.md). Under the existing implementation instruction and the immediately preceding pure-white preference, make the two shared About/Contact controls `#FFFFFF` (`rgb(255, 255, 255)`) in resolved Dark mode. This is the concrete contrast correction; it supersedes CHG-029's footer-matching color for these controls in Dark only.
 - Preserve the centered separate destinations, no arrows, 0.85rem type, underline, focus outline, touch target, divider and navigation/data/safety guards. Keep the disclosure/copyright muted and retain Light colors. No editorial content, public routes, saved data or other commercial features change.
 - Refresh/review affected actual Dark captures and pinned browser references, retain existing Light images, maintain the requirements/architecture/history and publish to the existing feature branch. Promotion must still respect PR/check gates; no deployment is inferred from a push.
+
+## CHG-032 — Temporarily disable future paid actions publicly
+
+- Date: 2026-10-12 (Europe/Vilnius).
+- User request: **“i want to proceed with removing paid options from this project. Leave the code, document what was removed, code put into separate package, or suggest how to disable paid functionality at the moment”**.
+- Clarification asked: temporary public hiding of custom-drill creation, adding more than one gun and advanced graphs, with retained full development features and saved-data access, versus abandoning monetization. Exact answer: **“Temporarily hide future paid features publicly (Recommended)”**.
+- [EDITION-01–07](../requirements/build-editions.md) define the public/full build boundary, transaction creation limits, preserved existing data and legacy preset editing, accurate copy, optional source package, both-edition tests and hosted-preview protection prerequisite. This specifically starts the previously proposed public/preview slice; broader billing/auth/cloud/SEO implementation remains paused. Do not claim Cloudflare Access is configured or preview deployed without evidence.
+- Implement and publish on the feature branch with the existing PR gates. No direct dev/main push or production deployment is authorized by this scope clarification.
+
+## CHG-033 — Bottom navigation on About and Contact
+
+- Date: 2026-10-12 (Europe/Vilnius).
+- Direct instruction: **“next, i want to have app navigation to be avaible at the bottom in about and contact pages, same as in all pages”**.
+- [ABOUT-06](../requirements/about.md) / [CONTACT-05](../requirements/contact.md): show the existing shared five-item bottom navigation on both informational screens in both themes/editions. Preserve safe-area/content padding, setup gates, Back/Forward, white Dark footer links, data and microphone/safety guards. No additional informational tab or unrelated active-tab indicator is introduced.
+- This overrides the earlier hidden-tab rule for these two pages. Refresh actual captures and reviewed browser references with the implementation; promotion/deployment remain separate.

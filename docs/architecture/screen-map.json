@@ -16,9 +16,10 @@
       "entry": "First visit without a gun; Add/Edit from My Guns",
       "requirements": [
         "docs/requirements/gun-profiles.md",
-        "docs/requirements/persistence.md"
+        "docs/requirements/persistence.md",
+        "docs/requirements/build-editions.md"
       ],
-      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, five-gun capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, five-gun capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
       "states": [
         {
           "key": "first-gun.dark",
@@ -30,7 +31,8 @@
           "key": "add-gun.dark",
           "anchor": "gunForm",
           "label": "Add or edit gun",
-          "image": "docs/design/screens/gun-setup/add-gun.dark.png"
+          "image": "docs/design/screens/gun-setup/add-gun.dark.png",
+          "edition": "preview"
         },
         {
           "key": "edit-gun.dark",
@@ -80,7 +82,8 @@
       "entry": "Active-gun switcher",
       "requirements": [
         "docs/requirements/gun-profiles.md",
-        "docs/requirements/persistence.md"
+        "docs/requirements/persistence.md",
+        "docs/requirements/build-editions.md"
       ],
       "notes": "Illustrated per-gun cards show readiness, selection and capacity. Separate Select, Edit and Delete actions; confirmed single-gun deletion removes all its owned sounds/calibration/presets/settings/recognition/session data atomically. Preserve other guns/device preferences, choose the oldest remaining gun when deleting selection, or open setup after the last gun. Cancel changes nothing; active/unsaved work locks actions.",
       "states": [
@@ -117,7 +120,7 @@
         "docs/requirements/practice-modes.md",
         "docs/requirements/practice-improvements.md"
       ],
-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
       "states": [
         {
           "key": "overview.dark",
@@ -155,7 +158,8 @@
       "entry": "Drills tab, Home card or review completion",
       "requirements": [
         "docs/requirements/drill-sessions.md",
-        "docs/requirements/practice-modes.md"
+        "docs/requirements/practice-modes.md",
+        "docs/requirements/build-editions.md"
       ],
       "notes": "Six practice cards precede the preserved sequence catalog. Built-in / Custom tabs select sequence presets. The inline custom editor has a title, ordered action list, add/remove/reorder controls, Save and Cancel. A preset is owned by the active gun and uses the existing four event identifiers. The editor is a screen state, not another public route.",
       "states": [
@@ -175,7 +179,15 @@
           "key": "custom-editor.dark",
           "anchor": "customDrillForm",
           "label": "Create or edit a sequence",
-          "image": "docs/design/screens/drills/custom-editor.dark.png"
+          "image": "docs/design/screens/drills/custom-editor.dark.png",
+          "edition": "preview"
+        },
+        {
+          "key": "edit-custom.dark",
+          "anchor": "customDrillForm",
+          "label": "Public existing custom preset editor",
+          "image": "docs/design/screens/drills/edit-custom.dark.png",
+          "edition": "public"
         }
       ],
       "design": "docs/design/screens/drills/README.md"
@@ -193,7 +205,7 @@
         "docs/requirements/persistence.md",
         "docs/requirements/practice-start.md"
       ],
-      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
         {
           "key": "configure-single.dark",
@@ -365,27 +377,45 @@
       "requirements": [
         "docs/requirements/core.md",
         "docs/requirements/practice-improvements.md",
-        "docs/requirements/persistence.md"
+        "docs/requirements/persistence.md",
+        "docs/requirements/build-editions.md"
       ],
-      "notes": "Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
+      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun\u2019s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
       "states": [
+        {
+          "key": "overview.dark",
+          "anchor": "savedSessions",
+          "label": "Public saved-session text, dark",
+          "image": "docs/design/screens/history/overview.dark.png",
+          "edition": "public"
+        },
+        {
+          "key": "overview.light",
+          "anchor": "savedSessions",
+          "label": "Public saved-session text, light",
+          "image": "docs/design/screens/history/overview.light.png",
+          "edition": "public"
+        },
         {
           "key": "progress.dark",
           "anchor": "progressContent",
           "label": "Progress charts, Dark",
-          "image": "docs/design/screens/history/progress.dark.png"
+          "image": "docs/design/screens/history/progress.dark.png",
+          "edition": "preview"
         },
         {
           "key": "data-table.dark",
           "anchor": "progressContent",
           "label": "Accessible chart data table",
-          "image": "docs/design/screens/history/data-table.dark.png"
+          "image": "docs/design/screens/history/data-table.dark.png",
+          "edition": "preview"
         },
         {
           "key": "progress.light",
           "anchor": "progressContent",
           "label": "Progress charts, Light",
-          "image": "docs/design/screens/history/progress.light.png"
+          "image": "docs/design/screens/history/progress.light.png",
+          "edition": "preview"
         },
         {
           "key": "recognition-cleared.dark",
@@ -444,14 +474,15 @@
       "domId": "aboutView",
       "title": "About",
       "parent": "home",
-      "entry": "Shared app footer → About, including before gun setup",
+      "entry": "Shared app footer \u2192 About, including before gun setup",
       "requirements": [
         "docs/requirements/about.md",
         "docs/requirements/core.md",
         "docs/requirements/branding.md",
-        "docs/requirements/persistence.md"
+        "docs/requirements/persistence.md",
+        "docs/requirements/build-editions.md"
       ],
-      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, white Dark/footer-matching Light color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Practice navigation and gun switcher are hidden.",
+      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, white Dark/footer-matching Light color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Five-item bottom navigation is visible; gun switcher is hidden. Copy follows the build edition.",
       "states": [
         {
           "key": "overview.dark",
@@ -474,14 +505,14 @@
       "domId": "contactView",
       "title": "Contact",
       "parent": "home",
-      "entry": "Shared app footer → Contact, including before gun setup",
+      "entry": "Shared app footer \u2192 Contact, including before gun setup",
       "requirements": [
         "docs/requirements/contact.md",
         "docs/requirements/about.md",
         "docs/requirements/core.md",
         "docs/requirements/persistence.md"
       ],
-      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered white Dark/footer-matching Light footer controls remain available with a divider below; gun switching/practice tabs/safety disclosure are hidden.",
+      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered white Dark/footer-matching Light footer controls remain available with a divider below; fixed five-item bottom navigation is visible; gun switching and safety disclosure are hidden.",
       "states": [
         {
           "key": "overview.dark",
@@ -531,8 +562,12 @@
     "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
     "src/sessionController.js": "ea077ffa2ecd0b63fe1e2b5660106e3a3e64da6f8f964a62787352e6be2b99a6",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
-    "src/progressView.js": "9f94fa76c62f9cd35478b73522b89b31a0a5b7ac70ff0d0535dc71b07e5ec016",
-    "src/inputLimits.js": "0e7be09afb1e9f6b652f6837d4f3dac3400db56cc21575642013da29a539864d"
+    "src/inputLimits.js": "0e7be09afb1e9f6b652f6837d4f3dac3400db56cc21575642013da29a539864d",
+    "src/optional/progressView.js": "9f94fa76c62f9cd35478b73522b89b31a0a5b7ac70ff0d0535dc71b07e5ec016",
+    "src/buildEdition.js": "0000000000000000000000000000000000000000000000000000000000000000",
+    "src/optional/customDrillEditor.js": "0000000000000000000000000000000000000000000000000000000000000000",
+    "src/storage.js": "0000000000000000000000000000000000000000000000000000000000000000",
+    "vite.config.js": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   "implementationChanges": [
     "CHG-017",
@@ -545,6 +580,8 @@
     "CHG-028 independent About footer link",
     "CHG-029 separate About/Contact and centered footer",
     "CHG-030 pure white Dark primary text",
-    "CHG-031 white Dark About/Contact controls"
+    "CHG-031 white Dark About/Contact controls",
+    "CHG-032",
+    "CHG-033"
   ]
 }
