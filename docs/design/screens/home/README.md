@@ -6,9 +6,9 @@ Entry: After gun selection/setup and returning visits. App anchor: `homeView`. T
 
 ## Layout and interaction
 
-Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations.
+Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. CHG-028 adds a separate About & contact link at the start of the app footer, opening its independent screen directly without Settings.
 
-Functional specifications: [core](../../../requirements/core.md) · [branding](../../../requirements/branding.md) · [gun-profiles](../../../requirements/gun-profiles.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
+Functional specifications: [core](../../../requirements/core.md) · [branding](../../../requirements/branding.md) · [gun-profiles](../../../requirements/gun-profiles.md) · [About](../../../requirements/about.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 
 ## Current visual references
 

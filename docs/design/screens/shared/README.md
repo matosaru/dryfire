@@ -1,5 +1,7 @@
 # Safety confirmation design
 
+CHG-028 adds a direct **About & contact** link at the start of the shared app footer, outside Settings. It opens the independent About screen from Home, first-gun setup and other screens; the self-link is hidden on About. The existing privacy/copyright text and five main navigation destinations stay present. [About requirements](../../../requirements/about.md) define the separate entry. All current screen references are refreshed from the production build.
+
 CHG-023 shared footer: every functional screen retains its data/microphone disclosure, followed by **© 2026 Dry Fire With Ease. All rights reserved.** in the same readable footer style. It wraps naturally on narrow screens and supports the existing Dark/Light themes. The notice belongs to the shared page layout; it creates no new screen or public route. Current captures are refreshed with the footer; the modal still uses the same acknowledgement/continuation rules.
 
 Current implemented layout · CHG-018 coverage audit · 2026-10-11 · CHG-023 source published in [`dbf8687`](https://github.com/matosaru/dryfire/commit/dbf8687); exact reviewed file hashes are in the registry

@@ -2,7 +2,7 @@
 
 Visual package for Dry Fire With Ease. [Functional requirements](../requirements/README.md) own behavior; [approval history](../project/approval-log.md) records authorization; [delivery plan](../project/implementation-history.md) owns implementation/publication status.
 
-CHG-028 [About-link placement preview](proposals/about-link-placement/README.md) suggests a visible first Settings item. It is a review proposal separate from the implemented screen references below.
+CHG-028 places About & contact directly in the shared app footer, independently of Settings. The initial [Settings placement preview](proposals/about-link-placement/README.md) is superseded; current captures below show the separate footer entry.
 
 CHG-026 prepares [future Contact/SEO/account/Free-Pro/preview design scope](../requirements/web-commercial.md), with implementation explicitly paused. CHG-027 is the later direct request to create [About and email contact](screens/about/README.md) on a separate feature branch, with proposed copy for review. Other commercial/SEO/account work remains planning only.
 

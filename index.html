@@ -357,7 +357,7 @@
         <p class="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
       </div>
       <div class="settings-group"><h3>Delete local app data</h3><p class="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" class="button danger wide-action" type="button">Delete all guns &amp; app data</button></div>
-      <div class="settings-group"><h3>About &amp; contact</h3><button id="aboutBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">i</span><span>About Dry Fire With Ease</span><span class="settings-chevron" aria-hidden="true">›</span></button><p id="deviceCheck" class="small muted"></p></div>
+      <div class="settings-group"><h3>Device information</h3><p id="deviceCheck" class="small muted"></p></div>
     </section>
 
     <section id="aboutView" class="view hidden" aria-labelledby="about-title">
@@ -389,7 +389,7 @@
       </section>
     </section>
 
-    <footer>Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.<p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p></footer>
+    <footer><button id="aboutBtn" class="text-button footer-about-link" type="button">About &amp; contact <span aria-hidden="true">›</span></button>Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.<p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p></footer>
   </main>
   <script type="module" src="/src/main.js"></script>
 </body>

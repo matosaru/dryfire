@@ -456,3 +456,7 @@ Later release instruction for this request: **“i want you to merge changes to 
 - Requested scope: explain and visualize the link's placement. CHG-027 already has the link in Settings on its feature branch.
 - Assistant proposal: first Settings item, above installation information, caption **About & contact**, with device capability information at the bottom. [Dark/Light previews](../design/proposals/about-link-placement/README.md) are suggestions for review, not approval evidence or implemented screen order.
 - Application sources, current registry/destination hierarchy, accepted captures and CI baselines remain unchanged by preparing these previews.
+
+### CHG-028 correction — separate from Settings
+
+The user subsequently directs **“update the screenshots with the link”** and **“it should be separated from settings”**. This supersedes the assistant's Settings-placement suggestion. Provide a direct **About & contact** entry in the shared app footer, opening its existing independent page without visiting Settings, including before gun setup. Preserve the five practice-navigation destinations and all data/safety/capture guards. Update actual application layout and its screenshots together under the already-authorized About implementation scope; the original top-of-Settings mockups remain superseded proposal evidence in Git. No broader commercial/SEO implementation or protection bypass is authorized.

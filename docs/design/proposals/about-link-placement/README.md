@@ -1,21 +1,11 @@
-# About link placement proposal
+# Superseded About link placement proposal
 
-CHG-028 · 2026-10-12 · Suggested layout for review; not an implemented order change.
+CHG-028 · 2026-10-12. The initial Settings-placement suggestion below is **superseded** by the user's explicit correction: **“it should be separated from settings”**.
 
-The user asks: **“about page should have a link inside an app, can you show me your suggested placement ?”** The CHG-027 feature already provides a link near the bottom of Settings. This proposal makes it the first Settings item, above installation information, so a mobile user can find it without scrolling.
+The final direction is a direct **About & contact** link at the start of the shared app footer, opening its independent page without Settings. See current [Home](../../screens/home/README.md), [Settings](../../screens/settings/README.md), [About](../../screens/about/README.md) and [requirements](../../../requirements/about.md). The registry maps About as an independent destination under Home, reached from the shared footer.
 
-## Recommended placement
+## Initial suggestion, retained as history
 
-**Any screen → Settings gear → App information → About & contact.**
+[Dark Settings proposal](near-top.dark.png) · [Light Settings proposal](near-top.light.png).
 
-Use one full-width row with the information icon, **About & contact** label and chevron. The row opens the existing About screen, which includes `easydryfire@gmail.com`. Keep device capability information at the bottom of Settings. The existing five practice-navigation destinations stay as they are.
-
-## Mobile previews
-
-![Proposed About link placement, Dark](near-top.dark.png)
-
-[Light preview](near-top.light.png).
-
-These 390 × 844 px previews use the built app's components/styles in system Chromium with synthetic gun data. Only the browser DOM was rearranged for this proposal; application source, current accepted screen captures and Chromium/WebKit CI baselines are unchanged. Both themes were checked for horizontal overflow, and the relocated link opens the existing About screen. These illustrative previews are not production/deployment evidence or accepted CI references.
-
-Functional specification: [About and email contact](../../../requirements/about.md). Current implemented layouts: [Settings](../../screens/settings/README.md) and [About](../../screens/about/README.md). The screen hierarchy remains Settings → About; register new actual capture/order only if this proposal is implemented.
+These initial 390 × 844 px system-Chromium mockups used browser-only rearrangement. They do not describe the current implemented entry and are not accepted CI references. The user requested updated screenshots, then explicitly corrected the entry to be separate from Settings; do not use the earlier Settings proposal as approval for that location.

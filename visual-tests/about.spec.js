@@ -13,7 +13,6 @@ test('About is available before setup without capture or safety acknowledgement'
   });
   await page.goto('/');
   await expect(page.locator('#gunSetupView')).toBeVisible();
-  await page.locator('#settingsShortcut').click();
   await page.locator('#aboutBtn').click();
   await expect(page.locator('#aboutView')).toBeVisible();
   const email = page.getByRole('link', { name: 'easydryfire@gmail.com', exact: true });
@@ -22,11 +21,10 @@ test('About is available before setup without capture or safety acknowledgement'
   await expect(page.locator('#safetyModal')).not.toBeVisible();
   expect(await page.evaluate(() => window.__aboutMicrophoneRequests)).toBe(0);
   await page.locator('#aboutView [data-back]').click();
-  await expect(page.locator('#settingsView')).toBeVisible();
+  await expect(page.locator('#gunSetupView')).toBeVisible();
   await page.goForward();
   await expect(page.locator('#aboutView')).toBeVisible();
   await page.goBack();
-  await page.locator('#settingsView [data-back]').click();
   await expect(page.locator('#gunSetupView')).toBeVisible();
   await expect(page.locator('#gunName')).toHaveValue('');
 });
@@ -47,11 +45,15 @@ test('About preserves selected-gun data and the current appearance', async ({ pa
     return JSON.parse(readFileSync(await download.path(), 'utf8'));
   };
   const before = await exportLibrary();
+  await page.locator('#settingsView [data-back]').click();
+  await expect(page.locator('#homeView')).toBeVisible();
   await page.locator('#aboutBtn').click();
   await expect(page.locator('#aboutView')).toBeVisible();
   await expect(page.locator('#gunSwitcherBtn')).not.toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await page.locator('#aboutView [data-back]').click();
+  await expect(page.locator('#homeView')).toBeVisible();
+  await page.locator('#settingsShortcut').click();
   await expect(page.locator('#appearance')).toHaveValue('light');
   const exported = await exportLibrary();
   for (const key of ['guns', 'activeGunId', 'examples', 'events', 'gunSettings', 'sessions', 'settings']) {

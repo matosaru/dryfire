@@ -1,12 +1,12 @@
 # About and email contact
 
-Revision 1.0 · CHG-027 · Implemented and locally/browser validated on 2026-10-11; exact editorial copy is proposed for user review. Publication, promotion and deployment are tracked separately.
+Revision 1.1 · CHG-027/028 · Implemented and locally/browser validated on 2026-10-11; exact editorial copy is proposed for user review. Publication, promotion and deployment are tracked separately.
 
 User instruction: **“also start creating aboutpage, suggest page text. and add easydryfire@gmail.com as a contact email. create this as a separate feature branch”**. This specifically starts the About/contact slice after the CHG-026 implementation pause. Other commercial, account, cloud, paywall and SEO implementations remain paused.
 
 | ID | Requirement | Authorization |
 | --- | --- | --- |
-| ABOUT-01 | Provide a dedicated About screen reached from Settings, including before a first gun has been saved. Describe the current app accurately and briefly. | Direct instruction, CHG-027 |
+| ABOUT-01 | Provide a dedicated About screen reached directly from the shared app footer, independently of Settings, including before a first gun has been saved. Describe the current app accurately and briefly. | Direct instruction, CHG-027/028 |
 | ABOUT-02 | Explain local storage and backup recovery, experimental acoustic recognition and existing safety checks without promising cloud recovery, perfect detection or verified firearm safety. | Current CORE/DATA invariants applied to the requested page |
 | ABOUT-03 | Display the selectable address **easydryfire@gmail.com** as a working `mailto:` link. Opening an email composer is user initiated; no saved gun/history/audio data is attached or sent automatically. | Explicit Contact address and CHG-027 |
 | ABOUT-04 | Preserve app/browser Back and Forward, Dark/Light readability and access without microphone permission. Opening About does not create a gun, acknowledge safety or alter saved data. | Existing navigation, appearance and data invariants |
@@ -47,7 +47,7 @@ Complete the safety check before recording or practice. Sound recognition is exp
 
 ## Acceptance and boundaries
 
-- Settings → About & contact opens the dedicated screen before and after gun setup. Back returns to Settings; browser Back/Forward restores the visited app state.
+- App footer → About & contact opens the dedicated screen before and after gun setup. Back returns to the visited screen; browser Back/Forward restores the visited app state.
 - Contact shows exactly the confirmed address and its `mailto:` destination, with no automatically populated private data. No in-app email-sending backend or contact form is introduced.
 - About does not request microphone access or complete the safety acknowledgement. Existing persisted data, formats, current free features and defaults remain intact.
 - Review mobile Dark/Light layouts at 390 and 320 px without horizontal overflow; maintain the registry, actual screen evidence and pinned browser baselines.
@@ -55,6 +55,6 @@ Complete the safety check before recording or practice. Sound recognition is exp
 
 Design: [About](../design/screens/about/README.md). Delivery and publication: [implementation history](../project/implementation-history.md).
 
-## Proposed link placement — CHG-028
+## Independent link placement — CHG-028
 
-The user asks to see where the in-app link should be placed. The existing feature's Settings link satisfies ABOUT-01, but sits near the bottom. [The proposed mobile layout](../design/proposals/about-link-placement/README.md) makes **About & contact** the first Settings item, above installation information, with device capability details remaining at the bottom. This is a placement/caption suggestion for review, not an approved or implemented order change. The existing About destination, email, history and data behavior remain the requirements.
+The user explicitly requests updated screenshots and says **“it should be separated from settings”**. This supersedes the initial Settings-position proposal. Put **About & contact** at the start of the shared app footer, above the privacy/copyright text, accessible from Home, gun setup and other screens without opening Settings. About remains its own page; its self-link is hidden on that page. Keep the five practice-navigation destinations and the existing capture/storage navigation guards. Settings contains device capability information without an About group. Current visual evidence: [Home](../design/screens/home/README.md), [Settings](../design/screens/settings/README.md) and [shared layout](../design/screens/shared/README.md). Earlier [Settings mockups](../design/proposals/about-link-placement/README.md) are superseded evidence, not the current layout.
