@@ -43,12 +43,22 @@ jobs:
       VISUAL_EDITION: ${{ matrix.edition }}
     steps:
       - uses: actions/checkout@v4
+      - name: Trust only the checked-out repository inside the rendering container
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
       - run: npm ci --no-audit --no-fund
-      - run: npm run build
+      - name: Build the selected edition
+        run: |
+          if npm run build > /tmp/edition-build.log 2>&1; then
+            cat /tmp/edition-build.log
+          else
+            cat /tmp/edition-build.log
+            cat /tmp/edition-build.log >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
       - run: npm run verify:dist -- --edition=${{ matrix.edition }}
       - name: Require reviewed baseline coverage and fingerprints
         run: npm run visual:review
