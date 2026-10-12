@@ -1,6 +1,6 @@
 # Settings design
 
-CHG-029 capture refresh: current references use the pinned production-build renderer and separate centered About/Contact footer controls. Current validation is recorded in the [delivery tracker](../../../project/implementation-history.md); earlier [CHG-028 evidence](../../baselines/footer-entry-validation.json) retains the combined entry.
+CHG-029 capture refresh: current references use the pinned production-build renderer and separate centered About/Contact footer controls. [Capture/build review](../../baselines/separate-pages-validation.json) records both passing 138-check runs and reviewed images; earlier [CHG-028 evidence](../../baselines/footer-entry-validation.json) retains the combined entry.
 
 Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · CHG-023 footer published in [`dbf8687`](https://github.com/matosaru/dryfire/commit/dbf8687); earlier feature baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
@@ -22,6 +22,6 @@ Functional specifications: [settings](../../../requirements/settings.md) · [cor
 | Settings, Light | [`overview.light.png`](overview.light.png) | `settingsView` |
 | Completed selected-gun sound reset | [`sounds-reset.dark.png`](sounds-reset.dark.png) | `soundResetOutcome` |
 
-CHG-027 captures come from the production build in pinned Chromium at 390 px, with the changed entry also reviewed at 320 px and in WebKit. [Rendering evidence](../../baselines/about-validation.json) retains source/collection details. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
+CHG-029 captures come from the production build in pinned Chromium at 390 px, with the shared footer also reviewed at 320 px and in WebKit. [Current rendering evidence](../../baselines/separate-pages-validation.json) retains source/collection details. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.

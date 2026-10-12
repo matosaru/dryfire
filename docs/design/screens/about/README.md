@@ -1,6 +1,6 @@
 # About design
 
-CHG-029 revises the footer and separates Contact from About. Current captures are being refreshed; completion/evidence is recorded in the [delivery tracker](../../../project/implementation-history.md). Earlier [CHG-028 evidence](../../baselines/footer-entry-validation.json) retains the superseded combined entry.
+CHG-029 revises the footer and separates Contact from About. Current captures are reviewed against the production build; [evidence](../../baselines/separate-pages-validation.json) records both passing 138-check runs. Earlier [CHG-028 evidence](../../baselines/footer-entry-validation.json) retains the superseded combined entry.
 
 CHG-027 · Initial copy/layout proposal implemented for review on `feature/about-contact-page`; direct page/contact request authorizes this slice. Exact copy has not received word-for-word user approval.
 
@@ -21,4 +21,4 @@ Functional specifications and proposed copy: [About](../../../requirements/about
 | About, Dark | [overview.dark.png](overview.dark.png) | `aboutView` |
 | About, Light | [overview.light.png](overview.light.png) | `aboutView` |
 
-Actual production-build references use the pinned Chromium renderer at 390 px. Both themes and 320/390 px images were reviewed in Chromium and WebKit; [collection and unchanged-comparison evidence](../../baselines/about-validation.json) and [build/source manifest](../../baselines/about-build-manifest.json) retain provenance. Publication does not establish Cloudflare deployment or physical microphone accuracy.
+Actual production-build references use the pinned Chromium renderer at 390 px. Both themes and 320/390 px images were reviewed in Chromium and WebKit; [current collection and unchanged-comparison evidence](../../baselines/separate-pages-validation.json) and [build/source manifest](../../baselines/separate-pages-build-manifest.json) retain provenance. Publication does not establish Cloudflare deployment or physical microphone accuracy.

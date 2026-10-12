@@ -523,9 +523,9 @@
     }
   ],
   "reviewedSources": {
-    "index.html": "96274d987bc0975eb4eadc6fed384f6b47620dcb9dd2343355e14491de0d250d",
-    "src/main.js": "b8c114c0a58a47655f20044bad7fb29f42e467d0f3f1b6ff1c8855101ab65eed",
-    "src/styles.css": "cf8eecfd03ec5860b9e8d3197446c1b9d6eb751f9e81266b1e57204c094f3678",
+    "index.html": "562efb12b63d7401840cbe75ff2010830d743a2c276fbac1197fcd0c42ef93b9",
+    "src/main.js": "61121c873119f4785bba13da797a8788405aa54a2952563edc9de208e6579a80",
+    "src/styles.css": "f3ba24b2ede612d1be1dc6d2ef9c0c28a4d4878e18a8fce44698248da9afec7b",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
     "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
@@ -543,6 +543,6 @@
     "CHG-023",
     "CHG-027 About and email contact",
     "CHG-028 independent About footer link",
-    "CHG-029"
+    "CHG-029 separate About/Contact and centered footer"
   ]
 }

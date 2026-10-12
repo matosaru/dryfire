@@ -31,7 +31,8 @@ Current references below are actual production-build captures. CHG-029 separates
 | Live Listen | [2 state/theme references](screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |
 | History | [5 state/theme references](screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
 | Settings | [3 state/theme references](screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [about](../requirements/about.md) |
-| About & contact | [2 state/theme references](screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md) |
+| About | [2 state/theme references](screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md) |
+| Contact | [2 state/theme references](screens/contact/README.md) | [contact](../requirements/contact.md), [about](../requirements/about.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md) |
 | Safety confirmation | [1 state/theme references](screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
 <!-- screen-coverage:end -->
 
