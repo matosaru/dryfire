@@ -1,0 +1,50 @@
+{
+  "commit": "377b9b750c6dacb4f6304284175b10d39d704b8d",
+  "edition": "public",
+  "build": {
+    "version": 1,
+    "edition": "public",
+    "sourceRevision": "377b9b750c6dacb4f6304284175b10d39d704b8d",
+    "sourceDigest": "7cf9b0b56480231e338463fa362b847e066876d5a2d694b7c51c2806cd0b9407",
+    "assets": [
+      "/assets/eventDetector-DtBbU0H0.js",
+      "/assets/index-Ck-xgB_c.css",
+      "/assets/index-DOB8_X6X.js",
+      "/pcm-capture.worklet.js",
+      "/sw.js"
+    ]
+  },
+  "environment": {
+    "playwrightVersion": "1.58.2",
+    "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+    "platform": "linux/amd64",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "clock": "2026-10-11T11:00:00.000Z",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "maxDiffPixels": 0,
+    "comparisonThreshold": 0.005
+  },
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v22.23.3",
+  "hashes": {
+    "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
+    "src/styles.css": "64890449cfb4d3004af2df507f0eca63e1775c2c833acceb893ca53111428b09",
+    "src/main.js": "391f2d78fbe58df50d42eacf535fd91252738695426589fc35d1f34adf87ff7b",
+    "package-lock.json": "1b17ec94a6c54c1380396c90d726f4a54ce0ff94969bccbc031209274d8b34cf",
+    "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+  },
+  "assetHashes": {
+    "index.html": "32140a562ea0004bd498483b117fbcc917e8a75376bd56764cccb3dd0c399e5f",
+    "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+    "sw.js": "8ebee51e5ff59a892740cd7ede673f55f1e28adbddb6dd888c2bf9a65b01a061",
+    "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+    "assets/index-Ck-xgB_c.css": "ecfd157ffb1d724076c7d5d6b33c74bd113545e4dbb681d70b55c7189996b065",
+    "assets/index-DOB8_X6X.js": "fc05feae88f2159bf5cc8de7e85587f338b875115988f45772f5ae22df8a10ff"
+  }
+}

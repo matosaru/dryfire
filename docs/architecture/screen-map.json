@@ -17,9 +17,10 @@
       "requirements": [
         "docs/requirements/gun-profiles.md",
         "docs/requirements/persistence.md",
-        "docs/requirements/build-editions.md"
+        "docs/requirements/build-editions.md",
+        "docs/requirements/page-layout.md"
       ],
-      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
       "states": [
         {
           "key": "first-gun.dark",
@@ -67,7 +68,8 @@
         "docs/requirements/core.md",
         "docs/requirements/branding.md",
         "docs/requirements/gun-profiles.md",
-        "docs/requirements/about.md"
+        "docs/requirements/about.md",
+        "docs/requirements/page-layout.md"
       ],
       "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. Separate shared-footer About & contact entry opens its independent page.",
       "states": [
@@ -90,7 +92,8 @@
       "requirements": [
         "docs/requirements/gun-profiles.md",
         "docs/requirements/persistence.md",
-        "docs/requirements/build-editions.md"
+        "docs/requirements/build-editions.md",
+        "docs/requirements/page-layout.md"
       ],
       "notes": "Illustrated per-gun cards show readiness, selection and capacity. Separate Select, Edit and Delete actions; confirmed single-gun deletion removes all its owned sounds/calibration/presets/settings/recognition/session data atomically. Preserve other guns/device preferences, choose the oldest remaining gun when deleting selection, or open setup after the last gun. Cancel changes nothing; active/unsaved work locks actions.",
       "states": [
@@ -125,9 +128,10 @@
       "requirements": [
         "docs/requirements/core.md",
         "docs/requirements/practice-modes.md",
-        "docs/requirements/practice-improvements.md"
+        "docs/requirements/practice-improvements.md",
+        "docs/requirements/page-layout.md"
       ],
-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
       "states": [
         {
           "key": "overview.dark",
@@ -166,7 +170,8 @@
       "requirements": [
         "docs/requirements/drill-sessions.md",
         "docs/requirements/practice-modes.md",
-        "docs/requirements/build-editions.md"
+        "docs/requirements/build-editions.md",
+        "docs/requirements/page-layout.md"
       ],
       "notes": "Six practice cards precede the preserved sequence catalog. Built-in / Custom tabs select sequence presets. The inline custom editor has a title, ordered action list, add/remove/reorder controls, Save and Cancel. A preset is owned by the active gun and uses the existing four event identifiers. The editor is a screen state, not another public route.",
       "states": [
@@ -210,9 +215,10 @@
         "docs/requirements/practice-modes.md",
         "docs/requirements/practice-improvements.md",
         "docs/requirements/persistence.md",
-        "docs/requirements/practice-start.md"
+        "docs/requirements/practice-start.md",
+        "docs/requirements/page-layout.md"
       ],
-      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
         {
           "key": "configure-single.dark",
@@ -314,7 +320,8 @@
       "requirements": [
         "docs/requirements/drill-sessions.md",
         "docs/requirements/practice-improvements.md",
-        "docs/requirements/persistence.md"
+        "docs/requirements/persistence.md",
+        "docs/requirements/page-layout.md"
       ],
       "notes": "Keep the ordered sequence visible once. Configure exposes repetitions (default ten), fixed/random delay (default fixed three seconds), Sound at start (default Off), readiness and Start Session. Require only referenced sound types. Run shows completed/left, countdown/GO, latest repetition and Pause/Resume/End. Legacy GO is a status; the Practice STOP correction does not replace this runner. Each ordered completion is saved and followed by a fresh countdown. Review shows totals and repetition/split details, Repeat Session and Back to Drills.",
       "states": [
@@ -355,7 +362,8 @@
       "requirements": [
         "docs/requirements/core.md",
         "docs/requirements/practice-modes.md",
-        "docs/requirements/practice-improvements.md"
+        "docs/requirements/practice-improvements.md",
+        "docs/requirements/page-layout.md"
       ],
       "notes": "Free-listening/sequence selection, current event and score, level/waveform, single sound test and continuous Start/Stop controls. Continuous capture remains active through separate events until stopped or left. Unknown input stays transient; accepted known results can be verified in History. Microphone level does not establish that a click was recognized.",
       "states": [
@@ -385,9 +393,10 @@
         "docs/requirements/core.md",
         "docs/requirements/practice-improvements.md",
         "docs/requirements/persistence.md",
-        "docs/requirements/build-editions.md"
+        "docs/requirements/build-editions.md",
+        "docs/requirements/page-layout.md"
       ],
-      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
+      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun\u2019s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
       "states": [
         {
           "key": "overview.dark",
@@ -450,7 +459,8 @@
         "docs/requirements/settings.md",
         "docs/requirements/core.md",
         "docs/requirements/persistence.md",
-        "docs/requirements/about.md"
+        "docs/requirements/about.md",
+        "docs/requirements/page-layout.md"
       ],
       "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. Device capability status stays in Settings; About is reached independently from the shared app footer. CHG-035 private preview adds Test as Free/Full, a mode indicator, Free default/private remembered preference and activity/data guards; public output omits them.",
       "states": [
@@ -501,6 +511,18 @@
           "label": "Private preview, Full mode, light",
           "image": "docs/design/screens/settings/preview-full.light.png",
           "edition": "preview"
+        },
+        {
+          "key": "installation-help.dark",
+          "anchor": "installStatus",
+          "label": "Installation help, dark",
+          "image": "docs/design/screens/settings/installation-help.dark.png"
+        },
+        {
+          "key": "installation-help.light",
+          "anchor": "installStatus",
+          "label": "Installation help, light",
+          "image": "docs/design/screens/settings/installation-help.light.png"
         }
       ],
       "design": "docs/design/screens/settings/README.md"
@@ -511,13 +533,14 @@
       "domId": "aboutView",
       "title": "About",
       "parent": "home",
-      "entry": "Shared app footer → About, including before gun setup",
+      "entry": "Shared app footer \u2192 About, including before gun setup",
       "requirements": [
         "docs/requirements/about.md",
         "docs/requirements/core.md",
         "docs/requirements/branding.md",
         "docs/requirements/persistence.md",
-        "docs/requirements/build-editions.md"
+        "docs/requirements/build-editions.md",
+        "docs/requirements/page-layout.md"
       ],
       "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, white Dark/footer-matching Light color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Five-item bottom navigation is visible; gun switcher is hidden. Copy follows the build edition.",
       "states": [
@@ -542,12 +565,13 @@
       "domId": "contactView",
       "title": "Contact",
       "parent": "home",
-      "entry": "Shared app footer → Contact, including before gun setup",
+      "entry": "Shared app footer \u2192 Contact, including before gun setup",
       "requirements": [
         "docs/requirements/contact.md",
         "docs/requirements/about.md",
         "docs/requirements/core.md",
-        "docs/requirements/persistence.md"
+        "docs/requirements/persistence.md",
+        "docs/requirements/page-layout.md"
       ],
       "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered white Dark/footer-matching Light footer controls remain available with a divider below; fixed five-item bottom navigation is visible; gun switching and safety disclosure are hidden.",
       "states": [
@@ -606,7 +630,28 @@
     "src/storage.js": "a4108f2ba56a57bea5faa15a612124f6c4006298ecaaa752b5556d1bb6ecdddd",
     "vite.config.js": "e643ea5345817d86e288980b59107a64a50aa81099474defbd9ac4d993f3c259",
     "src/optional/previewTesting.js": "636e98be5b0a50feb348c07725107010a0a922a7914c6c2b45c0fe99c4c4cfe8",
-    "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9"
+    "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
+    "src/pageDefinitions.js": "PENDING_REVIEW",
+    "tools/page-templates.mjs": "PENDING_REVIEW",
+    "src/templates/view.html": "PENDING_REVIEW",
+    "src/templates/layout.html": "PENDING_REVIEW",
+    "src/templates/pages/recognize.html": "PENDING_REVIEW",
+    "src/templates/pages/drills.html": "PENDING_REVIEW",
+    "src/templates/pages/contact.html": "PENDING_REVIEW",
+    "src/templates/pages/learn.html": "PENDING_REVIEW",
+    "src/templates/pages/practice.html": "PENDING_REVIEW",
+    "src/templates/pages/guns.html": "PENDING_REVIEW",
+    "src/templates/pages/gunSetup.html": "PENDING_REVIEW",
+    "src/templates/pages/home.html": "PENDING_REVIEW",
+    "src/templates/pages/session.html": "PENDING_REVIEW",
+    "src/templates/pages/settings.html": "PENDING_REVIEW",
+    "src/templates/pages/about.html": "PENDING_REVIEW",
+    "src/templates/pages/history.html": "PENDING_REVIEW",
+    "src/templates/shared/context.html": "PENDING_REVIEW",
+    "src/templates/shared/safety-modal.html": "PENDING_REVIEW",
+    "src/templates/shared/header.html": "PENDING_REVIEW",
+    "src/templates/shared/navigation.html": "PENDING_REVIEW",
+    "src/templates/shared/footer.html": "PENDING_REVIEW"
   },
   "implementationChanges": [
     "CHG-017",
@@ -624,6 +669,7 @@
     "CHG-033",
     "CHG-034",
     "CHG-035",
-    "CHG-036"
+    "CHG-036",
+    "CHG-037"
   ]
 }
