@@ -1,0 +1,28 @@
+{
+  "reviewedOn": "2026-10-12",
+  "change": "CHG-037",
+  "sourceChecks": {
+    "b": {
+      "run": "38297935311",
+      "status": "Success",
+      "commit": "f905588"
+    },
+    "dev": {
+      "run": "38298042121",
+      "status": "Success",
+      "commit": "2f30096"
+    }
+  },
+  "unitTests": 320,
+  "unitSuites": 29,
+  "smokeChecks": 16,
+  "browserChecks": {
+    "public": 168,
+    "preview": 180
+  },
+  "baselineImages": 266,
+  "currentScreenCaptures": 56,
+  "normalCi": "Both source/image workflows succeed, including the deliberate-defect probes. Later documentation-only commits retain independent CI.",
+  "production": "Owner PR #19 contains the earlier source/candidate revision. Accepted b images/docs still require checked b to main promotion.",
+  "deployment": "Cloudflare setup is owner-run; no live deploy/physical-device result."
+}
