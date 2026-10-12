@@ -11,7 +11,7 @@ User evidence: **“after a publish, proceed with”** working browser controls;
 | SET-03 | Provide an Appearance control that changes the app's presentation. | Approved; CHG-014 |
 | SET-04 | Provide Vibration Feedback connected to actual device/browser support. | Approved; CHG-014 |
 | SET-05 | Persist preferences across refreshes and compatible app updates. Explain unsupported capabilities accurately rather than displaying nonfunctional controls. | Approved; CHG-014 |
-| SET-07 | Main text in resolved Dark mode uses `#FFFFFF` (`rgb(255, 255, 255)`) consistently across the app: headings, primary content and neutral control labels/values, including session/practice/history text. Muted secondary copy/footer links and semantic accent/status/button ink retain their colors. Light mode retains its existing palette; System follows the resolved theme. | Direct user instruction; CHG-030 |
+| SET-07 | Main text in resolved Dark mode uses `#FFFFFF` (`rgb(255, 255, 255)`) consistently across the app: headings, primary content and neutral control labels/values, including session/practice/history text. Muted secondary copy/footer disclosure and semantic accent/status/button ink retain their colors. CHG-031 / ABOUT-05 separately makes the About/Contact controls white in Dark. Light mode retains its existing palette; System follows the resolved theme. | Direct user instruction; CHG-030 |
 
 ## Approved ownership, defaults and capability behavior
 

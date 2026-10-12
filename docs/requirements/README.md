@@ -1,6 +1,6 @@
 # Functional requirements
 
-Revision 1.13 · CHG-030 pure white Dark primary text · 2026-10-12
+Revision 1.14 · CHG-031 brighter Dark footer controls · 2026-10-12
 
 CHG-027 starts [About](about.md) with email support; CHG-029 separates [Contact](contact.md) and refines the centered shared footer links on the same feature branch. Suggested copy remains reviewable; broader CHG-026 implementations stay paused.
 

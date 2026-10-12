@@ -476,3 +476,11 @@ The user subsequently directs **“update the screenshots with the link”** and
 - Scope: SET-07 in [appearance requirements](../requirements/settings.md) and the [shared layout](../design/screens/shared/README.md). Dark-mode primary text, headings, neutral control labels/values and session/practice/history primary text use `#FFFFFF` (`rgb(255, 255, 255)`) consistently, including explicit near-white primary overrides.
 - Preserve muted secondary text, CHG-029 footer/link colors, accent/status colors, dark labels on orange buttons and the resolved Light theme. Keep sizes, layout, navigation, saved data and controls intact. System appearance follows the same Dark/Light rule.
 - Refresh and review affected actual production-build captures and pinned Chromium/WebKit references, record source fingerprints and architecture maintenance, then publish on the existing feature branch. No PR gate bypass, production deployment or broader paused commercial implementation is implied.
+
+## CHG-031 — Brighter About/Contact footer links in Dark mode
+
+- Date: 2026-10-12 (Europe/Vilnius).
+- Direct feedback/request: **“still see that about and contacts links are not very good contrast”**, pointing to the current About Dark screenshot; subsequent status question **“was the colour change added ?”**.
+- Scope: ABOUT-05 / CONTACT-04 and [shared footer](../design/screens/shared/README.md). Under the existing implementation instruction and the immediately preceding pure-white preference, make the two shared About/Contact controls `#FFFFFF` (`rgb(255, 255, 255)`) in resolved Dark mode. This is the concrete contrast correction; it supersedes CHG-029's footer-matching color for these controls in Dark only.
+- Preserve the centered separate destinations, no arrows, 0.85rem type, underline, focus outline, touch target, divider and navigation/data/safety guards. Keep the disclosure/copyright muted and retain Light colors. No editorial content, public routes, saved data or other commercial features change.
+- Refresh/review affected actual Dark captures and pinned browser references, retain existing Light images, maintain the requirements/architecture/history and publish to the existing feature branch. Promotion must still respect PR/check gates; no deployment is inferred from a push.

@@ -451,7 +451,7 @@
         "docs/requirements/branding.md",
         "docs/requirements/persistence.md"
       ],
-      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, muted color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Practice navigation and gun switcher are hidden.",
+      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, white Dark/footer-matching Light color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Practice navigation and gun switcher are hidden.",
       "states": [
         {
           "key": "overview.dark",
@@ -481,7 +481,7 @@
         "docs/requirements/core.md",
         "docs/requirements/persistence.md"
       ],
-      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered muted footer controls remain available with a divider below; gun switching/practice tabs/safety disclosure are hidden.",
+      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered white Dark/footer-matching Light footer controls remain available with a divider below; gun switching/practice tabs/safety disclosure are hidden.",
       "states": [
         {
           "key": "overview.dark",
@@ -544,6 +544,7 @@
     "CHG-027 About and email contact",
     "CHG-028 independent About footer link",
     "CHG-029 separate About/Contact and centered footer",
-    "CHG-030 pure white Dark primary text"
+    "CHG-030 pure white Dark primary text",
+    "CHG-031 white Dark About/Contact controls"
   ]
 }

@@ -1,6 +1,6 @@
 # About
 
-Revision 1.2 · CHG-027/028/029 · 2026-10-12. CHG-029 separates About from Contact and revises the shared links. Exact editorial copy remains suggested for review; implementation, validation and publication are tracked separately.
+Revision 1.3 · CHG-027/028/029/031 · 2026-10-12. CHG-029 separates About from Contact; CHG-031 makes the footer controls white in Dark mode. Exact editorial copy remains suggested for review; implementation, validation and publication are tracked separately.
 
 User instruction: **“also start creating aboutpage, suggest page text. and add easydryfire@gmail.com as a contact email. create this as a separate feature branch”**. This specifically starts the About/contact slice after the CHG-026 implementation pause. Other commercial, account, cloud, paywall and SEO implementations remain paused.
 
@@ -10,6 +10,7 @@ User instruction: **“also start creating aboutpage, suggest page text. and add
 | ABOUT-02 | Explain local storage and backup recovery, experimental acoustic recognition and existing safety checks without promising cloud recovery, perfect detection or verified firearm safety. | Current CORE/DATA invariants applied to the requested page |
 | ABOUT-03 | Display the selectable address **easydryfire@gmail.com** as a working `mailto:` link on the separate Contact screen. Opening an email composer is user initiated; no saved gun/history/audio data is attached or sent automatically. See [Contact](contact.md). | Explicit Contact address, CHG-027/029 |
 | ABOUT-04 | Preserve app/browser Back and Forward, Dark/Light readability and access without microphone permission. Opening About does not create a gun, acknowledge safety or alter saved data. | Existing navigation, appearance and data invariants |
+| ABOUT-05 | Shared About and Contact controls use `#FFFFFF` in resolved Dark mode for stronger contrast. Light controls keep the footer text color. Preserve centered placement, size/underline/focus/touch target, no arrows and the divider below. Disclosure/copyright retains its muted color. | CHG-031 contrast correction under the existing requested implementation and pure-white preference |
 
 ## Suggested page text
 
@@ -47,6 +48,6 @@ Complete the safety check before recording or practice. Sound recognition is exp
 
 Design: [About](../design/screens/about/README.md). Delivery and publication: [implementation history](../project/implementation-history.md).
 
-## Independent link placement — CHG-029 (supersedes CHG-028)
+## Independent link placement — CHG-029/031 (supersedes CHG-028)
 
-Use two separate **About** and **Contact** controls centered in the shared footer, independently of Settings. Both remain visible on either informational page and the current page has `aria-current="page"`. Remove arrows, inherit each theme's footer text color, preserve 0.85rem type, underline and keyboard focus outline, and add a divider between the links and the disclosure text. Minimum touch height stays 44px. Keep the five practice-navigation destinations and existing capture/storage guards. Earlier combined-link/Settings-placement images are superseded evidence. Current layouts: [shared footer](../design/screens/shared/README.md), [About](../design/screens/about/README.md) and [Contact](../design/screens/contact/README.md).
+Use two separate **About** and **Contact** controls centered in the shared footer, independently of Settings. Both remain visible on either informational page and the current page has `aria-current="page"`. Remove arrows; controls are `#FFFFFF` in Dark and match footer text `#4A6276` in Light. Preserve 0.85rem type, underline and keyboard focus outline, and the divider between the links and the disclosure text. Minimum touch height stays 44px. Keep the five practice-navigation destinations and existing capture/storage guards. Earlier muted-Dark/combined-link/Settings-placement images are superseded evidence. Current layouts: [shared footer](../design/screens/shared/README.md), [About](../design/screens/about/README.md) and [Contact](../design/screens/contact/README.md).

@@ -1,5 +1,5 @@
 // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
-const CACHE = 'dryfire-sound-trainer-v25';
+const CACHE = 'dryfire-sound-trainer-v26';
 const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
 
 self.addEventListener('install', event => {

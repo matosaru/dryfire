@@ -12,4 +12,4 @@ CHG-026 currently authorizes [plans/research only](docs/project/web-commercial-p
 
 CHG-027 is the later, specific instruction to start [About and email contact](docs/requirements/about.md) on a separate feature branch from `dev`. Implement that slice with suggested copy for review; the broader CHG-026 implementation pause remains in force.
 
-CHG-029 separates [Contact](docs/requirements/contact.md) from About, with centered muted footer links and a divider. Both are independent app states; this specific instruction leaves broader CHG-026 implementations paused. Preserve font/underline/focus, history, saved data and safety/capture guards.
+CHG-029 separates [Contact](docs/requirements/contact.md) from About, with centered footer links and a divider. CHG-031 makes these controls white in Dark mode and retains their Light color. Both are independent app states; this specific instruction leaves broader CHG-026 implementations paused. Preserve font/underline/focus, history, saved data and safety/capture guards.

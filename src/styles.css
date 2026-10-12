@@ -339,7 +339,7 @@ body[data-view="gunSetup"] .app-shell { padding-bottom:calc(28px + env(safe-area
 .storage-card p { margin:0; font-size:.73rem; line-height:1.55; color:#aec3d5; }
 .text-button { padding:11px 0; min-height:44px; background:none; border:0; color:#66bfff; font-size:.85rem; cursor:pointer; }
 .footer-links { display:flex; justify-content:center; align-items:center; gap:28px; padding-bottom:12px; margin-bottom:16px; border-bottom:1px solid #253139; }
-.footer-page-link { color:inherit; text-decoration:underline; text-underline-offset:3px; }
+.footer-page-link { color:var(--primary-text,inherit); text-decoration:underline; text-underline-offset:3px; }
 .gun-library-heading { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin:20px 0 9px; }
 .gun-library-heading h2 { margin:0; }
 .gun-library-heading+.muted { font-size:.85rem; line-height:1.5; margin-bottom:18px; }
