@@ -20,7 +20,7 @@
         "docs/requirements/build-editions.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
       "states": [
         {
           "key": "first-gun.dark",
@@ -71,7 +71,7 @@
         "docs/requirements/about.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. Separate shared-footer About & contact entry opens its independent page.",
+      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. Separate centered About and Contact footer links open their independent pages.",
       "states": [
         {
           "key": "overview.dark",
@@ -131,7 +131,7 @@
         "docs/requirements/practice-improvements.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
       "states": [
         {
           "key": "overview.dark",
@@ -218,7 +218,7 @@
         "docs/requirements/practice-start.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
         {
           "key": "configure-single.dark",
@@ -396,7 +396,7 @@
         "docs/requirements/build-editions.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun\u2019s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
+      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
       "states": [
         {
           "key": "overview.dark",
@@ -454,7 +454,7 @@
       "domId": "settingsView",
       "title": "Settings",
       "parent": "home",
-      "entry": "Settings gear in each screen heading; backup/restore links",
+      "entry": "Settings gear in the shared branded header; backup/restore links",
       "requirements": [
         "docs/requirements/settings.md",
         "docs/requirements/core.md",
@@ -533,7 +533,7 @@
       "domId": "aboutView",
       "title": "About",
       "parent": "home",
-      "entry": "Shared app footer \u2192 About, including before gun setup",
+      "entry": "Shared app footer → About, including before gun setup",
       "requirements": [
         "docs/requirements/about.md",
         "docs/requirements/core.md",
@@ -565,7 +565,7 @@
       "domId": "contactView",
       "title": "Contact",
       "parent": "home",
-      "entry": "Shared app footer \u2192 Contact, including before gun setup",
+      "entry": "Shared app footer → Contact, including before gun setup",
       "requirements": [
         "docs/requirements/contact.md",
         "docs/requirements/about.md",
@@ -615,9 +615,9 @@
     }
   ],
   "reviewedSources": {
-    "index.html": "2140604546ffa292fe25afc30a69f1d14f419e42081d1ecfdb26e9fed8382906",
-    "src/main.js": "b36ea643df53d8b7a47b8091a51a1068bffdd5c33b73d53e146c82c983db8e5e",
-    "src/styles.css": "0cdf45b47019246201099a78c83542024142910dcee9d4638275ba1171936650",
+    "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
+    "src/main.js": "391f2d78fbe58df50d42eacf535fd91252738695426589fc35d1f34adf87ff7b",
+    "src/styles.css": "64890449cfb4d3004af2df507f0eca63e1775c2c833acceb893ca53111428b09",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
     "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
@@ -628,30 +628,30 @@
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "f2cfbb0dd516db78a9c82c78f6369842f38911c25f96abcc1ed2cb7ae1f5642d",
     "src/storage.js": "a4108f2ba56a57bea5faa15a612124f6c4006298ecaaa752b5556d1bb6ecdddd",
-    "vite.config.js": "e643ea5345817d86e288980b59107a64a50aa81099474defbd9ac4d993f3c259",
+    "vite.config.js": "786a974dd2ecc18cb450027f88b835e15b7154b2144f5279604e0aa6824e559f",
     "src/optional/previewTesting.js": "636e98be5b0a50feb348c07725107010a0a922a7914c6c2b45c0fe99c4c4cfe8",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
-    "src/pageDefinitions.js": "PENDING_REVIEW",
-    "tools/page-templates.mjs": "PENDING_REVIEW",
-    "src/templates/view.html": "PENDING_REVIEW",
-    "src/templates/layout.html": "PENDING_REVIEW",
-    "src/templates/pages/recognize.html": "PENDING_REVIEW",
-    "src/templates/pages/drills.html": "PENDING_REVIEW",
-    "src/templates/pages/contact.html": "PENDING_REVIEW",
-    "src/templates/pages/learn.html": "PENDING_REVIEW",
-    "src/templates/pages/practice.html": "PENDING_REVIEW",
-    "src/templates/pages/guns.html": "PENDING_REVIEW",
-    "src/templates/pages/gunSetup.html": "PENDING_REVIEW",
-    "src/templates/pages/home.html": "PENDING_REVIEW",
-    "src/templates/pages/session.html": "PENDING_REVIEW",
-    "src/templates/pages/settings.html": "PENDING_REVIEW",
-    "src/templates/pages/about.html": "PENDING_REVIEW",
-    "src/templates/pages/history.html": "PENDING_REVIEW",
-    "src/templates/shared/context.html": "PENDING_REVIEW",
-    "src/templates/shared/safety-modal.html": "PENDING_REVIEW",
-    "src/templates/shared/header.html": "PENDING_REVIEW",
-    "src/templates/shared/navigation.html": "PENDING_REVIEW",
-    "src/templates/shared/footer.html": "PENDING_REVIEW"
+    "src/pageDefinitions.js": "1ab61d2b7f0e62e41fc934de55ae8165b48176c9cff3b5e8710034897a28b7d9",
+    "tools/page-templates.mjs": "255efb061d5fea9afad358ead5f92df74d31cd97805413f92744c11d68909104",
+    "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
+    "src/templates/layout.html": "883a5cc08416cf3325d18dc875640640e29c454e1e44467b9b0820f1a1f06591",
+    "src/templates/pages/recognize.html": "744f7545bf30854009830181aa89350df0e7c52c97a09d05520658628863edac",
+    "src/templates/pages/drills.html": "d2323825c9380ab8c432229aea5c1ffc42040baacb222510c2087fc10fe529ec",
+    "src/templates/pages/contact.html": "b1514b154ee4310a9976cb3eb4083c7a8e07fd624603c1c50d2ffd075172f07a",
+    "src/templates/pages/learn.html": "047c1a4d342f58463a4df7f3bffa95c28d7e5fa6d26c218d1ea027ea19fe09f5",
+    "src/templates/pages/practice.html": "9112df38706a114aa7fe1840333612d7e85d2ec013680aa9c911117db53bca94",
+    "src/templates/pages/guns.html": "d8c2fd3dab68c4d6e29667c354e1940c5cc874f14d1286ce33549f3b02346988",
+    "src/templates/pages/gunSetup.html": "957924d0f8444a4ad9f41d8e4575d757fe3de9c6ad0b54176533ab68c2fe8619",
+    "src/templates/pages/home.html": "e4ee581dde390ee63aaf72fe05c6d81ebd506f71909881ccfbd912d18f25e413",
+    "src/templates/pages/session.html": "272d56d4f0b4a4741b56cb37ee02dc23527d86df3b2e9bec413ac7d79417a038",
+    "src/templates/pages/settings.html": "b2463168a0a3622a3b2aeccb75f344a368b0bd3a9e40fa95179e14108fa907fa",
+    "src/templates/pages/about.html": "b64daf80ba7ddbf8e5144bc11aa2cc4b47a7ea686c5bd6f5ae23e5381d24de66",
+    "src/templates/pages/history.html": "93911ad01eb59991b1f1eda5451c13432eac9282bdecd49f361be2f1379ba251",
+    "src/templates/shared/context.html": "e16281f28a015e69707389a07517876937bd10b2fd19277016fceff92c6b5640",
+    "src/templates/shared/safety-modal.html": "259426f79af84ec62288e4bb4f5ff515ba9285ca693b548a3e94ce68d24752e5",
+    "src/templates/shared/header.html": "f8b2b0f40578df83a28cc480ea187ddcf03698f0fc005afa24bec83c7cccdd6f",
+    "src/templates/shared/navigation.html": "aa8a8ba31fd79b14f55e74ce7be1aee955ac2f9761751ba415e868c308afc70f",
+    "src/templates/shared/footer.html": "3b939187621c40c70dbe6dd8021ea432d2eea235b716972da22580e6f1094453"
   },
   "implementationChanges": [
     "CHG-017",

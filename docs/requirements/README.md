@@ -8,7 +8,7 @@ This is the single current functional index. Markdown requirements define behavi
 
 | Specification | Authoritative scope | Current application status |
 | --- | --- | --- |
-| [Page layout](page-layout.md) | Shared header/main/footer/fixed navigation across all screens, safe-area/scroll/readiness guards | CHG-037 directly requested; implementation and screenshot review in progress |
+| [Page layout](page-layout.md) | Shared header/main/footer/fixed navigation across all screens, safe-area/scroll/readiness guards | Implemented with reusable templates; 56 current captures and 266 browser references reviewed; final CI/publication in the delivery tracker |
 | [Core](core.md) | Learning, recognition, safety, resets and navigation invariants | Implemented |
 | [Branding](branding.md) | Dry Fire With Ease display name, DF / WITH EASE lockup and shared copyright | Implemented |
 | [Gun profiles](gun-profiles.md) | Names/types, up to five guns and independent owned data | Implemented, including CHG-019 Edit/type images and CHG-020 single-gun/all-owned-data deletion |
