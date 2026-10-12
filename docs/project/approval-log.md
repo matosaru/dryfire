@@ -449,3 +449,10 @@ The user then instructs **“prepare plans, and commit plans to a feature branch
 - Branch: `feature/about-contact-page`, created from current `origin/dev` (`7b8e72a`). Use a PR into dev; user owns production promotion.
 
 Later release instruction for this request: **“i want you to merge changes to dev and main, do this automatically, i will be out from computer. Just this time”**, followed by **“prepare a feature, and proceed with changes merge”**. This grants one-time ownership of feature/dev/main promotion after checks pass. Preserve PR/check gates and branch protections; it does not authorize forcing a protected branch, disabling checks or permanently enabling automatic production merges. GitHub API access from this workspace currently returns `Forbidden`; complete the feature and use available authorized GitHub automation if possible, recording any remaining access block accurately.
+
+## CHG-028 — Show the in-app About link placement
+
+- Evidence: **“about page should have a link inside an app, can you show me your suggested placement ?”**.
+- Requested scope: explain and visualize the link's placement. CHG-027 already has the link in Settings on its feature branch.
+- Assistant proposal: first Settings item, above installation information, caption **About & contact**, with device capability information at the bottom. [Dark/Light previews](../design/proposals/about-link-placement/README.md) are suggestions for review, not approval evidence or implemented screen order.
+- Application sources, current registry/destination hierarchy, accepted captures and CI baselines remain unchanged by preparing these previews.

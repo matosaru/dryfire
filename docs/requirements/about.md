@@ -54,3 +54,7 @@ Complete the safety check before recording or practice. Sound recognition is exp
 - About is a history-backed screen of `/`, not a new indexable `/about` server route. Public landing pages, Contact route, metadata, sitemap and robots remain CHG-026 planning scope.
 
 Design: [About](../design/screens/about/README.md). Delivery and publication: [implementation history](../project/implementation-history.md).
+
+## Proposed link placement — CHG-028
+
+The user asks to see where the in-app link should be placed. The existing feature's Settings link satisfies ABOUT-01, but sits near the bottom. [The proposed mobile layout](../design/proposals/about-link-placement/README.md) makes **About & contact** the first Settings item, above installation information, with device capability details remaining at the bottom. This is a placement/caption suggestion for review, not an approved or implemented order change. The existing About destination, email, history and data behavior remain the requirements.

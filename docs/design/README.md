@@ -2,6 +2,8 @@
 
 Visual package for Dry Fire With Ease. [Functional requirements](../requirements/README.md) own behavior; [approval history](../project/approval-log.md) records authorization; [delivery plan](../project/implementation-history.md) owns implementation/publication status.
 
+CHG-028 [About-link placement preview](proposals/about-link-placement/README.md) suggests a visible first Settings item. It is a review proposal separate from the implemented screen references below.
+
 CHG-026 prepares [future Contact/SEO/account/Free-Pro/preview design scope](../requirements/web-commercial.md), with implementation explicitly paused. CHG-027 is the later direct request to create [About and email contact](screens/about/README.md) on a separate feature branch, with proposed copy for review. Other commercial/SEO/account work remains planning only.
 
 Current references below are actual production-build captures. CHG-027 adds About and revises its Settings entry; earlier references retain the CHG-023 shared copyright footer after the CHG-022 practice-start correction. Eleven functional screens, all six Practice configurations, early-trigger Review, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples. The [shared layout](screens/shared/README.md) and BRAND-06 apply to every screen; prior captures are archived. Exact reviewed-source hashes are in the registry.
