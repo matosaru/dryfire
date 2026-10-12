@@ -1,5 +1,7 @@
 # My Guns design
 
+CHG-032/034 public availability: show every saved gun with Select/Edit/Delete and type illustration, including restored legacy libraries. Hide Add at two or more saved guns and explain the two-gun creation limit while retaining all existing profiles/recovery. Full preview retains five-gun creation. [Edition specification](../../../requirements/build-editions.md).
+
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
 
 CHG-030 typography revision: primary Dark text uses `#FFFFFF` throughout this screen and neutral controls. Secondary/footer/accent colors and Light values remain. The [shared typography design](../shared/README.md) and [SET-07](../../../requirements/settings.md) define the palette; [current capture/build review](../../baselines/white-primary-validation.json) records the passing pinned runs; publication is tracked separately.
@@ -12,7 +14,7 @@ Entry: Active-gun switcher. App anchor: `gunsView`. This is a state of the same 
 
 ## Layout and interaction
 
-Illustrated library cards show gun name/type, readiness, selected status and capacity out of five. Each has separate Select, Edit and Delete actions; no nested buttons. Edit/Delete share an action row with 44 px minimum targets. Delete names the gun in a confirmation and explains its complete owned-data scope and backup recovery. Cancel changes nothing; selected deletion selects the oldest remaining gun, and last-gun deletion opens setup. Capacity refreshes immediately. CHG-020 is implemented and locally validated; production/device evidence remains separate. Add opens the illustrated type form. Editing retains all owned data and selection; switching loads only the selected gun’s model/history. Backup & restore remains accessible.
+Illustrated library cards show gun name/type, readiness, selected status and edition-aware capacity. Each has separate Select, Edit and Delete actions; no nested buttons. Edit/Delete share an action row with 44 px minimum targets. Delete names the gun in a confirmation and explains its complete owned-data scope and backup recovery. Cancel changes nothing; selected deletion selects the oldest remaining gun, and last-gun deletion opens setup. Capacity refreshes immediately. CHG-020 is implemented and locally validated; production/device evidence remains separate. Add opens the illustrated type form. Editing retains all owned data and selection; switching loads only the selected gun’s model/history. Backup & restore remains accessible.
 
 Validation and publication: [CHG-020 delivery evidence](../../../project/implementation-history.md#chg-020--local-acceptance-2026-10-11).
 

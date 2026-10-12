@@ -1,5 +1,7 @@
 # Gun setup design
 
+CHG-034: public creation allows two guns; all existing profiles remain editable. Add-second-gun is captured in public; the existing five-gun Add state is full preview. [Edition specification](../../../requirements/build-editions.md).
+
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
 
 CHG-030 typography revision: primary Dark text uses `#FFFFFF` throughout this screen and neutral controls. Secondary/footer/accent colors and Light values remain. The [shared typography design](../shared/README.md) and [SET-07](../../../requirements/settings.md) define the palette; [current capture/build review](../../baselines/white-primary-validation.json) records the passing pinned runs; publication is tracked separately.
@@ -12,7 +14,7 @@ Entry: First visit without a gun; Add/Edit from My Guns. App anchor: `gunSetupVi
 
 ## Layout and interaction
 
-Name (1–80 characters), three illustrated native radio choices for gun type, five-gun capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.
+Name (1–80 characters), three illustrated native radio choices for gun type, edition-aware two/five-gun capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.
 
 Functional specifications: [gun-profiles](../../../requirements/gun-profiles.md) · [persistence](../../../requirements/persistence.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 
@@ -23,7 +25,8 @@ Functional specifications: [gun-profiles](../../../requirements/gun-profiles.md)
 | Screen/state | Capture | App anchor |
 | --- | --- | --- |
 | First gun | [`first-gun.dark.png`](first-gun.dark.png) | `gunForm` |
-| Add or edit gun | [`add-gun.dark.png`](add-gun.dark.png) | `gunForm` |
+| Add second gun, public Free | [`add-second-gun.dark.png`](add-second-gun.dark.png) | `gunForm` |
+| Add or edit gun, full preview | [`add-gun.dark.png`](add-gun.dark.png) | `gunForm` |
 | Edit existing gun, Dark | [`edit-gun.dark.png`](edit-gun.dark.png) | `gunForm` |
 | Edit existing gun, Light | [`edit-gun.light.png`](edit-gun.light.png) | `gunForm` |
 

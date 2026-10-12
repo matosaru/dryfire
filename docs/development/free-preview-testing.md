@@ -1,34 +1,83 @@
-# Public Free and private full preview
+# Public Free and full development preview
 
-CHG-026 · revision 1.0 · 2026-10-11 · **Proposed, not implemented.** Addresses the user's request to stop offering every feature publicly while retaining a way to test them. Preview is an internal release/access state, not a third customer plan; customers still see Free plus one future Pro. The later explicit instruction is plans only: do not begin application implementation.
+CHG-032 / CHG-034 / CHG-035 · revision 2.2 · 2026-10-12. The user explicitly approved temporary public restrictions while retaining full feature code and existing saved-data access. Source implementation, test/image review, publication and deployment are separate in the [delivery tracker](../project/implementation-history.md).
 
-## Immediate pre-billing approach
+## What is temporarily disabled
 
-| Environment | Build / access | Intended use |
+| Action | Public build | Full preview |
 | --- | --- | --- |
-| Public production, `main` / `dryfire` | Explicit public-Free capability profile | Anonymous basic practice and recovery of existing owned local data; no public new paid-feature actions |
-| Development, `dev` / `dryfire-dev` | Full staff-preview capability profile, protected by Cloudflare Access | Owner tests all current features before payment/backend service exists |
-| Local/CI | Both profiles against synthetic fixtures | Reproducible Free locks plus full-feature regression; no customer identity/data |
+| Create a first gun | Available | Available in either simulation |
+| Create a second gun | Available | Available |
+| Create a third or later gun | Hidden and transaction-limited at two saved guns; existing larger libraries kept | Full mode: existing five-gun capacity; Free mode: same public rules |
+| Create new custom drills | Hidden and guarded on submit | Available |
+| Edit/run existing custom presets | Available for the current gun's saved presets | Available |
+| Advanced progress graphs, ranges and chart-data table | Hidden; chart code omitted from bundle | Available |
+| Saved sessions and text timing summaries, recognition history, backup and all basic practice modes | Available | Available |
+| Existing multi-gun selection/edit/delete/use and compatible backup restoration | Available; no records removed | Available |
 
-Access must protect the **actual reachable preview Worker URL** and every alias/custom domain, not just a friendly staging hostname while workers.dev stays public. Verify unauthenticated requests cannot obtain preview through another route; disable unprotected aliases if needed. Use a server-side identity allowlist, not a hidden URL, robots/noindex or browser email comparison. The public support address is not automatic evidence of an authorized staff login. Owner Access configuration is external; a file cannot prove it is active.
+No payment/account/subscription code exists to remove. The commercial roadmap remains; this is temporary availability, not an implemented paid plan. [EDITION-01–07](../requirements/build-editions.md) are authoritative.
 
-The public capability proposal is one newly created gun, no new custom-preset creation and basic history/timing text, with graphs/deeper analytics in preview/future Pro. Keep built-in practice, calibration, safety, Contact and manual backup. This **specific allocation remains a proposal**, matching the user's candidates; publishing plans does not authorize applying it.
+## Retained code and data
 
-## Existing data transition
+[src/optional](../../src/optional/README.md) contains the retained editor and chart presentation. The chart is imported only in the compiled full branch. The editor stays in public output for legacy preset editing; it rejects creation there. Storage/preset execution remain shared to preserve every existing library and format-4 backup. IndexedDB schema 3, feature format 2 and backup format 4 are unchanged. No database migration, payment flag or local entitlement is added.
 
-- Never delete, hide from recovery or overwrite existing guns, calibration, presets/results when selecting Free.
-- Existing multi-gun libraries and custom drills remain viewable/usable/exportable; restrict disclosed future creation rather than charging to recover data. Decide editing and imported-library rules before code.
-- Graph visibility may change under a disclosed commercial rule, but results and useful text summaries/export stay accessible. Existing charts are currently free; no permanent Pro grant is silently created or removed by local migration.
-- Backups are not payment proof. A client-only capacity switch can be circumvented; editions control published UX, not strong licensing/DRM. Hosted paid resources need later backend authorization.
+A valid existing multi-gun/custom backup can still be restored. This protects personal data; it is not payment proof. The public repository and browser code are inspectable. Build editions control published actions, not licensing/DRM; future hosted paid resources need backend authorization.
 
-## Build and test contract
+## Commands
 
-Use one capability catalog for navigation/actions and clear lock states; no CSS-only hiding, scattered hard-coded conditions or public query/localStorage unlock. Build both profiles from the same tested commit. Artifacts must identify edition/source SHA; deployment chooses the correct tested artifact for its branch. The current single-artifact workflow needs a reviewed update; it is not implemented yet.
+```bash
+npm ci
+npm run build
+npm run verify:dist
+npm run preview -- --host 127.0.0.1
+```
 
-Test fresh Free, an existing five-gun/custom/graph library, backup restoration, locks/direct navigation and full-preview behavior. Add Free lock-state baselines alongside current full screens and update registry/requirements/designs when states exist. Prove production receives Free and no dev unlock/secret ships. Preserve schema 3/backup 4 and physical microphone timing.
+The default build/server edition is public. To run all retained features locally:
 
-## Production Pro testing after accounts exist
+```bash
+npm run dev:preview
+# Or test the full optimized build:
+npm run build:preview
+npm run verify:dist -- --edition=preview
+npm run preview -- --host 127.0.0.1
+```
 
-When a backend exists, move from separate pre-billing editions to account-scoped production entitlements as specified in [monetization QA](../business/monetization.md#freepro-testing-on-dev-and-production). Separate staff-owned Free and Pro users get audited server roles/grants. Comped access validates features; a controlled real purchase/refund still validates billing. Ordinary users cannot assign roles or grant themselves Pro.
+Both optimized builds use `dist/`; rebuilding replaces that output, not user data. `edition.json` records the edition, source revision/digest and complete bundled-asset list. Public worker cache v29 preloads the app shell without changing IndexedDB. CHG-035 private preview retires old app-shell workers/caches and disables authenticated offline shell reuse. Verification rejects the wrong edition or checkout revision. Unknown `APP_EDITION` values fail the build. Public edition cannot be changed by URL/localStorage/email. The private build alone has an authorized simulation preference; it changes visible/test capabilities, not the build identity or a paid entitlement.
 
-Keep dev/production keys, databases and objects separate. Review logout/account-switch caching before auth. Continue [feature PR → dev → main](../project/branching-strategy.md); do not push a Free-profile change directly to production.
+## Deployment boundary
+
+Ordinary dev/main deployment still consumes the **public** `minified-web-app` artifact. Both production/development deploy scripts verify public edition/source metadata before invoking Wrangler. An accidental full build cannot use these scripts. The private build runs on loopback and in isolated CI contexts. Its Free default/Full selector is implemented; [Access deployment](private-preview-deployment.md) is prepared for the requested host, but no hosted protection/deployment is claimed.
+
+Before hosting full preview, configure Cloudflare Access or equivalent authentication on the actual custom hostname **and every reachable Workers/preview/alias URL**. Disable unprotected aliases. Verify anonymous requests are denied, authorized staff can load the full app, and assets/service-worker paths have the same boundary. A hidden URL, noindex, local email comparison or an environment variable saying protection is enabled is not authentication. Then add a dedicated tested-preview artifact/deployment path through the existing PR and environment gates. Cloudflare credentials/live Access configuration are not available in this workspace; that external prerequisite remains unverified. No public full-preview deployment is performed.
+
+## Tests and screenshots
+
+```bash
+npm test
+npm run test:smoke
+npm run build
+VISUAL_EDITION=public npm run test:visual
+npm run build:preview
+npm run verify:dist -- --edition=preview
+VISUAL_EDITION=preview npm run test:visual
+```
+
+Use the pinned renderer from [visual-test instructions](VISUAL_TESTS.md), not system Chromium, for accepted comparisons. CI builds/tests public and preview separately and uploads edition-labelled difference reports. Cases cover fresh two-gun creation and third-gun rejection, atomic/concurrent rejection, existing libraries and presets, legacy editing/execution, direct submit/visible-control attempts, no client edition override, preserved text history and full creation/charts. Both informational screens retain all five bottom tabs with history/setup guards. Public first-install offline refresh retains the restored library. Private checks ensure old shell caches/registration are retired while online refresh retains data; same-origin preview headers prevent HTTP caching.
+
+[Current screen registry](../architecture/screen-map.json) marks preview-only and public-only states; shared states are compared in both editions. Browser references are grouped by browser/edition/screen/state/width. Actual implementation captures use the declared edition (public for shared states). Record image review and unchanged reruns before accepting references; ordinary CI never accepts them automatically.
+
+## Later real subscription testing
+
+Accounts/cloud/billing remain paused. Future production Free/Pro tests require separate staff identities and audited server-controlled grants, plus a controlled purchase/refund check. No production browser override or fake payment secret is introduced now. Continue [feature PR → dev → main](../project/branching-strategy.md); production release remains separate.
+
+## In-app tester switch and later production proposal
+
+CHG-035 explicitly authorizes and implements the first private-preview option; live Access setup remains unverified. That option is a small **Testing: Free / Full** selector inside an exclusively private preview build. Cloudflare Access authenticates and explicitly allowlists testers for that entire build; every admitted tester already has permission to use Full. The switch simulates the real Free restrictions without granting access. It is compiled out of public output together with its override path; a public URL/localStorage value cannot activate it. Access must protect all alternate hostnames, assets and Workers URLs, with unprotected aliases disabled. The selector and build separation are implemented; [fail-closed Access deployment setup](private-preview-deployment.md) is prepared, with live configuration/verification pending.
+
+Default private testing to Free, show the active simulation clearly, and preserve the test library on a mode change. Private-origin preferences may remember a tester's simulation; they are never paid entitlement evidence and never affect public output. Use the same capability rules and guards as the actual editions, including legacy-data access, to avoid a cosmetic hide-only simulation. Exercise both optimized published editions in CI as well; a private simulation does not replace those artifact checks. Full preview assets are available to authorized testers, and public source remains inspectable: this boundary protects access, not exclusive ownership of browser code.
+
+For a later **production** switch, once authentication and backend entitlements exist, expose the selector only after the server confirms an explicitly allowlisted tester account. Ordinary users never see the selector. Switching calls an authenticated server endpoint; the server checks the tester role, target environment and ownership, then stores a short-lived override. Use a secure HttpOnly session cookie, CSRF protection, audited grants/expiry and deny-by-default authorization. A client flag or decoded role must never grant access. Enforce permissions on protected APIs/resources as well as visible controls.
+
+Free simulation means the actual public rules: two new guns, no new custom drills and no advanced graphs. Full simulation means the five-gun/custom/chart preview. Preserve existing local data and normal backup recovery in either mode; switching does not delete profiles or rewrite a subscription. Display the active testing mode and expiry to prevent confusion. On expiry or revoked tester access, restore the account's real permissions. Isolate test billing, secrets, storage and identities on dev; production override grants are limited to named staff and their own test data. Actual customer billing checks remain a separate controlled test.
+
+Acceptance for that later feature: anonymous and ordinary accounts cannot request Full by revealing a control, calling its endpoint, changing a URL/localStorage value or replaying an expired/revoked grant; Free/Full/lapsed behavior has server and UI coverage; no grant exposes another person's data. The public repository and downloaded browser code remain inspectable. Authorization can protect hosted resources and private builds, but cannot make locally delivered features impossible to copy. No product login, tester API or production override is implemented in CHG-035.

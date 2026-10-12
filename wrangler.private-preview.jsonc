@@ -1,0 +1,18 @@
+{
+  "name": "dev-dryfire",
+  "main": "workers/privatePreview.js",
+  "compatibility_date": "2026-10-09",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "vars": {
+    "ACCESS_HOSTNAME": "dev-dryfire.matosaru.workers.dev",
+    "ACCESS_ALLOWED_EMAILS": "matosaru@gmail.com",
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": ""
+  }
+}

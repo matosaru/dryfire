@@ -15,6 +15,13 @@ test('narrow History retains readable choices and working native filters', async
   await page.locator('#importFile').setInputFiles({ name: 'fixture.json', mimeType: 'application/json', buffer: library });
   await expect(page.locator('#homeView')).toBeVisible();
   await page.locator('.tab[data-view="history"]').click();
+  if ((process.env.VISUAL_EDITION ?? 'public') === 'public') {
+    await expect(page.locator('#progressSection')).not.toBeVisible();
+    await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);
+    await expect(page.locator('#historyList select').first()).toBeVisible();
+    expect(await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth) - innerWidth)).toBe(0);
+    return;
+  }
   const group = page.getByRole('combobox', { name: 'Comparable drill and settings' });
   await expect(group).toBeEnabled();
   await expect(group.locator('option', { hasText: 'Single trigger press · App beep · 2–5s random' })).toHaveCount(1);

@@ -1,0 +1,1130 @@
+{
+  "config": {
+    "configFile": "/__w/dryfire/dryfire/edition-candidates.config.js",
+    "rootDir": "/__w/dryfire/dryfire/visual-tests",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": "/__w/dryfire/dryfire/visual-tests/metadata.js",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/matosaru/dryfire/commit/0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+        "commitHash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+        "buildHref": "https://github.com/matosaru/dryfire/actions/runs/38282583278"
+      },
+      "gitCommit": {
+        "shortHash": "0c85c9e",
+        "hash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+        "subject": "feat: allow two free guns and document secure tester modes",
+        "body": "feat: allow two free guns and document secure tester modes\n",
+        "author": {
+          "name": "Study",
+          "email": "studymatonis@gmail.com",
+          "time": 1791825094000
+        },
+        "committer": {
+          "name": "Study",
+          "email": "studymatonis@gmail.com",
+          "time": 1791825094000
+        },
+        "branch": "feature/about-contact-page"
+      },
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/__w/dryfire/dryfire/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/matosaru/dryfire/commit/0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "commitHash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "buildHref": "https://github.com/matosaru/dryfire/actions/runs/38282583278"
+          },
+          "gitCommit": {
+            "shortHash": "0c85c9e",
+            "hash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "subject": "feat: allow two free guns and document secure tester modes",
+            "body": "feat: allow two free guns and document secure tester modes\n",
+            "author": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1791825094000
+            },
+            "committer": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1791825094000
+            },
+            "branch": "feature/about-contact-page"
+          },
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/__w/dryfire/dryfire/visual-tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/__w/dryfire/dryfire/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/matosaru/dryfire/commit/0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "commitHash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "buildHref": "https://github.com/matosaru/dryfire/actions/runs/38282583278"
+          },
+          "gitCommit": {
+            "shortHash": "0c85c9e",
+            "hash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "subject": "feat: allow two free guns and document secure tester modes",
+            "body": "feat: allow two free guns and document secure tester modes\n",
+            "author": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1791825094000
+            },
+            "committer": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1791825094000
+            },
+            "branch": "feature/about-contact-page"
+          },
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/__w/dryfire/dryfire/visual-tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 2,
+    "webServer": {
+      "command": "npm run preview -- --host 127.0.0.1 --port 4175 --strictPort",
+      "url": "http://127.0.0.1:4175",
+      "reuseExistingServer": false,
+      "timeout": 20000
+    }
+  },
+  "suites": [
+    {
+      "title": "build-editions.spec.js",
+      "file": "build-editions.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "public creation guards survive revealed controls, direct submits and browser edition flags",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1944,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:01.692Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "69b39775a8ce62161c20-9623d332ab0065d0d430",
+          "file": "build-editions.spec.js",
+          "line": 45,
+          "column": 3
+        },
+        {
+          "title": "public creation guards survive revealed controls, direct submits and browser edition flags",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3368,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:10.295Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "69b39775a8ce62161c20-263681c0aeb4abd6e790",
+          "file": "build-editions.spec.js",
+          "line": 45,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "offline.spec.js",
+      "file": "offline.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "first installed offline refresh keeps app bundles and the restored library available",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1705,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:01.721Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "170c7452e9c121637e46-6ae4b8ded4ef94964c6d",
+          "file": "offline.spec.js",
+          "line": 6,
+          "column": 1
+        },
+        {
+          "title": "first installed offline refresh keeps app bundles and the restored library available",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2922,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:10.939Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "170c7452e9c121637e46-4de0a1c31600a192f687",
+          "file": "offline.spec.js",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "screens.spec.js",
+      "file": "screens.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "gun-setup/first-gun.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 740,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:03.637Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiZmlyc3QtZ3VuLmRhcmsiLCJhbmNob3IiOiJndW5Gb3JtIiwidmlldyI6Imd1blNldHVwVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MTE3M30sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-18765890518c9bd02224",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "gun-setup/first-gun.dark at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 656,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:03.813Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiZmlyc3QtZ3VuLmRhcmsiLCJhbmNob3IiOiJndW5Gb3JtIiwidmlldyI6Imd1blNldHVwVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjMyMCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozMjAsImhlaWdodCI6MTIwN30sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-8d1a0e877e318e072d42",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "gun-setup/add-second-gun.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1186,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:04.394Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiYWRkLXNlY29uZC1ndW4uZGFyayIsImFuY2hvciI6Imd1bkZvcm0iLCJ2aWV3IjoiZ3VuU2V0dXBWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIl0sIndpZHRoIjozOTAsImVkaXRpb24iOiJwdWJsaWMiLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjEyMzZ9LCJicm93c2VyIjoiY2hyb21pdW0iLCJicm93c2VyVmVyc2lvbiI6IjE0NS4wLjc2MzIuNiIsImNsb2NrIjoiMjAyNi0xMC0xMVQxMTowMDowMC4wMDBaIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-a40c8acc2b7bb7eb436a",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "gun-setup/edit-gun.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1185,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:04.494Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiZWRpdC1ndW4uZGFyayIsImFuY2hvciI6Imd1bkZvcm0iLCJ2aWV3IjoiZ3VuU2V0dXBWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHVibGljIiwidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0IjoxMjEzfSwiYnJvd3NlciI6ImNocm9taXVtIiwiYnJvd3NlclZlcnNpb24iOiIxNDUuMC43NjMyLjYiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-4b666c0bd8d04d13a827",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "gun-setup/edit-gun.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1110,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:05.601Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiZWRpdC1ndW4ubGlnaHQiLCJhbmNob3IiOiJndW5Gb3JtIiwidmlldyI6Imd1blNldHVwVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MTIxM30sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-7af23e6054454eae0e7e",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/library.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1249,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:05.706Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoibGlicmFyeS5kYXJrIiwiYW5jaG9yIjoiZ3VuTGlzdCIsInZpZXciOiJndW5zVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MTI0NX0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-c1a1a8ff4ea3cd74d660",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/library.dark at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1186,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:06.725Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoibGlicmFyeS5kYXJrIiwiYW5jaG9yIjoiZ3VuTGlzdCIsInZpZXciOiJndW5zVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjMyMCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozMjAsImhlaWdodCI6MTMwN30sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-1afe3c4e9f5d69e84ab4",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/library.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1159,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:06.974Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoibGlicmFyeS5saWdodCIsImFuY2hvciI6Imd1bkxpc3QiLCJ2aWV3IjoiZ3Vuc1ZpZXciLCJlZGl0aW9ucyI6WyJwdWJsaWMiLCJwcmV2aWV3Il0sIndpZHRoIjozOTAsImVkaXRpb24iOiJwdWJsaWMiLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjEyNDV9LCJicm93c2VyIjoiY2hyb21pdW0iLCJicm93c2VyVmVyc2lvbiI6IjE0NS4wLjc2MzIuNiIsImNsb2NrIjoiMjAyNi0xMC0xMVQxMTowMDowMC4wMDBaIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-6dc146192e17af377a67",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/library.light at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1053,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:07.924Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoibGlicmFyeS5saWdodCIsImFuY2hvciI6Imd1bkxpc3QiLCJ2aWV3IjoiZ3Vuc1ZpZXciLCJlZGl0aW9ucyI6WyJwdWJsaWMiLCJwcmV2aWV3Il0sIndpZHRoIjozMjAsImVkaXRpb24iOiJwdWJsaWMiLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzIwLCJoZWlnaHQiOjEzMDd9LCJicm93c2VyIjoiY2hyb21pdW0iLCJicm93c2VyVmVyc2lvbiI6IjE0NS4wLjc2MzIuNiIsImNsb2NrIjoiMjAyNi0xMC0xMVQxMTowMDowMC4wMDBaIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-b77f5890dad3ca0f0bb3",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/deleted.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1401,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:08.149Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoiZGVsZXRlZC5kYXJrIiwiYW5jaG9yIjoiZ3VuTGlzdCIsInZpZXciOiJndW5zVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MTE0N30sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-ef742de4f06a27a8037f",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "gun-setup/first-gun.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1320,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:13.831Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiZmlyc3QtZ3VuLmRhcmsiLCJhbmNob3IiOiJndW5Gb3JtIiwidmlldyI6Imd1blNldHVwVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MTE2NX0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-381a79d8181b4387582d",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "gun-setup/first-gun.dark at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1287,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:14.041Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiZmlyc3QtZ3VuLmRhcmsiLCJhbmNob3IiOiJndW5Gb3JtIiwidmlldyI6Imd1blNldHVwVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjMyMCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozMjAsImhlaWdodCI6MTE5N30sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-ca87fa36357115548c41",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "gun-setup/add-second-gun.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3117,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:15.175Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiYWRkLXNlY29uZC1ndW4uZGFyayIsImFuY2hvciI6Imd1bkZvcm0iLCJ2aWV3IjoiZ3VuU2V0dXBWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIl0sIndpZHRoIjozOTAsImVkaXRpb24iOiJwdWJsaWMiLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjEyMjh9LCJicm93c2VyIjoid2Via2l0IiwiYnJvd3NlclZlcnNpb24iOiIyNi4wIiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-724984560c876a838f43",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "gun-setup/edit-gun.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3180,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:15.373Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiZWRpdC1ndW4uZGFyayIsImFuY2hvciI6Imd1bkZvcm0iLCJ2aWV3IjoiZ3VuU2V0dXBWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHVibGljIiwidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0IjoxMjA1fSwiYnJvd3NlciI6IndlYmtpdCIsImJyb3dzZXJWZXJzaW9uIjoiMjYuMCIsImNsb2NrIjoiMjAyNi0xMC0xMVQxMTowMDowMC4wMDBaIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-ad49476da8334c21f28d",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "gun-setup/edit-gun.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2432,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:18.322Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5TZXR1cCIsImZvbGRlciI6Imd1bi1zZXR1cCIsInN0YXRlIjoiZWRpdC1ndW4ubGlnaHQiLCJhbmNob3IiOiJndW5Gb3JtIiwidmlldyI6Imd1blNldHVwVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MTIwNX0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-173627ab028bcbad9a16",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/library.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2464,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:18.581Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoibGlicmFyeS5kYXJrIiwiYW5jaG9yIjoiZ3VuTGlzdCIsInZpZXciOiJndW5zVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MTIzN30sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-63b84706b8df2abf6a15",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/library.dark at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2386,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:20.771Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoibGlicmFyeS5kYXJrIiwiYW5jaG9yIjoiZ3VuTGlzdCIsInZpZXciOiJndW5zVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjMyMCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozMjAsImhlaWdodCI6MTI5NH0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-25df99a96bb56415a9b9",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/library.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2396,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:21.082Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoibGlicmFyeS5saWdodCIsImFuY2hvciI6Imd1bkxpc3QiLCJ2aWV3IjoiZ3Vuc1ZpZXciLCJlZGl0aW9ucyI6WyJwdWJsaWMiLCJwcmV2aWV3Il0sIndpZHRoIjozOTAsImVkaXRpb24iOiJwdWJsaWMiLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjEyMzd9LCJicm93c2VyIjoid2Via2l0IiwiYnJvd3NlclZlcnNpb24iOiIyNi4wIiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-365fa8d7b2b70579886f",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/library.light at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2443,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:23.175Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoibGlicmFyeS5saWdodCIsImFuY2hvciI6Imd1bkxpc3QiLCJ2aWV3IjoiZ3Vuc1ZpZXciLCJlZGl0aW9ucyI6WyJwdWJsaWMiLCJwcmV2aWV3Il0sIndpZHRoIjozMjAsImVkaXRpb24iOiJwdWJsaWMiLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzIwLCJoZWlnaHQiOjEyOTR9LCJicm93c2VyIjoid2Via2l0IiwiYnJvd3NlclZlcnNpb24iOiIyNi4wIiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-4e92d22c41931873186d",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        },
+        {
+          "title": "guns/deleted.dark at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2358,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:23.497Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJndW5zIiwiZm9sZGVyIjoiZ3VucyIsInN0YXRlIjoiZGVsZXRlZC5kYXJrIiwiYW5jaG9yIjoiZ3VuTGlzdCIsInZpZXciOiJndW5zVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InB1YmxpYyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MTEzOX0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-38bb6896bf874e2a23a1",
+          "file": "screens.spec.js",
+          "line": 181,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-12T17:13:00.027Z",
+    "duration": 25921.073,
+    "expected": 24,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

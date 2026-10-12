@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:preview": "vite build --mode full-preview",
+    "dev:preview": "vite --mode full-preview --host 127.0.0.1",
     "preview": "vite preview",
     "cap:sync": "npm run build && cap sync",
     "cap:ios": "npm run cap:sync && cap open ios",
@@ -25,11 +27,14 @@
     "visual:review": "node tools/visual-review.mjs",
     "visual:probe": "node tools/visual-diff-probe.mjs",
     "deploy:check": "wrangler deploy --config wrangler.jsonc --env \"\" --dry-run && wrangler deploy --config wrangler.jsonc --env dev --dry-run",
-    "deploy:production": "wrangler deploy --config wrangler.jsonc --env \"\"",
-    "deploy:development": "wrangler deploy --config wrangler.jsonc --env dev"
+    "deploy:production": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.jsonc --env \"\"",
+    "deploy:development": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.jsonc --env dev",
+    "private-preview:check": "node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc --dry-run",
+    "deploy:private-preview": "node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc"
   },
   "dependencies": {
-    "@capacitor/core": "^8.0.0"
+    "@capacitor/core": "^8.0.0",
+    "jose": "6.2.12"
   },
   "devDependencies": {
     "@capacitor/android": "^8.0.0",

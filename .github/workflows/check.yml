@@ -27,7 +27,16 @@ jobs:
           name: minified-web-app
           path: dist/
           if-no-files-found: error
-  screenshots:
+      - name: Verify the private preview and fail-closed asset Worker without deploying
+        run: |
+          npm run build:preview
+          npm run private-preview:check
+  screenshot_editions:
+    name: screenshots (${{ matrix.edition }})
+    strategy:
+      fail-fast: false
+      matrix:
+        edition: [public, preview]
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     container:
@@ -35,15 +44,27 @@ jobs:
       options: --ipc=host
     env:
       VISUAL_IMAGE: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      APP_EDITION: ${{ matrix.edition }}
+      VISUAL_EDITION: ${{ matrix.edition }}
     steps:
       - uses: actions/checkout@v4
+      - name: Trust only the checked-out repository inside the rendering container
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
       - run: npm ci --no-audit --no-fund
-      - run: npm run build
-      - run: npm run verify:dist
+      - name: Build the selected edition
+        run: |
+          if npm run build > /tmp/edition-build.log 2>&1; then
+            cat /tmp/edition-build.log
+          else
+            cat /tmp/edition-build.log
+            cat /tmp/edition-build.log >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      - run: npm run verify:dist -- --edition=${{ matrix.edition }}
       - name: Require reviewed baseline coverage and fingerprints
         run: npm run visual:review
       - name: Compare Chromium and WebKit screenshots
@@ -53,7 +74,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: screenshot-checks
+          name: screenshot-checks-${{ matrix.edition }}
           path: |
             playwright-report/
             test-results/
@@ -61,3 +82,13 @@ jobs:
             test-results-probe/
           retention-days: 14
           if-no-files-found: error
+  screenshots:
+    # Preserve the existing required-check name while requiring both editions.
+    needs: screenshot_editions
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require both edition jobs to succeed
+        env:
+          EDITION_RESULT: ${{ needs.screenshot_editions.result }}
+        run: test "$EDITION_RESULT" = 'success'

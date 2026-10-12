@@ -13,6 +13,7 @@ export default defineConfig({
   reporter: [['line'], ...(process.env.CI && !probe ? [['github']] : []), ['html', { open: 'never', outputFolder: probe ? 'playwright-probe-report' : 'playwright-report' }], ['json', { outputFile: `${results}/results.json` }]],
   expect: { timeout: 5000, toHaveScreenshot: { maxDiffPixels: environment.maxDiffPixels, threshold: environment.comparisonThreshold, animations: 'disabled', caret: 'hide', scale: 'css' } },
   use: { baseURL: 'http://127.0.0.1:4175', viewport: environment.viewport, deviceScaleFactor: environment.deviceScaleFactor,
+    ...((process.env.VISUAL_EDITION ?? 'public') === 'preview' ? { storageState: { cookies: [], origins: [{ origin: 'http://127.0.0.1:4175', localStorage: [{ name: 'dryfire-private-preview-mode', value: 'full' }] }] } } : {}),
     locale: environment.locale, timezoneId: environment.timezoneId, colorScheme: 'dark', contextOptions: { reducedMotion: 'reduce' },
     serviceWorkers: 'block', trace: 'retain-on-failure', screenshot: 'only-on-failure' },
   projects: [{ name: 'chromium', use: { browserName: 'chromium' } }, { name: 'webkit', use: { browserName: 'webkit' } }],

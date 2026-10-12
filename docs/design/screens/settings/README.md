@@ -1,5 +1,7 @@
 # Settings design
 
+CHG-035: private preview alone adds **Test as: Free / Full** at the top of Settings and a footer mode indicator. Default Free reproduces the two-gun public rules; Full restores five-gun creation/custom creation/charts. Disabled during active work; mode changes preserve saved data. Public HTML omits these controls. Live Access and deployment are tracked separately in the [guide](../../../development/private-preview-deployment.md).
+
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
 
 CHG-030 typography revision: primary Dark text uses `#FFFFFF` throughout this screen and neutral controls. Secondary/footer/accent colors and Light values remain. The [shared typography design](../shared/README.md) and [SET-07](../../../requirements/settings.md) define the palette; [current capture/build review](../../baselines/white-primary-validation.json) records the passing pinned runs; publication is tracked separately.
@@ -22,6 +24,10 @@ Functional specifications: [settings](../../../requirements/settings.md) · [cor
 
 | Screen/state | Capture | App anchor |
 | --- | --- | --- |
+| Private preview, free, dark | [`preview-free.dark.png`](preview-free.dark.png) | `previewTestingSection` |
+| Private preview, free, light | [`preview-free.light.png`](preview-free.light.png) | `previewTestingSection` |
+| Private preview, full, dark | [`preview-full.dark.png`](preview-full.dark.png) | `previewTestingSection` |
+| Private preview, full, light | [`preview-full.light.png`](preview-full.light.png) | `previewTestingSection` |
 | Settings, Dark | [`overview.dark.png`](overview.dark.png) | `settingsView` |
 | Settings, Light | [`overview.light.png`](overview.light.png) | `settingsView` |
 | Completed selected-gun sound reset | [`sounds-reset.dark.png`](sounds-reset.dark.png) | `soundResetOutcome` |

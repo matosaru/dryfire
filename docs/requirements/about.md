@@ -1,6 +1,6 @@
 # About
 
-Revision 1.3 · CHG-027/028/029/031 · 2026-10-12. CHG-029 separates About from Contact; CHG-031 makes the footer controls white in Dark mode. Exact editorial copy remains suggested for review; implementation, validation and publication are tracked separately.
+Revision 1.4 · CHG-027/028/029/031/033 · 2026-10-12. CHG-033 restores the shared bottom navigation. Exact editorial copy remains suggested for review; implementation, validation and publication are tracked separately.
 
 User instruction: **“also start creating aboutpage, suggest page text. and add easydryfire@gmail.com as a contact email. create this as a separate feature branch”**. This specifically starts the About/contact slice after the CHG-026 implementation pause. Other commercial, account, cloud, paywall and SEO implementations remain paused.
 
@@ -13,6 +13,8 @@ User instruction: **“also start creating aboutpage, suggest page text. and add
 | ABOUT-05 | Shared About and Contact controls use `#FFFFFF` in resolved Dark mode for stronger contrast. Light controls keep the footer text color. Preserve centered placement, size/underline/focus/touch target, no arrows and the divider below. Disclosure/copyright retains its muted color. | CHG-031 contrast correction under the existing requested implementation and pure-white preference |
 
 ## Suggested page text
+
+CHG-032: describe the current build accurately. Public copy promotes basic trigger practice, saved results and manual recovery; it must not advertise new custom drills, more than two new guns or graphs as publicly available. The full preview retains the existing five-gun/custom/trends description. Existing saved data stays usable in either edition.
 
 This is the initial editorial proposal implemented for review, not a claim of word-for-word user approval.
 
@@ -39,6 +41,8 @@ No account is required. Your profiles, learned sound features, drills and histor
 Complete the safety check before recording or practice. Sound recognition is experimental. It cannot verify an unloaded firearm, aim or safe handling, and is not a calibrated measurement instrument.
 
 ## Acceptance and boundaries
+
+- **ABOUT-06 / CHG-033:** show the same fixed five-item bottom navigation as other app pages: Home, Learn, Drills, Live Listen and History. Keep safe-area/content padding so it does not cover page/footer content. About is not a practice tab, so no unrelated tab is marked active. Before gun setup, those destinations use the existing setup gate; opening a tab never starts the microphone or confirms safety.
 
 - App footer → About opens About and → Contact opens Contact before and after gun setup. Back returns to the visited screen; browser Back/Forward restores the visited app state.
 - About contains no contact card; [Contact](contact.md) owns the email page. Neither page sends private data or introduces an email backend or form.
