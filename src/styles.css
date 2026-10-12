@@ -271,7 +271,8 @@ button { -webkit-tap-highlight-color:transparent; }
 /* Reference design: compact mobile panels and persistent bottom navigation. */
 :root{--accent-orange:#ff8126}
 body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
-.app-shell{max-width:480px;padding:22px 16px calc(96px + env(safe-area-inset-bottom))}
+.app-shell{max-width:480px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:max(22px,env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom))}
+.page-content{flex:1;min-width:0}
 .hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}.brand-eyebrow{font-size:1.22rem;letter-spacing:.18em}.hero h1{font-size:.55rem;letter-spacing:.34em}.icon-button{background:none;border:0;color:var(--primary-text,#96a2b0);font-size:26px}.status-pill{display:none}
 .hero .brand-name{margin:0;color:var(--primary-text,#f5f7fa);font-size:inherit;font-weight:900;letter-spacing:normal;line-height:1.2}
 .brand-name .brand-eyebrow{display:block;font-size:clamp(1rem,4.9vw,1.22rem);letter-spacing:.14em;white-space:nowrap}
@@ -284,7 +285,6 @@ body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
 .home-actions{display:grid;grid-template-columns:1fr;gap:12px}.dashboard-card{width:100%;display:flex;align-items:center;gap:20px;text-align:left;color:var(--primary-text,#f2f4f8);padding:12px;min-height:102px;cursor:pointer}.dashboard-card strong{display:block;font-size:1.04rem;margin-bottom:7px}.dashboard-card small{display:block;color:#bac5d1;font-size:.8rem;line-height:1.4}.dashboard-icon{width:78px;height:78px;display:grid;place-items:center;flex:none;font-size:47px;border-radius:15px}.orange{color:#ff8126;background:#412d20}.blue{color:#43baff;background:#12344a}.green{color:#50da86;background:#203e2e}.purple{color:#b874ff;background:#302641}.chevron{margin-left:auto;font-size:30px;color:#acbac8;font-weight:300}.dashboard-card:disabled{opacity:.65;cursor:not-allowed}
 .home-stats{margin-top:20px}.home-stats article{padding:10px 7px;background:#111a20}.home-stats strong{font-size:1.05rem}.home-stats small{font-size:.64rem}
 .section-head{position:relative;justify-content:center;min-height:36px;margin-bottom:18px}.section-head h2{font-size:1.12rem;text-align:center}.section-head .eyebrow{display:none}.back-button{position:absolute;left:0;top:-5px;background:none;border:0;color:#fff;font-size:35px;padding:0 12px;cursor:pointer}
-body[data-view]:not([data-view="home"]):not([data-view="guns"]):not([data-view="gunSetup"]):not([data-view="loading"]) .hero{display:none}
 .view>.muted{font-size:.78rem;line-height:1.5}.class-grid{grid-template-columns:1fr;gap:12px;margin-top:12px}.class-card{padding:10px;gap:0}.class-card-top{gap:13px;align-items:stretch}.class-preview{width:34%;min-width:95px;max-width:128px;aspect-ratio:4/5;background:#081820}.class-preview img{object-fit:contain}.class-info{display:flex;flex-direction:column;justify-content:center;flex:1}.class-info h3{font-size:.95rem}.class-info>p{font-size:.73rem;line-height:1.35;margin-bottom:7px}.class-info .progress-label{font-size:.65rem!important;color:#a5b6c6!important;margin:3px 0}.progress-track{height:5px;margin:3px 0 10px}.class-actions{gap:7px}.class-actions .button{min-height:34px;padding:6px 9px;border-radius:9px;font-size:.76rem}.button.primary{background:linear-gradient(135deg,#ff983d,#ff751c);color:#16100b;border:1px solid #ffad62}.button.secondary{background:linear-gradient(#29343e,#1c2730);border-color:#35424e}.class-actions .reset-class{font-weight:600}
 .segmented-control{display:flex;padding:3px;border:1px solid #2b3842;border-radius:12px;background:#1b252e;font-size:.72rem}.segmented-control span{flex:1;text-align:center;padding:8px}.segmented-control .selected{border-radius:9px;background:linear-gradient(135deg,#ff9638,#ff751c);color:#15100a;font-weight:750}.segmented-control span:last-child{color:#a4afbc}
 .preset-card{padding:12px;gap:9px}.preset-header{display:flex;align-items:center;gap:13px}.preset-header h3{font-size:.91rem;line-height:1.35}.drill-target{font-size:37px;color:#46baff;line-height:1}.preset-card:nth-child(3) .drill-target{color:#b574f6}.drill-description{font-size:.73rem;color:#b3c0cc;margin:-5px 0 0 50px}.preset-steps{gap:6px;margin-left:46px}.preset-chip{font-size:.65rem;padding:4px 7px;border:1px solid #49c6ff;background:#0b1a24;color:#5aceff}.preset-chip[data-sound="trigger"]{border-color:#ff9231;color:#ff9c42}.preset-chip[data-sound="reload"]{border-color:#c77bff;color:#d19bff}.preset-card .button{min-height:35px;padding:6px;border-radius:8px;font-size:.78rem}
@@ -303,17 +303,13 @@ body[data-view="loading"] .tabs,
 body[data-view="loading"] .safety-disclosure,
 body[data-view="loading"] .gun-switcher,
 body[data-view="loading"] footer,
-body[data-view="guns"] .tabs,
 body[data-view="guns"] .safety-disclosure,
 body[data-view="guns"] .gun-switcher,
-body[data-view="gunSetup"] .tabs,
 body[data-view="gunSetup"] .safety-disclosure,
 body[data-view="gunSetup"] .gun-switcher { display:none; }
 body[data-view="loading"] .hero,
 body[data-view="guns"] .hero,
 body[data-view="gunSetup"] .hero { display:flex; }
-body[data-view="guns"] .app-shell,
-body[data-view="gunSetup"] .app-shell { padding-bottom:calc(28px + env(safe-area-inset-bottom)); }
 .gun-switcher { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 15px; margin:0 0 18px; background:linear-gradient(135deg,#1b2833,#101b24); border:1px solid #354c60; border-radius:13px; color:var(--primary-text,#f2f5f9); text-align:left; cursor:pointer; }
 .gun-switcher-copy { display:grid; gap:4px; min-width:0; }
 .gun-switcher-label { font-size:.63rem; font-weight:700; color:#a5b7ca; text-transform:uppercase; letter-spacing:.09em; }
@@ -646,8 +642,6 @@ html[data-theme="light"] :is(button,input,select,summary):focus-visible { outlin
 .progress-data summary { min-height: 44px; cursor: pointer; font-size: .85rem; }
 .progress-data table { width: 100%; border-collapse: collapse; font-size: .75rem; }
 .progress-data :is(th,td) { padding: 8px; border-bottom: 1px solid var(--session-border); text-align: left; }
-.section-head.has-settings h2 { padding: 0 38px; }
-.section-head > .icon-button { position: absolute; right: 0; top: -5px; min-height: 44px; min-width: 44px; padding: 0 5px; cursor: pointer; }
 
 /* Gun illustrations and separately operable Edit controls. */
 .gun-type-image { display:block; object-fit:contain; flex:none; width:78px; height:50px; border-radius:8px; background:#101b24; }

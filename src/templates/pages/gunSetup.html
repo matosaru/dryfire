@@ -1,0 +1,15 @@
+<div class="gun-page-heading"><h2 id="gunSetupTitle">Add your first gun</h2><p id="gunSetupDescription">Give it a name and choose a type. Its sounds and drills stay separate.</p></div>
+      <form id="gunForm" class="gun-form">
+        <label for="gunName">Gun name<input id="gunName" name="gunName" type="text" required minlength="1" maxlength="80" placeholder="e.g. My handgun" autocomplete="off" /></label>
+        <input id="gunType" name="gunType" type="hidden" value="" />
+        <fieldset id="gunTypeChoices" class="gun-type-choices"><legend>Gun type</legend>
+          <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/handgun.svg" width="96" height="56" alt="" /><span>Handguns</span><input type="radio" name="gunTypeChoice" value="Handguns" required /></label>
+          <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/rifle.svg" width="96" height="56" alt="" /><span>Rifles and Carbines</span><input type="radio" name="gunTypeChoice" value="Rifles and Carbines" required /></label>
+          <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/shotgun.svg" width="96" height="56" alt="" /><span>Shotguns</span><input type="radio" name="gunTypeChoice" value="Shotguns" required /></label>
+        </fieldset>
+        <p id="gunCapacityNotice" class="muted small">Create up to two gun profiles. Existing saved profiles remain available.</p>
+        <aside class="storage-card"><span class="storage-symbol" aria-hidden="true">▤</span><div><strong>Saved on this device</strong><p>Gun profiles, learned sounds and drill presets stay here between visits. Use the same app address and browser.</p></div></aside>
+        <button id="saveGunBtn" class="button primary wide-action" type="submit">Save Gun &amp; Continue</button>
+        <button id="cancelGunSetupBtn" class="button secondary wide-action hidden" type="button">Cancel</button>
+      </form>
+      <button id="restoreGunBackupBtn" class="text-button wide-action" type="button">Restore from backup</button>

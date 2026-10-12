@@ -1,0 +1,44 @@
+<div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button><div><p class="eyebrow">05 / DEVICE &amp; PRIVACY</p><h2 id="settings-title">Settings</h2></div></div>
+      <!-- private-preview:start -->
+      <div id="previewTestingSection" class="settings-group preference-group">
+        <h3>Private preview testing</h3>
+        <label class="preference-select" for="previewTestMode"><span>Test as</span><select id="previewTestMode" aria-describedby="previewModeStatus"><option value="free">Free</option><option value="full">Full</option></select></label>
+        <p id="previewModeStatus" class="muted small" role="status"></p>
+        <p class="muted small">Changes test availability only. Your saved data is kept.</p>
+      </div>
+      <!-- private-preview:end -->
+      <p class="gun-context">Sound resets affect <strong class="gun-context-name"></strong> only.</p>
+      <details class="install-details"><summary>Install on your iPhone <span>›</span></summary><div class="install-card">
+        <div class="install-badge">iOS · HOME SCREEN</div>
+        <h3>Install on your iPhone</h3>
+        <p id="installStatus" class="muted">Checking installation status…</p>
+        <ol><li>Open your deployed HTTPS address in <strong>Safari</strong>.</li><li>Tap the <strong>Share</strong> button.</li><li>Choose <strong>Add to Home Screen</strong>.</li><li>Enable <strong>Open as Web App</strong> (if shown), then tap <strong>Add</strong>.</li></ol>
+        <p class="small muted">This installs a web app icon and standalone experience, not an App Store IPA. The microphone runs only when the app is open.</p>
+      </div>
+      </details><div class="settings-group">
+        <h3>Learned Sounds</h3>
+        <p class="muted small">For one sound, use Reset on its card in Learn. Full reset erases this gun's learned sounds and reset/noise/beep calibration. Its saved results and other guns' data stay intact.</p>
+        <p id="soundResetSummary" class="muted small" role="status"></p>
+        <button id="resetModelBtn" class="button danger" type="button"><span class="settings-action-icon" aria-hidden="true">⏻</span><span>Reset all sounds for this gun</span><span class="settings-chevron" aria-hidden="true">›</span></button>
+        <p id="soundResetOutcome" class="small" role="status"></p>
+      </div>
+      <div class="settings-group">
+        <h3>Backup &amp; Data</h3>
+        <p class="muted small">Export all gun profiles, learned numeric sound features, drill presets, recognition history, saved sessions and preferences. The backup contains no raw recordings. Keep this file private.</p>
+        <div class="settings-actions"><button id="exportBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↑</span><span>Export backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><button id="importBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↓</span><span>Import backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><input id="importFile" type="file" accept="application/json,.json" class="hidden" /></div>
+        <p class="small muted">Import replaces saved guns, sounds, history, presets, sessions and preferences on this device. Older backups contain no saved sessions. Files from another device may perform differently.</p>
+      </div>
+      <div class="settings-group preference-group">
+        <h3>Audio processing · this gun</h3>
+        <label class="preference-toggle" for="noiseFilter"><span><strong>Noise Filter</strong><small id="noiseFilterStatus" role="status">Checking browser support…</small></span><input id="noiseFilter" type="checkbox" role="switch" aria-describedby="noiseFilterStatus" /></label>
+        <label class="preference-toggle" for="autoGainControl"><span><strong>Auto Gain</strong><small id="autoGainStatus" role="status">Checking browser support…</small></span><input id="autoGainControl" type="checkbox" role="switch" aria-describedby="autoGainStatus" /></label>
+        <p class="muted small">Changes apply to the next capture. Audio processing may affect recognition and require fresh examples; it never deletes your learned sounds.</p>
+      </div>
+      <div class="settings-group preference-group">
+        <h3>Appearance &amp; feedback · this device</h3>
+        <label class="preference-select" for="appearance"><span>Appearance</span><select id="appearance"><option value="dark">Dark</option><option value="light">Light</option><option value="system">System</option></select></label>
+        <label class="preference-toggle" for="vibrationFeedback"><span><strong>Vibration Feedback</strong><small id="vibrationStatus" role="status">Checking browser support…</small></span><input id="vibrationFeedback" type="checkbox" role="switch" aria-describedby="vibrationStatus" /></label>
+        <p class="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
+      </div>
+      <div class="settings-group"><h3>Delete local app data</h3><p class="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" class="button danger wide-action" type="button">Delete all guns &amp; app data</button></div>
+      <div class="settings-group"><h3>Device information</h3><p id="deviceCheck" class="small muted"></p></div>

@@ -160,6 +160,7 @@ async function prepare(page, item) {
       break;
     case 'settings':
       await page.locator('#settingsShortcut').click(); await visible(page, 'settingsView');
+      if (item.state.startsWith('installation-help')) { await page.locator('.install-details summary').click(); await expect(page.locator('.install-card')).toBeVisible(); }
       if (item.state.startsWith('sounds-reset')) { await page.locator('#resetModelBtn').click(); await expect(page.locator('#soundResetOutcome')).toContainText('reset'); await expect(page.locator('#soundResetSummary')).toContainText('0 learned samples'); }
       break;
     case 'about':
