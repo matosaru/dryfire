@@ -1,5 +1,7 @@
 # About design
 
+CHG-030 typography revision: primary Dark text uses `#FFFFFF` throughout this screen and neutral controls. Secondary/footer/accent colors and Light values remain. The [shared typography design](../shared/README.md) and [SET-07](../../../requirements/settings.md) define the palette; [current capture/build review](../../baselines/white-primary-validation.json) records the passing pinned runs; publication is tracked separately.
+
 CHG-029 revises the footer and separates Contact from About. Current captures are reviewed against the production build; [evidence](../../baselines/separate-pages-validation.json) records both passing 138-check runs. Earlier [CHG-028 evidence](../../baselines/footer-entry-validation.json) retains the superseded combined entry.
 
 CHG-027 · Initial copy/layout proposal implemented for review on `feature/about-contact-page`; direct page/contact request authorizes this slice. Exact copy has not received word-for-word user approval.

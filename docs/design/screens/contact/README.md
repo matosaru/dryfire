@@ -1,5 +1,7 @@
 # Contact design
 
+CHG-030 typography revision: primary Dark text uses `#FFFFFF` throughout this screen and neutral controls. Secondary/footer/accent colors and Light values remain. The [shared typography design](../shared/README.md) and [SET-07](../../../requirements/settings.md) define the palette; [current capture/build review](../../baselines/white-primary-validation.json) records the passing pinned runs; publication is tracked separately.
+
 CHG-029 · 2026-10-12 · Separate history-backed Contact screen of `/`, not a public server route. Entry: centered **Contact** control in the shared app footer; available before gun setup and independently of Settings.
 
 Compact Contact heading with Back and the existing Settings shortcut. A readable “Get in touch” card contains the existing feedback invitation, selectable **easydryfire@gmail.com** mailto link and explanation that it opens the user's email app. About's purpose/routine/storage/safety copy belongs on its separate screen.
