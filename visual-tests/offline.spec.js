@@ -1,10 +1,11 @@
+import { edition } from './catalog.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 const library = readFileSync(new URL('./fixtures/library.json', import.meta.url));
 const previewModule = JSON.parse(readFileSync(new URL('../dist/edition.json', import.meta.url))).assets.find(path => /\/previewTesting-[^/]+\.js$/.test(path));
 test.use({ serviceWorkers: 'allow' });
-test((process.env.VISUAL_EDITION ?? 'public') === 'public' ? 'first installed offline refresh keeps app bundles and the restored library available' : 'private preview retires shell caches and preserves its library on an online refresh', async ({ page, baseURL }) => {
+test(edition === 'public' ? 'first installed offline refresh keeps app bundles and the restored library available' : 'private preview retires shell caches and preserves its library on an online refresh', async ({ page, baseURL }) => {
   // Shut down a real same-origin server after installation. Playwright's WebKit
   // offline emulation can fail navigation before the service worker handles it.
   // Forward the optimized preview unchanged, then prove uncached fetches fail.
@@ -30,7 +31,7 @@ test((process.env.VISUAL_EDITION ?? 'public') === 'public' ? 'first installed of
     await page.locator('#restoreGunBackupBtn').click();
     await page.locator('#importFile').setInputFiles({ name: 'fixture.json', mimeType: 'application/json', buffer: library });
     await expect(page.locator('#homeView')).toBeVisible();
-    if ((process.env.VISUAL_EDITION ?? 'public') === 'preview') {
+    if (edition === 'preview') {
       await page.locator('#settingsShortcut').click(); await page.locator('#previewTestMode').selectOption('full');
       await page.locator('.tab[data-view="home"]').click();
       await page.evaluate(async () => {
@@ -72,7 +73,7 @@ test((process.env.VISUAL_EDITION ?? 'public') === 'public' ? 'first installed of
     await page.locator('#gunSwitcherBtn').click(); await expect(page.locator('#gunList .gun-profile')).toHaveCount(3);
     await page.locator('[data-gun-id="qa-gun-a"]').click(); await page.locator('.tab[data-view="history"]').click();
     await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);
-    if ((process.env.VISUAL_EDITION ?? 'public') === 'preview') await expect(page.locator('.progress-chart')).toBeVisible();
+    if (edition === 'preview') await expect(page.locator('.progress-chart')).toBeVisible();
     else await expect(page.locator('#progressSection')).not.toBeVisible();
   } finally { await disconnect(); }
 });

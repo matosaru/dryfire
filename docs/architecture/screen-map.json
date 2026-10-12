@@ -604,8 +604,9 @@
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "f2cfbb0dd516db78a9c82c78f6369842f38911c25f96abcc1ed2cb7ae1f5642d",
     "src/storage.js": "a4108f2ba56a57bea5faa15a612124f6c4006298ecaaa752b5556d1bb6ecdddd",
-    "vite.config.js": "b5a2c55463ba434eff95ea4ecbd075846f0c538b31cb6e04c63d968904566084",
-    "src/optional/previewTesting.js": "636e98be5b0a50feb348c07725107010a0a922a7914c6c2b45c0fe99c4c4cfe8"
+    "vite.config.js": "e643ea5345817d86e288980b59107a64a50aa81099474defbd9ac4d993f3c259",
+    "src/optional/previewTesting.js": "636e98be5b0a50feb348c07725107010a0a922a7914c6c2b45c0fe99c4c4cfe8",
+    "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9"
   },
   "implementationChanges": [
     "CHG-017",
@@ -622,6 +623,7 @@
     "CHG-032",
     "CHG-033",
     "CHG-034",
-    "CHG-035"
+    "CHG-035",
+    "CHG-036"
   ]
 }

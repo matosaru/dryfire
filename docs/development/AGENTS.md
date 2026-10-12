@@ -1,7 +1,7 @@
 # Codex instructions — Dry Fire With Ease
 
 ## Project
-Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with Capacitor. Trigger-click practice needs only `trigger`; optional `draw`, `rack` and `reload` retain their stable identifiers. Six practice modes share one engine, while existing ordered built-in/custom sequences remain available. Optional reset/noise/cue calibration supplies rejection evidence; only calibrated external-cue mode requires cue examples. Features, gun-owned preferences and legacy/practice history stay in IndexedDB schema 3; current backup format 4 restores compatible formats 1–3. Explicitly confirmed CHG-019 Settings full reset clears the whole local app library; CHG-020 single-gun deletion removes all data owned by that gun, and separate session/history clear actions remove only their disclosed selected-gun scope. Ordinary sound resets still preserve profiles/results. Production is hosted as static assets on Cloudflare Workers using `wrangler.jsonc`.
+Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with Capacitor. Trigger-click practice needs only `trigger`; optional `draw`, `rack` and `reload` retain their stable identifiers. Six practice modes share one engine, while existing ordered built-in/custom sequences remain available. Optional reset/noise/cue calibration supplies rejection evidence; only calibrated external-cue mode requires cue examples. Features, gun-owned preferences and legacy/practice history stay in IndexedDB schema 3; current backup format 4 restores compatible formats 1–3. Explicitly confirmed CHG-019 Settings full reset clears the whole local app library; CHG-020 single-gun deletion removes all data owned by that gun, and separate session/history clear actions remove only their disclosed selected-gun scope. Ordinary sound resets still preserve profiles/results. Production is hosted as public static assets on Cloudflare Workers. CHG-036 uses public routing on b/main and a signed private asset gate on dev, selected by branch configuration.
 
 ## Persistent requirements and approved designs
 
@@ -55,7 +55,7 @@ Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with C
 - Do not commit `node_modules/`, `dist/` or secrets.
 
 ## Delivery and deployments
-- CHG-025: follow [branching-strategy.md](../project/branching-strategy.md): feature branches from `dev` use PRs into `dev`; production uses a reviewed `dev` → `main` PR owned by the user. Hotfixes start from `main`, enter by PR and synchronize back to `dev`. Never push directly to `main`. Earlier no-PR instructions are superseded. Include tested/published commits and blocked server-protection/deployment/device validation in the delivery record.
+- CHG-036 replaces CHG-025: follow [branching-strategy.md](../project/branching-strategy.md). Commit Free changes directly on b, merge b → dev preserving Full additions/profile; Full-only changes directly on dev. Production is a checked b → main PR, never a direct main push or dev → main release. No feature branch required. Preserve destination build-profile/default Wrangler routing and all history/data. Cloudflare setup is owner-run; prepare/test code only. Record actual push/CI/PR/deployment separately.
 - CI should run `docs:check`, smoke tests, Jest, production build, and `verify:dist`.
 - Cloudflare project: `dryfire`; `wrangler.jsonc` controls static asset deployment from `./dist`.
 - Never claim a GitHub push, Cloudflare deployment, or real-device verification succeeded without observing success.

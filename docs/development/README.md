@@ -1,6 +1,6 @@
 # Dry Fire With Ease — trigger-first practice and optional sound learning
 
-Repository workflow: [main/dev branching, PR protection and test-gated deployments](../project/branching-strategy.md).
+Repository workflow: [b/main Free, dev Full, PR protection and test-gated builds](../project/branching-strategy.md).
 
 Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with dev/production verification.
 

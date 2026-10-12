@@ -2,9 +2,9 @@ import { mkdirSync, readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
+import { edition } from './catalog.js';
 export default async function metadata(config) {
   const env = JSON.parse(readFileSync('visual-tests/environment.json'));
-  const edition = process.env.VISUAL_EDITION ?? 'public';
   const build = JSON.parse(readFileSync('dist/edition.json'));
   if (build.edition !== edition) throw new Error('Visual-test edition does not match the built artifact.');
   const version = JSON.parse(readFileSync('node_modules/@playwright/test/package.json')).version;

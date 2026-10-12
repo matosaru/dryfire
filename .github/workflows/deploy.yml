@@ -3,7 +3,7 @@ on:
   workflow_run:
     workflows: ['Test and build']
     types: [completed]
-    branches: [main, dev]
+    branches: [main, b]
 permissions:
   contents: read
   actions: read
@@ -18,7 +18,7 @@ jobs:
           github.event.workflow_run.conclusion == 'success' &&
           github.event.workflow_run.event == 'push' &&
           github.event.workflow_run.head_repository.full_name == github.repository &&
-          (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'dev') }}
+          (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'b') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     environment:
@@ -38,7 +38,8 @@ jobs:
           path: dist/
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
-      - run: npm run verify:dist
+      - run: npm run verify:profile
+      - run: npm run verify:dist -- --edition=public
       - name: Skip superseded branch commits
         id: revision
         env:
@@ -64,7 +65,7 @@ jobs:
             echo '::error::Cloudflare deployment secrets are missing from this GitHub environment.'
             exit 1
           fi
-          if [ "$DEPLOY_BRANCH" = 'dev' ]; then
+          if [ "$DEPLOY_BRANCH" = 'b' ]; then
             npm run deploy:development
             deployment_worker='dryfire-dev'
           else

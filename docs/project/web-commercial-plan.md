@@ -16,7 +16,7 @@ This is the current forward plan; [implementation history](implementation-histor
 - There is only **one paid plan, Pro**. No separate gun, analytics, cloud or camera plans; no native-store billing in this iteration.
 - Keep the primary flow simple: add one gun, train Trigger, start practice. Optional handling sounds and advanced controls remain optional.
 - Compare affordability and actual recurring costs before choosing a price. Cloud recovery makes a low-cost recurring plan a stronger starting hypothesis than a lifetime promise.
-- Existing custom drills, five-gun support and progress graphs are currently free. A proposed paid split does not authorize silently restricting them or deleting user data.
+- CHG-032/034 now temporarily hide new custom creation/advanced graphs and cap new public guns at two; existing saved data remains available. Full preview retains five guns/custom creation/graphs. No real paid subscription allocation or billing is implemented.
 - Specifications, designs, site architecture and tests change together when implementation changes a screen or route. Proposed routes never appear in the current generated site tree or production sitemap.
 
 ## Optimized order and completion gates
@@ -57,4 +57,4 @@ The user confirmed **Lithuania** as the business registration country and **Euro
 
 Initial review baseline is dev `d1754d81a891435ef4e42de976f185ec8b3f26bf`. Production-only npm audit reports zero known advisories; full audit reports 22 moderate affected package entries tracing to two root advisories in development dependencies. These observations do not establish a complete security assessment. All five competitor website requests returned HTTP 403 at the environment gateway; prices and feature inventories remain unverified. First-party Cloudflare R2/D1 documentation was readable through its official GitHub source.
 
-Update the stage status, exact source/CI/deployment evidence and decision log after each request. Add future implemented public routes/screens to the architecture registry only with actual implementation and reviewed designs. The [branching strategy](branching-strategy.md) remains feature PR → dev → reviewed release PR → main.
+Update the stage status, exact source/CI/deployment evidence and decision log after each request. Add future implemented public routes/screens to the architecture registry only with actual implementation and reviewed designs. CHG-036 [branching strategy](branching-strategy.md): Free changes b → main PR, synchronized b → dev; Full-only changes stay on dev. Cloudflare setup is owner-managed.

@@ -26,11 +26,14 @@
     "test:visual:docker": "node tools/visual-docker.mjs",
     "visual:review": "node tools/visual-review.mjs",
     "visual:probe": "node tools/visual-diff-probe.mjs",
-    "deploy:check": "wrangler deploy --config wrangler.jsonc --env \"\" --dry-run && wrangler deploy --config wrangler.jsonc --env dev --dry-run",
-    "deploy:production": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.jsonc --env \"\"",
-    "deploy:development": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.jsonc --env dev",
+    "deploy:check": "npm run verify:dist && npm run verify:profile && wrangler deploy --config wrangler.jsonc --dry-run",
+    "deploy:production": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.public.jsonc --env \"\"",
+    "deploy:development": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.public.jsonc --env dev",
     "private-preview:check": "node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc --dry-run",
-    "deploy:private-preview": "node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc"
+    "deploy:private-preview": "node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc",
+    "build:public": "vite build --mode public",
+    "dev:public": "vite --mode public --host 127.0.0.1",
+    "verify:profile": "node tools/verify-build-profile.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.0.0",

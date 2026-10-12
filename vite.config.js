@@ -3,14 +3,14 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { defineConfig } from 'vite';
+import { readBuildProfile, resolveBuildEdition } from './tools/build-profile.mjs';
 
 // Ship minified production code without exposing the readable src/ modules.
 // Worker entries also pass through Oxc, unlike files copied from public/.
 export default defineConfig(({ mode }) => {
-  const edition = process.env.APP_EDITION ?? (mode === 'full-preview' ? 'preview' : 'public');
-  if (!['public', 'preview'].includes(edition)) throw new Error(`Unknown build edition: ${edition}`);
+  const edition = resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.env.APP_EDITION, mode });
   const sourceFiles = dir => readdirSync(dir, { withFileTypes: true }).flatMap(item => item.isDirectory() ? sourceFiles(`${dir}/${item.name}`) : item.name.endsWith('.js') ? [`${dir}/${item.name}`] : []);
-  const trackedSources = ['index.html', 'src/styles.css', 'vite.config.js', ...sourceFiles('src'), ...sourceFiles('workers')].sort();
+  const trackedSources = ['index.html', 'src/styles.css', 'vite.config.js', 'build-profile.json', 'tools/build-profile.mjs', ...sourceFiles('src'), ...sourceFiles('workers')].sort();
   const sourceDigest = createHash('sha256');
   for (const path of trackedSources) sourceDigest.update(path).update(readFileSync(path));
   return {

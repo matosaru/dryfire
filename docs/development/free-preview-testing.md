@@ -29,12 +29,12 @@ A valid existing multi-gun/custom backup can still be restored. This protects pe
 
 ```bash
 npm ci
-npm run build
-npm run verify:dist
+npm run build:public
+npm run verify:dist -- --edition=public
 npm run preview -- --host 127.0.0.1
 ```
 
-The default build/server edition is public. To run all retained features locally:
+The default build/server edition follows `build-profile.json`: public on b/main, private preview on dev. Explicit commands select an edition independently for local review. To run all retained features locally:
 
 ```bash
 npm run dev:preview
@@ -48,7 +48,7 @@ Both optimized builds use `dist/`; rebuilding replaces that output, not user dat
 
 ## Deployment boundary
 
-Ordinary dev/main deployment still consumes the **public** `minified-web-app` artifact. Both production/development deploy scripts verify public edition/source metadata before invoking Wrangler. An accidental full build cannot use these scripts. The private build runs on loopback and in isolated CI contexts. Its Free default/Full selector is implemented; [Access deployment](private-preview-deployment.md) is prepared for the requested host, but no hosted protection/deployment is claimed.
+CHG-036 makes b/main default to **public** `minified-web-app` output and dev default to **preview** `private-preview-web-app` output. `build-profile.json` selects normal dev/build/verification; explicit build:public/build:preview remain for isolated checks. Both production/development deploy scripts verify public edition/source metadata before invoking Wrangler. An accidental full build cannot use these scripts. The private build runs on loopback and in isolated CI contexts. Its Free default/Full selector is implemented; [Access deployment](private-preview-deployment.md) is prepared for the requested host, but no hosted protection/deployment is claimed.
 
 Before hosting full preview, configure Cloudflare Access or equivalent authentication on the actual custom hostname **and every reachable Workers/preview/alias URL**. Disable unprotected aliases. Verify anonymous requests are denied, authorized staff can load the full app, and assets/service-worker paths have the same boundary. A hidden URL, noindex, local email comparison or an environment variable saying protection is enabled is not authentication. Then add a dedicated tested-preview artifact/deployment path through the existing PR and environment gates. Cloudflare credentials/live Access configuration are not available in this workspace; that external prerequisite remains unverified. No public full-preview deployment is performed.
 
@@ -57,7 +57,7 @@ Before hosting full preview, configure Cloudflare Access or equivalent authentic
 ```bash
 npm test
 npm run test:smoke
-npm run build
+npm run build:public
 VISUAL_EDITION=public npm run test:visual
 npm run build:preview
 npm run verify:dist -- --edition=preview
@@ -70,7 +70,7 @@ Use the pinned renderer from [visual-test instructions](VISUAL_TESTS.md), not sy
 
 ## Later real subscription testing
 
-Accounts/cloud/billing remain paused. Future production Free/Pro tests require separate staff identities and audited server-controlled grants, plus a controlled purchase/refund check. No production browser override or fake payment secret is introduced now. Continue [feature PR → dev → main](../project/branching-strategy.md); production release remains separate.
+Accounts/cloud/billing remain paused. Future production Free/Pro tests require separate staff identities and audited server-controlled grants, plus a controlled purchase/refund check. No production browser override or fake payment secret is introduced now. Follow [Free b → main PR, b → dev synchronization and Full-only dev](../project/branching-strategy.md); production release remains separate.
 
 ## In-app tester switch and later production proposal
 
