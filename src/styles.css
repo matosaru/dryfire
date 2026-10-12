@@ -1,4 +1,6 @@
-:root { color-scheme:dark; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; background:#090d10; color:#f0f5f7; }
+:root { color-scheme:dark; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; background:#090d10; color:var(--primary-text,#f0f5f7); }
+/* Primary text is pure white only in the resolved Dark theme. */
+:root:not([data-theme="light"]) { --primary-text:#ffffff; }
 * { box-sizing:border-box; }
 body { margin:0; min-width:320px; background: radial-gradient(circle at top,#1a1e1f 0,#090d10 55%); }
 button,input { font:inherit; }
@@ -22,7 +24,7 @@ h2,h3,p { margin-top:0; }
 .safety-icon { display:grid; place-items:center; background:#392419; color:#ff9b5e; border:1px solid #62402a; border-radius:12px; width:32px; height:32px; flex:none; font-weight:900; }
 .safety-card h2 { font-size:1rem; margin-bottom:4px; }
 .safety-card p { margin-bottom:12px; color:#c1cbd0; font-size:.91rem; line-height:1.5; }
-.checkbox-row { display:flex; align-items:center; gap:9px; font-size:.88rem; color:#f0f2f3; }
+.checkbox-row { display:flex; align-items:center; gap:9px; font-size:.88rem; color:var(--primary-text,#f0f2f3); }
 .checkbox-row input { width:19px; height:19px; flex:none; accent-color:#ff9141; }
 .tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; padding:5px; border:1px solid #2b363d; background:#10161a; border-radius:15px; margin-bottom:22px; }
 .tab { min-height:48px; color:#a8b5bd; border:0; border-radius:11px; background:transparent; cursor:pointer; font-weight:750; }
@@ -46,7 +48,7 @@ h2,h3,p { margin-top:0; }
 .tone-purple .progress-track span { background:#cb8ef3; }
 .button { min-height:46px; padding:10px 15px; border:1px solid transparent; border-radius:12px; font-weight:800; cursor:pointer; }
 .button.primary { background:#ff9141; color:#21150e; }
-.button.secondary { background:#1a252b; border-color:#364650; color:#e2e9eb; }
+.button.secondary { background:#1a252b; border-color:#364650; color:var(--primary-text,#e2e9eb); }
 .button:disabled { opacity:.52; cursor:not-allowed; }
 .tip,.info-note { color:#bdcad0; padding:15px; line-height:1.55; font-size:.9rem; }
 .info-note { border-color:#5f4227; background:#2d2017; margin-top:12px; }
@@ -110,7 +112,7 @@ button:focus-visible,input:focus-visible { outline:3px solid #ffb77f; outline-of
 .listener-control .button { flex:1 1 180px; }
 .listener-control .button.listening { background:#c04735; color:#fff; }
 .sensitivity-control { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px; margin-top:17px; color:#bdcad0; font-size:.86rem; }
-.sensitivity-control select,.verify-inline select,.history-item select { min-height:44px; background:#121d22; border:1px solid #394852; color:#f0f5f7; border-radius:10px; padding:8px; font:inherit; max-width:100%; }
+.sensitivity-control select,.verify-inline select,.history-item select { min-height:44px; background:#121d22; border:1px solid #394852; color:var(--primary-text,#f0f5f7); border-radius:10px; padding:8px; font:inherit; max-width:100%; }
 .meter-track { width:min(420px,100%); margin:17px auto 0; height:9px; border-radius:10px; background:#273239; overflow:hidden; }
 .meter-fill { background:#34c183; height:100%; width:0; transition:width .12s ease; }
 .verify-inline { display:grid; gap:9px; border-top:1px solid #2a373e; padding-top:15px; }
@@ -205,7 +207,7 @@ button { -webkit-tap-highlight-color:transparent; }
 .drill-select-label select:focus-visible { outline:3px solid #ffb77f; outline-offset:2px; }
 .drill-steps { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin:18px 0 12px; }
 .drill-step { display:flex; align-items:center; gap:8px; border-radius:11px; border:1px solid #35434a; padding:9px 10px; color:#b9c5ca; background:#172126; font-size:.82rem; }
-.step-number { display:grid; place-items:center; flex:none; width:24px; height:24px; border-radius:50%; background:#2d383e; color:#d4e0e5; font-weight:800; }
+.step-number { display:grid; place-items:center; flex:none; width:24px; height:24px; border-radius:50%; background:#2d383e; color:var(--primary-text,#d4e0e5); font-weight:800; }
 .drill-step.current { border-color:#ed9148; color:#fff; background:#352418; }
 .drill-step.current .step-number { background:#ef914a; color:#24150d; }
 .drill-step.done { border-color:#2d7557; color:#a2e3bd; }
@@ -229,7 +231,7 @@ button { -webkit-tap-highlight-color:transparent; }
 .brand-eyebrow span{color:var(--accent-orange)}
 .header-actions{display:flex;align-items:center;gap:7px;flex:none}
 .status-pill{font-size:.69rem;padding:5px 8px;margin:0;max-width:110px;overflow-wrap:anywhere}
-.icon-button{border:1px solid #37454d;background:#172027;color:#e5eef4;width:44px;height:44px;border-radius:11px;font-size:1.15rem;cursor:pointer}
+.icon-button{border:1px solid #37454d;background:#172027;color:var(--primary-text,#e5eef4);width:44px;height:44px;border-radius:11px;font-size:1.15rem;cursor:pointer}
 .icon-button.active{border-color:#ff9141;color:#ff9141;background:#2d211b}
 .safety-card{padding:10px 12px;margin-bottom:12px;border-radius:12px;gap:9px}
 .safety-icon{width:26px;height:26px;border-radius:8px}
@@ -269,8 +271,8 @@ button { -webkit-tap-highlight-color:transparent; }
 :root{--accent-orange:#ff8126}
 body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
 .app-shell{max-width:480px;padding:22px 16px calc(96px + env(safe-area-inset-bottom))}
-.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}.brand-eyebrow{font-size:1.22rem;letter-spacing:.18em}.hero h1{font-size:.55rem;letter-spacing:.34em}.icon-button{background:none;border:0;color:#96a2b0;font-size:26px}.status-pill{display:none}
-.hero .brand-name{margin:0;color:#f5f7fa;font-size:inherit;font-weight:900;letter-spacing:normal;line-height:1.2}
+.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}.brand-eyebrow{font-size:1.22rem;letter-spacing:.18em}.hero h1{font-size:.55rem;letter-spacing:.34em}.icon-button{background:none;border:0;color:var(--primary-text,#96a2b0);font-size:26px}.status-pill{display:none}
+.hero .brand-name{margin:0;color:var(--primary-text,#f5f7fa);font-size:inherit;font-weight:900;letter-spacing:normal;line-height:1.2}
 .brand-name .brand-eyebrow{display:block;font-size:clamp(1rem,4.9vw,1.22rem);letter-spacing:.14em;white-space:nowrap}
 .brand-tagline{display:block;margin-top:4px;font-size:.75rem;font-weight:750;letter-spacing:.24em;color:#c3ced9;white-space:nowrap}
 .tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);z-index:20;border-radius:0;border:0;border-top:1px solid #2b353e;background:rgba(15,22,28,.97);padding:9px 10px calc(9px + env(safe-area-inset-bottom));margin:0;backdrop-filter:blur(18px)}
@@ -278,14 +280,14 @@ body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
 .safety-disclosure{margin:0 0 16px;border:1px solid #34404a;border-radius:10px;background:#121a20}.safety-disclosure>summary{padding:10px 12px;color:#ffad73;font-size:.76rem;cursor:pointer}.safety-disclosure>summary span{float:right;color:#a0acb8;font-size:.69rem}.safety-card{border:0;margin:0;background:none}.safety-card p{line-height:1.5}
 .welcome-card,.dashboard-card,.class-card,.preset-card,.settings-group{background:linear-gradient(135deg,#1d262e,#141c23);border:1px solid #2c3741;border-radius:15px;box-shadow:0 6px 16px #0002}
 .welcome-card{padding:24px;margin-bottom:16px}.welcome-card h2{font-size:1.1rem;margin-bottom:7px}.welcome-card p{color:#bdc8d3;font-size:.9rem;line-height:1.45;margin-bottom:12px}.orange-rule{display:block;width:35px;height:4px;border-radius:4px;background:#ff8126}
-.home-actions{display:grid;grid-template-columns:1fr;gap:12px}.dashboard-card{width:100%;display:flex;align-items:center;gap:20px;text-align:left;color:#f2f4f8;padding:12px;min-height:102px;cursor:pointer}.dashboard-card strong{display:block;font-size:1.04rem;margin-bottom:7px}.dashboard-card small{display:block;color:#bac5d1;font-size:.8rem;line-height:1.4}.dashboard-icon{width:78px;height:78px;display:grid;place-items:center;flex:none;font-size:47px;border-radius:15px}.orange{color:#ff8126;background:#412d20}.blue{color:#43baff;background:#12344a}.green{color:#50da86;background:#203e2e}.purple{color:#b874ff;background:#302641}.chevron{margin-left:auto;font-size:30px;color:#acbac8;font-weight:300}.dashboard-card:disabled{opacity:.65;cursor:not-allowed}
+.home-actions{display:grid;grid-template-columns:1fr;gap:12px}.dashboard-card{width:100%;display:flex;align-items:center;gap:20px;text-align:left;color:var(--primary-text,#f2f4f8);padding:12px;min-height:102px;cursor:pointer}.dashboard-card strong{display:block;font-size:1.04rem;margin-bottom:7px}.dashboard-card small{display:block;color:#bac5d1;font-size:.8rem;line-height:1.4}.dashboard-icon{width:78px;height:78px;display:grid;place-items:center;flex:none;font-size:47px;border-radius:15px}.orange{color:#ff8126;background:#412d20}.blue{color:#43baff;background:#12344a}.green{color:#50da86;background:#203e2e}.purple{color:#b874ff;background:#302641}.chevron{margin-left:auto;font-size:30px;color:#acbac8;font-weight:300}.dashboard-card:disabled{opacity:.65;cursor:not-allowed}
 .home-stats{margin-top:20px}.home-stats article{padding:10px 7px;background:#111a20}.home-stats strong{font-size:1.05rem}.home-stats small{font-size:.64rem}
 .section-head{position:relative;justify-content:center;min-height:36px;margin-bottom:18px}.section-head h2{font-size:1.12rem;text-align:center}.section-head .eyebrow{display:none}.back-button{position:absolute;left:0;top:-5px;background:none;border:0;color:#fff;font-size:35px;padding:0 12px;cursor:pointer}
 body[data-view]:not([data-view="home"]):not([data-view="guns"]):not([data-view="gunSetup"]):not([data-view="loading"]) .hero{display:none}
 .view>.muted{font-size:.78rem;line-height:1.5}.class-grid{grid-template-columns:1fr;gap:12px;margin-top:12px}.class-card{padding:10px;gap:0}.class-card-top{gap:13px;align-items:stretch}.class-preview{width:34%;min-width:95px;max-width:128px;aspect-ratio:4/5;background:#081820}.class-preview img{object-fit:contain}.class-info{display:flex;flex-direction:column;justify-content:center;flex:1}.class-info h3{font-size:.95rem}.class-info>p{font-size:.73rem;line-height:1.35;margin-bottom:7px}.class-info .progress-label{font-size:.65rem!important;color:#a5b6c6!important;margin:3px 0}.progress-track{height:5px;margin:3px 0 10px}.class-actions{gap:7px}.class-actions .button{min-height:34px;padding:6px 9px;border-radius:9px;font-size:.76rem}.button.primary{background:linear-gradient(135deg,#ff983d,#ff751c);color:#16100b;border:1px solid #ffad62}.button.secondary{background:linear-gradient(#29343e,#1c2730);border-color:#35424e}.class-actions .reset-class{font-weight:600}
 .segmented-control{display:flex;padding:3px;border:1px solid #2b3842;border-radius:12px;background:#1b252e;font-size:.72rem}.segmented-control span{flex:1;text-align:center;padding:8px}.segmented-control .selected{border-radius:9px;background:linear-gradient(135deg,#ff9638,#ff751c);color:#15100a;font-weight:750}.segmented-control span:last-child{color:#a4afbc}
 .preset-card{padding:12px;gap:9px}.preset-header{display:flex;align-items:center;gap:13px}.preset-header h3{font-size:.91rem;line-height:1.35}.drill-target{font-size:37px;color:#46baff;line-height:1}.preset-card:nth-child(3) .drill-target{color:#b574f6}.drill-description{font-size:.73rem;color:#b3c0cc;margin:-5px 0 0 50px}.preset-steps{gap:6px;margin-left:46px}.preset-chip{font-size:.65rem;padding:4px 7px;border:1px solid #49c6ff;background:#0b1a24;color:#5aceff}.preset-chip[data-sound="trigger"]{border-color:#ff9231;color:#ff9c42}.preset-chip[data-sound="reload"]{border-color:#c77bff;color:#d19bff}.preset-card .button{min-height:35px;padding:6px;border-radius:8px;font-size:.78rem}
-.settings-group{padding:0;margin-top:25px;background:#151e26}.settings-group h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:#b3c0cc;padding:0 12px;margin:-19px 0 10px}.settings-group>.muted{padding:0 14px;margin:12px 0;font-size:.73rem}.settings-group>.button{margin:0;width:100%;text-align:left;padding:17px;min-height:65px;border-radius:14px;border:0;background:none;color:#f0f5f7;font-size:.87rem}.settings-actions{gap:0;flex-direction:column}.settings-actions .button{flex:auto;text-align:left;border:0;border-radius:0;background:none;min-height:58px;border-bottom:1px solid #2b3640;padding:14px 18px}.install-details{margin:15px 0 27px;border:1px solid #2b3742;border-radius:12px;background:#17212a}.install-details>summary{padding:15px;cursor:pointer;font-size:.85rem}.install-details summary span{float:right}.install-card{border:0;background:none;margin:0;padding:15px}.install-card h3{font-size:1rem}.install-card p,.install-card ol{font-size:.78rem}
+.settings-group{padding:0;margin-top:25px;background:#151e26}.settings-group h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:#b3c0cc;padding:0 12px;margin:-19px 0 10px}.settings-group>.muted{padding:0 14px;margin:12px 0;font-size:.73rem}.settings-group>.button{margin:0;width:100%;text-align:left;padding:17px;min-height:65px;border-radius:14px;border:0;background:none;color:var(--primary-text,#f0f5f7);font-size:.87rem}.settings-actions{gap:0;flex-direction:column}.settings-actions .button{flex:auto;text-align:left;border:0;border-radius:0;background:none;min-height:58px;border-bottom:1px solid #2b3640;padding:14px 18px}.install-details{margin:15px 0 27px;border:1px solid #2b3742;border-radius:12px;background:#17212a}.install-details>summary{padding:15px;cursor:pointer;font-size:.85rem}.install-details summary span{float:right}.install-card{border:0;background:none;margin:0;padding:15px}.install-card h3{font-size:1rem}.install-card p,.install-card ol{font-size:.78rem}
 footer{font-size:.68rem;line-height:1.55;margin-top:20px;color:#8594a4}.tip,.info-note{font-size:.76rem}.settings-row{font-size:.8rem}.button:focus-visible,.dashboard-card:focus-visible,.back-button:focus-visible,summary:focus-visible{outline:2px solid #ffad62;outline-offset:3px}
 @media(min-width:700px){.app-shell{padding-top:30px}.welcome-card{margin-top:8px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
@@ -311,7 +313,7 @@ body[data-view="guns"] .hero,
 body[data-view="gunSetup"] .hero { display:flex; }
 body[data-view="guns"] .app-shell,
 body[data-view="gunSetup"] .app-shell { padding-bottom:calc(28px + env(safe-area-inset-bottom)); }
-.gun-switcher { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 15px; margin:0 0 18px; background:linear-gradient(135deg,#1b2833,#101b24); border:1px solid #354c60; border-radius:13px; color:#f2f5f9; text-align:left; cursor:pointer; }
+.gun-switcher { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 15px; margin:0 0 18px; background:linear-gradient(135deg,#1b2833,#101b24); border:1px solid #354c60; border-radius:13px; color:var(--primary-text,#f2f5f9); text-align:left; cursor:pointer; }
 .gun-switcher-copy { display:grid; gap:4px; min-width:0; }
 .gun-switcher-label { font-size:.63rem; font-weight:700; color:#a5b7ca; text-transform:uppercase; letter-spacing:.09em; }
 .gun-switcher strong { font-size:1rem; line-height:1.35; overflow-wrap:anywhere; }
@@ -319,13 +321,13 @@ body[data-view="gunSetup"] .app-shell { padding-bottom:calc(28px + env(safe-area
 .gun-switcher-action { flex:none; color:#61bfff; font-size:.7rem; }
 .gun-switcher-action>span { display:block; text-align:right; color:#bfcede; font-size:24px; line-height:1; margin-bottom:4px; }
 .gun-context { border:1px solid #2f414f; border-radius:9px; padding:9px 11px; margin:0 0 15px; color:#b5c8db; font-size:.74rem; line-height:1.5; overflow-wrap:anywhere; }
-.gun-context strong { color:#deebf8; font-weight:650; }
+.gun-context strong { color:var(--primary-text,#deebf8); font-weight:650; }
 .gun-page-heading { margin:20px 0 21px; }
 .gun-page-heading h2,.gun-library-heading h2 { font-size:1.65rem; line-height:1.15; letter-spacing:-.035em; margin:0 0 10px; }
 .gun-page-heading p { color:#b5c8db; font-size:.94rem; line-height:1.55; margin-bottom:0; }
 .gun-form { display:grid; gap:17px; }
-.gun-form>label,.custom-drill-editor>label,.custom-action-controls>label { display:grid; gap:8px; color:#eef4fb; font-size:.87rem; }
-.gun-form input,.gun-form select,.custom-drill-editor input,.custom-drill-editor select { width:100%; min-width:0; min-height:49px; padding:12px; background:#101c26; border:1px solid #3b5267; border-radius:10px; color:#edf4fa; font:inherit; font-size:16px; }
+.gun-form>label,.custom-drill-editor>label,.custom-action-controls>label { display:grid; gap:8px; color:var(--primary-text,#eef4fb); font-size:.87rem; }
+.gun-form input,.gun-form select,.custom-drill-editor input,.custom-drill-editor select { width:100%; min-width:0; min-height:49px; padding:12px; background:#101c26; border:1px solid #3b5267; border-radius:10px; color:var(--primary-text,#edf4fa); font:inherit; font-size:16px; }
 .gun-form input::placeholder,.custom-drill-editor input::placeholder { color:#8fa2b5; }
 .gun-form select,.custom-drill-editor select { appearance:auto; }
 .gun-form>.muted { margin:-3px 0 0; color:#a7bacd; }
@@ -333,7 +335,7 @@ body[data-view="gunSetup"] .app-shell { padding-bottom:calc(28px + env(safe-area
 .storage-card { display:flex; gap:12px; padding:15px; margin:2px 0 5px; border:1px solid #314858; border-radius:13px; background:linear-gradient(135deg,#182630,#111b23); }
 .storage-symbol { display:grid; place-items:center; flex:none; width:42px; height:42px; border-radius:11px; background:#243646; color:#b0c8df; font-size:28px; }
 .storage-card>div { min-width:0; }
-.storage-card strong { display:block; margin:1px 0 6px; color:#f0f4f8; font-size:.87rem; }
+.storage-card strong { display:block; margin:1px 0 6px; color:var(--primary-text,#f0f4f8); font-size:.87rem; }
 .storage-card p { margin:0; font-size:.73rem; line-height:1.55; color:#aec3d5; }
 .text-button { padding:11px 0; min-height:44px; background:none; border:0; color:#66bfff; font-size:.85rem; cursor:pointer; }
 .footer-links { display:flex; justify-content:center; align-items:center; gap:28px; padding-bottom:12px; margin-bottom:16px; border-bottom:1px solid #253139; }
@@ -343,7 +345,7 @@ body[data-view="gunSetup"] .app-shell { padding-bottom:calc(28px + env(safe-area
 .gun-library-heading+.muted { font-size:.85rem; line-height:1.5; margin-bottom:18px; }
 .gun-capacity { padding:6px 9px; border:1px solid #3a5165; border-radius:99px; background:#1b2935; color:#bfd2e7; font-size:.68rem; white-space:nowrap; }
 .gun-list { display:grid; gap:11px; margin:0 0 13px; }
-.gun-card { display:grid; gap:12px; width:100%; min-width:0; padding:14px; text-align:left; border:1px solid #31485b; border-radius:13px; background:linear-gradient(135deg,#1a2935,#111b24); color:#f0f4f8; cursor:pointer; }
+.gun-card { display:grid; gap:12px; width:100%; min-width:0; padding:14px; text-align:left; border:1px solid #31485b; border-radius:13px; background:linear-gradient(135deg,#1a2935,#111b24); color:var(--primary-text,#f0f4f8); cursor:pointer; }
 .gun-card[aria-pressed="true"] { border:2px solid #ff8126; padding:13px; background:linear-gradient(135deg,#25303a,#172129); }
 .gun-card-head { display:flex; justify-content:space-between; align-items:center; gap:10px; }
 .gun-card-head>:first-child { min-width:0; }
@@ -371,7 +373,7 @@ body[data-view="gunSetup"] .app-shell { padding-bottom:calc(28px + env(safe-area
 .custom-step-number { display:grid; place-items:center; width:27px; height:27px; flex:none; background:#23546a; border-radius:50%; color:#c1eeff; font-size:.8rem; font-weight:800; }
 .custom-step-name { flex:1; min-width:0; font-size:.79rem; line-height:1.35; }
 .custom-step-controls { display:flex; gap:4px; flex:none; }
-.custom-step-controls button { width:34px; height:34px; min-height:34px; padding:0; border:1px solid #40566b; background:#1e2e3b; border-radius:7px; color:#e3eef8; cursor:pointer; font-size:1rem; }
+.custom-step-controls button { width:34px; height:34px; min-height:34px; padding:0; border:1px solid #40566b; background:#1e2e3b; border-radius:7px; color:var(--primary-text,#e3eef8); cursor:pointer; font-size:1rem; }
 .custom-step-controls button:disabled { opacity:.35; cursor:not-allowed; }
 .custom-action-controls { display:grid; gap:10px; }
 .custom-drill-editor>.muted { margin:0; font-size:.71rem; }
@@ -393,7 +395,7 @@ body[data-view="gunSetup"] .app-shell { padding-bottom:calc(28px + env(safe-area
   --session-surface-raised:#1a2935;
   --session-border:#344a5a;
   --session-muted:#b2c5d5;
-  --session-text:#eef5fb;
+  --session-text:var(--primary-text,#eef5fb);
   --session-positive:#73e2ad;
 }
 .session-preset-name { color:var(--session-muted); font-size:.79rem; line-height:1.5; margin:0 0 10px; overflow-wrap:anywhere; }
@@ -651,8 +653,8 @@ html[data-theme="light"] :is(button,input,select,summary):focus-visible { outlin
 .gun-switcher-copy { flex:1; }
 .gun-switcher-image { width:68px; height:46px; }
 .gun-type-choices { display:grid; gap:9px; margin:0; padding:0; border:0; min-width:0; }
-.gun-type-choices legend { color:#eef4fb; font-size:.87rem; margin-bottom:8px; }
-.gun-type-choice { display:flex; align-items:center; gap:12px; padding:9px 12px; border:1px solid #3b5267; border-radius:10px; background:#101c26; color:#edf4fa; cursor:pointer; }
+.gun-type-choices legend { color:var(--primary-text,#eef4fb); font-size:.87rem; margin-bottom:8px; }
+.gun-type-choice { display:flex; align-items:center; gap:12px; padding:9px 12px; border:1px solid #3b5267; border-radius:10px; background:#101c26; color:var(--primary-text,#edf4fa); cursor:pointer; }
 .gun-type-choice>span { flex:1; min-width:0; font-size:.87rem; }
 .gun-type-choice input { flex:none; width:18px; min-height:18px; height:18px; padding:0; accent-color:#ff8126; }
 .gun-type-choice:has(input:checked) { border:2px solid #ff8126; padding:8px 11px; background:#28241e; }

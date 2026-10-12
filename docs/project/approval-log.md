@@ -468,3 +468,11 @@ The user subsequently directs **“update the screenshots with the link”** and
 - Scope: [About](../requirements/about.md), [Contact](../requirements/contact.md) and the [shared footer](../design/screens/shared/README.md). Two independent history-backed app screens, reached by centered About and Contact footer controls, with no arrows. Match each theme's footer text color; preserve the 0.85rem font, underline, minimum 44px target and existing keyboard focus outline. Add a divider below the link row, above the disclosure/copyright text.
 - Both controls remain available on both pages and identify the current page accessibly. Move the existing email/contact copy to Contact; About retains its purpose, routine, storage and safety copy. Preserve Back/Forward, first-use access and all data/capture/safety guards.
 - Authorization is the user's direct implementation instruction, superseding CHG-028's combined link and hidden About self-link. Keep the existing feature branch and PR gates. No public server route, form/backend, cloud, payment or other paused commercial implementation is started.
+
+## CHG-030 — Pure white primary text in Dark mode
+
+- Date: 2026-10-12.
+- Direct instruction: **“update all main text colour to #ffffff, update screenshots”**, following the Dark-mode color question identifying primary text as `#F0F5F7`, About body text as `#B8C5CF` and footer text/links as `#8594A4`.
+- Scope: SET-07 in [appearance requirements](../requirements/settings.md) and the [shared layout](../design/screens/shared/README.md). Dark-mode primary text, headings, neutral control labels/values and session/practice/history primary text use `#FFFFFF` (`rgb(255, 255, 255)`) consistently, including explicit near-white primary overrides.
+- Preserve muted secondary text, CHG-029 footer/link colors, accent/status colors, dark labels on orange buttons and the resolved Light theme. Keep sizes, layout, navigation, saved data and controls intact. System appearance follows the same Dark/Light rule.
+- Refresh and review affected actual production-build captures and pinned Chromium/WebKit references, record source fingerprints and architecture maintenance, then publish on the existing feature branch. No PR gate bypass, production deployment or broader paused commercial implementation is implied.

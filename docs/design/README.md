@@ -2,6 +2,8 @@
 
 Visual package for Dry Fire With Ease. [Functional requirements](../requirements/README.md) own behavior; [approval history](../project/approval-log.md) records authorization; [delivery plan](../project/implementation-history.md) owns implementation/publication status.
 
+CHG-030 makes primary text pure white (`#FFFFFF`) in resolved Dark mode across all screens and neutral control labels/values. Light and secondary/footer/accent palettes remain. Actual captures and pinned references are refreshed under the [shared typography requirements](screens/shared/README.md); review/publication status is in the delivery tracker.
+
 CHG-029 separates About and Contact into two pages, reached by centered muted links in the shared footer, independently of Settings. Arrows are removed; font/underline/focus are preserved and a divider separates links from the disclosure. Earlier combined-entry and [Settings placement previews](proposals/about-link-placement/README.md) are superseded.
 
 CHG-026 prepares [future Contact/SEO/account/Free-Pro/preview design scope](../requirements/web-commercial.md), with implementation explicitly paused. CHG-027 is the later direct request to create [About](screens/about/README.md) and [Contact](screens/contact/README.md) on a separate feature branch, with proposed copy for review. Other commercial/SEO/account work remains planning only.

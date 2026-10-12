@@ -1,6 +1,6 @@
 # Audio, appearance and feedback settings
 
-Revision: 1.2 · Scope: approved including CHG-014 detailed choices · Implementation: implemented and locally validated on 2026-10-11; physical-device/deployment verification separate
+Revision: 1.3 · Scope: approved including CHG-014 and CHG-030 Dark primary text · 2026-10-12; implementation/publication in the delivery tracker, physical-device/deployment verification separate
 
 User evidence: **“after a publish, proceed with”** working browser controls; the subsequent implementation was published in `b19aa4d`. The user now explicitly replied **“proceed”** to the detailed settings/session proposal published in `ebac22b`, approving CHG-014 revision 1.0. This records GitHub publication, not Cloudflare deployment.
 
@@ -11,6 +11,7 @@ User evidence: **“after a publish, proceed with”** working browser controls;
 | SET-03 | Provide an Appearance control that changes the app's presentation. | Approved; CHG-014 |
 | SET-04 | Provide Vibration Feedback connected to actual device/browser support. | Approved; CHG-014 |
 | SET-05 | Persist preferences across refreshes and compatible app updates. Explain unsupported capabilities accurately rather than displaying nonfunctional controls. | Approved; CHG-014 |
+| SET-07 | Main text in resolved Dark mode uses `#FFFFFF` (`rgb(255, 255, 255)`) consistently across the app: headings, primary content and neutral control labels/values, including session/practice/history text. Muted secondary copy/footer links and semantic accent/status/button ink retain their colors. Light mode retains its existing palette; System follows the resolved theme. | Direct user instruction; CHG-030 |
 
 ## Approved ownership, defaults and capability behavior
 
@@ -29,6 +30,7 @@ These choices are approved in the [immutable CHG-014 proposal](https://github.co
 3. An approved appearance choice changes the UI and is restored on reload without harming readability.
 4. Approved feedback triggers obey the saved preference; unsupported vibration is not reported as successful.
 5. Existing sound data and history are retained when preferences change.
+6. Review Dark captures across the twelve screens/shared safety modal and both browser engines. Main text is pure white; muted/accent styles remain distinct. Light-mode colors/layout remain unchanged. Update the [shared design](../design/screens/shared/README.md), source/capture fingerprints and delivery history; screenshot checks prove repeatable rendering, not device microphone behavior.
 
 ## Explicit data reset — CHG-019
 

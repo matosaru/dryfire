@@ -1,6 +1,6 @@
 # Functional requirements
 
-Revision 1.12 · CHG-029 separate About/Contact and footer refinement · 2026-10-12
+Revision 1.13 · CHG-030 pure white Dark primary text · 2026-10-12
 
 CHG-027 starts [About](about.md) with email support; CHG-029 separates [Contact](contact.md) and refines the centered shared footer links on the same feature branch. Suggested copy remains reviewable; broader CHG-026 implementations stay paused.
 
@@ -16,7 +16,7 @@ This is the single current functional index. Markdown requirements define behavi
 | [Practice start timing](practice-start.md) | CHG-022 actual microphone readiness, early Single failures and louder cue | Implemented and pushed; source CI passes, device/deployment evidence in the delivery tracker |
 | [Practice improvements and input limits](practice-improvements.md) | UPDATE-01–06 and LIMIT-01–03: automatic Single, charts, unknown filtering, screen history, safety modal and complete approved bounds | Implemented |
 | [Persistence](persistence.md) | Local durability, migrations, backups and ownership | Implemented: schema 3 / backup 4; compatible backups and CHG-020 separate recognition/session clearing |
-| [Settings](settings.md) | Browser-backed audio preferences, themes and supported vibration | Implemented; physical iPhone capability checks remain separate |
+| [Settings](settings.md) | Browser-backed audio preferences, themes, CHG-030 white Dark primary text and supported vibration | Implemented; physical iPhone capability checks remain separate |
 | [About](about.md) | Dedicated informational screen, local-data/recognition explanation and shared informational navigation | CHG-029 implemented and browser validated on the feature branch; publication/promotion in the delivery tracker |
 | [Contact](contact.md) | Separate email-support screen and confirmed mailto address | CHG-029 implemented and browser validated on the feature branch; publication/promotion in the delivery tracker |
 | [Web commercial preparation](web-commercial.md) | Contact/SEO, review, simple Free/Pro, account/cloud recovery, billing, dev/production QA and later paid candidates | Planning/analysis requested; price/allocation/providers/data policies proposed; product features not implemented; native releases deferred |
