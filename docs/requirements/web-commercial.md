@@ -2,11 +2,11 @@
 
 CHG-026 · revision 1.0 · 2026-10-11. **Requested planning/analysis; proposed commercial/backend behavior, not implemented.** The user confirmed Lithuania/Europe and deferred native apps. This file does not override currently free features or authorize a final price/provider/data-retention decision.
 
-The latest instruction is **plans only, committed to a feature branch; do not start implementations**. All product states below remain unimplemented until the user later starts that work.
+CHG-026 authorized **plans only, committed to a feature branch; do not start implementations**. CHG-027 is the later specific instruction starting the [About/email-contact slice](about.md). The remaining product states below stay unimplemented until separately started.
 
 | ID | Requirement / decision to specify | State and acceptance |
 | --- | --- | --- |
-| CONTACT-01 | Add an app Contact page and email support, also reachable from public pages | Directly requested forward scope, unimplemented; user-confirmed address `easydryfire@gmail.com`. Anonymous/Free/Pro users see the address and an Email support mailto action plus copy fallback; include no gun/audio/history data automatically |
+| CONTACT-01 | Add an app Contact page and email support, also reachable from public pages | App portion implemented by CHG-027/029 as a separate Contact screen with a centered footer entry, including first use; address `easydryfire@gmail.com` is selectable and linked with mailto, without automatic private data. Separate public Contact route and copy-button/form behavior remain planned |
 | WEB-01 | Real public SEO content with structured/canonical/social metadata, sitemap and robots configuration | Requested forward plan; routing/domain/design choice proposed. Product/help/contact pages work without login/microphone/local data; only real public canonical pages indexed; dev/account/session pages noindex |
 | REVIEW-01–08 | Review and optimize/security-harden using observed findings | Initial review performed; fixes/benchmarks pending. Preserve data/timing, measure before/after and use meaningful regressions; [detailed findings](../development/security-performance-review.md) own these IDs |
 | COMM-01 | Basic practice useful/free; exactly one inexpensive paid plan; simple onboarding | User-requested constraints. Free first practice needs no account/payment; one Pro offer, no feature-pack tiers; concrete split/price needs a reviewed decision |

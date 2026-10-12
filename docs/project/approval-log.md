@@ -440,3 +440,47 @@ The user explicitly instructed **“proceed with 1 point, Add screenshot checks 
 The user asks **“How to change this at the moment, so my public website would not have all the features ? but i would be able to check them ?”**. [Public Free/private preview](../development/free-preview-testing.md) records a concrete proposal: public Free artifact, protected full dev artifact, data-preserving transition, both profiles in CI and later trusted staff production entitlement. No final paid allocation or account setting is inferred from this question.
 
 The user then instructs **“prepare plans, and commit plans to a feature branch”** and **“do not yet start any implementations”**. This is the controlling execution limit for this iteration, superseding earlier automatic implementation instructions for these new features. Commit/publish documentation and observed research only; do not start app, auth/cloud/billing, gating, deployment or dependency remediation. Existing implemented screens/assets/data remain unchanged.
+
+## CHG-027 — About page and confirmed email
+
+- Evidence: **“also start creating aboutpage, suggest page text. and add easydryfire@gmail.com as a contact email. create this as a separate feature branch”**.
+- Scope: ABOUT-01–04 in [About requirements](../requirements/about.md). Dedicated informational app screen from Settings, accessible without a saved gun, proposed accurate current-feature copy and user-initiated email link.
+- Authorization: direct implementation instruction for this slice, after the CHG-026 pause. Exact editorial copy is suggested for review, not asserted as word-for-word approved. No other commercial/SEO/account/cloud/paywall implementation is authorized by this request.
+- Branch: `feature/about-contact-page`, created from current `origin/dev` (`7b8e72a`). Use a PR into dev; user owns production promotion.
+
+Later release instruction for this request: **“i want you to merge changes to dev and main, do this automatically, i will be out from computer. Just this time”**, followed by **“prepare a feature, and proceed with changes merge”**. This grants one-time ownership of feature/dev/main promotion after checks pass. Preserve PR/check gates and branch protections; it does not authorize forcing a protected branch, disabling checks or permanently enabling automatic production merges. GitHub API access from this workspace currently returns `Forbidden`; complete the feature and use available authorized GitHub automation if possible, recording any remaining access block accurately.
+
+## CHG-028 — Show the in-app About link placement
+
+- Evidence: **“about page should have a link inside an app, can you show me your suggested placement ?”**.
+- Requested scope: explain and visualize the link's placement. CHG-027 already has the link in Settings on its feature branch.
+- Assistant proposal: first Settings item, above installation information, caption **About & contact**, with device capability information at the bottom. [Dark/Light previews](../design/proposals/about-link-placement/README.md) are suggestions for review, not approval evidence or implemented screen order.
+- Application sources, current registry/destination hierarchy, accepted captures and CI baselines remain unchanged by preparing these previews.
+
+### CHG-028 correction — separate from Settings
+
+The user subsequently directs **“update the screenshots with the link”** and **“it should be separated from settings”**. This supersedes the assistant's Settings-placement suggestion. Provide a direct **About & contact** entry in the shared app footer, opening its existing independent page without visiting Settings, including before gun setup. Preserve the five practice-navigation destinations and all data/safety/capture guards. Update actual application layout and its screenshots together under the already-authorized About implementation scope; the original top-of-Settings mockups remain superseded proposal evidence in Git. No broader commercial/SEO implementation or protection bypass is authorized.
+
+## CHG-029 — Separate About and Contact; centered muted footer links
+
+- Date: 2026-10-12.
+- Direct instruction: **“i don't like the link design. Separate About and Contact pages, center links in a screen, remove arrow, make links color to match footer text color, keep the font size and outline, add separation line between links and footer text”**.
+- Scope: [About](../requirements/about.md), [Contact](../requirements/contact.md) and the [shared footer](../design/screens/shared/README.md). Two independent history-backed app screens, reached by centered About and Contact footer controls, with no arrows. Match each theme's footer text color; preserve the 0.85rem font, underline, minimum 44px target and existing keyboard focus outline. Add a divider below the link row, above the disclosure/copyright text.
+- Both controls remain available on both pages and identify the current page accessibly. Move the existing email/contact copy to Contact; About retains its purpose, routine, storage and safety copy. Preserve Back/Forward, first-use access and all data/capture/safety guards.
+- Authorization is the user's direct implementation instruction, superseding CHG-028's combined link and hidden About self-link. Keep the existing feature branch and PR gates. No public server route, form/backend, cloud, payment or other paused commercial implementation is started.
+
+## CHG-030 — Pure white primary text in Dark mode
+
+- Date: 2026-10-12.
+- Direct instruction: **“update all main text colour to #ffffff, update screenshots”**, following the Dark-mode color question identifying primary text as `#F0F5F7`, About body text as `#B8C5CF` and footer text/links as `#8594A4`.
+- Scope: SET-07 in [appearance requirements](../requirements/settings.md) and the [shared layout](../design/screens/shared/README.md). Dark-mode primary text, headings, neutral control labels/values and session/practice/history primary text use `#FFFFFF` (`rgb(255, 255, 255)`) consistently, including explicit near-white primary overrides.
+- Preserve muted secondary text, CHG-029 footer/link colors, accent/status colors, dark labels on orange buttons and the resolved Light theme. Keep sizes, layout, navigation, saved data and controls intact. System appearance follows the same Dark/Light rule.
+- Refresh and review affected actual production-build captures and pinned Chromium/WebKit references, record source fingerprints and architecture maintenance, then publish on the existing feature branch. No PR gate bypass, production deployment or broader paused commercial implementation is implied.
+
+## CHG-031 — Brighter About/Contact footer links in Dark mode
+
+- Date: 2026-10-12 (Europe/Vilnius).
+- Direct feedback/request: **“still see that about and contacts links are not very good contrast”**, pointing to the current About Dark screenshot; subsequent status question **“was the colour change added ?”**.
+- Scope: ABOUT-05 / CONTACT-04 and [shared footer](../design/screens/shared/README.md). Under the existing implementation instruction and the immediately preceding pure-white preference, make the two shared About/Contact controls `#FFFFFF` (`rgb(255, 255, 255)`) in resolved Dark mode. This is the concrete contrast correction; it supersedes CHG-029's footer-matching color for these controls in Dark only.
+- Preserve the centered separate destinations, no arrows, 0.85rem type, underline, focus outline, touch target, divider and navigation/data/safety guards. Keep the disclosure/copyright muted and retain Light colors. No editorial content, public routes, saved data or other commercial features change.
+- Refresh/review affected actual Dark captures and pinned browser references, retain existing Light images, maintain the requirements/architecture/history and publish to the existing feature branch. Promotion must still respect PR/check gates; no deployment is inferred from a push.

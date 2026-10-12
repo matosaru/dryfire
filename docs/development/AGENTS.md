@@ -63,4 +63,6 @@ Offline-first Vite / vanilla JavaScript PWA, packaged for iOS and Android with C
 ## Current handoff
 
 CHG-026: the [web commercial roadmap](../project/web-commercial-plan.md) is **planning only**, per the latest explicit instruction to commit plans on a feature branch and not begin implementations. Native releases are deferred. Use the [forward requirements](../requirements/web-commercial.md), commercial/cloud/review/preview documents and exact approval evidence; do not implement paid gates, pricing, accounts, cloud uploads or Contact/SEO routes until the user later starts implementation. Read-only research and documentation validation remain authorized.
+
+CHG-027 specifically starts the [About/email-contact slice](../requirements/about.md) on its own feature branch. This authorizes a dedicated app screen and the confirmed email link, with initial suggested copy for user review. It does not start other CHG-026 implementation stages.
 See the [historical handoff](CODEX_HANDOFF.md) for the requested v0.8 UI update, production minification audit, and regression-test-first refactor task.

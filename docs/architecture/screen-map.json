@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-10-11",
+  "reviewedOn": "2026-10-12",
   "sourceBaseline": "7240e2cb9cc9ff0cd577662eefec9fdddbed2292",
   "publicOrigin": "https://dryfire.matosaru.workers.dev",
   "publicPaths": [
@@ -57,9 +57,10 @@
       "requirements": [
         "docs/requirements/core.md",
         "docs/requirements/branding.md",
-        "docs/requirements/gun-profiles.md"
+        "docs/requirements/gun-profiles.md",
+        "docs/requirements/about.md"
       ],
-      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations.",
+      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. Separate shared-footer About & contact entry opens its independent page.",
       "states": [
         {
           "key": "overview.dark",
@@ -411,9 +412,10 @@
       "requirements": [
         "docs/requirements/settings.md",
         "docs/requirements/core.md",
-        "docs/requirements/persistence.md"
+        "docs/requirements/persistence.md",
+        "docs/requirements/about.md"
       ],
-      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install/About explain local-data and microphone limits.",
+      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. Device capability status stays in Settings; About is reached independently from the shared app footer.",
       "states": [
         {
           "key": "overview.dark",
@@ -435,6 +437,66 @@
         }
       ],
       "design": "docs/design/screens/settings/README.md"
+    },
+    {
+      "id": "about",
+      "folder": "about",
+      "domId": "aboutView",
+      "title": "About",
+      "parent": "home",
+      "entry": "Shared app footer → About, including before gun setup",
+      "requirements": [
+        "docs/requirements/about.md",
+        "docs/requirements/core.md",
+        "docs/requirements/branding.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, white Dark/footer-matching Light color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Practice navigation and gun switcher are hidden.",
+      "states": [
+        {
+          "key": "overview.dark",
+          "anchor": "aboutView",
+          "label": "About, Dark",
+          "image": "docs/design/screens/about/overview.dark.png"
+        },
+        {
+          "key": "overview.light",
+          "anchor": "aboutView",
+          "label": "About, Light",
+          "image": "docs/design/screens/about/overview.light.png"
+        }
+      ],
+      "design": "docs/design/screens/about/README.md"
+    },
+    {
+      "id": "contact",
+      "folder": "contact",
+      "domId": "contactView",
+      "title": "Contact",
+      "parent": "home",
+      "entry": "Shared app footer → Contact, including before gun setup",
+      "requirements": [
+        "docs/requirements/contact.md",
+        "docs/requirements/about.md",
+        "docs/requirements/core.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered white Dark/footer-matching Light footer controls remain available with a divider below; gun switching/practice tabs/safety disclosure are hidden.",
+      "states": [
+        {
+          "key": "overview.dark",
+          "anchor": "contactView",
+          "label": "Contact, Dark",
+          "image": "docs/design/screens/contact/overview.dark.png"
+        },
+        {
+          "key": "overview.light",
+          "anchor": "contactView",
+          "label": "Contact, Light",
+          "image": "docs/design/screens/contact/overview.light.png"
+        }
+      ],
+      "design": "docs/design/screens/contact/README.md"
     }
   ],
   "shared": [
@@ -461,9 +523,9 @@
     }
   ],
   "reviewedSources": {
-    "index.html": "8fceaa5c9a2220ea8128869944d0a1706768180f7d3627e51c03e4c838817519",
-    "src/main.js": "921f48402b8387ac76eba9cffdecb2833fa7865116909b3a5387960672add71d",
-    "src/styles.css": "a172416e624e9fb251457813f1875402b9bcaded8bfa61c2797a6789b499d355",
+    "index.html": "562efb12b63d7401840cbe75ff2010830d743a2c276fbac1197fcd0c42ef93b9",
+    "src/main.js": "61121c873119f4785bba13da797a8788405aa54a2952563edc9de208e6579a80",
+    "src/styles.css": "b32e41153f46a0e6a4d8adb4eb9158c57e69d0133c485397de5a4cc04e390cb2",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
     "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
@@ -478,6 +540,11 @@
     "CHG-020",
     "CHG-021",
     "CHG-022",
-    "CHG-023"
+    "CHG-023",
+    "CHG-027 About and email contact",
+    "CHG-028 independent About footer link",
+    "CHG-029 separate About/Contact and centered footer",
+    "CHG-030 pure white Dark primary text",
+    "CHG-031 white Dark About/Contact controls"
   ]
 }

@@ -357,10 +357,50 @@
         <p class="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
       </div>
       <div class="settings-group"><h3>Delete local app data</h3><p class="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" class="button danger wide-action" type="button">Delete all guns &amp; app data</button></div>
-      <div class="settings-group"><h3>About</h3><p class="muted small">Dry Fire With Ease v0.8.0 · Sound trainer · Private IndexedDB storage · Up to 10 new learned examples per sound and configurable last-N recognition results. This is experimental and is not a calibrated measurement instrument.</p><p id="deviceCheck" class="small muted"></p></div>
+      <div class="settings-group"><h3>Device information</h3><p id="deviceCheck" class="small muted"></p></div>
     </section>
 
-    <footer>Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.<p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p></footer>
+    <section id="aboutView" class="view hidden" aria-labelledby="about-title">
+      <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button><h2 id="about-title">About</h2></div>
+      <div class="about-intro">
+        <img class="brand-logo" src="/logo.svg" width="64" height="64" alt="" />
+        <p class="about-name">Dry Fire With Ease</p><p class="muted small">Sound trainer · v0.8.0</p>
+        <h3>Dry-fire practice,<br>made simple.</h3>
+        <p>Use your device's microphone to recognize your learned trigger click, time your repetitions and review your progress.</p>
+      </div>
+      <section class="about-card" aria-labelledby="aboutRoutineTitle">
+        <h3 id="aboutRoutineTitle">A simple practice routine</h3>
+        <ol><li>Learn your trigger click.</li><li>Choose a practice mode or drill.</li><li>Follow the start signal and review your saved results.</li></ol>
+        <p>Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.</p>
+      </section>
+      <section class="about-card" aria-labelledby="aboutDataTitle">
+        <h3 id="aboutDataTitle">Saved on your device</h3>
+        <p>No account is required. Your profiles, learned sound features, drills and history stay in this browser. Use Settings → Export backup to keep a recovery copy before changing device or clearing browser data.</p>
+      </section>
+      <section class="about-limits" aria-labelledby="aboutSafetyTitle">
+        <h3 id="aboutSafetyTitle">Practice responsibly</h3>
+        <p class="muted small">Complete the safety check before recording or practice. Sound recognition is experimental. It cannot verify an unloaded firearm, aim or safe handling, and is not a calibrated measurement instrument.</p>
+      </section>
+    </section>
+
+    <section id="contactView" class="view hidden" aria-labelledby="contact-title">
+      <div class="section-head"><button class="back-button" type="button" data-back aria-label="Back">‹</button><h2 id="contact-title">Contact</h2></div>
+      <section class="about-card about-contact" aria-labelledby="contactEmailTitle">
+        <h3 id="contactEmailTitle">Get in touch</h3>
+        <p>Have a question, feedback or a bug to report? We'd like to hear from you.</p>
+        <a class="about-email" href="mailto:easydryfire@gmail.com">easydryfire@gmail.com</a>
+        <p class="muted small">Opens your email app. You can also copy the address.</p>
+      </section>
+    </section>
+
+    <footer>
+      <nav class="footer-links" aria-label="Information">
+        <button id="aboutBtn" class="text-button footer-page-link" type="button">About</button>
+        <button id="contactBtn" class="text-button footer-page-link" type="button">Contact</button>
+      </nav>
+      Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.
+      <p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p>
+    </footer>
   </main>
   <script type="module" src="/src/main.js"></script>
 </body>

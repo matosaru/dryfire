@@ -4,6 +4,8 @@ Prepared for CHG-018 · 2026-10-11 · **Proposed; not applied to the application
 
 CHG-026 requests Contact and public SEO in the [forward web plan](../project/web-commercial-plan.md). Existing templates remain preparatory; their current Worker canonical is not changed until final routing/domain design and origin-data migration are specified. Do not publish the example paid price or make account/cloud claims before those features exist.
 
+CHG-027 starts the [About/email-contact app screen](../requirements/about.md) inside the existing `/` UI. It does not add a public `/about/` or `/contact/` route, sitemap entry, canonical/domain redirect or account/cloud claim; the SEO rollout stays planned.
+
 ## Planned public topology — CHG-026
 
 Working routing proposal, **not implemented or added to the current generated site tree**:
