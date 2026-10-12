@@ -1,3 +1,4 @@
+import { PAGE_IDS } from './pageDefinitions.js';
 import { analyzeRecording, recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
@@ -118,6 +119,7 @@ function ownerId() {
 function profileLocked() { return busy || profileLoading || preferencePending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked(); }
 function currentDrill(id) { return getDrill(id, customDrills); }
 function renderGunControls() {
+  document.querySelectorAll('.tab').forEach(tab => { tab.disabled = !activeGun || activeGun.needsDetails || profileLoading; });
   $('#gunSwitcherBtn').disabled = profileLocked();
   $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
   $('#gunSwitcherBtn').title = profileLocked() ? 'Finish recording or stop listening before switching guns.' : 'Choose another gun';
@@ -293,6 +295,7 @@ async function deleteGunProfile(gun) {
 async function selectGunProfile(id) {
   if (profileLocked()) return;
   profileLoading = true;
+  renderGunControls();
   renderLiveButton();
   try {
     await eventQueue;
@@ -302,7 +305,7 @@ async function selectGunProfile(id) {
     await loadActiveGun();
     $('#safetyAck').checked = false;
     $('#safetyAck').dispatchEvent(new Event('change'));
-  } finally { profileLoading = false; renderClassCards(); renderLiveButton(); }
+  } finally { profileLoading = false; renderGunControls(); renderClassCards(); renderLiveButton(); }
   if (activeGun?.needsDetails) openGunSetup(activeGun);
   else switchView('home');
 }
@@ -500,12 +503,12 @@ function resolveRoute(route) {
   if (route.gunId !== activeGun.id) return routeFor('home');
   if (route.view === 'practice' && (!practiceController?.routeKey() || route.context !== practiceController.routeKey())) return routeFor('drills');
   if (route.view === 'session' && (!sessionController?.routeKey() || route.context !== sessionController.routeKey())) return routeFor('drills');
-  return routeFor(['home','learn','drills','session','practice','recognize','history','settings','about','contact','guns','gunSetup'].includes(route.view) ? route.view : 'home');
+  return routeFor(PAGE_IDS.includes(route.view) ? route.view : 'home');
 }
 function switchView(name) { return screenNavigation ? screenNavigation.navigate(routeFor(name)) : displayView(name); }
 function goBack(fallback = 'home') { return screenNavigation ? screenNavigation.back(routeFor(fallback)) : switchView(fallback); }
 function displayView(name) {
-  if (busy || profileLoading || !['home','learn','drills','session','practice','recognize','history','settings','about','contact','guns','gunSetup'].includes(name)) return;
+  if (busy || profileLoading || !PAGE_IDS.includes(name)) return;
   if (name !== 'practice' && practiceController?.hasUnsavedResults()) {
     showError(new Error('Practice results are not saved. Keep this review open and retry saving.'));
     return;
@@ -514,10 +517,6 @@ function displayView(name) {
   if (name === 'recognize') { $('#drillSelect').value = ''; resetDrill(); }
   activeView=name;
   document.body.dataset.view = name;
-  const heading = document.querySelector(`#${name}View .section-head`);
-  if (heading && !['home','guns','gunSetup'].includes(name)) {
-    heading.classList.add('has-settings'); heading.append($('#settingsShortcut'));
-  } else document.querySelector('.header-actions').append($('#settingsShortcut'));
   window.scrollTo({top:0,behavior:'instant'});
   document.querySelectorAll('.tab').forEach(tab=>{
     const selected=tab.dataset.view===(['session','practice'].includes(name)?'drills':name);
@@ -525,7 +524,7 @@ function displayView(name) {
     if(selected)tab.setAttribute('aria-current','page');
     else tab.removeAttribute('aria-current');
   });
-  for(const view of ['home','learn','drills','session','practice','recognize','history','settings','about','contact','guns','gunSetup']) $('#'+view+'View').classList.toggle('hidden',view!==name);
+  for(const view of PAGE_IDS) $('#'+view+'View').classList.toggle('hidden',view!==name);
   for (const view of ['about', 'contact']) {
     const link = $('#' + view + 'Btn');
     if (name === view) link.setAttribute('aria-current', 'page');

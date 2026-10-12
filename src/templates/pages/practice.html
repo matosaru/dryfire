@@ -1,0 +1,37 @@
+<div class="section-head"><button id="practiceBackBtn" type="button" class="back-button" aria-label="Back to previous screen">‹</button><h2 id="practice-title">Practice</h2></div>
+      <p class="gun-context">Practice for <strong class="gun-context-name"></strong>.</p>
+      <div id="practiceSteps" class="preset-steps" aria-label="Required sounds"></div>
+      <div id="practiceConfigure">
+        <form id="practiceConfigForm" class="session-config-form"><fieldset id="practiceConfigFields" class="session-config-fields"><legend>Practice setup</legend>
+          <label id="practiceCountRow" class="session-field" for="practiceRepetitions"><span id="practiceCountLabel">Repetitions</span><input id="practiceRepetitions" type="number" min="1" max="100" step="1" value="10" required inputmode="numeric" /></label>
+          <label id="practiceDurationRow" class="session-field hidden" for="practiceDuration"><span>Active seconds</span><input id="practiceDuration" type="number" min="1" max="3600" step="1" value="60" required inputmode="numeric" /></label>
+          <label id="practiceParRow" class="session-field hidden" for="practicePar"><span>Par time (seconds)</span><input id="practicePar" type="number" min="0.1" max="30" step="0.1" value="1.5" required inputmode="decimal" /></label>
+          <div id="practiceReloadFields" class="session-delay-card hidden"><label class="session-field" for="practiceReloadStart"><span>First event</span><select id="practiceReloadStart"><option value="rack">Rack slide</option><option value="reload">Change magazine</option><option value="draw">Draw from holster</option><option value="trigger">Trigger pull</option></select></label><label class="session-field" for="practiceReloadEnd"><span>Second event</span><select id="practiceReloadEnd"><option value="reload">Change magazine</option><option value="rack">Rack slide</option><option value="draw">Draw from holster</option><option value="trigger">Trigger pull</option></select></label></div>
+          <label class="session-field" for="practiceStartSource"><span>Start signal</span><select id="practiceStartSource"><option value="app">App signal</option><option value="external">Calibrated external beep</option></select></label>
+          <div id="practiceAppTiming" class="session-delay-card"><label class="session-field" for="practiceDelayMode"><span>Ready delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label>
+            <label id="practiceFixedRow" class="session-field hidden" for="practiceFixedDelay"><span>Delay seconds</span><input id="practiceFixedDelay" type="number" min="0" max="30" step="0.1" value="3" required inputmode="decimal" /></label>
+            <div id="practiceRandomFields" class="session-delay-range"><label class="session-field" for="practiceMinDelay"><span>Minimum seconds</span><input id="practiceMinDelay" type="number" min="0" max="30" step="0.1" value="2" required inputmode="decimal" /></label><label class="session-field" for="practiceMaxDelay"><span>Maximum seconds</span><input id="practiceMaxDelay" type="number" min="0" max="30" step="0.1" value="5" required inputmode="decimal" /></label></div>
+            <label class="preference-toggle" for="practiceStartSound"><span><strong>Sound at start</strong><small>Play a beep at each repetition start.</small></span><input id="practiceStartSound" type="checkbox" role="switch" checked /></label>
+          </div>
+        </fieldset><p id="practiceCueNote" class="muted small"></p><p id="practiceReadiness" class="session-readiness" role="status"></p><button id="practiceLearnBtn" class="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" class="button primary wide-action" type="submit">Start Practice</button></form>
+      </div>
+      <div id="practiceRun" class="hidden">
+        <div class="practice-counters"><div><span id="practiceCompletedLabel">Attempts</span><strong id="practiceCompleted">0</strong></div><div><span>Shots</span><strong id="practiceShots">0</strong></div><div><span id="practiceRemainingLabel">Left</span><strong id="practiceRemaining">10</strong></div></div>
+        <div class="session-countdown-panel">
+          <div id="practiceSignal" class="session-countdown" role="timer" aria-live="off">—</div>
+          <button id="practiceStopBtn" class="button primary practice-stop hidden" type="button" aria-label="Stop practice and save results">STOP</button>
+          <div id="practiceLevelPanel" class="practice-level-panel hidden">
+            <p class="practice-level-label"><svg class="practice-mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg><span>MICROPHONE INPUT</span></p>
+            <div id="practiceLevelMeter" class="practice-level-track" role="meter" aria-label="Microphone input level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="practiceLevelFill" class="practice-level-fill"></div></div>
+            <p class="practice-level-value"><strong id="practiceLevelValue">0</strong><span>relative level</span></p>
+            <p id="practiceInputState" class="muted small">Waiting for audio input…</p>
+          </div>
+          <p id="practiceAnnouncement" class="session-announcement" role="status"></p>
+          <p id="practiceInputFeedback" class="practice-input-feedback" role="status"></p>
+          <p id="practiceMicrophone" class="listening-indicator" role="status"></p><p class="muted small">Active time <strong id="practiceElapsed">0.00 s</strong></p>
+        </div>
+        <div id="practiceLatest" class="session-result-card"></div>
+        <div class="session-run-actions"><button id="practicePauseBtn" class="button secondary" type="button">Pause</button><button id="practiceResumeBtn" class="button primary hidden" type="button">Resume</button><button id="practiceNextBtn" class="button primary hidden" type="button">Next repetition</button><button id="practiceEndBtn" class="button secondary" type="button">End Practice</button></div>
+      </div>
+      <div id="practiceReview" class="hidden"><section class="session-review-card"><h3 id="practiceReviewStatus">Practice review</h3><div id="practiceSummary"></div><p id="practiceSaved" class="session-saved-note"></p><button id="practiceRetryBtn" type="button" class="button secondary wide-action hidden">Retry saving results</button></section><div id="practiceResults" class="session-result-list"></div><button id="practiceRepeatBtn" type="button" class="button primary wide-action">Repeat Practice</button><button id="practiceDoneBtn" type="button" class="button secondary wide-action">Back to Drills</button></div>
+      <p class="muted small session-timing-note">Timings describe detected audio. The app cannot verify physical actions, aim, movement or unloaded status.</p>

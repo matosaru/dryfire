@@ -1,0 +1,20 @@
+<details class="safety-disclosure"><summary>Safety check <span id="safetySummaryState">Required before recording</span></summary><section class="safety-card" aria-labelledby="safety-title">
+      <div class="safety-icon" aria-hidden="true">!</div>
+      <div>
+        <h2 id="safety-title">Safety first</h2>
+        <p>Verify unloaded; remove live ammunition from the area; use a safe direction and backstop.</p>
+        <label class="checkbox-row"><input id="safetyAck" type="checkbox" /> I confirm the safety check.</label>
+      </div>
+    </section></details>
+
+
+
+    <p id="appMessage" class="app-message hidden" role="alert"></p>
+
+    <p class="startup-message" role="status">Opening your saved gun profiles…</p>
+
+    <button id="gunSwitcherBtn" class="gun-switcher hidden" type="button" aria-label="Choose a gun">
+      <img id="activeGunImage" class="gun-type-image gun-switcher-image" src="/gun-types/unknown.svg" width="96" height="56" alt="" />
+      <span class="gun-switcher-copy"><span class="gun-switcher-label">Active gun</span><strong id="activeGunName"></strong><span id="activeGunType"></span></span>
+      <span class="gun-switcher-action">Switch gun <span aria-hidden="true">⌄</span></span>
+    </button>

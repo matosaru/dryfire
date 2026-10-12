@@ -1,5 +1,7 @@
 # Settings design
 
+CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
+
 CHG-035: private preview alone adds **Test as: Free / Full** at the top of Settings and a footer mode indicator. Default Free reproduces the two-gun public rules; Full restores five-gun creation/custom creation/charts. Disabled during active work; mode changes preserve saved data. Public HTML omits these controls. Live Access and deployment are tracked separately in the [guide](../../../development/private-preview-deployment.md).
 
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
@@ -10,7 +12,7 @@ CHG-029 capture refresh: current references use the pinned production-build rend
 
 Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · CHG-023 footer published in [`dbf8687`](https://github.com/matosaru/dryfire/commit/dbf8687); earlier feature baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
-Entry: Settings gear in each screen heading; backup/restore links. App anchor: `settingsView`. This is a state of the same `/` web app, not a separate indexable URL.
+Entry: Settings gear in the shared branded header; backup/restore links. App anchor: `settingsView`. This is a state of the same `/` web app, not a separate indexable URL.
 
 ## Layout and interaction
 
@@ -28,6 +30,8 @@ Functional specifications: [settings](../../../requirements/settings.md) · [cor
 | Private preview, free, light | [`preview-free.light.png`](preview-free.light.png) | `previewTestingSection` |
 | Private preview, full, dark | [`preview-full.dark.png`](preview-full.dark.png) | `previewTestingSection` |
 | Private preview, full, light | [`preview-full.light.png`](preview-full.light.png) | `previewTestingSection` |
+| Expanded installation help, Dark | [`installation-help.dark.png`](installation-help.dark.png) | `installStatus` |
+| Expanded installation help, Light | [`installation-help.light.png`](installation-help.light.png) | `installStatus` |
 | Settings, Dark | [`overview.dark.png`](overview.dark.png) | `settingsView` |
 | Settings, Light | [`overview.light.png`](overview.light.png) | `settingsView` |
 | Completed selected-gun sound reset | [`sounds-reset.dark.png`](sounds-reset.dark.png) | `soundResetOutcome` |
@@ -35,3 +39,5 @@ Functional specifications: [settings](../../../requirements/settings.md) · [cor
 CHG-029 captures come from the production build in pinned Chromium at 390 px, with the shared footer also reviewed at 320 px and in WebKit. [Current rendering evidence](../../baselines/separate-pages-validation.json) retains source/collection details. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
+
+CHG-037 uses the shared branded header, reusable page wrapper and fixed five-tab navigation. Installation help remains an expandable Settings section using the same shell. Current Dark/Light expanded-help captures and updated existing states are reviewed in the pinned collection; [layout requirements](../../../requirements/page-layout.md) own the architecture.

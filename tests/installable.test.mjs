@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { restoreBackup } from '../src/storage.js';
+import { renderPageTemplates } from '../tools/page-templates.mjs';
 
-const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+const html = renderPageTemplates(await readFile(new URL('../index.html', import.meta.url), 'utf8'));
 
 test('all app navigation targets and controls exist in HTML', () => {
   for (const id of ['homeView', 'learnView', 'recognizeView', 'historyView', 'settingsView',
