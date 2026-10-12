@@ -1,0 +1,50 @@
+{
+  "commit": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+  "edition": "public",
+  "build": {
+    "version": 1,
+    "edition": "public",
+    "sourceRevision": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+    "sourceDigest": "91ffd98d4a25eff860e81850432246579147a412ef41a3417ca8e7752f3248c8",
+    "assets": [
+      "/assets/eventDetector-DtBbU0H0.js",
+      "/assets/index-B7_BGuaC.js",
+      "/assets/index-DrvJKM1X.css",
+      "/pcm-capture.worklet.js",
+      "/sw.js"
+    ]
+  },
+  "environment": {
+    "playwrightVersion": "1.58.2",
+    "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+    "platform": "linux/amd64",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "clock": "2026-10-11T11:00:00.000Z",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "maxDiffPixels": 0,
+    "comparisonThreshold": 0.005
+  },
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v22.23.3",
+  "hashes": {
+    "index.html": "901e0dc2459447fda85a0511431cbe746b035213e50dbbecb6ff03895b9e7669",
+    "src/styles.css": "d66b1f2f9df510631e1550f58c8a9fac0fe3f610983bf03d0fad16e1c17a1aed",
+    "src/main.js": "72d138fd1add86dd5a98c6cc7e241796a82465895227daf311c00ea4be83ba5d",
+    "package-lock.json": "300243b3ad3b20e7923e5791aa11c75b52bd595f1a882c49fa108bbed2acc1d5",
+    "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+  },
+  "assetHashes": {
+    "index.html": "89f7ca4eb86d051281e04f7bd679fc4cea10b2ce724b788f17d04f5613c3f1be",
+    "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+    "sw.js": "f22f2e52773caeec51b5a8b2ea3b62f248df269ca6fbbbac96a3c5c99bd5640e",
+    "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+    "assets/index-B7_BGuaC.js": "fb8f816a38e8873989c09a51c63516d96765e35bf5511f10c0c059449f7e71d9",
+    "assets/index-DrvJKM1X.css": "f8e5b8451fcd5d5bd7eb6141150503bdca98f71e97e092769b48d96deadbf88c"
+  }
+}

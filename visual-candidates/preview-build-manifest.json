@@ -1,0 +1,52 @@
+{
+  "commit": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+  "edition": "preview",
+  "build": {
+    "version": 1,
+    "edition": "preview",
+    "sourceRevision": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+    "sourceDigest": "91ffd98d4a25eff860e81850432246579147a412ef41a3417ca8e7752f3248c8",
+    "assets": [
+      "/assets/eventDetector-DtBbU0H0.js",
+      "/assets/index-CZxfav6U.js",
+      "/assets/index-DrvJKM1X.css",
+      "/assets/progressView-NAZSqbds.js",
+      "/pcm-capture.worklet.js",
+      "/sw.js"
+    ]
+  },
+  "environment": {
+    "playwrightVersion": "1.58.2",
+    "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+    "platform": "linux/amd64",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "clock": "2026-10-11T11:00:00.000Z",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "maxDiffPixels": 0,
+    "comparisonThreshold": 0.005
+  },
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v22.23.3",
+  "hashes": {
+    "index.html": "901e0dc2459447fda85a0511431cbe746b035213e50dbbecb6ff03895b9e7669",
+    "src/styles.css": "d66b1f2f9df510631e1550f58c8a9fac0fe3f610983bf03d0fad16e1c17a1aed",
+    "src/main.js": "72d138fd1add86dd5a98c6cc7e241796a82465895227daf311c00ea4be83ba5d",
+    "package-lock.json": "300243b3ad3b20e7923e5791aa11c75b52bd595f1a882c49fa108bbed2acc1d5",
+    "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+  },
+  "assetHashes": {
+    "index.html": "67e0dcfcc6ea37c01af491878e4df33a6fffa7836894cd567cd7b5ee3bab5064",
+    "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+    "sw.js": "41d53559155c391e0709d3896e3583c089faeb2c19aa041e1435b0b3be53a356",
+    "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+    "assets/index-CZxfav6U.js": "0ca73c367241dd5be813a1d4a011e9401e9f86f8d9055175f8c4ae70a2955022",
+    "assets/index-DrvJKM1X.css": "f8e5b8451fcd5d5bd7eb6141150503bdca98f71e97e092769b48d96deadbf88c",
+    "assets/progressView-NAZSqbds.js": "5459c2de0f4a0a21e1c23f1591af216fa4b3dcf423da04e0fbe0e878c2763361"
+  }
+}
