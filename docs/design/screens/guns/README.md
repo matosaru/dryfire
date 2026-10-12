@@ -1,6 +1,6 @@
 # My Guns design
 
-CHG-028 capture refresh: current references use the pinned production-build renderer and the independent About & contact footer entry. [Capture/build evidence](../../baselines/footer-entry-validation.json) records both 130-check runs and reviewed images.
+CHG-029 capture refresh: current references use the pinned production-build renderer and separate centered About/Contact footer controls. Current validation is recorded in the [delivery tracker](../../../project/implementation-history.md); earlier [CHG-028 evidence](../../baselines/footer-entry-validation.json) retains the combined entry.
 
 Current implemented layout · CHG-020 deletion/clear correction · 2026-10-11 · exact reviewed UI source hashes are in the registry; published source [`7240e2c`](https://github.com/matosaru/dryfire/commit/7240e2c); external CI/deployment evidence is in the project tracker
 

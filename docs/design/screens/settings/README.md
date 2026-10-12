@@ -1,6 +1,6 @@
 # Settings design
 
-CHG-028 capture refresh: current references use the pinned production-build renderer and the independent About & contact footer entry. [Capture/build evidence](../../baselines/footer-entry-validation.json) records both 130-check runs and reviewed images.
+CHG-029 capture refresh: current references use the pinned production-build renderer and separate centered About/Contact footer controls. Current validation is recorded in the [delivery tracker](../../../project/implementation-history.md); earlier [CHG-028 evidence](../../baselines/footer-entry-validation.json) retains the combined entry.
 
 Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · CHG-023 footer published in [`dbf8687`](https://github.com/matosaru/dryfire/commit/dbf8687); earlier feature baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
@@ -8,9 +8,9 @@ Entry: Settings gear in each screen heading; backup/restore links. App anchor: `
 
 ## Layout and interaction
 
-Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. CHG-028 keeps a Device information group with capability status. About & contact is a separate shared app-footer link, outside the Settings controls, and opens its independent screen directly.
+Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. CHG-028 keeps a Device information group with capability status. About and Contact have separate centered shared-footer controls outside Settings, opening their independent screens directly. Link colors match the footer text and a divider separates them from the disclosure.
 
-Functional specifications: [settings](../../../requirements/settings.md) · [core](../../../requirements/core.md) · [persistence](../../../requirements/persistence.md) · [About](../../../requirements/about.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
+Functional specifications: [settings](../../../requirements/settings.md) · [core](../../../requirements/core.md) · [persistence](../../../requirements/persistence.md) · [About](../../../requirements/about.md) · [Contact](../../../requirements/contact.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 
 ## Current visual references
 

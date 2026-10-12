@@ -442,16 +442,16 @@
       "id": "about",
       "folder": "about",
       "domId": "aboutView",
-      "title": "About & contact",
+      "title": "About",
       "parent": "home",
-      "entry": "Shared app footer → About & contact, including before gun setup",
+      "entry": "Shared app footer → About, including before gun setup",
       "requirements": [
         "docs/requirements/about.md",
         "docs/requirements/core.md",
         "docs/requirements/branding.md",
         "docs/requirements/persistence.md"
       ],
-      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage and backup explanation, selectable mailto contact and safety/recognition limits. Direct footer entry is independent of Settings; its self-link is hidden on About. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Practice navigation and gun switcher are hidden.",
+      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, muted color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Practice navigation and gun switcher are hidden.",
       "states": [
         {
           "key": "overview.dark",
@@ -467,6 +467,36 @@
         }
       ],
       "design": "docs/design/screens/about/README.md"
+    },
+    {
+      "id": "contact",
+      "folder": "contact",
+      "domId": "contactView",
+      "title": "Contact",
+      "parent": "home",
+      "entry": "Shared app footer → Contact, including before gun setup",
+      "requirements": [
+        "docs/requirements/contact.md",
+        "docs/requirements/about.md",
+        "docs/requirements/core.md",
+        "docs/requirements/persistence.md"
+      ],
+      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered muted footer controls remain available with a divider below; gun switching/practice tabs/safety disclosure are hidden.",
+      "states": [
+        {
+          "key": "overview.dark",
+          "anchor": "contactView",
+          "label": "Contact, Dark",
+          "image": "docs/design/screens/contact/overview.dark.png"
+        },
+        {
+          "key": "overview.light",
+          "anchor": "contactView",
+          "label": "Contact, Light",
+          "image": "docs/design/screens/contact/overview.light.png"
+        }
+      ],
+      "design": "docs/design/screens/contact/README.md"
     }
   ],
   "shared": [
@@ -512,6 +542,7 @@
     "CHG-022",
     "CHG-023",
     "CHG-027 About and email contact",
-    "CHG-028 independent About footer link"
+    "CHG-028 independent About footer link",
+    "CHG-029"
   ]
 }

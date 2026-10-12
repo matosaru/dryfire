@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 
 const library = readFileSync(new URL('./fixtures/library.json', import.meta.url));
 
-test('About is available before setup without capture or safety acknowledgement', async ({ page }) => {
+test('About and Contact are separate historical screens before setup without capture or safety acknowledgement', async ({ page }) => {
   await page.addInitScript(() => {
     window.__aboutMicrophoneRequests = 0;
     Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: {
@@ -15,21 +15,41 @@ test('About is available before setup without capture or safety acknowledgement'
   await expect(page.locator('#gunSetupView')).toBeVisible();
   await page.locator('#aboutBtn').click();
   await expect(page.locator('#aboutView')).toBeVisible();
+  await expect(page.locator('#aboutBtn')).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('#aboutView a[href^="mailto:"]')).toHaveCount(0);
+  await page.locator('#contactBtn').click();
+  await expect(page.locator('#contactView')).toBeVisible();
+  await expect(page.locator('#aboutView')).not.toBeVisible();
+  await expect(page.locator('#contactBtn')).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('#aboutBtn')).not.toHaveAttribute('aria-current', 'page');
   const email = page.getByRole('link', { name: 'easydryfire@gmail.com', exact: true });
   await expect(email).toHaveAttribute('href', 'mailto:easydryfire@gmail.com');
   await expect(page.locator('#safetyAck')).not.toBeChecked();
   await expect(page.locator('#safetyModal')).not.toBeVisible();
   expect(await page.evaluate(() => window.__aboutMicrophoneRequests)).toBe(0);
+  await page.locator('#contactView [data-back]').click();
+  await expect(page.locator('#aboutView')).toBeVisible();
+  await page.goForward();
+  await expect(page.locator('#contactView')).toBeVisible();
+  await page.goBack();
+  await expect(page.locator('#aboutView')).toBeVisible();
   await page.locator('#aboutView [data-back]').click();
   await expect(page.locator('#gunSetupView')).toBeVisible();
   await page.goForward();
   await expect(page.locator('#aboutView')).toBeVisible();
   await page.goBack();
   await expect(page.locator('#gunSetupView')).toBeVisible();
+  await page.locator('#contactBtn').click();
+  await expect(page.locator('#contactView')).toBeVisible();
+  await expect(page.locator('#gunSwitcherBtn')).not.toBeVisible();
+  await expect(page.locator('#safetyAck')).not.toBeChecked();
+  expect(await page.evaluate(() => window.__aboutMicrophoneRequests)).toBe(0);
+  await page.locator('#contactView [data-back]').click();
+  await expect(page.locator('#gunSetupView')).toBeVisible();
   await expect(page.locator('#gunName')).toHaveValue('');
 });
 
-test('About preserves selected-gun data and the current appearance', async ({ page }) => {
+test('About and Contact preserve selected-gun data and the current appearance', async ({ page }) => {
   page.on('dialog', dialog => dialog.accept());
   await page.goto('/');
   await page.locator('#restoreGunBackupBtn').click();
@@ -51,13 +71,19 @@ test('About preserves selected-gun data and the current appearance', async ({ pa
   await expect(page.locator('#aboutView')).toBeVisible();
   await expect(page.locator('#gunSwitcherBtn')).not.toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await page.locator('#contactBtn').click();
+  await expect(page.locator('#contactView')).toBeVisible();
+  await expect(page.locator('#gunSwitcherBtn')).not.toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await page.locator('#contactView [data-back]').click();
+  await expect(page.locator('#aboutView')).toBeVisible();
   await page.locator('#aboutView [data-back]').click();
   await expect(page.locator('#homeView')).toBeVisible();
   await page.locator('#settingsShortcut').click();
   await expect(page.locator('#appearance')).toHaveValue('light');
   const exported = await exportLibrary();
   for (const key of ['guns', 'activeGunId', 'examples', 'events', 'gunSettings', 'sessions', 'settings']) {
-    expect(exported[key], `About changed ${key}`).toEqual(before[key]);
+    expect(exported[key], `Informational pages changed ${key}`).toEqual(before[key]);
   }
   expect(exported.settings.appearance).toBe('light');
 });

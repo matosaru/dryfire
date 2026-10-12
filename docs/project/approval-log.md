@@ -460,3 +460,11 @@ Later release instruction for this request: **“i want you to merge changes to 
 ### CHG-028 correction — separate from Settings
 
 The user subsequently directs **“update the screenshots with the link”** and **“it should be separated from settings”**. This supersedes the assistant's Settings-placement suggestion. Provide a direct **About & contact** entry in the shared app footer, opening its existing independent page without visiting Settings, including before gun setup. Preserve the five practice-navigation destinations and all data/safety/capture guards. Update actual application layout and its screenshots together under the already-authorized About implementation scope; the original top-of-Settings mockups remain superseded proposal evidence in Git. No broader commercial/SEO implementation or protection bypass is authorized.
+
+## CHG-029 — Separate About and Contact; centered muted footer links
+
+- Date: 2026-10-12.
+- Direct instruction: **“i don't like the link design. Separate About and Contact pages, center links in a screen, remove arrow, make links color to match footer text color, keep the font size and outline, add separation line between links and footer text”**.
+- Scope: [About](../requirements/about.md), [Contact](../requirements/contact.md) and the [shared footer](../design/screens/shared/README.md). Two independent history-backed app screens, reached by centered About and Contact footer controls, with no arrows. Match each theme's footer text color; preserve the 0.85rem font, underline, minimum 44px target and existing keyboard focus outline. Add a divider below the link row, above the disclosure/copyright text.
+- Both controls remain available on both pages and identify the current page accessibly. Move the existing email/contact copy to Contact; About retains its purpose, routine, storage and safety copy. Preserve Back/Forward, first-use access and all data/capture/safety guards.
+- Authorization is the user's direct implementation instruction, superseding CHG-028's combined link and hidden About self-link. Keep the existing feature branch and PR gates. No public server route, form/backend, cloud, payment or other paused commercial implementation is started.

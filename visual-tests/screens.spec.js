@@ -154,6 +154,9 @@ async function prepare(page, item) {
       break;
     case 'about':
       await page.locator('#aboutBtn').click(); await visible(page, 'aboutView');
+      break;
+    case 'contact':
+      await page.locator('#contactBtn').click(); await visible(page, 'contactView');
       await expect(page.getByRole('link', { name: 'easydryfire@gmail.com', exact: true })).toHaveAttribute('href', 'mailto:easydryfire@gmail.com');
       break;
     case 'safety':

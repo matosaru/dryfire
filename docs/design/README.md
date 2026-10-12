@@ -2,11 +2,11 @@
 
 Visual package for Dry Fire With Ease. [Functional requirements](../requirements/README.md) own behavior; [approval history](../project/approval-log.md) records authorization; [delivery plan](../project/implementation-history.md) owns implementation/publication status.
 
-CHG-028 places About & contact directly in the shared app footer, independently of Settings. The initial [Settings placement preview](proposals/about-link-placement/README.md) is superseded; current captures below show the separate footer entry.
+CHG-029 separates About and Contact into two pages, reached by centered muted links in the shared footer, independently of Settings. Arrows are removed; font/underline/focus are preserved and a divider separates links from the disclosure. Earlier combined-entry and [Settings placement previews](proposals/about-link-placement/README.md) are superseded.
 
-CHG-026 prepares [future Contact/SEO/account/Free-Pro/preview design scope](../requirements/web-commercial.md), with implementation explicitly paused. CHG-027 is the later direct request to create [About and email contact](screens/about/README.md) on a separate feature branch, with proposed copy for review. Other commercial/SEO/account work remains planning only.
+CHG-026 prepares [future Contact/SEO/account/Free-Pro/preview design scope](../requirements/web-commercial.md), with implementation explicitly paused. CHG-027 is the later direct request to create [About](screens/about/README.md) and [Contact](screens/contact/README.md) on a separate feature branch, with proposed copy for review. Other commercial/SEO/account work remains planning only.
 
-Current references below are actual production-build captures. CHG-027 adds About and revises its Settings entry; earlier references retain the CHG-023 shared copyright footer after the CHG-022 practice-start correction. Eleven functional screens, all six Practice configurations, early-trigger Review, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples. The [shared layout](screens/shared/README.md) and BRAND-06 apply to every screen; prior captures are archived. Exact reviewed-source hashes are in the registry.
+Current references below are actual production-build captures. CHG-029 separates Contact and refreshes the footer across the app. Twelve functional screens, all six Practice configurations, early-trigger Review, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples. The [shared layout](screens/shared/README.md) and BRAND-06 apply to every screen; prior captures are archived. Exact reviewed-source hashes are in the registry.
 
 ## File naming and ownership
 

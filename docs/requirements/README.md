@@ -1,8 +1,8 @@
 # Functional requirements
 
-Revision 1.11 · CHG-026 forward web commercial planning · 2026-10-11
+Revision 1.12 · CHG-029 separate About/Contact and footer refinement · 2026-10-12
 
-CHG-027 specifically starts [About and email contact](about.md) on a separate feature branch. Its copy is proposed for review; broader CHG-026 implementations remain paused.
+CHG-027 starts [About](about.md) with email support; CHG-029 separates [Contact](contact.md) and refines the centered shared footer links on the same feature branch. Suggested copy remains reviewable; broader CHG-026 implementations stay paused.
 
 This is the single current functional index. Markdown requirements define behavior; [screen designs](../design/README.md) define layouts and provide actual visual evidence. Approval, implementation and deployment are tracked separately in the [project plan](../project/implementation-history.md).
 
@@ -17,7 +17,8 @@ This is the single current functional index. Markdown requirements define behavi
 | [Practice improvements and input limits](practice-improvements.md) | UPDATE-01–06 and LIMIT-01–03: automatic Single, charts, unknown filtering, screen history, safety modal and complete approved bounds | Implemented |
 | [Persistence](persistence.md) | Local durability, migrations, backups and ownership | Implemented: schema 3 / backup 4; compatible backups and CHG-020 separate recognition/session clearing |
 | [Settings](settings.md) | Browser-backed audio preferences, themes and supported vibration | Implemented; physical iPhone capability checks remain separate |
-| [About and email contact](about.md) | Dedicated informational screen, local-data/recognition explanation and confirmed mailto address | CHG-027 implemented and browser validated on its feature branch; exact copy proposed for review, promotion/deployment tracked separately |
+| [About](about.md) | Dedicated informational screen, local-data/recognition explanation and shared informational navigation | CHG-029 separates Contact; validation/publication in the delivery tracker |
+| [Contact](contact.md) | Separate email-support screen and confirmed mailto address | CHG-029 directly requested; validation/publication in the delivery tracker |
 | [Web commercial preparation](web-commercial.md) | Contact/SEO, review, simple Free/Pro, account/cloud recovery, billing, dev/production QA and later paid candidates | Planning/analysis requested; price/allocation/providers/data policies proposed; product features not implemented; native releases deferred |
 
 CHG-020 is implemented locally with 270 Jest / 23 suites, 16 smoke/build/assets and 16 focused browser checks passing. Updated My Guns/History designs and the architecture cover the single-gun Delete and separate clear actions; source published in [`7240e2c`](https://github.com/matosaru/dryfire/commit/7240e2c); [GitHub Actions run 38144631311](https://github.com/matosaru/dryfire/actions/runs/38144631311) completed successfully; deployment/device evidence is tracked separately. Prior corrections are published in [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18), with 261 Jest / 22 suites, 16 smoke/build/assets and 11 focused browser checks passing locally. Prior source baseline: [`b29837a`](https://github.com/matosaru/dryfire/commit/b29837a). Its 257 Jest tests / 21 suites, 16 smoke checks, seven browser suites / 46 checks and GitHub CI passed. Local screenshots and CI do not establish Cloudflare deployment or physical microphone accuracy.
@@ -32,4 +33,4 @@ CHG-020 is implemented locally with 270 Jest / 23 suites, 16 smoke/build/assets 
 
 ## Deferred scope
 
-CHG-026 moves one-gun commercial limits, accounts/cloud recovery and later synchronization into the requested planning/analysis roadmap; the final rules and backend implementation remain proposed/unimplemented. Sharing, new gun-type sounds and camera/sensor movement analysis are later paid candidates. Raw-audio/video upload is not authorized. Native iPhone/Android release is explicitly deferred. CHG-019/020 resets/deletion remain implemented. CHG-027 starts About with an email link inside the app; separate public Contact/SEO routes and production metadata remain unimplemented. Current free features remain intact.
+CHG-026 moves one-gun commercial limits, accounts/cloud recovery and later synchronization into the requested planning/analysis roadmap; the final rules and backend implementation remain proposed/unimplemented. Sharing, new gun-type sounds and camera/sensor movement analysis are later paid candidates. Raw-audio/video upload is not authorized. Native iPhone/Android release is explicitly deferred. CHG-019/020 resets/deletion remain implemented. CHG-027/029 start separate About and Contact screens inside the app; public Contact/SEO routes and production metadata remain unimplemented. Current free features remain intact.

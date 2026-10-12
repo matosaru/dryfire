@@ -11,3 +11,5 @@ CHG-025: use [the branching strategy](docs/project/branching-strategy.md). Creat
 CHG-026 currently authorizes [plans/research only](docs/project/web-commercial-plan.md), committed to a feature branch. The user explicitly says not to start implementations; wait for a later implementation instruction. Native apps are deferred. Price/paid allocation/providers/data policies and public-Free/private-preview gates remain proposals; existing free features and saved data stay intact. Country/market: Lithuania/Europe. Public Contact address: easydryfire@gmail.com.
 
 CHG-027 is the later, specific instruction to start [About and email contact](docs/requirements/about.md) on a separate feature branch from `dev`. Implement that slice with suggested copy for review; the broader CHG-026 implementation pause remains in force.
+
+CHG-029 separates [Contact](docs/requirements/contact.md) from About, with centered muted footer links and a divider. Both are independent app states; this specific instruction leaves broader CHG-026 implementations paused. Preserve font/underline/focus, history, saved data and safety/capture guards.

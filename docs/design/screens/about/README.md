@@ -1,14 +1,14 @@
 # About design
 
-CHG-028 capture refresh: current references use the pinned production-build renderer and the independent About & contact footer entry. [Capture/build evidence](../../baselines/footer-entry-validation.json) records both 130-check runs and reviewed images.
+CHG-029 revises the footer and separates Contact from About. Current captures are being refreshed; completion/evidence is recorded in the [delivery tracker](../../../project/implementation-history.md). Earlier [CHG-028 evidence](../../baselines/footer-entry-validation.json) retains the superseded combined entry.
 
 CHG-027 · Initial copy/layout proposal implemented for review on `feature/about-contact-page`; direct page/contact request authorizes this slice. Exact copy has not received word-for-word user approval.
 
-Entry: shared app footer → About & contact, independently of Settings and also before saving a first gun. App anchor: `aboutView`. This is a history-backed state of `/`, not a separate indexable route.
+Entry: shared app footer → About, independently of Settings and also before saving a first gun. App anchor: `aboutView`. This is a history-backed state of `/`, not a separate indexable route.
 
 ## Layout and interaction
 
-Compact About heading with Back and the existing Settings shortcut. The canonical DF logo leads the app name, version, short purpose and “Dry-fire practice, made simple.” Three readable cards explain the practice routine, local storage/backup and contact. The confirmed address is a selectable email link with a visible email-app explanation. A concise final note describes recognition limits and the existing safety check. The shared privacy/copyright footer remains present; the About self-link is hidden here.
+Compact About heading with Back and the existing Settings shortcut. The canonical DF logo leads the app name, version, short purpose and “Dry-fire practice, made simple.” Two readable cards explain the practice routine and local storage/backup. Contact and the email link belong to the separate [Contact screen](../contact/README.md). A concise final note describes recognition limits and the existing safety check. The shared privacy/copyright footer remains present; both centered About/Contact links remain visible with an accessible current-page indication and a divider above the footer disclosure.
 
 Gun switching, recording controls, the safety disclosure and bottom practice navigation are hidden on this informational screen. Back/Forward retains the visited screen, including first-gun setup. Opening About does not open the microphone, create a gun, confirm safety or change saved data. Dark/Light reuse the existing theme colors; long email text wraps at narrow widths. No illustration, paid offer or cloud feature is added.
 
