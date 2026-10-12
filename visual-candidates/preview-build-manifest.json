@@ -1,0 +1,54 @@
+{
+  "commit": "11960cdcaccc368f939266db333b041af032c853",
+  "edition": "preview",
+  "build": {
+    "version": 1,
+    "edition": "preview",
+    "sourceRevision": "11960cdcaccc368f939266db333b041af032c853",
+    "sourceDigest": "893dab63f55f6c2fd6603b8aa4a9f0cbb135fef2a1c6e9977e97a7da5b265b7a",
+    "assets": [
+      "/assets/eventDetector-DtBbU0H0.js",
+      "/assets/index-D30GZiuH.css",
+      "/assets/index-MJZUxzMf.js",
+      "/assets/previewTesting-DVTRvczk.js",
+      "/assets/progressView-BPyBgWbR.js",
+      "/pcm-capture.worklet.js",
+      "/sw.js"
+    ]
+  },
+  "environment": {
+    "playwrightVersion": "1.58.2",
+    "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+    "platform": "linux/amd64",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "clock": "2026-10-11T11:00:00.000Z",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "maxDiffPixels": 0,
+    "comparisonThreshold": 0.005
+  },
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v22.23.3",
+  "hashes": {
+    "index.html": "2140604546ffa292fe25afc30a69f1d14f419e42081d1ecfdb26e9fed8382906",
+    "src/styles.css": "0cdf45b47019246201099a78c83542024142910dcee9d4638275ba1171936650",
+    "src/main.js": "b36ea643df53d8b7a47b8091a51a1068bffdd5c33b73d53e146c82c983db8e5e",
+    "package-lock.json": "1b17ec94a6c54c1380396c90d726f4a54ce0ff94969bccbc031209274d8b34cf",
+    "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+  },
+  "assetHashes": {
+    "index.html": "d4acf2e327f846a12a02c99f2f188fbb9053b675fa87d35d334faa62c255aa77",
+    "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+    "sw.js": "c308fce36125c70efb8c71ccc3ff673114ff78a8290890b728b874bf7743104d",
+    "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+    "assets/index-D30GZiuH.css": "ca53513e42523a03dff46bb612b4eac8eea29589b80616052b39a60b9c670ac6",
+    "assets/index-MJZUxzMf.js": "67f7d3567bc29beb4e8e6f1d4e6f8eb8ba5573138beb275a42979ed5aae3c4f9",
+    "assets/previewTesting-DVTRvczk.js": "1939119cf31ad0641f347e6e240e63595b621b555670c47060255a9b71df966e",
+    "assets/progressView-BPyBgWbR.js": "994735a79411d08e487638a8b3a217c5db9196b92bf3482f37346c64033b9516"
+  }
+}
