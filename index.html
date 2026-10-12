@@ -70,7 +70,7 @@
           <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/rifle.svg" width="96" height="56" alt="" /><span>Rifles and Carbines</span><input type="radio" name="gunTypeChoice" value="Rifles and Carbines" required /></label>
           <label class="gun-type-choice"><img class="gun-type-image" src="/gun-types/shotgun.svg" width="96" height="56" alt="" /><span>Shotguns</span><input type="radio" name="gunTypeChoice" value="Shotguns" required /></label>
         </fieldset>
-        <p id="gunCapacityNotice" class="muted small">Create one gun profile. Existing saved profiles remain available.</p>
+        <p id="gunCapacityNotice" class="muted small">Create up to two gun profiles. Existing saved profiles remain available.</p>
         <aside class="storage-card"><span class="storage-symbol" aria-hidden="true">▤</span><div><strong>Saved on this device</strong><p>Gun profiles, learned sounds and drill presets stay here between visits. Use the same app address and browser.</p></div></aside>
         <button id="saveGunBtn" class="button primary wide-action" type="submit">Save Gun &amp; Continue</button>
         <button id="cancelGunSetupBtn" class="button secondary wide-action hidden" type="button">Cancel</button>
@@ -81,7 +81,7 @@
     <section id="gunsView" class="view hidden" aria-labelledby="gunsTitle">
       <div class="gun-library-heading"><h2 id="gunsTitle">My Guns</h2><span id="gunCapacity" class="gun-capacity" aria-live="polite">0 of 5 guns saved</span></div>
       <p class="muted">Choose a gun to open its own sounds and drills.</p>
-      <p id="gunCreationNotice" class="muted small hidden">This public version creates one gun. Existing saved profiles are kept.</p>
+      <p id="gunCreationNotice" class="muted small hidden">This public version creates up to two guns. Existing saved profiles are kept.</p>
       <div id="gunList" class="gun-list"></div>
       <button id="addGunBtn" class="button secondary wide-action add-gun-button" type="button"><span aria-hidden="true">+</span> Add Gun</button>
       <aside class="storage-card"><span class="storage-symbol" aria-hidden="true">▤</span><div><strong>Saved on this device</strong><p>Refreshing or updating at this app address keeps your saved data. Export a backup before clearing browser storage.</p><button id="gunLibraryBackupBtn" class="text-button" type="button">Backup &amp; restore <span aria-hidden="true">›</span></button></div></aside>

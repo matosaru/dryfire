@@ -499,3 +499,11 @@ The user subsequently directs **“update the screenshots with the link”** and
 - Direct instruction: **“next, i want to have app navigation to be avaible at the bottom in about and contact pages, same as in all pages”**.
 - [ABOUT-06](../requirements/about.md) / [CONTACT-05](../requirements/contact.md): show the existing shared five-item bottom navigation on both informational screens in both themes/editions. Preserve safe-area/content padding, setup gates, Back/Forward, white Dark footer links, data and microphone/safety guards. No additional informational tab or unrelated active-tab indicator is introduced.
 - This overrides the earlier hidden-tab rule for these two pages. Refresh actual captures and reviewed browser references with the implementation; promotion/deployment remain separate.
+
+## CHG-034 — Two guns in the public Free edition
+
+- Date: 2026-10-12 (Europe/Vilnius).
+- Direct instruction: **“btw, for free version allow max 2 guns”**.
+- This supersedes CHG-032's one-gun creation limit only. [EDITION-02](../requirements/build-editions.md) now allows first and second gun creation, rejects a third atomically and retains full-preview capacity of five. Existing larger libraries remain selectable/editable/deletable/usable/exportable/restorable; no records or schema change.
+- Update visible capacity explanations, regression tests, affected designs and delivery history; publish to the feature branch. Other public restrictions and PR/deployment boundaries remain unchanged.
+- The follow-up question about an easy, safe in-app Free/Full testing toggle requests a recommendation. The [tester-switch proposal](../development/free-preview-testing.md#proposed-in-app-tester-switch) is planning only; it does not authorize authentication, server grants or a public browser override.

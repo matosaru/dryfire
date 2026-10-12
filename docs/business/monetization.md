@@ -1,6 +1,6 @@
 # Monetization analysis and proposal
 
-CHG-032 current public availability is governed by [build editions](../requirements/build-editions.md): no new custom creation/additional-gun creation/advanced graphs publicly; full preview retains them. Existing data/preset editing/use/export/restore remain available. This overrides earlier all-free availability statements for these actions without implementing billing or deleting data. Publication/deployment are tracked separately.
+CHG-032 current public availability is governed by [build editions](../requirements/build-editions.md): two-gun public creation under CHG-034, no new custom creation or advanced graphs publicly; full preview retains them. Existing data/preset editing/use/export/restore remain available. This overrides earlier all-free availability statements for these actions without implementing billing or deleting data. Publication/deployment are tracked separately.
 
 CHG-026 · revision 2.0 · 2026-10-11 · **Analysis requested; no price, paywall, provider or cloud retention rule approved/implemented.** Business location: Lithuania. Initial markets: Europe; define the exact EU/EEA/non-EU country list before launch. Native apps/store billing are deferred.
 
@@ -15,7 +15,7 @@ Free starts without sign-in and remains useful for basic dry-fire practice. Acco
 | Capability | Recommended Free | Candidate Pro / later scope | Current implementation |
 | --- | --- | --- | --- |
 | Safety, Trigger learning, start signal/timing and built-in practice | Available; retain all current built-in modes to avoid mode-by-mode confusion | No safety/basic-recognition upsell | Implemented free |
-| Gun library | One new gun after a defined transition | Up to the existing five-gun capacity | CHG-032: public creation limited to one; existing libraries usable; full preview retains five; billing absent |
+| Gun library | Two saved guns for new creation, preserving existing larger libraries | Up to the existing five-gun capacity | CHG-034: public creation limited to two; existing libraries usable; full preview retains five; billing absent |
 | Local storage, manual export/import and personal-data access | Available, including on cancellation | Automatic cloud backup/recovery and later sync | Local/manual backup implemented; cloud absent |
 | Account/sign-in/purchase restore | Available when needed; anonymous practice remains possible | Account-linked Pro entitlement | Accounts/entitlements absent |
 | Custom drills | Built-ins available; preserve existing owned presets and readable/exportable data | Candidate paid custom creation/editing and saved presets | CHG-032: creation in full preview; existing preset editing/running in both |

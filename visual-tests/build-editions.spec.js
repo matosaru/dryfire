@@ -47,18 +47,22 @@ if (edition === 'public') {
     await page.evaluate(() => localStorage.setItem('edition', 'preview'));
     await page.locator('#gunName').fill('First gun'); await page.locator('[name="gunTypeChoice"][value="Handguns"]').check();
     await page.locator('#saveGunBtn').click(); await expect(page.locator('#homeView')).toBeVisible();
-    await page.locator('#gunSwitcherBtn').click(); await expect(page.locator('#gunList .gun-profile')).toHaveCount(1); await expect(page.locator('#addGunBtn')).not.toBeVisible();
+    await page.locator('#gunSwitcherBtn').click(); await expect(page.locator('#gunList .gun-profile')).toHaveCount(1); await expect(page.locator('#addGunBtn')).toBeVisible();
+    await page.locator('#addGunBtn').click();
+    await page.locator('#gunName').fill('Second gun'); await page.locator('[name="gunTypeChoice"][value="Shotguns"]').check();
+    await page.locator('#saveGunBtn').click(); await expect(page.locator('#homeView')).toBeVisible();
+    await page.locator('#gunSwitcherBtn').click(); await expect(page.locator('#gunList .gun-profile')).toHaveCount(2); await expect(page.locator('#addGunBtn')).not.toBeVisible();
     await page.evaluate(() => { document.querySelector('#addGunBtn').classList.remove('hidden'); document.querySelector('#addGunBtn').disabled = false; });
     await page.evaluate(() => document.querySelector('#addGunBtn').click()); await expect(page.locator('#gunsView')).toBeVisible();
-    await page.evaluate(() => { document.querySelector('#gunName').value = 'Blocked second gun'; document.querySelector('#gunType').value = 'Handguns'; document.querySelector('#gunForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); });
-    await expect(page.locator('#appMessage')).toContainText('one gun');
+    await page.evaluate(() => { document.querySelector('#gunName').value = 'Blocked third gun'; document.querySelector('#gunType').value = 'Handguns'; document.querySelector('#gunForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); });
+    await expect(page.locator('#appMessage')).toContainText('two guns');
     await page.locator('#gunList .gun-card').first().click(); await expect(page.locator('#homeView')).toBeVisible();
     await page.locator('.tab[data-view="drills"]').click();
     await expect(page.locator('#customDrillsTab')).not.toBeVisible();
     await page.evaluate(() => { document.querySelector('#customDrillName').value = 'Blocked new preset'; document.querySelector('#customDrillForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); });
     await expect(page.locator('#appMessage')).toContainText('New custom drills are unavailable');
     await expect(page.locator('html')).toHaveAttribute('data-build-edition', 'public');
-    const saved = await backup(page); expect(saved.guns).toHaveLength(1);
+    const saved = await backup(page); expect(saved.guns).toHaveLength(2);
     expect(saved.gunSettings.filter(row => row.key === 'customDrills').flatMap(row => row.value)).toHaveLength(0);
   });
   test('public History keeps saved timing text without chart implementation', async ({ page }) => {

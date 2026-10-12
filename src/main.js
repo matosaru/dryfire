@@ -127,7 +127,7 @@ function renderGunControls() {
     : 'Choose a gun before resetting its learned sounds.';
   $('#resetLibraryBtn').disabled = profileLocked();
   $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
-  $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= 1);
+  $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   document.querySelectorAll('.gun-card, [data-edit-gun-id], [data-delete-gun-id]').forEach(button => { button.disabled = profileLocked(); });
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) $('#'+id).disabled = profileLocked() || !activeGun || activeGun.needsDetails;
   document.querySelectorAll('.gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
@@ -216,7 +216,7 @@ async function renderGunLibrary() {
     : `${guns.length} of ${MAX_GUNS} guns saved · Saved on this device`;
   $('#gunCreationNotice').classList.toggle('hidden', CAPABILITIES.edition !== 'public');
   $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
-  $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= 1);
+  $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   $('#addGunBtn').textContent = guns.length >= MAX_GUNS ? '5 of 5 guns saved' : '+ Add gun';
   const host = $('#gunList');
   host.replaceChildren();

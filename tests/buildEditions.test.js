@@ -1,7 +1,7 @@
 import { editionCapabilities, canSaveCustomDrill } from '../src/buildEdition.js';
 
 test('public defaults preserve basic use but disable future paid creation and graphs', () => {
-  expect(editionCapabilities()).toEqual({ edition: 'public', gunCreationLimit: 1, customDrillCreation: false, advancedGraphs: false });
+  expect(editionCapabilities()).toEqual({ edition: 'public', gunCreationLimit: 2, customDrillCreation: false, advancedGraphs: false });
 });
 test('explicit preview retains the existing full feature capacity', () => {
   expect(editionCapabilities('preview')).toEqual({ edition: 'preview', gunCreationLimit: 5, customDrillCreation: true, advancedGraphs: true });

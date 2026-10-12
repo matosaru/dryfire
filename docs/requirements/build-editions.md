@@ -1,11 +1,11 @@
 # Public and full development editions
 
-Revision 1.0 · CHG-032 · 2026-10-12. Implementation is authorized by the user's request to temporarily remove future paid options while retaining their code, followed by the explicit answer **“Temporarily hide future paid features publicly (Recommended)”**. No billing, account, price or permanent paid allocation is implemented by this change.
+Revision 1.1 · CHG-032 / CHG-034 · 2026-10-12. Implementation is authorized by the user's request to temporarily remove future paid options while retaining their code, followed by the explicit answer **“Temporarily hide future paid features publicly (Recommended)”**. CHG-034 changes the public creation limit to two with **“btw, for free version allow max 2 guns”**. No billing, account, price or permanent paid allocation is implemented by this change.
 
 | ID | Requirement |
 | --- | --- |
 | EDITION-01 | Default production builds expose basic practice for free. Full preview is an explicit build edition, with no URL, localStorage, email or browser-console plan switch. Record the edition in the build artifact. Unknown edition values fail the build. |
-| EDITION-02 | Public users can create their first gun but cannot create additional guns. Preview retains the existing five-gun creation capacity. Enforce the selected creation limit in the save transaction as well as the visible controls. |
+| EDITION-02 | Public users can create their first and second guns. Hide Add at two or more saved guns and reject creating a third, including concurrent or direct form attempts. Preview retains the existing five-gun creation capacity. Enforce the selected creation limit in the save transaction as well as the visible controls. Deleting down to one permits a second again; editing does not consume capacity. |
 | EDITION-03 | Preserve every existing gun, sound, preference, custom preset and saved result. Existing multi-gun libraries remain selectable, editable, deletable, usable and exportable. Restore valid compatible backups without treating a backup as payment proof. No storage migration or record deletion is introduced. |
 | EDITION-04 | Public users cannot create new custom drills; hide creation controls and guard direct form submission. Preserve running and editing an existing saved preset. Full preview retains creation and editing. Built-in drills and all six basic practice modes remain available. |
 | EDITION-05 | Hide advanced progress graphs and their range/group controls in public. Keep saved sessions, per-session text timing summaries, recognition history and backup recovery available. Full preview retains the current charts/table. |

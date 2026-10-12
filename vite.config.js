@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
     html = html.replace(/<html\b/, `<html data-build-edition="${edition}"`);
     if (edition === 'preview') {
       html = html.replace('Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.', 'These require only the sounds in their sequence. Create your own or choose a built-in preset.');
-      html = html.replace('Create one gun profile. Existing saved profiles remain available.', 'You can save up to 5 guns.');
+      html = html.replace('Create up to two gun profiles. Existing saved profiles remain available.', 'You can save up to 5 guns.');
       html = html.replace('Learn your trigger click, choose a built-in practice mode and review saved timing results. Other sound categories are optional unless your drill uses them.', 'Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.');
     }
     return html;

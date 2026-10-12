@@ -57,6 +57,10 @@ async function prepare(page, item) {
   if (item.state !== 'first-gun.dark') {
     const backup = structuredClone(library);
     backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
+    if (item.state.startsWith('add-second-gun')) {
+      backup.guns = backup.guns.filter(gun => gun.id === backup.activeGunId);
+      for (const key of ['examples', 'events', 'sessions', 'gunSettings']) backup[key] = backup[key].filter(row => row.gunId === backup.activeGunId);
+    }
     if (item.state === 'recording-limit.dark') {
       const example = backup.examples.find(row => row.gunId === backup.activeGunId && row.label === 'trigger');
       const count = backup.examples.filter(row => row.gunId === backup.activeGunId && row.label === 'trigger').length;
@@ -72,8 +76,8 @@ async function prepare(page, item) {
     case 'gunSetup':
       if (item.state.startsWith('first-gun')) break;
       await page.locator('#gunSwitcherBtn').click(); await visible(page, 'gunsView');
-      await page.locator(item.state.startsWith('add-gun') ? '#addGunBtn' : '[data-edit-gun-id="qa-gun-a"]').click();
-      await expect(page.locator('#gunName')).toHaveValue(item.state.startsWith('add-gun') ? '' : 'QA Handgun');
+      await page.locator(item.state.startsWith('add-') ? '#addGunBtn' : '[data-edit-gun-id="qa-gun-a"]').click();
+      await expect(page.locator('#gunName')).toHaveValue(item.state.startsWith('add-') ? '' : 'QA Handgun');
       break;
     case 'home': break;
     case 'guns':

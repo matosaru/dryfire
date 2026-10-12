@@ -1,6 +1,6 @@
 # Gun profiles and front-door page
 
-CHG-032 current public availability is governed by [build editions](build-editions.md): no new custom creation/additional-gun creation/advanced graphs publicly; full preview retains them. Existing data/preset editing/use/export/restore remain available. This overrides earlier all-free availability statements for these actions without implementing billing or deleting data. Publication/deployment are tracked separately.
+CHG-032 current public availability is governed by [build editions](build-editions.md): two-gun public creation under CHG-034, no new custom creation or advanced graphs publicly; full preview retains them. Existing data/preset editing/use/export/restore remain available. This overrides earlier all-free availability statements for these actions without implementing billing or deleting data. Publication/deployment are tracked separately.
 
 Revision: 1.3 · Scope: user-approved · Implementation: implemented and locally validated (CHG-012); publication/deployment tracked separately
 

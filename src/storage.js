@@ -173,7 +173,10 @@ export async function createGun({ name, type } = {}, { maxGuns = MAX_GUNS } = {}
     const store = tx.objectStore(GUNS);
     const request = store.count();
     request.onsuccess = () => {
-      if (request.result >= maxGuns) { context.fail(new Error(maxGuns === 1 ? 'This public version allows creating one gun. Existing saved guns remain available.' : 'Maximum five guns saved. Select an existing gun.')); return; }
+      if (request.result >= maxGuns) {
+        const limit = ['one gun', 'two guns', 'three guns', 'four guns'][maxGuns - 1];
+        context.fail(new Error(maxGuns === MAX_GUNS ? 'Maximum five guns saved. Select an existing gun.' : `This version allows creating ${limit}. Existing saved guns remain available.`)); return;
+      }
       store.put(row);
       tx.objectStore(SETTINGS).put({ key: ACTIVE_GUN, value: row.id });
       context.result = row;

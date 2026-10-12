@@ -1,13 +1,14 @@
 # Public Free and full development preview
 
-CHG-032 · revision 2.0 · 2026-10-12. The user explicitly approved temporary public restrictions while retaining full feature code and existing saved-data access. Source implementation, test/image review, publication and deployment are separate in the [delivery tracker](../project/implementation-history.md).
+CHG-032 / CHG-034 · revision 2.1 · 2026-10-12. The user explicitly approved temporary public restrictions while retaining full feature code and existing saved-data access. Source implementation, test/image review, publication and deployment are separate in the [delivery tracker](../project/implementation-history.md).
 
 ## What is temporarily disabled
 
 | Action | Public build | Full preview |
 | --- | --- | --- |
 | Create a first gun | Available | Available |
-| Create additional guns | Hidden and transaction-limited to one saved gun | Existing five-gun capacity |
+| Create a second gun | Available | Available |
+| Create a third or later gun | Hidden and transaction-limited at two saved guns; existing larger libraries kept | Existing five-gun capacity |
 | Create new custom drills | Hidden and guarded on submit | Available |
 | Edit/run existing custom presets | Available for the current gun's saved presets | Available |
 | Advanced progress graphs, ranges and chart-data table | Hidden; chart code omitted from bundle | Available |
@@ -61,10 +62,20 @@ npm run verify:dist -- --edition=preview
 VISUAL_EDITION=preview npm run test:visual
 ```
 
-Use the pinned renderer from [visual-test instructions](VISUAL_TESTS.md), not system Chromium, for accepted comparisons. CI builds/tests public and preview separately and uploads edition-labelled difference reports. Cases cover fresh one-gun creation, atomic/concurrent rejection, existing libraries and presets, legacy editing/execution, direct submit/visible-control attempts, no client edition override, preserved text history and full creation/charts. Both informational screens retain all five bottom tabs with history/setup guards. First-install offline refresh tests retain the whole restored library in both editions; the optimized local preview uses same-origin assets without development CORS Vary headers.
+Use the pinned renderer from [visual-test instructions](VISUAL_TESTS.md), not system Chromium, for accepted comparisons. CI builds/tests public and preview separately and uploads edition-labelled difference reports. Cases cover fresh two-gun creation and third-gun rejection, atomic/concurrent rejection, existing libraries and presets, legacy editing/execution, direct submit/visible-control attempts, no client edition override, preserved text history and full creation/charts. Both informational screens retain all five bottom tabs with history/setup guards. First-install offline refresh tests retain the whole restored library in both editions; the optimized local preview uses same-origin assets without development CORS Vary headers.
 
 [Current screen registry](../architecture/screen-map.json) marks preview-only and public-only states; shared states are compared in both editions. Browser references are grouped by browser/edition/screen/state/width. Actual implementation captures use the declared edition (public for shared states). Record image review and unchanged reruns before accepting references; ordinary CI never accepts them automatically.
 
 ## Later real subscription testing
 
 Accounts/cloud/billing remain paused. Future production Free/Pro tests require separate staff identities and audited server-controlled grants, plus a controlled purchase/refund check. No production browser override or fake payment secret is introduced now. Continue [feature PR → dev → main](../project/branching-strategy.md); production release remains separate.
+
+## Proposed in-app tester switch
+
+Recommendation requested on 2026-10-12; **planning only**, not a new implementation approval. Initially use the existing full build locally or behind verified Cloudflare Access. Public output keeps its two-gun/default restrictions. Access must protect all alternate hostnames, assets and Workers URLs; do not host an unprotected full build.
+
+Once authentication and backend entitlements exist, add a small **Testing: Free / Full** selector in Settings, visible only after the server confirms an explicitly allowlisted tester account. Ordinary users never see the selector. Switching calls an authenticated server endpoint; the server checks the tester role, target environment and ownership, then stores a short-lived override. Use a secure HttpOnly session cookie, CSRF protection, audited grants/expiry and deny-by-default authorization. A client flag or decoded role must never grant access. Enforce permissions on protected APIs/resources as well as visible controls.
+
+Free simulation means the actual public rules: two new guns, no new custom drills and no advanced graphs. Full simulation means the five-gun/custom/chart preview. Preserve existing local data and normal backup recovery in either mode; switching does not delete profiles or rewrite a subscription. Display the active testing mode and expiry to prevent confusion. On expiry or revoked tester access, restore the account's real permissions. Isolate test billing, secrets, storage and identities on dev; production override grants are limited to named staff and their own test data. Actual customer billing checks remain a separate controlled test.
+
+Acceptance for that later feature: anonymous and ordinary accounts cannot request Full by revealing a control, calling its endpoint, changing a URL/localStorage value or replaying an expired/revoked grant; Free/Full/lapsed behavior has server and UI coverage; no grant exposes another person's data. The public repository and downloaded browser code remain inspectable. Authorization can protect hosted resources and private builds, but cannot make locally delivered features impossible to copy. No login, tester API or production override is implemented in CHG-034.

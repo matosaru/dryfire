@@ -14,7 +14,7 @@ User instruction: **“also start creating aboutpage, suggest page text. and add
 
 ## Suggested page text
 
-CHG-032: describe the current build accurately. Public copy promotes basic trigger practice, saved results and manual recovery; it must not advertise new custom drills, additional-gun creation or graphs as publicly available. The full preview retains the existing five-gun/custom/trends description. Existing saved data stays usable in either edition.
+CHG-032: describe the current build accurately. Public copy promotes basic trigger practice, saved results and manual recovery; it must not advertise new custom drills, more than two new guns or graphs as publicly available. The full preview retains the existing five-gun/custom/trends description. Existing saved data stays usable in either edition.
 
 This is the initial editorial proposal implemented for review, not a claim of word-for-word user approval.
 
