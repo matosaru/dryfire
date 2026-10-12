@@ -16,12 +16,12 @@
   },
   "images": {
     "chromium/public/gun-setup/first-gun.dark.390.png": {
-      "sha256": "9c6c8b611704f6c7b1b1d915ec4990907a8f902335695a64963ea0ff681b0120",
+      "sha256": "02b942792798bfec65c0966cefa7ffabebcbe14982c6cba2e09fae358094cdd3",
       "width": 390,
       "height": 1173
     },
     "chromium/public/gun-setup/first-gun.dark.320.png": {
-      "sha256": "3926248d869e524d497d74845c050088996288cf9615c9d0f54ab74b3d9828d2",
+      "sha256": "0a153257dd90cb45de305dc8346f2b95f256f6ad07fb3d893ce1ebf91691f2f4",
       "width": 320,
       "height": 1207
     },
@@ -35,13 +35,18 @@
       "width": 320,
       "height": 1187
     },
+    "chromium/public/gun-setup/add-second-gun.dark.390.png": {
+      "sha256": "ebe58fc64b7bec7042bce76ec67bd21d3c394cff7e543cde14510dec02fc80b0",
+      "width": 390,
+      "height": 1236
+    },
     "chromium/preview/gun-setup/add-gun.dark.390.png": {
       "sha256": "bee24b1c470fe0771fcb72648a640023fbf0828782c69faa45d77f3a3d66d12e",
       "width": 390,
       "height": 1216
     },
     "chromium/public/gun-setup/edit-gun.dark.390.png": {
-      "sha256": "9700efd7b870a5763f4d9884e0d9858769655dde955a86fbf5c19cf259b1f593",
+      "sha256": "824e60fff0e48c2eafcfb846ff1fdb158bdae69fab093233986131bb4433a834",
       "width": 390,
       "height": 1213
     },
@@ -51,7 +56,7 @@
       "height": 1193
     },
     "chromium/public/gun-setup/edit-gun.light.390.png": {
-      "sha256": "69581b048a231bafc2bf32b5aede1fd0343b257473f59c2b2722708a5564aaee",
+      "sha256": "2bf2c29f04a6f7d8bba9e2696692a1aa93e3b4a6a9c7527b2ba78c437bfb5fc8",
       "width": 390,
       "height": 1213
     },
@@ -71,12 +76,12 @@
       "height": 1368
     },
     "chromium/public/guns/library.dark.390.png": {
-      "sha256": "b970baee1dd86edfe0d6098a76ea7fb727b28e0d0fe64341f67534d82f6565e6",
+      "sha256": "2dfd64aa97e91f99c533deaba5449f624bc55292e4f1f7faec16ebb94b0ad9bd",
       "width": 390,
       "height": 1245
     },
     "chromium/public/guns/library.dark.320.png": {
-      "sha256": "5afde7d0092e5d53b8007b5757e4f024a4601e463fdd146466656f4d6ce3bc06",
+      "sha256": "63ec3f4b63265d0b1021fa41b64fb93c7d86d41d19ede7adbcf65391311f83ac",
       "width": 320,
       "height": 1307
     },
@@ -91,12 +96,12 @@
       "height": 1359
     },
     "chromium/public/guns/library.light.390.png": {
-      "sha256": "b9c6b9a1134dc838d77211249abc07b13df7b43f7c2ff2754d320f9a3940336c",
+      "sha256": "f5af2b8559e27b32f3b057c5062186db19371aad6f431db794e1a284c14cba11",
       "width": 390,
       "height": 1245
     },
     "chromium/public/guns/library.light.320.png": {
-      "sha256": "7b0abbfb98ada9dc9db1090edb4c616c92e99a0a9e521c2e3b7f67cc16359668",
+      "sha256": "bef80ca77098f9acc3fae54fd09a8b00472c465b511443fa42cdba51c81a8474",
       "width": 320,
       "height": 1307
     },
@@ -111,7 +116,7 @@
       "height": 1359
     },
     "chromium/public/guns/deleted.dark.390.png": {
-      "sha256": "0fad9f001dc565090a46ac2bc74dd93f0489be643facd9a3649b67e325086b79",
+      "sha256": "e431f158c48a4ed3854f619ddad07c575db95d96299d0a564efc9158d69507b3",
       "width": 390,
       "height": 1147
     },
@@ -616,12 +621,12 @@
       "height": 844
     },
     "webkit/public/gun-setup/first-gun.dark.390.png": {
-      "sha256": "0d42814c3d14ee6e5307348f6071b504a285acf0cf7f57c4f888216c9e1e5f1f",
+      "sha256": "f18bbcd81b186004af08ec05b7a3880e3926d6b456944cbbec5d66137bb6e62e",
       "width": 390,
       "height": 1165
     },
     "webkit/public/gun-setup/first-gun.dark.320.png": {
-      "sha256": "0b51737665e56aa4ac99e011abc99a8bd106d17815ae94767b6f7f85447c4e21",
+      "sha256": "0ad5c7c5d0fd8ca169ce5e125cd17b34e578154e94527e5a7350874ca3be52c3",
       "width": 320,
       "height": 1197
     },
@@ -635,13 +640,18 @@
       "width": 320,
       "height": 1178
     },
+    "webkit/public/gun-setup/add-second-gun.dark.390.png": {
+      "sha256": "7e5f81112dbc92fa1af378de59dc68af4f2387c2f3def093337d3191bba62d6b",
+      "width": 390,
+      "height": 1228
+    },
     "webkit/preview/gun-setup/add-gun.dark.390.png": {
       "sha256": "bc61eb8e5492fa72c6f1f2de3a7471897fcbb94778b8a3004793340d4911d44c",
       "width": 390,
       "height": 1209
     },
     "webkit/public/gun-setup/edit-gun.dark.390.png": {
-      "sha256": "0ae726436341acd7e8524b2d60fd4db4d752720bb1911ea78efbe9c07db1f4a9",
+      "sha256": "12c61df920e4f11f1e40fe87bf826393e57c52645c2a9c8bae066cb776622cec",
       "width": 390,
       "height": 1205
     },
@@ -651,7 +661,7 @@
       "height": 1186
     },
     "webkit/public/gun-setup/edit-gun.light.390.png": {
-      "sha256": "334d31fcb41d3cec5af6c085c63dab6ed9520ccdf3dd3f125648c6656b3993c8",
+      "sha256": "a216361e43e168950b6c959fbe9aa18fec088369a7ba75a2da81ae25e1e5cebd",
       "width": 390,
       "height": 1205
     },
@@ -671,12 +681,12 @@
       "height": 1359
     },
     "webkit/public/guns/library.dark.390.png": {
-      "sha256": "1f2748c92cb45e4431b650e9c477595644172bd30b7dc569f79bafef6021f950",
+      "sha256": "a080c07700b6349dd4fdcc63617f4057dafd4babf0930b98e35d2987359c543a",
       "width": 390,
       "height": 1237
     },
     "webkit/public/guns/library.dark.320.png": {
-      "sha256": "dd099a689cd5f4e157ce395b468f575bac88d464819a3d5f725157d87fa66c80",
+      "sha256": "a22651d097620582b5ce6aaaa3c571e356618765ab5f19b04e400c64db23a63c",
       "width": 320,
       "height": 1294
     },
@@ -691,12 +701,12 @@
       "height": 1348
     },
     "webkit/public/guns/library.light.390.png": {
-      "sha256": "fe1558031166a31673008f9619bee69b6388c166936eb814f8c0b6eee2e9e805",
+      "sha256": "1cf907acfc989f976bf1f08e7b7e6ae65caea034731395556d68033720e52612",
       "width": 390,
       "height": 1237
     },
     "webkit/public/guns/library.light.320.png": {
-      "sha256": "73156f4ebf1da190c08466c94c40d48cfd0f5dce765d6119b77d7301b8e87ca3",
+      "sha256": "31ab1c166f203945f1ab2017fdb78a7fb464fc9f120b8340a41fdbb406389189",
       "width": 320,
       "height": 1294
     },
@@ -711,7 +721,7 @@
       "height": 1348
     },
     "webkit/public/guns/deleted.dark.390.png": {
-      "sha256": "0ed8ef81e85673bd94f00ec9f6c823c2d126ea529447799ee08b1d678f31a359",
+      "sha256": "b94dd6137032106dd82cd0fc8cb1a71d176f4735bd8142a4d9c8b07733c8f63d",
       "width": 390,
       "height": 1139
     },

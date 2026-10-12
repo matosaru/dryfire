@@ -27,7 +27,7 @@ Current references below are actual production-build captures. CHG-029 separates
 <!-- screen-coverage:start -->
 | Screen / shared gate | Current layout and captures | Requirements |
 | --- | --- | --- |
-| Gun setup | [4 state/theme references](screens/gun-setup/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md) |
+| Gun setup | [5 state/theme references](screens/gun-setup/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md) |
 | Home | [1 state/theme references](screens/home/README.md) | [core](../requirements/core.md), [branding](../requirements/branding.md), [gun-profiles](../requirements/gun-profiles.md), [about](../requirements/about.md) |
 | My Guns | [3 state/theme references](screens/guns/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md) |
 | Learn Sounds | [4 state/theme references](screens/learn/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |

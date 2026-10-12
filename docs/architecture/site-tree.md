@@ -1,6 +1,6 @@
 # Site and screen tree
 
-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-12; application source baseline `7240e2c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-12; application source baseline `7240e2c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
 
 ## Public site
 
@@ -35,7 +35,7 @@ The tree describes primary destinations, not a restriction on Back/Forward. Abou
 
 | Screen / shared gate | App anchor | Entry path | Captured states | Visual layout | Functional specifications |
 | --- | --- | --- | --- | --- | --- |
-| Gun setup | `gunSetupView` | First visit without a gun; Add/Edit from My Guns | `first-gun.dark`, `add-gun.dark` (preview), `edit-gun.dark`, `edit-gun.light` | [Design](../design/screens/gun-setup/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md) |
+| Gun setup | `gunSetupView` | First visit without a gun; Add/Edit from My Guns | `first-gun.dark`, `add-second-gun.dark` (public), `add-gun.dark` (preview), `edit-gun.dark`, `edit-gun.light` | [Design](../design/screens/gun-setup/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md) |
 | Home | `homeView` | After gun selection/setup and returning visits | `overview.dark` | [Design](../design/screens/home/README.md) | [core](../requirements/core.md), [branding](../requirements/branding.md), [gun-profiles](../requirements/gun-profiles.md), [about](../requirements/about.md) |
 | My Guns | `gunsView` | Active-gun switcher | `library.dark`, `library.light`, `deleted.dark` | [Design](../design/screens/guns/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md) |
 | Learn Sounds | `learnView` | Learn tab, Home card or missing-sound link | `overview.dark`, `optional-sounds.dark`, `calibration.dark`, `recording-limit.dark` | [Design](../design/screens/learn/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |
