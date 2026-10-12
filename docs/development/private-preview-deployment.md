@@ -15,6 +15,8 @@ Private responses have `Cache-Control: private, no-store` and `X-Robots-Tag: noi
 3. Copy the Zero Trust **team domain** (`<team>.cloudflareaccess.com`, without a path/protocol) and the application's **Audience (AUD) tag** into `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD` in the dedicated config. These identifiers are not API secrets. Host/allowed email are already specified. Empty values deliberately fail closed.
 4. Supply Cloudflare deployment credentials through secure environment/secret settings; never put an API token in Git or chat. Use a scoped token for the intended account/Worker and Access configuration rather than a global API key. The managed workspace currently has no configured Cloudflare credentials or outbound identity. No live policy/deployment is claimed.
 
+Cloudflare Git Builds can deploy using its own configured repository integration, without an API token in this workspace. Set its build command to `npm run build:preview` and deploy command to `npm run deploy:private-preview`, selecting only reviewed/CI-passed source. This is an alternative to direct CLI deployment, not an activated integration. It does not supply the missing Access identifiers.
+
 Keep Access enabled when deploying updates. For this Worker, Cloudflare Git Builds must use the explicit private build/deploy commands below; do not use the public Wrangler config. Release only source that has passed the existing feature → dev/release PR and CI gates. Cloudflare dashboard configuration and GitHub environment protections must be verified on the server; prepared files do not activate them.
 
 ## Build, dry run and deployment

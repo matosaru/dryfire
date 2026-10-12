@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 const library = readFileSync(new URL('./fixtures/library.json', import.meta.url));
+const previewModule = JSON.parse(readFileSync(new URL('../dist/edition.json', import.meta.url))).assets.find(path => /\/previewTesting-[^/]+\.js$/.test(path));
 test.use({ serviceWorkers: 'allow' });
 test((process.env.VISUAL_EDITION ?? 'public') === 'public' ? 'first installed offline refresh keeps app bundles and the restored library available' : 'private preview retires shell caches and preserves its library on an online refresh', async ({ page, baseURL }) => {
   // Shut down a real same-origin server after installation. Playwright's WebKit
@@ -36,10 +37,20 @@ test((process.env.VISUAL_EDITION ?? 'public') === 'public' ? 'first installed of
         await (await caches.open('dryfire-sound-trainer-preview-v28')).put('/old-private-shell', new Response('old private shell'));
         await (await caches.open('unrelated-cache')).put('/unrelated', new Response('keep'));
       });
+      expect(await page.evaluate(async () => !!await caches.match('/unrelated'))).toBe(true);
+      await page.evaluate(async modulePath => {
+        const { retirePreviewShell } = await import(modulePath);
+        await retirePreviewShell({ serviceWorker: navigator.serviceWorker, caches, origin: location.origin });
+      }, previewModule);
+      expect(await page.evaluate(async () => !!await caches.match('/unrelated'))).toBe(true);
+      // Verify preservation during retirement itself, separately from WebKit's
+      // cache lifetime on navigation when no service worker is registered.
+      await page.evaluate(async () => {
+        await (await caches.open('dryfire-sound-trainer-preview-v27')).put('/old-private-shell', new Response('old private shell'));
+      });
       await page.reload();
       expect(await page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).length)).toBe(0);
       expect(await page.evaluate(async () => (await caches.keys()).filter(key => key.startsWith('dryfire-sound-trainer-')))).toEqual([]);
-      expect(await page.evaluate(async () => !!await caches.match('/unrelated'))).toBe(true);
     } else {
     // Production registers on HTTPS. Localhost is a secure context for exercising
     // the same built worker without weakening the application's HTTPS guard.

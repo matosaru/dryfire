@@ -17,6 +17,8 @@ CHG-032 / CHG-034 / CHG-035 · revision 2.2 · 2026-10-12. The user explicitly a
 
 No payment/account/subscription code exists to remove. The commercial roadmap remains; this is temporary availability, not an implemented paid plan. [EDITION-01–07](../requirements/build-editions.md) are authoritative.
 
+The Full column describes **Full simulation**; the private build starts in **Free**, matching public capability rules. Use Settings → Test as → Full to enable its retained features.
+
 ## Retained code and data
 
 [src/optional](../../src/optional/README.md) contains the retained editor and chart presentation. The chart is imported only in the compiled full branch. The editor stays in public output for legacy preset editing; it rejects creation there. Storage/preset execution remain shared to preserve every existing library and format-4 backup. IndexedDB schema 3, feature format 2 and backup format 4 are unchanged. No database migration, payment flag or local entitlement is added.

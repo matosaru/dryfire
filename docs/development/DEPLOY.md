@@ -2,6 +2,10 @@
 
 The repository holds **editable source**. Only `dist/` is deployed as the minified website.
 
+## Private tester preview — CHG-035
+
+The separate `dev-dryfire` Worker targets **https://dev-dryfire.matosaru.workers.dev**, with `matosaru@gmail.com` admitted through Cloudflare Access. The preview-only Free/Full selector is implemented; [private deployment setup](private-preview-deployment.md) provides the signed-token asset gate/config/commands and remaining live verification. Ordinary `dryfire`/`dryfire-dev` deployments remain public. Missing Access issuer/audience fails closed; no live protection/deployment is inferred from a dry run.
+
 ## Registered custom domains
 
 The user reports `easydryfire.com` and `easydryfire.app` are registered on Cloudflare (2026-10-11). The current documented app origin remains `https://dryfire.matosaru.workers.dev/`; no custom-domain binding has been verified or changed by the copyright update.
