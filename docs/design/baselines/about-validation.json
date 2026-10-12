@@ -1,0 +1,77 @@
+{
+  "change": "CHG-027",
+  "source": "1ac50bd5743babaf2f18e03c87feced6b204af91",
+  "collectionRun": "https://github.com/matosaru/dryfire/actions/runs/38169113410",
+  "collectionChecks": {
+    "expected": 22,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "unchangedComparison": {
+    "startTime": "2026-10-11T19:43:10.180Z",
+    "duration": 23587.551000000003,
+    "expected": 22,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "overallCollectionJob": "failed only at subsequent draft-PR creation; build/generation/comparison/publication passed",
+  "prError": "GitHub Actions is not permitted to create or approve pull requests.",
+  "review": "All 18 changed/new images inspected in both browsers, both themes and widths; About/contact text, logo contrast, Back/Settings controls, local-data/privacy/safety disclosure and Settings reset result match source and specification.",
+  "images": {
+    "chromium/about/overview.dark.320.png": {
+      "sha256": "2504394e4d0ffa577e2f70a16fcc9b3ac750ac9f96dac5d726bac5be04a80ae5"
+    },
+    "chromium/about/overview.dark.390.png": {
+      "sha256": "c7f5c15b6fafdc35c4538d53e40fa3370ed86996f516f938793a9c5d70baed4b"
+    },
+    "chromium/about/overview.light.320.png": {
+      "sha256": "2b046a10cb70e7484a59418626ef277130fba535d43e4c57662170cf0456c8ac"
+    },
+    "chromium/about/overview.light.390.png": {
+      "sha256": "2e42466d09cd073f477923dbc9f87cf67adc81d48bae1be90605879cfca44be2"
+    },
+    "chromium/settings/overview.dark.320.png": {
+      "sha256": "c56657ac3b48b6716683c5b25178fe56d9d561f308e8ff2354186a1af9658bcd"
+    },
+    "chromium/settings/overview.dark.390.png": {
+      "sha256": "1f23e63cbdec32850f58dc29bf3615e755f52b0a352fdd45960013921d87e706"
+    },
+    "chromium/settings/overview.light.320.png": {
+      "sha256": "ad3003c77b59073d92de28f13f017b216531c0b81512584a791975e99babfcfd"
+    },
+    "chromium/settings/overview.light.390.png": {
+      "sha256": "7a5b459145c03d225903fb37a9453424a13cf5cbefe1dbea1465be7839824ae8"
+    },
+    "chromium/settings/sounds-reset.dark.390.png": {
+      "sha256": "51b2219eb64a2d943fab78179c6e83ee55d33933cc8df49ca5c45eb208f262af"
+    },
+    "webkit/about/overview.dark.320.png": {
+      "sha256": "464992540783f940c44cda1ca2b9bd254036cd1bfaca58d654abf029a9c3abb0"
+    },
+    "webkit/about/overview.dark.390.png": {
+      "sha256": "fc6dc7dfd839e72cad8d48a9855b387a5de32187367e6b04ed2eca2070eaa85d"
+    },
+    "webkit/about/overview.light.320.png": {
+      "sha256": "281a161aeba3bdf91d53e5d94a8d8de1f9385ac3a1b40a9dbaa484da5965d439"
+    },
+    "webkit/about/overview.light.390.png": {
+      "sha256": "5d12a38f9d883ccdedb7bc74abf014c2adcfe2e134143e6c5d4971cd9a35681d"
+    },
+    "webkit/settings/overview.dark.320.png": {
+      "sha256": "2067a6a0b189fb53995c66f69faa0cd92a24e89925adccab3d69ee4ac7ab0fd3"
+    },
+    "webkit/settings/overview.dark.390.png": {
+      "sha256": "66504941688d60b200e16eb087d9eb3cb5625f6a1c9aaaed2fcd208b4233bae0"
+    },
+    "webkit/settings/overview.light.320.png": {
+      "sha256": "88852e40762f943cbd418760d6b8fc838748d7fbbb8ffdad469c398fc0ce85a3"
+    },
+    "webkit/settings/overview.light.390.png": {
+      "sha256": "6874c0685ab4c61865e80fc01c4dbc0bd8ff44da4c152a919f1666c209cd7ed3"
+    },
+    "webkit/settings/sounds-reset.dark.390.png": {
+      "sha256": "3ba5794d13b0e58bbe01243d88efd877536d55189ea0f997fcadb26d1c54cf15"
+    }
+  }
+}

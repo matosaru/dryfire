@@ -1,14 +1,20 @@
 # Home design
 
+CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
+
+CHG-030 typography revision: primary Dark text uses `#FFFFFF` throughout this screen and neutral controls. Secondary/footer/accent colors and Light values remain. The [shared typography design](../shared/README.md) and [SET-07](../../../requirements/settings.md) define the palette; [current capture/build review](../../baselines/white-primary-validation.json) records the passing pinned runs; publication is tracked separately.
+
+CHG-029 capture refresh: current references use the pinned production-build renderer and separate centered About/Contact footer controls. [Capture/build review](../../baselines/separate-pages-validation.json) records both passing 138-check runs and reviewed images; earlier [CHG-028 evidence](../../baselines/footer-entry-validation.json) retains the combined entry.
+
 Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · CHG-023 footer published in [`dbf8687`](https://github.com/matosaru/dryfire/commit/dbf8687); earlier feature baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
 Entry: After gun selection/setup and returning visits. App anchor: `homeView`. This is a state of the same `/` web app, not a separate indexable URL.
 
 ## Layout and interaction
 
-Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations.
+Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. CHG-029 centers separate About and Contact controls in the footer, white in Dark and footer-matching in Light, with no arrow and a divider below, opening independent screens directly without Settings.
 
-Functional specifications: [core](../../../requirements/core.md) · [branding](../../../requirements/branding.md) · [gun-profiles](../../../requirements/gun-profiles.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
+Functional specifications: [core](../../../requirements/core.md) · [branding](../../../requirements/branding.md) · [gun-profiles](../../../requirements/gun-profiles.md) · [About](../../../requirements/about.md) · [Contact](../../../requirements/contact.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 
 ## Current visual references
 

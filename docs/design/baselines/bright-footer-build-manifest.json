@@ -1,0 +1,36 @@
+{
+  "commit": "60b14ccc82a4e6dc95054856b07b7a20f4e732e3",
+  "environment": {
+    "playwrightVersion": "1.58.2",
+    "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+    "platform": "linux/amd64",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "clock": "2026-10-11T11:00:00.000Z",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "maxDiffPixels": 0,
+    "comparisonThreshold": 0.005
+  },
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v22.23.3",
+  "hashes": {
+    "index.html": "562efb12b63d7401840cbe75ff2010830d743a2c276fbac1197fcd0c42ef93b9",
+    "src/styles.css": "b32e41153f46a0e6a4d8adb4eb9158c57e69d0133c485397de5a4cc04e390cb2",
+    "src/main.js": "61121c873119f4785bba13da797a8788405aa54a2952563edc9de208e6579a80",
+    "package-lock.json": "300243b3ad3b20e7923e5791aa11c75b52bd595f1a882c49fa108bbed2acc1d5",
+    "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+  },
+  "assetHashes": {
+    "index.html": "e7616f4cc0c4868fbf1f643496c4e8b582167d7a3bfd21afdd915341606e0915",
+    "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+    "sw.js": "e12ec0166f6e8eaed8864355bfe50ce29c384ccbdac5649478e20ead581896fc",
+    "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+    "assets/index-B4DMz_jK.js": "72ae3d522777b6a769ccfdb0fc891069c79f16b84a8000dfbff43a9374897381",
+    "assets/index-h_jfRoTx.css": "c8f696444ba1a98d4dd22283c46577ea18c8cd46dfe3693569c2b1f0e55d1195"
+  }
+}
