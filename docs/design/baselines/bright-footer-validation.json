@@ -1,0 +1,844 @@
+{
+  "change": "CHG-031",
+  "source": "60b14ccc82a4e6dc95054856b07b7a20f4e732e3",
+  "run": "https://github.com/matosaru/dryfire/actions/runs/38243977755",
+  "generationPassed": 138,
+  "unchangedComparison": {
+    "startTime": "2026-10-12T11:42:04.030Z",
+    "duration": 142767.83899999998,
+    "expected": 138,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "reviewedOn": "2026-10-12",
+  "review": "Reviewed 100 Dark footer regions in Chromium/WebKit, both widths, with complete Contact pages and the cited complete About page. Controls are white with centered placement, underline, preserved size/focus/divider; disclosure stays muted. Dimensions match prior captures and no channel darkens beyond existing one-level rounding. Kept all 22 original Light baseline images and seven Light current images; final normal CI compares original Light references. Renderer/threshold/no-mask/no-retry rules unchanged.",
+  "darkImages": {
+    "chromium/about/overview.dark.320.png": "8edce69ec29b88b120a74886cd06f66a16be33fa67068883292086ec8163aa94",
+    "chromium/about/overview.dark.390.png": "3b2a49f3c1d417fe0421af6183b8702a376d94e110f8cad9dfcb7d0e7f1f84c2",
+    "chromium/contact/overview.dark.320.png": "5e84cac4551809697c52b838d59f8bd68eb59c39a7c3c6caaea437857d200ca5",
+    "chromium/contact/overview.dark.390.png": "0d60c3029fa142b124e832f1b0a05d350b5145787245a590309265a9f5fa7591",
+    "chromium/drills/catalog.dark.320.png": "5f6aac1807eb27eda1afcb3a8c7fb775ed8c99e6583a10ad26f5a9b1598e8db1",
+    "chromium/drills/catalog.dark.390.png": "d0e47969c15ea757737dd92b77f2b3b2484ff7d92a1cca938a18ea476b3ac9ec",
+    "chromium/drills/custom-editor.dark.390.png": "8e64e0f15780f6572963fd65cfab50993e6ddd1b8fb05fc474f5449834c2f446",
+    "chromium/drills/custom.dark.390.png": "c78e83bf68cd59e8914f6175ac1a38d20b38cf1d5382ee520232042c8a10f1c4",
+    "chromium/gun-setup/add-gun.dark.390.png": "bee24b1c470fe0771fcb72648a640023fbf0828782c69faa45d77f3a3d66d12e",
+    "chromium/gun-setup/edit-gun.dark.390.png": "0d183c88b74572f72aad06178664569f80b6705e892d158d61caa64084719076",
+    "chromium/gun-setup/first-gun.dark.320.png": "0821b4f86f6b17b2f35dbe2dcad6680356efe16b4ef5c272d3fea64b91324fa7",
+    "chromium/gun-setup/first-gun.dark.390.png": "61b0ab987d0fecc3ff18a004e6e05274efa45923630310c1bd6eca780f80b67e",
+    "chromium/guns/deleted.dark.390.png": "5db39c5ee531d9f2054d7986cfdfd179a742ef47df0324955b7db15a13e2fcb8",
+    "chromium/guns/library.dark.320.png": "e7484b337df6f538671e037c5e82a1cbabb7343c61621dde58d7538ff3b97df3",
+    "chromium/guns/library.dark.390.png": "cf2997bae17d4ea1ecb32e3d2dbb25474848408fcbceadeebf84b67dfe400235",
+    "chromium/history/data-table.dark.390.png": "9347d5243c04103c4957299421b458f479e8d318b8b5b645385fcfaf35ec1ddc",
+    "chromium/history/progress.dark.320.png": "eade7709e55c3f9c2d932d95dea35d6e6dc8a5bf7ea79c688ec7500bd06e5691",
+    "chromium/history/progress.dark.390.png": "3671802479eb968a24024f9386f6447bf4ab80f3d992d2c8a96e3dcf018bda76",
+    "chromium/history/recognition-cleared.dark.390.png": "840b4b0929fa704d9ede0f414e008d47f1bc98e2c825f885927964c03a5835e0",
+    "chromium/history/sessions-cleared.dark.390.png": "dfb408d213c3012cc7c7a2c99e809b83d846a0b7bf843542dc531925329cfc1f",
+    "chromium/home/overview.dark.390.png": "d808addd4eda3993dfd1ac134ff7aa3afe45c94f91916d4559d470ee49b48928",
+    "chromium/learn/calibration.dark.390.png": "fe492a61f23fff5e751859dd4b6c16fbf15c72e172186df93b07bf70c96ccbe2",
+    "chromium/learn/optional-sounds.dark.390.png": "8ed10e918681b111d349665074378f4254d8bdaef5f974b2c75df40e6b4701c2",
+    "chromium/learn/overview.dark.320.png": "ce55792a7a86b493cfcae447d39e99bb97ea83ef991ddbd6004c39715ebf2a7d",
+    "chromium/learn/overview.dark.390.png": "f3b4e70602584dd364347be1581d9a539ed4c58756a1b83823f15458932e8b90",
+    "chromium/learn/recording-limit.dark.390.png": "90d1e6bd30c53a8b1b9a2a20bcd1c5f8bb6f077170bb1219110594931500537d",
+    "chromium/live-listen/listening.dark.390.png": "a9570bdb6ccd84f0aa8f33039d201b6e178696c6f480be6be8f097285c108dbe",
+    "chromium/live-listen/ready.dark.390.png": "6aca33963fe24d80c0d49a097e1d13521fb4e7b0014f23ab5b680b6daa51e2f8",
+    "chromium/practice/active.dark.320.png": "01fe57f89acf8d43e4a5cb7b19c47f0e35750018d9c057986abfa5b3ff61fce0",
+    "chromium/practice/active.dark.390.png": "0184b7ddab918fd4b32ea2ab526d82d6a3b61e54e87105a7158775dbdbcc3dc5",
+    "chromium/practice/configure-control.dark.390.png": "a3d793753faa8c71ad3d81be036b60fbc3643311c297daa49e81992588b032c9",
+    "chromium/practice/configure-free.dark.390.png": "2e22e85968519583b7cfc4598cb101cb483fc76a437308ceb2d7965d93623247",
+    "chromium/practice/configure-par.dark.390.png": "7b45aa76707cb4dfe2f2f5a53635c7e8d460f40f930c98009df9d7be81a0f8b6",
+    "chromium/practice/configure-reload.dark.390.png": "c8b5c37eaaa10bfa60487579e080e47d5a2e5cce2d21770d84e21e05b92b4c8e",
+    "chromium/practice/configure-repeated.dark.390.png": "ecbcf307eabcf376844256b211a95258fc47fb88231df73d48725b93d3a8346e",
+    "chromium/practice/configure-single.dark.320.png": "007e9033afb4d9c21402cb72212242e28bdc06eaab561d3e37e35adbb9cb3d23",
+    "chromium/practice/configure-single.dark.390.png": "2a51017485d8ceb037c4d789e5950cda44c4e030ee149f5fa62758523d63dc68",
+    "chromium/practice/countdown.dark.390.png": "83ea92fd37c82370b47525592ad62387644b70b5b6717e00ca1111e74ee2f438",
+    "chromium/practice/early-review.dark.390.png": "1c88bc92746d716fe2644ec29ac8f88e76c735d2efd7c628a78ca35dbe325a05",
+    "chromium/practice/paused.dark.390.png": "0a09e3d242153b6acc9aaa6304a7a6eaa0b1af4897fd1574d1e9d4e8d282a394",
+    "chromium/practice/review.dark.390.png": "b694e979ce9212cc9fb5190d905a51cab118f0c56054dfcf504211e37ea5cec2",
+    "chromium/session/active.dark.390.png": "7db1080e02cc8818356c1445c70209a4a2182f08002d19405ac620c26adee151",
+    "chromium/session/configure.dark.390.png": "48c2dd636f1dc841d31204394bae80ff93873eaa2ba12475bd78cb12478fd7c4",
+    "chromium/session/paused.dark.390.png": "1b774ed6b2cf1371f04b824bb7043bf10d37da0f66be10651576c5055335e74d",
+    "chromium/session/review.dark.390.png": "4563f7ea525e78000884eafbd056e9d62c9cb1e596c46b918746da0510f17d2c",
+    "chromium/settings/overview.dark.320.png": "2e028d681954814f450e0b61f4c530d946246acd95454cd211981faf2de7edd8",
+    "chromium/settings/overview.dark.390.png": "7faa006bd5cf96e369dce451cc073328d934d94b752b1ad780376fe402377fbf",
+    "chromium/settings/sounds-reset.dark.390.png": "47fde9f50d33c9ae9d3a286706490ef591d96bb697ded04172f61aaa32462d0d",
+    "chromium/shared/safety-modal.dark.320.png": "77d54189b6c1968061fd4fb2e6dcdede1ae90b214ff65e3f22d9427afefc493b",
+    "chromium/shared/safety-modal.dark.390.png": "84d9243bb16144ef5761d666dac9809439b8f8cd4b3c5228815289a4e7e6c25b",
+    "webkit/about/overview.dark.320.png": "c0343f5e34c5d1a391b719d797ecf872b1781e013f5aa292250ca5da7b971f5e",
+    "webkit/about/overview.dark.390.png": "c2ea9f4fc4aebd49423df194276756e1177c7ca832cb9ffffee48e94962be49d",
+    "webkit/contact/overview.dark.320.png": "0c7db8dbd9d2c03d3dcf928ccfed8385b162286b3942994d9c8b4aedef962180",
+    "webkit/contact/overview.dark.390.png": "dd1b3aa65e1ff889a556d1ab61bc522de25680f4a387b1b523b175310b275d34",
+    "webkit/drills/catalog.dark.320.png": "f51f28b0ac19b4a9201bfd778aad8664640004c10be1aa1563c392dfda1f4588",
+    "webkit/drills/catalog.dark.390.png": "85b0a16fdb4b9f08de0f9e038381f5b7f673c0fc7acbdbfb88504ea05dfe1aa6",
+    "webkit/drills/custom-editor.dark.390.png": "cd9aaebb9d84ff60a4ea068b194d5432900e4ecf92ac11fc67298e72aa750cf4",
+    "webkit/drills/custom.dark.390.png": "9189d8657384828a84c3640a24f728efa42193f505fd00a512cdf7785dbab714",
+    "webkit/gun-setup/add-gun.dark.390.png": "bc61eb8e5492fa72c6f1f2de3a7471897fcbb94778b8a3004793340d4911d44c",
+    "webkit/gun-setup/edit-gun.dark.390.png": "dd634312b21712f76beaad825d543b271ea8ba0462772541c3154143844c459c",
+    "webkit/gun-setup/first-gun.dark.320.png": "8b630414c8a40b1c0ae345a1040ef0372d29251272dc312fe474e496c52f5d22",
+    "webkit/gun-setup/first-gun.dark.390.png": "1d76c7ccd9c9ee3e36af927d9abe8c98ace7f7d724a653cd080dc008bd60006f",
+    "webkit/guns/deleted.dark.390.png": "0cf63bc4b4b1e7f7f50a778015bf7cfacb90eb38c06ba808cbc9e7ae5a0cbe2c",
+    "webkit/guns/library.dark.320.png": "b50ec3f3ee6ee9635109889fa1d0b8a3144209066bf0cda1379280195a812d55",
+    "webkit/guns/library.dark.390.png": "9d096ad7097d64b1cc86d7220b2e3a26f766d3ceadd563d432e4eefd0dc992b0",
+    "webkit/history/data-table.dark.390.png": "01850d9784f7ee3addb001a7f4ed53d707a3a5c60f1a3270248b088bda14a243",
+    "webkit/history/progress.dark.320.png": "e7bc1387e593f52bfbcd1480fa93cd1068a7f1cf7e0871f4ff3b6b3643c77d63",
+    "webkit/history/progress.dark.390.png": "58d089abc6e1927edfeeb8fe39437725ce4470593d478cc9b90ad21679219503",
+    "webkit/history/recognition-cleared.dark.390.png": "882a2acce852d10e578168fbe546ee1d06886f00639b94a5ea363ba817af5633",
+    "webkit/history/sessions-cleared.dark.390.png": "d12a5a21a6518360c9eda1a8b07e1638edb3bcc8ba63065f6a43b6593b316e71",
+    "webkit/home/overview.dark.390.png": "0ae6d2ecdca90c24d6d970a63f7cdc407221ca866b5d6b74975a57b6c2ee6158",
+    "webkit/learn/calibration.dark.390.png": "004d5505caa0e695ec03fc2761cb0b6dd943479354776b8b025297c435e2bf40",
+    "webkit/learn/optional-sounds.dark.390.png": "f139e980b8405fdbfe6e52d0979bb0a9a9c31046668ee3d354d8d62fc543f764",
+    "webkit/learn/overview.dark.320.png": "d8eb31153e647c2bb053d8085b6c9814d30c683b825d7e5c02166cafe7478dbd",
+    "webkit/learn/overview.dark.390.png": "c5193b46cfc1b3c27204e5a0ad5a66c1ff366720b17ee772405d01ecb2bebf2e",
+    "webkit/learn/recording-limit.dark.390.png": "847262a0df7b1b82135181d2661164237a1349814110f8fa1ba33b1ed742a6a4",
+    "webkit/live-listen/listening.dark.390.png": "51bd9a5d9fc1b99fb9afd04bb0d1c8ce008d01b809f2a3b60571871fb00df450",
+    "webkit/live-listen/ready.dark.390.png": "bb2f86e0d16d246947626d0ab17eeaaf5abf0f2e9d196b067dcbeae8b8447267",
+    "webkit/practice/active.dark.320.png": "7538e201e83e4c8bd1f33f4f231fbdbd89a6e43192972644a943331a9f063373",
+    "webkit/practice/active.dark.390.png": "e18ccead06cc4496414c6a2c5b8b27a33858803c5d3d8e565674f41d9e5388eb",
+    "webkit/practice/configure-control.dark.390.png": "65a4f86a883518a7c4b8cb1f194ffac0383f5d74e00d9c978a8b706ee16325b9",
+    "webkit/practice/configure-free.dark.390.png": "5317740e3f2a2fb9948b5e30a987c1abf7ed616b2182b70b394505961d2b64db",
+    "webkit/practice/configure-par.dark.390.png": "1ba5874c53b0696d5ea251f62b572875814ad29cd9aa5d2295f96f4e0023f9fc",
+    "webkit/practice/configure-reload.dark.390.png": "58700f64a65cfe3d8a23111dd52c764bdd30894608a4008e0e01e18a504c9210",
+    "webkit/practice/configure-repeated.dark.390.png": "ac5254429006730b19c9dc3868c50b08f775803a4f235eff804ef87ca80b5f68",
+    "webkit/practice/configure-single.dark.320.png": "78ee86bb704926728debfcaf96a8afe94df63da2d6f01f794c118d571f477b11",
+    "webkit/practice/configure-single.dark.390.png": "fdd5d6bd766743aa6bc8c8df4debeeb48e66335b626894b14fde150f305268cb",
+    "webkit/practice/countdown.dark.390.png": "e394b32ca5919880d806a9b0a2d653d7482bb32fcee4fdf819d5fedb413c736a",
+    "webkit/practice/early-review.dark.390.png": "032dd833762392b7b863e69de6c37da8142d0495578556af5325ed41e0610a3f",
+    "webkit/practice/paused.dark.390.png": "0d04fe1128dee817fcf5a409c1c3dcbc3e25734b82ca64fd6bddced73e20be7c",
+    "webkit/practice/review.dark.390.png": "b6ab4c48dba4ae9066673a9e74a74d9575a6cf7c5fa17227659825237c556bda",
+    "webkit/session/active.dark.390.png": "aae02c4c3432f85061e9a4acffa8667a1c56b920b7e498af67584d52ccc66bbc",
+    "webkit/session/configure.dark.390.png": "c6c88612c3c970dc054838f5c961a0241a5bc805e57cbaad2485c7d8d2c56470",
+    "webkit/session/paused.dark.390.png": "7915509c735c3bfc88c8bbdca079071f68ed3671b1802e40bcbc5c5e2dfcdb72",
+    "webkit/session/review.dark.390.png": "5ab54944ac747717257b390a7239d956116278db9e362a9ab55f28a9f0546f8b",
+    "webkit/settings/overview.dark.320.png": "83f2bc221383d353b2b5595ff7523bd0e5bef9ccf6973907148137ae9542ead3",
+    "webkit/settings/overview.dark.390.png": "7072c814f1290b87a63b578347fffb9810e7529227f5dd26a3c1ce34824e8db5",
+    "webkit/settings/sounds-reset.dark.390.png": "86293b71eb9f4afb408435a7bbac864828e0cb25e5db389ad86e8d32a1a7a054",
+    "webkit/shared/safety-modal.dark.320.png": "36d57e361b24803f846e8cf39201f905ce60ce5f593350c9db1c25d8a0f33f8f",
+    "webkit/shared/safety-modal.dark.390.png": "dd5505448c809b1587558d95850dcd036e4056477db9d9ffc33623b453c27b4e"
+  },
+  "preservedLightImages": {
+    "webkit/contact/overview.light.390.png": "70a346c6493fff8d4e4095704f1fb25853f27c9d3b90037614545ee84a13419a",
+    "webkit/contact/overview.light.320.png": "aa12e443369d16d003f5af4aca3f971ef3324769bcc9f764ba6eeeb88eb70ba5",
+    "webkit/about/overview.light.390.png": "13346229560d9be73b64174bcd8a6847a1c21b0cbbecc9205425fdb3e058eab1",
+    "webkit/about/overview.light.320.png": "4427595334d4d9dc2dc7bb8a6883e1e14f174cb5d20393b301964dfecf2c5ed7",
+    "webkit/practice/active.light.390.png": "45a1a586cf14190d37fa37ebd9498c976138ecff4fee7f60ffd224afe60ec702",
+    "webkit/history/progress.light.390.png": "47c4532374278daf4a8b0426001266db80bff8609ae2a19640b35c82e6836e0d",
+    "webkit/guns/library.light.390.png": "d93e7792b860ee0068347356bb11643bb24c343962c15c73cabfb0bde79abde7",
+    "webkit/guns/library.light.320.png": "57840ea8acce059e5f792281be068efd9cc6b543877175e31625f1f2224b96c3",
+    "webkit/gun-setup/edit-gun.light.390.png": "c1384a3b5542c732de6723d6a77758495291cf32aed4c7797f8f34e17c9a5cc6",
+    "webkit/settings/overview.light.390.png": "3bed982e6afb7bedad69802a545ed0097274c51c1e5b911608fd52c9f9d14798",
+    "webkit/settings/overview.light.320.png": "bcecaf324c1211e9832f7b1bb1e0ba40be846a6da99c8f5e6c008c3b301cc2e2",
+    "chromium/contact/overview.light.390.png": "1a1b56a5f605deb47a71e8eef29ecb15e763ae3d3d8c5511b2d92bfdf558f666",
+    "chromium/contact/overview.light.320.png": "0ed2aa39ccd9032f1f0ffe4d4faaed6113afa563f9bd35ce2d4a69f6cf9f7019",
+    "chromium/about/overview.light.390.png": "424f97675e66e728ba35f587a06a3e3e34d2f89ce41672a74cb3957c35b18f0a",
+    "chromium/about/overview.light.320.png": "ed158c24d993ca1c16262e5eb1f64d9ed2882e507597f8cf61c5956a1bae87c3",
+    "chromium/practice/active.light.390.png": "55c4db988ec6f3cb62314c67edcb70435cfc0b7f76384d39a409bfaacc00f4b9",
+    "chromium/history/progress.light.390.png": "64636e6d1d4a28751a1073cac525ebd0c80b0518bcaba20202e34edd897f974a",
+    "chromium/guns/library.light.390.png": "f71d20ce065967df9367f191df10f72b9c208f4d2542bf4fe9ebfa00f2790641",
+    "chromium/guns/library.light.320.png": "95fbfc89027d1821096b407066cd2b8603073151a3e74c6ff6c01dfa528e5a19",
+    "chromium/gun-setup/edit-gun.light.390.png": "a51800f236e85047f164427812530dbc5ca2ed4e9b8881a5a1f6ab7690dfd83a",
+    "chromium/settings/overview.light.390.png": "c63c7d60ba4f02dc503a05ba5710578a31e2d33a13d0342016ff7dc5100c4324",
+    "chromium/settings/overview.light.320.png": "a0a031d9748a9522d5dd2a10d394504b47eaa358a10b901f0c1cb85d5729eb5b"
+  },
+  "pixelReview": [
+    {
+      "file": "chromium/about/overview.dark.320.png",
+      "width": 320,
+      "height": 1417,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/about/overview.dark.390.png",
+      "width": 390,
+      "height": 1297,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/contact/overview.dark.320.png",
+      "width": 320,
+      "height": 844,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/contact/overview.dark.390.png",
+      "width": 390,
+      "height": 844,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/drills/catalog.dark.320.png",
+      "width": 320,
+      "height": 2688,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/drills/catalog.dark.390.png",
+      "width": 390,
+      "height": 2560,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/drills/custom-editor.dark.390.png",
+      "width": 390,
+      "height": 2754,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/drills/custom.dark.390.png",
+      "width": 390,
+      "height": 2146,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/gun-setup/add-gun.dark.390.png",
+      "width": 390,
+      "height": 1216,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/gun-setup/edit-gun.dark.390.png",
+      "width": 390,
+      "height": 1193,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/gun-setup/first-gun.dark.320.png",
+      "width": 320,
+      "height": 1187,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/gun-setup/first-gun.dark.390.png",
+      "width": 390,
+      "height": 1153,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/guns/deleted.dark.390.png",
+      "width": 390,
+      "height": 1164,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/guns/library.dark.320.png",
+      "width": 320,
+      "height": 1359,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/guns/library.dark.390.png",
+      "width": 390,
+      "height": 1262,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/history/data-table.dark.390.png",
+      "width": 390,
+      "height": 3649,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/history/progress.dark.320.png",
+      "width": 320,
+      "height": 3485,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/history/progress.dark.390.png",
+      "width": 390,
+      "height": 3377,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/history/recognition-cleared.dark.390.png",
+      "width": 390,
+      "height": 3198,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/history/sessions-cleared.dark.390.png",
+      "width": 390,
+      "height": 2396,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/home/overview.dark.390.png",
+      "width": 390,
+      "height": 1368,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/learn/calibration.dark.390.png",
+      "width": 390,
+      "height": 1853,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/learn/optional-sounds.dark.390.png",
+      "width": 390,
+      "height": 1954,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/learn/overview.dark.320.png",
+      "width": 320,
+      "height": 1336,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/learn/overview.dark.390.png",
+      "width": 390,
+      "height": 1255,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/learn/recording-limit.dark.390.png",
+      "width": 390,
+      "height": 1269,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/live-listen/listening.dark.390.png",
+      "width": 390,
+      "height": 2229,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/live-listen/ready.dark.390.png",
+      "width": 390,
+      "height": 1666,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/active.dark.320.png",
+      "width": 320,
+      "height": 1473,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/active.dark.390.png",
+      "width": 390,
+      "height": 1384,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/configure-control.dark.390.png",
+      "width": 390,
+      "height": 1405,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/configure-free.dark.390.png",
+      "width": 390,
+      "height": 1405,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/configure-par.dark.390.png",
+      "width": 390,
+      "height": 1510,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/configure-reload.dark.390.png",
+      "width": 390,
+      "height": 1550,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/configure-repeated.dark.390.png",
+      "width": 390,
+      "height": 1405,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/configure-single.dark.320.png",
+      "width": 320,
+      "height": 1480,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/configure-single.dark.390.png",
+      "width": 390,
+      "height": 1405,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/countdown.dark.390.png",
+      "width": 390,
+      "height": 1569,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/early-review.dark.390.png",
+      "width": 390,
+      "height": 1198,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/paused.dark.390.png",
+      "width": 390,
+      "height": 1310,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/practice/review.dark.390.png",
+      "width": 390,
+      "height": 1425,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/session/active.dark.390.png",
+      "width": 390,
+      "height": 1310,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/session/configure.dark.390.png",
+      "width": 390,
+      "height": 1275,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/session/paused.dark.390.png",
+      "width": 390,
+      "height": 1310,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/session/review.dark.390.png",
+      "width": 390,
+      "height": 1241,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/settings/overview.dark.320.png",
+      "width": 320,
+      "height": 2155,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/settings/overview.dark.390.png",
+      "width": 390,
+      "height": 1970,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/settings/sounds-reset.dark.390.png",
+      "width": 390,
+      "height": 2110,
+      "brightenedPixels": 505,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/shared/safety-modal.dark.320.png",
+      "width": 320,
+      "height": 844,
+      "brightenedPixels": 0,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "chromium/shared/safety-modal.dark.390.png",
+      "width": 390,
+      "height": 844,
+      "brightenedPixels": 0,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/about/overview.dark.320.png",
+      "width": 320,
+      "height": 1405,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/about/overview.dark.390.png",
+      "width": 390,
+      "height": 1288,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/contact/overview.dark.320.png",
+      "width": 320,
+      "height": 844,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/contact/overview.dark.390.png",
+      "width": 390,
+      "height": 844,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/drills/catalog.dark.320.png",
+      "width": 320,
+      "height": 2669,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/drills/catalog.dark.390.png",
+      "width": 390,
+      "height": 2546,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/drills/custom-editor.dark.390.png",
+      "width": 390,
+      "height": 2749,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/drills/custom.dark.390.png",
+      "width": 390,
+      "height": 2133,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/gun-setup/add-gun.dark.390.png",
+      "width": 390,
+      "height": 1209,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/gun-setup/edit-gun.dark.390.png",
+      "width": 390,
+      "height": 1186,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/gun-setup/first-gun.dark.320.png",
+      "width": 320,
+      "height": 1178,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/gun-setup/first-gun.dark.390.png",
+      "width": 390,
+      "height": 1146,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/guns/deleted.dark.390.png",
+      "width": 390,
+      "height": 1158,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/guns/library.dark.320.png",
+      "width": 320,
+      "height": 1348,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/guns/library.dark.390.png",
+      "width": 390,
+      "height": 1256,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/history/data-table.dark.390.png",
+      "width": 390,
+      "height": 3629,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/history/progress.dark.320.png",
+      "width": 320,
+      "height": 3478,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/history/progress.dark.390.png",
+      "width": 390,
+      "height": 3374,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/history/recognition-cleared.dark.390.png",
+      "width": 390,
+      "height": 3190,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/history/sessions-cleared.dark.390.png",
+      "width": 390,
+      "height": 2399,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/home/overview.dark.390.png",
+      "width": 390,
+      "height": 1359,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/learn/calibration.dark.390.png",
+      "width": 390,
+      "height": 1849,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/learn/optional-sounds.dark.390.png",
+      "width": 390,
+      "height": 1950,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/learn/overview.dark.320.png",
+      "width": 320,
+      "height": 1316,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/learn/overview.dark.390.png",
+      "width": 390,
+      "height": 1258,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/learn/recording-limit.dark.390.png",
+      "width": 390,
+      "height": 1258,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/live-listen/listening.dark.390.png",
+      "width": 390,
+      "height": 2218,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/live-listen/ready.dark.390.png",
+      "width": 390,
+      "height": 1655,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/active.dark.320.png",
+      "width": 320,
+      "height": 1459,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/active.dark.390.png",
+      "width": 390,
+      "height": 1373,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/configure-control.dark.390.png",
+      "width": 390,
+      "height": 1409,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/configure-free.dark.390.png",
+      "width": 390,
+      "height": 1409,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/configure-par.dark.390.png",
+      "width": 390,
+      "height": 1514,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/configure-reload.dark.390.png",
+      "width": 390,
+      "height": 1568,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/configure-repeated.dark.390.png",
+      "width": 390,
+      "height": 1409,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/configure-single.dark.320.png",
+      "width": 320,
+      "height": 1481,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/configure-single.dark.390.png",
+      "width": 390,
+      "height": 1409,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/countdown.dark.390.png",
+      "width": 390,
+      "height": 1558,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/early-review.dark.390.png",
+      "width": 390,
+      "height": 1188,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/paused.dark.390.png",
+      "width": 390,
+      "height": 1299,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/practice/review.dark.390.png",
+      "width": 390,
+      "height": 1413,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/session/active.dark.390.png",
+      "width": 390,
+      "height": 1299,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/session/configure.dark.390.png",
+      "width": 390,
+      "height": 1273,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/session/paused.dark.390.png",
+      "width": 390,
+      "height": 1299,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/session/review.dark.390.png",
+      "width": 390,
+      "height": 1230,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/settings/overview.dark.320.png",
+      "width": 320,
+      "height": 2151,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/settings/overview.dark.390.png",
+      "width": 390,
+      "height": 1971,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/settings/sounds-reset.dark.390.png",
+      "width": 390,
+      "height": 2110,
+      "brightenedPixels": 488,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/shared/safety-modal.dark.320.png",
+      "width": 320,
+      "height": 844,
+      "brightenedPixels": 0,
+      "darkenedPixels": 0
+    },
+    {
+      "file": "webkit/shared/safety-modal.dark.390.png",
+      "width": 390,
+      "height": 844,
+      "brightenedPixels": 0,
+      "darkenedPixels": 0
+    }
+  ]
+}
