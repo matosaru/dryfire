@@ -10,7 +10,7 @@ This is the current forward plan; [implementation history](implementation-histor
 
 ## Product constraints
 
-**CHG-032 specific implementation exception:** the user now explicitly approves temporarily hiding future paid-feature actions publicly while keeping their code/full development edition. Implement [the edition requirements](../requirements/build-editions.md); this starts the earlier stage 1a only. Existing data/legacy editing remain available, no billing or commercial entitlement is introduced, and hosted full preview requires verified access protection. Other commercial implementation stages remain paused.
+**CHG-032/035 specific implementation exceptions:** the user now explicitly approves temporarily hiding future paid-feature actions publicly while keeping their code/full development edition. Implement [the edition requirements](../requirements/build-editions.md); this starts the earlier stage 1a only. Existing data/legacy editing remain available, no billing or commercial entitlement is introduced, and hosted full preview requires verified access protection. CHG-035 additionally authorizes private Free/Full simulation and an Access-signed-token asset gate at the requested host; product accounts/billing/cloud remain paused. Live protection and deployment require separate evidence.
 
 - Useful basic dry-fire practice stays free and easy to start, without a required account or payment details.
 - There is only **one paid plan, Pro**. No separate gun, analytics, cloud or camera plans; no native-store billing in this iteration.

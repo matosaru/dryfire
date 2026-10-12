@@ -1,6 +1,6 @@
 # Functional requirements
 
-Revision 1.16 · CHG-034 two-gun public edition / CHG-033 informational-page bottom navigation · 2026-10-12
+Revision 1.17 · CHG-035 private-preview simulation / CHG-034 two-gun public edition / CHG-033 informational-page bottom navigation · 2026-10-12
 
 CHG-027 starts [About](about.md) with email support; CHG-029 separates [Contact](contact.md) and refines the centered shared footer links on the same feature branch. Suggested copy remains reviewable; broader CHG-026 implementations stay paused.
 
@@ -19,7 +19,7 @@ This is the single current functional index. Markdown requirements define behavi
 | [Settings](settings.md) | Browser-backed audio preferences, themes, CHG-030 white Dark primary text and supported vibration | Implemented; physical iPhone capability checks remain separate |
 | [About](about.md) | Dedicated informational screen, local-data/recognition explanation and shared informational navigation | CHG-029 implemented and browser validated on the feature branch; publication/promotion in the delivery tracker |
 | [Contact](contact.md) | Separate email-support screen and confirmed mailto address | CHG-029 implemented and browser validated on the feature branch; publication/promotion in the delivery tracker |
-| [Build editions](build-editions.md) | CHG-032/034 two-gun public creation/graph restrictions, retained full preview and old-data compatibility | Explicitly authorized; implementation/testing/publication in the delivery tracker |
+| [Build editions](build-editions.md) | CHG-032/034 two-gun public restrictions and CHG-035 private Free/Full simulation, retained full preview and old-data compatibility | Explicitly authorized; implementation/testing/publication in the delivery tracker |
 | [Web commercial preparation](web-commercial.md) | Contact/SEO, review, simple Free/Pro, account/cloud recovery, billing, dev/production QA and later paid candidates | Planning/analysis requested; price/allocation/providers/data policies proposed; product features not implemented; native releases deferred |
 
 CHG-020 is implemented locally with 270 Jest / 23 suites, 16 smoke/build/assets and 16 focused browser checks passing. Updated My Guns/History designs and the architecture cover the single-gun Delete and separate clear actions; source published in [`7240e2c`](https://github.com/matosaru/dryfire/commit/7240e2c); [GitHub Actions run 38144631311](https://github.com/matosaru/dryfire/actions/runs/38144631311) completed successfully; deployment/device evidence is tracked separately. Prior corrections are published in [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18), with 261 Jest / 22 suites, 16 smoke/build/assets and 11 focused browser checks passing locally. Prior source baseline: [`b29837a`](https://github.com/matosaru/dryfire/commit/b29837a). Its 257 Jest tests / 21 suites, 16 smoke checks, seven browser suites / 46 checks and GitHub CI passed. Local screenshots and CI do not establish Cloudflare deployment or physical microphone accuracy.

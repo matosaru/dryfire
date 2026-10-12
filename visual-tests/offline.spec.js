@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 const library = readFileSync(new URL('./fixtures/library.json', import.meta.url));
 test.use({ serviceWorkers: 'allow' });
-test('first installed offline refresh keeps app bundles and the restored library available', async ({ page, baseURL }) => {
+test((process.env.VISUAL_EDITION ?? 'public') === 'public' ? 'first installed offline refresh keeps app bundles and the restored library available' : 'private preview retires shell caches and preserves its library on an online refresh', async ({ page, baseURL }) => {
   // Shut down a real same-origin server after installation. Playwright's WebKit
   // offline emulation can fail navigation before the service worker handles it.
   // Forward the optimized preview unchanged, then prove uncached fetches fail.
@@ -29,6 +29,18 @@ test('first installed offline refresh keeps app bundles and the restored library
     await page.locator('#restoreGunBackupBtn').click();
     await page.locator('#importFile').setInputFiles({ name: 'fixture.json', mimeType: 'application/json', buffer: library });
     await expect(page.locator('#homeView')).toBeVisible();
+    if ((process.env.VISUAL_EDITION ?? 'public') === 'preview') {
+      await page.locator('#settingsShortcut').click(); await page.locator('#previewTestMode').selectOption('full');
+      await page.locator('.tab[data-view="home"]').click();
+      await page.evaluate(async () => {
+        await (await caches.open('dryfire-sound-trainer-preview-v28')).put('/old-private-shell', new Response('old private shell'));
+        await (await caches.open('unrelated-cache')).put('/unrelated', new Response('keep'));
+      });
+      await page.reload();
+      expect(await page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).length)).toBe(0);
+      expect(await page.evaluate(async () => (await caches.keys()).filter(key => key.startsWith('dryfire-sound-trainer-')))).toEqual([]);
+      expect(await page.evaluate(async () => !!await caches.match('/unrelated'))).toBe(true);
+    } else {
     // Production registers on HTTPS. Localhost is a secure context for exercising
     // the same built worker without weakening the application's HTTPS guard.
     await page.evaluate(async () => { await navigator.serviceWorker.register('/sw.js'); await navigator.serviceWorker.ready; });
@@ -44,6 +56,7 @@ test('first installed offline refresh keeps app bundles and the restored library
       try { await fetch('/uncached-offline-probe', { cache: 'no-store' }); return false; } catch { return true; }
     }), 'The origin is unreachable; cached resources alone must support refresh').toBe(true);
     await page.reload();
+    }
     await expect(page.locator('#homeView')).toBeVisible(); await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
     await page.locator('#gunSwitcherBtn').click(); await expect(page.locator('#gunList .gun-profile')).toHaveCount(3);
     await page.locator('[data-gun-id="qa-gun-a"]').click(); await page.locator('.tab[data-view="history"]').click();

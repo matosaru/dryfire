@@ -4,7 +4,7 @@ import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
 import { soundCard, drillCard } from './uiComponents.js';
 import { configureNumberInputs, readNumberInput } from './inputLimits.js';
 import { createSafetyGate } from './safetyGate.js';
-import { CAPABILITIES } from './buildEdition.js';
+import { CAPABILITIES as BUILD_CAPABILITIES } from './buildEdition.js';
 import { createCustomDrillEditor } from './optional/customDrillEditor.js';
 import { createScreenNavigation } from './screenNavigation.js';
 import { ACTUAL_CLASSES, PREDICTED_CLASSES, evaluateEvents } from './evaluation.js';
@@ -60,6 +60,8 @@ let sessionController = null;
 let practiceController = null;
 let safetyGate = null;
 let progressView = null;
+let CAPABILITIES = BUILD_CAPABILITIES;
+let previewTesting = null;
 let screenNavigation = null;
 let historyRenderToken = 0;
 let homeRenderToken = 0;
@@ -84,6 +86,7 @@ async function loadDevicePreferences() {
   applyAppearance();
 }
 function renderPreferences() {
+  previewTesting?.render();
   const capabilities = getAudioCapabilities();
   for (const [key, inputId, statusId] of [['noiseFilter', 'noiseFilter', 'noiseFilterStatus'], ['autoGain', 'autoGainControl', 'autoGainStatus']]) {
     const input = $('#'+inputId);
@@ -872,7 +875,8 @@ async function renderHistory() {
   if (!isCurrent()) return;
   const sessions = await sessionController.renderSavedSessions(gunId, isCurrent);
   if (!isCurrent()) return;
-  progressView?.render(sessions || [], gunId);
+  if (CAPABILITIES.advancedGraphs) progressView?.render(sessions || [], gunId);
+  else $('#progressContent').replaceChildren();
   renderEvaluation(rows);
   $('#homeEvents').textContent = String(rows.length);
   const host = $('#historyList');
@@ -929,9 +933,27 @@ async function init() {
   configureNumberInputs(document);
   if (typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__) {
     const { createProgressView } = await import('./optional/progressView.js');
-    progressView = createProgressView(document);
+    const { createPreviewTesting, retirePreviewShell } = await import('./optional/previewTesting.js');
+    await retirePreviewShell({ serviceWorker: navigator.serviceWorker, caches: window.caches, origin: location.origin });
+    let storage;
+    try { storage = window.localStorage; } catch { /* Simulation works without preference storage. */ }
+    const applyPresentation = () => {
+      const full = CAPABILITIES.advancedGraphs;
+      document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
+      $('#gunCapacityNotice').textContent = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
+      $('#sequenceDescription').textContent = full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
+      $('#aboutFeatureSummary').textContent = full ? 'Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.' : 'Learn your trigger click, choose a built-in practice mode and review saved timing results. Other sound categories are optional unless your drill uses them.';
+    };
+    previewTesting = createPreviewTesting({ doc: document, storage,
+      locked: () => profileLocked() || !!practiceController?.hasUnsavedResults() || $('#safetyModal').open || !$('#customDrillForm').classList.contains('hidden'),
+      onMessage: setMessage, onChange: capabilities => {
+        CAPABILITIES = capabilities; applyPresentation(); selectDrillCollection(false);
+        renderGunControls(); renderPreferences(); renderHistory().catch(showError);
+      } });
+    CAPABILITIES = previewTesting.capabilities; applyPresentation();
+    progressView = createProgressView(document, { enabled: () => CAPABILITIES.advancedGraphs });
   }
-  customEditor = createCustomDrillEditor({ doc: document, capabilities: CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
+  customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
   screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute,
     show: route => displayView(route.view), canLeave: () => !busy && !profileLoading && !preferencePending && !practiceController?.hasUnsavedResults() && !sessionController?.hasUnsavedResults(),
@@ -1172,7 +1194,7 @@ init().catch(showError);
 // HTTPS-hosted web builds can reopen offline after an initial successful load.
 // Capacitor packages the web bundle itself, so don't register a worker there.
 const isNative = typeof globalThis.Capacitor?.isNativePlatform === 'function' && globalThis.Capacitor.isNativePlatform();
-if (!import.meta.env.DEV && !isNative && 'serviceWorker' in navigator && location.protocol === 'https:') {
+if (!(typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__) && !import.meta.env.DEV && !isNative && 'serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('/sw.js').catch(error => {
     console.warn('Offline caching unavailable:', error);
   });

@@ -1,6 +1,6 @@
 # Current designs
 
-CHG-032 adds public/full build editions; shared current captures use public unless a state is explicitly preview-only. CHG-033 retains the five bottom tabs on About/Contact in both themes/editions. Requirements and exact capture/CI status are in the delivery tracker.
+CHG-035 adds private-only Free/Full Settings simulation, with a visible mode indicator and protected online asset boundary. CHG-032 adds public/full build editions; shared current captures use public unless a state is explicitly preview-only. CHG-033 retains the five bottom tabs on About/Contact in both themes/editions. Requirements and exact capture/CI status are in the delivery tracker.
 
 Visual package for Dry Fire With Ease. [Functional requirements](../requirements/README.md) own behavior; [approval history](../project/approval-log.md) records authorization; [delivery plan](../project/implementation-history.md) owns implementation/publication status.
 

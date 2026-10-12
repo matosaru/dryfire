@@ -51,6 +51,7 @@ async function prepare(page, item) {
   });
   await page.clock.install({ time: new Date(environment.clock) });
   await page.clock.pauseAt(new Date(environment.clock));
+  if (item.edition === 'preview' && item.state.startsWith('preview-free')) await page.addInitScript(() => localStorage.setItem('dryfire-private-preview-mode', 'free'));
   await page.goto('/');
   expect(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true);
   await visible(page, 'gunSetupView');

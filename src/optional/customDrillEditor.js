@@ -1,10 +1,10 @@
 import { normalizeCustomDrill } from '../drills.js';
 import { canSaveCustomDrill } from '../buildEdition.js';
 
-export function createCustomDrillEditor({ doc, capabilities, getContext, locked, titleFor, setBusy, onSave, onMessage, onError }) {
+export function createCustomDrillEditor({ doc, getCapabilities, getContext, locked, titleFor, setBusy, onSave, onMessage, onError }) {
   const $ = id => doc.getElementById(id);
   let editingId = null, steps = [];
-  const permitted = () => canSaveCustomDrill(capabilities, editingId, getContext().customDrills);
+  const permitted = () => canSaveCustomDrill(getCapabilities(), editingId, getContext().customDrills);
   function render() {
     $('customDrillSteps').replaceChildren();
     steps.forEach((label, index) => {
@@ -30,7 +30,7 @@ export function createCustomDrillEditor({ doc, capabilities, getContext, locked,
   function open(drill = null) {
     const { activeGun, customDrills } = getContext();
     if (locked() || !activeGun || activeGun.needsDetails) return;
-    if (!canSaveCustomDrill(capabilities, drill?.id, customDrills)) { onMessage('New custom drills are unavailable in this public version. Saved presets remain usable and editable.'); return; }
+    if (!canSaveCustomDrill(getCapabilities(), drill?.id, customDrills)) { onMessage('New custom drills are unavailable in this public version. Saved presets remain usable and editable.'); return; }
     editingId = drill?.id ?? null; steps = [...(drill?.steps ?? [])];
     $('customDrillName').value = drill?.title ?? '';
     $('customDrillEditorTitle').textContent = drill ? 'Edit drill' : 'Create a drill';

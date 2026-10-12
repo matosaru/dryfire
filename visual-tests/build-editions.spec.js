@@ -45,6 +45,8 @@ if (edition === 'public') {
   test('public creation guards survive revealed controls, direct submits and browser edition flags', async ({ page }) => {
     await page.goto('/?edition=preview');
     await page.evaluate(() => localStorage.setItem('edition', 'preview'));
+    await page.evaluate(() => localStorage.setItem('dryfire-private-preview-mode', 'full'));
+    await expect(page.locator('#previewTestMode')).toHaveCount(0);
     await page.locator('#gunName').fill('First gun'); await page.locator('[name="gunTypeChoice"][value="Handguns"]').check();
     await page.locator('#saveGunBtn').click(); await expect(page.locator('#homeView')).toBeVisible();
     await page.locator('#gunSwitcherBtn').click(); await expect(page.locator('#gunList .gun-profile')).toHaveCount(1); await expect(page.locator('#addGunBtn')).toBeVisible();

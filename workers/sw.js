@@ -1,8 +1,16 @@
 // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
 const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
-const CACHE = `dryfire-sound-trainer-${EDITION}-v28`;
+const CACHE = `dryfire-sound-trainer-${EDITION}-v29`;
 const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
 
+if (EDITION === 'preview') {
+  // Retire earlier authenticated preview shells; never serve assets offline.
+  self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
+  self.addEventListener('activate', event => event.waitUntil((async () => {
+    for (const key of await caches.keys()) if (key.startsWith('dryfire-sound-trainer-')) await caches.delete(key);
+    await self.clients.claim(); await self.registration.unregister();
+  })()));
+} else {
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
@@ -52,3 +60,5 @@ self.addEventListener('fetch', event => {
     }
   })());
 });
+
+}

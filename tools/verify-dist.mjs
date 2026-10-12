@@ -17,6 +17,8 @@ if (html.includes('/src/main.js') || html.includes('/src/styles.css')) {
   throw new Error('The deploy directory contains unbundled development sources. Run npm run build.');
 }
 const files = await readdir(dist, { recursive: true });
+if (expectedEdition === 'public' && /previewTestMode|previewTestingSection|previewModeBadge/.test(html)) throw new Error('Private testing controls leaked into public HTML.');
+if (expectedEdition === 'preview' && !html.includes('id="previewTestMode"')) throw new Error('Preview testing controls are missing.');
 const bundleAssets = files.filter(path => /\.(js|css)$/.test(path)).map(path => `/${path.replaceAll('\\', '/')}`).sort();
 if (JSON.stringify(edition.assets) !== JSON.stringify(bundleAssets)) throw new Error('Build asset metadata is incomplete; lazy bundles must be available offline.');
 if (!files.some(path => /assets[\\/].*\.js$/.test(path)) || !files.some(path => /assets[\\/].*\.css$/.test(path))) {
@@ -28,6 +30,7 @@ if (files.some(path => path.endsWith('.map') || path.startsWith('src/') || path.
 for (const file of files.filter(path => path.endsWith('.js'))) {
   const js = await readFile(join(distPath, file), 'utf8');
   if (expectedEdition === 'public' && js.includes('progress-chart')) throw new Error('Optional chart implementation leaked into the public build.');
+  if (expectedEdition === 'public' && /dryfire-private-preview-mode|previewTestMode/.test(js)) throw new Error('Private testing override leaked into public JavaScript.');
   if (js.includes('function renderClassCards()') || js.includes('function startContinuousListening(') || js.includes('class PcmCaptureProcessor extends AudioWorkletProcessor')) {
     throw new Error('Development code signatures detected in published JS; verify minifier settings.');
   }

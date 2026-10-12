@@ -5,11 +5,12 @@ const timing = group => {
   const c = group.config;
   return `${c.startSource === 'external' ? 'External beep' : c.soundAtStart ? 'App beep' : 'Silent start'} · ${c.delayMode === 'fixed' ? `${c.fixedDelaySeconds}s fixed` : `${c.randomMinSeconds}–${c.randomMaxSeconds}s random`}${group.mode === 'par' ? ` · ${c.parSeconds}s par` : ''}`;
 };
-export function createProgressView(doc) {
+export function createProgressView(doc, { enabled = () => true } = {}) {
   const $ = id => doc.getElementById(id), select = $('progressGroup'), range = $('progressRange'), host = $('progressContent');
   let groups = [], owner = null;
   function renderSelected() {
     host.replaceChildren();
+    if (!enabled()) return;
     const group = groups.find(row => row.key === select.value);
     if (!group) { host.append(element(doc, 'p', 'Complete practice sessions to see your timing and progress here.', 'empty-state')); return; }
     const data = progressSummary(group, { days: Number(range.value) });

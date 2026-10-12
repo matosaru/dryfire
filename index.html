@@ -324,6 +324,14 @@
 
     <section id="settingsView" class="view hidden" aria-labelledby="settings-title">
       <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button><div><p class="eyebrow">05 / DEVICE &amp; PRIVACY</p><h2 id="settings-title">Settings</h2></div></div>
+      <!-- private-preview:start -->
+      <div id="previewTestingSection" class="settings-group preference-group">
+        <h3>Private preview testing</h3>
+        <label class="preference-select" for="previewTestMode"><span>Test as</span><select id="previewTestMode" aria-describedby="previewModeStatus"><option value="free">Free</option><option value="full">Full</option></select></label>
+        <p id="previewModeStatus" class="muted small" role="status"></p>
+        <p class="muted small">Changes test availability only. Your saved data is kept.</p>
+      </div>
+      <!-- private-preview:end -->
       <p class="gun-context">Sound resets affect <strong class="gun-context-name"></strong> only.</p>
       <details class="install-details"><summary>Install on your iPhone <span>›</span></summary><div class="install-card">
         <div class="install-badge">iOS · HOME SCREEN</div>
@@ -401,6 +409,9 @@
       </nav>
       Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.
       <p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p>
+      <!-- private-preview:start -->
+      <p id="previewModeBadge" class="preview-mode-badge" role="status">Private preview · Free mode</p>
+      <!-- private-preview:end -->
     </footer>
   </main>
   <script type="module" src="/src/main.js"></script>

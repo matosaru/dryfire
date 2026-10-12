@@ -28,10 +28,13 @@
     "visual:probe": "node tools/visual-diff-probe.mjs",
     "deploy:check": "wrangler deploy --config wrangler.jsonc --env \"\" --dry-run && wrangler deploy --config wrangler.jsonc --env dev --dry-run",
     "deploy:production": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.jsonc --env \"\"",
-    "deploy:development": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.jsonc --env dev"
+    "deploy:development": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.jsonc --env dev",
+    "private-preview:check": "node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc --dry-run",
+    "deploy:private-preview": "node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc"
   },
   "dependencies": {
-    "@capacitor/core": "^8.0.0"
+    "@capacitor/core": "^8.0.0",
+    "jose": "6.2.12"
   },
   "devDependencies": {
     "@capacitor/android": "^8.0.0",

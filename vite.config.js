@@ -18,14 +18,10 @@ export default defineConfig(({ mode }) => {
   server: { host: '127.0.0.1' },
   // The optimized preview serves same-origin assets, like the production Worker.
   // Avoid development CORS Vary headers invalidating preloaded offline assets.
-  preview: { host: '127.0.0.1', cors: false },
+  preview: { host: '127.0.0.1', cors: false, ...(edition === 'preview' ? { headers: { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow, noarchive' } } : {}) },
   plugins: [{ name: 'build-edition', transformIndexHtml(html) {
-    html = html.replace(/<html\b/, `<html data-build-edition="${edition}"`);
-    if (edition === 'preview') {
-      html = html.replace('Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.', 'These require only the sounds in their sequence. Create your own or choose a built-in preset.');
-      html = html.replace('Create up to two gun profiles. Existing saved profiles remain available.', 'You can save up to 5 guns.');
-      html = html.replace('Learn your trigger click, choose a built-in practice mode and review saved timing results. Other sound categories are optional unless your drill uses them.', 'Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.');
-    }
+    html = html.replace(/<html\b/, `<html data-build-edition="${edition}" data-feature-edition="public"`);
+    html = html.replace(/<!-- private-preview:start -->([\s\S]*?)<!-- private-preview:end -->/g, (_, content) => edition === 'preview' ? content : '');
     return html;
   }, generateBundle(options, bundle) {
     this.emitFile({ type: 'asset', fileName: 'edition.json', source: JSON.stringify({ version: 1, edition,

@@ -27,6 +27,10 @@ jobs:
           name: minified-web-app
           path: dist/
           if-no-files-found: error
+      - name: Verify the private preview and fail-closed asset Worker without deploying
+        run: |
+          npm run build:preview
+          npm run private-preview:check
   screenshot_editions:
     name: screenshots (${{ matrix.edition }})
     strategy:

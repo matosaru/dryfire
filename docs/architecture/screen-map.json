@@ -19,7 +19,7 @@
         "docs/requirements/persistence.md",
         "docs/requirements/build-editions.md"
       ],
-      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
       "states": [
         {
           "key": "first-gun.dark",
@@ -127,7 +127,7 @@
         "docs/requirements/practice-modes.md",
         "docs/requirements/practice-improvements.md"
       ],
-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
       "states": [
         {
           "key": "overview.dark",
@@ -212,7 +212,7 @@
         "docs/requirements/persistence.md",
         "docs/requirements/practice-start.md"
       ],
-      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
         {
           "key": "configure-single.dark",
@@ -387,7 +387,7 @@
         "docs/requirements/persistence.md",
         "docs/requirements/build-editions.md"
       ],
-      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
+      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun\u2019s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
       "states": [
         {
           "key": "overview.dark",
@@ -452,25 +452,55 @@
         "docs/requirements/persistence.md",
         "docs/requirements/about.md"
       ],
-      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. Device capability status stays in Settings; About is reached independently from the shared app footer.",
+      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. Device capability status stays in Settings; About is reached independently from the shared app footer. CHG-035 private preview adds Test as Free/Full, a mode indicator, Free default/private remembered preference and activity/data guards; public output omits them.",
       "states": [
         {
           "key": "overview.dark",
           "anchor": "settingsView",
           "label": "Settings, Dark",
-          "image": "docs/design/screens/settings/overview.dark.png"
+          "image": "docs/design/screens/settings/overview.dark.png",
+          "edition": "public"
         },
         {
           "key": "overview.light",
           "anchor": "settingsView",
           "label": "Settings, Light",
-          "image": "docs/design/screens/settings/overview.light.png"
+          "image": "docs/design/screens/settings/overview.light.png",
+          "edition": "public"
         },
         {
           "key": "sounds-reset.dark",
           "anchor": "soundResetOutcome",
           "label": "Completed selected-gun sound reset",
           "image": "docs/design/screens/settings/sounds-reset.dark.png"
+        },
+        {
+          "key": "preview-free.dark",
+          "anchor": "previewTestingSection",
+          "label": "Private preview, Free mode, dark",
+          "image": "docs/design/screens/settings/preview-free.dark.png",
+          "edition": "preview"
+        },
+        {
+          "key": "preview-free.light",
+          "anchor": "previewTestingSection",
+          "label": "Private preview, Free mode, light",
+          "image": "docs/design/screens/settings/preview-free.light.png",
+          "edition": "preview"
+        },
+        {
+          "key": "preview-full.dark",
+          "anchor": "previewTestingSection",
+          "label": "Private preview, Full mode, dark",
+          "image": "docs/design/screens/settings/preview-full.dark.png",
+          "edition": "preview"
+        },
+        {
+          "key": "preview-full.light",
+          "anchor": "previewTestingSection",
+          "label": "Private preview, Full mode, light",
+          "image": "docs/design/screens/settings/preview-full.light.png",
+          "edition": "preview"
         }
       ],
       "design": "docs/design/screens/settings/README.md"
@@ -481,7 +511,7 @@
       "domId": "aboutView",
       "title": "About",
       "parent": "home",
-      "entry": "Shared app footer → About, including before gun setup",
+      "entry": "Shared app footer \u2192 About, including before gun setup",
       "requirements": [
         "docs/requirements/about.md",
         "docs/requirements/core.md",
@@ -512,7 +542,7 @@
       "domId": "contactView",
       "title": "Contact",
       "parent": "home",
-      "entry": "Shared app footer → Contact, including before gun setup",
+      "entry": "Shared app footer \u2192 Contact, including before gun setup",
       "requirements": [
         "docs/requirements/contact.md",
         "docs/requirements/about.md",
@@ -574,7 +604,8 @@
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "fdc0fb7e7bbc41f760db0eb92f6f5b10c1e6061e8c6dd6c221305655548b5f35",
     "src/storage.js": "a4108f2ba56a57bea5faa15a612124f6c4006298ecaaa752b5556d1bb6ecdddd",
-    "vite.config.js": "4f4714c6d5ecd5030aa151550b163abd75e8468d8fde44063df482c5393eb8de"
+    "vite.config.js": "4f4714c6d5ecd5030aa151550b163abd75e8468d8fde44063df482c5393eb8de",
+    "src/optional/previewTesting.js": "PENDING_REVIEW"
   },
   "implementationChanges": [
     "CHG-017",
@@ -590,6 +621,7 @@
     "CHG-031 white Dark About/Contact controls",
     "CHG-032",
     "CHG-033",
-    "CHG-034"
+    "CHG-034",
+    "CHG-035"
   ]
 }

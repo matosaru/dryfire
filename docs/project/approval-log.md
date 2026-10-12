@@ -506,4 +506,13 @@ The user subsequently directs **“update the screenshots with the link”** and
 - Direct instruction: **“btw, for free version allow max 2 guns”**.
 - This supersedes CHG-032's one-gun creation limit only. [EDITION-02](../requirements/build-editions.md) now allows first and second gun creation, rejects a third atomically and retains full-preview capacity of five. Existing larger libraries remain selectable/editable/deletable/usable/exportable/restorable; no records or schema change.
 - Update visible capacity explanations, regression tests, affected designs and delivery history; publish to the feature branch. Other public restrictions and PR/deployment boundaries remain unchanged.
-- The follow-up question about an easy, safe in-app Free/Full testing toggle requests a recommendation. The [tester-switch proposal](../development/free-preview-testing.md#proposed-in-app-tester-switch) is planning only; it does not authorize authentication, server grants or a public browser override.
+- The follow-up question about an easy, safe in-app Free/Full testing toggle requests a recommendation. The [tester-switch proposal](../development/free-preview-testing.md#in-app-tester-switch-and-later-production-proposal) is planning only; it does not authorize authentication, server grants or a public browser override.
+
+## CHG-035 — Private-preview Free / Full simulation
+
+- Date: 2026-10-12 (Europe/Vilnius).
+- Explicit approval: **“ok, do this : For your current app, there’s a simpler first step: put ‘Test as Free / Full’ inside the private preview build only, protected by Cloudflare Access. Everyone admitted to that preview already has permission to test Full, so the switch can simulate either experience without granting public access.”**
+- Host/tester answer: **“http://dev-dryfire.matosaru.workers.dev/”**, **“matosaru@gmail.com”**. Use HTTPS for microphone and authenticated preview; the Worker is `dev-dryfire`, separate from public `dryfire` / `dryfire-dev`.
+- [EDITION-08–11](../requirements/build-editions.md) authorize the preview-only selector, Free default/two-gun versus Full/five-gun simulation, visible mode, remembered private preference and active-operation guards without data deletion. Public HTML/JS omits the switch/override. Keep actual public/full build checks.
+- Prepare a fail-closed Access-verified asset Worker and deployment instructions for the requested host/identity. Private preview must not cache its authenticated app shell for unauthenticated offline reuse. Missing Access issuer/audience, invalid/expired signatures, wrong email or alternate host must never serve assets. Live Access policy/credentials remain external requirements until actually configured and verified; do not deploy an unprotected full build or claim live setup from files.
+- Production tester grants, app accounts, payments and subscriptions remain unimplemented; this approval is limited to the authenticated private-preview simulation.

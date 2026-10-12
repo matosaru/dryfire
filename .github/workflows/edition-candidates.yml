@@ -1,4 +1,4 @@
-name: Collect two-gun edition candidates
+name: Collect private testing switch candidates
 on:
   push:
     branches: [feature/about-contact-page]
@@ -36,19 +36,19 @@ jobs:
             fi
             npm run verify:dist -- --edition="$edition"
             if test "$edition" = public; then
-              selection='gun-setup/|guns/|public creation|first installed offline'
+              npx --no-install playwright test
             else
-              selection='full preview retains|first installed offline'
+              npx --no-install playwright test --config edition-candidates.config.js
+              VISUAL_CANDIDATES_COMPARE=1 npx --no-install playwright test --config edition-candidates.config.js
             fi
-            npx --no-install playwright test --config edition-candidates.config.js --grep "$selection"
-            VISUAL_CANDIDATES_COMPARE=1 npx --no-install playwright test --config edition-candidates.config.js --grep "$selection"
+            mkdir -p visual-candidates
             cp test-results/build-manifest.json "visual-candidates/$edition-build-manifest.json"
             cp test-results/results.json "visual-candidates/$edition-validation.json"
           done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: two-gun-edition-candidates
+          name: private-testing-switch-candidates
           path: |
             playwright-report/
             test-results/
@@ -63,5 +63,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add visual-candidates/
-          git commit -m 'test: collect two-gun screenshot candidates'
+          git commit -m 'test: collect private testing switch screenshot candidates'
           git push origin HEAD:feature/about-contact-page
