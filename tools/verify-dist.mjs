@@ -2,11 +2,12 @@ import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import { readBuildProfile, resolveBuildEdition } from './build-profile.mjs';
 
 const dist = new URL('../dist/', import.meta.url);
 const distPath = fileURLToPath(dist);
 const html = await readFile(new URL('index.html', dist), 'utf8');
-const expectedEdition = process.argv.find(arg => arg.startsWith('--edition='))?.slice('--edition='.length) ?? 'public';
+const expectedEdition = resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.argv.find(arg => arg.startsWith('--edition='))?.slice('--edition='.length) ?? process.env.APP_EDITION });
 const edition = JSON.parse(await readFile(new URL('edition.json', dist), 'utf8'));
 if (edition.sourceRevision !== execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim()) throw new Error('Artifact source revision does not match this checkout.');
 if (!['public', 'preview'].includes(expectedEdition) || edition.edition !== expectedEdition ||

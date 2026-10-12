@@ -19,7 +19,7 @@
         "docs/requirements/persistence.md",
         "docs/requirements/build-editions.md"
       ],
-      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
       "states": [
         {
           "key": "first-gun.dark",
@@ -127,7 +127,7 @@
         "docs/requirements/practice-modes.md",
         "docs/requirements/practice-improvements.md"
       ],
-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
       "states": [
         {
           "key": "overview.dark",
@@ -212,7 +212,7 @@
         "docs/requirements/persistence.md",
         "docs/requirements/practice-start.md"
       ],
-      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
         {
           "key": "configure-single.dark",
@@ -387,7 +387,7 @@
         "docs/requirements/persistence.md",
         "docs/requirements/build-editions.md"
       ],
-      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun\u2019s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
+      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
       "states": [
         {
           "key": "overview.dark",
@@ -511,7 +511,7 @@
       "domId": "aboutView",
       "title": "About",
       "parent": "home",
-      "entry": "Shared app footer \u2192 About, including before gun setup",
+      "entry": "Shared app footer → About, including before gun setup",
       "requirements": [
         "docs/requirements/about.md",
         "docs/requirements/core.md",
@@ -542,7 +542,7 @@
       "domId": "contactView",
       "title": "Contact",
       "parent": "home",
-      "entry": "Shared app footer \u2192 Contact, including before gun setup",
+      "entry": "Shared app footer → Contact, including before gun setup",
       "requirements": [
         "docs/requirements/contact.md",
         "docs/requirements/about.md",
@@ -591,21 +591,22 @@
     }
   ],
   "reviewedSources": {
-    "index.html": "901e0dc2459447fda85a0511431cbe746b035213e50dbbecb6ff03895b9e7669",
-    "src/main.js": "72d138fd1add86dd5a98c6cc7e241796a82465895227daf311c00ea4be83ba5d",
-    "src/styles.css": "d66b1f2f9df510631e1550f58c8a9fac0fe3f610983bf03d0fad16e1c17a1aed",
+    "index.html": "2140604546ffa292fe25afc30a69f1d14f419e42081d1ecfdb26e9fed8382906",
+    "src/main.js": "b36ea643df53d8b7a47b8091a51a1068bffdd5c33b73d53e146c82c983db8e5e",
+    "src/styles.css": "0cdf45b47019246201099a78c83542024142910dcee9d4638275ba1171936650",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
     "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
     "src/sessionController.js": "ea077ffa2ecd0b63fe1e2b5660106e3a3e64da6f8f964a62787352e6be2b99a6",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "0e7be09afb1e9f6b652f6837d4f3dac3400db56cc21575642013da29a539864d",
-    "src/optional/progressView.js": "1b4864c212089da8e1daef072ed995413d8d27a7711624f94c366df401f736cc",
+    "src/optional/progressView.js": "15797163f4fd188661c4dcd98954c7c4dd61765d55a29114e5bf4b3f2d25ab5e",
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
-    "src/optional/customDrillEditor.js": "fdc0fb7e7bbc41f760db0eb92f6f5b10c1e6061e8c6dd6c221305655548b5f35",
+    "src/optional/customDrillEditor.js": "f2cfbb0dd516db78a9c82c78f6369842f38911c25f96abcc1ed2cb7ae1f5642d",
     "src/storage.js": "a4108f2ba56a57bea5faa15a612124f6c4006298ecaaa752b5556d1bb6ecdddd",
-    "vite.config.js": "4f4714c6d5ecd5030aa151550b163abd75e8468d8fde44063df482c5393eb8de",
-    "src/optional/previewTesting.js": "PENDING_REVIEW"
+    "vite.config.js": "e643ea5345817d86e288980b59107a64a50aa81099474defbd9ac4d993f3c259",
+    "src/optional/previewTesting.js": "636e98be5b0a50feb348c07725107010a0a922a7914c6c2b45c0fe99c4c4cfe8",
+    "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9"
   },
   "implementationChanges": [
     "CHG-017",
@@ -622,6 +623,7 @@
     "CHG-032",
     "CHG-033",
     "CHG-034",
-    "CHG-035"
+    "CHG-035",
+    "CHG-036"
   ]
 }

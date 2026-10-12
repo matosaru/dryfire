@@ -1,3 +1,4 @@
+import { edition } from './catalog.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { installSyntheticMedia } from './media.js';
@@ -15,7 +16,7 @@ test('narrow History retains readable choices and working native filters', async
   await page.locator('#importFile').setInputFiles({ name: 'fixture.json', mimeType: 'application/json', buffer: library });
   await expect(page.locator('#homeView')).toBeVisible();
   await page.locator('.tab[data-view="history"]').click();
-  if ((process.env.VISUAL_EDITION ?? 'public') === 'public') {
+  if (edition === 'public') {
     await expect(page.locator('#progressSection')).not.toBeVisible();
     await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);
     await expect(page.locator('#historyList select').first()).toBeVisible();

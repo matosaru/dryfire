@@ -1,0 +1,50 @@
+{
+  "commit": "11960cdcaccc368f939266db333b041af032c853",
+  "edition": "public",
+  "build": {
+    "version": 1,
+    "edition": "public",
+    "sourceRevision": "11960cdcaccc368f939266db333b041af032c853",
+    "sourceDigest": "893dab63f55f6c2fd6603b8aa4a9f0cbb135fef2a1c6e9977e97a7da5b265b7a",
+    "assets": [
+      "/assets/eventDetector-DtBbU0H0.js",
+      "/assets/index-D30GZiuH.css",
+      "/assets/index-SSRT4oAR.js",
+      "/pcm-capture.worklet.js",
+      "/sw.js"
+    ]
+  },
+  "environment": {
+    "playwrightVersion": "1.58.2",
+    "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+    "platform": "linux/amd64",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "clock": "2026-10-11T11:00:00.000Z",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "maxDiffPixels": 0,
+    "comparisonThreshold": 0.005
+  },
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v22.23.3",
+  "hashes": {
+    "index.html": "2140604546ffa292fe25afc30a69f1d14f419e42081d1ecfdb26e9fed8382906",
+    "src/styles.css": "0cdf45b47019246201099a78c83542024142910dcee9d4638275ba1171936650",
+    "src/main.js": "b36ea643df53d8b7a47b8091a51a1068bffdd5c33b73d53e146c82c983db8e5e",
+    "package-lock.json": "1b17ec94a6c54c1380396c90d726f4a54ce0ff94969bccbc031209274d8b34cf",
+    "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+  },
+  "assetHashes": {
+    "index.html": "9b31f4add480de103554fcbe2a2ae5bc7a0a9a2d31337a8403820f84a1ecd8d4",
+    "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+    "sw.js": "05728a3942845b145c6754c0e29cc5407676f81a5e8e7c41b62df256aeeef27b",
+    "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+    "assets/index-D30GZiuH.css": "ca53513e42523a03dff46bb612b4eac8eea29589b80616052b39a60b9c670ac6",
+    "assets/index-SSRT4oAR.js": "296187917a0597a9cc14df0ca2f9fbfb2c77445fc1a6cea1759cdd28ba6489b1"
+  }
+}

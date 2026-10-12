@@ -1,6 +1,6 @@
+import { edition } from './catalog.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
-const edition = process.env.VISUAL_EDITION ?? 'public';
 const library = readFileSync(new URL('./fixtures/library.json', import.meta.url));
 async function restore(page) {
   page.on('dialog', dialog => dialog.accept()); await page.goto('/');

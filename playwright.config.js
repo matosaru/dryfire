@@ -1,5 +1,6 @@
 import { defineConfig } from '@playwright/test';
 import { readFileSync } from 'node:fs';
+import { edition } from './visual-tests/catalog.js';
 const environment = JSON.parse(readFileSync(new URL('./visual-tests/environment.json', import.meta.url)));
 const probe = process.env.VISUAL_DIFF_PROBE === '1';
 const results = probe ? 'test-results-probe' : 'test-results';
@@ -13,7 +14,7 @@ export default defineConfig({
   reporter: [['line'], ...(process.env.CI && !probe ? [['github']] : []), ['html', { open: 'never', outputFolder: probe ? 'playwright-probe-report' : 'playwright-report' }], ['json', { outputFile: `${results}/results.json` }]],
   expect: { timeout: 5000, toHaveScreenshot: { maxDiffPixels: environment.maxDiffPixels, threshold: environment.comparisonThreshold, animations: 'disabled', caret: 'hide', scale: 'css' } },
   use: { baseURL: 'http://127.0.0.1:4175', viewport: environment.viewport, deviceScaleFactor: environment.deviceScaleFactor,
-    ...((process.env.VISUAL_EDITION ?? 'public') === 'preview' ? { storageState: { cookies: [], origins: [{ origin: 'http://127.0.0.1:4175', localStorage: [{ name: 'dryfire-private-preview-mode', value: 'full' }] }] } } : {}),
+    ...(edition === 'preview' ? { storageState: { cookies: [], origins: [{ origin: 'http://127.0.0.1:4175', localStorage: [{ name: 'dryfire-private-preview-mode', value: 'full' }] }] } } : {}),
     locale: environment.locale, timezoneId: environment.timezoneId, colorScheme: 'dark', contextOptions: { reducedMotion: 'reduce' },
     serviceWorkers: 'block', trace: 'retain-on-failure', screenshot: 'only-on-failure' },
   projects: [{ name: 'chromium', use: { browserName: 'chromium' } }, { name: 'webkit', use: { browserName: 'webkit' } }],

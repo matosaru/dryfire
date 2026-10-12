@@ -1,7 +1,7 @@
+import { edition } from './catalog.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { installSyntheticMedia } from './media.js';
-const edition = process.env.VISUAL_EDITION ?? 'public';
 if (edition === 'preview') {
   test.use({ storageState: { cookies: [], origins: [] } });
   const library = readFileSync(new URL('./fixtures/library.json', import.meta.url));

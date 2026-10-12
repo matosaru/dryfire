@@ -1,65 +1,63 @@
 # Branching and release strategy
 
-CHG-025 · revision 1.0 · directly requested on 2026-10-11. This supersedes earlier direct-main/no-PR publication rules.
+CHG-036 · revision 2.0 · directly requested 2026-10-12. This replaces CHG-025 feature → dev → main. The main PR requirement remains. Cloudflare setup and deployment are owner-managed.
 
-| Branch | Purpose | Changes enter through | Deployment |
+| Branch | App functionality | Changes enter through | Default build / routing |
 | --- | --- | --- | --- |
-| `main` | Stable production code | Reviewed `dev` release PR or urgent `hotfix/*` PR; required CI | Production Worker `dryfire`, after deployment approval |
-| `dev` | Integration and staging | `feature/*` PR; `main` synchronization PR after a hotfix | Development Worker `dryfire-dev` |
-| `feature/*` | Features and routine fixes, based on `dev` | Commit/push the feature branch; PR to `dev` | CI; optional previews |
-| `hotfix/*` | Urgent production fixes, based on `main` | PR to `main`, then synchronize `main` to `dev` by PR | Production through the same checks/approval gate |
+| `b` | Free pre-production: two new guns, basic practice, saved text results and legacy-data access | Direct Free feature/fix commits; no feature branch required | `public`; public assets |
+| `main` | Stable Free production | Tested `b` → `main` PR | `public`; public assets |
+| `dev` | Complete app: Free improvements plus Full-only functionality | Merge Free changes from `b`; direct Full-only commits | `preview`; signed Access asset gate |
 
-New work stays on feature branches until its PR passes CI. Release promotion uses `dev` → `main`; the user owns release review/merge. Never push commits directly to `main`, including from automation or an administrator. Keep long-lived branches synchronized through merges, preserving history; no force pushes. Delete merged feature/hotfix branches when no longer needed.
+`dev` contains the complete feature set. Its private **Test as Free / Full** simulation defaults to Free and remembers a valid private preference; choose Full in Settings to test all five-gun/custom/graph functionality. This does not change the build identity. Public output contains no switch or override implementation.
+
+## Daily changes and synchronization
+
+1. Work on `b` for Free features/fixes. Run the required checks, commit and push directly there.
+2. Synchronize tested Free improvements **b → dev**, retaining dev's Full-only additions, `build-profile.json` (`preview`) and private `wrangler.jsonc`. If either configuration conflicts, resolve it to the destination branch's profile; never accept the Free routing into dev blindly. Run `npm run verify:profile -- --branch=dev` and CI after the merge.
+3. Work directly on `dev` for Full-only features/fixes. Bring a shared fix into b deliberately as a reviewed small change; do not release dev wholesale into b/main.
+4. Release the tested Free code by **b → main PR**, with passing `validate` and `screenshots`. Never push main directly or bypass its protection. Synchronize main's merge ancestry back to b, then b → dev, retaining dev's profile.
+
+No force pushes, rebases of shared branch history or required feature branches. Urgent Free fixes follow b → main PR as well. All saved data remains compatible. Optional source retained in Free branches supports existing-preset editing and both-edition regression tests; official Free artifacts exclude new Full functionality. Future Full-only development stays on dev.
+
+## Build and artifact contract
+
+`build-profile.json` is the committed branch default. `npm run dev`, `npm run build` and `npm run verify:dist` follow it. `npm run build:public` and `npm run build:preview` explicitly select an alternate edition for isolated review; `APP_EDITION` is also validated. Unknown values fail closed. A build's `edition.json` identifies its edition, checkout revision, source digest and complete bundle assets.
+
+`wrangler.jsonc` must match the appropriate prepared template: [public](../../wrangler.public.jsonc) on b/main; [private](../../wrangler.private-preview.jsonc) on dev. `verify:profile` checks routing and the CI target branch. Preview uses a fail-closed signed-token Worker with every asset routed first through authentication. The owner fills the non-secret Access identifiers in both private template and dev default configuration together. Public deployment scripts explicitly reject preview output.
+
+CI runs on b/main/dev pushes and PRs. Every branch runs documentation, profile, smoke, Jest, optimized build/artifact validation, public/private dry runs and both editions' Chromium/WebKit checks, including visible-defect evidence. Default Free artifacts upload as `minified-web-app`; default Full artifacts as `private-preview-web-app`. The stable `screenshots` aggregate requires both edition jobs. Downloadable expected/actual/difference images remain available; normal CI never accepts baselines.
 
 ## Required GitHub protection
 
-Open [repository branch settings](https://github.com/matosaru/dryfire/settings/branches) and add a classic protection rule matching **`main`**:
+In [branch settings](https://github.com/matosaru/dryfire/settings/branches), protect **main**:
 
-1. Enable **Require a pull request before merging**. Leave required approvals at **0** for this solo-maintainer repository; the PR and passing checks remain mandatory, and the owner can merge their own reviewed PR.
-2. Enable **Require status checks to pass before merging** and **Require branches to be up to date before merging**. Select the GitHub Actions checks **`validate`** and **`screenshots`** from the **Test and build** workflow.
-3. Enable **Require conversation resolution before merging** and **Do not allow bypassing the above settings** (including administrators).
-4. Leave force pushes and branch deletion disabled. Save the rule. Verify its target is exactly `main` and that no actor can bypass it.
+1. Require a pull request. Zero mandatory approvals is appropriate for a solo maintainer; the PR and passing checks still apply.
+2. Require `validate` and `screenshots` from **Test and build**, and require the branch to be up to date.
+3. Require resolved conversations; disallow bypass, force pushes and deletion.
 
-Apply the same rule to `dev` to enforce the feature-PR integration path. Zero mandatory reviewer approvals avoids locking a sole maintainer out of their own PRs. Add independent required reviews later if the team grows.
-
-[branch-protection.json](branch-protection.json) is the equivalent REST payload. A repository administrator with GitHub API access can apply it separately to each branch:
+[branch-protection.json](branch-protection.json) is the prepared REST payload for main only. It does not activate server rules. b/dev accept the requested direct commits; remove any obsolete dev rule requiring feature PRs while retaining CI/no-force-push controls as appropriate. Server settings remain separately owner-verified.
 
 ```bash
 gh api --method PUT repos/matosaru/dryfire/branches/main/protection --input docs/project/branch-protection.json
-gh api --method PUT repos/matosaru/dryfire/branches/dev/protection --input docs/project/branch-protection.json
 gh api repos/matosaru/dryfire/branches/main/protection
-gh api repos/matosaru/dryfire/branches/dev/protection
 ```
-
-A file in Git does not activate server protection. Workspace requests to `api.github.com` currently return `Forbidden`; activation/verification requires owner settings access. Do not test enforcement by pushing a disposable commit to production.
 
 ## Development and production deployment
 
-The opt-in [Cloudflare deployment workflow](../../.github/workflows/deploy.yml) deploys the `minified-web-app` artifact from the exact successful **Test and build** push run. It accepts only same-repository `main`/`dev` push runs, and skips stale commits. Feature/PR checks never receive deployment credentials.
+The user will reconfigure Cloudflare. No live deploy, Access change, credentials or domain binding is part of this code delivery. Use one authoritative deployment path; configure external Git Builds to follow the same tested-commit gates if used instead of Actions.
 
-- `dev` → GitHub environment **development** → Wrangler environment `dev` → Worker **dryfire-dev**.
-- `main` → GitHub environment **production** → existing Worker **dryfire**. Configure a required deployment reviewer for this environment.
-- The existing production address is `https://dryfire.matosaru.workers.dev/`. The expected staging address, once deployed in that account, is `https://dryfire-dev.matosaru.workers.dev/`; it is not yet verified. Separate origins keep staging and production IndexedDB libraries independent.
+| Branch | Cloudflare setup prepared for the owner | Commands |
+| --- | --- | --- |
+| b | Separate Free pre-production Worker; existing public template's `dev` environment uses `dryfire-dev`, which the owner may rename | `npm run build`; `npm run deploy:development` |
+| main | Free production Worker `dryfire` | `npm run build`; `npm run deploy:production` |
+| dev | Private complete preview Worker `dev-dryfire`, Access allowlist `matosaru@gmail.com` | `npm run build`; `npm run deploy:private-preview` |
 
-Owner setup before enabling deployments:
+The opt-in [Actions deployment workflow](../../.github/workflows/deploy.yml) accepts only successful same-repository b/main push runs, downloads the exact Free artifact, verifies edition/revision/profile and skips superseded commits. b maps to GitHub environment `development`, main to `production`. It cannot publish dev's Full artifact. Keep it disabled unless the owner deliberately selects it by setting `CLOUDFLARE_DEPLOYMENTS_ENABLED=true`, scoped deployment secrets and a production reviewer. No private deployment automation is enabled.
 
-1. Create GitHub environments **development** and **production** under repository Settings → Environments. Limit development to `dev`, production to `main`. Add the production required reviewer; allow the sole maintainer to approve their own deployment if necessary.
-2. Set environment secrets **CLOUDFLARE_API_TOKEN** and **CLOUDFLARE_ACCOUNT_ID**. Use Cloudflare Workers deployment permissions for the intended account; never commit credentials.
-3. Disable the existing Cloudflare Workers Git automatic deployment path before enabling this workflow. Otherwise those builds can deploy independently of the GitHub approval gate. Use one authoritative deployment path.
-4. Enable repository Actions variable **CLOUDFLARE_DEPLOYMENTS_ENABLED=true** only after protections, secrets and the production reviewer are configured.
-5. Merge the policy PRs so the deployment workflow exists on the default `main` branch, then complete/re-run the latest `dev` push CI to start staging deployment. Observe successful development deployment before approving a production deployment. Record the tested/deployed commit, Worker version and URL.
-
-Until the variable is enabled, deployment jobs are skipped. Configuration preparation is not deployment, domain binding or enforcement evidence. Domain registration/custom routing and physical iPhone verification remain separate in [DEPLOY.md](../development/DEPLOY.md).
+[Private preview setup](../development/private-preview-deployment.md) explains Access team domain/AUD, all-path protection and live authorization checks. The dev default configuration deliberately serves no assets until configured. Separate origins have separate local IndexedDB data; moving domains requires explicit export/import. Current production origin remains `https://dryfire.matosaru.workers.dev/`.
 
 ## Release and rollback
 
-Create an annotated `vX.Y.Z` release tag for the exact verified production commit, rather than for an untested branch tip. Record its CI run, Worker deployment/version and any data-format implications. For an urgent rollback, restore the known-good Worker version in Cloudflare and record the tag/commit; follow with a tested hotfix PR so repository history matches the restored release. Avoid rewriting `main` history or deleting browser data. Existing schema 3 / backup 4 remain unchanged by this policy.
+Tag the exact verified production commit after release. Record its PR, CI, Worker deployment/version and data-format implications. Roll back to a known-good Worker version when necessary, then follow with a checked b → main fix PR. Never rewrite main or delete browser data. Schema 3 / backup format 4 stay unchanged.
 
-## Acceptance and ownership
-
-- Feature/hotfix pushes and PRs run source/build/documentation and Chromium/WebKit checks.
-- Server rules block direct pushes and merging red/outdated PRs to protected branches.
-- Development and production use distinct Workers, tested artifacts and explicit GitHub environments.
-- Production deployment waits for the configured reviewer; stale/failed CI runs cannot deploy.
-- No production credentials, domains or data are changed by preparation of this package.
-- CI/publication, actual GitHub enforcement and Cloudflare/device verification are recorded separately in [the delivery tracker](implementation-history.md).
+Publication, PR merge, server enforcement, Cloudflare deployment and physical-device validation are separate facts in [the delivery tracker](implementation-history.md).

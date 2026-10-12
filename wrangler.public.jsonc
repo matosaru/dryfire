@@ -1,0 +1,17 @@
+{
+  "name": "dryfire",
+  "compatibility_date": "2026-10-09",
+  "previews": {},
+  "assets": {
+    "directory": "./dist"
+  },
+  "env": {
+    "dev": {
+      "name": "dryfire-dev",
+      "assets": {
+        "directory": "./dist"
+      },
+      "workers_dev": true
+    }
+  }
+}
