@@ -1,6 +1,6 @@
 # Site and screen tree
 
-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-11; application source baseline `7240e2c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-12; application source baseline `7240e2c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
 
 ## Public site
 
@@ -20,20 +20,20 @@ Canonical production origin: `https://dryfire.matosaru.workers.dev/`. **One impl
 │   │   └── Drill Session [session]
 │   ├── Live Listen [recognize]
 │   ├── History [history]
-│   └── Settings [settings]
-│       └── About & contact [about]
+│   ├── Settings [settings]
+│   └── About & contact [about]
 └── Shared capture gate
     └── Safety confirmation dialog
 ```
 
-The tree describes primary destinations, not a restriction on Back/Forward. Settings is accessible from every compact screen heading; My Guns links to the shared add/edit form and backup/restore. History opens Practice or Drill Session review. Missing required sounds link to Learn. Gun Setup can also be reached from My Guns after first use.
+The tree describes primary destinations, not a restriction on Back/Forward. About & contact opens its independent screen from the shared app footer, including before gun setup; Back returns to the visited screen. Settings is accessible from every compact screen heading; My Guns links to the shared add/edit form and backup/restore. History opens Practice or Drill Session review. Missing required sounds link to Learn. Gun Setup can also be reached from My Guns after first use.
 
 ## Functional screens and states
 
 | Screen / shared gate | App anchor | Entry path | Captured states | Visual layout | Functional specifications |
 | --- | --- | --- | --- | --- | --- |
 | Gun setup | `gunSetupView` | First visit without a gun; Add/Edit from My Guns | `first-gun.dark`, `add-gun.dark`, `edit-gun.dark`, `edit-gun.light` | [Design](../design/screens/gun-setup/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md) |
-| Home | `homeView` | After gun selection/setup and returning visits | `overview.dark` | [Design](../design/screens/home/README.md) | [core](../requirements/core.md), [branding](../requirements/branding.md), [gun-profiles](../requirements/gun-profiles.md) |
+| Home | `homeView` | After gun selection/setup and returning visits | `overview.dark` | [Design](../design/screens/home/README.md) | [core](../requirements/core.md), [branding](../requirements/branding.md), [gun-profiles](../requirements/gun-profiles.md), [about](../requirements/about.md) |
 | My Guns | `gunsView` | Active-gun switcher | `library.dark`, `library.light`, `deleted.dark` | [Design](../design/screens/guns/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md) |
 | Learn Sounds | `learnView` | Learn tab, Home card or missing-sound link | `overview.dark`, `optional-sounds.dark`, `calibration.dark`, `recording-limit.dark` | [Design](../design/screens/learn/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |
 | Drills | `drillsView` | Drills tab, Home card or review completion | `catalog.dark`, `custom.dark`, `custom-editor.dark` | [Design](../design/screens/drills/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-modes](../requirements/practice-modes.md) |
@@ -42,7 +42,7 @@ The tree describes primary destinations, not a restriction on Back/Forward. Sett
 | Live Listen | `recognizeView` | Live Listen tab, Home card or Start free listening | `ready.dark`, `listening.dark` | [Design](../design/screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md) |
 | History | `historyView` | History tab or Home card | `progress.dark`, `data-table.dark`, `progress.light`, `recognition-cleared.dark`, `sessions-cleared.dark` | [Design](../design/screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md) |
 | Settings | `settingsView` | Settings gear in each screen heading; backup/restore links | `overview.dark`, `overview.light`, `sounds-reset.dark` | [Design](../design/screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [about](../requirements/about.md) |
-| About & contact | `aboutView` | Settings → About & contact, including before gun setup | `overview.dark`, `overview.light` | [Design](../design/screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md) |
+| About & contact | `aboutView` | Shared app footer → About & contact, including before gun setup | `overview.dark`, `overview.light` | [Design](../design/screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md) |
 | Safety confirmation | `safetyModal` | Any unconfirmed action that would acquire microphone capture | `safety-modal.dark` | [Design](../design/screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
 
 ## State transitions

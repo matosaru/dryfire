@@ -1,5 +1,7 @@
 # About design
 
+CHG-028 capture refresh: current references use the pinned production-build renderer and the independent About & contact footer entry. [Capture/build evidence](../../baselines/footer-entry-validation.json) records both 130-check runs and reviewed images.
+
 CHG-027 · Initial copy/layout proposal implemented for review on `feature/about-contact-page`; direct page/contact request authorizes this slice. Exact copy has not received word-for-word user approval.
 
 Entry: shared app footer → About & contact, independently of Settings and also before saving a first gun. App anchor: `aboutView`. This is a history-backed state of `/`, not a separate indexable route.
