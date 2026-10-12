@@ -1,0 +1,12 @@
+{
+  "sourceRevision": "08737ae6600567d5fd0812af62e56791813f01e9",
+  "collectionRun": "https://github.com/matosaru/dryfire/actions/runs/38273958706",
+  "stats": {
+    "startTime": "2026-10-12T16:03:42.570Z",
+    "duration": 127064.277,
+    "expected": 146,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

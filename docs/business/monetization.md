@@ -15,12 +15,12 @@ Free starts without sign-in and remains useful for basic dry-fire practice. Acco
 | Capability | Recommended Free | Candidate Pro / later scope | Current implementation |
 | --- | --- | --- | --- |
 | Safety, Trigger learning, start signal/timing and built-in practice | Available; retain all current built-in modes to avoid mode-by-mode confusion | No safety/basic-recognition upsell | Implemented free |
-| Gun library | One new gun after a defined transition | Up to the existing five-gun capacity | Five guns currently free; paid cap absent |
+| Gun library | One new gun after a defined transition | Up to the existing five-gun capacity | CHG-032: public creation limited to one; existing libraries usable; full preview retains five; billing absent |
 | Local storage, manual export/import and personal-data access | Available, including on cancellation | Automatic cloud backup/recovery and later sync | Local/manual backup implemented; cloud absent |
 | Account/sign-in/purchase restore | Available when needed; anonymous practice remains possible | Account-linked Pro entitlement | Accounts/entitlements absent |
-| Custom drills | Built-ins available; preserve existing owned presets and readable/exportable data | Candidate paid custom creation/editing and saved presets | Custom creation/editing currently free |
-| Statistics | Useful timing/history text summaries | Candidate graphs, comparisons, filters and deeper analysis | Existing summaries/graphs currently free; visibility/transition proposed |
-| Email support/contact | Available to all, without sign-in | Same public contact | Newly requested, unimplemented; address confirmed as `easydryfire@gmail.com` |
+| Custom drills | Built-ins available; preserve existing owned presets and readable/exportable data | Candidate paid custom creation/editing and saved presets | CHG-032: creation in full preview; existing preset editing/running in both |
+| Statistics | Useful timing/history text summaries | Candidate graphs, comparisons, filters and deeper analysis | CHG-032: text summaries in both; advanced graphs in full preview only; final paid allocation proposed |
+| Email support/contact | Available to all, without sign-in | Same public contact | Separate app Contact/mailto implemented; address `easydryfire@gmail.com`; public server route unimplemented |
 | Share drills | Not necessary to basic practice | Later candidate: share sanitized sequence definitions, not gun/audio/history data | Unimplemented |
 | Extra gun-type sound categories | Existing types/Trigger remain usable | Later optional mechanical categories, after accuracy validation | Extra categories unimplemented |
 | Camera/sensor analysis | No promise of movement/aim grading | Later candidate with separate privacy/device/design scope | Unimplemented |

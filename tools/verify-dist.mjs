@@ -17,6 +17,8 @@ if (html.includes('/src/main.js') || html.includes('/src/styles.css')) {
   throw new Error('The deploy directory contains unbundled development sources. Run npm run build.');
 }
 const files = await readdir(dist, { recursive: true });
+const bundleAssets = files.filter(path => /\.(js|css)$/.test(path)).map(path => `/${path.replaceAll('\\', '/')}`).sort();
+if (JSON.stringify(edition.assets) !== JSON.stringify(bundleAssets)) throw new Error('Build asset metadata is incomplete; lazy bundles must be available offline.');
 if (!files.some(path => /assets[\\/].*\.js$/.test(path)) || !files.some(path => /assets[\\/].*\.css$/.test(path))) {
   throw new Error('Expected optimized JavaScript and CSS under dist/assets.');
 }

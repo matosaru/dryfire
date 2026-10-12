@@ -16,6 +16,9 @@ export default defineConfig(({ mode }) => {
   return {
   define: { __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
   server: { host: '127.0.0.1' },
+  // The optimized preview serves same-origin assets, like the production Worker.
+  // Avoid development CORS Vary headers invalidating preloaded offline assets.
+  preview: { host: '127.0.0.1', cors: false },
   plugins: [{ name: 'build-edition', transformIndexHtml(html) {
     html = html.replace(/<html\b/, `<html data-build-edition="${edition}"`);
     if (edition === 'preview') {
@@ -24,9 +27,10 @@ export default defineConfig(({ mode }) => {
       html = html.replace('Learn your trigger click, choose a built-in practice mode and review saved timing results. Other sound categories are optional unless your drill uses them.', 'Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.');
     }
     return html;
-  }, generateBundle() {
+  }, generateBundle(options, bundle) {
     this.emitFile({ type: 'asset', fileName: 'edition.json', source: JSON.stringify({ version: 1, edition,
-      sourceRevision: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), sourceDigest: sourceDigest.digest('hex') }, null, 2) + '\n' });
+      sourceRevision: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), sourceDigest: sourceDigest.digest('hex'),
+      assets: Object.keys(bundle).filter(path => /\.(js|css)$/.test(path)).sort().map(path => `/${path}`) }, null, 2) + '\n' });
   } }],
   base: '/',
   build: {

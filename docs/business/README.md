@@ -9,4 +9,4 @@ CHG-032 current public availability is governed by [build editions](../requireme
 - [iPhone/Android release guide](../development/NATIVE_RELEASE.md): retained for later; native releases are deferred by CHG-026.
 - [Implementation history and remaining plan](../project/implementation-history.md): what is implemented versus proposed.
 
-These documents do not implement pricing, accounts, purchase flows, cloud storage or one-gun enforcement. Current custom drills, five-gun capacity and basic graphs remain free; proposed commercial rules need a concrete reviewed specification before application changes.
+Billing/accounts/cloud and the final paid offer remain plans. CHG-032 specifically implements temporary public creation/graph restrictions with retained full preview and existing-data access; deployment is tracked separately. No customer payments or subscriptions are introduced.

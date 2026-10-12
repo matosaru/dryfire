@@ -27,7 +27,8 @@ jobs:
           name: minified-web-app
           path: dist/
           if-no-files-found: error
-  screenshots:
+  screenshot_editions:
+    name: screenshots (${{ matrix.edition }})
     strategy:
       fail-fast: false
       matrix:
@@ -77,3 +78,13 @@ jobs:
             test-results-probe/
           retention-days: 14
           if-no-files-found: error
+  screenshots:
+    # Preserve the existing required-check name while requiring both editions.
+    needs: screenshot_editions
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require both edition jobs to succeed
+        env:
+          EDITION_RESULT: ${{ needs.screenshot_editions.result }}
+        run: test "$EDITION_RESULT" = 'success'

@@ -41,7 +41,7 @@ npm run verify:dist -- --edition=preview
 npm run preview -- --host 127.0.0.1
 ```
 
-Both optimized builds use `dist/`; rebuilding replaces that output, not user data. `edition.json` records the edition, source revision and source digest. Verification rejects the wrong edition or checkout revision. Unknown `APP_EDITION` values fail the build. No query parameter, localStorage setting, email address or client plan switch changes the edition.
+Both optimized builds use `dist/`; rebuilding replaces that output, not user data. `edition.json` records the edition, source revision/digest and complete bundled-asset list. Worker cache v28 preloads lazy modules as well as the app shell, without changing IndexedDB. Verification rejects the wrong edition or checkout revision. Unknown `APP_EDITION` values fail the build. No query parameter, localStorage setting, email address or client plan switch changes the edition.
 
 ## Deployment boundary
 
@@ -61,7 +61,7 @@ npm run verify:dist -- --edition=preview
 VISUAL_EDITION=preview npm run test:visual
 ```
 
-Use the pinned renderer from [visual-test instructions](VISUAL_TESTS.md), not system Chromium, for accepted comparisons. CI builds/tests public and preview separately and uploads edition-labelled difference reports. Cases cover fresh one-gun creation, atomic/concurrent rejection, existing libraries and presets, legacy editing/execution, direct submit/visible-control attempts, no client edition override, preserved text history and full creation/charts. Both informational screens retain all five bottom tabs with history/setup guards.
+Use the pinned renderer from [visual-test instructions](VISUAL_TESTS.md), not system Chromium, for accepted comparisons. CI builds/tests public and preview separately and uploads edition-labelled difference reports. Cases cover fresh one-gun creation, atomic/concurrent rejection, existing libraries and presets, legacy editing/execution, direct submit/visible-control attempts, no client edition override, preserved text history and full creation/charts. Both informational screens retain all five bottom tabs with history/setup guards. First-install offline refresh tests retain the whole restored library in both editions; the optimized local preview uses same-origin assets without development CORS Vary headers.
 
 [Current screen registry](../architecture/screen-map.json) marks preview-only and public-only states; shared states are compared in both editions. Browser references are grouped by browser/edition/screen/state/width. Actual implementation captures use the declared edition (public for shared states). Record image review and unchanged reruns before accepting references; ordinary CI never accepts them automatically.
 

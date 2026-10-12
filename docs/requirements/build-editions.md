@@ -10,7 +10,7 @@ Revision 1.0 · CHG-032 · 2026-10-12. Implementation is authorized by the user'
 | EDITION-04 | Public users cannot create new custom drills; hide creation controls and guard direct form submission. Preserve running and editing an existing saved preset. Full preview retains creation and editing. Built-in drills and all six basic practice modes remain available. |
 | EDITION-05 | Hide advanced progress graphs and their range/group controls in public. Keep saved sessions, per-session text timing summaries, recognition history and backup recovery available. Full preview retains the current charts/table. |
 | EDITION-06 | Keep optional editor/chart code in a clearly documented feature package within the source tree. Charts are omitted from the public bundle; the editor remains available for legacy preset editing. Document the temporarily disabled actions, retained data and commands for both editions. |
-| EDITION-07 | Verify both editions with synthetic old/new libraries, direct creation attempts, valid backup restore, navigation, saved data and appropriate screenshots. Normal public deployment accepts only a verified public artifact. Full preview can run locally; a hosted preview must be protected on every reachable URL before deployment. |
+| EDITION-07 | Verify both editions with synthetic old/new libraries, direct creation attempts, valid backup restore, navigation, saved data and appropriate screenshots. Normal public deployment accepts only a verified public artifact. Offline app-shell caching includes every bundled asset, including full-preview lazy charts, and refresh preserves the restored library. Full preview can run locally; a hosted preview must be protected on every reachable URL before deployment. |
 
 ## Transition and boundaries
 
