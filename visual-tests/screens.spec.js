@@ -51,12 +51,17 @@ async function prepare(page, item) {
   });
   await page.clock.install({ time: new Date(environment.clock) });
   await page.clock.pauseAt(new Date(environment.clock));
+  if (item.edition === 'preview' && item.state.startsWith('preview-free')) await page.addInitScript(() => localStorage.setItem('dryfire-private-preview-mode', 'free'));
   await page.goto('/');
   expect(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true);
   await visible(page, 'gunSetupView');
   if (item.state !== 'first-gun.dark') {
     const backup = structuredClone(library);
     backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
+    if (item.state.startsWith('add-second-gun')) {
+      backup.guns = backup.guns.filter(gun => gun.id === backup.activeGunId);
+      for (const key of ['examples', 'events', 'sessions', 'gunSettings']) backup[key] = backup[key].filter(row => row.gunId === backup.activeGunId);
+    }
     if (item.state === 'recording-limit.dark') {
       const example = backup.examples.find(row => row.gunId === backup.activeGunId && row.label === 'trigger');
       const count = backup.examples.filter(row => row.gunId === backup.activeGunId && row.label === 'trigger').length;
@@ -72,8 +77,8 @@ async function prepare(page, item) {
     case 'gunSetup':
       if (item.state.startsWith('first-gun')) break;
       await page.locator('#gunSwitcherBtn').click(); await visible(page, 'gunsView');
-      await page.locator(item.state.startsWith('add-gun') ? '#addGunBtn' : '[data-edit-gun-id="qa-gun-a"]').click();
-      await expect(page.locator('#gunName')).toHaveValue(item.state.startsWith('add-gun') ? '' : 'QA Handgun');
+      await page.locator(item.state.startsWith('add-') ? '#addGunBtn' : '[data-edit-gun-id="qa-gun-a"]').click();
+      await expect(page.locator('#gunName')).toHaveValue(item.state.startsWith('add-') ? '' : 'QA Handgun');
       break;
     case 'home': break;
     case 'guns':
@@ -82,7 +87,7 @@ async function prepare(page, item) {
       if (item.state.startsWith('deleted')) {
         await page.locator('[data-delete-gun-id="qa-gun-b"]').click();
         await expect(page.locator('[data-delete-gun-id="qa-gun-b"]')).toHaveCount(0);
-        await expect(page.locator('#gunCapacity')).toContainText('2 of');
+        await expect(page.locator('#gunCapacity')).toContainText(item.edition === 'public' ? '2 saved guns' : '2 of');
         await expect(page.locator('#gunList .gun-profile')).toHaveCount(2);
       }
       break;
@@ -100,6 +105,11 @@ async function prepare(page, item) {
       if (item.state.startsWith('custom-editor')) {
         await page.locator('#newCustomDrillBtn').click(); await page.locator('#customDrillName').fill('Draw and press');
         for (const label of ['draw', 'trigger']) { await page.locator('#customAction').selectOption(label); await page.locator('#addCustomActionBtn').click(); }
+      }
+      if (item.state.startsWith('edit-custom')) {
+        await page.locator('#customDrillsTab').click();
+        await page.locator('#customDrillCatalog').getByRole('button', { name: 'Edit sequence' }).click();
+        await expect(page.locator('#customDrillName')).toHaveValue('QA saved sequence');
       }
       break;
     case 'practice':

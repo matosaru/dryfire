@@ -4,7 +4,7 @@ Repository workflow: [main/dev branching, PR protection and test-gated deploymen
 
 Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with dev/production verification.
 
-[Public-Free/private-full-preview testing](free-preview-testing.md) proposes owner testing before billing. The latest instruction is planning only; build profiles, gates and account settings are not implemented by these documents.
+[Public-Free/private-full-preview testing](free-preview-testing.md) documents the authorized two-gun public build and retained full preview. Hosted preview protection and a proposed authenticated in-app tester switch remain unimplemented; broader billing/accounts/cloud work is still paused.
 
 Product planning: [Requirements and approvals](../requirements/README.md) · [Design catalog](../design/README.md). Read these before changing product behavior.
 
@@ -16,9 +16,9 @@ The next verification target is iPhone Safari/Home Screen. Use the [release chec
 
 ## Gun profiles and saved custom drills
 
-- First use asks for a gun name and one of **Handguns**, **Rifles and Carbines**, or **Shotguns**. Save up to five profiles and use **My Guns** to switch the selected gun. The future free-version one-gun cap is not applied.
+- First use asks for a gun name and one of **Handguns**, **Rifles and Carbines**, or **Shotguns**. The public edition allows creating two profiles; full preview allows five. Existing larger libraries remain usable. Use **My Guns** to switch the selected gun.
 - Learned examples, recognition history, custom sequences and selected drill are owned by a gun. Sound/history resets affect only that gun. Stop recording/listening before switching so in-flight data keeps its original owner.
-- On **Drills**, create or edit a saved custom preset with a name and ordered known actions; repeated actions are supported. **Start Drill** opens its explicit, safety-gated session configuration. Built-in sequences remain unchanged.
+- On **Drills**, full preview can create a saved custom preset; both editions can edit an existing preset with a name and ordered known actions; repeated actions are supported. **Start Drill** opens its explicit, safety-gated session configuration. Built-in sequences remain unchanged.
 - IndexedDB schema 3 retains `dryfire-sound-trainer` and adds durable saved sessions alongside gun-owned data. Existing legacy sounds/history are assigned to one profile requiring the user's name/type; an empty legacy database starts with no fabricated profile. Selection and owned data persist after compatible same-origin reloads/deployments.
 - Export creates a version-4 whole-library backup including legacy/practice sessions, calibration and preferences. Compatible versions 1–3 remain readable; version-1 data restores into a profile requiring details and older backups contain no saved sessions. Imports validate before atomic replacement, disclose replacing sessions and reject files over 10 MB. Export excludes outdated feature vectors as before; migration preserves those vectors until a confirmed relevant-sound reset.
 

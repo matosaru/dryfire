@@ -1,5 +1,7 @@
 # Drills design
 
+CHG-032 public availability: preserve all six modes/built-ins and existing custom presets, including their Start/Edit actions. Hide new custom creation; the saved-custom tab appears only when owned presets exist. Full preview retains creation. [Edition specification](../../../requirements/build-editions.md).
+
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
 
 CHG-030 typography revision: primary Dark text uses `#FFFFFF` throughout this screen and neutral controls. Secondary/footer/accent colors and Light values remain. The [shared typography design](../shared/README.md) and [SET-07](../../../requirements/settings.md) define the palette; [current capture/build review](../../baselines/white-primary-validation.json) records the passing pinned runs; publication is tracked separately.
@@ -29,3 +31,5 @@ Functional specifications: [drill-sessions](../../../requirements/drill-sessions
 Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
+
+Public existing-preset editing: [`edit-custom.dark.png`](edit-custom.dark.png), anchor `customDrillForm`. New-preset editor is preview-only; both retain the same sequence controls.

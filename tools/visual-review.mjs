@@ -1,8 +1,8 @@
 import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { cases, baselineName } from '../visual-tests/catalog.js';
+import { allCases, baselineName } from '../visual-tests/catalog.js';
 const environment = JSON.parse(readFileSync('visual-tests/environment.json'));
-const paths = ['chromium', 'webkit'].flatMap(browser => cases.map(item => `${browser}/${baselineName(item)}`));
+const paths = ['chromium', 'webkit'].flatMap(browser => allCases.map(item => `${browser}/${baselineName(item)}`));
 const root = 'docs/design/baselines';
 const walk = dir => readdirSync(dir, { withFileTypes: true }).flatMap(item => item.isDirectory() ? walk(`${dir}/${item.name}`) : [`${dir}/${item.name}`]);
 const actual = walk(root).filter(path => path.endsWith('.png')).map(path => path.slice(root.length + 1));
@@ -19,5 +19,5 @@ if (process.argv.includes('--write')) {
   writeFileSync(path, manifest); console.log(`Recorded ${paths.length} reviewed baseline fingerprints.`);
 } else {
   if (!existsSync(path) || readFileSync(path, 'utf8') !== manifest) throw new Error('Baselines changed without review; review images and run npm run visual:review -- --write.');
-  console.log(`Visual coverage verified: ${cases.length} states/widths × 2 browsers, exact matching enabled.`);
+  console.log(`Visual coverage verified: ${allCases.length} edition/state/width cases × 2 browsers, exact matching enabled.`);
 }

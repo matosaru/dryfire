@@ -82,8 +82,9 @@ footer { padding-top:20px; border-top:1px solid #253139; font-size:.79rem; line-
 .copyright { margin: 12px 0 0; }
 
 /* Informational pages use the same app shell without practice controls. */
-body:is([data-view="about"],[data-view="contact"]) :is(.tabs,.safety-disclosure,.gun-switcher) { display:none; }
-body:is([data-view="about"],[data-view="contact"]) .app-shell { padding-bottom:calc(28px + env(safe-area-inset-bottom)); }
+body:is([data-view="about"],[data-view="contact"]) :is(.safety-disclosure,.gun-switcher) { display:none; }
+html[data-feature-edition="public"] [data-preview-only] { display:none !important; }
+.preview-mode-badge { border-top:1px solid #2b3640; padding-top:10px; }
 .about-intro { text-align:center; padding:24px 8px 12px; }
 .about-intro img { display:block; margin:0 auto 14px; }
 .about-intro .brand-logo { width:64px; height:64px; }

@@ -165,14 +165,18 @@ export async function getActiveGun() {
   return id ? await getRow(GUNS, id) ?? null : null;
 }
 
-export async function createGun({ name, type } = {}) {
+export async function createGun({ name, type } = {}, { maxGuns = MAX_GUNS } = {}) {
+  if (!Number.isInteger(maxGuns) || maxGuns < 1 || maxGuns > MAX_GUNS) throw new TypeError('Invalid gun creation limit.');
   const details = validGunDetails(name, type);
   const row = { id: crypto.randomUUID(), ...details, needsDetails: false, createdAt: Date.now() };
   return withTransaction([GUNS, SETTINGS], 'readwrite', (tx, context) => {
     const store = tx.objectStore(GUNS);
     const request = store.count();
     request.onsuccess = () => {
-      if (request.result >= MAX_GUNS) { context.fail(new Error('Maximum five guns saved. Select an existing gun.')); return; }
+      if (request.result >= maxGuns) {
+        const limit = ['one gun', 'two guns', 'three guns', 'four guns'][maxGuns - 1];
+        context.fail(new Error(maxGuns === MAX_GUNS ? 'Maximum five guns saved. Select an existing gun.' : `This version allows creating ${limit}. Existing saved guns remain available.`)); return;
+      }
       store.put(row);
       tx.objectStore(SETTINGS).put({ key: ACTIVE_GUN, value: row.id });
       context.result = row;

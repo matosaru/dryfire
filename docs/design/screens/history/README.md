@@ -1,5 +1,7 @@
 # History design
 
+CHG-032 public availability: omit the advanced chart/group/range/table section while keeping saved-session text timings/review, recognition results and separate clear controls. Full preview retains the graphs. [Edition specification](../../../requirements/build-editions.md).
+
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
 
 CHG-030 typography revision: primary Dark text uses `#FFFFFF` throughout this screen and neutral controls. Secondary/footer/accent colors and Light values remain. The [shared typography design](../shared/README.md) and [SET-07](../../../requirements/settings.md) define the palette; [current capture/build review](../../baselines/white-primary-validation.json) records the passing pinned runs; publication is tracked separately.
@@ -22,17 +24,21 @@ Functional specifications: [core](../../../requirements/core.md) · [practice-im
 
 ## Current visual references
 
-![History current layout](progress.dark.png)
+![Public History](overview.dark.png)
+
+The chart/table captures below are full-preview evidence; public overview/clear captures retain the text history.
 
 | Screen/state | Capture | App anchor |
 | --- | --- | --- |
-| Progress charts, Dark | [`progress.dark.png`](progress.dark.png) | `progressContent` |
+| Public saved-session text, Dark | [`overview.dark.png`](overview.dark.png) | `savedSessions` |
+| Public saved-session text, Light | [`overview.light.png`](overview.light.png) | `savedSessions` |
+| Progress charts, Dark (full preview) | [`progress.dark.png`](progress.dark.png) | `progressContent` |
 | Accessible chart data table | [`data-table.dark.png`](data-table.dark.png) | `progressContent` |
 | Recognition cleared; sessions retained | [`recognition-cleared.dark.png`](recognition-cleared.dark.png) | `historyClearOutcome` |
 | Sessions cleared; recognition retained | [`sessions-cleared.dark.png`](sessions-cleared.dark.png) | `sessionsClearOutcome` |
 | Progress charts, Light | [`progress.light.png`](progress.light.png) | `progressContent` |
 
-Captured from the current local production build in Chromium at a 390 px mobile width. Overview captures use a 1400 px viewport; full-content captures expand the viewport height so fixed bottom navigation does not obscure controls midway through a long image. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
+Captured from the reviewed public/full build in pinned Chromium at a 390 px mobile width; shared states use public, and edition-specific states follow the registry. Overview captures use a 1400 px viewport; full-content captures expand the viewport height so fixed bottom navigation does not obscure controls midway through a long image. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
 

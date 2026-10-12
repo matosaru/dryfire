@@ -1,0 +1,322 @@
+{
+  "config": {
+    "configFile": "/__w/dryfire/dryfire/edition-candidates.config.js",
+    "rootDir": "/__w/dryfire/dryfire/visual-tests",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": "/__w/dryfire/dryfire/visual-tests/metadata.js",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/matosaru/dryfire/commit/0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+        "commitHash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+        "buildHref": "https://github.com/matosaru/dryfire/actions/runs/38282583278"
+      },
+      "gitCommit": {
+        "shortHash": "0c85c9e",
+        "hash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+        "subject": "feat: allow two free guns and document secure tester modes",
+        "body": "feat: allow two free guns and document secure tester modes\n",
+        "author": {
+          "name": "Study",
+          "email": "studymatonis@gmail.com",
+          "time": 1791825094000
+        },
+        "committer": {
+          "name": "Study",
+          "email": "studymatonis@gmail.com",
+          "time": 1791825094000
+        },
+        "branch": "feature/about-contact-page"
+      },
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/__w/dryfire/dryfire/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/matosaru/dryfire/commit/0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "commitHash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "buildHref": "https://github.com/matosaru/dryfire/actions/runs/38282583278"
+          },
+          "gitCommit": {
+            "shortHash": "0c85c9e",
+            "hash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "subject": "feat: allow two free guns and document secure tester modes",
+            "body": "feat: allow two free guns and document secure tester modes\n",
+            "author": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1791825094000
+            },
+            "committer": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1791825094000
+            },
+            "branch": "feature/about-contact-page"
+          },
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/__w/dryfire/dryfire/visual-tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/__w/dryfire/dryfire/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/matosaru/dryfire/commit/0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "commitHash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "buildHref": "https://github.com/matosaru/dryfire/actions/runs/38282583278"
+          },
+          "gitCommit": {
+            "shortHash": "0c85c9e",
+            "hash": "0c85c9e5502f3eb9e7bd5d5e6a4dd41b9b2cf103",
+            "subject": "feat: allow two free guns and document secure tester modes",
+            "body": "feat: allow two free guns and document secure tester modes\n",
+            "author": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1791825094000
+            },
+            "committer": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1791825094000
+            },
+            "branch": "feature/about-contact-page"
+          },
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/__w/dryfire/dryfire/visual-tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 2,
+    "webServer": {
+      "command": "npm run preview -- --host 127.0.0.1 --port 4175 --strictPort",
+      "url": "http://127.0.0.1:4175",
+      "reuseExistingServer": false,
+      "timeout": 20000
+    }
+  },
+  "suites": [
+    {
+      "title": "build-editions.spec.js",
+      "file": "build-editions.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "full preview retains new-gun, custom-creation and graph workflows",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1993,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:40.443Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "69b39775a8ce62161c20-615d6580666e98269e6f",
+          "file": "build-editions.spec.js",
+          "line": 78,
+          "column": 3
+        },
+        {
+          "title": "full preview retains new-gun, custom-creation and graph workflows",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4030,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:43.640Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "69b39775a8ce62161c20-d740080449a4a403e4e9",
+          "file": "build-editions.spec.js",
+          "line": 78,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "offline.spec.js",
+      "file": "offline.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "first installed offline refresh keeps app bundles and the restored library available",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1848,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:40.389Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "170c7452e9c121637e46-6ae4b8ded4ef94964c6d",
+          "file": "offline.spec.js",
+          "line": 6,
+          "column": 1
+        },
+        {
+          "title": "first installed offline refresh keeps app bundles and the restored library available",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3198,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:13:43.915Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "170c7452e9c121637e46-4de0a1c31600a192f687",
+          "file": "offline.spec.js",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-12T17:13:38.710Z",
+    "duration": 9198.913,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

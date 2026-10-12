@@ -1,12 +1,13 @@
 # Contact
 
-Revision 1.1 · CHG-029/031 · 2026-10-12. Separate app screen with brighter Dark footer controls; validation and publication are recorded in the [delivery tracker](../project/implementation-history.md).
+Revision 1.2 · CHG-029/031/033 · 2026-10-12. Separate app screen with shared bottom navigation; validation and publication are recorded in the [delivery tracker](../project/implementation-history.md).
 
 | ID | Requirement | Authorization |
 | --- | --- | --- |
 | CONTACT-02 | Provide an independent Contact app screen, opened by its own centered shared-footer control before or after first-gun setup. Preserve visited-screen Back/Forward and appearance. | CHG-029 direct instruction |
 | CONTACT-03 | Show the confirmed, selectable **easydryfire@gmail.com** address linked to `mailto:easydryfire@gmail.com`, with the existing invitation and email-app explanation. No private data is automatically attached. | CHG-027 confirmed address; ABOUT-03 retained; CHG-029 separation |
-| CONTACT-04 | Opening Contact does not request microphone permission, confirm safety, create a profile or change saved data. Hide practice tabs, safety disclosure and gun selector as on About. Both footer links remain available: white in Dark, footer-matching in Light, with preserved font/underline/focus and a divider below. | Existing invariants and CHG-029/031 |
+| CONTACT-04 | Opening Contact does not request microphone permission, confirm safety, create a profile or change saved data. Hide the safety disclosure and gun selector as on About. Both footer links remain available: white in Dark, footer-matching in Light, with preserved font/underline/focus and a divider below. | Existing invariants and CHG-029/031; tab visibility superseded by CHG-033 |
+| CONTACT-05 | Show the same fixed Home / Learn / Drills / Live Listen / History bottom navigation as other pages, preserving safe-area/content padding and setup/capture guards. No unrelated tab is active while on Contact. | CHG-033 direct instruction |
 
 ## Page text
 
