@@ -1,6 +1,6 @@
 # Branching and release strategy
 
-CHG-036 · revision 2.0 · directly requested 2026-10-12. This replaces CHG-025 feature → dev → main. The main PR requirement remains. Cloudflare setup and deployment are owner-managed.
+CHG-036 / CHG-038 · revision 2.1 · updated 2026-10-13. This replaces CHG-025 feature → dev → main. The main PR requirement remains. Cloudflare setup and deployment are owner-managed.
 
 | Branch | App functionality | Changes enter through | Default build / routing |
 | --- | --- | --- | --- |
