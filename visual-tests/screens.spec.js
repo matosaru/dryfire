@@ -5,6 +5,9 @@ import { installSyntheticMedia } from './media.js';
 
 const library = JSON.parse(readFileSync(new URL('./fixtures/library.json', import.meta.url)));
 const environment = JSON.parse(readFileSync(new URL('./environment.json', import.meta.url)));
+const motionSources = new Map(['draw', 'rack', 'trigger', 'reload'].map(name => [
+  `/motions/${name}.svg`, readFileSync(new URL(`../dist/motions/${name}.svg`, import.meta.url), 'utf8'),
+]));
 const visible = async (page, id) => expect(page.locator(`#${id}`)).toBeVisible();
 const tab = async (page, name) => { await page.locator(`.tab[data-view="${name}"]`).click(); await visible(page, `${name}View`); };
 const practice = async (page, mode = 'single') => { await tab(page, 'drills'); await page.locator(`[data-practice-mode="${mode}"]`).click(); await visible(page, 'practiceConfigure'); };
@@ -42,12 +45,12 @@ async function prepare(page, item) {
   // External SVG documents can retain their own CSS/SMIL animation clock.
   // Freeze the existing artwork at its initial frame without changing its shapes.
   await page.route('**/motions/*.svg', async route => {
-    const response = await route.fetch();
-    const svg = (await response.text()).replace(/<animate\b[^>]*\/>/g, '')
+    const path = new URL(route.request().url()).pathname;
+    const source = motionSources.get(path);
+    if (source === undefined) throw new Error(`Unknown built motion asset: ${path}`);
+    const svg = source.replace(/<animate\b[^>]*\/>/g, '')
       .replace('animation:cue 2s ease-in-out infinite', 'animation:none');
-    const headers = { ...response.headers(), 'content-length': String(Buffer.byteLength(svg)) };
-    delete headers['content-encoding'];
-    await route.fulfill({ response, headers, body: svg, contentType: 'image/svg+xml' });
+    await route.fulfill({ status: 200, body: svg, contentType: 'image/svg+xml' });
   });
   await page.clock.install({ time: new Date(environment.clock) });
   await page.clock.pauseAt(new Date(environment.clock));

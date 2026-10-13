@@ -1,5 +1,7 @@
 # About design
 
+CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
+
 CHG-033: retain the fixed Home / Learn / Drills / Live Listen / History navigation at the bottom in both themes, with normal safe-area/content padding and no unrelated active tab. CHG-032: public copy describes basic practice/saved results/recovery; full preview retains the five-gun/custom/trends description. Both editions preserve the shared footer and data/capture guards. [Edition specification](../../../requirements/build-editions.md).
 
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
@@ -14,7 +16,7 @@ Entry: shared app footer → About, independently of Settings and also before sa
 
 ## Layout and interaction
 
-Compact About heading with Back and the existing Settings shortcut. The canonical DF logo leads the app name, version, short purpose and “Dry-fire practice, made simple.” Two readable cards explain the practice routine and local storage/backup. Contact and the email link belong to the separate [Contact screen](../contact/README.md). A concise final note describes recognition limits and the existing safety check. The shared privacy/copyright footer remains present; both centered About/Contact links remain visible with an accessible current-page indication and a divider above the footer disclosure.
+Shared branded header with Settings; compact About content heading with Back. The canonical DF logo leads the app name, version, short purpose and “Dry-fire practice, made simple.” Two readable cards explain the practice routine and local storage/backup. Contact and the email link belong to the separate [Contact screen](../contact/README.md). A concise final note describes recognition limits and the existing safety check. The shared privacy/copyright footer remains present; both centered About/Contact links remain visible with an accessible current-page indication and a divider above the footer disclosure.
 
 Gun switching, recording controls and the inline safety disclosure are hidden. The shared five-item bottom navigation is visible with normal content/safe-area padding. Back/Forward retains the visited screen, including first-gun setup. Opening About does not open the microphone, create a gun, confirm safety or change saved data. Dark/Light reuse the existing theme colors; long email text wraps at narrow widths. No illustration, paid offer or cloud feature is added.
 
