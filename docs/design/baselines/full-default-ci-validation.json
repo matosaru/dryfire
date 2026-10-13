@@ -1,0 +1,29 @@
+{
+  "reviewedOn": "2026-10-13",
+  "change": "CHG-038 and shared SVG fixture transport correction",
+  "branches": {
+    "b": {
+      "commit": "12ba30062092048c2aa15526894f09c19df55d39",
+      "run": "https://github.com/matosaru/dryfire/actions/runs/38345913338",
+      "status": "Success",
+      "unitTests": 320
+    },
+    "dev": {
+      "commit": "f57bd52ca0730a00f9b3837a165277d5bc95df3d",
+      "run": "https://github.com/matosaru/dryfire/actions/runs/38346003520",
+      "status": "Success",
+      "unitTests": 321
+    }
+  },
+  "smokeChecksPerBranch": 16,
+  "browserChecksPerBranch": {
+    "public": 168,
+    "preview": 180
+  },
+  "baselineImages": 266,
+  "currentScreenCaptures": 56,
+  "changedAcceptedImages": 0,
+  "comparison": "Pinned Chromium/WebKit, zero differing pixels above existing rounding threshold; zero retries; deliberate visible-defect probes passed.",
+  "scope": "Private Full initial mode with both explicit preferences retained; public bundle exclusions/data/activity guards; built-SVG frame freeze removes redundant intercepted network transport.",
+  "remaining": "Main needs checked b PR follow-up; owner-run Cloudflare deployment/Access and physical-device checks remain separately verified. Later documentation-only commits retain independent CI."
+}
