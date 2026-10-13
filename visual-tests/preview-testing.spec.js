@@ -15,9 +15,9 @@ if (edition === 'preview') {
     await page.locator('#settingsShortcut').click(); const pending = page.waitForEvent('download'); await page.locator('#exportBtn').click();
     return JSON.parse(readFileSync(await (await pending).path(), 'utf8'));
   }
-  test('private preview defaults Free and switches Full/Free without changing saved data or identity', async ({ page }) => {
-    await restore(page); await expect(page.locator('#previewModeBadge')).toContainText('Free mode');
-    const before = await backup(page); await page.locator('#previewTestMode').selectOption('full');
+  test('private preview defaults Full and switches Free/Full without changing saved data or identity', async ({ page }) => {
+    await restore(page); await expect(page.locator('#previewModeBadge')).toContainText('Full mode');
+    const before = await backup(page); await expect(page.locator('#previewTestMode')).toHaveValue('full');
     await page.locator('#gunSwitcherBtn').click(); await expect(page.locator('#addGunBtn')).toBeVisible();
     await page.locator('[data-gun-id="qa-gun-a"]').click(); await page.locator('.tab[data-view="drills"]').click();
     await page.locator('#customDrillsTab').click(); await expect(page.locator('#newCustomDrillBtn')).toBeVisible();
@@ -32,11 +32,17 @@ if (edition === 'preview') {
     await page.locator('.tab[data-view="history"]').click(); await expect(page.locator('#progressSection')).not.toBeVisible(); await expect(page.locator('.progress-chart')).toHaveCount(0);
     const after = await backup(page);
     for (const key of ['guns', 'activeGunId', 'examples', 'events', 'sessions', 'settings', 'gunSettings']) expect(after[key], key).toEqual(before[key]);
+    await page.reload();
+    await expect(page.locator('#homeView')).toBeVisible();
+    await page.locator('#settingsShortcut').click(); await expect(page.locator('#settingsView')).toBeVisible(); await expect(page.locator('#previewTestMode')).toHaveValue('free');
+    await expect(page.locator('#previewModeBadge')).toContainText('Free mode');
     await page.locator('#previewTestMode').selectOption('full'); await page.reload();
-    await page.locator('#settingsShortcut').click(); await expect(page.locator('#previewTestMode')).toHaveValue('full');
+    await expect(page.locator('#homeView')).toBeVisible();
+    await page.locator('#settingsShortcut').click(); await expect(page.locator('#settingsView')).toBeVisible(); await expect(page.locator('#previewTestMode')).toHaveValue('full');
     await expect(page.locator('html')).toHaveAttribute('data-build-edition', 'preview');
   });
   test('private preview rejects forced mode changes during safety confirmation and pending microphone permission', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('dryfire-private-preview-mode', 'free'));
     await page.addInitScript(installSyntheticMedia);
     await page.addInitScript(() => { navigator.mediaDevices.getUserMedia = () => new Promise((resolve, reject) => { window.__rejectPreviewPermission = reject; }); });
     await restore(page); await page.locator('#settingsShortcut').click(); await page.locator('#previewTestMode').selectOption('full');

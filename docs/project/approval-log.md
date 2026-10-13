@@ -537,3 +537,10 @@ The user subsequently directs **“update the screenshots with the link”** and
 - Work directly on b, sync shared changes to dev retaining Full configuration. Production main still uses a checked b → main PR. Refresh actual designs/pinned references and architecture; never auto-accept expected images in ordinary CI.
 
 CHG-037 implementation clarification: the user explicitly adds **“restructure the code, so all the pages will use common, reusable templates”**. LAYOUT-07 requires a reusable app layout, header/footer/navigation fragments and one wrapper for each screen’s content, compiled by Vite for both editions. Keep stable DOM IDs and all behavior; this is a refactor of the approved layout, not a new framework, routing or storage migration.
+
+## CHG-038 — Correct the private dev initial experience
+
+- Date: 2026-10-13 (Europe/Vilnius).
+- Report: **“i see all branches now hav public version: This public version creates up to two guns. Existing saved profiles are kept. b, dev and main”**. Existing CHG-036 instruction requires **“full app, final functionality will exists in dev branch”** and authorizes branch corrections/testing; work proceeds without repeated step confirmation.
+- Diagnosis: dev already has the preview profile/private routing, but its initial simulation is Free under the earlier CHG-035 default. Engineering correction under the requested complete-dev behavior: initial private simulation becomes Full; retain either explicit saved Free/Full choice and the approved private test switch. This supersedes the default only in EDITION-08/12; it creates no public entitlement override or billing scope.
+- Full-only correction goes directly to dev. Keep b/main Free, all saved data, public bundle exclusions, signed Access checks, activity guards and image comparison policy. User owns Cloudflare setup/deployment; repository diagnosis does not establish the live artifact.

@@ -17,6 +17,8 @@ Private responses have `Cache-Control: private, no-store` and `X-Robots-Tag: noi
 
 Cloudflare Git Builds can deploy using its own configured repository integration, without an API token in this workspace. On dev, set its build command to `npm run build` (or explicit `npm run build:preview`) and deploy command to `npm run deploy:private-preview`, selecting only reviewed/CI-passed source. This is an alternative to direct CLI deployment, not an activated integration. It does not supply the missing Access identifiers.
 
+If the Cloudflare log says `Executing user deploy command: npx wrangler preview` followed by a missing `previews` block, the Full Vite build has succeeded but the deploy command targets a separate preview system. For this stable private host, change Git Builds to **build `npm run build:preview` and deploy `npm run deploy:private-preview`**. Do not add preview resource bindings or enable alternate URLs to silence that error; the asset gate deliberately accepts only the configured private hostname. A failed deployment leaves the previous release live, which can show older Settings/navigation or a public build. Configure the Access team domain/audience as above before expecting authenticated assets to work.
+
 Keep Access enabled when deploying updates. For this Worker, Cloudflare Git Builds must use the explicit private build/deploy commands below; do not use the public Wrangler config. Release only CI-passed dev source for Full preview; Free production uses b → main PRs. Cloudflare dashboard configuration and GitHub environment protections must be verified on the server; prepared files do not activate them.
 
 ## Build, dry run and deployment
@@ -30,7 +32,7 @@ npm run private-preview:check
 npm run deploy:private-preview
 ```
 
-The private build starts in Free mode. Open Settings → **Test as** → **Full** to exercise five-gun creation, new custom drills and advanced charts; Free restores the actual two-gun public rules without deleting existing data. The selected simulation is remembered only on the private origin and is excluded from backups and payment entitlements. Switching is blocked during active work/confirmation/pending results. Public artifacts omit both the selector and override implementation. Different origins have separate browser libraries; use a compatible manual backup to seed preview, not an implied cloud synchronization.
+The private build starts in Full mode (CHG-038), exposing five-gun creation, new custom drills and advanced charts. Settings → **Test as** → **Free** simulates the actual two-gun public rules without deleting existing data. Either explicit choice is remembered; an existing stored Free choice remains Free until you select Full. The selected simulation is remembered only on the private origin and is excluded from backups and payment entitlements. Switching is blocked during active work/confirmation/pending results. Public artifacts omit both the selector and override implementation. Different origins have separate browser libraries; use a compatible manual backup to seed preview, not an implied cloud synchronization.
 
 ## Verify the actual host before calling it live
 
@@ -40,3 +42,9 @@ The private build starts in Free mode. Open Settings → **Test as** → **Full*
 - Record the tested source/deployment revision, anonymous/authorized/denied outcomes and device checks in the delivery tracker. Node/synthetic/browser tests do not establish live Access or real microphone accuracy.
 
 If this hostname previously hosted an unprotected cached app, export a backup and retire only its app-shell worker/cache before verification. An old already-installed service worker may intercept navigation before a new authenticated request; do not clear IndexedDB or all website data as a routine upgrade. On that origin, browser developer tools can unregister `/sw.js` and delete Cache Storage names starting `dryfire-sound-trainer-`, then reload through Access. New preview source performs that retirement when loaded successfully.
+
+## Diagnose a dev page that looks public or lacks the shared header
+
+Current dev source uses the common branded header on every screen, including Settings, and contains the private Test as control. If the live Settings page has no header or test control, check the deployed commit/build rather than changing the gun limit. In browser Network, `/edition.json` must identify `edition: "preview"` and the expected dev `sourceRevision`; public output identifies `"public"`. The served HTML uses `data-build-edition="preview"`. A remembered Free simulation changes feature availability, not that build identity or the shared header.
+
+Confirm Cloudflare Git Builds uses branch dev and `npm run build` (or `npm run build:preview`), with no `APP_EDITION=public` override or `--mode public`. Deploy with the private config/command and the configured Access gate. Check a fresh authorized tab after a successful deployment. If an older public shell intercepts this origin, export a backup and retire only its app-shell cache/worker as described above; keep IndexedDB. A failed deploy leaves the older live release. Repository CI cannot establish which release is served.

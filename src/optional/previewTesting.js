@@ -2,8 +2,11 @@ import { editionCapabilities } from '../buildEdition.js';
 
 export const PREVIEW_MODE_KEY = 'dryfire-private-preview-mode';
 export function createPreviewSimulation({ storage, locked = () => false, onChange = () => {} } = {}) {
-  let mode = 'free';
-  try { if (storage?.getItem(PREVIEW_MODE_KEY) === 'full') mode = 'full'; } catch { /* Preference storage can be unavailable. */ }
+  let mode = 'full';
+  try {
+    const savedMode = storage?.getItem(PREVIEW_MODE_KEY);
+    if (['free', 'full'].includes(savedMode)) mode = savedMode;
+  } catch { /* Keep the private Full default if preference storage is unavailable. */ }
   const capabilitiesFor = value => editionCapabilities(value === 'full' ? 'preview' : 'public');
   return {
     get mode() { return mode; },

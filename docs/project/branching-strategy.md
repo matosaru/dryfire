@@ -8,7 +8,7 @@ CHG-036 · revision 2.0 · directly requested 2026-10-12. This replaces CHG-025 
 | `main` | Stable Free production | Tested `b` → `main` PR | `public`; public assets |
 | `dev` | Complete app: Free improvements plus Full-only functionality | Merge Free changes from `b`; direct Full-only commits | `preview`; signed Access asset gate |
 
-`dev` contains the complete feature set. Its private **Test as Free / Full** simulation defaults to Free and remembers a valid private preference; choose Full in Settings to test all five-gun/custom/graph functionality. This does not change the build identity. Public output contains no switch or override implementation.
+`dev` contains the complete feature set. Its private **Test as Free / Full** simulation defaults to Full (CHG-038) and remembers either explicit Free/Full preference; select Free in Settings only when testing the public rules. An existing saved Free choice remains Free until changed to Full. This does not change the build identity. Public output contains no switch or override implementation.
 
 ## Daily changes and synchronization
 
@@ -61,3 +61,5 @@ The opt-in [Actions deployment workflow](../../.github/workflows/deploy.yml) acc
 Tag the exact verified production commit after release. Record its PR, CI, Worker deployment/version and data-format implications. Roll back to a known-good Worker version when necessary, then follow with a checked b → main fix PR. Never rewrite main or delete browser data. Schema 3 / backup format 4 stay unchanged.
 
 Publication, PR merge, server enforcement, Cloudflare deployment and physical-device validation are separate facts in [the delivery tracker](implementation-history.md).
+
+CHG-038: keep the private Full initial simulation and explicit stored Free/Full choices when synchronizing b → dev. These are Full-preview behavior; merging Free improvements must not restore the older private Free initial default.
