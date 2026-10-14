@@ -35,3 +35,5 @@ CHG-035 private preview has an authenticated asset boundary and a Free/Full simu
 ## Shared app shell
 
 CHG-037 uses [reusable page templates](page-templates.md) for every screen. Preserve this shared architecture when adding or changing pages; do not duplicate header/footer/navigation.
+
+CHG-039 deployment topology: public dryfire serves main and b previews; protected dev-dryfire serves the dev Full branch. [Private target validation](../../tools/private-deploy-target.mjs) prevents Cloudflare’s connected Worker override from redirecting that private deploy. This affects deploy commands, with no new app screen/state, storage or artwork; [setup ownership and commands](../development/private-preview-deployment.md) remain explicit.

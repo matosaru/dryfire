@@ -1,6 +1,6 @@
 # Public and full development editions
 
-Revision 1.4 · CHG-032 / CHG-034 / CHG-035 / CHG-036 / CHG-038 · 2026-10-13. Implementation is authorized by the user's request to temporarily remove future paid options while retaining their code, followed by the explicit answer **“Temporarily hide future paid features publicly (Recommended)”**. CHG-034 changes the public creation limit to two with **“btw, for free version allow max 2 guns”**. No billing, account, price or permanent paid allocation is implemented by this change.
+Revision 1.5 · CHG-032 / CHG-034 / CHG-035 / CHG-036 / CHG-038 / CHG-039 · 2026-10-14. Implementation is authorized by the user's request to temporarily remove future paid options while retaining their code, followed by the explicit answer **“Temporarily hide future paid features publicly (Recommended)”**. CHG-034 changes the public creation limit to two with **“btw, for free version allow max 2 guns”**. No billing, account, price or permanent paid allocation is implemented by this change.
 
 | ID | Requirement |
 | --- | --- |
@@ -21,6 +21,7 @@ Revision 1.4 · CHG-032 / CHG-034 / CHG-035 / CHG-036 / CHG-038 · 2026-10-13. I
 | EDITION-12 | b is Free pre-production; main is Free production; dev contains Free plus all Full functionality. A committed build profile selects the branch default for normal build/dev/verification. Explicit public/full-preview modes remain available for isolated review and both-edition CI. Unknown profiles/editions fail closed; start the private simulation in Full when no valid choice is stored; preserve an explicit Free/Full choice. |
 | EDITION-13 | Free changes go directly to b and synchronize b → dev, retaining dev's Full profile/configuration. Full-only changes go directly to dev. Production promotion is a b → main PR with passing validate/screenshots checks. Never push main directly, force push or release dev into main. Retained optional source in Free branches preserves legacy editing and reproducible edition tests; shipped Free functionality stays restricted. |
 | EDITION-14 | CI validates the branch profile/routing, builds both editions and compares all pinned references. Default dev Wrangler config routes every asset through the signed fail-closed private gate; b/main default config serves public assets. Public deployment rejects preview artifacts. Cloudflare setup/deployment belongs to the user; prepare commands/configuration without activating them. |
+| EDITION-15 | Private deploy/check commands verify the configured target is `dev-dryfire` and reject a different Cloudflare `WRANGLER_CI_OVERRIDE_NAME` before invoking Wrangler. Git Builds must connect the dev branch to the separate dev-dryfire Worker; do not rename private config to the public production target or bypass Cloudflare’s supplied identity. Owner sets the connection and Access configuration; no code check proves live setup. |
 
 ## Transition and boundaries
 

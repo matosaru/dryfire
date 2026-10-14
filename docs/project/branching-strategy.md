@@ -63,3 +63,5 @@ Tag the exact verified production commit after release. Record its PR, CI, Worke
 Publication, PR merge, server enforcement, Cloudflare deployment and physical-device validation are separate facts in [the delivery tracker](implementation-history.md).
 
 CHG-038: keep the private Full initial simulation and explicit stored Free/Full choices when synchronizing b → dev. These are Full-preview behavior; merging Free improvements must not restore the older private Free initial default.
+
+CHG-039: Cloudflare Git Builds binds branches to a Worker connection. Full dev requires the separate dev-dryfire connection with production branch dev; public dryfire keeps main production and b previews. Private deployment rejects a different configured name or WRANGLER_CI_OVERRIDE_NAME before Wrangler. Keep this validation during b → dev synchronization; the user configures Cloudflare. See the [connection guide](../development/private-preview-deployment.md#connect-git-builds-to-the-correct-worker).

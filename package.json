@@ -29,11 +29,12 @@
     "deploy:check": "npm run verify:dist && npm run verify:profile && wrangler deploy --config wrangler.jsonc --dry-run",
     "deploy:production": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.public.jsonc --env \"\"",
     "deploy:development": "node tools/verify-dist.mjs --edition=public && wrangler deploy --config wrangler.public.jsonc --env dev",
-    "private-preview:check": "node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc --dry-run",
-    "deploy:private-preview": "node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc",
+    "private-preview:check": "node tools/verify-private-deploy-target.mjs && node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc --dry-run",
+    "deploy:private-preview": "node tools/verify-private-deploy-target.mjs && node tools/verify-dist.mjs --edition=preview && wrangler deploy --config wrangler.private-preview.jsonc",
     "build:public": "vite build --mode public",
     "dev:public": "vite --mode public --host 127.0.0.1",
-    "verify:profile": "node tools/verify-build-profile.mjs"
+    "verify:profile": "node tools/verify-build-profile.mjs",
+    "verify:private-target": "node tools/verify-private-deploy-target.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.0.0",

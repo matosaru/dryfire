@@ -544,3 +544,10 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 - Report: **“i see all branches now hav public version: This public version creates up to two guns. Existing saved profiles are kept. b, dev and main”**. Existing CHG-036 instruction requires **“full app, final functionality will exists in dev branch”** and authorizes branch corrections/testing; work proceeds without repeated step confirmation.
 - Diagnosis: dev already has the preview profile/private routing, but its initial simulation is Free under the earlier CHG-035 default. Engineering correction under the requested complete-dev behavior: initial private simulation becomes Full; retain either explicit saved Free/Full choice and the approved private test switch. This supersedes the default only in EDITION-08/12; it creates no public entitlement override or billing scope.
 - Full-only correction goes directly to dev. Keep b/main Free, all saved data, public bundle exclusions, signed Access checks, activity guards and image comparison policy. User owns Cloudflare setup/deployment; repository diagnosis does not establish the live artifact.
+
+## CHG-039 — Private deployment target mismatch
+
+- Date: 2026-10-14 (Europe/Vilnius).
+- Report: **“claudfare failed on dev branch”**, with a log showing a successful Full build/verification followed by Cloudflare’s expected Worker `dryfire` overriding config Worker `dev-dryfire`.
+- Existing CHG-036/038 authorization covers code-only build/deploy corrections and complete private dev functionality. Engineering fix: reject mismatched private config/CI target names before Wrangler runs, and document a separate dev-dryfire Git connection with branch dev. This changes deployment validation, not product features or public availability.
+- Full-only work goes directly to dev. Keep public dryfire production, b public previews, signed Access, existing gun data and all screenshots intact. User retains ownership of live Cloudflare settings and deployment; do not rename Full config to the public Worker, clear the CI override, change live policies or push main directly.

@@ -1,12 +1,26 @@
 # Authenticated private preview deployment
 
-CHG-035 / CHG-036 · 2026-10-12. Requested host: **https://dev-dryfire.matosaru.workers.dev**. Allowed tester: **matosaru@gmail.com**. Source/prepared configuration is separate from live Access activation and deployment; see [delivery history](../project/implementation-history.md).
+CHG-035 / CHG-036 / CHG-038 / CHG-039 · updated 2026-10-14. Requested host: **https://dev-dryfire.matosaru.workers.dev**. Allowed tester: **matosaru@gmail.com**. Source/prepared configuration is separate from live Access activation and deployment; see [delivery history](../project/implementation-history.md).
 
 ## Boundaries
 
 [wrangler.private-preview.jsonc](../../wrangler.private-preview.jsonc) targets the separate `dev-dryfire` Worker. dev now defaults to this private routing in `wrangler.jsonc`; b/main default to public routing. The user owns Cloudflare configuration and deployment. All private asset paths run through [the Access token gate](../../workers/privatePreview.js), including HTML, JS, CSS, workers and build metadata. It verifies RSA signature against the team's Access JWKS, issuer, app audience, expiry and the allowed email. Missing configuration returns 503 without serving assets; anonymous/invalid tokens are denied, wrong identities/aliases cannot serve files. Deployment preview URLs are disabled, and only the requested hostname is accepted.
 
 Private responses have `Cache-Control: private, no-store` and `X-Robots-Tag: noindex, nofollow, noarchive`. The private app retires its origin's old app-shell cache/service worker and does not install an offline app shell. Local IndexedDB data, manual recovery and mode preference remain. Public offline functionality stays intact. Access protects new online requests; it cannot retract code already downloaded by an authorized tester or erase their local data. The repository is public and no exclusive-code claim is made.
+
+## Connect Git Builds to the correct Worker
+
+The Worker connection is separate from the Git branch. Cloudflare supplies `WRANGLER_CI_OVERRIDE_NAME` from the Worker that owns the build. Changing the build/deploy commands within **dryfire** does not move a dev deployment to **dev-dryfire**.
+
+| Cloudflare Worker | Repository branch | Build command | Deploy command |
+| --- | --- | --- | --- |
+| `dryfire` public production | `main` | `npm run build` | `npm run deploy:production` |
+| `dryfire` public branch preview | `b` | `npm run build` | Existing `npx wrangler preview` command |
+| `dev-dryfire` protected Full app | `dev` as this Worker's production branch | `npm run build:preview` | `npm run deploy:private-preview` |
+
+In Workers & Pages, open or create **dev-dryfire**, connect `matosaru/dryfire` in its Builds/Git integration settings and select **dev** as its production branch. Keep **dryfire** production on **main** and its non-production branch selection on **b**, excluding **dev** from that public Worker's build selection. Configure Access for dev-dryfire as below before serving Full assets.
+
+If the log says the config uses `dev-dryfire` but CI expects `dryfire`, fix that connection. Both private configs intentionally name `dev-dryfire`. Do not accept an automatic PR that changes the private name to `dryfire`, clear the CI override, or reuse the public Worker to silence the error. The new `verify:private-target` check stops private deploy/dry-run commands before Wrangler on a different connected or configured name. It allows the intended CI Worker or local checks without an override; it neither creates a Worker nor proves live Access. Remaining Access team/audience values must still be configured.
 
 ## Cloudflare setup
 
