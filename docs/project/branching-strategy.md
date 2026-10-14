@@ -1,6 +1,6 @@
 # Branching and release strategy
 
-CHG-036 / CHG-038 · revision 2.1 · updated 2026-10-13. This replaces CHG-025 feature → dev → main. The main PR requirement remains. Cloudflare setup and deployment are owner-managed.
+CHG-036 / CHG-038 / CHG-040 · revision 2.2 · updated 2026-10-14. This replaces CHG-025 feature → dev → main. The main PR requirement remains. Cloudflare setup and deployment are owner-managed.
 
 | Branch | App functionality | Changes enter through | Default build / routing |
 | --- | --- | --- | --- |
@@ -48,9 +48,9 @@ The user will reconfigure Cloudflare. No live deploy, Access change, credentials
 
 | Branch | Cloudflare setup prepared for the owner | Commands |
 | --- | --- | --- |
-| b | Separate Free pre-production Worker; existing public template's `dev` environment uses `dryfire-dev`, which the owner may rename | `npm run build`; `npm run deploy:development` |
+| b | Named b Preview of parent dryfire, tracking branch b | `npm run build`; existing `npx wrangler preview` |
 | main | Free production Worker `dryfire` | `npm run build`; `npm run deploy:production` |
-| dev | Private complete preview Worker `dev-dryfire`, Access allowlist `matosaru@gmail.com` | `npm run build`; `npm run deploy:private-preview` |
+| dev | Named dev Preview of parent dryfire at dev-dryfire.matosaru.workers.dev; signed Access gate, tester matosaru@gmail.com | `npm run build:preview`; `npm run deploy:private-preview` |
 
 The opt-in [Actions deployment workflow](../../.github/workflows/deploy.yml) accepts only successful same-repository b/main push runs, downloads the exact Free artifact, verifies edition/revision/profile and skips superseded commits. b maps to GitHub environment `development`, main to `production`. It cannot publish dev's Full artifact. Keep it disabled unless the owner deliberately selects it by setting `CLOUDFLARE_DEPLOYMENTS_ENABLED=true`, scoped deployment secrets and a production reviewer. No private deployment automation is enabled.
 
@@ -64,4 +64,4 @@ Publication, PR merge, server enforcement, Cloudflare deployment and physical-de
 
 CHG-038: keep the private Full initial simulation and explicit stored Free/Full choices when synchronizing b → dev. These are Full-preview behavior; merging Free improvements must not restore the older private Free initial default.
 
-CHG-039: Cloudflare Git Builds binds branches to a Worker connection. Full dev requires the separate dev-dryfire connection with production branch dev; public dryfire keeps main production and b previews. Private deployment rejects a different configured name or WRANGLER_CI_OVERRIDE_NAME before Wrangler. Keep this validation during b → dev synchronization; the user configures Cloudflare. See the [connection guide](../development/private-preview-deployment.md#connect-git-builds-to-the-correct-worker).
+CHG-040 supersedes CHG-039’s separate-Worker assumption: the user uses one parent dryfire Worker with main production and named b/dev Previews. Full publishing explicitly updates Preview dev, accepts CI parent dryfire and reads authentication from previews.vars. Keep dev’s private config/runner through b → dev synchronization; never replace its Preview publishing command with a production deploy. The optional public dryfire-dev environment/Actions path remains an alternative, not an activated second deployment. See the [connection guide](../development/private-preview-deployment.md#connect-git-builds-to-the-correct-worker).

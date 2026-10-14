@@ -1,64 +1,60 @@
 # Authenticated private preview deployment
 
-CHG-035 / CHG-036 / CHG-038 / CHG-039 · updated 2026-10-14. Requested host: **https://dev-dryfire.matosaru.workers.dev**. Allowed tester: **matosaru@gmail.com**. Source/prepared configuration is separate from live Access activation and deployment; see [delivery history](../project/implementation-history.md).
-
-## Boundaries
-
-[wrangler.private-preview.jsonc](../../wrangler.private-preview.jsonc) targets the separate `dev-dryfire` Worker. dev now defaults to this private routing in `wrangler.jsonc`; b/main default to public routing. The user owns Cloudflare configuration and deployment. All private asset paths run through [the Access token gate](../../workers/privatePreview.js), including HTML, JS, CSS, workers and build metadata. It verifies RSA signature against the team's Access JWKS, issuer, app audience, expiry and the allowed email. Missing configuration returns 503 without serving assets; anonymous/invalid tokens are denied, wrong identities/aliases cannot serve files. Deployment preview URLs are disabled, and only the requested hostname is accepted.
-
-Private responses have `Cache-Control: private, no-store` and `X-Robots-Tag: noindex, nofollow, noarchive`. The private app retires its origin's old app-shell cache/service worker and does not install an offline app shell. Local IndexedDB data, manual recovery and mode preference remain. Public offline functionality stays intact. Access protects new online requests; it cannot retract code already downloaded by an authorized tester or erase their local data. The repository is public and no exclusive-code claim is made.
+CHG-035 / CHG-036 / CHG-038 / CHG-040 · updated 2026-10-14. Requested host: **https://dev-dryfire.matosaru.workers.dev**. Allowed tester: **matosaru@gmail.com**. The owner’s screenshot confirms a named **dev Preview inside parent Worker dryfire**. CHG-040 supersedes the earlier separate-Worker recommendation. No separate dev-dryfire Worker is required.
 
 ## Connect Git Builds to the correct Worker
 
-The Worker connection is separate from the Git branch. Cloudflare supplies `WRANGLER_CI_OVERRIDE_NAME` from the Worker that owns the build. Changing the build/deploy commands within **dryfire** does not move a dev deployment to **dev-dryfire**.
+Keep the existing **dryfire** Worker with production branch **main**. Its named Previews track **b** and **dev** independently. Cloudflare supplies `WRANGLER_CI_OVERRIDE_NAME=dryfire` because that is the parent Worker. `dev-dryfire` in the URL is the Preview name plus parent name, not a separate Worker identity.
 
-| Cloudflare Worker | Repository branch | Build command | Deploy command |
+| Parent Worker / target | Tracking branch | Build command | Deployment or Preview command |
 | --- | --- | --- | --- |
-| `dryfire` public production | `main` | `npm run build` | `npm run deploy:production` |
-| `dryfire` public branch preview | `b` | `npm run build` | Existing `npx wrangler preview` command |
-| `dev-dryfire` protected Full app | `dev` as this Worker's production branch | `npm run build:preview` | `npm run deploy:private-preview` |
+| dryfire / production | main | `npm run build` | `npm run deploy:production` |
+| dryfire / named b Preview | b | `npm run build` | Existing `npx wrangler preview` (branch b) |
+| dryfire / named dev Preview | dev | `npm run build:preview` | `npm run deploy:private-preview` |
 
-In Workers & Pages, open or create **dev-dryfire**, connect `matosaru/dryfire` in its Builds/Git integration settings and select **dev** as its production branch. Keep **dryfire** production on **main** and its non-production branch selection on **b**, excluding **dev** from that public Worker's build selection. Configure Access for dev-dryfire as below before serving Full assets.
+Leave the screenshot’s dev tracking branch and commands in place. After the updated dev source is available, the private npm script invokes **`wrangler preview --config wrangler.private-preview.jsonc --name dev`**, selecting the existing dev Preview explicitly. The previous script invoked `wrangler deploy`, which attempted parent production deployment and produced the name mismatch. Do not set the parent production branch to dev or use a production deploy command for Full output.
 
-If the log says the config uses `dev-dryfire` but CI expects `dryfire`, fix that connection. Both private configs intentionally name `dev-dryfire`. Do not accept an automatic PR that changes the private name to `dryfire`, clear the CI override, or reuse the public Worker to silence the error. The new `verify:private-target` check stops private deploy/dry-run commands before Wrangler on a different connected or configured name. It allows the intended CI Worker or local checks without an override; it neither creates a Worker nor proves live Access. Remaining Access team/audience values must still be configured.
+[Both private configs](../../wrangler.private-preview.jsonc) now name parent dryfire. Default dev [wrangler.jsonc](../../wrangler.jsonc) matches the dedicated private configuration; b/main retain public routing. Authentication variables belong in **`previews.vars`**. Wrangler’s Preview API reads that scope, not top-level production `vars`. Assets, Worker entry and compatibility remain top-level. The target preflight accepts the local or connected parent dryfire, rejects another parent and verifies the signed asset gate and fixed host/tester. The restricted command runner accepts only publication or local check; no forwarded Worker/name/command overrides.
 
-## Cloudflare setup
+## Authentication boundary
 
-1. In Workers & Pages, use **dev-dryfire** and enable Cloudflare Access for its `workers.dev` address through Settings → Domains & Routes. If necessary, create a placeholder Worker first; do not publish the full app as an unprotected static-assets Worker.
-2. In Zero Trust → Access → Applications, select that host's application. Configure an Allow policy including only `matosaru@gmail.com`; email one-time PIN is sufficient. Remove broad allow/bypass rules and cover all paths. Keep other public Workers independent.
-3. Copy the Zero Trust **team domain** (`<team>.cloudflareaccess.com`, without a path/protocol) and the application's **Audience (AUD) tag** into `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD` in both the dedicated config and dev default `wrangler.jsonc`, keeping them identical for `verify:profile`. These identifiers are not API secrets. Host/allowed email are already specified. Empty values deliberately fail closed.
-4. Supply Cloudflare deployment credentials through secure environment/secret settings; never put an API token in Git or chat. Use a scoped token for the intended account/Worker and Access configuration rather than a global API key. The managed workspace currently has no configured Cloudflare credentials or outbound identity. No live policy/deployment is claimed.
+Every asset runs through [the Access token gate](../../workers/privatePreview.js), including HTML, JS, CSS, worklets and edition metadata. It verifies RSA signature against the team’s Access JWKS, issuer, application audience, expiry and the approved email before calling ASSETS. Only dev-dryfire.matosaru.workers.dev is accepted; generated deployment aliases, public/custom-domain aliases and unrelated identities cannot retrieve Full assets. `preview_urls: false` disables ordinary version-preview URLs; the intentional named dev Preview remains the selected target. Named-preview deployment modifies the Preview, not the production version.
 
-Cloudflare Git Builds can deploy using its own configured repository integration, without an API token in this workspace. On dev, set its build command to `npm run build` (or explicit `npm run build:preview`) and deploy command to `npm run deploy:private-preview`, selecting only reviewed/CI-passed source. This is an alternative to direct CLI deployment, not an activated integration. It does not supply the missing Access identifiers.
+Missing team/audience configuration returns 503 without serving assets. Anonymous/invalid tokens are denied. Responses use `Cache-Control: private, no-store` and `X-Robots-Tag: noindex, nofollow, noarchive`. The private app retires its origin’s old shell cache/service worker and does not install an offline app shell. IndexedDB, manual backup recovery and the remembered test-mode preference remain intact. Public offline functionality stays intact. Access cannot retract files already downloaded by an authorized tester; the public repository is not exclusive code.
 
-If the Cloudflare log says `Executing user deploy command: npx wrangler preview` followed by a missing `previews` block, the Full Vite build has succeeded but the deploy command targets a separate preview system. For this stable private host, change Git Builds to **build `npm run build:preview` and deploy `npm run deploy:private-preview`**. Do not add preview resource bindings or enable alternate URLs to silence that error; the asset gate deliberately accepts only the configured private hostname. A failed deployment leaves the previous release live, which can show older Settings/navigation or a public build. Configure the Access team domain/audience as above before expecting authenticated assets to work.
+## Owner-managed Cloudflare setup
 
-Keep Access enabled when deploying updates. For this Worker, Cloudflare Git Builds must use the explicit private build/deploy commands below; do not use the public Wrangler config. Release only CI-passed dev source for Full preview; Free production uses b → main PRs. Cloudflare dashboard configuration and GitHub environment protections must be verified on the server; prepared files do not activate them.
+1. Use the existing parent dryfire Worker’s **dev Preview**, with the tracking branch/build/Preview commands above. Keep main production and b public Preview unchanged.
+2. Protect the exact host **dev-dryfire.matosaru.workers.dev** in Zero Trust → Access → Applications, covering all paths. If the Preview’s Domains & Routes UI offers Access protection, use that; verify the resulting application covers this Preview hostname rather than assuming parent-host protection covers it. Configure an Allow policy for only **matosaru@gmail.com** (email one-time PIN is sufficient), with no broad allow/bypass rules. Confirm the policy actually challenges this named Preview URL.
+3. Set the Access **team domain** (`<team>.cloudflareaccess.com`, without protocol/path) and application **Audience (AUD) tag** in `previews.vars.ACCESS_TEAM_DOMAIN` / `ACCESS_AUD` in both private configs, keeping them identical for `verify:profile`. These are non-secret identifiers; blank values deliberately fail closed. Host/email are already set. The screenshot’s empty **Build variables and secrets** list concerns the build process and does not establish runtime Preview Access configuration. Top-level production vars cannot substitute for Preview vars. The explicit config values are submitted on each deployment.
+4. Keep Cloudflare deployment authentication in the configured Git Builds integration or secure CLI settings; never put API tokens in Git/chat. No credentials, Worker setup, Access policy or live deployment are changed by this code delivery. The workspace has no configured Cloudflare credentials.
 
-## Build, dry run and deployment
+If this Workers account cannot attach Access to the exact named Preview hostname, keep the signed gate fail closed and use an Access-capable private hostname deliberately configured and reviewed before changing the fixed host. Do not remove authentication to make the Preview load.
+
+## Build, local packaging check and owner deployment
 
 ```bash
 npm ci
 npm run build:preview
 npm run verify:dist -- --edition=preview
 npm run private-preview:check
-# With configured Access identifiers, secure credentials and reviewed CI:
+# Owner only, after configuring Access and selecting reviewed/CI-passed source:
 npm run deploy:private-preview
 ```
 
-The private build starts in Full mode (CHG-038), exposing five-gun creation, new custom drills and advanced charts. Settings → **Test as** → **Free** simulates the actual two-gun public rules without deleting existing data. Either explicit choice is remembered; an existing stored Free choice remains Free until you select Full. The selected simulation is remembered only on the private origin and is excluded from backups and payment entitlements. Switching is blocked during active work/confirmation/pending results. Public artifacts omit both the selector and override implementation. Different origins have separate browser libraries; use a compatible manual backup to seed preview, not an implied cloud synchronization.
+Pinned Wrangler **4.149.0** provides no `wrangler preview --dry-run`. The local check uses `wrangler deploy --config wrangler.private-preview.jsonc --dry-run` **only to bundle the gate without uploading**. It verifies the private target/configuration and optimized artifact; it does not exercise the Preview API or prove live Access. Never omit `--dry-run` from this packaging command. The publishing script uses the actual named-Preview command. `deploy:check` on dev uses the same non-publishing runner with the default artifact/profile checks.
+
+The private app defaults to Full, exposing five-gun creation, new custom drills and charts. Settings → **Test as** → **Free** simulates the real two-gun/no-new-custom/no-graphs rules without deleting saved data. Either explicit choice is remembered only on this private origin, excluded from backups/payment entitlements; switching is blocked during capture, safety confirmation and pending results. Public artifacts omit the test selector/override. Different origins retain separate IndexedDB libraries; use compatible export/import to seed Preview, not implied cloud sync.
 
 ## Verify the actual host before calling it live
 
-- Fresh anonymous/private browsing: `/`, `/edition.json`, `/sw.js` and an actual JS/CSS asset require Access login; none returns the full asset. HTTP uses HTTPS. Alternate deployment/alias URLs do not expose files.
-- Allowlisted email: login, load HTML and every module, confirm preview metadata, toggle Free/Full and check saved data survives refresh. Confirm an unrelated email is denied and expired/invalid authentication cannot fetch assets.
-- Use the Network response headers to verify private/no-store/noindex; the preview has no persistent app-shell service worker. Exported backup and IndexedDB survive reload and mode changes. Public URLs still serve the public edition and its offline cache.
-- Record the tested source/deployment revision, anonymous/authorized/denied outcomes and device checks in the delivery tracker. Node/synthetic/browser tests do not establish live Access or real microphone accuracy.
+- Fresh anonymous/private browsing: `/`, `/edition.json`, `/sw.js` and actual JS/CSS assets require Access; none returns Full assets. Confirm the public production and b Preview still expose only Free output.
+- Allowlisted login: load every module, confirm preview edition/source revision, switch Free/Full and refresh while preserving data. An unrelated email and invalid/expired tokens cannot fetch assets.
+- Verify private/no-store/noindex response headers, no persistent Preview app-shell worker and rejection of alternate Preview/deployment/custom-domain URLs. Record actual URLs/statuses rather than assuming a config flag protects aliases.
+- Record source/deployment revision, anonymous/authorized/denied outcomes and physical-device checks in [delivery history](../project/implementation-history.md). CI/package checks do not prove Cloudflare deployment or microphone accuracy.
 
-If this hostname previously hosted an unprotected cached app, export a backup and retire only its app-shell worker/cache before verification. An old already-installed service worker may intercept navigation before a new authenticated request; do not clear IndexedDB or all website data as a routine upgrade. On that origin, browser developer tools can unregister `/sw.js` and delete Cache Storage names starting `dryfire-sound-trainer-`, then reload through Access. New preview source performs that retirement when loaded successfully.
+If this origin previously hosted a public cached shell, export a backup and retire only its app-shell worker/cache. Browser developer tools can unregister `/sw.js` and delete Cache Storage names starting `dryfire-sound-trainer-`; retain IndexedDB and reload through Access. Do not clear all website data. New private source performs shell retirement after authorized loading.
 
 ## Diagnose a dev page that looks public or lacks the shared header
 
-Current dev source uses the common branded header on every screen, including Settings, and contains the private Test as control. If the live Settings page has no header or test control, check the deployed commit/build rather than changing the gun limit. In browser Network, `/edition.json` must identify `edition: "preview"` and the expected dev `sourceRevision`; public output identifies `"public"`. The served HTML uses `data-build-edition="preview"`. A remembered Free simulation changes feature availability, not that build identity or the shared header.
-
-Confirm Cloudflare Git Builds uses branch dev and `npm run build` (or `npm run build:preview`), with no `APP_EDITION=public` override or `--mode public`. Deploy with the private config/command and the configured Access gate. Check a fresh authorized tab after a successful deployment. If an older public shell intercepts this origin, export a backup and retire only its app-shell cache/worker as described above; keep IndexedDB. A failed deploy leaves the older live release. Repository CI cannot establish which release is served.
+Current dev source contains the common header on every screen, including Settings, and the private Test as control. In Network, `/edition.json` must identify `edition: "preview"` and the expected dev `sourceRevision`; served HTML has `data-build-edition="preview"`. A remembered Free simulation changes availability, not edition identity/header. Confirm tracking branch dev, the commands above and no public-edition build override. A failed Preview deploy leaves older code live; source CI cannot establish the currently served release.

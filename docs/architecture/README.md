@@ -36,4 +36,14 @@ CHG-035 private preview has an authenticated asset boundary and a Free/Full simu
 
 CHG-037 uses [reusable page templates](page-templates.md) for every screen. Preserve this shared architecture when adding or changing pages; do not duplicate header/footer/navigation.
 
-CHG-039 deployment topology: public dryfire serves main and b previews; protected dev-dryfire serves the dev Full branch. [Private target validation](../../tools/private-deploy-target.mjs) prevents Cloudflare’s connected Worker override from redirecting that private deploy. This affects deploy commands, with no new app screen/state, storage or artwork; [setup ownership and commands](../development/private-preview-deployment.md) remain explicit.
+## Deployment topology — CHG-040
+
+One parent Worker **dryfire** owns Free production (main), Free named Preview (b) and Full named Preview (dev). dev’s URL is dev-dryfire.matosaru.workers.dev. Full publishing uses the Preview API with explicit name dev; its Access vars are Preview-scoped and every asset passes the signed gate. The [target/command checks](../../tools/private-deploy-target.mjs) reject another parent or unauthenticated routing. This supersedes the earlier CHG-039 separate-Worker interpretation; screens, storage and artwork are unchanged. [Owner setup and commands](../development/private-preview-deployment.md) distinguish code validation from live deployment.
+
+```text
+dryfire (parent Worker)
+├── production: main → public assets
+├── Preview b: branch b → public assets
+└── Preview dev: branch dev → signed Access gate → Full assets
+    └── dev-dryfire.matosaru.workers.dev
+```

@@ -1,5 +1,5 @@
 {
-  "name": "dev-dryfire",
+  "name": "dryfire",
   "main": "workers/privatePreview.js",
   "compatibility_date": "2026-10-09",
   "workers_dev": true,
@@ -9,10 +9,12 @@
     "binding": "ASSETS",
     "run_worker_first": true
   },
-  "vars": {
-    "ACCESS_HOSTNAME": "dev-dryfire.matosaru.workers.dev",
-    "ACCESS_ALLOWED_EMAILS": "matosaru@gmail.com",
-    "ACCESS_TEAM_DOMAIN": "",
-    "ACCESS_AUD": ""
+  "previews": {
+    "vars": {
+      "ACCESS_HOSTNAME": "dev-dryfire.matosaru.workers.dev",
+      "ACCESS_ALLOWED_EMAILS": "matosaru@gmail.com",
+      "ACCESS_TEAM_DOMAIN": "",
+      "ACCESS_AUD": ""
+    }
   }
 }
