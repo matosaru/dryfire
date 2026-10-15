@@ -1,0 +1,65 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - heading "Dry Fire With Ease" [level=1] [ref=e6]:
+        - generic [ref=e7]: DRY FIRE
+        - generic [ref=e8]: WITH EASE
+      - generic "Beta version" [ref=e9]: BETA
+    - button "Open settings" [ref=e11] [cursor=pointer]: ⚙
+  - main [ref=e12]:
+    - region "Edit gun" [ref=e13]:
+      - generic [ref=e14]:
+        - heading "Edit gun" [level=2] [ref=e15]
+        - paragraph [ref=e16]: Update the name or type. This gun’s learned sounds, presets and history stay saved.
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - text: Gun name
+          - textbox "Gun name" [ref=e19]:
+            - /placeholder: e.g. My handgun
+            - text: QA Handgun
+        - group "Gun type" [ref=e20]:
+          - generic [ref=e21]: Gun type
+          - generic [ref=e22] [cursor=pointer]:
+            - generic [ref=e23]: Handguns
+            - radio "Handguns" [checked] [ref=e24]
+          - generic [ref=e25] [cursor=pointer]:
+            - generic [ref=e26]: Rifles and Carbines
+            - radio "Rifles and Carbines" [ref=e27]
+          - generic [ref=e28] [cursor=pointer]:
+            - generic [ref=e29]: Shotguns
+            - radio "Shotguns" [ref=e30]
+        - paragraph [ref=e31]: Create up to two gun profiles. Existing saved profiles remain available.
+        - complementary [ref=e32]:
+          - generic [ref=e33]: ▤
+          - generic [ref=e34]:
+            - strong [ref=e35]: Saved on this device
+            - paragraph [ref=e36]: Gun profiles, learned sounds and drill presets stay here between visits. Use the same app address and browser.
+        - button "Save Changes" [ref=e37] [cursor=pointer]
+        - button "Cancel" [ref=e38] [cursor=pointer]
+      - button "Restore from backup" [ref=e39] [cursor=pointer]
+  - contentinfo [ref=e40]:
+    - navigation "Information" [ref=e41]:
+      - button "About" [ref=e42] [cursor=pointer]
+      - button "Contact" [ref=e43] [cursor=pointer]
+    - text: Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.
+    - paragraph [ref=e44]: © 2026 Dry Fire With Ease. All rights reserved.
+  - navigation "Main navigation" [ref=e45]:
+    - button "Home" [ref=e46] [cursor=pointer]:
+      - img [ref=e48]
+      - text: Home
+    - button "Learn" [ref=e50] [cursor=pointer]:
+      - img [ref=e52]
+      - text: Learn
+    - button "Drills" [ref=e54] [cursor=pointer]:
+      - img [ref=e56]
+      - text: Drills
+    - button "Live Listen" [ref=e60] [cursor=pointer]:
+      - img [ref=e62]
+      - text: Live Listen
+    - button "History" [ref=e64] [cursor=pointer]:
+      - img [ref=e66]
+      - text: History
+```
