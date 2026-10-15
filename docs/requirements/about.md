@@ -1,6 +1,6 @@
 # About
 
-Revision 1.4 · CHG-027/028/029/031/033 · 2026-10-12. CHG-033 restores the shared bottom navigation. Exact editorial copy remains suggested for review; implementation, validation and publication are tracked separately.
+Revision 1.5 · CHG-027/028/029/031/033/041 · 2026-10-15. CHG-033 restores the shared bottom navigation. Exact editorial copy remains suggested for review; implementation, validation and publication are tracked separately.
 
 User instruction: **“also start creating aboutpage, suggest page text. and add easydryfire@gmail.com as a contact email. create this as a separate feature branch”**. This specifically starts the About/contact slice after the CHG-026 implementation pause. Other commercial, account, cloud, paywall and SEO implementations remain paused.
 
@@ -55,3 +55,7 @@ Design: [About](../design/screens/about/README.md). Delivery and publication: [i
 ## Independent link placement — CHG-029/031 (supersedes CHG-028)
 
 Use two separate **About** and **Contact** controls centered in the shared footer, independently of Settings. Both remain visible on either informational page and the current page has `aria-current="page"`. Remove arrows; controls are `#FFFFFF` in Dark and match footer text `#4A6276` in Light. Preserve 0.85rem type, underline and keyboard focus outline, and the divider between the links and the disclosure text. Minimum touch height stays 44px. Keep the five practice-navigation destinations and existing capture/storage guards. Earlier muted-Dark/combined-link/Settings-placement images are superseded evidence. Current layouts: [shared footer](../design/screens/shared/README.md), [About](../design/screens/about/README.md) and [Contact](../design/screens/contact/README.md).
+
+## Beta and feedback — CHG-041
+
+**ABOUT-07:** the user directly requests **“In about page mention, tht beta version, and all the suggestions are welcom”**. Display Beta beside the current version and add a short **Feedback welcome** card: **“This app is in beta. All feedback and suggestions are welcome. Visit Contact to share an idea or report a problem.”** Keep the existing Contact destination/email; no new form, email backend or automatic data sharing. Apply to both editions and both themes, preserving independent About/Contact pages and navigation. Refresh actual About and shared-header screenshots; this is a direct implementation instruction, not a new approval request.

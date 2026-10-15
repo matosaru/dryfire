@@ -5,7 +5,7 @@ CHG-037 · 2026-10-12. All existing SPA screens at `/` use one shared template a
 ```text
 index.html — metadata, Vite entry and one {{app}} mount
   src/templates/layout.html — common app shell
-    shared/header.html — branding and Settings
+    shared/header.html — branding, BETA status and Settings
     shared/safety-modal.html — modal overlay
     main.page-content
       shared/context.html — contextual messages/safety/gun selector
@@ -22,3 +22,5 @@ index.html — metadata, Vite entry and one {{app}} mount
 To add a page, add its definition/content, route/context behavior and requirements/design/registry states; never duplicate the app header/footer/nav or bypass the shared wrapper. Maintain [screen-map.json](screen-map.json), regenerate the [tree](site-tree.md) and run docs/source/both-edition browser checks. Scroll/viewport tests cover every page at 320/390/1024 px in both themes and both browser engines. Screenshot acceptance remains manual engineering review; ordinary CI does not update images.
 
 [Layout requirements](../requirements/page-layout.md) · [Shared design](../design/screens/shared/README.md) · [Delivery history](../project/implementation-history.md).
+
+CHG-041 adds the beta lifecycle disclosure once in the shared header, independent of build edition, plus the About feedback card. No new screen, public route or storage state is introduced. The existing screen tree remains authoritative.

@@ -1,6 +1,6 @@
 # Dry Fire With Ease branding
 
-Revision: 1.0 · Date: 2026-10-10 · Approval: **Approved** · Implementation: **implemented and locally validated** · Deployment: **not verified**
+Revision: 1.1 · Date: 2026-10-15 · Approval: **Approved** · Implementation: **implemented and locally validated** · Deployment: **not verified**
 
 The user directly instructed: **“no, lets leave dry fire with ease, just update logo to have this with ease, and all other places , where dry fire as a brand is used in an app”**. This authorizes the branding update below; it does not authorize unrelated behavior or data-format changes. See CHG-011 in the [approval log](../project/approval-log.md).
 
@@ -17,11 +17,19 @@ Before this update, the app presented Dry Fire / DRYFIRE with Sound Trainer as i
 | BRAND-05 | Replace brand references in current documentation and record the new lockup's creation. Preserve historical approval evidence and previously reviewed image snapshots. Older mockups may retain their reviewed brand; their catalog must identify that difference and must not present them as the latest production lockup. No uniqueness or legal-clearance claim is established by the name change. |
 | BRAND-06 | CHG-023, directly requested 2026-10-11: show **© 2026 Dry Fire With Ease. All rights reserved.** in the shared app footer, readable in both themes and at 320 px. Keep the existing data/microphone notice and brand. Record `easydryfire.com` and `easydryfire.app` as user-reported Cloudflare registrations; registration alone does not change app origin or connect a Worker custom domain. |
 
+## Beta disclosure — CHG-041
+
+Direct instruction: **“add some marker, that this site only a Beta version. Make it clearly visible, maybe somewhere near logo”**. The beta lifecycle label is independent of Free/Full build editions and does not change entitlements.
+
+| ID | Approved requirement and acceptance criteria |
+| --- | --- |
+| BRAND-07 | Show a clearly readable, non-interactive **BETA** badge beside the full wordmark in the shared header on every existing page, in public and private builds. Use the existing orange accent with dark text, readable in both themes. Preserve logo/name, Settings access and header geometry without overlap or horizontal overflow at 320, 390 and 1024 px. Provide an accessible Beta version label. No storage, installed-app identity or edition change. |
+
 Generic descriptions of dry-fire practice and technical `dryfire` identifiers are not display-brand labels. They do not need a forced wording change.
 
 ## Design record
 
-The canonical DF monogram remains [public/logo.svg](../../public/logo.svg). The complete production lockup combines that monogram with the accessible HTML wordmark in [index.html](../../index.html), styled by [src/styles.css](../../src/styles.css); the SVG alone does not contain the full name. See the [actual header screenshot](../design/archive/chg-011/brand/lockup.png), including Settings, and [Home screenshot](../design/archive/chg-011/home/overview.png).
+The canonical DF monogram remains [public/logo.svg](../../public/logo.svg). The complete production lockup combines that monogram with the accessible HTML wordmark and BETA marker in [the shared header](../../src/templates/shared/header.html), styled by [src/styles.css](../../src/styles.css); the SVG alone does not contain the full name. See the [actual header screenshot](../design/archive/chg-011/brand/lockup.png), including Settings, and [Home screenshot](../design/archive/chg-011/home/overview.png).
 
 This is the approved wording extension, retaining the existing monogram rather than adopting generated variants from earlier mockups. Existing [reviewed mockups](../design/README.md) remain available as historical flow/design evidence.
 

@@ -1,5 +1,7 @@
 # Current designs
 
+CHG-041 adds a visible **BETA** badge in the shared header across all screens and a Beta/feedback invitation within About. [Branding](../requirements/branding.md#beta-disclosure--chg-041) and [About](../requirements/about.md#beta-and-feedback--chg-041) own the approved wording; screenshot review/publication is in the [delivery tracker](../project/implementation-history.md).
+
 CHG-035 adds private-only Free/Full Settings simulation, with a visible mode indicator and protected online asset boundary. CHG-032 adds public/full build editions; shared current captures use public unless a state is explicitly preview-only. CHG-033 retains the five bottom tabs on About/Contact in both themes/editions. Requirements and exact capture/CI status are in the delivery tracker.
 
 Visual package for Dry Fire With Ease. [Functional requirements](../requirements/README.md) own behavior; [approval history](../project/approval-log.md) records authorization; [delivery plan](../project/implementation-history.md) owns implementation/publication status.

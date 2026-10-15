@@ -14,6 +14,17 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
       await expect(page.getByRole('contentinfo')).toHaveCount(1);
       await expect(page.getByRole('banner').locator('#settingsShortcut')).toBeVisible();
       await expect(page.getByRole('banner').locator('.brand-name')).toContainText('WITH EASE');
+      const beta = page.getByRole('banner').getByLabel('Beta version', { exact: true });
+      await expect(beta).toBeVisible();
+      await expect(beta).toHaveText('BETA');
+      const header = await page.evaluate(() => ({
+        brandRight: document.querySelector('.brand-name').getBoundingClientRect().right,
+        badgeLeft: document.querySelector('.beta-badge').getBoundingClientRect().left,
+        badgeRight: document.querySelector('.beta-badge').getBoundingClientRect().right,
+        settingsLeft: document.querySelector('#settingsShortcut').getBoundingClientRect().left,
+      }));
+      expect(header.badgeLeft).toBeGreaterThanOrEqual(header.brandRight + 4);
+      expect(header.badgeRight).toBeLessThanOrEqual(header.settingsLeft - 4);
       await expect(page.locator('.tabs')).toBeInViewport();
       await expect(page.locator('.tabs .tab')).toHaveCount(5);
       expect(await page.locator('.tabs').evaluate(node => getComputedStyle(node).position)).toBe('fixed');

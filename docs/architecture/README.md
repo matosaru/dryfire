@@ -47,3 +47,5 @@ dryfire (parent Worker)
 └── Preview dev: branch dev → signed Access gate → Full assets
     └── dev-dryfire.matosaru.workers.dev
 ```
+
+CHG-041 adds a shared BETA badge beside the brand and a feedback invitation within the existing About page. The twelve-screen tree and public routes are unchanged; current captures include the shared marker in both editions. See [branding](../requirements/branding.md#beta-disclosure--chg-041) and [About](../requirements/about.md#beta-and-feedback--chg-041).

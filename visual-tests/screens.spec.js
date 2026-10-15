@@ -201,6 +201,10 @@ for (const item of cases) {
       const height = await page.evaluate(() => Math.max(innerHeight, document.documentElement.scrollHeight));
       await page.setViewportSize({ width: item.width, height });
     }
+    // Native WebKit controls paint a different accent in an inactive page.
+    // Capture an explicitly active page, rather than depending on worker order.
+    await page.bringToFront();
+    await expect.poll(() => page.evaluate(() => document.hasFocus())).toBe(true);
     if (item.screen === 'learn') expect(await page.locator('#learnView img').first().evaluate(image => image.currentSrc)).toMatch(/\.svg$/);
     const overflow = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth) - innerWidth);
     const offenders = overflow > 0 ? await page.evaluate(() => [...document.querySelectorAll('*')]
