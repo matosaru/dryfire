@@ -1,6 +1,6 @@
 # Practice guides — CHG-042
 
-Revision 0.1 · 2026-10-15 (Europe/Vilnius) · **Design proposal; no application implementation yet.**
+Revision 0.2 · CHG-042/043 · 2026-10-15 (Europe/Vilnius) · **Design proposal; no application implementation yet.**
 
 The user requests a short manual for each practice type, a link reading **“About this practice >”** on each initial configuration page, separate manual subpages and visual examples, preferably with animation. This authorizes preparing and publishing the proposal below. The exact new layout/copy/animation is presented for review; it is not an implemented application feature.
 
@@ -15,6 +15,9 @@ The user requests a short manual for each practice type, a link reading **“Abo
 | GUIDE-05 | Copy follows the existing engines: Single automatically repeats and counts pre-beep accepted triggers as failed attempts; Par/Reload use Next repetition after a result; Repeated/control/free listen continuously. Legacy ordered sessions automatically repeat and keep their existing cue/timing rules. Explain default app signals versus optional calibrated external beeps without claiming a microphone can verify physical actions. |
 | GUIDE-06 | Use locally authored, silent timing illustrations, visibly labeled **Illustration · example timings**. Provide a poster, text-equivalent steps and Play/Pause; honor reduced motion by keeping the poster until explicitly played. No camera, microphone, audio autoplay, external media tracker or new raw-audio collection is needed. A GIF is a review/export example; an eventual app implementation may use a lighter controlled SVG animation with the same meaning. |
 | GUIDE-07 | Keep guides available for existing usable practices in both editions. Explain only features available in the chosen context; do not unlock new custom creation, graphs or additional guns. Guides do not change timing thresholds, limits, entitlements, calibration, storage or safety behavior. |
+| GUIDE-08 | CHG-043 revises the original compressed diagrams: show microphone preparation before countdown, actual elapsed countdown seconds and a visible signal before accepted clicks. Export at 1× timing, using configurations clearly labeled as examples. Check transitions/outcomes against the real session engines. Single demonstrates automatic repetition and a separate early-trigger miss with zero shots and no successful reaction time. Par/Reload show explicit user Next; continuous modes have one beep; ordered sessions retain their distinct result hold/detection rules. Remove decorative waveforms that could imply real recorded audio. Keep examples silent, controllable and visibly synthetic. |
+
+The user's **“ok, revisit”** approves revising the proposal after the assistant identified compressed timing, missing readiness and missing early-trigger behavior. It authorizes this animation/mockup correction; it is not blanket approval to implement guide pages in the app. The original four-second concept remains in Git at [`b84de36`](https://github.com/matosaru/dryfire/commit/b84de36).
 
 ## Content and acceptance
 

@@ -1,16 +1,25 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Practice timing illustration</title>
-<style>*{box-sizing:border-box}body{margin:0;background:#101a22;color:#fff;font-family:system-ui,sans-serif}svg{display:block;width:344px;height:160px}text{font-family:system-ui,sans-serif}</style></head><body>
-<svg viewBox="0 0 344 160" aria-label="Illustrative acoustic timing, not live audio">
-<text x="18" y="24" fill="#b8cad8" font-size="9" letter-spacing="1.1">EXAMPLE · NOT LIVE AUDIO</text>
-<text id="stage" x="18" y="52" fill="#fff" font-size="17" font-weight="750"></text>
-<g id="wave"></g><line x1="18" x2="326" y1="97" y2="97" stroke="#3d515f" stroke-width="1"/>
-<line id="progress" x1="18" x2="18" y1="97" y2="97" stroke="#ff9141" stroke-width="2"/>
-<circle id="cursor" cx="18" cy="97" r="4" fill="#ff9141"/>
-<g id="nodes"></g><text x="18" y="147" fill="#b8cad8" font-size="10">READY</text><text x="104" y="147" fill="#b8cad8" font-size="10">SIGNAL</text><text x="190" y="147" fill="#b8cad8" font-size="10">EVENT</text><text x="275" y="147" fill="#b8cad8" font-size="10">RESULT</text>
-</svg>
+<html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Practice scenario illustration</title>
+<style>body{margin:0;background:#101a22}canvas{display:block;width:344px;height:244px}</style></head><body>
+<canvas width="344" height="244" aria-label="Synthetic session example, with real-time countdown and microphone state"></canvas>
 <script>
-let manual;
-const ns='http://www.w3.org/2000/svg';const node=(tag,attrs)=>{const el=document.createElementNS(ns,tag);for(const [k,v]of Object.entries(attrs))el.setAttribute(k,v);return el};
-window.motion={setManual(m){manual=m},setFrame(t){const phase=Math.min(3,Math.floor(t*4));document.getElementById('stage').textContent=manual.stages[phase];const x=18+t*308;document.getElementById('progress').setAttribute('x2',x);document.getElementById('cursor').setAttribute('cx',x);const wave=document.getElementById('wave');wave.replaceChildren();for(let i=0;i<47;i++){const spike=phase===0?2:phase===1?Math.max(2,24-Math.abs(i-15)*4):Math.max(2,27-Math.abs(i-31)*7,manual.sequence.length>1?21-Math.abs(i-40)*6:0);const h=2+spike*(.75+.25*Math.cos(t*25+i));wave.append(node('rect',{x:19+i*6.5,y:80-h/2,width:3.5,height:h,rx:1.6,fill:phase===1?'#ff9141':phase>=2?'#66d6ff':'#6c8699'}))}const nodes=document.getElementById('nodes');nodes.replaceChildren();[32,122,211,297].forEach((cx,i)=>{nodes.append(node('circle',{cx,cy:119,r:5,fill:i<=phase?'#ff9141':'#2b414f'}))})}};
+const canvas=document.querySelector('canvas'), ctx=canvas.getContext('2d');
+const colors={green:'#71e4a0',amber:'#ffbc79',muted:'#a8bdca'};
+function text(value,x,y,size=12,color='#ffffff',weight=400){ctx.fillStyle=color;ctx.font=weight+' '+size+'px system-ui,sans-serif';ctx.fillText(value,x,y)}
+function fit(value,y,size=12,color='#b8cad8'){ctx.font=size+'px system-ui,sans-serif';while(ctx.measureText(value).width>310&&size>9){size-=.5;ctx.font=size+'px system-ui,sans-serif'}text(value,16,y,size,color)}
+window.motion={render(frame){
+ctx.fillStyle='#101a22';ctx.fillRect(0,0,344,244);
+text(frame.example,16,21,9,'#b8cad8',600);
+ctx.fillStyle=colors[frame.micTone];ctx.beginPath();ctx.arc(21,43,4,0,Math.PI*2);ctx.fill();text(frame.mic,33,47,11,colors[frame.micTone],550);
+text(frame.title,16,78,frame.title.length>30?14:16,frame.failed&&frame.phase==='result'?'#ffb095':'#fff',700);
+text(frame.value,16,124,34,frame.beep?'#ffbc79':frame.phase==='countdown'?'#ffbc79':'#fff',800);
+// A discrete icon represents the synthetic recognized event. No decorative
+// waveform or fake live microphone-level meter is shown.
+if(frame.pulse){ctx.strokeStyle=frame.failed?'#ffb095':'#66d6ff';ctx.lineWidth=3;for(let i=0;i<3;i++){ctx.beginPath();ctx.arc(295,106,9+i*8,-.9,.9);ctx.stroke()}}
+fit(frame.detail,149);
+ctx.strokeStyle='#334957';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(16,165);ctx.lineTo(328,165);ctx.stroke();
+text(frame.counter,16,187,12,'#ffffff',650);fit(frame.last,209,11,frame.failed?'#ffbcad':'#b8cad8');
+text('Synthetic detections · silent example · no live audio',16,232,9,'#a8bdca');
+return canvas.toDataURL('image/png');
+}};
 </script></body></html>

@@ -1,14 +1,15 @@
 {
-  "change": "CHG-042",
+  "change": "CHG-043 (revises CHG-042)",
   "status": "proposal only; not product screenshots or accepted CI references",
   "renderer": "154.0.8037.57",
-  "source": "shared shell plus locally authored guide content and timing diagrams",
-  "coverage": "six actual engine modes and four actual built-in sequences verified against source; one custom-preset example",
+  "source": "shared shell and locally authored Canvas scenes driven by actual pure session engines",
+  "coverage": "six actual engine modes, four built-in sequences and one custom-preset example; separate early Single failure",
   "guides": 11,
-  "themeCaptures": 26,
-  "animations": 11,
-  "framesPerAnimation": 40,
+  "themeCaptures": 28,
+  "animations": 12,
   "framesPerSecond": 10,
+  "scenarioChecks": "readiness before countdown, 2.4/3.2 s delays, mode-specific beep/Next counts, early miss/zero shot and automatic progression, 0.50 s first accepted click, Par hit/miss, Reload interval/no handling shots, Free duration",
+  "exportChecks": "every GIF frame count and encoded duration matches the scenario at 1× speed; 344 × 244 px",
   "layoutChecks": 66,
   "widths": [
     320,
@@ -19,7 +20,7 @@
     "dark",
     "light"
   ],
-  "reducedMotion": "poster until explicit Play; Play and Pause verified on all 22 themed guides",
+  "reducedMotion": "poster until explicit Play; Play/Pause verified on 22 themed guides; early/normal selection verified in both themes",
   "settingsPreservation": "four setup → guide → setup round trips preserve unsaved repetitions=17",
   "pageErrors": []
 }
