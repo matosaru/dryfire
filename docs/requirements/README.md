@@ -1,6 +1,6 @@
 # Functional requirements
 
-Revision 1.23 · CHG-041 shared Beta disclosure / CHG-037 shared page architecture / CHG-036 b/main Free and dev Full branch profiles / CHG-035 private-preview simulation / CHG-034 two-gun public edition / CHG-033 informational-page bottom navigation · 2026-10-15
+Revision 1.24 · CHG-044 contextual practice guides / CHG-041 shared Beta disclosure / CHG-037 shared page architecture / CHG-036 b/main Free and dev Full branch profiles / CHG-035 private-preview simulation / CHG-034 two-gun public edition / CHG-033 informational-page bottom navigation · 2026-10-15
 
 CHG-027 starts [About](about.md) with email support; CHG-029 separates [Contact](contact.md) and refines the centered shared footer links in independent app screens. Suggested copy remains reviewable; broader CHG-026 implementations stay paused.
 
@@ -8,7 +8,7 @@ This is the single current functional index. Markdown requirements define behavi
 
 | Specification | Authoritative scope | Current application status |
 | --- | --- | --- |
-| [Page layout](page-layout.md) | Shared header/main/footer/fixed navigation across all screens, safe-area/scroll/readiness guards | Implemented with reusable templates; 56 current captures and 266 browser references reviewed; final CI/publication in the delivery tracker |
+| [Page layout](page-layout.md) | Shared header/main/footer/fixed navigation across all screens, safe-area/scroll/readiness guards | Implemented with reusable templates; current capture acceptance and CI/publication in the delivery tracker |
 | [Core](core.md) | Learning, recognition, safety, resets and navigation invariants | Implemented |
 | [Branding](branding.md) | Dry Fire With Ease display name, DF / WITH EASE lockup, BETA status and shared copyright | Implemented |
 | [Gun profiles](gun-profiles.md) | Names/types, up to five guns and independent owned data | Implemented, including CHG-019 Edit/type images and CHG-020 single-gun/all-owned-data deletion |

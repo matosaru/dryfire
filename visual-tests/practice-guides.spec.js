@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
+import { installSyntheticMedia } from './media.js';
 const library = JSON.parse(readFileSync(new URL('./fixtures/library.json', import.meta.url)));
 
-async function openLibrary(page, theme = 'dark') {
-  await page.addInitScript(() => {
+async function openLibrary(page, theme = 'dark', synthetic = false) {
+  if (synthetic) await page.addInitScript(installSyntheticMedia);
+  else await page.addInitScript(() => {
     window.__guideMicRequests = 0;
     Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: {
       getUserMedia: () => { window.__guideMicRequests++; return Promise.reject(new Error('Guide must not acquire a microphone')); },
@@ -56,7 +58,11 @@ test('browser Back/Forward restores the same setup and guide; refresh does not r
 test('animation is initially static, pauses, resumes, stops at review and offers replay', async ({ page }) => {
   await openLibrary(page); await page.clock.install(); await practice(page);
   await page.locator('#practiceGuideLink').click(); await expect(page.locator('#practiceGuideView')).toBeVisible();
-  const pixels = () => page.locator('#practiceGuideCanvas').evaluate(canvas => canvas.toDataURL());
+  await expect(page.locator('#example-practiceStopBtn')).toBeVisible();
+  await expect(page.locator('#example-practiceLevelPanel')).toBeVisible();
+  await expect(page.locator('#example-practiceCompleted')).toHaveText('1');
+  await expect(page.locator('#example-practiceShots')).toHaveText('1');
+  const pixels = () => page.locator('#practiceGuideExample').evaluate(el => el.innerHTML);
   const poster = await pixels(); await page.clock.runFor(500); expect(await pixels()).toBe(poster);
   await page.locator('#practiceGuidePlayBtn').click(); await page.clock.runFor(1700);
   expect(await pixels()).not.toBe(poster); await page.locator('#practiceGuidePlayBtn').click();
@@ -64,8 +70,10 @@ test('animation is initially static, pauses, resumes, stops at review and offers
   await expect(page.locator('#practiceGuidePlayBtn')).toHaveText('Resume example');
   await page.locator('#practiceGuidePlayBtn').click(); await page.clock.runFor(10000);
   await expect(page.locator('#practiceGuidePlayBtn')).toHaveText('Replay example');
+  await expect(page.locator('#example-practiceReview')).toBeVisible();
+  await expect(page.locator('#example-practiceSaved')).toHaveText('Example only · nothing saved');
   await page.locator('#practiceGuideEarlyBtn').click(); await expect(page.locator('#practiceGuideEarlyBtn')).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('#practiceGuideCanvas')).toHaveAttribute('aria-label', /early trigger fails with zero shots/);
+  await expect(page.locator('#practiceGuideExample')).toHaveAttribute('aria-label', /early trigger fails with zero shots/);
   await expect(page.locator('#practiceGuidePlayBtn')).toHaveText('Play example');
   expect(await page.evaluate(() => window.__guideMicRequests)).toBe(0);
 });
@@ -109,4 +117,22 @@ test('a forced guide click cannot leave a pending microphone start', async ({ pa
   await page.locator('#practiceGuideLink').dispatchEvent('click');
   await expect(page.locator('#practiceGuideView')).not.toBeVisible();
   await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase', 'connecting');
+});
+
+test('an old guide history entry cannot reopen a setup guide after practice has started', async ({ page }) => {
+  await openLibrary(page, 'dark', true);
+  const now = new Date('2026-10-11T11:00:00Z'); await page.clock.install({ time: now }); await page.clock.pauseAt(now);
+  await practice(page);
+  await page.locator('#practiceDelayMode').selectOption('fixed'); await page.locator('#practiceFixedDelay').fill('0');
+  await page.locator('#practiceStartSound').uncheck();
+  await page.locator('#practiceGuideLink').click(); await expect(page.locator('#practiceGuideView')).toBeVisible();
+  await page.locator('#practiceGuideReturnBtn').click(); await expect(page.locator('#practiceConfigure')).toBeVisible();
+  await page.locator('#practiceStartBtn').click(); await page.locator('#safetyModalAck').check(); await page.locator('#safetyConfirmBtn').click();
+  await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase', 'countdown');
+  await page.clock.runFor(160); await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase', 'active');
+  await page.goForward(); await expect(page.locator('#drillsView')).toBeVisible();
+  await expect(page.locator('#practiceGuideView')).not.toBeVisible();
+  expect(await page.evaluate(() => window.__visualAudio.inputActive())).toBe(false);
+  await page.locator('.tab[data-view="history"]').click();
+  await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(6);
 });

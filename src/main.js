@@ -507,7 +507,7 @@ function resolveRoute(route) {
   if (route.view === 'practiceGuide') {
     const guide = practiceGuideController?.current();
     const owner = guide?.parent === 'practice' ? practiceController : sessionController;
-    if (!isGuideContextCurrent(guide, activeGun.id, owner?.routeKey()) || route.context !== guide.contextKey) return routeFor('drills');
+    if (!owner?.guideContext() || !isGuideContextCurrent(guide, activeGun.id, owner?.routeKey()) || route.context !== guide.contextKey) return routeFor('drills');
   }
   if (route.view === 'practice' && (!practiceController?.routeKey() || route.context !== practiceController.routeKey())) return routeFor('drills');
   if (route.view === 'session' && (!sessionController?.routeKey() || route.context !== sessionController.routeKey())) return routeFor('drills');

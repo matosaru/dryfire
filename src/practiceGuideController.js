@@ -1,21 +1,22 @@
 import { getPracticeGuide, guideSoundTitle } from './practiceGuides.js';
-import { createScenario, FRAME_MS, WIDTH, HEIGHT } from './practiceGuideExamples.js';
-import { paintGuideFrame } from './practiceGuidePainting.js';
+import { createScenario, FRAME_MS } from './practiceGuideExamples.js';
+import { createGuideExampleRenderer } from './practiceGuideRendering.js';
 
 /** A read-only animation/guide; no audio, storage or capture API is used. */
 export function createPracticeGuideController({ onBack, document: doc = document }) {
   const $ = id => doc.getElementById(id);
-  const canvas = $('practiceGuideCanvas');
-  const ratio = Math.max(1, Math.min(3, globalThis.devicePixelRatio || 1));
-  canvas.width = WIDTH * ratio; canvas.height = HEIGHT * ratio;
-  canvas.getContext('2d').setTransform(ratio, 0, 0, ratio, 0, 0);
+  const renderExample = createGuideExampleRenderer(doc);
+  // Demo statuses are read on demand; repeated animation frames must not flood
+  // screen readers. Only the real session keeps live announcements.
+  $('practiceGuideExample').querySelectorAll('[role="status"], [aria-live]').forEach(el => el.setAttribute('aria-live', 'off'));
+  $('example-practiceStopBtn').setAttribute('aria-label', 'Stop example');
   let guide = null, scenario = null, playing = false, position = 0, startedAt = 0, raf = null;
   let lastPainted = -1, early = false;
   const text = (id, value) => { $(id).textContent = value; };
   function paint(index) {
     index = Math.min(scenario.frames.length - 1, Math.max(0, index));
     if (index === lastPainted) return;
-    lastPainted = index; paintGuideFrame($('practiceGuideCanvas'), scenario.frames[index]);
+    lastPainted = index; renderExample(scenario.frames[index], guide);
   }
   function pause() {
     if (playing) position = Math.min(scenario.durationMs, performance.now() - startedAt);
@@ -34,7 +35,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
     pause(); early = isEarly;
     scenario = createScenario(guide.exampleSequence ? { ...guide, sequence: guide.exampleSequence } : guide, { early });
     position = 0; lastPainted = -1; paint(scenario.posterIndex);
-    $('practiceGuideCanvas').setAttribute('aria-label', early
+    $('practiceGuideExample').setAttribute('aria-label', early
       ? 'Example: listening before the beep, early trigger fails with zero shots, then an automatic countdown and a successful trigger.'
       : `${guide.title}. ${guide.stages.join(' → ')}. Synthetic example; no live microphone data.`);
     $('practiceGuideNormalBtn').setAttribute('aria-pressed', String(!early));
@@ -58,13 +59,23 @@ export function createPracticeGuideController({ onBack, document: doc = document
     $('practiceGuideExamples').classList.toggle('hidden', guide.id !== 'single');
     selectExample(false); return guide;
   }
-  $('practiceGuidePlayBtn').addEventListener('click', () => {
+  function togglePlay() {
     if (!scenario) return;
     if (playing) { pause(); return; }
     if (position >= scenario.durationMs) position = 0;
     playing = true; startedAt = performance.now() - position;
     text('practiceGuidePlayBtn', 'Pause'); $('practiceGuidePlayBtn').setAttribute('aria-pressed', 'true');
     lastPainted = -1; tick(performance.now());
+  }
+  $('practiceGuidePlayBtn').addEventListener('click', togglePlay);
+  for (const id of ['practiceStopBtn', 'practicePauseBtn', 'practiceEndBtn', 'pauseSessionBtn', 'endSessionBtn'])
+    $('example-' + id).addEventListener('click', pause);
+  for (const id of ['practiceResumeBtn', 'resumeSessionBtn']) $('example-' + id).addEventListener('click', togglePlay);
+  for (const id of ['practiceRepeatBtn', 'repeatSessionBtn']) $('example-' + id).addEventListener('click', () => { selectExample(early); togglePlay(); });
+  for (const id of ['practiceDoneBtn', 'backToDrillsBtn']) $('example-' + id).addEventListener('click', () => { pause(); onBack(guide?.parent ?? 'drills'); });
+  $('example-practiceNextBtn').addEventListener('click', () => {
+    const next = scenario.events.find(e => e.kind === 'user-selects-next' && e.atMs > position);
+    if (next) { pause(); position = next.atMs; paint(Math.floor(position / FRAME_MS)); }
   });
   $('practiceGuideNormalBtn').addEventListener('click', () => { if (guide?.id === 'single') selectExample(false); });
   $('practiceGuideEarlyBtn').addEventListener('click', () => { if (guide?.id === 'single') selectExample(true); });

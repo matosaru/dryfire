@@ -8,7 +8,7 @@ permissions:
 jobs:
   candidates:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 40
     container:
       image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
       options: --ipc=host
@@ -34,6 +34,14 @@ jobs:
             cp test-results/build-manifest.json "visual-candidates/$edition-build-manifest.json"
             cp test-results/results.json "visual-candidates/$edition-validation.json"
           done
+      - name: Export actual shared guide examples and encode maintained GIFs
+        run: |
+          npm run build:public
+          npm run verify:dist -- --edition=public
+          node tools/export-guide-examples.mjs --output /tmp/dryfire-guide-frames
+          apt-get update -qq
+          apt-get install -y -qq python3-pil
+          python3 tools/encode-guide-examples.py /tmp/dryfire-guide-frames visual-candidates/guide-examples
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -11,7 +11,7 @@ body[data-view="practiceGuide"] :is(.safety-disclosure,.gun-switcher) { display:
 .guide-current-setup,.guide-example-note { font-size:.72rem; line-height:1.55; color:var(--session-muted); margin:0 0 18px; }
 .guide-sequence { margin-bottom:14px; }
 .guide-media { border:1px solid var(--session-border); border-radius:14px; overflow:hidden; background:#101a22; margin:0 0 10px; }
-.guide-media canvas { display:block; width:100%; height:auto; aspect-ratio:344/244; }
+
 .guide-media figcaption { display:flex; align-items:center; justify-content:space-between; gap:8px; border-top:1px solid #33434f; padding:8px 11px; font-size:.67rem; color:#c0d1de; }
 .guide-play { min-height:44px; background:transparent; color:#fff; border:1px solid #526674; border-radius:8px; padding:5px 10px; font:inherit; cursor:pointer; white-space:nowrap; }
 .guide-example-options { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px; }
@@ -631,8 +631,8 @@ html[data-theme="light"] :is(button,input,select,summary):focus-visible { outlin
 .practice-counters strong { display: block; font-size: 1.8rem; }
 .practice-counters span { color: var(--session-muted); font-size: .8rem; }
 #practiceSteps { margin-bottom: 20px; flex-wrap: wrap; }
-#practiceReview > .button { margin-top: 12px; }
-#practiceResults { margin-top: 18px; }
+:is(#practiceReview,#example-practiceReview) > .button { margin-top: 12px; }
+:is(#practiceResults,#example-practiceResults) { margin-top: 18px; }
 #practiceConfigFields select { max-width: 100%; }
 .practice-stop { display: grid; place-items: center; width: 116px; height: 116px; border-radius: 50%; margin: 4px 0 12px; font-size: 1.65rem; font-weight: 800; letter-spacing: .04em; }
 .practice-level-panel { width: min(300px, 100%); padding: 4px 0; }
@@ -702,3 +702,8 @@ html[data-theme="light"] .gun-type-choices legend { color:#243d51; }
 html[data-theme="light"] .gun-type-choice:has(input:checked) { background:#fff3e8; border-color:#d96613; }
 html[data-theme="light"] .gun-profile:has(.gun-card[aria-pressed="true"]) { border-color:#d96613; }
 @media (max-width:350px) { .gun-switcher-image { width:52px; height:40px; } .gun-card-head .gun-type-image { width:58px; height:42px; } }
+
+/* Example content uses the live run/review classes without visual overrides. */
+.guide-media { border:0; background:transparent; overflow:visible; }
+.guide-example-label { color:var(--session-muted); font-size:.67rem; letter-spacing:.04em; line-height:1.6; margin-bottom:12px; }
+.guide-media figcaption { border:1px solid var(--session-border); border-radius:10px; margin-top:12px; background:var(--session-surface); }

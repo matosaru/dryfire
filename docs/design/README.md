@@ -20,7 +20,7 @@ CHG-029 separates About and Contact into two pages, reached by centered separate
 
 CHG-026 prepares [future Contact/SEO/account/Free-Pro/preview design scope](../requirements/web-commercial.md), with implementation explicitly paused. CHG-027 is the later direct request to create [About](screens/about/README.md) and [Contact](screens/contact/README.md) on a separate feature branch, with proposed copy for review. Other commercial/SEO/account work remains planning only.
 
-Current references below are actual production-build captures. CHG-029 separates Contact and refreshes the footer across the app. Twelve functional screens, all six Practice configurations, early-trigger Review, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples. The [shared layout](screens/shared/README.md) and BRAND-06 apply to every screen; prior captures are archived. Exact reviewed-source hashes are in the registry.
+Current references below are actual production-build captures. CHG-029 separates Contact and refreshes the footer across the app. Thirteen functional screens, the contextual practice guides, all six Practice configurations, early-trigger Review, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples. The [shared layout](screens/shared/README.md) and BRAND-06 apply to every screen; prior captures are archived. Exact reviewed-source hashes are in the registry.
 
 ## File naming and ownership
 

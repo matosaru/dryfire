@@ -4,8 +4,6 @@ import { createPractice, tickPractice, detectPractice, nextPractice, practiceEla
 import { createSession, tickSession, recordSessionDetection } from './drillSession.js';
 
 export const FRAME_MS = 100;
-export const WIDTH = 344;
-export const HEIGHT = 244;
 const READY_AT_MS = 1000; // Example preparation time; actual readiness varies.
 const gun = { id: 'guide-example', name: 'Example gun', type: 'Handguns' };
 const clock = monoNow => ({ monoNow, epochNow: 1800000000000 + monoNow, randomValue: monoNow <= READY_AT_MS ? .13 : .4 });
@@ -123,7 +121,7 @@ export function createScenario(manual, { early = false } = {}) {
     const counter = !state ? 'Example · preparing' : id === 'free' ? `${state.shots} clicks · ${seconds(elapsedMs)} active`
       : ['repeated', 'control'].includes(id) ? `Clicks ${state.completed} / ${config.repetitions}`
       : `Attempts ${state.completed} / ${config.repetitions}${sequence ? '' : ` · Shots ${state.shots}`}`;
-    frames.push({ atMs: t, phase, mic, micTone, title, value, detail, last, counter,
+    frames.push({ state, config, atMs: t, phase, mic, micTone, title, value, detail, last, counter,
       pulse: t - lastEventAt < 300, failed: latest?.reason === 'early', beep: t - beepAt < 300,
       example: id === 'free' ? 'EXAMPLE · 6 S SESSION · 1× TIMING' : ['repeated', 'control'].includes(id) ? 'EXAMPLE · 3 CLICKS · 1× TIMING' : `EXAMPLE · ${config.repetitions} ATTEMPTS · 1× TIMING` });
     if (posterIndex === null && ((early && latest?.reason === 'early')

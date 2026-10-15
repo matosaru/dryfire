@@ -30,3 +30,16 @@ test('the public/preview filter still has the private controls in its trusted so
   expect(html).toContain('id="previewTestMode"');
   expect(html).toContain('id="previewModeBadge"');
 });
+
+test('guide examples compile the exact live run and review fragments with unique IDs', () => {
+  const html = renderPageTemplates('{{app}}');
+  for (const name of ['practice-run', 'practice-review', 'session-run', 'session-review']) {
+    const fragment = readFileSync(new URL(`../src/templates/shared/${name}.html`, import.meta.url), 'utf8');
+    expect(html).toContain(fragment.trim());
+    const example = fragment.replace(/\bid="([^"]+)"/g, (_, id) => `id="example-${id}"`)
+      .replace(/\b(aria-labelledby|aria-describedby|for)="([^"]+)"/g, (_, attr, ids) => `${attr}="${ids.split(' ').map(id => `example-${id}`).join(' ')}"`);
+    expect(html).toContain(example.trim());
+  }
+  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
+  expect(new Set(ids).size).toBe(ids.length);
+});

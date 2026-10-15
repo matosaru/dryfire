@@ -5,7 +5,15 @@
 <div id="practiceGuideSequence" class="preset-steps guide-sequence" aria-label="Selected sound order"></div>
 <p id="practiceGuideCurrentSetup" class="guide-current-setup"></p>
 <div id="practiceGuideExamples" class="guide-example-options" role="group" aria-label="Single practice example"><button id="practiceGuideNormalBtn" type="button" aria-pressed="true">Normal repetitions</button><button id="practiceGuideEarlyBtn" type="button" aria-pressed="false">Early trigger</button></div>
-<figure class="guide-media"><canvas id="practiceGuideCanvas" width="344" height="244" role="img" aria-label="Silent synthetic timing example; use Play example to view it"></canvas><figcaption><span>Silent example · 1× timing</span><button id="practiceGuidePlayBtn" class="guide-play" type="button" aria-pressed="false">Play example</button></figcaption></figure>
+<figure class="guide-media">
+<p id="practiceGuideExampleLabel" class="guide-example-label">SIMULATED EXAMPLE · NO LIVE MICROPHONE · NOTHING IS SAVED</p>
+<div id="practiceGuideExample" class="guide-live-example" aria-label="Silent simulated practice example">
+{{examplePracticeRun}}
+{{examplePracticeReview}}
+{{exampleSessionRun}}
+{{exampleSessionReview}}
+</div>
+<figcaption><span>Silent example · 1× timing</span><button id="practiceGuidePlayBtn" class="guide-play" type="button" aria-pressed="false">Play example</button></figcaption></figure>
 <p id="practiceGuideExampleNote" class="guide-example-note"></p>
 <section class="guide-card"><h3>What it measures</h3><p id="practiceGuideMeasures"></p></section>
 <section class="guide-how"><h3>How it works</h3><ol id="practiceGuideSteps"></ol></section>

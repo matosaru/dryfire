@@ -1,5 +1,7 @@
 # Repository instructions
 
+CHG-045 requires the live screen, help example, screenshots and current GIF exports to stay synchronized. Use the shared run/review fragments and read-only presentation; regenerate exports and their source/media fingerprints after relevant changes. CHG-046 requests a React structure/refactor **plan only after the design release**, preserving visuals/tests; it does not authorize a framework migration.
+
 CHG-044 implements the [contextual practice guides](docs/requirements/practice-guides.md) in the shared page architecture. Preserve gun/source ownership, history and invalid/unsaved setup drafts when reading a guide. Its synthetic controlled examples use pure session engines, never microphone/storage APIs; keep initial motion paused, actual selected sequence/endpoints, the disclosed example settings, early-Single semantics and navigation/background pause. Current application designs and browser references are separate from earlier CHG-042/043 proposal GIFs.
 
 Read the repository-wide [agent instructions](docs/development/AGENTS.md), [functional requirements](docs/requirements/README.md), [approval log](docs/project/approval-log.md) and [design catalog](docs/design/README.md) before work. Preserve saved user data and reuse existing explicit approvals.

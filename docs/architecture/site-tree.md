@@ -57,6 +57,8 @@ Every screen uses the [reusable app layout and view wrapper](page-templates.md),
 
 ## State transitions
 
+`Practice/Sequence Configure → About this practice → Same Configure`; preserve source/gun context and invalid/unsaved draft values, with no microphone/safety prompt. Guides use controlled synthetic examples and pause on navigation/background.
+
 `First visit → Gun setup → Home`; returning visits restore a valid selected gun.
 
 `Drills → Practice Configure → Safety if needed → Connecting → Countdown or external cue → Listening → Review`. Single saves its first accepted click then automatically repeats fresh countdown/signal/listening until the target; Par/Reload offer Next; repeated/control/free remain continuous. Pause releases capture; Resume restarts appropriately. STOP/End saves partial results.
