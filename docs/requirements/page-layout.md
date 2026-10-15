@@ -1,10 +1,10 @@
 # Shared page layout
 
-Revision 1.0 · CHG-037 · directly requested 2026-10-12. Applies to all existing functional app screens, including Settings, About, Contact and Settings installation/help content. It creates no new public route.
+Revision 1.1 · CHG-037 / CHG-041 · directly requested 2026-10-12. Applies to all existing functional app screens, including Settings, About, Contact and Settings installation/help content. It creates no new public route.
 
 | ID | Requirement |
 | --- | --- |
-| LAYOUT-01 | Use one shared branded header with the DF / WITH EASE wordmark and Settings control on every screen. Keep it in the same position; do not move the gear into individual page headings. Screen-specific titles/back controls remain content headings. |
+| LAYOUT-01 | Use one shared branded header with the DF / WITH EASE wordmark, visible BETA badge (BRAND-07) and Settings control on every screen. Keep it in the same position; do not move the gear into individual page headings. Screen-specific titles/back controls remain content headings. |
 | LAYOUT-02 | Shared architecture is header → main content → footer links/disclosure/copyright → fixed bottom navigation. Expose separate banner, main, contentinfo and navigation landmarks. Keep one main content region and one copy of each shared control. |
 | LAYOUT-03 | Every screen, including gun setup/library and informational views, shows the same five fixed bottom tabs. Preserve active/aria-current state and history/context guards. Until a valid gun exists, or while a profile change loads, unavailable practice destinations are disabled; Settings/About/Contact and recovery remain available. |
 | LAYOUT-04 | Reserve bottom space for navigation and the device safe area on every page. At the end of scrolling, content, footer links, copyright and last controls remain visible above navigation. Support short/long pages, 320/390 px phones, wider screens and theme changes without horizontal overflow. |

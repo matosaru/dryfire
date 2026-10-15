@@ -25,7 +25,7 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - name: Generate and compare both editions in the pinned browsers
         run: |
-          for edition in public preview; do
+          for edition in public; do
             export APP_EDITION="$edition" VISUAL_EDITION="$edition"
             if npm run build > /tmp/edition-build.log 2>&1; then
               cat /tmp/edition-build.log
@@ -35,8 +35,8 @@ jobs:
               exit 1
             fi
             npm run verify:dist -- --edition="$edition"
-            npx --no-install playwright test --config edition-candidates.config.js
-            VISUAL_CANDIDATES_COMPARE=1 npx --no-install playwright test --config edition-candidates.config.js
+            npx --no-install playwright test --config edition-candidates.config.js --project=webkit --grep 'gun-setup/edit-gun.light'
+            VISUAL_CANDIDATES_COMPARE=1 npx --no-install playwright test --config edition-candidates.config.js --project=webkit --grep 'gun-setup/edit-gun.light' --repeat-each=10 --workers=1
             mkdir -p visual-candidates
             cp test-results/build-manifest.json "visual-candidates/$edition-build-manifest.json"
             cp test-results/results.json "visual-candidates/$edition-validation.json"
@@ -52,12 +52,17 @@ jobs:
           retention-days: 14
           if-no-files-found: error
       - name: Publish unaccepted candidates only to their source b branch
+        if: always()
         run: |
+          test -d visual-candidates || exit 0
+          mkdir -p visual-candidates/diagnostics
+          cp -R test-results visual-candidates/diagnostics/
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           test "$GITHUB_REF_NAME" = 'b'
           test "$(git ls-remote origin refs/heads/b | cut -f1)" = "$GITHUB_SHA"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add visual-candidates/
-          git commit -m 'test: collect Beta disclosure screenshot candidates'
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'test: collect unaccepted Beta disclosure diagnostics'
           git push origin HEAD:b

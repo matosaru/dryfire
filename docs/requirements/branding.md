@@ -29,7 +29,7 @@ Generic descriptions of dry-fire practice and technical `dryfire` identifiers ar
 
 ## Design record
 
-The canonical DF monogram remains [public/logo.svg](../../public/logo.svg). The complete production lockup combines that monogram with the accessible HTML wordmark in [index.html](../../index.html), styled by [src/styles.css](../../src/styles.css); the SVG alone does not contain the full name. See the [actual header screenshot](../design/archive/chg-011/brand/lockup.png), including Settings, and [Home screenshot](../design/archive/chg-011/home/overview.png).
+The canonical DF monogram remains [public/logo.svg](../../public/logo.svg). The complete production lockup combines that monogram with the accessible HTML wordmark and BETA marker in [the shared header](../../src/templates/shared/header.html), styled by [src/styles.css](../../src/styles.css); the SVG alone does not contain the full name. See the [actual header screenshot](../design/archive/chg-011/brand/lockup.png), including Settings, and [Home screenshot](../design/archive/chg-011/home/overview.png).
 
 This is the approved wording extension, retaining the existing monogram rather than adopting generated variants from earlier mockups. Existing [reviewed mockups](../design/README.md) remain available as historical flow/design evidence.
 
