@@ -53,6 +53,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add visual-candidates/
+          if test -d visual-candidates/recovered-original/test-results; then git add -f visual-candidates/recovered-original/test-results; fi
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'test: collect unaccepted Beta disclosure diagnostics'
           git push origin HEAD:b
