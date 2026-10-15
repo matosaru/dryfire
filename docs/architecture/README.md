@@ -17,6 +17,8 @@ The checker compares all HTML root views and the six source-defined modes to the
 
 ## Data and execution boundaries
 
+CHG-042 [proposes contextual practice guides](../requirements/practice-guides.md#proposed-architecture-not-current-routes): Practice/Sequence Configure → guide for the selected mode/preset → the same Configure state with unsaved values retained. One shared guide template/content catalog would reuse the app shell. This is design-only and adds no implemented screen/public route to `screen-map.json`; register real guide states and pinned captures during implementation.
+
 - `index.html` declares screens; `src/main.js` connects controls and active gun context. `src/screenNavigation.js` maintains app/browser Back/Forward and guards stale contexts.
 - `src/practiceSession.js` / `src/practiceController.js` own the six-mode engine and Configure/Run/Review. `src/drillSession.js` / `src/sessionController.js` preserve ordered sequence sessions.
 - Microphone capture and segmentation run through `src/audio.js`, the AudioWorklet and event detector; calibrated numeric features feed local recognition. No raw audio is durably recorded/uploaded.

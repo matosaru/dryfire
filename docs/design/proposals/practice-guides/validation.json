@@ -1,0 +1,25 @@
+{
+  "change": "CHG-042",
+  "status": "proposal only; not product screenshots or accepted CI references",
+  "renderer": "154.0.8037.57",
+  "source": "shared shell plus locally authored guide content and timing diagrams",
+  "coverage": "six actual engine modes and four actual built-in sequences verified against source; one custom-preset example",
+  "guides": 11,
+  "themeCaptures": 26,
+  "animations": 11,
+  "framesPerAnimation": 40,
+  "framesPerSecond": 10,
+  "layoutChecks": 66,
+  "widths": [
+    320,
+    390,
+    1024
+  ],
+  "themes": [
+    "dark",
+    "light"
+  ],
+  "reducedMotion": "poster until explicit Play; Play and Pause verified on all 22 themed guides",
+  "settingsPreservation": "four setup → guide → setup round trips preserve unsaved repetitions=17",
+  "pageErrors": []
+}

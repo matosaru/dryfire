@@ -1,5 +1,9 @@
 # Design originality and asset provenance
 
+## CHG-042 proposal artwork — 2026-10-15
+
+The [practice-guide proposal](proposals/practice-guides/README.md) reuses the existing repository-owned shared shell/CSS and canonical logo. Its mode-specific diagrams in `proposals/practice-guides/animations/` are rendered from the locally authored [timing-illustration SVG/JavaScript](proposals/practice-guides/motion.html), with browser PNG frames encoded by FFmpeg into silent GIFs. The [renderer](proposals/practice-guides/render.mjs) and [capture script](proposals/practice-guides/capture.mjs) preserve this creation record. No competitor screenshot, stock footage, external font, icon pack, manufacturer logo or third-party animation was imported. System fonts are used. These are UI/timing illustrations, not a physical handling demonstration, live audio, a field accuracy test or a legal-clearance claim. Their production use remains subject to review of the proposal.
+
 Review updated: 2026-10-11 · State: factual provenance review; not a legal-clearance certificate
 
 ## What this review establishes

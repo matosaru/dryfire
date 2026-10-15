@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Practice timing illustration</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#101a22;color:#fff;font-family:system-ui,sans-serif}svg{display:block;width:344px;height:160px}text{font-family:system-ui,sans-serif}</style></head><body>
+<svg viewBox="0 0 344 160" aria-label="Illustrative acoustic timing, not live audio">
+<text x="18" y="24" fill="#b8cad8" font-size="9" letter-spacing="1.1">EXAMPLE · NOT LIVE AUDIO</text>
+<text id="stage" x="18" y="52" fill="#fff" font-size="17" font-weight="750"></text>
+<g id="wave"></g><line x1="18" x2="326" y1="97" y2="97" stroke="#3d515f" stroke-width="1"/>
+<line id="progress" x1="18" x2="18" y1="97" y2="97" stroke="#ff9141" stroke-width="2"/>
+<circle id="cursor" cx="18" cy="97" r="4" fill="#ff9141"/>
+<g id="nodes"></g><text x="18" y="147" fill="#b8cad8" font-size="10">READY</text><text x="104" y="147" fill="#b8cad8" font-size="10">SIGNAL</text><text x="190" y="147" fill="#b8cad8" font-size="10">EVENT</text><text x="275" y="147" fill="#b8cad8" font-size="10">RESULT</text>
+</svg>
+<script>
+let manual;
+const ns='http://www.w3.org/2000/svg';const node=(tag,attrs)=>{const el=document.createElementNS(ns,tag);for(const [k,v]of Object.entries(attrs))el.setAttribute(k,v);return el};
+window.motion={setManual(m){manual=m},setFrame(t){const phase=Math.min(3,Math.floor(t*4));document.getElementById('stage').textContent=manual.stages[phase];const x=18+t*308;document.getElementById('progress').setAttribute('x2',x);document.getElementById('cursor').setAttribute('cx',x);const wave=document.getElementById('wave');wave.replaceChildren();for(let i=0;i<47;i++){const spike=phase===0?2:phase===1?Math.max(2,24-Math.abs(i-15)*4):Math.max(2,27-Math.abs(i-31)*7,manual.sequence.length>1?21-Math.abs(i-40)*6:0);const h=2+spike*(.75+.25*Math.cos(t*25+i));wave.append(node('rect',{x:19+i*6.5,y:80-h/2,width:3.5,height:h,rx:1.6,fill:phase===1?'#ff9141':phase>=2?'#66d6ff':'#6c8699'}))}const nodes=document.getElementById('nodes');nodes.replaceChildren();[32,122,211,297].forEach((cx,i)=>{nodes.append(node('circle',{cx,cy:119,r:5,fill:i<=phase?'#ff9141':'#2b414f'}))})}};
+</script></body></html>
