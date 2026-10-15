@@ -5,7 +5,6 @@ on:
     paths: ['index.html', 'src/**', 'visual-tests/**', 'vite.config.js', 'tools/page-templates.mjs', 'edition-candidates.config.js', '.github/workflows/edition-candidates.yml']
 permissions:
   contents: write
-  actions: read
 jobs:
   candidates:
     runs-on: ubuntu-24.04
@@ -24,13 +23,25 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --no-audit --no-fund
-      - name: Recover the original mismatch images without accepting them
-        uses: actions/download-artifact@v4
-        with:
-          name: beta-disclosure-candidates
-          run-id: 38685501498
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: visual-candidates/recovered-original
+      - name: Generate and compare both editions in the pinned browsers
+        run: |
+          for edition in public preview; do
+            export APP_EDITION="$edition" VISUAL_EDITION="$edition"
+            if npm run build > /tmp/edition-build.log 2>&1; then
+              cat /tmp/edition-build.log
+            else
+              cat /tmp/edition-build.log
+              cat /tmp/edition-build.log >> "$GITHUB_STEP_SUMMARY"
+              exit 1
+            fi
+            npm run verify:dist -- --edition="$edition"
+            npx --no-install playwright test --config edition-candidates.config.js
+            cp test-results/results.json "visual-candidates/$edition-generation-validation.json"
+            VISUAL_CANDIDATES_COMPARE=1 npx --no-install playwright test --config edition-candidates.config.js
+            mkdir -p visual-candidates
+            cp test-results/build-manifest.json "visual-candidates/$edition-build-manifest.json"
+            cp test-results/results.json "visual-candidates/$edition-validation.json"
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -53,7 +64,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add visual-candidates/
-          if test -d visual-candidates/recovered-original/test-results; then git add -f visual-candidates/recovered-original/test-results; fi
+          git add -f visual-candidates/diagnostics/
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'test: collect unaccepted Beta disclosure diagnostics'
+          git commit -m 'test: collect unaccepted Beta disclosure screenshot candidates'
           git push origin HEAD:b
