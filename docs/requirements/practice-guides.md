@@ -1,10 +1,12 @@
 # Practice guides — CHG-042
 
-Revision 0.2 · CHG-042/043 · 2026-10-15 (Europe/Vilnius) · **Design proposal; no application implementation yet.**
+Revision 1.0 · CHG-042/043/044 · 2026-10-15 (Europe/Vilnius) · **Approved for implementation; delivery/testing tracked separately.**
 
-The user requests a short manual for each practice type, a link reading **“About this practice >”** on each initial configuration page, separate manual subpages and visual examples, preferably with animation. This authorizes preparing and publishing the proposal below. The exact new layout/copy/animation is presented for review; it is not an implemented application feature.
+CHG-044 explicitly starts implementation: after **“publish changes”**, the user clarifies **“Implement guides and push to b/dev (Recommended)”**. This supersedes the design-only status below for GUIDE-01–08. Reuse the reviewed page direction and animation meaning, one shared guide template and the existing navigation guards. A controlled Canvas rendition may replace exported GIFs to keep the app small, pause reliably and stop at Review. Illustrations remain synthetic and separate from real capture. Use actual selected Reload endpoints/custom steps in instructions/examples; explain external-cue/silent settings truthfully. Preserve invalid/unsaved form drafts rather than revalidating or resetting setup to read help. The source registry/current product captures will be updated with implementation. Main/Cloudflare are not part of this publication instruction.
 
-## Proposed requirements
+The user requests a short manual for each practice type, a link reading **“About this practice >”** on each initial configuration page, separate manual subpages and visual examples, preferably with animation. This authorizes preparing and publishing the proposal below. The reviewed CHG-042/043 direction is now implemented locally under CHG-044; pinned screenshot acceptance and publication are tracked separately.
+
+## Approved requirements
 
 | ID | Proposed behavior |
 | --- | --- |
@@ -17,15 +19,15 @@ The user requests a short manual for each practice type, a link reading **“Abo
 | GUIDE-07 | Keep guides available for existing usable practices in both editions. Explain only features available in the chosen context; do not unlock new custom creation, graphs or additional guns. Guides do not change timing thresholds, limits, entitlements, calibration, storage or safety behavior. |
 | GUIDE-08 | CHG-043 revises the original compressed diagrams: show microphone preparation before countdown, actual elapsed countdown seconds and a visible signal before accepted clicks. Export at 1× timing, using configurations clearly labeled as examples. Check transitions/outcomes against the real session engines. Single demonstrates automatic repetition and a separate early-trigger miss with zero shots and no successful reaction time. Par/Reload show explicit user Next; continuous modes have one beep; ordered sessions retain their distinct result hold/detection rules. Remove decorative waveforms that could imply real recorded audio. Keep examples silent, controllable and visibly synthetic. |
 
-The user's **“ok, revisit”** approves revising the proposal after the assistant identified compressed timing, missing readiness and missing early-trigger behavior. It authorizes this animation/mockup correction; it is not blanket approval to implement guide pages in the app. The original four-second concept remains in Git at [`b84de36`](https://github.com/matosaru/dryfire/commit/b84de36).
+The user's **“ok, revisit”** approves revising the proposal after the assistant identified compressed timing, missing readiness and missing early-trigger behavior. It authorizes this animation/mockup correction; at that time it did not authorize app implementation; the subsequent explicit CHG-044 instruction above now does. The original four-second concept remains in Git at [`b84de36`](https://github.com/matosaru/dryfire/commit/b84de36).
 
 ## Content and acceptance
 
 [The design proposal](../design/proposals/practice-guides/README.md) owns reviewable page examples and the [draft content catalog](../design/proposals/practice-guides/manuals.json). The catalog contains separate copy and animation states for six practice modes, four built-ins and one custom-preset example. Custom/Reload guides must resolve actual saved steps/endpoints in a future implementation; fixture values are illustrative.
 
-Acceptance for eventual implementation: every stopped configuration links to its correct guide; keyboard/Back navigation preserves unsaved values; all guides use the common shell at 320/390/1024 px and in both themes; active/unsaved guards remain intact; no automatic media permission or start signal; animations can stop and reduced motion shows an equivalent poster; content agrees with [practice modes](practice-modes.md), [start timing](practice-start.md), [sequence sessions](drill-sessions.md) and [page layout](page-layout.md). Add actual registry states and reviewed product screenshots only when the feature is implemented.
+Acceptance for eventual implementation: every stopped configuration links to its correct guide; keyboard/Back navigation preserves unsaved values; all guides use the common shell at 320/390/1024 px and in both themes; active/unsaved guards remain intact; no automatic media permission or start signal; animations can stop and reduced motion shows an equivalent poster; content agrees with [practice modes](practice-modes.md), [start timing](practice-start.md), [sequence sessions](drill-sessions.md) and [page layout](page-layout.md). The actual guide states and captures belong in the current registry and screen package; older proposals retain their historical scope.
 
-## Proposed architecture (not current routes)
+## Internal guide architecture
 
 ```text
 Drills
@@ -35,4 +37,8 @@ Drills
     └── About this practice → Practice guide(preset snapshot) → Back to same setup
 ```
 
-Reuse the common layout plus one guide-content template/data catalog; retain one app public path `/`. This is proposed internal history state, not a public SEO page or live route. The current screen registry remains the truthful twelve-screen implemented map.
+Reuse the common layout plus one guide-content template/data catalog; retain one app public path `/`. This is an implemented internal history state, not a public SEO route. The screen registry maps thirteen functional screens, including the shared Practice guide.
+
+## CHG-044 implementation details
+
+The controlled Canvas uses the same synthetic engine scenarios as the reviewed GIF direction, with Play/Pause/Resume/Replay and stopped Review; it never requests audio or saves synthetic outcomes. Static posters are initial in all motion preferences. Navigation/backgrounding pauses examples. Reload and saved presets resolve current endpoints/steps; long presets illustrate one full attempt. A deliberately invalid equal-endpoint draft may still read help, with the valid fallback illustration disclosed. External/silent setups explain that the illustration uses the optional app signal. The setup inputs stay in their existing DOM and controllers; opening/closing help does not normalize, reset or require valid numeric drafts. The context checks gun/source key and disallows pending/running/unsaved capture; stale history resolves safely.

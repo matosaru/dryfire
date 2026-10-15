@@ -144,6 +144,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   function render() {
     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
     const running = pending || state && state.phase !== 'review';
+    $('practiceGuideLink').classList.toggle('hidden', !!running || !!record);
     $('practice-title').textContent = practiceMode(record?.practiceMode || mode)?.title || 'Practice';
     $('practiceConfigure').classList.toggle('hidden', !!running || !!record);
     $('practiceRun').classList.toggle('hidden', !running); $('practiceReview').classList.toggle('hidden', !!running || !record);
@@ -372,6 +373,12 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   $('practiceRepeatBtn').addEventListener('click', () => { const record = state ? toPracticeRecord(state) : review; if (record) open(record.practiceMode, record.config).catch(onError); });
   $('practiceRetryBtn').addEventListener('click', () => { enqueue(persist).then(changed).catch(onError); });
   $('safetyAck').addEventListener('change', () => { if (!state && !review) configure(); });
-  return { open, showRecord, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
+  function guideContext() {
+    if (!routeKey || locked() || state || review) return null;
+    return { type: 'practice', gunId: getContext().gun?.id, routeKey, mode,
+      config: { reloadStart: $('practiceReloadStart').value, reloadEnd: $('practiceReloadEnd').value,
+        startSource: $('practiceStartSource').value, soundAtStart: $('practiceStartSound').checked } };
+  }
+  return { open, showRecord, guideContext, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken++; routeKey = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

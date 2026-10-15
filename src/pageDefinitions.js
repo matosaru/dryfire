@@ -29,6 +29,10 @@ export const PAGE_DEFINITIONS = Object.freeze([
     "titleId": "session-title"
   },
   {
+    "id": "practiceGuide",
+    "titleId": "practiceGuide-title"
+  },
+  {
     "id": "recognize",
     "titleId": "recognize-title"
   },

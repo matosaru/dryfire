@@ -162,6 +162,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   function render() {
     const record = state?.phase === 'review' ? toSessionRecord(state) : review;
     const running = pending || !!state && state.phase !== 'review';
+    $('#sessionGuideLink').classList.toggle('hidden', !!running || !!record);
     $('#sessionConfigure').classList.toggle('hidden', running || !!record);
     $('#sessionRun').classList.toggle('hidden', !running);
     $('#sessionReview').classList.toggle('hidden', running || !record);
@@ -465,6 +466,11 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   });
   $('#safetyAck').addEventListener('change', updateReadiness);
 
-  return { open, showRecord, interrupt, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
+  function guideContext() {
+    if (!routeKey || !selection || locked() || saveError || state || review) return null;
+    return { type: 'sequence', gunId: getContext().gun?.id, routeKey, drill: structuredClone(selection),
+      config: { soundAtStart: $('#sessionStartSound').checked } };
+  }
+  return { open, showRecord, guideContext, interrupt, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

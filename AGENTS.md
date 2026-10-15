@@ -1,5 +1,7 @@
 # Repository instructions
 
+CHG-044 implements the [contextual practice guides](docs/requirements/practice-guides.md) in the shared page architecture. Preserve gun/source ownership, history and invalid/unsaved setup drafts when reading a guide. Its synthetic controlled examples use pure session engines, never microphone/storage APIs; keep initial motion paused, actual selected sequence/endpoints, the disclosed example settings, early-Single semantics and navigation/background pause. Current application designs and browser references are separate from earlier CHG-042/043 proposal GIFs.
+
 Read the repository-wide [agent instructions](docs/development/AGENTS.md), [functional requirements](docs/requirements/README.md), [approval log](docs/project/approval-log.md) and [design catalog](docs/design/README.md) before work. Preserve saved user data and reuse existing explicit approvals.
 
 Full documentation belongs in the appropriate package under `docs/`; the [documentation index](docs/README.md) defines ownership. CHG-018 supersedes the older all-under-`docs/design/` rule.

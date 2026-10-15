@@ -1,6 +1,6 @@
 # Practice guide proposal — CHG-042
 
-Revision 0.2 · CHG-042/043 · 2026-10-15 (Europe/Vilnius) · **Proposal for review. Not added to the working app.**
+Revision 0.2 · CHG-042/043 · 2026-10-15 (Europe/Vilnius) · **Historical proposal. CHG-044 now implements the guide feature; see [current product designs](../../screens/practice-guide/README.md) and the delivery tracker.**
 
 Put an underlined **About this practice ›** link directly below each configuration title, before settings. Use white Dark text, normal Light ink, the existing body-link font and a minimum 44 px touch target. The guide opens as an independent app subpage with the same BETA header, footer/information links and sticky navigation, with Drills active. **Back to setup** returns to the same gun/mode and keeps edited settings; reading never starts the microphone or a drill.
 

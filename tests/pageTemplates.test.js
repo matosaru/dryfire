@@ -4,7 +4,7 @@ import { PAGE_DEFINITIONS } from '../src/pageDefinitions.js';
 
 test('all screen content uses one wrapper and one shared application layout', () => {
   const html = renderPageTemplates(readFileSync(new URL('../index.html', import.meta.url), 'utf8'));
-  expect(PAGE_DEFINITIONS).toHaveLength(12);
+  expect(PAGE_DEFINITIONS).toHaveLength(13);
   for (const { id, titleId } of PAGE_DEFINITIONS) {
     expect(html.match(new RegExp(`id="${id}View"`, 'g'))).toHaveLength(1);
     expect(html).toContain(`aria-labelledby="${titleId}"`);
