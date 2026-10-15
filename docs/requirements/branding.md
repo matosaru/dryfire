@@ -1,6 +1,6 @@
 # Dry Fire With Ease branding
 
-Revision: 1.0 · Date: 2026-10-10 · Approval: **Approved** · Implementation: **implemented and locally validated** · Deployment: **not verified**
+Revision: 1.1 · Date: 2026-10-15 · Approval: **Approved** · Implementation: **implemented and locally validated** · Deployment: **not verified**
 
 The user directly instructed: **“no, lets leave dry fire with ease, just update logo to have this with ease, and all other places , where dry fire as a brand is used in an app”**. This authorizes the branding update below; it does not authorize unrelated behavior or data-format changes. See CHG-011 in the [approval log](../project/approval-log.md).
 
@@ -16,6 +16,14 @@ Before this update, the app presented Dry Fire / DRYFIRE with Sound Trainer as i
 | BRAND-04 | Preserve existing database names, stores, persisted sound/drill identifiers, backup schema, manifest identity/start URL, package name, Capacitor `appId`, worker/project/repository identifiers and deployment origin. A display-brand update must not create a new storage identity or invalidate existing learned sounds and history. |
 | BRAND-05 | Replace brand references in current documentation and record the new lockup's creation. Preserve historical approval evidence and previously reviewed image snapshots. Older mockups may retain their reviewed brand; their catalog must identify that difference and must not present them as the latest production lockup. No uniqueness or legal-clearance claim is established by the name change. |
 | BRAND-06 | CHG-023, directly requested 2026-10-11: show **© 2026 Dry Fire With Ease. All rights reserved.** in the shared app footer, readable in both themes and at 320 px. Keep the existing data/microphone notice and brand. Record `easydryfire.com` and `easydryfire.app` as user-reported Cloudflare registrations; registration alone does not change app origin or connect a Worker custom domain. |
+
+## Beta disclosure — CHG-041
+
+Direct instruction: **“add some marker, that this site only a Beta version. Make it clearly visible, maybe somewhere near logo”**. The beta lifecycle label is independent of Free/Full build editions and does not change entitlements.
+
+| ID | Approved requirement and acceptance criteria |
+| --- | --- |
+| BRAND-07 | Show a clearly readable, non-interactive **BETA** badge beside the full wordmark in the shared header on every existing page, in public and private builds. Use the existing orange accent with dark text, readable in both themes. Preserve logo/name, Settings access and header geometry without overlap or horizontal overflow at 320, 390 and 1024 px. Provide an accessible Beta version label. No storage, installed-app identity or edition change. |
 
 Generic descriptions of dry-fire practice and technical `dryfire` identifiers are not display-brand labels. They do not need a forced wording change.
 

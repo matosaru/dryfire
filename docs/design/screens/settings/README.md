@@ -1,5 +1,7 @@
 # Settings design
 
+CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
+
 CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
 
 CHG-035: private preview alone adds **Test as: Free / Full** at the top of Settings and a footer mode indicator. Default Free reproduces the two-gun public rules; Full restores five-gun creation/custom creation/charts. Disabled during active work; mode changes preserve saved data. Public HTML omits these controls. Live Access and deployment are tracked separately in the [guide](../../../development/private-preview-deployment.md).

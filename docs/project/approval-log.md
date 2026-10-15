@@ -537,3 +537,10 @@ The user subsequently directs **“update the screenshots with the link”** and
 - Work directly on b, sync shared changes to dev retaining Full configuration. Production main still uses a checked b → main PR. Refresh actual designs/pinned references and architecture; never auto-accept expected images in ordinary CI.
 
 CHG-037 implementation clarification: the user explicitly adds **“restructure the code, so all the pages will use common, reusable templates”**. LAYOUT-07 requires a reusable app layout, header/footer/navigation fragments and one wrapper for each screen’s content, compiled by Vite for both editions. Keep stable DOM IDs and all behavior; this is a refactor of the approved layout, not a new framework, routing or storage migration.
+
+## CHG-041 — Visible Beta status and welcoming feedback
+
+- Date: 2026-10-15 (Europe/Vilnius). Direct instruction: **“I want you to add some marker, that this site only a Beta version. Make it clearly visible, maybe somewhere near logo, In about page mention, tht beta version, and all the suggestions are welcom”**.
+- Authorizes BRAND-07 and ABOUT-07: a visible accessible orange BETA label beside the shared wordmark on all pages/editions, plus Beta version metadata and a short feedback invitation on About. The existing Contact page remains the feedback path; no new backend/contact form.
+- Free/shared change starts directly on b, syncs to dev preserving Full profile/private named-Preview commands. Main promotion remains an owner-reviewed b → main PR. Preserve all saved data, navigation, safety and edition rules.
+- Refresh/review actual images and both pinned browser baseline sets. Local pinned Docker image pull is blocked by a registry Forbidden response; use the established temporary unaccepted GitHub candidate collector, compare candidates unchanged, review before promotion, and remove the collector. Ordinary CI never accepts images or relaxes its comparison threshold. Publication, CI and live deployment remain separate.
