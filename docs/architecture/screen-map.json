@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "reviewedOn": "2026-10-12",
-  "sourceBaseline": "7240e2cb9cc9ff0cd577662eefec9fdddbed2292",
+  "reviewedOn": "2026-10-15",
+  "sourceBaseline": "8ec331cf1e8733fafc3939b2c5bc6ed9e19432f1",
   "publicOrigin": "https://dryfire.matosaru.workers.dev",
   "publicPaths": [
     "/"
@@ -542,7 +542,7 @@
         "docs/requirements/build-editions.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, white Dark/footer-matching Light color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Five-item bottom navigation is visible; gun switcher is hidden. Copy follows the build edition.",
+      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, white Dark/footer-matching Light color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Five-item bottom navigation is visible; gun switcher is hidden. Copy follows the build edition. Beta status/version and Feedback welcome card invite suggestions via Contact.",
       "states": [
         {
           "key": "overview.dark",
@@ -617,7 +617,7 @@
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
     "src/main.js": "391f2d78fbe58df50d42eacf535fd91252738695426589fc35d1f34adf87ff7b",
-    "src/styles.css": "64890449cfb4d3004af2df507f0eca63e1775c2c833acceb893ca53111428b09",
+    "src/styles.css": "657a65ce8733082b01674d81f57dc8324b8b84091f1b43764e36fcdd205fd8d2",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
     "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
@@ -645,11 +645,11 @@
     "src/templates/pages/home.html": "e4ee581dde390ee63aaf72fe05c6d81ebd506f71909881ccfbd912d18f25e413",
     "src/templates/pages/session.html": "272d56d4f0b4a4741b56cb37ee02dc23527d86df3b2e9bec413ac7d79417a038",
     "src/templates/pages/settings.html": "b2463168a0a3622a3b2aeccb75f344a368b0bd3a9e40fa95179e14108fa907fa",
-    "src/templates/pages/about.html": "b64daf80ba7ddbf8e5144bc11aa2cc4b47a7ea686c5bd6f5ae23e5381d24de66",
+    "src/templates/pages/about.html": "8f10ac82c7347750b70f2c90e999e656d70f4792d202fe53f20d1fd5510f5d34",
     "src/templates/pages/history.html": "93911ad01eb59991b1f1eda5451c13432eac9282bdecd49f361be2f1379ba251",
     "src/templates/shared/context.html": "5155fb19111dad1f10f7d6754eecfe6e3f05870113860294f335f16c42eb49e7",
     "src/templates/shared/safety-modal.html": "259426f79af84ec62288e4bb4f5ff515ba9285ca693b548a3e94ce68d24752e5",
-    "src/templates/shared/header.html": "f8b2b0f40578df83a28cc480ea187ddcf03698f0fc005afa24bec83c7cccdd6f",
+    "src/templates/shared/header.html": "8003b374183a9df0f87b8a7d402f267d5a58f05d8f350c2aa61c8ddf3dbea64e",
     "src/templates/shared/navigation.html": "aa8a8ba31fd79b14f55e74ce7be1aee955ac2f9761751ba415e868c308afc70f",
     "src/templates/shared/footer.html": "3b939187621c40c70dbe6dd8021ea432d2eea235b716972da22580e6f1094453"
   },
@@ -670,6 +670,7 @@
     "CHG-034",
     "CHG-035",
     "CHG-036",
-    "CHG-037"
+    "CHG-037",
+    "CHG-041"
   ]
 }

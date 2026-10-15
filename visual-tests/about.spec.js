@@ -29,6 +29,8 @@ test('About and Contact are separate historical screens before setup without cap
   await expect(page.locator('#gunSetupView')).toBeVisible();
   await page.locator('#aboutBtn').click();
   await expect(page.locator('#aboutView')).toBeVisible();
+  await expect(page.locator('#aboutBetaTitle')).toHaveText('Feedback welcome');
+  await expect(page.locator('#aboutBetaTitle + p')).toContainText('This app is in beta. All feedback and suggestions are welcome.');
   await expect(page.locator('#aboutBtn')).toHaveAttribute('aria-current', 'page');
   await expect(page.locator('#aboutView a[href^="mailto:"]')).toHaveCount(0);
   await page.locator('#contactBtn').click();

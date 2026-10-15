@@ -1,5 +1,9 @@
 # About design
 
+CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
+
+About also shows **Sound trainer · Beta · v0.8.0** and a **Feedback welcome** card: “This app is in beta. All feedback and suggestions are welcome. Visit Contact to share an idea or report a problem.” Contact remains a separate page. See [ABOUT-07](../../../requirements/about.md#beta-and-feedback--chg-041).
+
 CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
 
 CHG-033: retain the fixed Home / Learn / Drills / Live Listen / History navigation at the bottom in both themes, with normal safe-area/content padding and no unrelated active tab. CHG-032: public copy describes basic practice/saved results/recovery; full preview retains the five-gun/custom/trends description. Both editions preserve the shared footer and data/capture guards. [Edition specification](../../../requirements/build-editions.md).

@@ -45,7 +45,7 @@ Connect GitHub `matosaru/dryfire`. Build command: `npm run build`; publish direc
 
 Use the [iPhone release checklist](IPHONE_RELEASE_CHECKS.md) to record the production commit and test Safari/Home Screen sessions, settings and retained data. Its current results distinguish completed local checks from unverified production/device checks.
 
-The current service-worker public cache version is `dryfire-sound-trainer-public-v30`; the technical cache-name prefix remains unchanged. Active practice displays STOP with the microphone level below it. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
+The current service-worker public cache version is `dryfire-sound-trainer-public-v31`; the technical cache-name prefix remains unchanged. Active practice displays STOP with the microphone level below it. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
 
 ## Verify the current production build
 
