@@ -1,4 +1,4 @@
-# Draft guide copy — CHG-042
+# Draft guide copy — CHG-042/043
 
 Generated from [manuals.json](manuals.json) by [render.mjs](render.mjs). Design proposal, not implemented app content. Default app-signal examples are shown; calibrated external-cue wording must reflect the actual configuration.
 
@@ -18,7 +18,7 @@ Measure the time from each start signal to your first recognized trigger click.
 
 **Before you start:** Learn Trigger pull for the selected gun. Other sound types are optional. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · 2.4 s → Beep · timer starts → Click detected → 0.48 s · next countdown. These are example timings, not live audio.
+**Illustration:** Microphone ready → 2.4 s countdown → beep → Click at 0.50 s → Automatic 3.2 s countdown → second beep → 0.60 s click. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/single.dark.png) · [Light page](screens/single.light.png) · [Silent GIF](animations/single.gif)
 
@@ -38,7 +38,7 @@ Count separate recognized trigger clicks and see the time between them.
 
 **Before you start:** Learn Trigger pull. Optional reset/noise examples can help reject other clicks. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · start once → Click 1 → 2 → 3 → Intervals · 0.72 / 0.69 s. These are example timings, not live audio.
+**Illustration:** Microphone ready → 2.4 s countdown → one beep → Three clicks: 0.50 / 1.30 / 2.10 s → Two intervals: 0.80 / 0.80 s. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/repeated.dark.png) · [Light page](screens/repeated.light.png) · [Silent GIF](animations/repeated.gif)
 
@@ -58,7 +58,7 @@ Check whether a recognized trigger click arrives within your chosen time limit.
 
 **Before you start:** Learn Trigger pull. Example: a 0.64 s click is in time for a 1.50 s limit. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · 1.50 s limit → Click · 0.64 s → In time · select Next. These are example timings, not live audio.
+**Illustration:** Microphone ready → Countdown → beep → 0.60 s hit within 1.50 s → User selects Next repetition → Fresh countdown → beep → no click → miss. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/par.dark.png) · [Light page](screens/par.light.png) · [Silent GIF](animations/par.gif)
 
@@ -78,7 +78,7 @@ Compare how consistent the timing is between your recognized trigger clicks.
 
 **Before you start:** Learn Trigger pull. Optional reset/noise calibration can improve discrimination. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · start once → Click → click → click → Intervals · 0.80 / 0.82 s. These are example timings, not live audio.
+**Illustration:** Microphone ready → 2.4 s countdown → one beep → Three distinct clicks → 0.80 s intervals → review. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/control.dark.png) · [Light page](screens/control.light.png) · [Silent GIF](animations/control.gif)
 
@@ -98,7 +98,7 @@ Measure the time between two mechanical sounds you choose.
 
 **Before you start:** Learn both selected endpoint sounds. Trigger is needed only when it is a selected endpoint. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · start → Rack → Magazine → Event interval · 1.24 s. These are example timings, not live audio.
+**Illustration:** Microphone ready → Countdown → beep → Rack at 0.40 s → Magazine at 1.60 s → 1.20 s interval → user selects Next → repeat. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/reload.dark.png) · [Light page](screens/reload.light.png) · [Silent GIF](animations/reload.gif)
 
@@ -118,7 +118,7 @@ Practice for a chosen duration without a fixed click target.
 
 **Before you start:** Learn Trigger pull. No extra mechanical sound categories are required. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · 60 s session → Click counter running → 12 clicks · 60 s active. These are example timings, not live audio.
+**Illustration:** Microphone ready → Countdown → one beep → Three clicks during a 6 s example session → Deadline → finish captured audio → 3 clicks in 6 s. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/free.dark.png) · [Light page](screens/free.light.png) · [Silent GIF](animations/free.gif)
 
@@ -138,7 +138,7 @@ Complete a one-step ordered drill by matching the learned trigger sound after th
 
 **Before you start:** Learn Trigger pull. Sounds in the initial 0.30 s after the app beep are excluded to reject the cue. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · start → Trigger matched → 0.52 s · next repetition. These are example timings, not live audio.
+**Illustration:** Microphone connected → 2.4 s countdown → beep → trigger → Result → automatic 3.2 s countdown → repeat. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/sequence-trigger-only.dark.png) · [Light page](screens/sequence-trigger-only.light.png) · [Silent GIF](animations/sequence-trigger-only.gif)
 
@@ -158,7 +158,7 @@ Complete the learned Rack slide and Trigger pull sounds in the displayed order.
 
 **Before you start:** Learn Rack slide and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · start → Rack → Trigger → Sequence complete · 1.38 s. These are example timings, not live audio.
+**Illustration:** Microphone connected → 2.4 s countdown → beep → rack → trigger → Result → automatic 3.2 s countdown → repeat. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/sequence-rack-trigger.dark.png) · [Light page](screens/sequence-rack-trigger.light.png) · [Silent GIF](animations/sequence-rack-trigger.gif)
 
@@ -178,7 +178,7 @@ Complete the learned magazine-change and trigger sounds in the displayed order.
 
 **Before you start:** Learn Change magazine and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · start → Magazine → Trigger → Sequence complete · 1.62 s. These are example timings, not live audio.
+**Illustration:** Microphone connected → 2.4 s countdown → beep → reload → trigger → Result → automatic 3.2 s countdown → repeat. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/sequence-mag-trigger.dark.png) · [Light page](screens/sequence-mag-trigger.light.png) · [Silent GIF](animations/sequence-mag-trigger.gif)
 
@@ -198,7 +198,7 @@ Match the three learned sounds in one ordered sequence.
 
 **Before you start:** Learn Draw, Change magazine and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · start → Draw → Mag → Trigger → Sequence complete · 2.40 s. These are example timings, not live audio.
+**Illustration:** Microphone connected → 2.4 s countdown → beep → draw → reload → trigger → Result → automatic 3.2 s countdown → repeat. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/sequence-draw-mag-trigger.dark.png) · [Light page](screens/sequence-draw-mag-trigger.light.png) · [Silent GIF](animations/sequence-draw-mag-trigger.gif)
 
@@ -218,7 +218,7 @@ Match the sounds in your selected saved drill, in the order you defined.
 
 **Before you start:** Learn only the sounds referenced by this preset. Creating a new custom preset remains a Full-only feature. Verify unloaded, remove live ammunition and use a safe direction and backstop.
 
-**Illustration:** Ready · countdown → Beep · start → Rack → Click → Click → Your sequence · complete. These are example timings, not live audio.
+**Illustration:** Microphone connected → 2.4 s countdown → beep → rack → trigger → trigger → Result → automatic 3.2 s countdown → repeat. The exported animation follows these example timings at 1× speed; detections are synthetic, not live audio.
 
 [Dark page](screens/sequence-custom.dark.png) · [Light page](screens/sequence-custom.light.png) · [Silent GIF](animations/sequence-custom.gif)
 

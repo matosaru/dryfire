@@ -1,0 +1,1133 @@
+{
+  "change": "CHG-043",
+  "frameStepMs": 100,
+  "speed": 1,
+  "sourceHashes": {
+    "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
+    "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
+    "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
+    "src/sessionController.js": "ea077ffa2ecd0b63fe1e2b5660106e3a3e64da6f8f964a62787352e6be2b99a6"
+  },
+  "assumptions": "Synthetic recognized events; safety already confirmed; preparation shown as 1 s example; classifier, hardware and storage latency are not modeled.",
+  "scenarios": [
+    {
+      "id": "single",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 6,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "durationMs": 9100,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-input-ready"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3900,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 3900,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 500,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": 1
+        },
+        {
+          "atMs": 4000,
+          "kind": "countdown",
+          "endsAtMs": 7200
+        },
+        {
+          "atMs": 7200,
+          "kind": "app-beep",
+          "attempt": 2,
+          "goAtMs": 7200
+        },
+        {
+          "atMs": 7800,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 600
+        },
+        {
+          "atMs": 7800,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 600,
+          "intervalMs": null,
+          "completed": 2,
+          "shots": 2
+        },
+        {
+          "atMs": 7800,
+          "kind": "review",
+          "completed": 2,
+          "shots": 2
+        }
+      ],
+      "posterIndex": 40,
+      "frameCount": 91
+    },
+    {
+      "id": "repeated",
+      "config": {
+        "repetitions": 3,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 6,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "durationMs": 6800,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-input-ready"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3900,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 3900,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 500,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": 1
+        },
+        {
+          "atMs": 4700,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 4700,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 1300,
+          "intervalMs": 800,
+          "completed": 2,
+          "shots": 2
+        },
+        {
+          "atMs": 5500,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 2100
+        },
+        {
+          "atMs": 5500,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 2100,
+          "intervalMs": 800,
+          "completed": 3,
+          "shots": 3
+        },
+        {
+          "atMs": 5500,
+          "kind": "review",
+          "completed": 3,
+          "shots": 3
+        }
+      ],
+      "posterIndex": 47,
+      "frameCount": 68
+    },
+    {
+      "id": "par",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 6,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "durationMs": 13300,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-input-ready"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 4000,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 600
+        },
+        {
+          "atMs": 4000,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 600,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": 1
+        },
+        {
+          "atMs": 5200,
+          "kind": "user-selects-next"
+        },
+        {
+          "atMs": 5200,
+          "kind": "countdown",
+          "endsAtMs": 8400
+        },
+        {
+          "atMs": 8400,
+          "kind": "app-beep",
+          "attempt": 2,
+          "goAtMs": 8400
+        },
+        {
+          "atMs": 10000,
+          "kind": "finish-captured-audio"
+        },
+        {
+          "atMs": 12000,
+          "kind": "outcome",
+          "status": "miss",
+          "reason": "no-click",
+          "elapsedMs": 3600,
+          "intervalMs": null,
+          "completed": 2,
+          "shots": 1
+        },
+        {
+          "atMs": 12000,
+          "kind": "review",
+          "completed": 2,
+          "shots": 1
+        }
+      ],
+      "posterIndex": 40,
+      "frameCount": 133
+    },
+    {
+      "id": "control",
+      "config": {
+        "repetitions": 3,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 6,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "durationMs": 6800,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-input-ready"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3900,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 3900,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 500,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": 1
+        },
+        {
+          "atMs": 4700,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 4700,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 1300,
+          "intervalMs": 800,
+          "completed": 2,
+          "shots": 2
+        },
+        {
+          "atMs": 5500,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 2100
+        },
+        {
+          "atMs": 5500,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 2100,
+          "intervalMs": 800,
+          "completed": 3,
+          "shots": 3
+        },
+        {
+          "atMs": 5500,
+          "kind": "review",
+          "completed": 3,
+          "shots": 3
+        }
+      ],
+      "posterIndex": 47,
+      "frameCount": 68
+    },
+    {
+      "id": "reload",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 6,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "durationMs": 12300,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-input-ready"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3800,
+          "kind": "recognized-event",
+          "label": "rack",
+          "offsetMs": 400
+        },
+        {
+          "atMs": 5000,
+          "kind": "recognized-event",
+          "label": "reload",
+          "offsetMs": 1600
+        },
+        {
+          "atMs": 5000,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 1600,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": 0
+        },
+        {
+          "atMs": 6200,
+          "kind": "user-selects-next"
+        },
+        {
+          "atMs": 6200,
+          "kind": "countdown",
+          "endsAtMs": 9400
+        },
+        {
+          "atMs": 9400,
+          "kind": "app-beep",
+          "attempt": 2,
+          "goAtMs": 9400
+        },
+        {
+          "atMs": 9800,
+          "kind": "recognized-event",
+          "label": "rack",
+          "offsetMs": 400
+        },
+        {
+          "atMs": 11000,
+          "kind": "recognized-event",
+          "label": "reload",
+          "offsetMs": 1600
+        },
+        {
+          "atMs": 11000,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 1600,
+          "intervalMs": null,
+          "completed": 2,
+          "shots": 0
+        },
+        {
+          "atMs": 11000,
+          "kind": "review",
+          "completed": 2,
+          "shots": 0
+        }
+      ],
+      "posterIndex": 50,
+      "frameCount": 123
+    },
+    {
+      "id": "free",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 6,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "durationMs": 12800,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-input-ready"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3900,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 3900,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 500,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": 1
+        },
+        {
+          "atMs": 5400,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 2000
+        },
+        {
+          "atMs": 5400,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 2000,
+          "intervalMs": 1500,
+          "completed": 2,
+          "shots": 2
+        },
+        {
+          "atMs": 8200,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 4800
+        },
+        {
+          "atMs": 8200,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 4800,
+          "intervalMs": 2800,
+          "completed": 3,
+          "shots": 3
+        },
+        {
+          "atMs": 9500,
+          "kind": "finish-captured-audio"
+        },
+        {
+          "atMs": 11500,
+          "kind": "outcome",
+          "status": "partial",
+          "reason": "duration",
+          "elapsedMs": 8100,
+          "intervalMs": null,
+          "completed": 3,
+          "shots": 3
+        },
+        {
+          "atMs": 11500,
+          "kind": "review",
+          "completed": 3,
+          "shots": 3
+        }
+      ],
+      "posterIndex": 123,
+      "frameCount": 128
+    },
+    {
+      "id": "sequence-trigger-only",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true
+      },
+      "durationMs": 10900,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-connected"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3900,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 3900,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 500,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": null
+        },
+        {
+          "atMs": 4900,
+          "kind": "countdown",
+          "endsAtMs": 8100
+        },
+        {
+          "atMs": 8100,
+          "kind": "app-beep",
+          "attempt": 2,
+          "goAtMs": 8100
+        },
+        {
+          "atMs": 8600,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 8600,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 500,
+          "intervalMs": null,
+          "completed": 2,
+          "shots": null
+        },
+        {
+          "atMs": 9600,
+          "kind": "review",
+          "completed": 2,
+          "shots": null
+        }
+      ],
+      "posterIndex": 39,
+      "frameCount": 109
+    },
+    {
+      "id": "sequence-rack-trigger",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true
+      },
+      "durationMs": 12500,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-connected"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3900,
+          "kind": "recognized-event",
+          "label": "rack",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 4700,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 4700,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 1300,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": null
+        },
+        {
+          "atMs": 5700,
+          "kind": "countdown",
+          "endsAtMs": 8900
+        },
+        {
+          "atMs": 8900,
+          "kind": "app-beep",
+          "attempt": 2,
+          "goAtMs": 8900
+        },
+        {
+          "atMs": 9400,
+          "kind": "recognized-event",
+          "label": "rack",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 10200,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 10200,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 1300,
+          "intervalMs": null,
+          "completed": 2,
+          "shots": null
+        },
+        {
+          "atMs": 11200,
+          "kind": "review",
+          "completed": 2,
+          "shots": null
+        }
+      ],
+      "posterIndex": 47,
+      "frameCount": 125
+    },
+    {
+      "id": "sequence-mag-trigger",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true
+      },
+      "durationMs": 12500,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-connected"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3900,
+          "kind": "recognized-event",
+          "label": "reload",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 4700,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 4700,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 1300,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": null
+        },
+        {
+          "atMs": 5700,
+          "kind": "countdown",
+          "endsAtMs": 8900
+        },
+        {
+          "atMs": 8900,
+          "kind": "app-beep",
+          "attempt": 2,
+          "goAtMs": 8900
+        },
+        {
+          "atMs": 9400,
+          "kind": "recognized-event",
+          "label": "reload",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 10200,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 10200,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 1300,
+          "intervalMs": null,
+          "completed": 2,
+          "shots": null
+        },
+        {
+          "atMs": 11200,
+          "kind": "review",
+          "completed": 2,
+          "shots": null
+        }
+      ],
+      "posterIndex": 47,
+      "frameCount": 125
+    },
+    {
+      "id": "sequence-draw-mag-trigger",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true
+      },
+      "durationMs": 14100,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-connected"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3900,
+          "kind": "recognized-event",
+          "label": "draw",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 4700,
+          "kind": "recognized-event",
+          "label": "reload",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 5500,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 2100
+        },
+        {
+          "atMs": 5500,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 2100,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": null
+        },
+        {
+          "atMs": 6500,
+          "kind": "countdown",
+          "endsAtMs": 9700
+        },
+        {
+          "atMs": 9700,
+          "kind": "app-beep",
+          "attempt": 2,
+          "goAtMs": 9700
+        },
+        {
+          "atMs": 10200,
+          "kind": "recognized-event",
+          "label": "draw",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 11000,
+          "kind": "recognized-event",
+          "label": "reload",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 11800,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 2100
+        },
+        {
+          "atMs": 11800,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 2100,
+          "intervalMs": null,
+          "completed": 2,
+          "shots": null
+        },
+        {
+          "atMs": 12800,
+          "kind": "review",
+          "completed": 2,
+          "shots": null
+        }
+      ],
+      "posterIndex": 55,
+      "frameCount": 141
+    },
+    {
+      "id": "sequence-custom",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true
+      },
+      "durationMs": 14100,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-connected"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 3400,
+          "kind": "app-beep",
+          "attempt": 1,
+          "goAtMs": 3400
+        },
+        {
+          "atMs": 3900,
+          "kind": "recognized-event",
+          "label": "rack",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 4700,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 5500,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 2100
+        },
+        {
+          "atMs": 5500,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 2100,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": null
+        },
+        {
+          "atMs": 6500,
+          "kind": "countdown",
+          "endsAtMs": 9700
+        },
+        {
+          "atMs": 9700,
+          "kind": "app-beep",
+          "attempt": 2,
+          "goAtMs": 9700
+        },
+        {
+          "atMs": 10200,
+          "kind": "recognized-event",
+          "label": "rack",
+          "offsetMs": 500
+        },
+        {
+          "atMs": 11000,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 1300
+        },
+        {
+          "atMs": 11800,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 2100
+        },
+        {
+          "atMs": 11800,
+          "kind": "outcome",
+          "status": "completed",
+          "reason": "completed",
+          "elapsedMs": 2100,
+          "intervalMs": null,
+          "completed": 2,
+          "shots": null
+        },
+        {
+          "atMs": 12800,
+          "kind": "review",
+          "completed": 2,
+          "shots": null
+        }
+      ],
+      "posterIndex": 55,
+      "frameCount": 141
+    },
+    {
+      "id": "single-early",
+      "config": {
+        "repetitions": 2,
+        "delayMode": "random",
+        "fixedDelaySeconds": 3,
+        "randomMinSeconds": 2,
+        "randomMaxSeconds": 5,
+        "soundAtStart": true,
+        "startSource": "app",
+        "durationSeconds": 6,
+        "parSeconds": 1.5,
+        "reloadStart": "rack",
+        "reloadEnd": "reload"
+      },
+      "durationMs": 8100,
+      "readyAtMs": 1000,
+      "events": [
+        {
+          "atMs": 1000,
+          "kind": "microphone-input-ready"
+        },
+        {
+          "atMs": 1000,
+          "kind": "countdown",
+          "endsAtMs": 3400
+        },
+        {
+          "atMs": 2900,
+          "kind": "recognized-trigger-before-signal",
+          "offsetMs": -500
+        },
+        {
+          "atMs": 2900,
+          "kind": "outcome",
+          "status": "miss",
+          "reason": "early",
+          "elapsedMs": null,
+          "intervalMs": null,
+          "completed": 1,
+          "shots": 0
+        },
+        {
+          "atMs": 3000,
+          "kind": "countdown",
+          "endsAtMs": 6200
+        },
+        {
+          "atMs": 6200,
+          "kind": "app-beep",
+          "attempt": 2,
+          "goAtMs": 6200
+        },
+        {
+          "atMs": 6800,
+          "kind": "recognized-event",
+          "label": "trigger",
+          "offsetMs": 600
+        },
+        {
+          "atMs": 6800,
+          "kind": "outcome",
+          "status": "hit",
+          "reason": "recognized",
+          "elapsedMs": 600,
+          "intervalMs": null,
+          "completed": 2,
+          "shots": 1
+        },
+        {
+          "atMs": 6800,
+          "kind": "review",
+          "completed": 2,
+          "shots": 1
+        }
+      ],
+      "posterIndex": 29,
+      "frameCount": 81
+    }
+  ]
+}

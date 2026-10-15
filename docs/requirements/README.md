@@ -27,7 +27,7 @@ CHG-020 is implemented locally with 270 Jest / 23 suites, 16 smoke/build/assets 
 
 ## Interpretation and maintenance
 
-CHG-042 prepares [practice-guide requirements](practice-guides.md) and [mode-specific page/animation examples](../design/proposals/practice-guides/README.md). This is a design proposal, **not implemented**. Existing practice/sequence behavior and the twelve-screen registry remain unchanged until implementation.
+CHG-042/043 prepares [practice-guide requirements](practice-guides.md) and [mode-specific page/animation examples](../design/proposals/practice-guides/README.md), revised with realistic timing, microphone states and a separate early-trigger failure. This is a design proposal, **not implemented**. Existing practice/sequence behavior and the twelve-screen registry remain unchanged until implementation.
 
 - Keep stable requirement IDs; do not recycle them. A direct user instruction or explicit approval authorizes its documented scope. [Approval evidence](../project/approval-log.md) is append-only.
 - Use [the change process](../project/change-process.md). Proposed assistant additions need approval before product implementation; existing approvals do not need to be requested again.

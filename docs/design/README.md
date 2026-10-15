@@ -1,5 +1,7 @@
 # Current designs
 
+CHG-043 revises the [practice-guide examples](proposals/practice-guides/README.md#animation-direction) with 1× timing from actual session-engine scenarios, microphone preparation/listening states, automatic Single repetitions and a separate early-trigger failure. The guide feature remains a proposal; product screens/baselines and the twelve-screen registry are unchanged.
+
 CHG-042 [practice-guide proposal](proposals/practice-guides/README.md) shows an **About this practice ›** setup link, separate short manuals for six practice modes and ordered sequences, Dark/Light pages and silent timing GIFs. These are reviewable mockups, not current product captures; the implemented references below remain unchanged.
 
 CHG-041 adds a visible **BETA** badge in the shared header across all screens and a Beta/feedback invitation within About. [Branding](../requirements/branding.md#beta-disclosure--chg-041) and [About](../requirements/about.md#beta-and-feedback--chg-041) own the approved wording; screenshot review/publication is in the [delivery tracker](../project/implementation-history.md).
