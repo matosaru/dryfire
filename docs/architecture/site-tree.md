@@ -1,6 +1,6 @@
 # Site and screen tree
 
-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-12; application source baseline `7240e2c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-15; application source baseline `8ec331c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
 
 ## Public site
 
