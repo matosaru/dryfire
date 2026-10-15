@@ -1,10 +1,10 @@
 {
-  "commit": "3eaa30caab14250fcd8afd788a5c78f3383dcffc",
+  "commit": "8ec331cf1e8733fafc3939b2c5bc6ed9e19432f1",
   "edition": "public",
   "build": {
     "version": 1,
     "edition": "public",
-    "sourceRevision": "3eaa30caab14250fcd8afd788a5c78f3383dcffc",
+    "sourceRevision": "8ec331cf1e8733fafc3939b2c5bc6ed9e19432f1",
     "sourceDigest": "5508617d0597ae22414452f2266e27f42f1080fb9cebf96b918d972eb7f95a77",
     "assets": [
       "/assets/eventDetector-DtBbU0H0.js",
