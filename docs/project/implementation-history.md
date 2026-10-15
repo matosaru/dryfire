@@ -6,6 +6,8 @@
 
 **Pinned candidate investigation:** initial run 38685501498 passes all 168 public generation checks, then its unchanged comparison fails one WebKit Light gun-editor case by 154 pixels (167 pass). No candidates are accepted and the comparison threshold/retry policy remains unchanged. Add targeted repeated diagnostic capture and publish unaccepted expected/actual/diff evidence to the source b branch for inspection; repeat full both-edition generation/comparison only after diagnosing the mismatch.
 
+**Targeted diagnostic result:** pinned run 38686237691 passes generation and ten unchanged repetitions of the WebKit Light editor. The original 154-pixel mismatch has not yet been explained; recover its retained artifact with the repository’s scoped Actions token for direct expected/actual/diff inspection before baseline acceptance. No retry setting or threshold is changed.
+
 **Setup:** initial npm ci failed because its inherited cache was outside the writable workspace; retry uses /tmp/dryfire-npm-cache without changing dependency pins or integrity checks. The pinned browser image registry download returns Forbidden locally; use the existing GitHub pinned-candidate workflow pattern and review all changed evidence before baseline acceptance.
 
 **Shared SVG fixture correction locally verified:** b public build/artifact/profile/docs and 266 unchanged baseline fingerprints pass. The expanded installation-help case renders successfully in local Chromium, then passes an unchanged comparison against its local debug capture; no debug image is promoted and no reviewed PNG is changed. Publish the test-only correction on b, synchronize into dev preserving CHG-038 Full default, then run normal pinned Chromium/WebKit comparisons and probes on both branches.
