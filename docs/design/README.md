@@ -1,5 +1,7 @@
 # Current designs
 
+CHG-042 [practice-guide proposal](proposals/practice-guides/README.md) shows an **About this practice ›** setup link, separate short manuals for six practice modes and ordered sequences, Dark/Light pages and silent timing GIFs. These are reviewable mockups, not current product captures; the implemented references below remain unchanged.
+
 CHG-041 adds a visible **BETA** badge in the shared header across all screens and a Beta/feedback invitation within About. [Branding](../requirements/branding.md#beta-disclosure--chg-041) and [About](../requirements/about.md#beta-and-feedback--chg-041) own the approved wording; screenshot review/publication is in the [delivery tracker](../project/implementation-history.md).
 
 CHG-035 adds private-only Free/Full Settings simulation, with a visible mode indicator and protected online asset boundary. CHG-032 adds public/full build editions; shared current captures use public unless a state is explicitly preview-only. CHG-033 retains the five bottom tabs on About/Contact in both themes/editions. Requirements and exact capture/CI status are in the delivery tracker.
