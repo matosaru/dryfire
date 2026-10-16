@@ -1,0 +1,133 @@
+{
+  "sourceCommit": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+  "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+  "sources": {
+    "src/styles.css": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
+    "src/sessionPresentation.js": "55258e9a2b7c9c2acbfccd722bea1986af688d4b51773e0367f6c97b0b31c837",
+    "src/practiceGuideController.js": "978daa3edf0db71157cf5e4c10dff3a9437f87ec952dcf408190dd07fe7d6e4e",
+    "src/practiceGuideRendering.js": "2cd900f757cfb2a860c5c64b9cfc6c48b59d29ca845661ec6493f3ef02d89580",
+    "src/practiceGuideExamples.js": "6a597a7ad94169334a98a3f58ec5af4ddfd9aa4f3284208f929c0e7b299a183b",
+    "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
+    "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
+    "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
+    "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
+    "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
+    "tools/page-templates.mjs": "0c7fed0ec6f8cc4c135a76e41f41e9322e8481eafab21e87267de0f39286396a",
+    "tools/export-guide-examples.mjs": "0fb241f2ef9d835f1928cd20b6e207ee9b957edfdf51bf2bfd94fc9daab19315",
+    "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
+    "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
+    "src/templates/shared/practice-review.html": "cd21f121c3ee65f387f5e263e46a046e26214b51e681da4339d26371e26c31c0",
+    "src/templates/shared/session-run.html": "eed45b5ebf5d95c265e57d2df1039eac3478272dee3f72def1d4afe9e109e1b1",
+    "src/templates/shared/session-review.html": "7e0e4ecc2bd1f2ba74f252925dcaef0fcd99987f75a23f4689982e54bf71ab03"
+  },
+  "exports": [
+    {
+      "name": "single",
+      "frames": 47,
+      "frameMs": 200,
+      "file": "single.gif",
+      "sha256": "f4c3ba3010b3ca515893d5147fa18709d630607c9452d5526fa2dd035078c2d8",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "single-early",
+      "frames": 42,
+      "frameMs": 200,
+      "file": "single-early.gif",
+      "sha256": "a277ddecb4766c52589ee3d585d5c7a41ac63fe69b5ad76345dfd8a042257284",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "repeated",
+      "frames": 36,
+      "frameMs": 200,
+      "file": "repeated.gif",
+      "sha256": "f3fe1a824dc7af099a24be921dd043a78f19fb1ccd86d35709132d22653f968c",
+      "width": 358,
+      "height": 949
+    },
+    {
+      "name": "par",
+      "frames": 68,
+      "frameMs": 200,
+      "file": "par.gif",
+      "sha256": "f8c4ef7d7d33ef28823627b6783101ecc04ee335b46d2a96c06d4c84b70f9b18",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "control",
+      "frames": 36,
+      "frameMs": 200,
+      "file": "control.gif",
+      "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182",
+      "width": 358,
+      "height": 949
+    },
+    {
+      "name": "reload",
+      "frames": 63,
+      "frameMs": 200,
+      "file": "reload.gif",
+      "sha256": "aa8fffd16518e6a4205096de655d01b9bad8527622c05219c9d91947b0c03c45",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "free",
+      "frames": 65,
+      "frameMs": 200,
+      "file": "free.gif",
+      "sha256": "bb1e2a8b9b62a650ab3fa3f99e57eaca1b3fc075bd84e5d03bea970645c0af58",
+      "width": 358,
+      "height": 949
+    },
+    {
+      "name": "sequence-trigger-only",
+      "frames": 56,
+      "frameMs": 200,
+      "file": "sequence-trigger-only.gif",
+      "sha256": "e33b277c31155abd1fe024dadad2fbe0905e747d84af4b4bcbc3a3afdab1e1cf",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-rack-trigger",
+      "frames": 64,
+      "frameMs": 200,
+      "file": "sequence-rack-trigger.gif",
+      "sha256": "ea25a1da44c8d815d89c38124e249d7bc30e579aa1ec7e7c64b7eaf528092614",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-mag-trigger",
+      "frames": 64,
+      "frameMs": 200,
+      "file": "sequence-mag-trigger.gif",
+      "sha256": "21042b77c1f62af2f489961f84a6e98c613c75fa6e4a42caaf07ce72f1c3fd66",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-draw-mag-trigger",
+      "frames": 72,
+      "frameMs": 200,
+      "file": "sequence-draw-mag-trigger.gif",
+      "sha256": "28f3d78736d0b457b779d1ae3ca6e3658192988adfec5598038bca5c8174ef51",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-custom",
+      "frames": 72,
+      "frameMs": 200,
+      "file": "sequence-custom.gif",
+      "sha256": "bb9904dce957cee1052bc408a7a54eff19502e7f4f6c459fe95efc05a3953cd8",
+      "width": 358,
+      "height": 750
+    }
+  ]
+}

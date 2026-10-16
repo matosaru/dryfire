@@ -2,6 +2,8 @@
 
 Repository workflow: [b/main Free, dev Full, PR protection and test-gated builds](../project/branching-strategy.md).
 
+CHG-046: [React refactor plan](../project/react-refactor-plan.md) maps all 13 existing screens, component/CSS/test ownership and regression gates. It is a plan only; no framework migration has started, and the requested DEV.to article comparison awaits access.
+
 Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with dev/production verification.
 
 [Public-Free/private-full-preview testing](free-preview-testing.md) documents the authorized two-gun public build and retained full preview. Hosted preview protection and a proposed authenticated in-app tester switch remain unimplemented; broader billing/accounts/cloud work is still paused.

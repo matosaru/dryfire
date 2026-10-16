@@ -1,0 +1,50 @@
+{
+  "commit": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+  "edition": "public",
+  "build": {
+    "version": 1,
+    "edition": "public",
+    "sourceRevision": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+    "sourceDigest": "312630acd8ad4e3f83ca2d8e9d0b51c8c0d7d24be504d3b2a8f969d03bbfa2e7",
+    "assets": [
+      "/assets/eventDetector-DtBbU0H0.js",
+      "/assets/index-CU47aMVO.js",
+      "/assets/index-DnLrZEQ0.css",
+      "/pcm-capture.worklet.js",
+      "/sw.js"
+    ]
+  },
+  "environment": {
+    "playwrightVersion": "1.58.2",
+    "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+    "platform": "linux/amd64",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "clock": "2026-10-11T11:00:00.000Z",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "maxDiffPixels": 0,
+    "comparisonThreshold": 0.005
+  },
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v22.23.3",
+  "hashes": {
+    "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
+    "src/styles.css": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
+    "src/main.js": "3074d2b1c4da565e6e7ec524bc847944cb555a5a83f45bdef65935be5020100f",
+    "package-lock.json": "1b17ec94a6c54c1380396c90d726f4a54ce0ff94969bccbc031209274d8b34cf",
+    "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+  },
+  "assetHashes": {
+    "index.html": "36505225cc4ca2a98f6ee65d3c5118c80ba59298513411d5b63516de416b41b8",
+    "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+    "sw.js": "4a0f089605e5ac5f6ed2f7abca5237368444a61389ddc99bfa113ffeae437e8a",
+    "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+    "assets/index-CU47aMVO.js": "672c6d8b287cdeee103309901c02c96fddff83edc7358a724f8467665eaee7d9",
+    "assets/index-DnLrZEQ0.css": "235ad2e132f412f60103792e215d91f6e0c8cfa9d23f6c78410182caebb28ec7"
+  }
+}

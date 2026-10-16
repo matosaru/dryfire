@@ -1,0 +1,2024 @@
+{
+  "change": "CHG-044/045",
+  "sourceRevision": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+  "fullCollectionSourceRevision": "277da2e9cbbcbf1884f35cd58ed7cc6db9ab0e03",
+  "lightCorrectionRun": "https://github.com/matosaru/dryfire/actions/runs/38849822022",
+  "lightCorrectionGenerationAndComparison": {
+    "public": 30,
+    "preview": 30,
+    "imagesPerEdition": 28
+  },
+  "run": "https://github.com/matosaru/dryfire/actions/runs/38801482145",
+  "currentScreenCaptures": 83,
+  "totalBaselineImages": 390,
+  "newImages": 124,
+  "changedExistingImages": 40,
+  "unchangedExistingImages": 226,
+  "reviewSheets": 35,
+  "generation": {
+    "public": 244,
+    "preview": 256
+  },
+  "unchangedComparison": {
+    "public": 244,
+    "preview": 256
+  },
+  "skipped": 0,
+  "unexpected": 0,
+  "flaky": 0,
+  "scope": "Contextual guide pages use the actual shared run/review templates, CSS and read-only presentation with simulated engine state; no capture/save. Configure links and modal background updated; other existing pixels retain previous bytes. Reviewed all changed/new browser/edition/theme/width variants and all twelve GIFs.",
+  "supersededCollection": "38796923567: simplified Canvas candidates passed but were rejected by user review and not promoted.",
+  "contrastRegression": "Rendered Light caption and Play control each require 4.5:1; first failed at 1.57:1 before the Light-only token correction. All Dark and other existing pixels preserved by this correction.",
+  "reviewedImages": [
+    {
+      "path": "chromium/preview/practice/configure-control.dark.390.png",
+      "width": 390,
+      "height": 1578,
+      "sha256": "dba80c8816bd9efa2eb40333908f9fcea62c0d69b3161eabe209617537c46e3f",
+      "oldSha256": "0e45715b3daa3ba4bc7f61a8d1ed5531b83b846a604e310e781061884299163d",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1522
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice/configure-free.dark.390.png",
+      "width": 390,
+      "height": 1578,
+      "sha256": "3f743d209f479ca3f8600047223283f57b984dffa904547959b5b9da96b1b32c",
+      "oldSha256": "bbb95cc7c5952a82cc8a7ff14ba845e403654b3dd856a78743670c0054058c8d",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1522
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice/configure-par.dark.390.png",
+      "width": 390,
+      "height": 1683,
+      "sha256": "59bcf93dcfd4b2e4b3c70fe3d2a3e1b8aa5457ab1f87db8a048a201d7002e3fb",
+      "oldSha256": "ab409523a29c33c325fecf9b977a90f66dcdfbf708e9bd62ba56d51aff439ca4",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1627
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice/configure-reload.dark.390.png",
+      "width": 390,
+      "height": 1723,
+      "sha256": "e5c4113ac7fb95054b9a5647c15b375d13590f0d152211224324a83105f07077",
+      "oldSha256": "591d99f0e61c1255dce166465f3dd4524300d00e5d055b069f58ac8ce9663c40",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1667
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice/configure-repeated.dark.390.png",
+      "width": 390,
+      "height": 1578,
+      "sha256": "6ced7b13056b78be8154360483b24ac8aaea39fbc6b1335fd5c66cfd0ee8a84c",
+      "oldSha256": "42884c329026dc02730d4935fc5acc28da2ae76f7ddad768875b1ef0adb1bd46",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1522
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice/configure-single.dark.320.png",
+      "width": 320,
+      "height": 1653,
+      "sha256": "f4ad00dd7516440a43b9d5f0accdb0c9b8833882db627f15009117519e5719b3",
+      "oldSha256": "a7c12712edea8a06a38f8d6c42b91d3550da7c771e2faff040bc5403aeba3b81",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        320,
+        1597
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice/configure-single.dark.390.png",
+      "width": 390,
+      "height": 1578,
+      "sha256": "c22361da35d444c57a00200249c12e4775e6f3ee9a45c8134d4f990019d0b3e8",
+      "oldSha256": "4395e9f9c0c8e09f6cec41b97907c384b7e12e316204827903c5757e61364f58",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1522
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/control.dark.390.png",
+      "width": 390,
+      "height": 2195,
+      "sha256": "0156f3f40bb18d46bb5d79c3b974e9cd2f0ef5770cfe044010f204e876fbb660",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/control.light.390.png",
+      "width": 390,
+      "height": 2195,
+      "sha256": "28cd6492bcf7c7a1d8ca8cf8a0e5cb6b20bb4252ea6f7fc7d5dabf41936eed94",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/external-start.dark.390.png",
+      "width": 390,
+      "height": 2490,
+      "sha256": "bf4d84d4ffe2c3336184e69c740b8e4dff7780828daf8d88188cd7a99446a5ae",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/free.dark.390.png",
+      "width": 390,
+      "height": 2294,
+      "sha256": "695a6ce00a04dfa5e8c63d832602adbb66e79e060f13e145393688272fa73e3b",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/free.light.390.png",
+      "width": 390,
+      "height": 2294,
+      "sha256": "942c30e18a0c2bb6b596f7bf747a4fea7a755cc92b5ad8ff30ee97c9747c3665",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/par.dark.390.png",
+      "width": 390,
+      "height": 2178,
+      "sha256": "dd8e1c767467a827fb955fbf1ac0ab6809d907a93296c274fc002c05eee1e809",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/par.light.390.png",
+      "width": 390,
+      "height": 2178,
+      "sha256": "2bd6443b3b2746f802b1f8b78116dd260022d96f60defc0f62dee37560bff462",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/reload-selected-endpoints.dark.390.png",
+      "width": 390,
+      "height": 2210,
+      "sha256": "0eafbb7775b56dece6df5980ffc24c9163acbefc808bd6ae23ad9da7066afd87",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/reload.dark.390.png",
+      "width": 390,
+      "height": 2210,
+      "sha256": "8f2fe7ab2563579432e57828274524c653225dad68adae491c794376c545de70",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/reload.light.390.png",
+      "width": 390,
+      "height": 2210,
+      "sha256": "8d9db660834c4ff31f419b1236d0cfc18f945fcb21f5f702f9ff9f60a4ae37a4",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/repeated.dark.390.png",
+      "width": 390,
+      "height": 2195,
+      "sha256": "9ccfef8ac5f2d314a58e3f3747823bfc678406ef54adc07748c298d77acda2c7",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/repeated.light.390.png",
+      "width": 390,
+      "height": 2195,
+      "sha256": "bf141c5f4d6d23fb1bd6dd8a425abdfe686b10675f69fc86938b75147c3482af",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-custom.dark.390.png",
+      "width": 390,
+      "height": 2181,
+      "sha256": "06ae48fbe5a0850a41c31b6e8426b5c14dc2df64a5fea5d801a7d55169c93b4a",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-custom.light.390.png",
+      "width": 390,
+      "height": 2181,
+      "sha256": "85630d46e209f9dfe30f7c2c2a22ffd6f53e853b5cf6164cb1fb10681a46138a",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-draw-mag-trigger.dark.390.png",
+      "width": 390,
+      "height": 2212,
+      "sha256": "8795916b69f1fa07a3276f25302605b78ccee1aceff1d39a3c4d4afc919f504b",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-draw-mag-trigger.light.390.png",
+      "width": 390,
+      "height": 2212,
+      "sha256": "21e7845789c462ee74d85423f562429b16b635064ea54010d69a6115e19a4334",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-mag-trigger.dark.390.png",
+      "width": 390,
+      "height": 2181,
+      "sha256": "d2f4f357177c2dc9579ffb8051a7230f12ff50c30827e1558bba900ac3ecfbc3",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-mag-trigger.light.390.png",
+      "width": 390,
+      "height": 2181,
+      "sha256": "35da36fea143efc86d18f0cf3c024596a02092d318e10e144cf105acd70c51a9",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-rack-trigger.dark.390.png",
+      "width": 390,
+      "height": 2181,
+      "sha256": "efe6f0019fe5c358677473c23d88c76a9d4ce96342c9c5ff3b3aa7fb02b6d829",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-rack-trigger.light.390.png",
+      "width": 390,
+      "height": 2181,
+      "sha256": "83fae735657cb73e120b0e1ea481643d3fb626bbd351be33dca91e0725df1b33",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-trigger-only.dark.390.png",
+      "width": 390,
+      "height": 2181,
+      "sha256": "40b859c732ca458566bddc4af378135db38fafafb27a20a169d5c33c7388f4ac",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/sequence-trigger-only.light.390.png",
+      "width": 390,
+      "height": 2181,
+      "sha256": "bc3ec5919ab95e05d83c451d6328856cde784c04d498e7257609d8c926fafb1f",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/silent-start.dark.390.png",
+      "width": 390,
+      "height": 2450,
+      "sha256": "84c36c1076e91d0dac7d376cd24ca48764beb5f2c2186c4c2e122bfe54a7cbe3",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/single-early.dark.320.png",
+      "width": 320,
+      "height": 2242,
+      "sha256": "92398148d9a29c6fc7226a74917584bf17b198db43042fd90299f23140148dda",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/single-early.dark.390.png",
+      "width": 390,
+      "height": 2191,
+      "sha256": "769eef1777352bbc38b1d8c0851dd7327472eb6777fd89412c7aac3b1cb3d062",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/single-early.light.320.png",
+      "width": 320,
+      "height": 2242,
+      "sha256": "e380569c143b94774bd18b15bbe72f786e18838fe737ac82fdd02370656b737e",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/single-early.light.390.png",
+      "width": 390,
+      "height": 2191,
+      "sha256": "95a2c2b9f33b8883771cf8154de4898086e70897d0b00ffa504b184b88f39761",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/single.dark.320.png",
+      "width": 320,
+      "height": 2501,
+      "sha256": "e965e2de6483ec2470f0dd7db54bd4b4e55b28663cf456fbca021377060a1c02",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/single.dark.390.png",
+      "width": 390,
+      "height": 2450,
+      "sha256": "29f37c42a1ac9deabb5a6637aefd82a931c2bed7fb126435b409de7ab33385a1",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/single.light.320.png",
+      "width": 320,
+      "height": 2501,
+      "sha256": "8290ffbc0c3249edfb80b5bc9e3310186213ddf1d58f36765cff60f8cecc4bc9",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/practice-guide/single.light.390.png",
+      "width": 390,
+      "height": 2450,
+      "sha256": "162c5f8828237d7811074abd1a0639fc47d758835e38a55afc71f9ee6d0fb979",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/session/configure.dark.390.png",
+      "width": 390,
+      "height": 1447,
+      "sha256": "4771857e507f99876c41824440ae9d1b207b83cba3af00a445dda825743374f3",
+      "oldSha256": "1c3f26ff8025010cfd23f6fca882352c9e3d320a23bc81e73cf03435a6866c1e",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1391
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/preview/shared/safety-modal.dark.320.png",
+      "width": 320,
+      "height": 844,
+      "sha256": "2716ddc99f6fa34276071f8a4994e399b7b789b5f04dda45007bcee27e15f5be",
+      "oldSha256": "8dc3cb23f8d139c37a27f26109cca1394380a17bcffb060a520d28a055b44275",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        320,
+        844
+      ],
+      "differenceBounds": [
+        16,
+        15,
+        304,
+        844
+      ],
+      "planned": false
+    },
+    {
+      "path": "chromium/preview/shared/safety-modal.dark.390.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "96567cb85f0fff47c7ad3e59b14bd89a5554ef558b5c3a3a56a5cab4838cba76",
+      "oldSha256": "24f5e21a240cd0eadfb90e5d73f1b9635c58e0eb60dc458e824b6ec14a77778f",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        844
+      ],
+      "differenceBounds": [
+        16,
+        17,
+        374,
+        844
+      ],
+      "planned": false
+    },
+    {
+      "path": "chromium/public/practice/configure-control.dark.390.png",
+      "width": 390,
+      "height": 1539,
+      "sha256": "e4bc61a49d6a1187d84978854e16b629c2584c65fd4edcfc1b55549b9c0359d0",
+      "oldSha256": "e1aa1f97091a705ee8873a8591cd63f468f453fad1bde59d8a1ffb8b5ca9337a",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1483
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice/configure-free.dark.390.png",
+      "width": 390,
+      "height": 1539,
+      "sha256": "1c49f1c09a2cfd3ee4b1c6afbf54df57a253ad6644f532ed1685dd0d58450e37",
+      "oldSha256": "53efc5d071662189eb0056a53bfc90a8f9f237907d625f1380d6ae36a097e0a7",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1483
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice/configure-par.dark.390.png",
+      "width": 390,
+      "height": 1644,
+      "sha256": "14ff4c00beb7bb32b483cfa889dd1fa7d410f14a69d27b16b9e5051b503b5bc3",
+      "oldSha256": "b136ececebf087867405071865b98eb8de293241a773aaa2f5fe83e887c72c23",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1588
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice/configure-reload.dark.390.png",
+      "width": 390,
+      "height": 1684,
+      "sha256": "4c6faba9fa99a843c2374895c86e722ce0879b2b567b6e512f61a917ce47ac92",
+      "oldSha256": "a601438235ce038e6908bea787a7677f63be297adfa0f5e187a8b77e78c12db9",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1628
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice/configure-repeated.dark.390.png",
+      "width": 390,
+      "height": 1539,
+      "sha256": "428126243dd7c8865e6345971d7d49d7a81fa03e0521e81b2a82c3770dd5fa5a",
+      "oldSha256": "b29ac16484d58ad3bd16bebbf6f3f900719ae8e44e657c22fc6fd74168bbe408",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1483
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice/configure-single.dark.320.png",
+      "width": 320,
+      "height": 1614,
+      "sha256": "490edf51b130edefb6e0279af9fad51ce2469bc8a73977e86a449c24c36f3dd4",
+      "oldSha256": "046d1bb75693e6b1593eba53fd0707871de8b0898474ff0558a6394a59603da1",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        320,
+        1558
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice/configure-single.dark.390.png",
+      "width": 390,
+      "height": 1539,
+      "sha256": "0acce6b0d279e4f94d33a188d8e59f6ca6143b231fdf8fb399104aa80246e179",
+      "oldSha256": "ef66b22e96bb710ff6223b257bf8d2ea39c11fe31199954f4acc2d747a89e57b",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1483
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/control.dark.390.png",
+      "width": 390,
+      "height": 2156,
+      "sha256": "8aed0e4793f4bb591505a8f1eef459f34348bfc123afde0e2c588094391f48c1",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/control.light.390.png",
+      "width": 390,
+      "height": 2156,
+      "sha256": "cfa721dd43a67b4118d0026c3bae278c35f38d3429c6f2cb4e1c949f212e3927",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/external-start.dark.390.png",
+      "width": 390,
+      "height": 2452,
+      "sha256": "f74f81128159b9e47c1698d086ec20647517b6752dd128f1e339f5297b70c2c4",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/free.dark.390.png",
+      "width": 390,
+      "height": 2255,
+      "sha256": "1ea9050558aaa4215e2353019b83f245c12b44bdecd427153243cdccedb93074",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/free.light.390.png",
+      "width": 390,
+      "height": 2255,
+      "sha256": "5b4d91bebd7d7fdabe3501fbe0bc5aa57e79979bae10208352dc203aae303823",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/par.dark.390.png",
+      "width": 390,
+      "height": 2139,
+      "sha256": "a0aa9336b4ee0e1c5f1c79b4fb220c7746fdb1046d41aca8dc5ee071b662276f",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/par.light.390.png",
+      "width": 390,
+      "height": 2139,
+      "sha256": "2ca6d7f31bdd6ed6cb8cb8b05c43549b68f100b151a424ce679b088ba6946adc",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/reload-selected-endpoints.dark.390.png",
+      "width": 390,
+      "height": 2171,
+      "sha256": "b7fcfc1dd2cd23ea3be02ab43246ee87ca034026521c4590eb30e14c92dc5511",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/reload.dark.390.png",
+      "width": 390,
+      "height": 2171,
+      "sha256": "d26a1ae46cfab19f3895dd3a8cf4e05ec8721b7881c5ec9cfc74b6c602f7b115",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/reload.light.390.png",
+      "width": 390,
+      "height": 2171,
+      "sha256": "cff5e6dc0e483f61e83bcf54e0e20347bfd0c86dc8f6864606cd1ff50442ee5e",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/repeated.dark.390.png",
+      "width": 390,
+      "height": 2156,
+      "sha256": "e695ed298ac1d8c3ecf4266dd5c042fddac1e9f789dce142d6492ab3572d0678",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/repeated.light.390.png",
+      "width": 390,
+      "height": 2156,
+      "sha256": "7d7dccbeaa8b445735722c7acce0dbded425f894427360adf82aa5604fedb190",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-custom.dark.390.png",
+      "width": 390,
+      "height": 2142,
+      "sha256": "83bd4da06e939236609d5c8a8f41489145822da034251a37473d044d423445f9",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-custom.light.390.png",
+      "width": 390,
+      "height": 2142,
+      "sha256": "5033b16c09e1d5c6752f1b9b504993ed147c45d05c938798f7416235a2bd017b",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-draw-mag-trigger.dark.390.png",
+      "width": 390,
+      "height": 2173,
+      "sha256": "6b8404f5993afc198095f4dfa0d8a969675fc4d3cbac6d9df6c494f7366c656a",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-draw-mag-trigger.light.390.png",
+      "width": 390,
+      "height": 2173,
+      "sha256": "9ca0c54193f0d64d16b2b39715558ddbe9b0ef80991755a357fd1e5c3b2a88c7",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-mag-trigger.dark.390.png",
+      "width": 390,
+      "height": 2142,
+      "sha256": "c1e605d4890e830d287aa9e6dc85ea81f044363c38f1f5c06e1766efe4aa7900",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-mag-trigger.light.390.png",
+      "width": 390,
+      "height": 2142,
+      "sha256": "d440c59cba197a1f0efac2b8810591c048211c03cbbf8354be60e690c61996e5",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-rack-trigger.dark.390.png",
+      "width": 390,
+      "height": 2142,
+      "sha256": "deec474a2ae0f1501f6f2546fe3d44cff6501b8fd3e0ce4f02f19051a5521b14",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-rack-trigger.light.390.png",
+      "width": 390,
+      "height": 2142,
+      "sha256": "3dfb489f05d807acb3400cbb7a56c87fd62a0c8af82915925cac4261cbcfd1bf",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-trigger-only.dark.390.png",
+      "width": 390,
+      "height": 2142,
+      "sha256": "7ddd622c9756e78e58d18083f1929aa7471bd29ab60f9e0c117e1eed00cfc74f",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/sequence-trigger-only.light.390.png",
+      "width": 390,
+      "height": 2142,
+      "sha256": "3041c0c016615c64c11a9e1b0cad813b5b8461eca43453799a10023d5682447d",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/silent-start.dark.390.png",
+      "width": 390,
+      "height": 2411,
+      "sha256": "7e6c7881d021efd2f94cd4ee1c07e613f1441fabef8e2aad92777ae20d37cc47",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/single-early.dark.320.png",
+      "width": 320,
+      "height": 2203,
+      "sha256": "5aae9b76c3b732d6932a97ac03174673967a54a6b1948a7840f9b5a571b18d50",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/single-early.dark.390.png",
+      "width": 390,
+      "height": 2152,
+      "sha256": "24302f9edaefcce7a2932eab56f69d40c5e0ca372410565ecd566bc244e3140d",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/single-early.light.320.png",
+      "width": 320,
+      "height": 2203,
+      "sha256": "4c727048aa38fee52834e12e5d3558cb24b0d6371fabd60fff1946221a3d6c36",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/single-early.light.390.png",
+      "width": 390,
+      "height": 2152,
+      "sha256": "fa0909044515720b6bc0fff8996347e34c760790405c6939b691008c0fbe89ef",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/single.dark.320.png",
+      "width": 320,
+      "height": 2462,
+      "sha256": "8e3c2bdba892e6c37140c366008175f24124d712345b5ec9f79993d4a15d6f55",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/single.dark.390.png",
+      "width": 390,
+      "height": 2411,
+      "sha256": "54d58478d1b7990a2afb16a78b5965a609468b0f71243da9490ce21306c3fd6d",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/single.light.320.png",
+      "width": 320,
+      "height": 2462,
+      "sha256": "670a3d537587d2f02ab869df182288059d654c153584cba9cee53bbab096a8b4",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/practice-guide/single.light.390.png",
+      "width": 390,
+      "height": 2411,
+      "sha256": "90eac35707c438906538cd02f180a61c06f37e73aeed5005419b6a39559da868",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "chromium/public/session/configure.dark.390.png",
+      "width": 390,
+      "height": 1409,
+      "sha256": "cee25c36441ab1b43ecf48f04f062f589c336408f4e1767a1c93e36cdee4a241",
+      "oldSha256": "c9d33c132d993afccdc03ab4e7ef02cf1b95272c51bb1f00c372a11274bc7fc7",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1353
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "chromium/public/shared/safety-modal.dark.320.png",
+      "width": 320,
+      "height": 844,
+      "sha256": "cd14f3ca1d7b7521716f386b296143d1cb1609f7076b44d4708c126df1bfe5ac",
+      "oldSha256": "b77bf4d046df57a088501f0b6902167742cbd9e737a09373259ac23b95657671",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        320,
+        844
+      ],
+      "differenceBounds": [
+        16,
+        28,
+        304,
+        844
+      ],
+      "planned": false
+    },
+    {
+      "path": "chromium/public/shared/safety-modal.dark.390.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "bc7641c013ca3575bdcf43aabe21c2d8320f1b0db0e771c2a365c9fe6fca4595",
+      "oldSha256": "43a5d94f998387741178a53b2c09b4dd05b90177cbd0b7a7b8a7d9e6ebbbaa6d",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        844
+      ],
+      "differenceBounds": [
+        16,
+        30,
+        374,
+        844
+      ],
+      "planned": false
+    },
+    {
+      "path": "webkit/preview/practice/configure-control.dark.390.png",
+      "width": 390,
+      "height": 1581,
+      "sha256": "667a1624763b2ffd26019d07841ae4490e59c454814c14b77dc67e46967548bd",
+      "oldSha256": "aaeb4e1737b426de1b6b5dd920c651189dc5b5eebfe099a8c259a12f9b00497a",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1525
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice/configure-free.dark.390.png",
+      "width": 390,
+      "height": 1581,
+      "sha256": "6c5f8539aa7a4a026f305f04f9f6f9e9963efee052b8a6d559a33e2328d5d5a8",
+      "oldSha256": "45b983607a11703b61ba4985013362c89fbb401528d0457a36694e41639ab8d9",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1525
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice/configure-par.dark.390.png",
+      "width": 390,
+      "height": 1686,
+      "sha256": "ca34a915898067233d3ece1b59a999a74e641810c843b381c996eb242e541990",
+      "oldSha256": "460febd409550b892414842dceb29b1d4e5c8d6f9d7485133a771aac1c16aaae",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1630
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice/configure-reload.dark.390.png",
+      "width": 390,
+      "height": 1740,
+      "sha256": "5b6e4b79b605fe162d7b0ebc8fbf73a7166d2f38b995ca87fec941df4dfbca29",
+      "oldSha256": "59fc8fd9c5dfc4d3fe4786f0d97c63064a06ff26fb8ffd89dda1952e85ece8e0",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1684
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice/configure-repeated.dark.390.png",
+      "width": 390,
+      "height": 1581,
+      "sha256": "ea9212e49ba8155aa7c5c0401e2a2ee54f21f787314d078bd7b6ea098f277c3a",
+      "oldSha256": "7dd0b002a5840f967343a9d634fc549dc197fc2ac9b29c60f30edf458e9c10bf",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1525
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice/configure-single.dark.320.png",
+      "width": 320,
+      "height": 1653,
+      "sha256": "3736203f69aac915b7d201a99762d0c07dd5f1abfddc9e049698f8864c8be9e1",
+      "oldSha256": "f2f8f3513df844e8f0fae6116cf3700d71a19bd9a777205dbfda48a30df798ee",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        320,
+        1597
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice/configure-single.dark.390.png",
+      "width": 390,
+      "height": 1581,
+      "sha256": "a8c872435d2d254f1ce1275479cbcd116ff06e766412b356155bd86b0e9e3e90",
+      "oldSha256": "02430fe8d4ff65e0228081d1724c3f07b859b550a1a9228fdc5ad3eba7708b43",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1525
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/control.dark.390.png",
+      "width": 390,
+      "height": 2177,
+      "sha256": "acde05ffb45a691660c48a0be80074db68bb6188c65a686ec37d621ee89ba7bb",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/control.light.390.png",
+      "width": 390,
+      "height": 2177,
+      "sha256": "333bb6f7fea728dc6f2d8fb14588ba4062f07494026aec25ea083acd97d18ad4",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/external-start.dark.390.png",
+      "width": 390,
+      "height": 2471,
+      "sha256": "78d4d85deb5bf5b23453dd301c0e18d0402670d5adb999ada33b386f04116998",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/free.dark.390.png",
+      "width": 390,
+      "height": 2273,
+      "sha256": "f58529d3b4a5bb665217c216926ea74c5300d6dcca22c9c3b885744de257e45f",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/free.light.390.png",
+      "width": 390,
+      "height": 2273,
+      "sha256": "386ff2e5082d3d3077fed5657d1df54a47355c5072688c7d7a0141c9cf47083c",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/par.dark.390.png",
+      "width": 390,
+      "height": 2160,
+      "sha256": "c6bc8f60783d93e0c5d436f39cfa947e7cfeec999b3393dd472e8ef66e288914",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/par.light.390.png",
+      "width": 390,
+      "height": 2160,
+      "sha256": "bd306783f1e2146fd95001185f97b1d05a9fb6f78e7ba4c9a54a626580638d94",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/reload-selected-endpoints.dark.390.png",
+      "width": 390,
+      "height": 2192,
+      "sha256": "dcb5199f299a3a35bf125edbdd5eaebd193b7a8b67d19aa8081161413ee4b1fc",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/reload.dark.390.png",
+      "width": 390,
+      "height": 2192,
+      "sha256": "ddf9e2d87ecd0f279e24ff8b212f6824bbe8bca8abbcaca188f3706c80569485",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/reload.light.390.png",
+      "width": 390,
+      "height": 2192,
+      "sha256": "c440f64cacdfc916c8780aff5b38e79419445a968e448c354570a1733a4ba48b",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/repeated.dark.390.png",
+      "width": 390,
+      "height": 2177,
+      "sha256": "e6fff1e35e47b87a65396f18d1a19655be44761bb84fd08586556f72f1cbcb63",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/repeated.light.390.png",
+      "width": 390,
+      "height": 2177,
+      "sha256": "6be38830267ecb240194a57dee09fce5343c57613e4cbe0342e2925a3ab1c97a",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-custom.dark.390.png",
+      "width": 390,
+      "height": 2161,
+      "sha256": "0a2a5301d0a86753729c49334e0888e0c1812c807335608ec84e387b6f9fed8f",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-custom.light.390.png",
+      "width": 390,
+      "height": 2161,
+      "sha256": "91eae634548e813ebfa0cf284146864e42a97de61d9d4ca06a172fc8d0e45257",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-draw-mag-trigger.dark.390.png",
+      "width": 390,
+      "height": 2191,
+      "sha256": "3b6c35dbb06e3596162b13b9d8327b8eb8551198a5a6d97e87d1a2be7d9ab763",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-draw-mag-trigger.light.390.png",
+      "width": 390,
+      "height": 2191,
+      "sha256": "920a6a5ff92615e148f048d6c6f00be102daf9eb5a1c2aa98248a1230e641bdb",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-mag-trigger.dark.390.png",
+      "width": 390,
+      "height": 2161,
+      "sha256": "d4b076aca7b6b243ef9ed467ef8fb9612bf883502f33c3ec81ca0172062f4b71",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-mag-trigger.light.390.png",
+      "width": 390,
+      "height": 2161,
+      "sha256": "0384ecbb03b646719c579b83af851e4ce3675929dd3768a4546c6b49faa52b98",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-rack-trigger.dark.390.png",
+      "width": 390,
+      "height": 2161,
+      "sha256": "edb101c530e5026614dfd07f93c5ec3661071d92d5c696689195254e46b9b2a3",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-rack-trigger.light.390.png",
+      "width": 390,
+      "height": 2161,
+      "sha256": "c7820629dbf3881d2821c9c892ebbf2db18bf2bbeb034f72eb6375c5f720312e",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-trigger-only.dark.390.png",
+      "width": 390,
+      "height": 2161,
+      "sha256": "05bf6bbe2a44767e22510847f79509d05e41fde73d21427945ab3c1d178b5996",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/sequence-trigger-only.light.390.png",
+      "width": 390,
+      "height": 2161,
+      "sha256": "22013c0009cadb6ed0a2649b733da6db4492f361e961deebe9cf18252ed24df9",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/silent-start.dark.390.png",
+      "width": 390,
+      "height": 2431,
+      "sha256": "047aac0be9ea2acb49b74658947df9210444bf07bb66ade8a06795ce2c733c19",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/single-early.dark.320.png",
+      "width": 320,
+      "height": 2221,
+      "sha256": "250245b4b518a3e300021bf8915791bb393c8196673c6a89cf276f2710e22838",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/single-early.dark.390.png",
+      "width": 390,
+      "height": 2172,
+      "sha256": "0f41c3b1dc64d9c32af093054a1ce1c92fcb5e9b37c047e6cd8ecb9be83e57c0",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/single-early.light.320.png",
+      "width": 320,
+      "height": 2221,
+      "sha256": "82fce032a3dd45215b1bc60daa9f2ec25a08a0ec3b3c91a3047f3ff30a169b2b",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/single-early.light.390.png",
+      "width": 390,
+      "height": 2172,
+      "sha256": "7a05c9ac776bc410bd17e14774eafc0051d5a94423364eee7e9f99b35329bd55",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/single.dark.320.png",
+      "width": 320,
+      "height": 2480,
+      "sha256": "f265524b6242f8a374d2c259d388fc6cb5ee136e8ab1ccc307e0c97b4c9d2d22",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/single.dark.390.png",
+      "width": 390,
+      "height": 2431,
+      "sha256": "ea39a3963479ba291ee3e20f67536011d837cd55f9a1a9f701ef85326765a814",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/single.light.320.png",
+      "width": 320,
+      "height": 2480,
+      "sha256": "8f3f2c123c758a2a18ebc11147c376b15856b29af3c76064ce76c28b0853c97a",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/practice-guide/single.light.390.png",
+      "width": 390,
+      "height": 2431,
+      "sha256": "131caa62c64d3198b0e40c32453c305759892ce714c9ea850a124497b88cb158",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/session/configure.dark.390.png",
+      "width": 390,
+      "height": 1445,
+      "sha256": "b507245a9f1dbbcc789d56fbfd8cc2d9760be7e1269bf30601828f83706c952d",
+      "oldSha256": "b3b78040c53f84e934edb623d5349a04967509aa1ce8c15b6a17dda2a6b1a961",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1389
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/preview/shared/safety-modal.dark.320.png",
+      "width": 320,
+      "height": 844,
+      "sha256": "682649063c72958b5bf5e6e90b9f1c8dde4721c9530e0a23363ed944a51f3c5a",
+      "oldSha256": "80d437a98555ef0d34264b54caee4f701023c3dab62911da48714ff07581c346",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        320,
+        844
+      ],
+      "differenceBounds": [
+        16,
+        16,
+        304,
+        844
+      ],
+      "planned": false
+    },
+    {
+      "path": "webkit/preview/shared/safety-modal.dark.390.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "7522155249b69c32a43cc002920ab6baa88f11b60174df59d6b31491d1a451f0",
+      "oldSha256": "bd3dcce3dbb9328d2b5d5d999a1cf8c0ab7c8f7519b8c5796578453947066d3e",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        844
+      ],
+      "differenceBounds": [
+        16,
+        25,
+        374,
+        844
+      ],
+      "planned": false
+    },
+    {
+      "path": "webkit/public/practice/configure-control.dark.390.png",
+      "width": 390,
+      "height": 1543,
+      "sha256": "40a7c79de0706e471cf43a388ad61a065862916038c8754a0c958e947dacfe4e",
+      "oldSha256": "c705e65bc098b81b5eb80fce6e597afebeeff3f38d5f3f35db4c7429f73e6dbd",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1487
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice/configure-free.dark.390.png",
+      "width": 390,
+      "height": 1543,
+      "sha256": "dfd935ecff65354e8cb501f6de311536e8735a78707a01a7fde9d80832a637b2",
+      "oldSha256": "2ba3ac8f206425a5e197a97f1b46a4e8bd730bb50fc5c58ef6872fc612157256",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1487
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice/configure-par.dark.390.png",
+      "width": 390,
+      "height": 1648,
+      "sha256": "c091c5388db24a1e59851b1eaff604612a99af29ee617eb18a1eba4435adc145",
+      "oldSha256": "031a2f60089d430a440e8a051e7eae5738075fea3c1c213db6f15876d8945392",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1592
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice/configure-reload.dark.390.png",
+      "width": 390,
+      "height": 1702,
+      "sha256": "edce22dd1dcaaff24cf3a8689ad8116fd5e2cd960e7e3b57ae3346c4f6b22a16",
+      "oldSha256": "9cfc68bb751efd9ee541e752081059eb5339df894be1eea0632f46f03300b721",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1646
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice/configure-repeated.dark.390.png",
+      "width": 390,
+      "height": 1543,
+      "sha256": "5b42daf7d6bcab9210201049fca974d76ff097c046c5cd7422b08948315e6d3a",
+      "oldSha256": "3c8aae92d1e15dbf48a8d42aa7c3e4dd9f009e145ee75d7b67c87bde399b47c8",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1487
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice/configure-single.dark.320.png",
+      "width": 320,
+      "height": 1615,
+      "sha256": "5e772919ef8107118a62c385ff04c29a8f0dc58aaf37bdf8b3b46dac416489ab",
+      "oldSha256": "82f972c5536b0a0c260ccde39b0ad84742472089cb3935d9f06fab8a4a7b7933",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        320,
+        1559
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice/configure-single.dark.390.png",
+      "width": 390,
+      "height": 1543,
+      "sha256": "f8ff86596a913873bee34da9b80f1baec72cf5e6af305e74671d54596ab28f92",
+      "oldSha256": "530318f47237644cf91ea0d7a41300ea4ab14712a868d1d27e8b914a221de247",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1487
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/control.dark.390.png",
+      "width": 390,
+      "height": 2139,
+      "sha256": "fc07428fc106da09a6f7d5603e3945729b1c759f62b55bf80cfc67fb13540d02",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/control.light.390.png",
+      "width": 390,
+      "height": 2139,
+      "sha256": "644e6799eb120233b3948e886aed931a94d6ada50248f9fbef6161dcaec3067e",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/external-start.dark.390.png",
+      "width": 390,
+      "height": 2433,
+      "sha256": "422a69ed355a124f6de799dc6a04896b4b89e5db576f8735834080361a96ff7a",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/free.dark.390.png",
+      "width": 390,
+      "height": 2236,
+      "sha256": "9169e7e5d33d79a7f5455147a89545e8090a7c4cd367a2dc567e03809af43673",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/free.light.390.png",
+      "width": 390,
+      "height": 2236,
+      "sha256": "bc42eb7a5e959db1492c1e5b4437c50de781a1eb0b9ae32f5c4bb504364bcbc9",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/par.dark.390.png",
+      "width": 390,
+      "height": 2122,
+      "sha256": "386c739e02dc0c40d58045fbabec364353c4fe20545492db5b47e58fb0f42d2a",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/par.light.390.png",
+      "width": 390,
+      "height": 2122,
+      "sha256": "0afa56220f5597594bfb8aef9326a90980033a8f06f63b170b90e1c6ed11c0e3",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/reload-selected-endpoints.dark.390.png",
+      "width": 390,
+      "height": 2154,
+      "sha256": "fa9e2258b6dd8c4d6c361089d15fa6032d9da21e6323ff306ff2c6aabff2f347",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/reload.dark.390.png",
+      "width": 390,
+      "height": 2154,
+      "sha256": "9264edb923a40a245710ce988b874dc945fe8066f86b625c05644f5b18c9088d",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/reload.light.390.png",
+      "width": 390,
+      "height": 2154,
+      "sha256": "604a50021831360a3d1eba7c0ce1bb467d43bfb3bfb54d75b6af0953b6760c9a",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/repeated.dark.390.png",
+      "width": 390,
+      "height": 2139,
+      "sha256": "7e67ebe28f3895dd0155b206d2e8e74ae7d13a519bcc657a7248e1e57bdfb2a8",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/repeated.light.390.png",
+      "width": 390,
+      "height": 2139,
+      "sha256": "674fcd59f37ea5dd375d07afda36b408f61c6b30a246237569e9d6223e848708",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-custom.dark.390.png",
+      "width": 390,
+      "height": 2123,
+      "sha256": "0c29e46dfbfcaa76b559f6a5fa38aaa8746a13388e27ff06562c2436dc97d62b",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-custom.light.390.png",
+      "width": 390,
+      "height": 2123,
+      "sha256": "278e8aea0f38f7b720e9f15db5fa8d1b181b86664924fb26c0b49a9fdb68e23b",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-draw-mag-trigger.dark.390.png",
+      "width": 390,
+      "height": 2153,
+      "sha256": "8e0574693941e1f8f03f5743985415975f5b9cb14d7a26eaeede8075976dd07c",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-draw-mag-trigger.light.390.png",
+      "width": 390,
+      "height": 2153,
+      "sha256": "104f76d688e2e122c3d1009fafcf65f29e16a42cd4680253cbda2392b7b2fa62",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-mag-trigger.dark.390.png",
+      "width": 390,
+      "height": 2123,
+      "sha256": "4014cbd00af076bfa4c3823dd2ca32033f2cabcc537a5a94354720c539337b91",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-mag-trigger.light.390.png",
+      "width": 390,
+      "height": 2123,
+      "sha256": "e72785e2dab4f019697c5e48374ba36976c162e27801db82f41113e54dd2d010",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-rack-trigger.dark.390.png",
+      "width": 390,
+      "height": 2123,
+      "sha256": "c78c0d58292615bff1eb018d3cccd6d753f36a4e8865b7744baf3e6ed9e3784d",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-rack-trigger.light.390.png",
+      "width": 390,
+      "height": 2123,
+      "sha256": "155a36aa2a93643f6e70d75576372d530d5a051597aa581bf0977c853fa667d7",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-trigger-only.dark.390.png",
+      "width": 390,
+      "height": 2123,
+      "sha256": "562eb1f0e6ae5948ec0a84e09da2b6bc082940f4543333b861bdd64f0f7c987b",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/sequence-trigger-only.light.390.png",
+      "width": 390,
+      "height": 2123,
+      "sha256": "5cb9c81cff189ec423133a0036bb66c2322bb99355ec3143c2747947a145b082",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/silent-start.dark.390.png",
+      "width": 390,
+      "height": 2393,
+      "sha256": "65db5fab2f29afa8b0d4e404f39370052593ae6a5d091badc41a1674237f1d04",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/single-early.dark.320.png",
+      "width": 320,
+      "height": 2183,
+      "sha256": "f4df4cccc13303d001aa9dba17b8f8717e0324fe941eed306678743c7cb44785",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/single-early.dark.390.png",
+      "width": 390,
+      "height": 2134,
+      "sha256": "71eeb995fa40e07edb10a3c3274a5f5e99d1bb3c00c08b1d48b8d3f1cdcfcf8b",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/single-early.light.320.png",
+      "width": 320,
+      "height": 2183,
+      "sha256": "8a78a00b4e694a316b55c8c58ddc9ab233f5b41cba23a15be57b636008be7405",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/single-early.light.390.png",
+      "width": 390,
+      "height": 2134,
+      "sha256": "a27cf00fa71f5afe8e8ece4d71afde32b45ecbe83fdcd1e540adb201997d7a0e",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/single.dark.320.png",
+      "width": 320,
+      "height": 2442,
+      "sha256": "e2b8947b9744f9f7c69aa32888c5a6872c6c5c4e0d3475e1bc413b0a51c8b57f",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/single.dark.390.png",
+      "width": 390,
+      "height": 2393,
+      "sha256": "db9a292848a0f02e6a21f7da8a48474188418def170f58f3cfc9ce14abd06d9e",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/single.light.320.png",
+      "width": 320,
+      "height": 2442,
+      "sha256": "211cd4caba0386ced444243d948a3dc039065445c389ea7d1b74cc4e468535b0",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/practice-guide/single.light.390.png",
+      "width": 390,
+      "height": 2393,
+      "sha256": "ac85b13547dd15d0da4bc243a67802eec634989ff98696b0a7999a98b0f9ceec",
+      "oldSha256": null,
+      "new": true,
+      "changed": true,
+      "planned": true
+    },
+    {
+      "path": "webkit/public/session/configure.dark.390.png",
+      "width": 390,
+      "height": 1407,
+      "sha256": "48cd771a7bcd0d198a69a551ba65b00ed9810aefe44f0bcd28404c0b7181973e",
+      "oldSha256": "5680868c435f3e14864588f9f8b5d7e9a143743fcda67a89ccae104cebcb68e4",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        1351
+      ],
+      "differenceBounds": "resized",
+      "planned": true
+    },
+    {
+      "path": "webkit/public/shared/safety-modal.dark.320.png",
+      "width": 320,
+      "height": 844,
+      "sha256": "a37c2af6e4236ddefaa26bdd0e49d0c45a2e03bbc286e4d4b5b8e54dbc856f36",
+      "oldSha256": "2f77a1ec10b5e358403f893cf0cab9a479906fc5ea084bb19e2694359c32b6c8",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        320,
+        844
+      ],
+      "differenceBounds": [
+        16,
+        23,
+        304,
+        844
+      ],
+      "planned": false
+    },
+    {
+      "path": "webkit/public/shared/safety-modal.dark.390.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "1f7df4f0cedef41df5610865513caa268b86bfba9a6ea591f02e53d03ff81d0e",
+      "oldSha256": "9a8c43e281a74cf8772cc87a85ba9d8cce320d1e93aed34569380c6f4f98141c",
+      "new": false,
+      "changed": true,
+      "oldSize": [
+        390,
+        844
+      ],
+      "differenceBounds": [
+        16,
+        24,
+        374,
+        844
+      ],
+      "planned": false
+    }
+  ],
+  "animatedExports": [
+    {
+      "name": "single",
+      "frames": 47,
+      "frameMs": 200,
+      "file": "single.gif",
+      "sha256": "f4c3ba3010b3ca515893d5147fa18709d630607c9452d5526fa2dd035078c2d8",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "single-early",
+      "frames": 42,
+      "frameMs": 200,
+      "file": "single-early.gif",
+      "sha256": "a277ddecb4766c52589ee3d585d5c7a41ac63fe69b5ad76345dfd8a042257284",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "repeated",
+      "frames": 36,
+      "frameMs": 200,
+      "file": "repeated.gif",
+      "sha256": "f3fe1a824dc7af099a24be921dd043a78f19fb1ccd86d35709132d22653f968c",
+      "width": 358,
+      "height": 949
+    },
+    {
+      "name": "par",
+      "frames": 68,
+      "frameMs": 200,
+      "file": "par.gif",
+      "sha256": "f8c4ef7d7d33ef28823627b6783101ecc04ee335b46d2a96c06d4c84b70f9b18",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "control",
+      "frames": 36,
+      "frameMs": 200,
+      "file": "control.gif",
+      "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182",
+      "width": 358,
+      "height": 949
+    },
+    {
+      "name": "reload",
+      "frames": 63,
+      "frameMs": 200,
+      "file": "reload.gif",
+      "sha256": "aa8fffd16518e6a4205096de655d01b9bad8527622c05219c9d91947b0c03c45",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "free",
+      "frames": 65,
+      "frameMs": 200,
+      "file": "free.gif",
+      "sha256": "bb1e2a8b9b62a650ab3fa3f99e57eaca1b3fc075bd84e5d03bea970645c0af58",
+      "width": 358,
+      "height": 949
+    },
+    {
+      "name": "sequence-trigger-only",
+      "frames": 56,
+      "frameMs": 200,
+      "file": "sequence-trigger-only.gif",
+      "sha256": "e33b277c31155abd1fe024dadad2fbe0905e747d84af4b4bcbc3a3afdab1e1cf",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-rack-trigger",
+      "frames": 64,
+      "frameMs": 200,
+      "file": "sequence-rack-trigger.gif",
+      "sha256": "ea25a1da44c8d815d89c38124e249d7bc30e579aa1ec7e7c64b7eaf528092614",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-mag-trigger",
+      "frames": 64,
+      "frameMs": 200,
+      "file": "sequence-mag-trigger.gif",
+      "sha256": "21042b77c1f62af2f489961f84a6e98c613c75fa6e4a42caaf07ce72f1c3fd66",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-draw-mag-trigger",
+      "frames": 72,
+      "frameMs": 200,
+      "file": "sequence-draw-mag-trigger.gif",
+      "sha256": "28f3d78736d0b457b779d1ae3ca6e3658192988adfec5598038bca5c8174ef51",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-custom",
+      "frames": 72,
+      "frameMs": 200,
+      "file": "sequence-custom.gif",
+      "sha256": "bb9904dce957cee1052bc408a7a54eff19502e7f4f6c459fe95efc05a3953cd8",
+      "width": 358,
+      "height": 750
+    }
+  ]
+}
