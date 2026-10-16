@@ -1,0 +1,2 @@
+.section-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.section-head h2 { font-size:1.55rem; margin:0; }

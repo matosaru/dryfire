@@ -34,3 +34,5 @@ Functional specifications and proposed copy: [About](../../../requirements/about
 | About, Light | [overview.light.png](overview.light.png) | `aboutView` |
 
 Actual production-build references use the pinned Chromium renderer at 390 px. Both themes and 320/390 px images were reviewed in Chromium and WebKit; [current collection and unchanged-comparison evidence](../../baselines/separate-pages-validation.json) and [build/source manifest](../../baselines/separate-pages-build-manifest.json) retain provenance. Publication does not establish Cloudflare deployment or physical microphone accuracy.
+
+CHG-047 preserves this design during the React migration. The page interior now has one typed component with colocated styles/tests; the shared shell and exact existing browser images remain the reference. No visual redesign or new screenshot baseline is authorized.

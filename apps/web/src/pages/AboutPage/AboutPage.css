@@ -1,0 +1,6 @@
+.about-intro { text-align:center; padding:24px 8px 12px; }
+.about-intro img { display:block; margin:0 auto 14px; }
+.about-intro .brand-logo { width:64px; height:64px; }
+.about-name { font-size:1rem; font-weight:750; margin-bottom:5px; }
+.about-intro h3 { font-size:1.8rem; letter-spacing:-.025em; line-height:1.12; margin:22px 0 14px; }
+.about-intro>p:last-child { color:#a8b5bd; font-size:.9rem; line-height:1.6; }

@@ -52,3 +52,5 @@ dryfire (parent Worker)
 ```
 
 CHG-041 adds a shared BETA badge beside the brand and a feedback invitation within the existing About page. The twelve-screen tree and public routes are unchanged; current captures include the shared marker in both editions. See [branding](../requirements/branding.md#beta-disclosure--chg-041) and [About](../requirements/about.md#beta-and-feedback--chg-041).
+
+CHG-047: [incremental React ownership, CSS and test boundaries](react-migration.md) · [screen-to-component/test map](component-map.json). Keep these current when moving a screen; the site hierarchy and stable routes remain unchanged.

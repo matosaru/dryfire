@@ -2,7 +2,7 @@
 
 Repository workflow: [b/main Free, dev Full, PR protection and test-gated builds](../project/branching-strategy.md).
 
-CHG-046: [React refactor plan](../project/react-refactor-plan.md) maps all 13 existing screens, component/CSS/test ownership and regression gates. It is a plan only; no framework migration has started, and the requested DEV.to article comparison awaits access.
+CHG-046: [React refactor plan](../project/react-refactor-plan.md) maps all 13 existing screens, component/CSS/test ownership and regression gates. CHG-047 starts implementation: workspaces, typed About/Contact and shared heading/card packages are introduced first. The [migration architecture](../architecture/react-migration.md) and [component map](../architecture/component-map.json) distinguish current and remaining owners; the requested DEV.to article comparison still awaits access.
 
 Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with dev/production verification.
 

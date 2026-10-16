@@ -18,3 +18,5 @@ Build public assets, export frames with `node tools/export-guide-examples.mjs --
 | sequence mag trigger | [sequence-mag-trigger.gif](sequence-mag-trigger.gif) |
 | sequence draw mag trigger | [sequence-draw-mag-trigger.gif](sequence-draw-mag-trigger.gif) |
 | sequence custom | [sequence-custom.gif](sequence-custom.gif) |
+
+CHG-047 regenerates these exports after the CSS composition refactor. The manifest now fingerprints every ordered component/global stylesheet. All frame counts, durations, dimensions and endpoints remain unchanged; five encodings have sparse reviewed color differences, and seven retain exact bytes. [Review evidence](../../../baselines/react-refactor-review.json) preserves comparison/source details without changing PNG references.
