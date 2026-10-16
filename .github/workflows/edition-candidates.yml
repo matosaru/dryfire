@@ -22,17 +22,17 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --no-audit --no-fund
-      - name: Generate and compare both editions in the pinned browsers
+      - name: Correct and compare affected Light guides in both pinned editions
         run: |
           for edition in public preview; do
             export APP_EDITION="$edition" VISUAL_EDITION="$edition"
             npm run build
             npm run verify:dist -- --edition="$edition"
-            npx --no-install playwright test --config edition-candidates.config.js
-            cp test-results/results.json "visual-candidates/$edition-generation-validation.json"
-            VISUAL_CANDIDATES_COMPARE=1 npx --no-install playwright test --config edition-candidates.config.js
-            cp test-results/build-manifest.json "visual-candidates/$edition-build-manifest.json"
-            cp test-results/results.json "visual-candidates/$edition-validation.json"
+            npx --no-install playwright test --config edition-candidates.config.js -g 'practice-guide/.*\.light|actual Reload endpoints'
+            cp test-results/results.json "visual-candidates/light-$edition-generation-validation.json"
+            VISUAL_CANDIDATES_COMPARE=1 npx --no-install playwright test --config edition-candidates.config.js -g 'practice-guide/.*\.light|actual Reload endpoints'
+            cp test-results/build-manifest.json "visual-candidates/light-$edition-build-manifest.json"
+            cp test-results/results.json "visual-candidates/light-$edition-validation.json"
           done
       - name: Export actual shared guide examples and encode maintained GIFs
         run: |

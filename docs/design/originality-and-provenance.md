@@ -1,8 +1,8 @@
 # Design originality and asset provenance
 
-## CHG-044 application guides — 2026-10-15
+## CHG-044/045 application guides — 2026-10-15
 
-The current [practice-guide screen](screens/practice-guide/README.md) implements the reviewed CHG-042/043 direction using the existing shared app shell and locally authored [Canvas renderer](../../src/practiceGuidePainting.js) / [engine examples](../../src/practiceGuideExamples.js). The app does not bundle the proposal GIF exports; controlled examples are drawn locally from synthetic pure-engine states. Mode copy derives from the reviewed proposal with current endpoint/preset/start-source adaptation. New product screenshots use the repository's pinned browser process; final capture/publication evidence is in the delivery tracker. No competitor media, stock artwork, external font or new manufacturer assets are imported; this is a creation record, not an exclusivity or legal-clearance claim.
+The current [practice-guide screen](screens/practice-guide/README.md) implements the reviewed CHG-042/043 direction using the existing shared app shell and locally authored [shared live presentation](../../src/sessionPresentation.js) / [engine examples](../../src/practiceGuideExamples.js). The app does not bundle the proposal GIF exports; controlled examples render the actual run/review fragments from synthetic pure-engine states. CHG-045 replaces the rejected simplified Canvas with the working session structure/CSS; [current GIF exports](screens/practice-guide/examples/README.md) are captured from that same component and checked for stale sources. Mode copy derives from the reviewed proposal with current endpoint/preset/start-source adaptation. New product screenshots use the repository's pinned browser process; final capture/publication evidence is in the delivery tracker. No competitor media, stock artwork, external font or new manufacturer assets are imported; this is a creation record, not an exclusivity or legal-clearance claim.
 
 ## CHG-043 scenario revision — 2026-10-15
 

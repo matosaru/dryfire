@@ -75,16 +75,36 @@ test('animation is initially static, pauses, resumes, stops at review and offers
   await page.locator('#practiceGuideEarlyBtn').click(); await expect(page.locator('#practiceGuideEarlyBtn')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('#practiceGuideExample')).toHaveAttribute('aria-label', /early trigger fails with zero shots/);
   await expect(page.locator('#practiceGuidePlayBtn')).toHaveText('Play example');
+  await page.locator('#practiceGuidePlayBtn').click(); await page.clock.runFor(1700);
+  await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, value: true }); document.dispatchEvent(new Event('visibilitychange')); });
+  await expect(page.locator('#practiceGuidePlayBtn')).toHaveText('Resume example');
+  const background = await pixels(); await page.clock.runFor(700); expect(await pixels()).toBe(background);
+  await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, value: false }); document.dispatchEvent(new Event('visibilitychange')); });
+  await page.locator('#practiceGuideReturnBtn').click();
+  await page.locator('.tab[data-view="history"]').click();
+  await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);
   expect(await page.evaluate(() => window.__guideMicRequests)).toBe(0);
 });
 
 test('actual Reload endpoints and external/silent setup descriptions are retained', async ({ page }) => {
-  await openLibrary(page); await practice(page, 'reload');
+  await openLibrary(page, 'light'); await practice(page, 'reload');
   await page.locator('#practiceReloadStart').selectOption('trigger'); await page.locator('#practiceReloadEnd').selectOption('draw');
   await page.locator('#practiceStartSource').selectOption('external'); await page.locator('#practiceGuideLink').click();
   await expect(page.locator('#practiceGuideSequence')).toContainText('Trigger pull');
   await expect(page.locator('#practiceGuideSequence')).toContainText('Draw from holster');
   await expect(page.locator('#practiceGuideCurrentSetup')).toContainText('no app countdown');
+  const contrasts = await page.locator('.guide-media figcaption').evaluate(caption => {
+    const rgb = value => value.match(/[\d.]+/g).slice(0, 3).map(Number);
+    const luminance = value => rgb(value).map(channel => {
+      const s = channel / 255; return s <= .04045 ? s / 12.92 : ((s + .055) / 1.055) ** 2.4;
+    }).reduce((sum, channel, i) => sum + channel * [.2126, .7152, .0722][i], 0);
+    const background = luminance(getComputedStyle(caption).backgroundColor);
+    return [caption, caption.querySelector('button')].map(el => {
+      const foreground = luminance(getComputedStyle(el).color);
+      return (Math.max(foreground, background) + .05) / (Math.min(foreground, background) + .05);
+    });
+  });
+  for (const contrast of contrasts) expect(contrast).toBeGreaterThanOrEqual(4.5);
   await page.locator('#practiceGuideReturnBtn').click(); await expect(page.locator('#practiceReloadStart')).toHaveValue('trigger');
   await expect(page.locator('#practiceReloadEnd')).toHaveValue('draw');
   await page.locator('#practiceStartSource').selectOption('app'); await page.locator('#practiceStartSound').uncheck();
