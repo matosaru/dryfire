@@ -1,3 +1,4 @@
+import { aboutFeatureSummary } from './AboutPage.copy.ts';
 import { PageHeading } from '@dryfire/ui/PageHeading';
 import { InformationCard } from '@dryfire/ui/InformationCard';
 
@@ -17,9 +18,7 @@ export function AboutPage({ full = false, onBack }: AboutPageProps) {
     </InformationCard>
     <InformationCard id="aboutRoutineTitle" title="A simple practice routine">
       <ol><li>Learn your trigger click.</li><li>Choose a practice mode or drill.</li><li>Follow the start signal and review your saved results.</li></ol>
-      <p id="aboutFeatureSummary">{full
-        ? 'Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.'
-        : 'Learn your trigger click, choose a built-in practice mode and review saved timing results. Other sound categories are optional unless your drill uses them.'}</p>
+      <p id="aboutFeatureSummary">{aboutFeatureSummary(full)}</p>
     </InformationCard>
     <InformationCard id="aboutDataTitle" title="Saved on your device">
       <p>No account is required. Your profiles, learned sound features, drills and history stay in this browser. Use Settings → Export backup to keep a recovery copy before changing device or clearing browser data.</p>

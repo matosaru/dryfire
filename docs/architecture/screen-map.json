@@ -859,7 +859,8 @@
     "packages/ui/src/InformationCard/InformationCard.css": "pending-review",
     "packages/ui/src/InformationCard/index.ts": "pending-review",
     "packages/ui/src/InformationCard/InformationCard.tsx": "pending-review",
-    "tools/style-sources.mjs": "pending-review"
+    "tools/style-sources.mjs": "pending-review",
+    "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "pending-review"
   },
   "implementationChanges": [
     "CHG-017",

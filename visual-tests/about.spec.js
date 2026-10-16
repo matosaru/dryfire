@@ -1,3 +1,4 @@
+import { edition } from './catalog.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 
@@ -122,9 +123,12 @@ test('informational React loads on demand while static content and Back stay usa
   await page.getByRole('button', { name: 'Back to previous screen', exact: true }).click();
   await expect(page.locator('#gunSetupView')).toBeVisible();
   await page.locator('#aboutBtn').click();
+  await expect(page.locator('#aboutFeatureSummary')).toContainText(edition === 'preview' ? 'up to five guns' : 'built-in practice mode');
+  await page.getByRole('button', { name: 'Back to previous screen', exact: true }).focus();
   release();
   const modulePath = JSON.parse(readFileSync(new URL('../dist/edition.json', import.meta.url))).assets.find(path => /\/informationPages-[^/]+\.js$/.test(path));
   expect(await page.evaluate(async path => !!(await import(path)).mountInformationPages, modulePath)).toBe(true);
+  await expect(page.getByRole('button', { name: 'Back to previous screen', exact: true })).toBeFocused();
   await page.locator('#contactBtn').click();
   await page.getByRole('button', { name: 'Back', exact: true }).click();
   await expect(page.locator('#aboutView')).toBeVisible();

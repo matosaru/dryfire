@@ -1,64 +1,51 @@
-name: Review React migration parity and guide exports
+name: Recover React export diagnostics
 on:
   push:
     branches: [b]
     paths: ['.github/workflows/refactor-parity.yml']
 permissions:
   contents: write
+  actions: read
 jobs:
-  parity:
+  recover:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
-    container:
-      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
-      options: --ipc=host
-    env:
-      VISUAL_IMAGE: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
     steps:
       - uses: actions/checkout@v4
-      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - run: npm ci --no-audit --no-fund
-      - run: npm run typecheck && npm run lint:components && npm run verify:architecture
-      - run: npm test && npm run test:smoke
-      - name: Compare both editions with the unchanged reviewed browser references
-        run: |
-          for edition in public preview; do
-            export APP_EDITION="$edition" VISUAL_EDITION="$edition"
-            npm run build
-            npm run verify:dist -- --edition="$edition"
-            npm run visual:review
-            npm run test:visual
-            npm run visual:probe
-            mkdir -p visual-candidates/react-refactor
-            cp test-results/build-manifest.json "visual-candidates/react-refactor/$edition-build.json"
-            cp test-results/results.json "visual-candidates/react-refactor/$edition-results.json"
-          done
-      - name: Regenerate guide media from the unchanged actual component in the pinned renderer
-        run: |
-          npm run build:public
-          node tools/export-guide-examples.mjs --output /tmp/refactor-guide-frames
-          python3 -m pip install --break-system-packages Pillow==11.3.0
-          python3 tools/encode-guide-examples.py /tmp/refactor-guide-frames visual-candidates/react-refactor/guide-examples
-      - uses: actions/upload-artifact@v4
-        if: always()
+      - uses: actions/download-artifact@v4
         with:
           name: react-refactor-parity
-          path: |
-            visual-candidates/
-            playwright-report/
-            test-results/
-            playwright-probe-report/
-            test-results-probe/
-          if-no-files-found: error
-      - name: Publish review evidence only to the exact source branch
+          run-id: 38900997369
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/react-recovered
+      - name: Retain compact passing comparison reports
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          out=Path('visual-candidates/react-refactor');out.mkdir(parents=True,exist_ok=True)
+          for name in ['public-build.json','public-results.json','preview-build.json','preview-results.json']:
+              source=list(Path('/tmp/react-recovered').rglob(name));assert len(source)==1,(name,source)
+              shutil.copyfile(source[0],out/name)
+          PY
+      - name: Read the failed export step from the existing job logs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const result = await github.rest.actions.downloadJobLogsForWorkflowRun({ owner: context.repo.owner, repo: context.repo.repo, job_id: 116972921519 });
+            const log = typeof result.data === 'string' ? result.data : Buffer.from(result.data).toString('utf8');
+            const lines = log.split('\n');
+            const at = lines.findLastIndex(line => /Error:|ERROR|Traceback|error:/.test(line));
+            const excerpt = lines.slice(Math.max(0, at-12), at+25).join('\n');
+            fs.writeFileSync('visual-candidates/react-refactor/export-error.json', JSON.stringify({ run: 38900997369, job: 116972921519, excerpt }, null, 2)+'\n');
+      - name: Publish unaccepted diagnostics only to the exact source branch
+        if: always()
         run: |
           test "$GITHUB_REF_NAME" = 'b'
           test "$(git ls-remote origin refs/heads/b | cut -f1)" = "$GITHUB_SHA"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add visual-candidates/react-refactor/
-          git commit -m 'test: collect React parity evidence and current guide exports'
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'test: retain passing React comparison evidence and export error'
           git push origin HEAD:b

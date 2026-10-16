@@ -59,3 +59,13 @@ test('leaving the application while the chunk loads never mounts abandoned roots
   await Promise.resolve(); await Promise.resolve();
   expect(mount).not.toHaveBeenCalled();
 });
+
+test('Full preview copy is correct immediately while its React chunk is still pending', () => {
+  document.body.innerHTML = '<section id="aboutView"><p id="aboutFeatureSummary">Public copy</p></section><section id="contactView"></section>';
+  const bridge = createInformationBridge({ onBack() {}, onError() {}, load: () => new Promise(() => {}) });
+  bridge.setFull(true); bridge.show('about');
+  expect(document.querySelector('#aboutFeatureSummary')?.textContent).toContain('up to five guns');
+  bridge.setFull(false);
+  expect(document.querySelector('#aboutFeatureSummary')?.textContent).toContain('built-in practice mode');
+  bridge.dispose();
+});

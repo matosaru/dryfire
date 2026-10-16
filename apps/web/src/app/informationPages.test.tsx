@@ -30,3 +30,13 @@ test('missing mounts fail before acquiring a root', () => {
   expect(() => mountInformationPages({ onBack: () => {} })).toThrow('mounts are missing');
   expect(document.querySelector('#aboutView')).toBeEmptyDOMElement();
 });
+
+test('connecting React preserves keyboard focus inside the prerendered page', () => {
+  document.querySelector('#aboutView')!.innerHTML = '<button data-react-back>Back</button>';
+  const initialBack = document.querySelector<HTMLButtonElement>('[data-react-back]')!;
+  initialBack.focus();
+  let pages: ReturnType<typeof mountInformationPages>;
+  act(() => { pages = mountInformationPages({ onBack() {} }); });
+  expect(screen.getByRole('button', { name: 'Back to previous screen' })).toHaveFocus();
+  act(() => pages.dispose());
+});

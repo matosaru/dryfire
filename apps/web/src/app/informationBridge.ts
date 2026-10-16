@@ -1,3 +1,4 @@
+import { aboutFeatureSummary } from '../pages/AboutPage/AboutPage.copy.ts';
 import type { mountInformationPages } from './informationPages.tsx';
 type Pages = ReturnType<typeof mountInformationPages>;
 type Module = { mountInformationPages: typeof mountInformationPages };
@@ -20,11 +21,20 @@ export function createInformationBridge({ onBack, onError, doc = document,
       if (disposed || pages || pending || !['about', 'contact'].includes(view)) return;
       pending = load().then(module => {
         if (disposed) return;
-        pages = module.mountInformationPages({ onBack, doc });
+        pages = module.mountInformationPages({ onBack, doc, full });
         pages.setFull(full);
       }).catch(error => { if (!disposed) onError(error); }).finally(() => { pending = undefined; });
     },
-    setFull(value: boolean) { full = value; if (!disposed) pages?.setFull(value); },
+    setFull(value: boolean) {
+      full = value;
+      if (disposed) return;
+      if (pages) pages.setFull(value);
+      else {
+        // Until the roots mount, this boundary owns only the prerendered copy.
+        const summary = doc.getElementById('aboutFeatureSummary');
+        if (summary) summary.textContent = aboutFeatureSummary(value);
+      }
+    },
     dispose() {
       if (disposed) return;
       disposed = true;
