@@ -36,3 +36,5 @@ Add a component as `Name/{Name.tsx,Name.css,Name.test.tsx,index.ts}`. Keep test 
 Use `npm run typecheck`, `npm run lint:components`, `npm run verify:architecture`, existing unit/smoke tests, both-edition builds/artifact checks and pinned Chromium/WebKit references. Do not update PNG baselines to accommodate a refactor. Current help GIFs are exported from actual guide UI and carry the full CSS dependency fingerprints, so splitting style files does not bypass staleness detection.
 
 [Page templates](page-templates.md) · [Site tree](site-tree.md) · [Implementation history](../project/implementation-history.md).
+
+First-increment visual/media evidence: [review record](../design/baselines/react-refactor-review.json). All browser PNGs remain unchanged; regenerated GIF geometry/timing is unchanged, with sparse reviewed color-quantization differences in five exports.
