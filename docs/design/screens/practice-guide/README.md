@@ -49,3 +49,7 @@ The state/theme image list below is generated from the screen registry when the 
 The initial Canvas was rejected by user review. The example now compiles the real Practice/Sequence run and review fragments with namespaced IDs and uses the same read-only presentation functions and CSS. It shows the actual counters, STOP/microphone card, countdown and results. Only synthetic events/levels drive it; reading and playback never capture/save.
 
 Current animated exports are generated from this working component using `node tools/export-guide-examples.mjs`, then `python3 tools/encode-guide-examples.py`. Their source/media manifest is validated by `docs:check`; see [examples](examples/README.md). Any relevant design change requires updating live/help/GIF/screenshot evidence together.
+
+## Component and theme ownership
+
+Existing runtime tokens in `src/styles.css` remain canonical. The guide reuses the shared app shell and the actual Practice/Sequence run and review fragments; `sessionPresentation.js` owns their read-only display, while `practiceGuideController.js` owns example playback only. The guide caption and Play control use the existing `--session-muted` / `--session-text` roles in Light; Dark retains its reviewed values. The browser regression requires at least 4.5:1 rendered text contrast on the caption surface. Requirements own behavior; current captures/GIF manifests own visual evidence. There is no separate help theme or second session drawing.
