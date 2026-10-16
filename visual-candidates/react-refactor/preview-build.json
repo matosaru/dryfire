@@ -1,0 +1,56 @@
+{
+  "commit": "eac3d0bc37ca820cbee16a8d48da95121cf3dc5c",
+  "edition": "preview",
+  "build": {
+    "version": 1,
+    "edition": "preview",
+    "sourceRevision": "eac3d0bc37ca820cbee16a8d48da95121cf3dc5c",
+    "sourceDigest": "cd60f2021a7fd6b23194cc3db78b34fe230a2497246954f9f24b601d48a64580",
+    "assets": [
+      "/assets/eventDetector-DtBbU0H0.js",
+      "/assets/index-DGCXQG_Q.js",
+      "/assets/index-DnLrZEQ0.css",
+      "/assets/informationPages-B4az1FCt.js",
+      "/assets/previewTesting-CdrmyFEj.js",
+      "/assets/progressView-BPyBgWbR.js",
+      "/pcm-capture.worklet.js",
+      "/sw.js"
+    ]
+  },
+  "environment": {
+    "playwrightVersion": "1.58.2",
+    "image": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+    "platform": "linux/amd64",
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "clock": "2026-10-11T11:00:00.000Z",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "maxDiffPixels": 0,
+    "comparisonThreshold": 0.005
+  },
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v22.23.3",
+  "hashes": {
+    "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
+    "src/styles.css": "440f1e998cc2dc35c8b2da814e7ebfabc8d2a0968b0574741914b98c72816bed",
+    "src/main.js": "114417cd5b6ffcf214664ffd369c46d3dca1803ba9825177e1bbb79e102195bc",
+    "package-lock.json": "7bc64783c9d08d7383e925dfbc1237d1160accad67d16cd7a81cc86e81dd524a",
+    "visual-tests/fixtures/library.json": "4082ad24d9beda61b87273ee6ca507af6f303cc57c08d6595b2640ab3849af45"
+  },
+  "assetHashes": {
+    "index.html": "7e5b367778ec5f112245d300ac025b565ca0a4b060fe6ac48ef6a930910c9476",
+    "pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+    "sw.js": "c308fce36125c70efb8c71ccc3ff673114ff78a8290890b728b874bf7743104d",
+    "assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+    "assets/index-DGCXQG_Q.js": "a2045252b68ed3d9ca3af2cdd6de99a377b8e1e966ac033568d0c42da8c5df35",
+    "assets/index-DnLrZEQ0.css": "235ad2e132f412f60103792e215d91f6e0c8cfa9d23f6c78410182caebb28ec7",
+    "assets/informationPages-B4az1FCt.js": "adacfbfd3d5dc58f33c238a7f5e03c5c9d0071dc7f23570a4280c439dd3f1846",
+    "assets/previewTesting-CdrmyFEj.js": "db85b10a137551232df9c5fdb634b2c50c1d2aa8a72a4cfefae1a7d30aef7ab7",
+    "assets/progressView-BPyBgWbR.js": "994735a79411d08e487638a8b3a217c5db9196b92bf3482f37346c64033b9516"
+  }
+}
