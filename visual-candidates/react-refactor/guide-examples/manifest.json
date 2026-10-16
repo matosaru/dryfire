@@ -1,0 +1,141 @@
+{
+  "sourceCommit": "1c5e027ef546d51bb877b67aaad14f00e57802cf",
+  "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+  "sources": {
+    "src/styles.css": "440f1e998cc2dc35c8b2da814e7ebfabc8d2a0968b0574741914b98c72816bed",
+    "apps/web/src/styles/legacy-base.css": "e013c89bb5c04bbf105ae4fa7e06b24d9b400ac73aaf571a526b9758d13a90f6",
+    "packages/ui/src/PageHeading/PageHeading.css": "17a188929d245b237da7e8832a3779beb7f3a3208acc7131d1433f3617225b5d",
+    "apps/web/src/styles/legacy-controls.css": "0b4eb9a5bf9dd9130ce38a27f1e1a3a5e7031089d46837c6caa5c769db16110f",
+    "apps/web/src/pages/AboutPage/AboutPage.css": "f461cfe293e1fec12d7a8bbbca835abd9a7495db77e1a5effa56241150b900b5",
+    "packages/ui/src/InformationCard/InformationCard.css": "5c866ea8582066954f298ce2e43ee6f474d85b11539e516cc615b7da27b97f0d",
+    "apps/web/src/pages/ContactPage/ContactPage.css": "48411add5890d908e191a4340ec2a2154fa4a328c578e4daf4b1240ed3775d71",
+    "apps/web/src/styles/legacy-theme-and-layout.css": "2f22367da51afe0a184ba44c52c8b7c02c398bff5d1b77e417aabe70b5ea1464",
+    "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
+    "src/sessionPresentation.js": "55258e9a2b7c9c2acbfccd722bea1986af688d4b51773e0367f6c97b0b31c837",
+    "src/practiceGuideController.js": "978daa3edf0db71157cf5e4c10dff3a9437f87ec952dcf408190dd07fe7d6e4e",
+    "src/practiceGuideRendering.js": "2cd900f757cfb2a860c5c64b9cfc6c48b59d29ca845661ec6493f3ef02d89580",
+    "src/practiceGuideExamples.js": "6a597a7ad94169334a98a3f58ec5af4ddfd9aa4f3284208f929c0e7b299a183b",
+    "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
+    "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
+    "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
+    "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
+    "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
+    "tools/page-templates.mjs": "b19ecbca8c5595847f5bb1f5525557845deaf61b5b6c3a31e9785f860217813c",
+    "tools/export-guide-examples.mjs": "a2954f85a24c38df5ea07b50cfc4738ae0af2fd2babf89405615c23d83862116",
+    "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
+    "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
+    "src/templates/shared/practice-review.html": "cd21f121c3ee65f387f5e263e46a046e26214b51e681da4339d26371e26c31c0",
+    "src/templates/shared/session-run.html": "eed45b5ebf5d95c265e57d2df1039eac3478272dee3f72def1d4afe9e109e1b1",
+    "src/templates/shared/session-review.html": "7e0e4ecc2bd1f2ba74f252925dcaef0fcd99987f75a23f4689982e54bf71ab03"
+  },
+  "exports": [
+    {
+      "name": "single",
+      "frames": 47,
+      "frameMs": 200,
+      "file": "single.gif",
+      "sha256": "5a54b915c3e89ce9c9dc4c1654533f1100ae8e69e0fe20b4eeb1c0b7ef646888",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "single-early",
+      "frames": 42,
+      "frameMs": 200,
+      "file": "single-early.gif",
+      "sha256": "a9c97db122e3915ba2ac2d9967a794245d3bbd04515a4a3e32bf6f70b174d9cc",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "repeated",
+      "frames": 36,
+      "frameMs": 200,
+      "file": "repeated.gif",
+      "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182",
+      "width": 358,
+      "height": 949
+    },
+    {
+      "name": "par",
+      "frames": 68,
+      "frameMs": 200,
+      "file": "par.gif",
+      "sha256": "13dc5caa54b004d3ae240bb74c6579a6240ac4d0a1d97dc7e27b2906d607334a",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "control",
+      "frames": 36,
+      "frameMs": 200,
+      "file": "control.gif",
+      "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182",
+      "width": 358,
+      "height": 949
+    },
+    {
+      "name": "reload",
+      "frames": 63,
+      "frameMs": 200,
+      "file": "reload.gif",
+      "sha256": "e368a9f55028260969757a4d14139dbc0eaee58e8614452fcdc01e946261c97c",
+      "width": 358,
+      "height": 1004
+    },
+    {
+      "name": "free",
+      "frames": 65,
+      "frameMs": 200,
+      "file": "free.gif",
+      "sha256": "bb1e2a8b9b62a650ab3fa3f99e57eaca1b3fc075bd84e5d03bea970645c0af58",
+      "width": 358,
+      "height": 949
+    },
+    {
+      "name": "sequence-trigger-only",
+      "frames": 56,
+      "frameMs": 200,
+      "file": "sequence-trigger-only.gif",
+      "sha256": "e33b277c31155abd1fe024dadad2fbe0905e747d84af4b4bcbc3a3afdab1e1cf",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-rack-trigger",
+      "frames": 64,
+      "frameMs": 200,
+      "file": "sequence-rack-trigger.gif",
+      "sha256": "ea25a1da44c8d815d89c38124e249d7bc30e579aa1ec7e7c64b7eaf528092614",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-mag-trigger",
+      "frames": 64,
+      "frameMs": 200,
+      "file": "sequence-mag-trigger.gif",
+      "sha256": "21042b77c1f62af2f489961f84a6e98c613c75fa6e4a42caaf07ce72f1c3fd66",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-draw-mag-trigger",
+      "frames": 72,
+      "frameMs": 200,
+      "file": "sequence-draw-mag-trigger.gif",
+      "sha256": "28f3d78736d0b457b779d1ae3ca6e3658192988adfec5598038bca5c8174ef51",
+      "width": 358,
+      "height": 750
+    },
+    {
+      "name": "sequence-custom",
+      "frames": 72,
+      "frameMs": 200,
+      "file": "sequence-custom.gif",
+      "sha256": "bb9904dce957cee1052bc408a7a54eff19502e7f4f6c459fe95efc05a3953cd8",
+      "width": 358,
+      "height": 750
+    }
+  ]
+}
