@@ -1,4 +1,4 @@
-name: Recover React export diagnostics
+name: Recover final React collector error
 on:
   push:
     branches: [b]
@@ -36,7 +36,7 @@ jobs:
             const log = typeof result.data === 'string' ? result.data : Buffer.from(result.data).toString('utf8');
             const lines = log.split('\n');
             const at = lines.findLastIndex(line => /Error:|ERROR|Traceback|error:/.test(line));
-            const excerpt = lines.slice(Math.max(0, at-12), at+25).join('\n');
+            const excerpt = lines.slice(-200).join('\n');
             fs.writeFileSync('visual-candidates/react-refactor/export-error.json', JSON.stringify({ run: 38900997369, job: 116972921519, excerpt }, null, 2)+'\n');
       - name: Publish unaccepted diagnostics only to the exact source branch
         if: always()
