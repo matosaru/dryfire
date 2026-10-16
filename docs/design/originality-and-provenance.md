@@ -1,5 +1,17 @@
 # Design originality and asset provenance
 
+## CHG-044 application guides — 2026-10-15
+
+The current [practice-guide screen](screens/practice-guide/README.md) implements the reviewed CHG-042/043 direction using the existing shared app shell and locally authored [Canvas renderer](../../src/practiceGuidePainting.js) / [engine examples](../../src/practiceGuideExamples.js). The app does not bundle the proposal GIF exports; controlled examples are drawn locally from synthetic pure-engine states. Mode copy derives from the reviewed proposal with current endpoint/preset/start-source adaptation. New product screenshots use the repository's pinned browser process; final capture/publication evidence is in the delivery tracker. No competitor media, stock artwork, external font or new manufacturer assets are imported; this is a creation record, not an exclusivity or legal-clearance claim.
+
+## CHG-043 scenario revision — 2026-10-15
+
+The [revised practice-guide animations](proposals/practice-guides/README.md#animation-direction) replace CHG-042's SVG waveform concepts with locally authored [Canvas scenes](proposals/practice-guides/motion.html). Their [scenario fixtures](proposals/practice-guides/scenarios.mjs) call the existing pure session engines using synthetic accepted detections, and FFmpeg encodes the rendered PNG frames into GIFs. No stock/competitor footage, external font or third-party artwork is used. The [event/source record](proposals/practice-guides/scenario-timelines.json) retains configuration, source hashes and timing evidence. Original four-second SVG concepts remain in [`b84de36`](https://github.com/matosaru/dryfire/commit/b84de36); the historical CHG-042 creation record below refers to that earlier revision. These are instructional UI examples, not live microphone data, hardware latency validation, physical handling instruction or legal clearance.
+
+## CHG-042 proposal artwork — 2026-10-15
+
+The [practice-guide proposal](proposals/practice-guides/README.md) reuses the existing repository-owned shared shell/CSS and canonical logo. Its mode-specific diagrams in `proposals/practice-guides/animations/` are rendered from the locally authored [timing-illustration SVG/JavaScript](proposals/practice-guides/motion.html), with browser PNG frames encoded by FFmpeg into silent GIFs. The [renderer](proposals/practice-guides/render.mjs) and [capture script](proposals/practice-guides/capture.mjs) preserve this creation record. No competitor screenshot, stock footage, external font, icon pack, manufacturer logo or third-party animation was imported. System fonts are used. These are UI/timing illustrations, not a physical handling demonstration, live audio, a field accuracy test or a legal-clearance claim. Their production use remains subject to review of the proposal.
+
 Review updated: 2026-10-11 · State: factual provenance review; not a legal-clearance certificate
 
 ## What this review establishes

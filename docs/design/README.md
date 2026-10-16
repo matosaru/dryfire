@@ -1,5 +1,11 @@
 # Current designs
 
+CHG-044 implements the [shared Practice guide page](screens/practice-guide/README.md), linked below Practice/Sequence configuration titles, with individual mode/preset manuals, current-context explanations and controlled silent examples. It is the thirteenth shared app screen. Earlier CHG-042/043 proposal-only statements below retain their historical scope. Current image acceptance/publication is recorded in the tracker.
+
+CHG-043 revises the [practice-guide examples](proposals/practice-guides/README.md#animation-direction) with 1× timing from actual session-engine scenarios, microphone preparation/listening states, automatic Single repetitions and a separate early-trigger failure. The guide feature remains a proposal; product screens/baselines and the twelve-screen registry are unchanged.
+
+CHG-042 [practice-guide proposal](proposals/practice-guides/README.md) shows an **About this practice ›** setup link, separate short manuals for six practice modes and ordered sequences, Dark/Light pages and silent timing GIFs. These are reviewable mockups, not current product captures; the implemented references below remain unchanged.
+
 CHG-041 adds a visible **BETA** badge in the shared header across all screens and a Beta/feedback invitation within About. [Branding](../requirements/branding.md#beta-disclosure--chg-041) and [About](../requirements/about.md#beta-and-feedback--chg-041) own the approved wording; screenshot review/publication is in the [delivery tracker](../project/implementation-history.md).
 
 CHG-035 adds private-only Free/Full Settings simulation, with a visible mode indicator and protected online asset boundary. CHG-032 adds public/full build editions; shared current captures use public unless a state is explicitly preview-only. CHG-033 retains the five bottom tabs on About/Contact in both themes/editions. Requirements and exact capture/CI status are in the delivery tracker.
@@ -14,7 +20,7 @@ CHG-029 separates About and Contact into two pages, reached by centered separate
 
 CHG-026 prepares [future Contact/SEO/account/Free-Pro/preview design scope](../requirements/web-commercial.md), with implementation explicitly paused. CHG-027 is the later direct request to create [About](screens/about/README.md) and [Contact](screens/contact/README.md) on a separate feature branch, with proposed copy for review. Other commercial/SEO/account work remains planning only.
 
-Current references below are actual production-build captures. CHG-029 separates Contact and refreshes the footer across the app. Twelve functional screens, all six Practice configurations, early-trigger Review, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples. The [shared layout](screens/shared/README.md) and BRAND-06 apply to every screen; prior captures are archived. Exact reviewed-source hashes are in the registry.
+Current references below are actual production-build captures. CHG-029 separates Contact and refreshes the footer across the app. Thirteen functional screens, the contextual practice guides, all six Practice configurations, early-trigger Review, the inline custom editor and shared safety modal have references. Fixture statistics and gun names are examples. The [shared layout](screens/shared/README.md) and BRAND-06 apply to every screen; prior captures are archived. Exact reviewed-source hashes are in the registry.
 
 ## File naming and ownership
 
@@ -36,6 +42,7 @@ Current references below are actual production-build captures. CHG-029 separates
 | Drills | [4 state/theme references](screens/drills/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-modes](../requirements/practice-modes.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
 | Practice | [12 state/theme references](screens/practice/README.md) | [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [practice-start](../requirements/practice-start.md), [page-layout](../requirements/page-layout.md) |
 | Drill Session | [4 state/theme references](screens/session/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md) |
+| About this practice | [27 state/theme references](screens/practice-guide/README.md) | [practice-guides](../requirements/practice-guides.md), [page-layout](../requirements/page-layout.md), [practice-modes](../requirements/practice-modes.md), [drill-sessions](../requirements/drill-sessions.md) |
 | Live Listen | [2 state/theme references](screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [page-layout](../requirements/page-layout.md) |
 | History | [7 state/theme references](screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
 | Settings | [9 state/theme references](screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [about](../requirements/about.md), [page-layout](../requirements/page-layout.md) |

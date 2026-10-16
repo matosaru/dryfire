@@ -1,6 +1,6 @@
 # Site and screen tree
 
-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-15; application source baseline `8ec331c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-15; application source baseline `8ec331c`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
 
 ## Public site
 
@@ -17,7 +17,8 @@ Canonical production origin: `https://dryfire.matosaru.workers.dev/`. **One impl
 │   ├── Learn Sounds [learn]
 │   ├── Drills [drills]
 │   │   ├── Practice [practice]
-│   │   └── Drill Session [session]
+│   │   ├── Drill Session [session]
+│   │   └── About this practice [practiceGuide]
 │   ├── Live Listen [recognize]
 │   ├── History [history]
 │   ├── Settings [settings]
@@ -42,6 +43,7 @@ The tree describes primary destinations, not a restriction on Back/Forward. Abou
 | Drills | `drillsView` | Drills tab, Home card or review completion | `catalog.dark`, `custom.dark`, `custom-editor.dark` (preview), `edit-custom.dark` (public) | [Design](../design/screens/drills/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-modes](../requirements/practice-modes.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
 | Practice | `practiceView` | Six mode cards or saved practice review in History | `configure-single.dark`, `configure-repeated.dark`, `configure-par.dark`, `configure-control.dark`, `configure-reload.dark`, `configure-free.dark`, `countdown.dark`, `active.dark`, `active.light`, `paused.dark`, `review.dark`, `early-review.dark` | [Design](../design/screens/practice/README.md) | [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [practice-start](../requirements/practice-start.md), [page-layout](../requirements/page-layout.md) |
 | Drill Session | `sessionView` | Start Drill on a built-in/custom sequence, or History review | `configure.dark`, `active.dark`, `paused.dark`, `review.dark` | [Design](../design/screens/session/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md) |
+| About this practice | `practiceGuideView` | About this practice link on stopped Practice or Sequence configuration | `single.dark`, `single.light`, `repeated.dark`, `repeated.light`, `par.dark`, `par.light`, `control.dark`, `control.light`, `reload.dark`, `reload.light`, `free.dark`, `free.light`, `sequence-trigger-only.dark`, `sequence-trigger-only.light`, `sequence-rack-trigger.dark`, `sequence-rack-trigger.light`, `sequence-mag-trigger.dark`, `sequence-mag-trigger.light`, `sequence-draw-mag-trigger.dark`, `sequence-draw-mag-trigger.light`, `sequence-custom.dark`, `sequence-custom.light`, `single-early.dark`, `single-early.light`, `reload-selected-endpoints.dark`, `external-start.dark`, `silent-start.dark` | [Design](../design/screens/practice-guide/README.md) | [practice-guides](../requirements/practice-guides.md), [page-layout](../requirements/page-layout.md), [practice-modes](../requirements/practice-modes.md), [drill-sessions](../requirements/drill-sessions.md) |
 | Live Listen | `recognizeView` | Live Listen tab, Home card or Start free listening | `ready.dark`, `listening.dark` | [Design](../design/screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [page-layout](../requirements/page-layout.md) |
 | History | `historyView` | History tab or Home card | `overview.dark` (public), `overview.light` (public), `progress.dark` (preview), `data-table.dark` (preview), `progress.light` (preview), `recognition-cleared.dark`, `sessions-cleared.dark` | [Design](../design/screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
 | Settings | `settingsView` | Settings gear in the shared branded header; backup/restore links | `overview.dark` (public), `overview.light` (public), `sounds-reset.dark`, `preview-free.dark` (preview), `preview-free.light` (preview), `preview-full.dark` (preview), `preview-full.light` (preview), `installation-help.dark`, `installation-help.light` | [Design](../design/screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [about](../requirements/about.md), [page-layout](../requirements/page-layout.md) |
@@ -54,6 +56,8 @@ The tree describes primary destinations, not a restriction on Back/Forward. Abou
 Every screen uses the [reusable app layout and view wrapper](page-templates.md), one branded header, main content, informational footer and fixed five-item bottom navigation. Installation/help is existing Settings content. Keep this shell consistent when adding screens.
 
 ## State transitions
+
+`Practice/Sequence Configure → About this practice → Same Configure`; preserve source/gun context and invalid/unsaved draft values, with no microphone/safety prompt. Guides use controlled synthetic examples and pause on navigation/background.
 
 `First visit → Gun setup → Home`; returning visits restore a valid selected gun.
 

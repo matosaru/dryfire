@@ -7,13 +7,22 @@ const fill = (template, slots) => template.replace(/\{\{([a-zA-Z]+)\}\}/g, (_, n
   return slots[name];
 });
 
+const runFragments = Object.fromEntries(['practice', 'session'].flatMap(name => ['run', 'review'].flatMap(state => {
+  const html = read(`shared/${name}-${state}`).trim();
+  const example = html.replace(/\bid="([^"]+)"/g, (_, id) => `id="example-${id}"`)
+    .replace(/\b(aria-labelledby|aria-describedby|for)="([^"]+)"/g, (_, attr, ids) => `${attr}="${ids.split(' ').map(id => `example-${id}`).join(' ')}"`);
+  const slot = name + state[0].toUpperCase() + state.slice(1);
+  return [[slot, html], ['example' + slot[0].toUpperCase() + slot.slice(1), example]];
+})));
+const content = id => fill(read(`pages/${id}`), runFragments);
+
 // Only trusted, repository-owned templates are compiled. User data still uses
 // the application's existing textContent/form APIs after the page is loaded.
 export function renderPageTemplates(html) {
   if (html.split('{{app}}').length !== 2) throw new Error('The HTML entry must contain exactly one {{app}} layout mount.');
   const wrapper = read('view');
   const pages = PAGE_DEFINITIONS.map(({ id, titleId }) => fill(wrapper, {
-    id, titleId, visibility: id === 'home' ? '' : 'hidden', content: read(`pages/${id}`),
+    id, titleId, visibility: id === 'home' ? '' : 'hidden', content: content(id),
   })).join('\n');
   const layout = fill(read('layout'), { pages,
     header: read('shared/header'), context: read('shared/context'),

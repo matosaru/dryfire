@@ -1,6 +1,6 @@
 # Shared page layout
 
-Revision 1.1 · CHG-037 / CHG-041 · directly requested 2026-10-12. Applies to all existing functional app screens, including Settings, About, Contact and Settings installation/help content. It creates no new public route.
+Revision 1.2 · CHG-037 / CHG-041 / CHG-044 · directly requested 2026-10-12. Applies to all existing functional app screens, including Settings, About, Contact, the contextual Practice guide and Settings installation/help content. It creates no new public route.
 
 | ID | Requirement |
 | --- | --- |

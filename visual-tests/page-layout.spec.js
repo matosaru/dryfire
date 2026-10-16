@@ -54,7 +54,9 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
       await page.locator(`.tab[data-view="${view}"]`).click(); await expect(page.locator(`#${view}View`)).toBeVisible(); await shell();
     }
     await page.locator('.tab[data-view="drills"]').click(); await page.locator('[data-practice-mode="single"]').click();
-    await expect(page.locator('#practiceView')).toBeVisible(); await shell(); await page.locator('#practiceBackBtn').click();
+    await expect(page.locator('#practiceView')).toBeVisible(); await shell();
+    await page.locator('#practiceGuideLink').click(); await expect(page.locator('#practiceGuideView')).toBeVisible(); await shell();
+    await page.locator('#practiceGuideReturnBtn').click(); await page.locator('#practiceBackBtn').click();
     await page.locator('#drillCatalog .preset-card').first().getByRole('button', { name: 'Start Drill' }).click();
     await expect(page.locator('#sessionView')).toBeVisible(); await shell(); await page.locator('#sessionBackBtn').click();
     await page.locator('#settingsShortcut').click(); await expect(page.locator('#settingsView')).toBeVisible(); await shell();
