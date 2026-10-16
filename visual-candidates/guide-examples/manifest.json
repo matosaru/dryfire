@@ -1,8 +1,8 @@
 {
-  "sourceCommit": "277da2e9cbbcbf1884f35cd58ed7cc6db9ab0e03",
+  "sourceCommit": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
-    "src/styles.css": "82ab79ed59021b3c653484ccf18575dfb3463aa5b387b38796ae81e55c67fd13",
+    "src/styles.css": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
     "src/sessionPresentation.js": "55258e9a2b7c9c2acbfccd722bea1986af688d4b51773e0367f6c97b0b31c837",
     "src/practiceGuideController.js": "978daa3edf0db71157cf5e4c10dff3a9437f87ec952dcf408190dd07fe7d6e4e",
     "src/practiceGuideRendering.js": "2cd900f757cfb2a860c5c64b9cfc6c48b59d29ca845661ec6493f3ef02d89580",
@@ -26,7 +26,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "96b2c3f42ba3a609c48a283bcdb05513ae1463ef25121bbd4763618cb53ac7c2",
+      "sha256": "f4c3ba3010b3ca515893d5147fa18709d630607c9452d5526fa2dd035078c2d8",
       "width": 358,
       "height": 1004
     },
@@ -35,7 +35,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "a9c97db122e3915ba2ac2d9967a794245d3bbd04515a4a3e32bf6f70b174d9cc",
+      "sha256": "a277ddecb4766c52589ee3d585d5c7a41ac63fe69b5ad76345dfd8a042257284",
       "width": 358,
       "height": 1004
     },
@@ -44,7 +44,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "repeated.gif",
-      "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182",
+      "sha256": "f3fe1a824dc7af099a24be921dd043a78f19fb1ccd86d35709132d22653f968c",
       "width": 358,
       "height": 949
     },
@@ -53,7 +53,7 @@
       "frames": 68,
       "frameMs": 200,
       "file": "par.gif",
-      "sha256": "21e5403dec24287aef0f1a2b0a457f521bfcc9eb125b082f599b357983a2e4af",
+      "sha256": "f8c4ef7d7d33ef28823627b6783101ecc04ee335b46d2a96c06d4c84b70f9b18",
       "width": 358,
       "height": 1004
     },
@@ -71,7 +71,7 @@
       "frames": 63,
       "frameMs": 200,
       "file": "reload.gif",
-      "sha256": "d5221cc9ed8d1ff8cd6753f486c9cd5ed0b9c3becab6f7ed40beef2a6df16bd4",
+      "sha256": "aa8fffd16518e6a4205096de655d01b9bad8527622c05219c9d91947b0c03c45",
       "width": 358,
       "height": 1004
     },
