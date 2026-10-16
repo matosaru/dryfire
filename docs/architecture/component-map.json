@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "shellOwner": "src/templates/layout.html",
+  "routerOwner": "src/screenNavigation.js",
+  "screens": [
+    {
+      "id": "gunSetup",
+      "targetOwner": "GunSetupPage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/gunSetup.html",
+      "behaviorTests": [
+        "tests/multiGunStorage.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "home",
+      "targetOwner": "HomePage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/home.html",
+      "behaviorTests": [
+        "tests/pageTemplates.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "guns",
+      "targetOwner": "GunsPage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/guns.html",
+      "behaviorTests": [
+        "tests/multiGunStorage.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "learn",
+      "targetOwner": "LearnPage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/learn.html",
+      "behaviorTests": [
+        "tests/storage.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "drills",
+      "targetOwner": "DrillsPage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/drills.html",
+      "behaviorTests": [
+        "tests/drills.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "practice",
+      "targetOwner": "PracticePage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/practice.html",
+      "behaviorTests": [
+        "tests/practiceSession.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "session",
+      "targetOwner": "SequencePage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/session.html",
+      "behaviorTests": [
+        "tests/drillSession.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "practiceGuide",
+      "targetOwner": "PracticeGuidePage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/practiceGuide.html",
+      "behaviorTests": [
+        "tests/practiceGuides.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "recognize",
+      "targetOwner": "LiveListenPage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/recognize.html",
+      "behaviorTests": [
+        "tests/recognition.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "history",
+      "targetOwner": "HistoryPage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/history.html",
+      "behaviorTests": [
+        "tests/sessionStorage.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "settings",
+      "targetOwner": "SettingsPage",
+      "renderer": "legacy",
+      "source": "src/templates/pages/settings.html",
+      "behaviorTests": [
+        "tests/audioPreferences.test.js",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "about",
+      "targetOwner": "AboutPage",
+      "renderer": "react",
+      "source": "apps/web/src/pages/AboutPage/AboutPage.tsx",
+      "behaviorTests": [
+        "apps/web/src/pages/AboutPage/AboutPage.test.tsx",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    },
+    {
+      "id": "contact",
+      "targetOwner": "ContactPage",
+      "renderer": "react",
+      "source": "apps/web/src/pages/ContactPage/ContactPage.tsx",
+      "behaviorTests": [
+        "apps/web/src/pages/ContactPage/ContactPage.test.tsx",
+        "tests/pageTemplates.test.js"
+      ],
+      "visualTests": "visual-tests/screens.spec.js"
+    }
+  ]
+}

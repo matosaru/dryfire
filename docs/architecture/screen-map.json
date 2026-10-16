@@ -817,7 +817,6 @@
     "src/templates/layout.html": "883a5cc08416cf3325d18dc875640640e29c454e1e44467b9b0820f1a1f06591",
     "src/templates/pages/recognize.html": "744f7545bf30854009830181aa89350df0e7c52c97a09d05520658628863edac",
     "src/templates/pages/drills.html": "d2323825c9380ab8c432229aea5c1ffc42040baacb222510c2087fc10fe529ec",
-    "src/templates/pages/contact.html": "b1514b154ee4310a9976cb3eb4083c7a8e07fd624603c1c50d2ffd075172f07a",
     "src/templates/pages/learn.html": "047c1a4d342f58463a4df7f3bffa95c28d7e5fa6d26c218d1ea027ea19fe09f5",
     "src/templates/pages/practice.html": "0acf870c2feb7fd307fd73c4f2f8e65dad7b572e66576c6e22097f988d47e3b5",
     "src/templates/pages/guns.html": "d8c2fd3dab68c4d6e29667c354e1940c5cc874f14d1286ce33549f3b02346988",
@@ -825,7 +824,6 @@
     "src/templates/pages/home.html": "e4ee581dde390ee63aaf72fe05c6d81ebd506f71909881ccfbd912d18f25e413",
     "src/templates/pages/session.html": "37a4ac51d76033bd54b955b04e4ab942239ec927fbf166abbb3665e10468069a",
     "src/templates/pages/settings.html": "b2463168a0a3622a3b2aeccb75f344a368b0bd3a9e40fa95179e14108fa907fa",
-    "src/templates/pages/about.html": "8f10ac82c7347750b70f2c90e999e656d70f4792d202fe53f20d1fd5510f5d34",
     "src/templates/pages/history.html": "93911ad01eb59991b1f1eda5451c13432eac9282bdecd49f361be2f1379ba251",
     "src/templates/shared/context.html": "5155fb19111dad1f10f7d6754eecfe6e3f05870113860294f335f16c42eb49e7",
     "src/templates/shared/safety-modal.html": "259426f79af84ec62288e4bb4f5ff515ba9285ca693b548a3e94ce68d24752e5",
@@ -842,7 +840,26 @@
     "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
     "src/templates/shared/practice-review.html": "cd21f121c3ee65f387f5e263e46a046e26214b51e681da4339d26371e26c31c0",
     "src/templates/shared/session-run.html": "eed45b5ebf5d95c265e57d2df1039eac3478272dee3f72def1d4afe9e109e1b1",
-    "src/templates/shared/session-review.html": "7e0e4ecc2bd1f2ba74f252925dcaef0fcd99987f75a23f4689982e54bf71ab03"
+    "src/templates/shared/session-review.html": "7e0e4ecc2bd1f2ba74f252925dcaef0fcd99987f75a23f4689982e54bf71ab03",
+    "apps/web/src/styles/legacy-controls.css": "pending-review",
+    "apps/web/src/styles/legacy-base.css": "pending-review",
+    "apps/web/src/styles/legacy-theme-and-layout.css": "pending-review",
+    "apps/web/src/app/informationPages.tsx": "pending-review",
+    "apps/web/src/app/informationBridge.ts": "pending-review",
+    "apps/web/src/app/renderInformationPages.tsx": "pending-review",
+    "apps/web/src/pages/AboutPage/AboutPage.tsx": "pending-review",
+    "apps/web/src/pages/AboutPage/index.ts": "pending-review",
+    "apps/web/src/pages/AboutPage/AboutPage.css": "pending-review",
+    "apps/web/src/pages/ContactPage/ContactPage.tsx": "pending-review",
+    "apps/web/src/pages/ContactPage/ContactPage.css": "pending-review",
+    "apps/web/src/pages/ContactPage/index.ts": "pending-review",
+    "packages/ui/src/PageHeading/PageHeading.tsx": "pending-review",
+    "packages/ui/src/PageHeading/PageHeading.css": "pending-review",
+    "packages/ui/src/PageHeading/index.ts": "pending-review",
+    "packages/ui/src/InformationCard/InformationCard.css": "pending-review",
+    "packages/ui/src/InformationCard/index.ts": "pending-review",
+    "packages/ui/src/InformationCard/InformationCard.tsx": "pending-review",
+    "tools/style-sources.mjs": "pending-review"
   },
   "implementationChanges": [
     "CHG-017",
@@ -864,6 +881,7 @@
     "CHG-037",
     "CHG-041",
     "CHG-044",
-    "CHG-045"
+    "CHG-045",
+    "CHG-047"
   ]
 }

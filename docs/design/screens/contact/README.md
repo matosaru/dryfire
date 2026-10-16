@@ -26,3 +26,5 @@ Specifications: [Contact](../../../requirements/contact.md) · [About](../../../
 | Contact, Light | [overview.light.png](overview.light.png) | `contactView` |
 
 Capture validation and publication are recorded in the [delivery tracker](../../../project/implementation-history.md). Current references are reviewed production-build images in the pinned Chromium renderer, with passing Chromium/WebKit comparisons at 320/390px. [Review evidence](../../baselines/separate-pages-validation.json) and [build manifest](../../baselines/separate-pages-build-manifest.json) record provenance; no generated concept is substituted for the implemented screen.
+
+CHG-047 preserves this design during the React migration. The page interior now has one typed component with colocated styles/tests; the shared shell and exact existing browser images remain the reference. No visual redesign or new screenshot baseline is authorized.

@@ -1,0 +1,6 @@
+.about-card { padding:20px; margin:14px 0; border:1px solid #2c3741; border-radius:15px; background:linear-gradient(135deg,#1d262e,#141c23); }
+.about-card h3,.about-limits h3 { font-size:.95rem; margin-bottom:12px; }
+.about-card p,.about-card ol { color:#b8c5cf; font-size:.86rem; line-height:1.6; }
+.about-card ol { padding-left:22px; }
+.about-card li { padding-left:4px; margin-bottom:7px; }
+.about-card p:last-child { margin-bottom:0; }

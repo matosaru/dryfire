@@ -25,7 +25,7 @@ if (JSON.stringify(edition.assets) !== JSON.stringify(bundleAssets)) throw new E
 if (!files.some(path => /assets[\\/].*\.js$/.test(path)) || !files.some(path => /assets[\\/].*\.css$/.test(path))) {
   throw new Error('Expected optimized JavaScript and CSS under dist/assets.');
 }
-if (files.some(path => path.endsWith('.map') || path.startsWith('src/') || path.startsWith('tests/') || path === 'vite.config.js')) {
+if (files.some(path => path.endsWith('.map') || path.startsWith('src/') || path.startsWith('tests/') || path.startsWith('apps/') || path.startsWith('packages/') || path === 'vite.config.js')) {
   throw new Error('Source maps or development sources unexpectedly exposed in the deployment.');
 }
 for (const file of files.filter(path => path.endsWith('.js'))) {
