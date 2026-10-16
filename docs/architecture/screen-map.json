@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "reviewedOn": "2026-10-15",
-  "sourceBaseline": "8ec331cf1e8733fafc3939b2c5bc6ed9e19432f1",
+  "reviewedOn": "2026-10-16",
+  "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://dryfire.matosaru.workers.dev",
   "publicPaths": [
     "/"
@@ -20,7 +20,7 @@
         "docs/requirements/build-editions.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
       "states": [
         {
           "key": "first-gun.dark",
@@ -131,7 +131,7 @@
         "docs/requirements/practice-improvements.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
       "states": [
         {
           "key": "overview.dark",
@@ -218,7 +218,7 @@
         "docs/requirements/practice-start.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
         {
           "key": "configure-single.dark",
@@ -353,6 +353,186 @@
       "design": "docs/design/screens/session/README.md"
     },
     {
+      "id": "practiceGuide",
+      "folder": "practice-guide",
+      "domId": "practiceGuideView",
+      "title": "About this practice",
+      "parent": "drills",
+      "entry": "About this practice link on stopped Practice or Sequence configuration",
+      "requirements": [
+        "docs/requirements/practice-guides.md",
+        "docs/requirements/page-layout.md",
+        "docs/requirements/practice-modes.md",
+        "docs/requirements/drill-sessions.md"
+      ],
+      "notes": "One reusable read-only guide for six modes and four built-in/custom sequences. Preserves unsaved/invalid setup and history; no capture or safety prompt. Current endpoints/preset steps and start-source explanation; controlled examples using shared live run/review templates, normal/early Single, Play/Pause/Replay and stopped Review. Shared BETA shell/footer/fixed Drills navigation.",
+      "states": [
+        {
+          "key": "single.dark",
+          "anchor": "practiceGuideExample",
+          "label": "single guide, dark",
+          "image": "docs/design/screens/practice-guide/single.dark.png"
+        },
+        {
+          "key": "single.light",
+          "anchor": "practiceGuideExample",
+          "label": "single guide, light",
+          "image": "docs/design/screens/practice-guide/single.light.png"
+        },
+        {
+          "key": "repeated.dark",
+          "anchor": "practiceGuideExample",
+          "label": "repeated guide, dark",
+          "image": "docs/design/screens/practice-guide/repeated.dark.png"
+        },
+        {
+          "key": "repeated.light",
+          "anchor": "practiceGuideExample",
+          "label": "repeated guide, light",
+          "image": "docs/design/screens/practice-guide/repeated.light.png"
+        },
+        {
+          "key": "par.dark",
+          "anchor": "practiceGuideExample",
+          "label": "par guide, dark",
+          "image": "docs/design/screens/practice-guide/par.dark.png"
+        },
+        {
+          "key": "par.light",
+          "anchor": "practiceGuideExample",
+          "label": "par guide, light",
+          "image": "docs/design/screens/practice-guide/par.light.png"
+        },
+        {
+          "key": "control.dark",
+          "anchor": "practiceGuideExample",
+          "label": "control guide, dark",
+          "image": "docs/design/screens/practice-guide/control.dark.png"
+        },
+        {
+          "key": "control.light",
+          "anchor": "practiceGuideExample",
+          "label": "control guide, light",
+          "image": "docs/design/screens/practice-guide/control.light.png"
+        },
+        {
+          "key": "reload.dark",
+          "anchor": "practiceGuideExample",
+          "label": "reload guide, dark",
+          "image": "docs/design/screens/practice-guide/reload.dark.png"
+        },
+        {
+          "key": "reload.light",
+          "anchor": "practiceGuideExample",
+          "label": "reload guide, light",
+          "image": "docs/design/screens/practice-guide/reload.light.png"
+        },
+        {
+          "key": "free.dark",
+          "anchor": "practiceGuideExample",
+          "label": "free guide, dark",
+          "image": "docs/design/screens/practice-guide/free.dark.png"
+        },
+        {
+          "key": "free.light",
+          "anchor": "practiceGuideExample",
+          "label": "free guide, light",
+          "image": "docs/design/screens/practice-guide/free.light.png"
+        },
+        {
+          "key": "sequence-trigger-only.dark",
+          "anchor": "practiceGuideExample",
+          "label": "sequence trigger only guide, dark",
+          "image": "docs/design/screens/practice-guide/sequence-trigger-only.dark.png"
+        },
+        {
+          "key": "sequence-trigger-only.light",
+          "anchor": "practiceGuideExample",
+          "label": "sequence trigger only guide, light",
+          "image": "docs/design/screens/practice-guide/sequence-trigger-only.light.png"
+        },
+        {
+          "key": "sequence-rack-trigger.dark",
+          "anchor": "practiceGuideExample",
+          "label": "sequence rack trigger guide, dark",
+          "image": "docs/design/screens/practice-guide/sequence-rack-trigger.dark.png"
+        },
+        {
+          "key": "sequence-rack-trigger.light",
+          "anchor": "practiceGuideExample",
+          "label": "sequence rack trigger guide, light",
+          "image": "docs/design/screens/practice-guide/sequence-rack-trigger.light.png"
+        },
+        {
+          "key": "sequence-mag-trigger.dark",
+          "anchor": "practiceGuideExample",
+          "label": "sequence mag trigger guide, dark",
+          "image": "docs/design/screens/practice-guide/sequence-mag-trigger.dark.png"
+        },
+        {
+          "key": "sequence-mag-trigger.light",
+          "anchor": "practiceGuideExample",
+          "label": "sequence mag trigger guide, light",
+          "image": "docs/design/screens/practice-guide/sequence-mag-trigger.light.png"
+        },
+        {
+          "key": "sequence-draw-mag-trigger.dark",
+          "anchor": "practiceGuideExample",
+          "label": "sequence draw mag trigger guide, dark",
+          "image": "docs/design/screens/practice-guide/sequence-draw-mag-trigger.dark.png"
+        },
+        {
+          "key": "sequence-draw-mag-trigger.light",
+          "anchor": "practiceGuideExample",
+          "label": "sequence draw mag trigger guide, light",
+          "image": "docs/design/screens/practice-guide/sequence-draw-mag-trigger.light.png"
+        },
+        {
+          "key": "sequence-custom.dark",
+          "anchor": "practiceGuideExample",
+          "label": "sequence custom guide, dark",
+          "image": "docs/design/screens/practice-guide/sequence-custom.dark.png"
+        },
+        {
+          "key": "sequence-custom.light",
+          "anchor": "practiceGuideExample",
+          "label": "sequence custom guide, light",
+          "image": "docs/design/screens/practice-guide/sequence-custom.light.png"
+        },
+        {
+          "key": "single-early.dark",
+          "anchor": "practiceGuideExample",
+          "label": "single early guide, dark",
+          "image": "docs/design/screens/practice-guide/single-early.dark.png"
+        },
+        {
+          "key": "single-early.light",
+          "anchor": "practiceGuideExample",
+          "label": "single early guide, light",
+          "image": "docs/design/screens/practice-guide/single-early.light.png"
+        },
+        {
+          "key": "reload-selected-endpoints.dark",
+          "anchor": "practiceGuideExample",
+          "label": "reload selected endpoints context",
+          "image": "docs/design/screens/practice-guide/reload-selected-endpoints.dark.png"
+        },
+        {
+          "key": "external-start.dark",
+          "anchor": "practiceGuideExample",
+          "label": "external start context",
+          "image": "docs/design/screens/practice-guide/external-start.dark.png"
+        },
+        {
+          "key": "silent-start.dark",
+          "anchor": "practiceGuideExample",
+          "label": "silent start context",
+          "image": "docs/design/screens/practice-guide/silent-start.dark.png"
+        }
+      ],
+      "design": "docs/design/screens/practice-guide/README.md"
+    },
+    {
       "id": "recognize",
       "folder": "live-listen",
       "domId": "recognizeView",
@@ -396,7 +576,7 @@
         "docs/requirements/build-editions.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
+      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun\u2019s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
       "states": [
         {
           "key": "overview.dark",
@@ -533,7 +713,7 @@
       "domId": "aboutView",
       "title": "About",
       "parent": "home",
-      "entry": "Shared app footer → About, including before gun setup",
+      "entry": "Shared app footer \u2192 About, including before gun setup",
       "requirements": [
         "docs/requirements/about.md",
         "docs/requirements/core.md",
@@ -565,7 +745,7 @@
       "domId": "contactView",
       "title": "Contact",
       "parent": "home",
-      "entry": "Shared app footer → Contact, including before gun setup",
+      "entry": "Shared app footer \u2192 Contact, including before gun setup",
       "requirements": [
         "docs/requirements/contact.md",
         "docs/requirements/about.md",
@@ -616,12 +796,12 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "391f2d78fbe58df50d42eacf535fd91252738695426589fc35d1f34adf87ff7b",
-    "src/styles.css": "657a65ce8733082b01674d81f57dc8324b8b84091f1b43764e36fcdd205fd8d2",
+    "src/main.js": "3074d2b1c4da565e6e7ec524bc847944cb555a5a83f45bdef65935be5020100f",
+    "src/styles.css": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
-    "src/practiceController.js": "00f5c73969d1e364b90288335876114f800b44f429e2b6c506a85987dc6d2042",
-    "src/sessionController.js": "ea077ffa2ecd0b63fe1e2b5660106e3a3e64da6f8f964a62787352e6be2b99a6",
+    "src/practiceController.js": "97ee44b0db0c36430b8d02952cfe038ed53b1db9a3037bcba7ecdab67eb2df5f",
+    "src/sessionController.js": "97be6ac162de0265a44fb083f852f8aef421d73d4e110683a3e8245aabbe6bda",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "0e7be09afb1e9f6b652f6837d4f3dac3400db56cc21575642013da29a539864d",
     "src/optional/progressView.js": "15797163f4fd188661c4dcd98954c7c4dd61765d55a29114e5bf4b3f2d25ab5e",
@@ -631,19 +811,19 @@
     "vite.config.js": "786a974dd2ecc18cb450027f88b835e15b7154b2144f5279604e0aa6824e559f",
     "src/optional/previewTesting.js": "b3a24a81d74e2f5774e9b7b429bd125e63cfab3d9937a5869a8e07103f927dd3",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
-    "src/pageDefinitions.js": "1ab61d2b7f0e62e41fc934de55ae8165b48176c9cff3b5e8710034897a28b7d9",
-    "tools/page-templates.mjs": "255efb061d5fea9afad358ead5f92df74d31cd97805413f92744c11d68909104",
+    "src/pageDefinitions.js": "f5024ec2a38b94acedea0e069a180472e3a6245abb7fdf069c7156ac277c194f",
+    "tools/page-templates.mjs": "0c7fed0ec6f8cc4c135a76e41f41e9322e8481eafab21e87267de0f39286396a",
     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
     "src/templates/layout.html": "883a5cc08416cf3325d18dc875640640e29c454e1e44467b9b0820f1a1f06591",
     "src/templates/pages/recognize.html": "744f7545bf30854009830181aa89350df0e7c52c97a09d05520658628863edac",
     "src/templates/pages/drills.html": "d2323825c9380ab8c432229aea5c1ffc42040baacb222510c2087fc10fe529ec",
     "src/templates/pages/contact.html": "b1514b154ee4310a9976cb3eb4083c7a8e07fd624603c1c50d2ffd075172f07a",
     "src/templates/pages/learn.html": "047c1a4d342f58463a4df7f3bffa95c28d7e5fa6d26c218d1ea027ea19fe09f5",
-    "src/templates/pages/practice.html": "9112df38706a114aa7fe1840333612d7e85d2ec013680aa9c911117db53bca94",
+    "src/templates/pages/practice.html": "0acf870c2feb7fd307fd73c4f2f8e65dad7b572e66576c6e22097f988d47e3b5",
     "src/templates/pages/guns.html": "d8c2fd3dab68c4d6e29667c354e1940c5cc874f14d1286ce33549f3b02346988",
     "src/templates/pages/gunSetup.html": "957924d0f8444a4ad9f41d8e4575d757fe3de9c6ad0b54176533ab68c2fe8619",
     "src/templates/pages/home.html": "e4ee581dde390ee63aaf72fe05c6d81ebd506f71909881ccfbd912d18f25e413",
-    "src/templates/pages/session.html": "272d56d4f0b4a4741b56cb37ee02dc23527d86df3b2e9bec413ac7d79417a038",
+    "src/templates/pages/session.html": "37a4ac51d76033bd54b955b04e4ab942239ec927fbf166abbb3665e10468069a",
     "src/templates/pages/settings.html": "b2463168a0a3622a3b2aeccb75f344a368b0bd3a9e40fa95179e14108fa907fa",
     "src/templates/pages/about.html": "8f10ac82c7347750b70f2c90e999e656d70f4792d202fe53f20d1fd5510f5d34",
     "src/templates/pages/history.html": "93911ad01eb59991b1f1eda5451c13432eac9282bdecd49f361be2f1379ba251",
@@ -651,7 +831,18 @@
     "src/templates/shared/safety-modal.html": "259426f79af84ec62288e4bb4f5ff515ba9285ca693b548a3e94ce68d24752e5",
     "src/templates/shared/header.html": "8003b374183a9df0f87b8a7d402f267d5a58f05d8f350c2aa61c8ddf3dbea64e",
     "src/templates/shared/navigation.html": "aa8a8ba31fd79b14f55e74ce7be1aee955ac2f9761751ba415e868c308afc70f",
-    "src/templates/shared/footer.html": "3b939187621c40c70dbe6dd8021ea432d2eea235b716972da22580e6f1094453"
+    "src/templates/shared/footer.html": "3b939187621c40c70dbe6dd8021ea432d2eea235b716972da22580e6f1094453",
+    "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
+    "src/practiceGuideController.js": "978daa3edf0db71157cf5e4c10dff3a9437f87ec952dcf408190dd07fe7d6e4e",
+    "src/practiceGuideExamples.js": "6a597a7ad94169334a98a3f58ec5af4ddfd9aa4f3284208f929c0e7b299a183b",
+    "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
+    "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
+    "src/practiceGuideRendering.js": "2cd900f757cfb2a860c5c64b9cfc6c48b59d29ca845661ec6493f3ef02d89580",
+    "src/sessionPresentation.js": "55258e9a2b7c9c2acbfccd722bea1986af688d4b51773e0367f6c97b0b31c837",
+    "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
+    "src/templates/shared/practice-review.html": "cd21f121c3ee65f387f5e263e46a046e26214b51e681da4339d26371e26c31c0",
+    "src/templates/shared/session-run.html": "eed45b5ebf5d95c265e57d2df1039eac3478272dee3f72def1d4afe9e109e1b1",
+    "src/templates/shared/session-review.html": "7e0e4ecc2bd1f2ba74f252925dcaef0fcd99987f75a23f4689982e54bf71ab03"
   },
   "implementationChanges": [
     "CHG-017",
@@ -672,6 +863,8 @@
     "CHG-036",
     "CHG-037",
     "CHG-038",
-    "CHG-041"
+    "CHG-041",
+    "CHG-044",
+    "CHG-045"
   ]
 }

@@ -1,3 +1,4 @@
+import { sequenceResultDetails, renderSequenceRun, renderSequenceReview } from './sessionPresentation.js';
 import { startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { classify, labels, MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
@@ -112,45 +113,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     $('#sessionPresetName').textContent = `${steps.length} sound action${steps.length === 1 ? '' : 's'} · ${record ? 'Saved session' : 'Session setup'}`;
   }
 
-  function resultDetails(row) {
-    const details = node('details', '', 'session-result-card');
-    const outcome = row.status === 'completed' ? 'Completed' : `Partial · ${row.reason || 'interrupted'}`;
-    details.append(node('summary', `Repetition ${row.ordinal} · ${outcome} · ${seconds(row.elapsedMs)}`));
-    const body = node('div', '', 'session-result-body');
-    body.append(node('p', `${row.unknown} unknown · ${row.incorrect} out of order`, 'muted small'));
-    for (const step of row.stepTimings) {
-      body.append(node('p', `${titleFor(step.label)}: ${seconds(step.offsetMs)} from GO · split ${seconds(step.splitMs)}`, 'small'));
-    }
-    if (row.detections.length) {
-      const list = node('ol', '', 'session-detection-list');
-      for (const detection of row.detections) {
-        list.append(node('li', `${titleFor(detection.label)} · ${seconds(detection.offsetMs)} · ${detection.outcome} · score ${detection.score}/100`));
-      }
-      body.append(list);
-    }
-    details.append(body);
-    return details;
-  }
-
-  function renderReview(record) {
-    $('#sessionReviewStatus').dataset.status = record.status;
-    $('#sessionReviewStatus').textContent = record.status === 'completed' ? 'Session completed' : `Session ${record.status}`;
-    const summary = $('#sessionReviewSummary');
-    summary.replaceChildren(node('p', `${record.completed} / ${record.config.repetitions}`, 'session-summary-count'),
-      node('p', `${record.completed} completed · ${record.remaining} left`, 'muted small'),
-      node('p', `${record.gunName} · ${new Date(record.startedAt).toLocaleString()}`, 'muted small'));
-    const host = $('#sessionResultList');
-    host.replaceChildren();
-    if (!record.repetitions.length) host.append(node('p', 'No repetition was completed before this session ended.', 'empty-state'));
-    for (const row of record.repetitions) host.append(resultDetails(row));
-    const durable = !state || savedRevision === state.revision;
-    $('#sessionReview .session-saved-note').textContent = saveError
-      ? 'Results are not saved. Keep this page open and retry saving.'
-      : durable ? 'Saved on this device' : 'Saving results on this device…';
-    retrySaveButton.classList.toggle('hidden', !saveError);
-    retrySaveButton.disabled = saving || pending;
-    $('#repeatSessionBtn').disabled = locked() || !!saveError || getContext().gun?.id !== record.gunId;
-  }
+  const resultDetails = row => sequenceResultDetails(row, { node, titleFor });
+  const renderReview = record => renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails });
 
   function announce(text) {
     if (text !== lastAnnouncement) {
@@ -162,6 +126,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   function render() {
     const record = state?.phase === 'review' ? toSessionRecord(state) : review;
     const running = pending || !!state && state.phase !== 'review';
+    $('#sessionGuideLink').classList.toggle('hidden', !!running || !!record);
     $('#sessionConfigure').classList.toggle('hidden', running || !!record);
     $('#sessionRun').classList.toggle('hidden', !running);
     $('#sessionReview').classList.toggle('hidden', running || !record);
@@ -170,37 +135,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if (record && !running) { renderReview(record); return; }
     updateReadiness();
     if (!running) return;
-    const config = state?.config || readConfig();
-    $('#sessionCompletedCount').textContent = state?.completed ?? 0;
-    $('#sessionLeftCount').textContent = state?.remaining ?? config.repetitions;
-    $('#sessionProgressMeter').max = config.repetitions;
-    $('#sessionProgressMeter').value = state?.completed ?? 0;
-    $('#sessionCountdown').classList.toggle('is-go', state?.phase === 'active' && !pending);
-    $('#sessionCountdown').classList.toggle('is-paused', state?.phase === 'paused');
-    $('#sessionCountdown').classList.toggle('is-connecting', pending);
-    $('#sessionMicrophoneStatus').textContent = microphone ? '● Microphone active' : pending ? 'Connecting microphone…' : 'Microphone inactive';
-    $('#sessionMicrophoneStatus').classList.toggle('is-live', !!microphone);
-    $('#pauseSessionBtn').classList.toggle('hidden', state?.phase === 'paused');
-    $('#pauseSessionBtn').disabled = pending || !state || state.completed === config.repetitions;
-    $('#resumeSessionBtn').classList.toggle('hidden', state?.phase !== 'paused');
-    $('#resumeSessionBtn').disabled = pending;
-    $('#endSessionBtn').disabled = false;
-    if (pending) { $('#sessionCountdown').textContent = 'Connecting'; announce('Waiting for microphone permission.'); }
-    else if (state.phase === 'countdown') {
-      const remaining = Math.max(0, state.countdownEndsAtMs - clock());
-      $('#sessionCountdown').textContent = (remaining / 1000).toFixed(1);
-      announce(`Get ready · ${Math.ceil(remaining / 1000)} seconds.`);
-    } else if (state.phase === 'active') {
-      $('#sessionCountdown').textContent = 'GO';
-      announce(`GO · awaiting ${titleFor(state.drillSteps[state.current.stepIndex])}.`);
-    } else if (state.phase === 'paused') { $('#sessionCountdown').textContent = 'Paused'; announce('Paused. Resume starts a fresh countdown.'); }
-    else {
-      const durable = savedRevision === state.revision;
-      $('#sessionCountdown').textContent = durable ? 'Saved' : 'Saving';
-      announce(durable ? 'Repetition completed and saved.' : 'Repetition detected · saving results.');
-    }
-    const latest = state?.repetitions.filter(row => row.status === 'completed').at(-1);
-    $('#sessionLatestResult').replaceChildren(latest ? resultDetails(latest) : node('p', 'Your completed repetition will appear here.', 'muted small'));
+    renderSequenceRun({ $, state, pending, clock, microphone, readConfig, savedRevision, titleFor, resultDetails, announce, node });
   }
 
   async function persist() {
@@ -465,6 +400,11 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   });
   $('#safetyAck').addEventListener('change', updateReadiness);
 
-  return { open, showRecord, interrupt, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
+  function guideContext() {
+    if (!routeKey || !selection || locked() || saveError || state || review) return null;
+    return { type: 'sequence', gunId: getContext().gun?.id, routeKey, drill: structuredClone(selection),
+      config: { soundAtStart: $('#sessionStartSound').checked } };
+  }
+  return { open, showRecord, guideContext, interrupt, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

@@ -1,6 +1,6 @@
 # Site and application architecture
 
-The [site tree](site-tree.md) is generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. The app has one public address, `/`; its twelve functional screens, including separate CHG-029 About and Contact, are history-backed UI states, not separate server routes or indexable pages.
+The [site tree](site-tree.md) is generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. The app has one public address, `/`; its thirteen functional screens, including separate CHG-029 About and Contact, are history-backed UI states, not separate server routes or indexable pages.
 
 CHG-026 adds a separate [future cloud-services proposal](cloud-services-proposal.md) and [planned public topology](../seo/README.md#planned-public-topology--chg-026). These are not implemented routes or registry entries. Contact is now an app state; its public server route remains proposed. Add account/public-page states to the maintained tree only when code and reviewed designs exist.
 
@@ -11,13 +11,14 @@ CHG-026 adds a separate [future cloud-services proposal](cloud-services-proposal
 3. Update registry screen/state IDs, hierarchy, entry points and requirement/design/image paths. Add a new real public path only when its implementation and scope are authorized. Do not put inline forms or dialogs in the sitemap.
 4. After reviewing affected screens, refresh the hashes in `reviewedSources` with `npm run docs:review`. This command records the current UI/navigation source hashes; it does not approve a design or capture images. Do not use it just to suppress a failing check.
 5. For a visible change, update and review the affected Chromium/WebKit baselines in the pinned renderer and record `npm run visual:review -- --write`; normal CI never updates baselines. Follow [the visual-test guide](../development/VISUAL_TESTS.md).
-6. Run `npm run docs:generate` to regenerate the tree and coverage table, then `npm run docs:check`. Commit the registry, tree, specifications, screenshots and implementation-history update with the change. CI runs the same checker.
+6. For guide/run UI changes, regenerate current [guide GIF exports](../design/screens/practice-guide/examples/README.md) from the actual shared component. Documentation checks reject stale source/media fingerprints; retain earlier proposal GIFs as history.
+7. Run `npm run docs:generate` to regenerate the tree and coverage table, then `npm run docs:check`. Commit the registry, tree, specifications, screenshots and implementation-history update with the change. CI runs the same checker.
 
 The checker compares all HTML root views and the six source-defined modes to the registry, checks required DOM anchors and reviewed-source fingerprints, validates current design/capture links and naming, detects byte-identical current PNGs, and verifies generated tree/catalog content. It checks local file/heading links across repository Markdown, including the archive. It cannot prove that a new screenshot looks right; visual review remains required.
 
 ## Data and execution boundaries
 
-CHG-042 [proposes contextual practice guides](../requirements/practice-guides.md#proposed-architecture-not-current-routes): Practice/Sequence Configure → guide for the selected mode/preset → the same Configure state with unsaved values retained. One shared guide template/content catalog would reuse the app shell. This is design-only and adds no implemented screen/public route to `screen-map.json`; register real guide states and pinned captures during implementation.
+CHG-044 [implements contextual practice guides](../requirements/practice-guides.md#internal-guide-architecture): Practice/Sequence Configure → guide for the selected mode/preset → the same Configure state with unsaved values retained. One shared guide template/content catalog reuses the app shell; the registry includes its mode/sequence/early/theme/context states. Guide navigation retains source keys and setup DOM, and examples pause on navigation/background without audio or storage APIs. No public route is added.
 
 - `index.html` declares screens; `src/main.js` connects controls and active gun context. `src/screenNavigation.js` maintains app/browser Back/Forward and guards stale contexts.
 - `src/practiceSession.js` / `src/practiceController.js` own the six-mode engine and Configure/Run/Review. `src/drillSession.js` / `src/sessionController.js` preserve ordered sequence sessions.

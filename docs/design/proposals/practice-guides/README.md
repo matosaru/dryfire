@@ -1,6 +1,6 @@
 # Practice guide proposal — CHG-042
 
-Revision 0.2 · CHG-042/043 · 2026-10-15 (Europe/Vilnius) · **Proposal for review. Not added to the working app.**
+Revision 0.2 · CHG-042/043 · 2026-10-15 (Europe/Vilnius) · **Historical proposal. CHG-044 now implements the guide feature; see [current product designs](../../screens/practice-guide/README.md) and the delivery tracker.**
 
 Put an underlined **About this practice ›** link directly below each configuration title, before settings. Use white Dark text, normal Light ink, the existing body-link font and a minimum 44 px touch target. The guide opens as an independent app subpage with the same BETA header, footer/information links and sticky navigation, with Drills active. **Back to setup** returns to the same gun/mode and keeps edited settings; reading never starts the microphone or a drill.
 
@@ -73,3 +73,5 @@ The [validation report](validation.json) records the final observed revision che
 Reproduce from the repository root with `node docs/design/proposals/practice-guides/capture.mjs`. Requires installed Playwright, a Chromium executable (`CHROMIUM_EXECUTABLE_PATH`, default `/usr/bin/chromium`) and FFmpeg/FFprobe. It uses a temporary local server and stops it when done. No product routes, source files, build profiles, accepted screenshot references or stored user data are modified. The app's twelve-screen registry continues to describe implemented behavior; add the guide state and pinned capture coverage only with actual implementation.
 
 Review scope: link placement/style, common page structure, all mode-specific copy, and the silent animation direction. Once this proposal is accepted, implement one reusable guide template/catalog, navigation guards and context retention, then refresh actual product screenshots and pinned browser references. Publication of these mockups does not itself approve or deploy the feature.
+
+CHG-045 user review rejects the simplified Canvas as a current product layout. Its files here retain historical scenario/timing evidence only. The [current guide](../../screens/practice-guide/README.md) uses shared live run/review components, and [current GIF exports](../../screens/practice-guide/examples/README.md) are captured from that component. Maintain those current assets after future design changes.

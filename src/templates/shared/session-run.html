@@ -1,0 +1,16 @@
+<div id="sessionRun" class="hidden">
+        <div class="session-progress" aria-label="Session progress">
+          <div><span>Completed</span><strong id="sessionCompletedCount">0</strong></div>
+          <progress id="sessionProgressMeter" max="10" value="0" aria-label="Completed repetitions"></progress>
+          <div><span>Left</span><strong id="sessionLeftCount">10</strong></div>
+        </div>
+        <div class="session-countdown-panel">
+          <p class="eyebrow">Current repetition</p>
+          <div id="sessionCountdown" class="session-countdown" role="timer" aria-live="off">—</div>
+          <p id="sessionAnnouncement" class="session-announcement" role="status" aria-live="polite">Get ready…</p>
+          <p id="sessionMicrophoneStatus" class="listening-indicator" role="status">Microphone inactive</p>
+        </div>
+        <section class="session-latest" aria-labelledby="sessionLatestTitle"><h3 id="sessionLatestTitle">Latest repetition</h3><div id="sessionLatestResult" class="session-result-card"><p class="muted small">Your completed repetition will appear here.</p></div></section>
+        <div class="session-run-actions"><button id="pauseSessionBtn" type="button" class="button secondary">Pause</button><button id="resumeSessionBtn" type="button" class="button primary hidden">Resume</button><button id="endSessionBtn" type="button" class="button secondary">End Session</button></div>
+        <p class="muted small session-timing-note">Pause releases the microphone and restarts the unfinished repetition with a fresh countdown on Resume.</p>
+      </div>

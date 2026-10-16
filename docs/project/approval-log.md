@@ -580,3 +580,25 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 - Date: 2026-10-15 (Europe/Vilnius). The user asks **“is animated example matches real scenario ?”**. The assistant identifies compressed timing/missing readiness and recommends a revision showing microphone readiness, realistic countdown, automatic repetition and a separate early-trigger example. The user's **“ok, revisit”** directly authorizes that revision without another confirmation.
 - Revise the CHG-042 proposal and GUIDE-08 using existing production session engines for synthetic scenario transitions/outcomes. Render one-timescale examples with disclosed small targets/configuration; show readiness before countdown, first accepted subsecond click, automatic Single progression, a distinct zero-shot early miss, actual manual Next behavior for Par/Reload and continuous/legacy differences. Remove decorative waveforms and refresh affected proposal screenshots/copy/animation evidence.
 - This is proposal correction, not approval to implement the guide navigation/app pages. Preserve application timing, safety, data, profiles, current registry and accepted product images. Shared docs enter b and sync to dev; main promotion remains a checked b → main PR. No live Cloudflare operation or physical-device claim.
+
+## CHG-044 — Implement and publish the reviewed practice guides
+
+- Date: 2026-10-15 (Europe/Vilnius). User directs **“publish changes”**, then explicitly clarifies **“Implement guides and push to b/dev (Recommended)”**. This starts application implementation of the CHG-042/043 proposal, GUIDE-01–08, without another confirmation.
+- One reusable guide page, links on stopped Practice/Sequence configuration, individual concise manuals, actual selected Reload/custom actions, contextual start-source explanation, controlled synthetic timing examples and separate early Single illustration. Reading acquires no microphone/safety permission and preserves invalid/unsaved setup values and the actual navigation history. Keep shared BETA header/footer/fixed navigation and existing active/unsaved ownership guards.
+- Routine implementation uses lightweight controlled Canvas scenes equivalent to the exported GIF direction, with initial poster/reduced-motion behavior, Play/Pause/Replay, navigation/background pause and stopping at Review. No classifier, timing, saved-data schema, entitlement, calibration or safety behavior changes.
+- Implement directly on b, validate both editions, refresh/review actual/pinned references, then sync/push dev retaining Full/default/private configuration. Main still uses a checked b → main PR; the owner manages Cloudflare. No direct production write or live deployment is authorized here.
+
+## CHG-045 — Help examples match live practice screens
+
+- Date: 2026-10-15.
+- Evidence: user supplies real/help screenshots and says **“designs do not match”**, followed by **“make sure, after we change designs, animated gifs and help pages needs to updated accordingly”**. This directly requests correction and ongoing synchronization.
+- Scope: GUIDE-06/08/09, shared live run/review fragments and read-only presentation; regenerate help captures and GIF exports from the actual rendered component. Preserve synthetic/no-capture/no-save boundaries, timing engines, draft/history guards and edition restrictions.
+- Release: user later directs **“after you finish with b env, create a pull request and merge everything to main”** and **“also update dev environment”**. Authorizes a checked b → main PR/merge and b → dev sync; no direct main push. Cloudflare setup remains owner-run.
+- Status: implementation/validation/publication tracked separately in the delivery history.
+
+## CHG-046 — React structure/refactor plan after design release
+
+- Date: 2026-10-15.
+- Evidence: user asks to read the DEV.to React folder-structure article, compare best practices and **“prepare a refactor plan after all the changes are done regarding the designs. Make sure not to break any visuals and tests”**.
+- Scope: research and a concrete migration/structure/test plan for reusable component folders/packages with separate CSS/tests and shared templates. Inspect the actual vanilla-JavaScript application first; distinguish React migration from modularization. Preserve pixel references, data, audio/timing, both editions and passing tests as acceptance gates.
+- Status: queued after the design implementation/release. This is planning authorization, not permission to rewrite the app in React now.

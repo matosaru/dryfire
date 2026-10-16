@@ -1,0 +1,1570 @@
+{
+  "config": {
+    "configFile": "/__w/dryfire/dryfire/edition-candidates.config.js",
+    "rootDir": "/__w/dryfire/dryfire/visual-tests",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": "/__w/dryfire/dryfire/visual-tests/metadata.js",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/matosaru/dryfire/commit/98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+        "commitHash": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+        "buildHref": "https://github.com/matosaru/dryfire/actions/runs/38849822022"
+      },
+      "gitCommit": {
+        "shortHash": "98e4bbd",
+        "hash": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+        "subject": "fix: preserve readable Light practice guide playback controls",
+        "body": "fix: preserve readable Light practice guide playback controls\n",
+        "author": {
+          "name": "Study",
+          "email": "studymatonis@gmail.com",
+          "time": 1792124218000
+        },
+        "committer": {
+          "name": "Study",
+          "email": "studymatonis@gmail.com",
+          "time": 1792124218000
+        },
+        "branch": "b"
+      },
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/__w/dryfire/dryfire/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/matosaru/dryfire/commit/98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+            "commitHash": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+            "buildHref": "https://github.com/matosaru/dryfire/actions/runs/38849822022"
+          },
+          "gitCommit": {
+            "shortHash": "98e4bbd",
+            "hash": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+            "subject": "fix: preserve readable Light practice guide playback controls",
+            "body": "fix: preserve readable Light practice guide playback controls\n",
+            "author": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1792124218000
+            },
+            "committer": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1792124218000
+            },
+            "branch": "b"
+          },
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/__w/dryfire/dryfire/visual-tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/__w/dryfire/dryfire/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/matosaru/dryfire/commit/98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+            "commitHash": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+            "buildHref": "https://github.com/matosaru/dryfire/actions/runs/38849822022"
+          },
+          "gitCommit": {
+            "shortHash": "98e4bbd",
+            "hash": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+            "subject": "fix: preserve readable Light practice guide playback controls",
+            "body": "fix: preserve readable Light practice guide playback controls\n",
+            "author": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1792124218000
+            },
+            "committer": {
+              "name": "Study",
+              "email": "studymatonis@gmail.com",
+              "time": 1792124218000
+            },
+            "branch": "b"
+          },
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/__w/dryfire/dryfire/visual-tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "all",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 2,
+    "webServer": {
+      "command": "npm run preview -- --host 127.0.0.1 --port 4175 --strictPort",
+      "url": "http://127.0.0.1:4175",
+      "reuseExistingServer": false,
+      "timeout": 20000
+    }
+  },
+  "suites": [
+    {
+      "title": "practice-guides.spec.js",
+      "file": "practice-guides.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual Reload endpoints and external/silent setup descriptions are retained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2038,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:35.164Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "da188dec91c1eb46257b-d4f5aabf58c6ab6ec755",
+          "file": "practice-guides.spec.js",
+          "line": 89,
+          "column": 1
+        },
+        {
+          "title": "actual Reload endpoints and external/silent setup descriptions are retained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4140,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:51.582Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "da188dec91c1eb46257b-d8a0e7b89bae90126fb0",
+          "file": "practice-guides.spec.js",
+          "line": 89,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "screens.spec.js",
+      "file": "screens.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "practice-guide/single.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2634,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/single.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/single.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:35.156Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNpbmdsZS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjQ1MH0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-7929785b3c54d389b39e",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/single.light at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2082,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/single.light.320.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/single.light.320.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:37.365Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNpbmdsZS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzIwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozMjAsImhlaWdodCI6MjUwMX0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-bfd7f343d99b926fddbb",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/repeated.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2004,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/repeated.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/repeated.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:37.914Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InJlcGVhdGVkLmxpZ2h0IiwiYW5jaG9yIjoicHJhY3RpY2VHdWlkZUV4YW1wbGUiLCJ2aWV3IjoicHJhY3RpY2VHdWlkZVZpZXciLCJlZGl0aW9ucyI6WyJwdWJsaWMiLCJwcmV2aWV3Il0sIndpZHRoIjozOTAsImVkaXRpb24iOiJwcmV2aWV3Iiwidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0IjoyMTk1fSwiYnJvd3NlciI6ImNocm9taXVtIiwiYnJvd3NlclZlcnNpb24iOiIxNDUuMC43NjMyLjYiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-3510eff6ad19bdd3ea2f",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/par.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2100,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/par.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/par.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:39.466Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InBhci5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE3OH0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-2690e577a77c7ff1d8cc",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/control.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2085,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/control.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/control.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:39.938Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6ImNvbnRyb2wubGlnaHQiLCJhbmNob3IiOiJwcmFjdGljZUd1aWRlRXhhbXBsZSIsInZpZXciOiJwcmFjdGljZUd1aWRlVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InByZXZpZXciLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjIxOTV9LCJicm93c2VyIjoiY2hyb21pdW0iLCJicm93c2VyVmVyc2lvbiI6IjE0NS4wLjc2MzIuNiIsImNsb2NrIjoiMjAyNi0xMC0xMVQxMTowMDowMC4wMDBaIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-12209f831e7fbc4d5a6d",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/reload.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2081,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/reload.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/reload.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:41.583Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InJlbG9hZC5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjIxMH0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-bbc2c969a578258a57a6",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/free.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2069,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/free.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/free.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:42.038Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6ImZyZWUubGlnaHQiLCJhbmNob3IiOiJwcmFjdGljZUd1aWRlRXhhbXBsZSIsInZpZXciOiJwcmFjdGljZUd1aWRlVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InByZXZpZXciLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjIyOTR9LCJicm93c2VyIjoiY2hyb21pdW0iLCJicm93c2VyVmVyc2lvbiI6IjE0NS4wLjc2MzIuNiIsImNsb2NrIjoiMjAyNi0xMC0xMVQxMTowMDowMC4wMDBaIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-a2e436992056113fadb8",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-trigger-only.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2089,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-trigger-only.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-trigger-only.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:43.680Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLXRyaWdnZXItb25seS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE4MX0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-0f5969432c8fc696363c",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-rack-trigger.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1994,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-rack-trigger.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-rack-trigger.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:44.126Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLXJhY2stdHJpZ2dlci5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE4MX0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-73289c7fad9dd31a6b9e",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-mag-trigger.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1974,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-mag-trigger.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-mag-trigger.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:45.785Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLW1hZy10cmlnZ2VyLmxpZ2h0IiwiYW5jaG9yIjoicHJhY3RpY2VHdWlkZUV4YW1wbGUiLCJ2aWV3IjoicHJhY3RpY2VHdWlkZVZpZXciLCJlZGl0aW9ucyI6WyJwdWJsaWMiLCJwcmV2aWV3Il0sIndpZHRoIjozOTAsImVkaXRpb24iOiJwcmV2aWV3Iiwidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0IjoyMTgxfSwiYnJvd3NlciI6ImNocm9taXVtIiwiYnJvd3NlclZlcnNpb24iOiIxNDUuMC43NjMyLjYiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-59fbe42f5837d9496d02",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-draw-mag-trigger.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1948,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-draw-mag-trigger.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-draw-mag-trigger.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:46.133Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLWRyYXctbWFnLXRyaWdnZXIubGlnaHQiLCJhbmNob3IiOiJwcmFjdGljZUd1aWRlRXhhbXBsZSIsInZpZXciOiJwcmFjdGljZUd1aWRlVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InByZXZpZXciLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjIyMTJ9LCJicm93c2VyIjoiY2hyb21pdW0iLCJicm93c2VyVmVyc2lvbiI6IjE0NS4wLjc2MzIuNiIsImNsb2NrIjoiMjAyNi0xMC0xMVQxMTowMDowMC4wMDBaIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-97c8c6bc78d2863e538f",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-custom.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2039,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-custom.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/sequence-custom.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:47.773Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLWN1c3RvbS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE4MX0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-859293cbce6a4056a1f9",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/single-early.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2033,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/single-early.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/single-early.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:48.099Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNpbmdsZS1lYXJseS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE5MX0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-8e0a1180c48417c7da3a",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/single-early.light at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1927,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/single-early.light.320.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/chromium/preview/practice-guide/single-early.light.320.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:49.826Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNpbmdsZS1lYXJseS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzIwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozMjAsImhlaWdodCI6MjI0Mn0sImJyb3dzZXIiOiJjaHJvbWl1bSIsImJyb3dzZXJWZXJzaW9uIjoiMTQ1LjAuNzYzMi42IiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-b2f39a564e517bfd616d",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/single.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4131,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/single.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/single.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:53.305Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNpbmdsZS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjQzMX0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-cd886ea5702e5fdb6b99",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/single.light at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3760,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/single.light.320.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/single.light.320.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:55.882Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNpbmdsZS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzIwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozMjAsImhlaWdodCI6MjQ4MH0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-360376c9b68c03f90297",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/repeated.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3824,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/repeated.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/repeated.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:57.608Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InJlcGVhdGVkLmxpZ2h0IiwiYW5jaG9yIjoicHJhY3RpY2VHdWlkZUV4YW1wbGUiLCJ2aWV3IjoicHJhY3RpY2VHdWlkZVZpZXciLCJlZGl0aW9ucyI6WyJwdWJsaWMiLCJwcmV2aWV3Il0sIndpZHRoIjozOTAsImVkaXRpb24iOiJwcmV2aWV3Iiwidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0IjoyMTc3fSwiYnJvd3NlciI6IndlYmtpdCIsImJyb3dzZXJWZXJzaW9uIjoiMjYuMCIsImNsb2NrIjoiMjAyNi0xMC0xMVQxMTowMDowMC4wMDBaIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-010cec1249d6792245c2",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/par.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3686,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/par.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/par.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:19:59.667Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InBhci5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE2MH0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-d8523c897bb2cf938fed",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/control.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3842,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/control.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/control.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:01.464Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6ImNvbnRyb2wubGlnaHQiLCJhbmNob3IiOiJwcmFjdGljZUd1aWRlRXhhbXBsZSIsInZpZXciOiJwcmFjdGljZUd1aWRlVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InByZXZpZXciLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjIxNzd9LCJicm93c2VyIjoid2Via2l0IiwiYnJvd3NlclZlcnNpb24iOiIyNi4wIiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-a24a5807186293f733d9",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/reload.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3915,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/reload.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/reload.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:03.372Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InJlbG9hZC5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE5Mn0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-cd643ac5092581cb576a",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/free.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3836,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/free.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/free.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:05.328Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6ImZyZWUubGlnaHQiLCJhbmNob3IiOiJwcmFjdGljZUd1aWRlRXhhbXBsZSIsInZpZXciOiJwcmFjdGljZUd1aWRlVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InByZXZpZXciLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjIyNzN9LCJicm93c2VyIjoid2Via2l0IiwiYnJvd3NlclZlcnNpb24iOiIyNi4wIiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-1a79674995864b15f716",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-trigger-only.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3755,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-trigger-only.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-trigger-only.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:07.304Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLXRyaWdnZXItb25seS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE2MX0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-e89cbd24e669dda56178",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-rack-trigger.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3894,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-rack-trigger.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-rack-trigger.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:09.184Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLXJhY2stdHJpZ2dlci5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE2MX0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-c04e1c193d97f66641c3",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-mag-trigger.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3732,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-mag-trigger.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-mag-trigger.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:11.081Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLW1hZy10cmlnZ2VyLmxpZ2h0IiwiYW5jaG9yIjoicHJhY3RpY2VHdWlkZUV4YW1wbGUiLCJ2aWV3IjoicHJhY3RpY2VHdWlkZVZpZXciLCJlZGl0aW9ucyI6WyJwdWJsaWMiLCJwcmV2aWV3Il0sIndpZHRoIjozOTAsImVkaXRpb24iOiJwcmV2aWV3Iiwidmlld3BvcnQiOnsid2lkdGgiOjM5MCwiaGVpZ2h0IjoyMTYxfSwiYnJvd3NlciI6IndlYmtpdCIsImJyb3dzZXJWZXJzaW9uIjoiMjYuMCIsImNsb2NrIjoiMjAyNi0xMC0xMVQxMTowMDowMC4wMDBaIn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-1bc023e966375a281cc7",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-draw-mag-trigger.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3836,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-draw-mag-trigger.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-draw-mag-trigger.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:13.107Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLWRyYXctbWFnLXRyaWdnZXIubGlnaHQiLCJhbmNob3IiOiJwcmFjdGljZUd1aWRlRXhhbXBsZSIsInZpZXciOiJwcmFjdGljZUd1aWRlVmlldyIsImVkaXRpb25zIjpbInB1YmxpYyIsInByZXZpZXciXSwid2lkdGgiOjM5MCwiZWRpdGlvbiI6InByZXZpZXciLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6MzkwLCJoZWlnaHQiOjIxOTF9LCJicm93c2VyIjoid2Via2l0IiwiYnJvd3NlclZlcnNpb24iOiIyNi4wIiwiY2xvY2siOiIyMDI2LTEwLTExVDExOjAwOjAwLjAwMFoifQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-baeb2fa82af30231077a",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/sequence-custom.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4068,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-custom.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/sequence-custom.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:14.837Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNlcXVlbmNlLWN1c3RvbS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE2MX0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-ed1ee3ee844fa2d66033",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/single-early.light at 390px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3862,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/single-early.light.390.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/single-early.light.390.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:16.964Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNpbmdsZS1lYXJseS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzkwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozOTAsImhlaWdodCI6MjE3Mn0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-754a84855871c26a9a41",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        },
+        {
+          "title": "practice-guide/single-early.light at 320px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3300,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/single-early.light.320.png is re-generated, writing actual.\n"
+                    },
+                    {
+                      "text": "/__w/dryfire/dryfire/visual-candidates/webkit/preview/practice-guide/single-early.light.320.png is re-generated, writing actual.\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:20:18.946Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screen-state",
+                      "contentType": "application/json",
+                      "body": "eyJzY3JlZW4iOiJwcmFjdGljZUd1aWRlIiwiZm9sZGVyIjoicHJhY3RpY2UtZ3VpZGUiLCJzdGF0ZSI6InNpbmdsZS1lYXJseS5saWdodCIsImFuY2hvciI6InByYWN0aWNlR3VpZGVFeGFtcGxlIiwidmlldyI6InByYWN0aWNlR3VpZGVWaWV3IiwiZWRpdGlvbnMiOlsicHVibGljIiwicHJldmlldyJdLCJ3aWR0aCI6MzIwLCJlZGl0aW9uIjoicHJldmlldyIsInZpZXdwb3J0Ijp7IndpZHRoIjozMjAsImhlaWdodCI6MjIyMX0sImJyb3dzZXIiOiJ3ZWJraXQiLCJicm93c2VyVmVyc2lvbiI6IjI2LjAiLCJjbG9jayI6IjIwMjYtMTAtMTFUMTE6MDA6MDAuMDAwWiJ9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4e58ca2a3cb798687116-ecc4a1f6122520adf227",
+          "file": "screens.spec.js",
+          "line": 212,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-16T04:19:33.326Z",
+    "duration": 49033.269,
+    "expected": 30,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -151,6 +151,32 @@ async function prepare(page, item) {
         await expect(page.locator('#sessionReview .session-saved-note')).toContainText('Saved');
       }
       break;
+    case 'practiceGuide': {
+      const state = item.state.split('.')[0];
+      if (state.startsWith('sequence-')) {
+        await tab(page, 'drills');
+        if (state === 'sequence-custom') {
+          await page.locator('#customDrillsTab').click();
+          await page.locator('#customDrillCatalog').getByRole('button', { name: 'Start Drill' }).first().click();
+        } else {
+          const ids = ['trigger-only', 'rack-trigger', 'mag-trigger', 'draw-mag-trigger'];
+          await page.locator('#drillCatalog .preset-card').nth(ids.indexOf(state.replace('sequence-', ''))).getByRole('button', { name: 'Start Drill' }).click();
+        }
+        await page.locator('#sessionGuideLink').click();
+      } else {
+        const mode = ['single-early', 'external-start', 'silent-start'].includes(state) ? 'single' : state.startsWith('reload-') ? 'reload' : state;
+        await practice(page, mode);
+        if (state === 'reload-selected-endpoints') { await page.locator('#practiceReloadStart').selectOption('trigger'); await page.locator('#practiceReloadEnd').selectOption('draw'); }
+        if (state === 'external-start') await page.locator('#practiceStartSource').selectOption('external');
+        if (state === 'silent-start') await page.locator('#practiceStartSound').uncheck();
+        await page.locator('#practiceGuideLink').click();
+      }
+      await visible(page, 'practiceGuideView');
+      if (state === 'single-early') await page.locator('#practiceGuideEarlyBtn').click();
+      await expect(page.locator('#practiceGuideSteps li')).toHaveCount(3);
+      await expect(page.locator('#practiceGuidePlayBtn')).toHaveText('Play example');
+      break;
+    }
     case 'recognize':
       await tab(page, 'recognize');
       if (item.state.startsWith('listening')) { await page.locator('#listenBtn').click(); await confirmSafety(page); await expect(page.locator('#listeningIndicator')).toContainText('Microphone active'); await emit(page); await expect(page.locator('#sessionTimeline li')).toHaveCount(1); }

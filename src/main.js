@@ -1,4 +1,6 @@
 import { PAGE_IDS } from './pageDefinitions.js';
+import { createPracticeGuideController } from './practiceGuideController.js';
+import { isGuideContextCurrent } from './practiceGuides.js';
 import { analyzeRecording, recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
@@ -59,6 +61,7 @@ let processingReport = null;
 let preferencePending = false;
 let sessionController = null;
 let practiceController = null;
+let practiceGuideController = null;
 let safetyGate = null;
 let progressView = null;
 let CAPABILITIES = BUILD_CAPABILITIES;
@@ -497,10 +500,15 @@ function renderDrillCatalog() {
 }
 
 function routeFor(name) { return { view: name, gunId: activeGun?.id || null,
-  context: name === 'practice' ? practiceController?.routeKey() : name === 'session' ? sessionController?.routeKey() : null }; }
+  context: name === 'practiceGuide' ? practiceGuideController?.current()?.contextKey : name === 'practice' ? practiceController?.routeKey() : name === 'session' ? sessionController?.routeKey() : null }; }
 function resolveRoute(route) {
   if (!activeGun || activeGun.needsDetails) return routeFor(['gunSetup', 'guns', 'settings', 'about', 'contact'].includes(route.view) ? route.view : 'gunSetup');
-  if (route.gunId !== activeGun.id) return routeFor('home');
+  if (route.gunId !== activeGun.id) return routeFor(route.view === 'practiceGuide' ? 'drills' : 'home');
+  if (route.view === 'practiceGuide') {
+    const guide = practiceGuideController?.current();
+    const owner = guide?.parent === 'practice' ? practiceController : sessionController;
+    if (!owner?.guideContext() || !isGuideContextCurrent(guide, activeGun.id, owner?.routeKey()) || route.context !== guide.contextKey) return routeFor('drills');
+  }
   if (route.view === 'practice' && (!practiceController?.routeKey() || route.context !== practiceController.routeKey())) return routeFor('drills');
   if (route.view === 'session' && (!sessionController?.routeKey() || route.context !== sessionController.routeKey())) return routeFor('drills');
   return routeFor(PAGE_IDS.includes(route.view) ? route.view : 'home');
@@ -519,7 +527,7 @@ function displayView(name) {
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
   document.querySelectorAll('.tab').forEach(tab=>{
-    const selected=tab.dataset.view===(['session','practice'].includes(name)?'drills':name);
+    const selected=tab.dataset.view===(['session','practice','practiceGuide'].includes(name)?'drills':name);
     tab.classList.toggle('active',selected);
     if(selected)tab.setAttribute('aria-current','page');
     else tab.removeAttribute('aria-current');
@@ -956,7 +964,7 @@ async function init() {
     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
   screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute,
     show: route => displayView(route.view), canLeave: () => !busy && !profileLoading && !preferencePending && !practiceController?.hasUnsavedResults() && !sessionController?.hasUnsavedResults(),
-    beforeLeave: async () => { safetyGate?.cancel(); if (liveSession || livePendingStart) await stopLive();
+    beforeLeave: async () => { practiceGuideController?.pause(); safetyGate?.cancel(); if (liveSession || livePendingStart) await stopLive();
       if (sessionController?.locked()) await sessionController.interrupt('navigation');
       if (practiceController?.locked()) await practiceController.interrupt('navigation'); }, onError: showError });
   safetyGate = createSafetyGate({ dialog: $('#safetyModal'), checkbox: $('#safetyModalAck'), confirmButton: $('#safetyConfirmBtn'), cancelButton: $('#safetyCancelBtn'),
@@ -974,6 +982,16 @@ async function init() {
     onVibration: reportVibration,
     onPracticeRecord: record => practiceController.showRecord(record),
   });
+  practiceGuideController = createPracticeGuideController({ onBack: parent => goBack(parent) });
+  for (const [id, parent] of [['practiceGuideLink', 'practice'], ['sessionGuideLink', 'session']]) {
+    $('#' + id).addEventListener('click', event => {
+      event.preventDefault();
+      if (activeView !== parent || profileLocked()) return;
+      const context = (parent === 'practice' ? practiceController : sessionController).guideContext();
+      if (!context || context.gunId !== activeGun?.id) return;
+      try { practiceGuideController.open(context); switchView('practiceGuide'); } catch (error) { showError(error); }
+    });
+  }
   darkPreference?.addEventListener?.('change', () => { if (appearance === 'system') applyAppearance(); });
   $('#appearance').addEventListener('change', async () => {
     const value = $('#appearance').value;
