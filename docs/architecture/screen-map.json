@@ -800,7 +800,7 @@
     "src/styles.css": "440f1e998cc2dc35c8b2da814e7ebfabc8d2a0968b0574741914b98c72816bed",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
-    "src/practiceController.js": "97ee44b0db0c36430b8d02952cfe038ed53b1db9a3037bcba7ecdab67eb2df5f",
+    "src/practiceController.js": "7c8d08f76c5afd456dabd5de6fca37da32d44e3dd098335e19be9f66cc848a24",
     "src/sessionController.js": "97be6ac162de0265a44fb083f852f8aef421d73d4e110683a3e8245aabbe6bda",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "0e7be09afb1e9f6b652f6837d4f3dac3400db56cc21575642013da29a539864d",
@@ -812,11 +812,11 @@
     "src/optional/previewTesting.js": "b3a24a81d74e2f5774e9b7b429bd125e63cfab3d9937a5869a8e07103f927dd3",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
-    "tools/page-templates.mjs": "b19ecbca8c5595847f5bb1f5525557845deaf61b5b6c3a31e9785f860217813c",
+    "tools/page-templates.mjs": "c14db0a14fe5bbf0bcbfc1efd5d6f14de1fb0c30f7b7f0fd06e053f054f0374d",
     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
     "src/templates/layout.html": "883a5cc08416cf3325d18dc875640640e29c454e1e44467b9b0820f1a1f06591",
     "src/templates/pages/recognize.html": "744f7545bf30854009830181aa89350df0e7c52c97a09d05520658628863edac",
-    "src/templates/pages/drills.html": "d2323825c9380ab8c432229aea5c1ffc42040baacb222510c2087fc10fe529ec",
+    "src/templates/pages/drills.html": "093affdcc53ef2bc56d3bb025a971402376aadae6dcc96109a19590881329e82",
     "src/templates/pages/learn.html": "047c1a4d342f58463a4df7f3bffa95c28d7e5fa6d26c218d1ea027ea19fe09f5",
     "src/templates/pages/practice.html": "0acf870c2feb7fd307fd73c4f2f8e65dad7b572e66576c6e22097f988d47e3b5",
     "src/templates/pages/guns.html": "d8c2fd3dab68c4d6e29667c354e1940c5cc874f14d1286ce33549f3b02346988",
@@ -861,7 +861,9 @@
     "packages/ui/src/InformationCard/InformationCard.tsx": "2e0c4d1a75ac8c869282fad19f76aa22a8cd256a2f377095a90b42574293b532",
     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
     "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "b041999974ca3986bbf24f40f8bfe40a124c66b396ea47cf5aa3d2a554bbe40d",
-    "apps/web/src/app/routeContext.ts": "8edb4b9d133e4914784d4938581a3bfd63fcbbde42d201ff4057d94f2db19391"
+    "apps/web/src/app/routeContext.ts": "8edb4b9d133e4914784d4938581a3bfd63fcbbde42d201ff4057d94f2db19391",
+    "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
+    "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "54e08b3086e792da9e69ddaacd976f07c1c2067df094cdf53648949202509ba0"
   },
   "implementationChanges": [
     "CHG-017",
@@ -886,6 +888,7 @@
     "CHG-044",
     "CHG-045",
     "CHG-047",
-    "CHG-049 P1 route ownership extraction (no visual change)"
+    "CHG-049 P1 route ownership extraction (no visual change)",
+    "CHG-049 static practice catalog prerender (unchanged final UI)"
   ]
 }

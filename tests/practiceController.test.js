@@ -3,6 +3,7 @@ import { jest } from '@jest/globals';
 import { readFileSync } from 'node:fs';
 import { serialize, deserialize } from 'node:v8';
 import { controllerPage, deferred, clickPcm } from './helpers/controllerDom.js';
+import { PRACTICE_MODES } from '../src/practiceSession.js';
 
 const audio = await import('../src/audio.js');
 const capture = jest.fn(), save = jest.fn(), set = jest.fn(), get = jest.fn();
@@ -11,6 +12,7 @@ jest.unstable_mockModule('../src/audio.js', () => ({ ...audio, startContinuousLi
 jest.unstable_mockModule('../src/storage.js', () => ({ getGunSetting: get, setGunSetting: set, saveSession: save }));
 jest.unstable_mockModule('../src/feedback.js', () => ({ createStartCuePlayer: () => cue, requestFeedbackVibration: () => ({ supported: true, accepted: true }) }));
 const { createPracticeController } = await import('../src/practiceController.js');
+const catalog = readFileSync(new URL('./fixtures/practice-catalog.html', import.meta.url), 'utf8');
 const library = JSON.parse(readFileSync(new URL('../visual-tests/fixtures/library.json', import.meta.url)));
 const originalClone = globalThis.structuredClone;
 let controller, context, callbacks, input, captureCalled, session, options, cueTimes;
@@ -20,7 +22,7 @@ const config = { repetitions: 2, delayMode: 'fixed', fixedDelaySeconds: 1, sound
 beforeEach(() => {
   globalThis.structuredClone = value => deserialize(serialize(value));
   jest.useFakeTimers();
-  document.body.innerHTML = '<input id="safetyAck" type="checkbox" checked><div id="practiceCatalog"></div>' + controllerPage('practice');
+  document.body.innerHTML = '<input id="safetyAck" type="checkbox" checked>' + catalog + controllerPage('practice');
   context = { gun: library.guns[0], examples: library.examples.filter(row => row.gunId === library.guns[0].id), calibration: [], available: true, audioPreferences: { noiseFilter: true } };
   callbacks = Object.fromEntries(['onNavigate','onBack','onChange','onError','onStatus','onProcessing','onVibration'].map(key => [key, jest.fn()]));
   callbacks.ensureSafe = jest.fn(() => true);
@@ -35,6 +37,42 @@ beforeEach(() => {
 afterEach(async () => {
   await controller.interrupt('test-cleanup');
   jest.useRealTimers(); globalThis.structuredClone = originalClone; document.body.replaceChildren();
+});
+
+test('the six catalog choices preserve copy/order and configure exactly once without microphone access', async () => {
+  controller.renderCatalog(); controller.renderCatalog();
+  const buttons = [...document.querySelectorAll('#practiceCatalog button')];
+  expect(buttons.map(button => button.dataset.practiceMode)).toEqual(PRACTICE_MODES.map(mode => mode.id));
+  expect([...document.querySelectorAll('#practiceCatalog h3')].map(node => node.textContent)).toEqual(PRACTICE_MODES.map(mode => mode.title));
+  expect([...document.querySelectorAll('#practiceCatalog p')].map(node => node.textContent)).toEqual(PRACTICE_MODES.map(mode => mode.description));
+  for (const [index, button] of buttons.entries()) {
+    button.click();
+    for (let i=0;i<20;i++) await Promise.resolve();
+    expect(controller.guideContext().mode).toBe(PRACTICE_MODES[index].id);
+    expect(callbacks.onNavigate).toHaveBeenCalledTimes(index+1);
+  }
+  expect(capture).not.toHaveBeenCalled();
+});
+
+test('a catalog click cannot replace a practice whose microphone is still connecting', async () => {
+  controller.renderCatalog();
+  await controller.open('single', config); submit(); await captureCalled.promise;
+  document.querySelector('[data-practice-mode="repeated"]').click();
+  for (let i=0;i<20;i++) await Promise.resolve();
+  expect(callbacks.onNavigate).toHaveBeenCalledTimes(1);
+  expect(controller.locked()).toBe(true);
+  input.resolve(0);
+});
+
+test('delegated catalog actions ignore headings and disabled controls', async () => {
+  controller.renderCatalog();
+  document.querySelector('#practiceCatalog h3').click();
+  const button = document.querySelector('[data-practice-mode="single"]');
+  button.disabled = true;
+  button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  for (let i=0;i<20;i++) await Promise.resolve();
+  expect(callbacks.onNavigate).not.toHaveBeenCalled();
+  expect(capture).not.toHaveBeenCalled();
 });
 
 test.each(['single','repeated','par','control','reload','free'])('%s configuration keeps a focused, editable setup without requesting audio', async mode => {

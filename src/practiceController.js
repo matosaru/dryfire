@@ -3,7 +3,7 @@ import { startContinuousListening } from './audio.js';
 import { recognitionFeatures, recognizeRecording, selectRecognition } from './recognition.js';
 import { classify, MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
 import { compatibleCalibration, classifyExternalCue } from './calibration.js';
-import { PRACTICE_MODES, practiceMode, normalizePracticeConfig, practiceLabels, continuousPractice,
+import { practiceMode, normalizePracticeConfig, practiceLabels, continuousPractice,
   createPractice, tickPractice, detectPractice, nextPractice, pausePractice, resumePractice, endPractice,
   toPracticeRecord, practiceStatistics, PRACTICE_CUE_GUARD_MS } from './practiceSession.js';
 import { getGunSetting, setGunSetting, saveSession } from './storage.js';
@@ -283,14 +283,14 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     fillConfig(record.config); changed(); onNavigate('practice');
   }
   function renderCatalog() {
-    const cards = PRACTICE_MODES.map(definition => {
-      const card = node('article', '', 'preset-card');
-      card.append(node('h3', definition.title), node('p', definition.description, 'muted small'));
-      const button = node('button', 'Configure practice', 'button primary wide-action'); button.type = 'button';
-      button.dataset.practiceMode = definition.id; button.disabled = locked();
-      button.addEventListener('click', () => { if (!locked()) open(definition.id).catch(onError); }); card.append(button); return card;
-    }); $('practiceCatalog').replaceChildren(...cards);
+    for (const button of $('practiceCatalog').querySelectorAll('[data-practice-mode]')) button.disabled = locked();
   }
+  // The cards are compiled from the typed component. Bind once to their stable
+  // container; refreshing disabled state must never replace nodes/listeners.
+  $('practiceCatalog').addEventListener('click', event => {
+    const button = event.target.closest?.('button[data-practice-mode]');
+    if (button && !button.disabled && !locked()) open(button.dataset.practiceMode).catch(onError);
+  });
   $('practiceConfigForm').addEventListener('submit', event => { event.preventDefault(); start().catch(onError); });
   $('practiceConfigForm').addEventListener('input', configure);
   $('practiceConfigForm').addEventListener('change', () => {

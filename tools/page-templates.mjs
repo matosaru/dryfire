@@ -1,5 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { renderInformationPage } from '../apps/web/src/app/renderInformationPages.tsx';
+import { renderPracticeCatalog } from '../apps/web/src/app/renderPracticeCatalog.tsx';
+import { PRACTICE_MODES } from '../src/practiceSession.js';
 import { PAGE_DEFINITIONS } from '../src/pageDefinitions.js';
 
 const read = name => readFileSync(new URL(`../src/templates/${name}.html`, import.meta.url), 'utf8');
@@ -15,7 +17,8 @@ const runFragments = Object.fromEntries(['practice', 'session'].flatMap(name => 
   const slot = name + state[0].toUpperCase() + state.slice(1);
   return [[slot, html], ['example' + slot[0].toUpperCase() + slot.slice(1), example]];
 })));
-const content = id => ['about', 'contact'].includes(id) ? renderInformationPage(id) : fill(read(`pages/${id}`), runFragments);
+const fragments = { ...runFragments, practiceCatalog: renderPracticeCatalog(PRACTICE_MODES) };
+const content = id => ['about', 'contact'].includes(id) ? renderInformationPage(id) : fill(read(`pages/${id}`), fragments);
 
 // Only trusted, repository-owned templates are compiled. User data still uses
 // the application's existing textContent/form APIs after the page is loaded.

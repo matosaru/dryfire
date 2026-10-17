@@ -1,5 +1,7 @@
 # Drills design
 
+CHG-049 structural refactor: the six unchanged practice choices are now prerendered by [PracticeCatalog](../../../../packages/ui/src/PracticeCatalog/PracticeCatalog.tsx); the existing controller owns one delegated native action listener and capture/configuration guards. Card copy, order, DOM, styles and behavior are preserved. The [input-equivalence review](../../baselines/static-practice-catalog-review.json) records this performance correction; full Drills/editor migration is still pending.
+
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
 
 CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
