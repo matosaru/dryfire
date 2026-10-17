@@ -1,6 +1,6 @@
 # Incremental React architecture — CHG-047
 
-CHG-048 prepares the remaining migration in [spec.md](../project/react-refactor/spec.md) and [plan.md](../project/react-refactor/plan.md). The owner requires reviewing those documents before further implementation; the current architecture below is unchanged. The linked article is now read, and expanded coverage/performance preparation must precede the next production-code slice.
+CHG-048 prepares the remaining migration in [spec.md](../project/react-refactor/spec.md) and [plan.md](../project/react-refactor/plan.md). CHG-049 approves those documents and autonomous staged implementation. The linked article is now read, and expanded coverage/performance preparation must precede the next production-code slice.
 
 The owner started the [refactor plan](../project/react-refactor-plan.md). This is an incremental migration, not a completed React rewrite. [component-map.json](component-map.json) records all 13 screen owners and their existing behavior-test entry points. Browser screen/state coverage remains in [screen-map.json](screen-map.json) and the pinned visual catalog. Neither map claims complete branch coverage.
 
@@ -9,7 +9,7 @@ The owner started the [refactor plan](../project/react-refactor-plan.md). This i
 | Boundary | Owner and contract |
 | --- | --- |
 | Shared shell, BETA header, contextual gun/safety UI, footer, bottom navigation | Existing `src/templates/layout.html` and `shared/` fragments. One copy for all 13 screens. Not yet React-owned. |
-| History, active screen, capture/unsaved guards | Existing `src/screenNavigation.js` and `src/main.js`; section wrappers stay mounted. No new router or URLs. |
+| History, active screen, capture/unsaved guards | Existing `src/screenNavigation.js` owns serialized history/capture/save guards; typed `apps/web/src/app/routeContext.ts` validates current route ownership through explicit gun/controller ports; `src/main.js` creates route snapshots. Section wrappers stay mounted. No new router or URLs. |
 | About/Contact interiors | `apps/web/src/pages/AboutPage/` and `ContactPage/`; each has component, CSS, public export and behavior tests. The same React components produce build-time content and interactive browser roots. Old duplicate page HTML is removed. |
 | Shared heading/card | `packages/ui/src/PageHeading/` and `InformationCard/`; explicit props, accessible names and keyboard/escaping tests; no app, microphone or storage imports. |
 | Lazy bridge | `apps/web/src/app/informationBridge.ts`; About/Contact load React once when visited. Static Back remains usable before loading or after a failed download. The bridge retries on a later visit, keeps the prerendered Free/Full copy current before the runtime arrives, forwards that same snapshot into React and cancels abandoned mounts. The shared copy helper prevents duplicate brand/feature strings. |
@@ -40,3 +40,7 @@ Use `npm run typecheck`, `npm run lint:components`, `npm run verify:architecture
 [Page templates](page-templates.md) · [Site tree](site-tree.md) · [Implementation history](../project/implementation-history.md).
 
 First-increment visual/media evidence: [review record](../design/baselines/react-refactor-review.json). All browser PNGs remain unchanged; regenerated GIF geometry/timing is unchanged, with sparse reviewed color-quantization differences in five exports.
+
+## CHG-049 P0/P1
+
+P0 is green in both branch profiles, including pinned both-edition screenshots and paired browser performance. P1 extracts route validation only, not the router or audio/session engines. Eight pre-move characterization cases cover every ordinary route, no/incomplete gun, stale profile/setup/guide context and both controller owners. The source-wrapper integration test retains the released route-creation seam; the actual resolver is imported from the typed module. Chrome selection is characterized separately against the existing shared fragments before P2 transfers its writer. Build-only heading metadata is derived from the same frozen route IDs and tree-shaken out of the browser. Narrow `.d.ts` ports describe existing JavaScript APIs without introducing a domain-to-app dependency. No page rendering, URL, ID, storage schema, capture or GIF input changes. P1 canonical image/performance checks are pending until its own commit runs; P0 green is not substituted as P1 evidence.

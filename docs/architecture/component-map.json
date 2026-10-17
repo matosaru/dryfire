@@ -321,5 +321,11 @@
     "packages/ui cannot import app or acquire browser services",
     "domain/audio/storage remain existing src modules until their own migration increment",
     "CSS composition is ordered; page and component imports must not reorder the existing cascade"
+  ],
+  "routerContextOwner": "apps/web/src/app/routeContext.ts",
+  "navigationTests": [
+    "tests/screenNavigation.test.js",
+    "tests/routeContext.test.js",
+    "tests/routeSelection.test.js"
   ]
 }
