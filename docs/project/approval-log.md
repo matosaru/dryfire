@@ -588,3 +588,12 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 - Start shared work directly on b and synchronize into Full dev, preserving destination profiles/private deployment controls. Main remains a checked PR; no direct main write or Cloudflare deployment. Production PR #23 is observed merged by the owner before this refactor starts.
 - The exact DEV.to article remains unavailable under the running network policy. The user's instruction starts independent work using the published plan and verified first-party React sources; do not claim the unread article has been compared. R0 remains explicitly pending. No monetization/native/backend feature is started.
 - Implementation, stage validation, publication and remaining work belong in the delivery tracker and migration ledger; no approval is inferred for a visual redesign or data migration.
+
+## CHG-048 — Refactor specification and review gate
+
+- Date: 2026-10-17 (Europe/Vilnius).
+- Latest user request: **“Analyze existing structure”**, **“Prepare spec.md document”**, **“Analyze best practices provided in website”**, **“Prepare plan.md document with refactoring plan”** and **“Show me this plan before processing”**.
+- The expanded request explicitly requires unchanged design/functionality, **“js and css compressing should still be used”**, no final performance downgrade, desirable measured performance improvement, and good visual/unit/integration test coverage **before** refactoring.
+- Authorized now: inspect/research, measure existing tests/build/coverage, prepare and publish [the specification](react-refactor/spec.md) and [plan](react-refactor/plan.md) for review. This latest specific gate pauses further CHG-047 application migration; prior general automation instructions do not approve the new concrete plan.
+- The linked article is successfully retrieved and read on this date. Current architecture, broad vs configured coverage and the lazy-React startup risk are recorded without claiming complete test/accessibility/performance validation.
+- **Proposed, not approved:** stage order, coverage thresholds/ratchets, performance measurement/gates and subsequent implementation. Await owner approval before changing application code, tests/configuration, CSS or reference images/media. Publishing planning documents is not approval or deployment.
