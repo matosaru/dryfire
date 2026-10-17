@@ -4,6 +4,7 @@ import { resolve, relative, extname } from 'node:path';
 import { gzipSync } from 'node:zlib';
 import { chromium, webkit } from '@playwright/test';
 import { measureArtifact, payloadViolations } from './artifact.mjs';
+import { usableInitialScreen } from './readiness.mjs';
 import { installSyntheticMedia } from '../../visual-tests/media.js';
 
 const argument = name => process.argv.find(value => value.startsWith(`--${name}=`))?.slice(name.length+3);
@@ -59,17 +60,18 @@ try {
         ...(reports[index].edition === 'preview' ? {storageState:{cookies:[],origins:[{origin:servers[index].url,localStorage:[{name:'dryfire-private-preview-mode',value:'full'}]}]}} : {})});
       try {
         await context.addInitScript(installSyntheticMedia);
+        await context.addInitScript({content:`window.__performanceUsableScreen = (${usableInitialScreen.toString()});`});
         await context.addInitScript(() => {
           window.__performanceReview = {ready:null,longTasks:[],frameGaps:[]};
           let previous;
           const frame = now => { if(previous !== undefined) window.__performanceReview.frameGaps.push(now-previous); previous=now; requestAnimationFrame(frame); };
           requestAnimationFrame(frame);
           const observer = new MutationObserver(()=>{
-            if (document.getElementById('statusPill')?.textContent === 'Ready') {
+            if (window.__performanceUsableScreen(document)) {
               window.__performanceReview.ready = performance.now(); observer.disconnect();
             }
           });
-          observer.observe(document,{subtree:true,childList:true,characterData:true});
+          observer.observe(document,{subtree:true,childList:true,characterData:true,attributes:true});
           if (PerformanceObserver.supportedEntryTypes?.includes('longtask')) {
             new PerformanceObserver(list=>window.__performanceReview.longTasks.push(...list.getEntries().map(entry=>entry.duration))).observe({type:'longtask'});
           }
