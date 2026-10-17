@@ -1,0 +1,18 @@
+h1 { margin:3px 0 8px; font-size:clamp(2rem,6vw,3.5rem); letter-spacing:-.05em; line-height:1.04; }
+h2,h3,p { margin-top:0; }
+.subhead,.muted,footer,.class-card p,.history-item p { color:#a8b5bd; }
+.subhead { margin-bottom:0; max-width:550px; line-height:1.5; }
+.eyebrow { color:#fa974d; margin:0 0 7px; font-size:.72rem; font-weight:800; letter-spacing:.13em; }
+.status-pill { border:1px solid #364148; background:#172126; border-radius:20px; padding:9px 13px; color:#d5e0e7; font-size:.8rem; max-width:100%; }
+.brand-mark { height:60px; width:60px; display:flex; justify-content:center; align-items:center; gap:3px; border-radius:17px; border:1px solid #543421; background:#2c1c13; }
+.brand-mark span { display:block; height:12px; width:3px; border-radius:5px; background:#ff9141; }
+.brand-mark span:nth-child(2),.brand-mark span:nth-child(6) { height:23px; }
+.brand-mark span:nth-child(3),.brand-mark span:nth-child(5) { height:34px; }
+.brand-mark span:nth-child(4) { height:44px; }
+.safety-card,.class-card,.prediction,.tip,.history-item,.empty-state,.listen-panel,.settings-row,.info-note { border:1px solid #29353c; background:#10171b; border-radius:17px; }
+.safety-card { display:flex; align-items:flex-start; gap:13px; padding:16px; margin-bottom:20px; }
+.safety-icon { display:grid; place-items:center; background:#392419; color:#ff9b5e; border:1px solid #62402a; border-radius:12px; width:32px; height:32px; flex:none; font-weight:900; }
+.safety-card h2 { font-size:1rem; margin-bottom:4px; }
+.safety-card p { margin-bottom:12px; color:#c1cbd0; font-size:.91rem; line-height:1.5; }
+.checkbox-row { display:flex; align-items:center; gap:9px; font-size:.88rem; color:var(--primary-text,#f0f2f3); }
+.checkbox-row input { width:19px; height:19px; flex:none; accent-color:#ff9141; }

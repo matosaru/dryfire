@@ -1,4 +1,7 @@
-/** @jest-environment jsdom */
+/**
+ * @jest-environment jsdom
+ * @jest-environment-options {"customExportConditions":["node","node-addons"]}
+ */
 import { jest } from '@jest/globals';
 import { readFileSync } from 'node:fs';
 import { serialize, deserialize } from 'node:v8';

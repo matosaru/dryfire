@@ -3,6 +3,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { flushSync } from 'react-dom';
 import { AboutPage } from '../pages/AboutPage/index.ts';
 import { ContactPage } from '../pages/ContactPage/index.ts';
+export { mountChrome } from './chromePages.tsx';
 
 /** Temporary, explicit boundary while the existing router migrates. Only these
  * two page interiors belong to React; the shared shell/router retain ownership. */

@@ -1,17 +1,11 @@
+import { practiceDefinition } from './practiceModes.js';
+export { PRACTICE_MODES, practiceMode, practiceDefinition } from './practiceModes.js';
+
 const LABELS = ['draw', 'rack', 'trigger', 'reload'];
 const TYPES = ['Handguns', 'Rifles and Carbines', 'Shotguns'];
 export const PRACTICE_CUE_GUARD_MS = 80;
 // Let segmentation finish an event captured before a deadline; score by onset.
 export const DETECTION_SETTLE_MS = 2000;
-export const PRACTICE_MODES = Object.freeze([
-  { id: 'single', title: 'Single trigger press', description: 'Reaction time for one click after each start signal.' },
-  { id: 'repeated', title: 'Repeated trigger presses', description: 'Count distinct clicks and the intervals between them.' },
-  { id: 'par', title: 'Par-time practice', description: 'Recognize a click within your chosen time limit.' },
-  { id: 'control', title: 'Trigger control', description: 'Compare the consistency of your detected click intervals.' },
-  { id: 'reload', title: 'Reload practice', description: 'Time two calibrated events in your chosen order.' },
-  { id: 'free', title: 'Free practice', description: 'Count clicks during a timed practice session.' },
-]);
-export const practiceMode = id => PRACTICE_MODES.find(mode => mode.id === id);
 export const continuousPractice = mode => ['repeated', 'control', 'free'].includes(mode);
 const terminal = state => ['completed', 'ended', 'interrupted'].includes(state.status);
 const finite = n => typeof n === 'number' && Number.isFinite(n) && n >= 0;
@@ -64,10 +58,10 @@ function activate(state, clock, onset = clock.monoNow) {
 }
 export function createPractice({ id, gun, mode = 'single', config, ...clock } = {}) {
   clockValue(clock);
-  if (typeof id !== 'string' || !id || id.length > 80 || !practiceMode(mode) || !gun?.id || !gun.name?.trim() || !TYPES.includes(gun.type)) throw new TypeError('A valid gun and practice mode are required.');
+  if (typeof id !== 'string' || !id || id.length > 80 || !practiceDefinition(mode) || !gun?.id || !gun.name?.trim() || !TYPES.includes(gun.type)) throw new TypeError('A valid gun and practice mode are required.');
   const normalized = normalizePracticeConfig(config);
   return ready({ kind: 'practice', practiceMode: mode, id, gunId: gun.id, gunName: gun.name, gunType: gun.type,
-    drillId: `practice-${mode}`, drillTitle: practiceMode(mode).title, drillSteps: practiceLabels(mode, normalized),
+    drillId: `practice-${mode}`, drillTitle: practiceDefinition(mode).title, drillSteps: practiceLabels(mode, normalized),
     config: normalized, revision: 0, startedAt: clock.epochNow, updatedAt: clock.epochNow, endedAt: null,
     endReason: null, status: 'running', phase: 'countdown', completed: 0, remaining: mode === 'free' ? null : normalized.repetitions,
     shots: 0, elapsedMs: 0, repetitions: [], current: null, activeBaseMs: 0, lastShotOffsetMs: null }, clock);
@@ -194,7 +188,7 @@ export function validatePracticeRecord(value, owner) {
   const fail = () => { throw new TypeError('Invalid saved practice session.'); };
   if (!value || value.kind !== 'practice' || value.gunId !== owner || typeof value.id !== 'string' || !value.id || value.id.length > 80 ||
       typeof value.gunName !== 'string' || !value.gunName.trim() || value.gunName.length > 80 || !TYPES.includes(value.gunType) ||
-      !practiceMode(value.practiceMode) || value.drillId !== `practice-${value.practiceMode}` || value.drillTitle !== practiceMode(value.practiceMode).title ||
+      !practiceDefinition(value.practiceMode) || value.drillId !== `practice-${value.practiceMode}` || value.drillTitle !== practiceDefinition(value.practiceMode).title ||
       !Number.isInteger(value.revision) || value.revision < 0 || !finite(value.startedAt) || !finite(value.updatedAt) || value.updatedAt < value.startedAt ||
       !['running', 'paused', 'completed', 'ended', 'interrupted'].includes(value.status) || !finite(value.elapsedMs) || !Array.isArray(value.repetitions)) fail();
   const config = normalizePracticeConfig(value.config);

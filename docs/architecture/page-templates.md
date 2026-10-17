@@ -4,16 +4,16 @@ CHG-037 · 2026-10-12. All existing SPA screens at `/` use one shared template a
 
 ```text
 index.html — metadata, Vite entry and one {{app}} mount
-  src/templates/layout.html — common app shell
-    shared/header.html — branding, BETA status and Settings
+  packages/ui/src/AppShell — typed common shell (build adapter)
+    BrandHeader — branding, BETA status and Settings
     shared/safety-modal.html — modal overlay
     main.page-content
       shared/context.html — contextual messages/safety/gun selector
       view.html × pageDefinitions.js — stable accessible section wrapper
         pages/<screen-id>.html — 11 legacy screen interiors
         apps/web/src/pages/{AboutPage,ContactPage} — 2 React interiors
-    shared/footer.html — About/Contact, disclosure, copyright, private indicator
-    shared/navigation.html — one fixed five-tab navigation
+    InfoFooter — About/Contact, disclosure, copyright, private indicator
+    BottomNavigation — one fixed five-tab navigation
 ```
 
 [Templates](../../src/templates/README.md) are assembled by [page-templates.mjs](../../tools/page-templates.mjs) in Vite’s pre-transform phase. Edition filtering then removes private fragments from public output; bundling/minification work as before. Docs/smoke checks inspect the same assembled HTML as the app. Template and compiler content is included in the source digest; registry fingerprints cover all visible templates. Dev changes to HTML fragments trigger full reload. Raw source templates are not published.
@@ -29,3 +29,6 @@ CHG-041 adds the beta lifecycle disclosure once in the shared header, independen
 CHG-045 extracts Practice/Sequence run/review content into four shared fragments. The compiler mounts the exact same fragments in help with namespaced IDs/ARIA references; `sessionPresentation.js` renders both live state and simulated snapshots. Their shared CSS has no alternate animation skin. Tests assert fragment identity and unique IDs. See [guide requirements](../requirements/practice-guides.md#chg-045-visual-parity-and-exports).
 
 CHG-047 begins the [incremental React migration](react-migration.md). About/Contact have colocated CSS/tests and render through the same React components at build time and in lazy browser roots; legacy Back bindings exclude their React buttons. The existing shell remains the sole header/footer/navigation owner. The [component map](component-map.json) tracks all current screen owners.
+
+
+CHG-049 P2 compiles the shared typed AppShell through `renderAppShell.tsx`; trusted safety/context/page slots retain the mounted native nodes. React's automatic header-logo hint is omitted to preserve the released request graph. Numeric inputs/hints and calibration cards are also prerendered from their tested packages. Their static DOM replaces startup construction; existing native validation, counters and service callbacks remain. The information chunk can transfer only the three chrome interiors after locks clear, with rollback/focus restoration on failed commit. See [ownership](react-migration.md) and [unchanged-input review](../design/baselines/shared-shell-refactor-review.json).

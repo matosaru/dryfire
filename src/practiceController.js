@@ -3,7 +3,7 @@ import { startContinuousListening } from './audio.js';
 import { recognitionFeatures, recognizeRecording, selectRecognition } from './recognition.js';
 import { classify, MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
 import { compatibleCalibration, classifyExternalCue } from './calibration.js';
-import { practiceMode, normalizePracticeConfig, practiceLabels, continuousPractice,
+import { practiceDefinition, normalizePracticeConfig, practiceLabels, continuousPractice,
   createPractice, tickPractice, detectPractice, nextPractice, pausePractice, resumePractice, endPractice,
   toPracticeRecord, practiceStatistics, PRACTICE_CUE_GUARD_MS } from './practiceSession.js';
 import { getGunSetting, setGunSetting, saveSession } from './storage.js';
@@ -114,7 +114,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
     const running = pending || state && state.phase !== 'review';
     $('practiceGuideLink').classList.toggle('hidden', !!running || !!record);
-    $('practice-title').textContent = practiceMode(record?.practiceMode || mode)?.title || 'Practice';
+    $('practice-title').textContent = practiceDefinition(record?.practiceMode || mode)?.title || 'Practice';
     $('practiceConfigure').classList.toggle('hidden', !!running || !!record);
     $('practiceRun').classList.toggle('hidden', !running); $('practiceReview').classList.toggle('hidden', !!running || !record);
     $('practiceConfigFields').disabled = !!running;
@@ -269,7 +269,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     interruption = task.finally(() => { interruption = null; pending = false; changed(); }); changed(); return interruption;
   }
   async function open(id, config = null) {
-    if (locked() || getContext().available === false || !practiceMode(id)) return;
+    if (locked() || getContext().available === false || !practiceDefinition(id)) return;
     const token = ++readToken, owner = getContext().gun?.id;
     await configQueue; const saved = await getGunSetting('practiceConfig', {}, owner);
     if (token !== readToken || owner !== getContext().gun?.id || locked() || getContext().available === false) return;

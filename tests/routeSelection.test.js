@@ -1,16 +1,15 @@
 /** @jest-environment jsdom */
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { createChromeBridge } from '../apps/web/src/app/chromeBridge.ts';
 import { PAGE_IDS } from '../src/pageDefinitions.js';
 
-// Exercise the released chrome behavior before P2 moves its writer.
-const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
-const source = main.slice(main.indexOf("  document.querySelectorAll('.tab').forEach(tab=>{"), main.indexOf('  setMessage();', main.indexOf('function displayView(')));
-const select = name => runInNewContext(source, { name, document, PAGE_IDS: [], $: selector => document.querySelector(selector) });
+// The same matrix passed before P2 moved the writer out of main.js.
 
 test('all screens transfer active/aria-current state without touching unrelated classes', () => {
   document.body.innerHTML = ['header', 'footer', 'navigation'].map(name =>
     readFileSync(new URL(`../src/templates/shared/${name}.html`, import.meta.url), 'utf8')).join('');
+  const bridge = createChromeBridge(document, () => {});
+  const select = view => bridge.view(view);
   const settings = document.getElementById('settingsShortcut');
   const footer = ['about', 'contact'].map(id => document.getElementById(id + 'Btn'));
   for (const name of [...PAGE_IDS, ...PAGE_IDS.toReversed()]) {
@@ -28,4 +27,5 @@ test('all screens transfer active/aria-current state without touching unrelated 
       expect(link.classList.contains('active')).toBe(false);
     });
   }
+  bridge.dispose();
 });

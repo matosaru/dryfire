@@ -18,7 +18,7 @@ export function AboutPage({ full = false, onBack }: AboutPageProps) {
     </InformationCard>
     <InformationCard id="aboutRoutineTitle" title="A simple practice routine">
       <ol><li>Learn your trigger click.</li><li>Choose a practice mode or drill.</li><li>Follow the start signal and review your saved results.</li></ol>
-      <p id="aboutFeatureSummary">{aboutFeatureSummary(full)}</p>
+      <p id="aboutFeatureSummary" data-full-summary={aboutFeatureSummary(true)}>{aboutFeatureSummary(full)}</p>
     </InformationCard>
     <InformationCard id="aboutDataTitle" title="Saved on your device">
       <p>No account is required. Your profiles, learned sound features, drills and history stay in this browser. Use Settings → Export backup to keep a recovery copy before changing device or clearing browser data.</p>

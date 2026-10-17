@@ -1,11 +1,11 @@
-import { readFileSync } from 'node:fs';
+import { renderPageTemplates } from '../../tools/page-templates.mjs';
 import { createEventDetector } from '../../src/eventDetector.js';
 
-const read = name => readFileSync(new URL(`../../src/templates/${name}.html`, import.meta.url), 'utf8');
-// Use the exact maintained page/run/review markup, rather than a test-only UI.
+// Use the actual compiled section, including prerendered shared controls.
 export function controllerPage(name) {
-  return read(`pages/${name}`).replace(/\{\{(practice|session)(Run|Review)\}\}/g,
-    (_, kind, state) => read(`shared/${kind}-${state.toLowerCase()}`));
+  const container = document.createElement('div');
+  container.innerHTML = renderPageTemplates('{{app}}');
+  return container.querySelector(`#${name}View`).innerHTML;
 }
 
 export function deferred() {
