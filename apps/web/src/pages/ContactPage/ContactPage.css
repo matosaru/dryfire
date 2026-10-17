@@ -1,0 +1,3 @@
+.about-email { display:block; padding:12px 0; color:#ffad62; font-size:1rem; font-weight:700; overflow-wrap:anywhere; text-underline-offset:4px; }
+.about-email:focus-visible { outline:2px solid #ffad62; outline-offset:3px; border-radius:4px; }
+.about-contact .small { font-size:.74rem; margin-top:7px; }

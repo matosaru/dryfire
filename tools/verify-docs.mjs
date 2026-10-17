@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve, relative, dirname, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
+import { styleSources } from './style-sources.mjs';
 import { PRACTICE_MODES } from '../src/practiceSession.js';
 import { renderPageTemplates } from './page-templates.mjs';
 
@@ -31,6 +32,7 @@ const exampleRoot = 'docs/design/screens/practice-guide/examples';
 const exampleManifest = `${exampleRoot}/manifest.json`;
 if (existsSync(resolve(root, exampleManifest))) {
   const manifest = JSON.parse(read(exampleManifest));
+  for (const path of styleSources()) check(Object.hasOwn(manifest.sources, path), `${path}: current guide GIF manifest omits a CSS dependency.`);
   for (const [path, hash] of Object.entries(manifest.sources)) check(local(path) && digest(path) === hash, `${path}: guide GIF exports are stale; regenerate exports after reviewing the design.`);
   check(manifest.exports.length === 12, 'Guide GIF coverage must include six modes, early Single and five ordered examples.');
   for (const item of manifest.exports) check(local(`${exampleRoot}/${item.file}`) && digest(`${exampleRoot}/${item.file}`) === item.sha256, `${item.file}: missing or unreviewed guide GIF.`);

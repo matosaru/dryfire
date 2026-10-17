@@ -1,0 +1,14 @@
+{
+  "name": "@dryfire/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./information": "./src/app/informationPages.tsx",
+    "./information-bridge": "./src/app/informationBridge.ts"
+  },
+  "peerDependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
+}

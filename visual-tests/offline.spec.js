@@ -70,6 +70,20 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
     await page.reload();
     }
     await expect(page.locator('#homeView')).toBeVisible(); await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
+    // First visit to the React pages happens after offline refresh in public;
+    // their lazy runtime must have been included in the original cache metadata.
+    await page.locator('#aboutBtn').click();
+    await expect(page.locator('#aboutView')).toBeVisible();
+    await expect(page.locator('#aboutView [data-react-back]')).toBeVisible();
+    const informationModule = JSON.parse(readFileSync(new URL('../dist/edition.json', import.meta.url))).assets.find(path => /\/informationPages-[^/]+\.js$/.test(path));
+    expect(informationModule).toBeTruthy();
+    // Import completion proves actual React code loaded, not only static HTML.
+    expect(await page.evaluate(async modulePath => !!(await import(modulePath)).mountInformationPages, informationModule)).toBe(true);
+    await page.locator('#contactBtn').click();
+    await page.getByRole('button', { name: 'Back', exact: true }).click();
+    await expect(page.locator('#aboutView')).toBeVisible();
+    await page.getByRole('button', { name: 'Back to previous screen', exact: true }).click();
+    await expect(page.locator('#homeView')).toBeVisible();
     await page.locator('#gunSwitcherBtn').click(); await expect(page.locator('#gunList .gun-profile')).toHaveCount(3);
     await page.locator('[data-gun-id="qa-gun-a"]').click(); await page.locator('.tab[data-view="history"]').click();
     await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);

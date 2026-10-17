@@ -40,3 +40,5 @@ CHG-035 private preview has an authenticated asset boundary and a Free/Full simu
 CHG-037 uses [reusable page templates](page-templates.md) for every screen. Preserve this shared architecture when adding or changing pages; do not duplicate header/footer/navigation.
 
 CHG-041 adds a shared BETA badge beside the brand and a feedback invitation within the existing About page. The twelve-screen tree and public routes are unchanged; current captures include the shared marker in both editions. See [branding](../requirements/branding.md#beta-disclosure--chg-041) and [About](../requirements/about.md#beta-and-feedback--chg-041).
+
+CHG-047: [incremental React ownership, CSS and test boundaries](react-migration.md) · [screen-to-component/test map](component-map.json). Keep these current when moving a screen; the site hierarchy and stable routes remain unchanged.

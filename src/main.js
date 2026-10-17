@@ -1,3 +1,4 @@
+import { createInformationBridge } from '@dryfire/web/information-bridge';
 import { PAGE_IDS } from './pageDefinitions.js';
 import { createPracticeGuideController } from './practiceGuideController.js';
 import { isGuideContextCurrent } from './practiceGuides.js';
@@ -523,6 +524,7 @@ function displayView(name) {
   }
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name)) { openGunSetup(activeGun); return; }
   if (name === 'recognize') { $('#drillSelect').value = ''; resetDrill(); }
+  informationPages.show(name);
   activeView=name;
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
@@ -949,7 +951,7 @@ async function init() {
       document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
       $('#gunCapacityNotice').textContent = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
       $('#sequenceDescription').textContent = full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
-      $('#aboutFeatureSummary').textContent = full ? 'Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.' : 'Learn your trigger click, choose a built-in practice mode and review saved timing results. Other sound categories are optional unless your drill uses them.';
+      informationPages.setFull(full);
     };
     previewTesting = createPreviewTesting({ doc: document, storage,
       locked: () => profileLocked() || !!practiceController?.hasUnsavedResults() || $('#safetyModal').open || !$('#customDrillForm').classList.contains('hidden'),
@@ -1030,7 +1032,7 @@ async function init() {
   $('#builtInDrillsTab').addEventListener('click', () => selectDrillCollection(false));
   $('#customDrillsTab').addEventListener('click', () => selectDrillCollection(true));
   document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
-  document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => goBack()));
+  document.querySelectorAll('[data-back]:not([data-react-back])').forEach(button => button.addEventListener('click', () => goBack()));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
   $('#settingsShortcut').addEventListener('click', () => switchView('settings'));
   $('#aboutBtn').addEventListener('click', () => switchView('about'));
@@ -1206,6 +1208,7 @@ async function init() {
   setStatus('Ready');
 }
 
+const informationPages = createInformationBridge({ onBack: () => goBack(), onError: showError });
 init().catch(showError);
 
 // HTTPS-hosted web builds can reopen offline after an initial successful load.

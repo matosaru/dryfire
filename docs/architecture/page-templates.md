@@ -10,7 +10,8 @@ index.html — metadata, Vite entry and one {{app}} mount
     main.page-content
       shared/context.html — contextual messages/safety/gun selector
       view.html × pageDefinitions.js — stable accessible section wrapper
-        pages/<screen-id>.html — screen-specific content
+        pages/<screen-id>.html — 11 legacy screen interiors
+        apps/web/src/pages/{AboutPage,ContactPage} — 2 React interiors
     shared/footer.html — About/Contact, disclosure, copyright, private indicator
     shared/navigation.html — one fixed five-tab navigation
 ```
@@ -26,3 +27,5 @@ To add a page, add its definition/content, route/context behavior and requiremen
 CHG-041 adds the beta lifecycle disclosure once in the shared header, independent of build edition, plus the About feedback card. No new screen, public route or storage state is introduced. The existing screen tree remains authoritative.
 
 CHG-045 extracts Practice/Sequence run/review content into four shared fragments. The compiler mounts the exact same fragments in help with namespaced IDs/ARIA references; `sessionPresentation.js` renders both live state and simulated snapshots. Their shared CSS has no alternate animation skin. Tests assert fragment identity and unique IDs. See [guide requirements](../requirements/practice-guides.md#chg-045-visual-parity-and-exports).
+
+CHG-047 begins the [incremental React migration](react-migration.md). About/Contact have colocated CSS/tests and render through the same React components at build time and in lazy browser roots; legacy Back bindings exclude their React buttons. The existing shell remains the sole header/footer/navigation owner. The [component map](component-map.json) tracks all current screen owners.
