@@ -42,3 +42,7 @@ npm run coverage:check
 ```
 
 Jest now discovers both .test.ts and .test.tsx and measures src, workers, typed web and shared UI runtime code. [coverage-baseline.json](../architecture/coverage-baseline.json) prevents lowering the measured whole-scope and per-file percentages or silently removing a measured owner. New typed runtime packages use the approved 90% statement/function/line and 80% branch floors. Existing uncovered legacy controllers stay visible; they do not become safe just because a global ratchet passes. Add their characterization before moving them, and increase the accepted floors when coverage improves. Reports are uploaded as runtime-test-coverage.
+
+### Identical-build calibration
+
+The P1 canonical failures changed metric across unchanged-code reruns/small corrections: WebKit returning 71→74 ms, then Chromium Settings median improved while p95 signaled. A separate `control.json` runs 20 pairs of the immutable original against itself on the same pinned runner, after the candidate comparison. Its timing signals are public notices and diagnostic data only; they cannot override a failed candidate step or relax a threshold. Candidate and control artifacts remain separate. Error annotations now state whether median or p95 triggered and include both baseline/candidate median and p95; a p95-only failure is not mislabeled as a majority paired slowdown. This investigation is ongoing; do not equate a successful control with a passing application comparison.

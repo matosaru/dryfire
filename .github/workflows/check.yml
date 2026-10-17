@@ -146,6 +146,12 @@ jobs:
       - name: Publish performance evidence and failure annotations
         if: always()
         run: node tools/performance/report.mjs
+      - name: Measure identical-build timing control on the same runner
+        if: always()
+        run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=.performance-baseline/dist --runs=20 --output=performance-results/control.json
+      - name: Publish identical-build control evidence
+        if: always()
+        run: node tools/performance/report.mjs performance-results/control.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

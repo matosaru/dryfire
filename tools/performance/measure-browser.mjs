@@ -178,8 +178,8 @@ try {
         const repeatedSlowdown = slowerPairs >= Math.ceil(data[1][metric].length*.8) && candidate.median > baseline.median;
         const slowerTail = candidate.p95 > baseline.p95*1.05 && data[1][metric].filter(value=>value>baseline.p95).length >= Math.ceil(data[1][metric].length*.2);
         const regression = !sameAssets && (repeatedSlowdown || slowerTail);
-        if (regression) errors.push(`${name} ${metric}: repeated paired slowdown (${slowerPairs}/${data[1][metric].length}); baseline median ${baseline.median}, candidate ${candidate.median}.`);
-        return [metric,{baseline,candidate,slowerPairs,regression,interpretation:sameAssets?'Identical application assets; timing variance is diagnostic.':regression?'Regression: stop migration.':'No repeatable slowdown detected; no speedup claimed.'}];
+        if (regression) errors.push(`${name} ${metric}: ${repeatedSlowdown ? 'paired median' : 'p95 tail'} signal (${slowerPairs}/${data[1][metric].length} slower pairs); baseline median/p95 ${baseline.median}/${baseline.p95}, candidate ${candidate.median}/${candidate.p95}.`);
+        return [metric,{baseline,candidate,slowerPairs,observedSignal:repeatedSlowdown || slowerTail,regression,interpretation:sameAssets?'Identical application assets; timing variance is diagnostic.':regression?'Regression: stop migration.':'No repeatable slowdown detected; no speedup claimed.'}];
       }));
       for(let i=0;i<data[1].startupPayload.length;i++) {
         errors.push(...payloadViolations({edition:reports[1].edition,critical:data[1].startupPayload[i]},
