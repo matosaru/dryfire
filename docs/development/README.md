@@ -172,3 +172,5 @@ Run `npm run docs:check` before publishing; see [screen architecture maintenance
 [Native iPhone/Android release guide](NATIVE_RELEASE.md) · [Monetization planning](../business/monetization.md)
 
 The [reusable page architecture](../architecture/page-templates.md) compiles all screen content through shared app/view templates. Use `src/templates/shared/` for header/footer/navigation and `src/templates/pages/` for screen content; index.html owns metadata and the single app mount.
+
+CHG-049: [coverage and performance gates](PERFORMANCE.md) run before and after refactor slices; the independent original artifacts, paired browser reports and React shell feasibility probe preserve the unchanged-startup contract.

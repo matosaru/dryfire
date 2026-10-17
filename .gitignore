@@ -11,3 +11,5 @@ playwright-probe-report/
 test-results-probe/
 
 .wrangler/
+performance-results/
+.performance-baseline/

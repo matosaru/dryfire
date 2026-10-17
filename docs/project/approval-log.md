@@ -597,3 +597,11 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 - Authorized now: inspect/research, measure existing tests/build/coverage, prepare and publish [the specification](react-refactor/spec.md) and [plan](react-refactor/plan.md) for review. This latest specific gate pauses further CHG-047 application migration; prior general automation instructions do not approve the new concrete plan.
 - The linked article is successfully retrieved and read on this date. Current architecture, broad vs configured coverage and the lazy-React startup risk are recorded without claiming complete test/accessibility/performance validation.
 - **Proposed, not approved:** stage order, coverage thresholds/ratchets, performance measurement/gates and subsequent implementation. Await owner approval before changing application code, tests/configuration, CSS or reference images/media. Publishing planning documents is not approval or deployment.
+
+## CHG-049 — Approved autonomous refactor implementation
+
+- Date: 2026-10-17 (Europe/Vilnius).
+- Evidence: **“ok. I want you to proceed with a plan. I want to give you full autonomy for implementation. Initial changes should go to b and dev branches”**.
+- This approves the presented CHG-048 specification, staged plan, test/visual/performance gates and unchanged-design/functionality/data/edition constraints. The earlier plan-review pause is satisfied.
+- Execute P0 onward autonomously through the exit gates, without repeating approval for unchanged scope. Shared work enters b then synchronizes into dev retaining Full additions/profile. Main remains checked-PR-only; Cloudflare setup remains owner-managed.
+- A failed exit gate requires investigation and correction, not silently weakened tests, changed designs or a false completion claim. New product behavior and paused commercial/native features remain outside scope.

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "measuredOn": "2026-10-17",
+  "kind": "Isolated interactive React hydration dependency lower bound; no application features included.",
+  "react": "19.3.1",
+  "target": "safari16.4",
+  "minifier": "oxc",
+  "sourceMaps": false,
+  "node": "v24.19.0",
+  "raw": 219424,
+  "gzip": 67811,
+  "chunkHashes": [
+    "653a169bcab299b4210160376739f679cfc0995df2e4ad791e1575ac5c7819ba"
+  ],
+  "existingPublicCritical": {
+    "raw": 170917,
+    "gzip": 50807
+  }
+}

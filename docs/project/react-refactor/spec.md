@@ -1,8 +1,8 @@
 # React refactor specification
 
-CHG-048 · revision 1 · 2026-10-17 (Europe/Vilnius) · **Proposed; awaiting owner review.**
+CHG-048 · revision 1 · 2026-10-17 (Europe/Vilnius) · **Approved for autonomous implementation by CHG-049.**
 
-This document specifies the remaining refactor; [plan.md](plan.md) defines its execution order. The latest request explicitly requires seeing the plan before proceeding. It pauses further CHG-047 application migration until the owner approves this revision. Preparing, checking and publishing these documents does not approve or start the refactor.
+This document specifies the remaining refactor; [plan.md](plan.md) defines its execution order. The owner reviewed this revision and explicitly approved autonomous implementation in CHG-049. Execute its staged test, visual and performance gates on b and dev; the former planning pause is satisfied.
 
 ## Goal and boundaries
 
@@ -144,4 +144,4 @@ The generic strict UI audit reports **72 findings**: six native-select owner dec
 
 All 13 screen interiors and the single shell must have tested owners; no obsolete parallel HTML/DOM renderer or duplicate styling remains. Pure/audio/storage implementations may keep their existing file locations when moving them has no value. Update ownership maps and remove obsolete code only after consumers and reference checks pass.
 
-Shared increments enter b, then synchronize into dev preserving Full configuration. Only a checked b → main PR promotes production. The owner manages Cloudflare. A merged PR, test success or prepared artifact is not evidence of live deployment. [plan.md](plan.md) specifies gates, rollback and status; further implementation awaits the owner's approval.
+Shared increments enter b, then synchronize into dev preserving Full configuration. Only a checked b → main PR promotes production. The owner manages Cloudflare. A merged PR, test success or prepared artifact is not evidence of live deployment. [plan.md](plan.md) specifies gates, rollback and status; CHG-049 authorizes implementation through its gates.
