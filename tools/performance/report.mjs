@@ -29,6 +29,11 @@ export function publishPerformanceReport(report, { summaryPath, annotate = value
   if (summaryPath) appendFileSync(summaryPath, summary);
   const command = value => String(value).replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A');
   for (const error of report.errors ?? []) annotate(`::error title=Performance gate::${command(error)}`);
+  if (report.identicalApplicationAssets) for (const [browser, data] of Object.entries(report.browsers ?? {})) {
+    for (const [metric, value] of Object.entries(data.comparisons)) if (value.observedSignal) {
+      annotate(`::notice title=Identical-build timing control::${command(`${browser} ${metric}: the timing rule signals on identical code; baseline median/p95 ${value.baseline.median}/${value.baseline.p95}, candidate ${value.candidate.median}/${value.candidate.p95}, ${value.slowerPairs}/${value.candidate.samples.length} slower pairs. This is calibration evidence, not a passing candidate result.`)}`);
+    }
+  }
   return summary;
 }
 

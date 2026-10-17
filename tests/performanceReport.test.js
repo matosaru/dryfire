@@ -32,3 +32,12 @@ test('an identical-assets pass and a partial/no-browser report remain explicit',
   publishPerformanceReport({}, {annotate:value=>annotations.push(value)});
   expect(annotations).toEqual([]);
 });
+
+test('identical-build timing signals are disclosed as controls and never turn a failed candidate green', () => {
+  const sample = {median:74,p95:90,samples:[70,74,90]}, annotations = [];
+  publishPerformanceReport({identicalApplicationAssets:true,errors:[],browsers:{webkit:{version:'1',comparisons:{returning:{baseline:sample,candidate:sample,slowerPairs:3,observedSignal:true,regression:false}}}}},
+    {annotate:value=>annotations.push(value)});
+  expect(annotations).toHaveLength(1);
+  expect(annotations[0]).toContain('::notice title=Identical-build timing control::');
+  expect(annotations[0]).toContain('calibration evidence, not a passing candidate result');
+});
