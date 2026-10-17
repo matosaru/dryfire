@@ -1,0 +1,45 @@
+import { appendFileSync, readFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
+
+const cell = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('|', '&#124;').replaceAll('\n', ' ');
+export function performanceSummary(report) {
+  const lines = ['## Performance comparison', '', `Application assets: ${report.identicalApplicationAssets ? 'identical' : 'changed'}. Measurement: ${cell(report.measuredAt ?? 'not started')}.`, ''];
+  if (report.reports?.length === 2) {
+    lines.push('| Initial payload | Original | Candidate |', '| --- | ---: | ---: |');
+    for (const kind of ['js', 'css']) for (const encoding of ['raw', 'gzip']) {
+      lines.push(`| ${kind.toUpperCase()} ${encoding} bytes | ${report.reports[0].critical[kind][encoding]} | ${report.reports[1].critical[kind][encoding]} |`);
+    }
+    lines.push('');
+  }
+  for (const [browser, data] of Object.entries(report.browsers ?? {})) {
+    lines.push(`### ${cell(browser)} ${cell(data.version)}`, '', '| Metric (ms) | Original median / p95 | Candidate median / p95 | Slower pairs | Gate |', '| --- | ---: | ---: | ---: | --- |');
+    for (const [metric, value] of Object.entries(data.comparisons)) {
+      lines.push(`| ${cell(metric)} | ${value.baseline.median.toFixed(2)} / ${value.baseline.p95.toFixed(2)} | ${value.candidate.median.toFixed(2)} / ${value.candidate.p95.toFixed(2)} | ${value.slowerPairs} / ${value.candidate.samples.length} | ${value.regression ? 'FAIL' : 'pass'} |`);
+    }
+    lines.push('');
+  }
+  lines.push('### Errors', '', ...(report.errors?.length ? report.errors.map(error => `- ${cell(error)}`) : ['None.']), '', 'Detailed samples, frame/resource/cleanup observations and source metadata are in the downloadable performance artifact.', '');
+  return lines.join('\n');
+}
+
+// Make the reason visible in public check annotations and the job summary,
+// without needing authenticated access to raw logs/artifact downloads.
+export function publishPerformanceReport(report, { summaryPath, annotate = value => process.stdout.write(value + '\n') } = {}) {
+  const summary = performanceSummary(report);
+  if (summaryPath) appendFileSync(summaryPath, summary);
+  const command = value => String(value).replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A');
+  for (const error of report.errors ?? []) annotate(`::error title=Performance gate::${command(error)}`);
+  return summary;
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const path = process.argv[2] ?? 'performance-results/report.json';
+  let report;
+  try { report = JSON.parse(readFileSync(path, 'utf8')); }
+  catch (error) {
+    // This does not replace the failing measurement step's outcome.
+    report = { errors: [`No readable performance report: ${error.message}. The comparison may have failed before measurements.`] };
+  }
+  const summary = publishPerformanceReport(report, { summaryPath: process.env.GITHUB_STEP_SUMMARY });
+  if (!process.env.GITHUB_STEP_SUMMARY) process.stdout.write(summary);
+}
