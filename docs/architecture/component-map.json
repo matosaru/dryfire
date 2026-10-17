@@ -104,7 +104,10 @@
       "source": "src/templates/pages/drills.html",
       "behaviorTests": [
         "tests/drills.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "packages/ui/src/PracticeCatalog/PracticeCatalog.test.tsx",
+        "tests/practiceCatalogParity.test.tsx",
+        "tests/practiceController.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -119,6 +122,9 @@
       "draftOwnership": "Mounted existing-preset edit draft; Full-only creation checks capabilities.",
       "effects": [
         "Read/update owned presets; navigation only for a selected mode/preset"
+      ],
+      "prerenderedComponents": [
+        "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx"
       ]
     },
     {

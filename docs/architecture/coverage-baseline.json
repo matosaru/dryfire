@@ -272,6 +272,18 @@
       "branches": 100,
       "functions": 100,
       "lines": 100
+    },
+    "apps/web/src/app/renderPracticeCatalog.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
     }
   },
   "newRuntimeRoots": [

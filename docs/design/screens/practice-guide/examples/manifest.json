@@ -20,7 +20,7 @@
     "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
-    "tools/page-templates.mjs": "b19ecbca8c5595847f5bb1f5525557845deaf61b5b6c3a31e9785f860217813c",
+    "tools/page-templates.mjs": "c14db0a14fe5bbf0bcbfc1efd5d6f14de1fb0c30f7b7f0fd06e053f054f0374d",
     "tools/export-guide-examples.mjs": "a2954f85a24c38df5ea07b50cfc4738ae0af2fd2babf89405615c23d83862116",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
