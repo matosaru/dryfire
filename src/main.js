@@ -5,8 +5,9 @@ import { createPracticeGuideController } from './practiceGuideController.js';
 import { analyzeRecording, recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
+import { calibrationProgress } from '@dryfire/ui/calibration-copy';
 import { soundCard, drillCard } from './uiComponents.js';
-import { configureNumberInputs, readNumberInput } from './inputLimits.js';
+import { readNumberInput } from './inputLimits.js';
 import { createSafetyGate } from './safetyGate.js';
 import { CAPABILITIES as BUILD_CAPABILITIES } from './buildEdition.js';
 import { createCustomDrillEditor } from './optional/customDrillEditor.js';
@@ -28,10 +29,10 @@ import {
 } from './storage.js';
 
 const labelMeta = {
-  draw: { title: 'Draw from holster', description: 'Holster release and presentation sounds', tone: 'blue', short: 'DR' },
-  rack: { title: 'Rack slide', description: 'Slide movement and return', tone: 'green', short: 'RK' },
-  trigger: { title: 'Trigger pull', description: 'Dry trigger click', tone: 'orange', short: 'TR' },
-  reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple', short: 'MG' },
+  draw: { title: 'Draw from holster', description: 'Holster release and presentation sounds', tone: 'blue' },
+  rack: { title: 'Rack slide', description: 'Slide movement and return', tone: 'green' },
+  trigger: { title: 'Trigger pull', description: 'Dry trigger click', tone: 'orange' },
+  reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple' },
 };
 const $ = selector => document.querySelector(selector);
 const gunTypeImages = { Handguns: 'handgun', 'Rifles and Carbines': 'rifle', Shotguns: 'shotgun' };
@@ -123,7 +124,7 @@ function ownerId() {
 function profileLocked() { return busy || profileLoading || preferencePending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked(); }
 function currentDrill(id) { return getDrill(id, customDrills); }
 function renderGunControls() {
-  document.querySelectorAll('.tab').forEach(tab => { tab.disabled = !activeGun || activeGun.needsDetails || profileLoading; });
+  informationPages.setNavigationDisabled(!activeGun || activeGun.needsDetails || profileLoading);
   $('#gunSwitcherBtn').disabled = profileLocked();
   $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
   $('#gunSwitcherBtn').title = profileLocked() ? 'Finish recording or stop listening before switching guns.' : 'Choose another gun';
@@ -379,7 +380,7 @@ async function saveEditedCustomDrill(drill, gunId) {
 }
 
 function titleFor(label) { return labelMeta[label]?.title ?? 'Unknown sound'; }
-function setStatus(text) { $('#statusPill').textContent = text; }
+function setStatus(text) { informationPages.setStatus(text); }
 function setMessage(text = '') {
   $('#appMessage').textContent = text;
   $('#appMessage').classList.toggle('hidden', !text);
@@ -445,26 +446,28 @@ async function toggleOptionalSound(label, enabled) {
   finally { preferencePending = false; renderLiveButton(); renderClassCards(); }
 }
 function renderCalibrationCards() {
-  const host = $('#calibrationCards'); host.replaceChildren();
-  const definitions = [['reset','Trigger reset clicks','Examples of clicks that must not count as a shot.'],['noise','Other noise / handling','Background and handling sounds to reject.'],['cue','External start beep','Required only for the External beep start option.']];
-  for (const [kind, title, description] of definitions) {
-    const count = calibration.filter(row => row.kind === kind).length;
-    const card = document.createElement('article'); card.className = 'calibration-card';
-    const heading = document.createElement('h3'); heading.textContent = title;
-    const text = document.createElement('p'); text.className = 'muted small'; text.textContent = `${description} ${count} / ${MAX_EXAMPLES_PER_CLASS} samples.${count >= MAX_EXAMPLES_PER_CLASS ? ' Recording limit reached; existing samples are kept.' : ''}`;
-    const actions = document.createElement('div'); actions.className = 'class-actions';
-    const record = document.createElement('button'); record.type = 'button'; record.className = 'button primary'; record.textContent = 'Train'; record.disabled = profileLocked() || count >= MAX_EXAMPLES_PER_CLASS;
-    record.dataset.calibrationKind = kind;
-    record.addEventListener('click', () => recordCalibration(kind));
-    const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'button secondary'; reset.textContent = 'Reset'; reset.disabled = profileLocked() || !count;
-    reset.addEventListener('click', async () => {
-      if (profileLocked() || !confirm(`Remove ${title} calibration for this gun? Learned action sounds and all history stay saved.`)) return;
-      setBusy(true);
-      try { await clearCalibrationExamples(kind, ownerId()); calibration = await getCalibrationExamples(ownerId()); }
-      catch (error) { showError(error); } finally { setBusy(false); renderClassCards(); }
-    });
-    actions.append(record, reset); card.append(heading, text, actions); host.append(card);
+  for (const card of $('#calibrationCards').children) {
+    const record = card.querySelector('[data-calibration-kind]');
+    const count = calibration.filter(row => row.kind === record.dataset.calibrationKind).length;
+    const text = card.querySelector('p');
+    text.textContent = calibrationProgress(text.dataset.description, count, MAX_EXAMPLES_PER_CLASS);
+    record.disabled = profileLocked() || count >= MAX_EXAMPLES_PER_CLASS;
+    card.querySelector('.secondary').disabled = profileLocked() || !count;
   }
+}
+function bindCalibrationActions() {
+  $('#calibrationCards').addEventListener('click', async event => {
+    const button = event.target.closest('button');
+    if (!button || button.disabled || profileLocked()) return;
+    const card = button.closest('.calibration-card');
+    const kind = card.querySelector('[data-calibration-kind]').dataset.calibrationKind;
+    if (button.dataset.calibrationKind) { recordCalibration(kind); return; }
+    const title = card.querySelector('h3').textContent;
+    if (!confirm(`Remove ${title} calibration for this gun? Learned action sounds and all history stay saved.`)) return;
+    setBusy(true);
+    try { await clearCalibrationExamples(kind, ownerId()); calibration = await getCalibrationExamples(ownerId()); }
+    catch (error) { showError(error); } finally { setBusy(false); renderClassCards(); }
+  });
 }
 async function recordCalibration(kind) {
   const gunId = ownerId();
@@ -519,21 +522,7 @@ function displayView(name) {
   activeView=name;
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
-  document.querySelectorAll('.tab').forEach(tab=>{
-    const selected=tab.dataset.view===(['session','practice','practiceGuide'].includes(name)?'drills':name);
-    tab.classList.toggle('active',selected);
-    if(selected)tab.setAttribute('aria-current','page');
-    else tab.removeAttribute('aria-current');
-  });
   for(const view of PAGE_IDS) $('#'+view+'View').classList.toggle('hidden',view!==name);
-  for (const view of ['about', 'contact']) {
-    const link = $('#' + view + 'Btn');
-    if (name === view) link.setAttribute('aria-current', 'page');
-    else link.removeAttribute('aria-current');
-  }
-  $('#settingsShortcut').classList.toggle('active',name==='settings');
-  if(name==='settings')$('#settingsShortcut').setAttribute('aria-current','page');
-  else $('#settingsShortcut').removeAttribute('aria-current');
   setMessage();
   if(name==='history')renderHistory().catch(showError);
   if(name==='home')renderHome().catch(showError);
@@ -930,7 +919,7 @@ async function renderHistory() {
 }
 
 async function init() {
-  configureNumberInputs(document);
+  bindCalibrationActions();
   if (typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__) {
     const { createProgressView } = await import('./optional/progressView.js');
     const { createPreviewTesting, retirePreviewShell } = await import('./optional/previewTesting.js');
@@ -963,13 +952,13 @@ async function init() {
   safetyGate = createSafetyGate({ dialog: $('#safetyModal'), checkbox: $('#safetyModalAck'), confirmButton: $('#safetyConfirmBtn'), cancelButton: $('#safetyCancelBtn'),
     isConfirmed: () => $('#safetyAck').checked, confirmState: () => { $('#safetyAck').checked = true; $('#safetyAck').dispatchEvent(new Event('change')); },
     identity: () => `${activeGun?.id}|${activeView}`, onError: showError });
-  practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
+  practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: name => { if (screenNavigation) switchView(name); }, onBack: () => goBack('drills'),
     onError: showError, onStatus: setStatus, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
     vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
   practiceController.renderCatalog();
   sessionController = createSessionController({
     getContext: practiceContext,
-    titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
+    titleFor, ensureSafe, onNavigate: name => { if (screenNavigation) switchView(name); }, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
     onChange: () => { renderLiveButton(); renderClassCards(); },
     onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
     onVibration: reportVibration,
@@ -1022,12 +1011,8 @@ async function init() {
   for (const id of ['restoreGunBackupBtn', 'gunLibraryBackupBtn']) $('#'+id).addEventListener('click', () => switchView('settings'));
   $('#builtInDrillsTab').addEventListener('click', () => selectDrillCollection(false));
   $('#customDrillsTab').addEventListener('click', () => selectDrillCollection(true));
-  document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
   document.querySelectorAll('[data-back]:not([data-react-back])').forEach(button => button.addEventListener('click', () => goBack()));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
-  $('#settingsShortcut').addEventListener('click', () => switchView('settings'));
-  $('#aboutBtn').addEventListener('click', () => switchView('about'));
-  $('#contactBtn').addEventListener('click', () => switchView('contact'));
   $('#changeDrillBtn').addEventListener('click', () => switchView('drills'));
   $('#freeListenBtn').addEventListener('click', () => { if (!profileLocked()) switchView('recognize'); });
   renderDrillCatalog();
@@ -1199,7 +1184,8 @@ async function init() {
   setStatus('Ready');
 }
 
-const informationPages = createInformationBridge({ onBack: () => goBack(), onError: showError });
+const informationPages = createInformationBridge({ onBack: () => goBack(), onError: showError, onNavigate: name => { if (screenNavigation) switchView(name); },
+  canEnhance: () => !profileLocked() && !$('#safetyModal').open });
 init().catch(showError);
 
 // HTTPS-hosted web builds can reopen offline after an initial successful load.

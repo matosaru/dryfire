@@ -11,7 +11,7 @@ const out = resolve(process.argv.includes('--output') ? process.argv[process.arg
 const edition = JSON.parse(readFileSync('dist/edition.json'));
 if (edition.edition !== 'public') throw new Error('Export guides from the public build.');
 mkdirSync(out, { recursive: true });
-const sources = [...styleSources(), 'tools/style-sources.mjs', 'src/sessionPresentation.js', 'src/practiceGuideController.js', 'src/practiceGuideRendering.js', 'src/practiceGuideExamples.js', 'src/practiceGuides.js', 'src/practiceGuideManuals.js', 'src/practiceSession.js', 'src/drillSession.js', 'src/templates/pages/practiceGuide.html', 'tools/page-templates.mjs', 'tools/export-guide-examples.mjs', 'tools/encode-guide-examples.py', ...['practice','session'].flatMap(n => ['run','review'].map(s => `src/templates/shared/${n}-${s}.html`))];
+const sources = [...styleSources(), 'tools/style-sources.mjs', 'src/sessionPresentation.js', 'src/practiceGuideController.js', 'src/practiceGuideRendering.js', 'src/practiceGuideExamples.js', 'src/practiceGuides.js', 'src/practiceGuideManuals.js', 'src/practiceSession.js', 'src/practiceModes.js', 'src/drillSession.js', 'src/templates/pages/practiceGuide.html', 'tools/page-templates.mjs', 'tools/export-guide-examples.mjs', 'tools/encode-guide-examples.py', ...['practice','session'].flatMap(n => ['run','review'].map(s => `src/templates/shared/${n}-${s}.html`))];
 const sourceHashes = Object.fromEntries(sources.map(p => [p, createHash('sha256').update(readFileSync(p)).digest('hex')]));
 const server = spawn(process.execPath, ['--import', 'tsx', 'node_modules/vite/bin/vite.js', 'preview', '--host', '127.0.0.1', '--port', '4174', '--strictPort'], { stdio: 'ignore' });
 let browser;

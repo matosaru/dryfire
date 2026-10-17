@@ -192,3 +192,19 @@ test('portable results reject contradictory shot outcomes and future result time
   const futureAttempt = structuredClone(original); futureAttempt.repetitions[0].endedAt = futureAttempt.updatedAt + 1000;
   expect(() => validatePracticeRecord(futureAttempt, gun.id)).toThrow();
 });
+
+test.each([
+  null, [], {delayMode:'unknown'}, {startSource:'unknown'}, {soundAtStart:'yes'},
+  {randomMinSeconds:4,randomMaxSeconds:2}, {durationSeconds:0}, {durationSeconds:3601},
+  {fixedDelaySeconds:31}, {fixedDelaySeconds:NaN}, {fixedDelaySeconds:0.15},
+  {reloadStart:'unknown'}, {reloadEnd:'unknown'},
+])('invalid configuration is rejected before a session can start: %p', config => {
+  expect(()=>normalizePracticeConfig(config)).toThrow(TypeError);
+});
+
+test('unknown mode and invalid acquisition clocks cannot create a practice session',()=>{
+  const input={id:'invalid',gun,mode:'single',...clock(0)};
+  expect(()=>createPractice({...input,mode:'unknown'})).toThrow(TypeError);
+  expect(()=>createPractice({...input,monoNow:NaN})).toThrow(TypeError);
+  expect(()=>createPractice({...input,epochNow:-1})).toThrow(TypeError);
+});

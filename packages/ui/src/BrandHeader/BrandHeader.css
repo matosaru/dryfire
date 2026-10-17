@@ -1,0 +1,2 @@
+.hero { display:flex; align-items:center; gap:18px; padding:24px 0; flex-wrap:wrap; }
+.hero-copy { flex:1; min-width:220px; }

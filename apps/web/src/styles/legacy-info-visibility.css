@@ -1,0 +1,4 @@
+/* Informational pages use the same app shell without practice controls. */
+body:is([data-view="about"],[data-view="contact"]) :is(.safety-disclosure,.gun-switcher) { display:none; }
+html[data-feature-edition="public"] [data-preview-only] { display:none !important; }
+.preview-mode-badge { border-top:1px solid #2b3640; padding-top:10px; }

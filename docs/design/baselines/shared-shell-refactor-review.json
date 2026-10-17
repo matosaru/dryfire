@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "change": "CHG-049",
+  "measuredOn": "2026-10-17",
+  "originalApplicationRevision": "6c38bff81662d30279d94d41ca5c949bdbbe1c6e",
+  "candidateBase": "3bd1f7bf5bc679b451cad60b3e52e7b72e9cd7a0",
+  "contracts": [
+    "Released shell semantic DOM/SVG/ID parity in shellParity.test.tsx; no new page wrapper.",
+    "Numeric input fields match the original initialized fields/attributes/hints for all eleven controls.",
+    "Calibration cards match released nodes/text/attributes except new nonvisual data-description; reset/action characterization passes before and after extraction.",
+    "All six mode IDs/titles/descriptions and public lookup identity preserve the frozen released API."
+  ],
+  "unchangedInitializedSections": {
+    "practiceGuideView": "5c5779971b1d545883464a8bf5e260b135d6afcd7ff87088a2f75c1f5085e3f0",
+    "practiceView": "1129d4c719d2245e6b49282608060d445782ba65e10257f5634d5b6756838689",
+    "sessionView": "af9bf7d9d78f4768395a5d725b429dce0d8e3f9989ea58998d37b2d264e5f971",
+    "historyView": "02a812f8ab88c3be4b1ba946cdf684f515a4a1e99a0d327bea839b489ed9050c"
+  },
+  "unchangedProductionCSS": {
+    "file": "assets/index-DnLrZEQ0.css",
+    "sha256": "235ad2e132f412f60103792e215d91f6e0c8cfa9d23f6c78410182caebb28ec7"
+  },
+  "expandedCSSSha256": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
+  "scenarios": [
+    {
+      "name": "single",
+      "frames": 91,
+      "sha256": "402cf1f1f6b2b41801ca288f18747a7551d3be8b3f0434d3f4a317e26d22a66d",
+      "equivalent": true
+    },
+    {
+      "name": "repeated",
+      "frames": 68,
+      "sha256": "c405f6eea06cea4777cd6134692789ef9d82c930a74986f4eaf6895664cc9418",
+      "equivalent": true
+    },
+    {
+      "name": "par",
+      "frames": 133,
+      "sha256": "7c85025ea1a31a90420a1dd6461df570b06d31ab31ed9cda6648842db51ca9dd",
+      "equivalent": true
+    },
+    {
+      "name": "control",
+      "frames": 68,
+      "sha256": "5c5c3d108c14864f1fccf60d1f7042208a35f3133609105ddf8acfffa25a8f61",
+      "equivalent": true
+    },
+    {
+      "name": "reload",
+      "frames": 123,
+      "sha256": "625ad609f4cec436791f12cb319a6cdf764a411fa39bab88349b2b43ee8f72fa",
+      "equivalent": true
+    },
+    {
+      "name": "free",
+      "frames": 128,
+      "sha256": "a21adf7cb208c33fb76efb5cf70108490955cbe26f6f20d0312419ee54d5e843",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-trigger-only",
+      "frames": 109,
+      "sha256": "595c3a595963a757d5e27a478c066029f89fec5fda8211f5b1bc5dd01005c134",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-rack-trigger",
+      "frames": 125,
+      "sha256": "ae5deede91ed233e68392ab286dd354fc40e8977535d805c5501b970267d9160",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-mag-trigger",
+      "frames": 125,
+      "sha256": "320266d963cfe6bef4df7bde022406ec55089cdba5c323182ab7e931f5e55bb3",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-draw-mag-trigger",
+      "frames": 141,
+      "sha256": "a952878fe8705d278b40f04182e99ab5f1b7334bd563ea256a83e6b154cf37e0",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-custom",
+      "frames": 141,
+      "sha256": "8c2247a3c3bd106ff84aff654df1fb5bc2be9d81035520f5fef0cafa20a38f66",
+      "equivalent": true
+    },
+    {
+      "name": "single-early",
+      "frames": 81,
+      "sha256": "0123cde53a00efee59ccf3253f0e62e228fa229cd7b432f6abda6f801ae84343",
+      "equivalent": true
+    }
+  ],
+  "guideExports": {
+    "count": 12,
+    "bytes": "Every existing GIF hash verified unchanged; not re-encoded.",
+    "reason": "All original/current synthetic frame snapshots and event timelines are identical. The guide/run/review presentation and fragments are unchanged. Only coarse engine metadata/compiler/CSS ownership sources moved; reviewed under this input-equivalence proof."
+  },
+  "browserChecks": "28 public + 29 preview local Chromium diagnostic workflows pass; complete pinned Chromium/WebKit comparison remains normal CI.",
+  "canonicalValidation": "Pending normal both-edition CI; no image reference or comparison tolerance updated."
+}

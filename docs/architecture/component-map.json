@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "shellOwner": "src/templates/layout.html",
+  "shellOwner": "packages/ui/src/AppShell/AppShell.tsx",
   "routerOwner": "src/screenNavigation.js",
   "screens": [
     {
@@ -79,7 +79,9 @@
       "source": "src/templates/pages/learn.html",
       "behaviorTests": [
         "tests/storage.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/calibrationCatalogLegacy.test.js",
+        "tests/calibrationCatalogParity.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -333,5 +335,33 @@
     "tests/screenNavigation.test.js",
     "tests/routeContext.test.js",
     "tests/routeSelection.test.js"
+  ],
+  "shellRuntime": {
+    "build": "apps/web/src/app/renderAppShell.tsx",
+    "native": "apps/web/src/app/chromeBridge.ts",
+    "lazyReact": "apps/web/src/app/chromePages.tsx",
+    "loading": "apps/web/src/app/informationBridge.ts",
+    "invariant": "One writer per region; React takes header/footer-link/tab contents only after a safe informational-route load. Persistent sections, forms, safety/context and the private badge retain their owners."
+  },
+  "shellTests": [
+    "tests/shellParity.test.tsx",
+    "tests/routeSelection.test.js",
+    "apps/web/src/app/chromeBridge.test.ts",
+    "apps/web/src/app/chromePages.test.tsx",
+    "apps/web/src/app/informationBridge.test.ts"
+  ],
+  "staticComponents": [
+    {
+      "source": "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx",
+      "runtimeOwner": "src/practiceController.js"
+    },
+    {
+      "source": "packages/ui/src/NumberInput/NumberInput.tsx",
+      "runtimeOwner": "Native inputs; existing controller and domain validation"
+    },
+    {
+      "source": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx",
+      "runtimeOwner": "src/main.js renderCalibrationCards/bindCalibrationActions"
+    }
   ]
 }

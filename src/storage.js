@@ -4,7 +4,7 @@ import { isFeatureVector, labels } from './classifier.js';
 import { ACTUAL_CLASSES } from './evaluation.js';
 import { getDrill, normalizeCustomDrill } from './drills.js';
 import { normalizeSessionConfig, recoverSessionRecord } from './drillSession.js';
-import { normalizePracticeConfig, practiceMode, validatePracticeRecord, recoverPracticeRecord } from './practiceSession.js';
+import { normalizePracticeConfig, practiceDefinition, validatePracticeRecord, recoverPracticeRecord } from './practiceSession.js';
 import { normalizeCalibration, compatibleCalibration, normalizeEnabledLabels, CALIBRATION_KINDS } from './calibration.js';
 
 const DB_NAME = 'dryfire-sound-trainer';
@@ -436,7 +436,7 @@ function validatePracticeSetting(key, value) {
   if (key === 'practiceConfig') {
     if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError('Invalid practice settings.');
     return Object.fromEntries(Object.entries(value).map(([mode, config]) => {
-      if (!practiceMode(mode)) throw new TypeError('Invalid practice mode.');
+      if (!practiceDefinition(mode)) throw new TypeError('Invalid practice mode.');
       return [mode, normalizePracticeConfig(config)];
     }));
   }

@@ -3,13 +3,13 @@
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "440f1e998cc2dc35c8b2da814e7ebfabc8d2a0968b0574741914b98c72816bed",
-    "apps/web/src/styles/legacy-base.css": "e013c89bb5c04bbf105ae4fa7e06b24d9b400ac73aaf571a526b9758d13a90f6",
+    "apps/web/src/styles/legacy-base.css": "e81dbed6e8d3087350711e8dcb86e6f2bc9b9da71e0662aa9934340e1f480635",
     "packages/ui/src/PageHeading/PageHeading.css": "17a188929d245b237da7e8832a3779beb7f3a3208acc7131d1433f3617225b5d",
-    "apps/web/src/styles/legacy-controls.css": "0b4eb9a5bf9dd9130ce38a27f1e1a3a5e7031089d46837c6caa5c769db16110f",
+    "apps/web/src/styles/legacy-controls.css": "ecaf0403aaa5bce2dbc92e6c95d28815d421635d3a3bc092000bed6687891cf6",
     "apps/web/src/pages/AboutPage/AboutPage.css": "f461cfe293e1fec12d7a8bbbca835abd9a7495db77e1a5effa56241150b900b5",
     "packages/ui/src/InformationCard/InformationCard.css": "5c866ea8582066954f298ce2e43ee6f474d85b11539e516cc615b7da27b97f0d",
     "apps/web/src/pages/ContactPage/ContactPage.css": "48411add5890d908e191a4340ec2a2154fa4a328c578e4daf4b1240ed3775d71",
-    "apps/web/src/styles/legacy-theme-and-layout.css": "2f22367da51afe0a184ba44c52c8b7c02c398bff5d1b77e417aabe70b5ea1464",
+    "apps/web/src/styles/legacy-theme-and-layout.css": "40e996df61f0f92278150f099f81405ba56553a6df359c9de42b85c2a778dcc9",
     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
     "src/sessionPresentation.js": "55258e9a2b7c9c2acbfccd722bea1986af688d4b51773e0367f6c97b0b31c837",
     "src/practiceGuideController.js": "978daa3edf0db71157cf5e4c10dff3a9437f87ec952dcf408190dd07fe7d6e4e",
@@ -17,16 +17,31 @@
     "src/practiceGuideExamples.js": "6a597a7ad94169334a98a3f58ec5af4ddfd9aa4f3284208f929c0e7b299a183b",
     "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
     "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
-    "src/practiceSession.js": "20873e2e63084d25808d59bc9124bcff9b1df29656a5e7bf4080e3573caf5f1a",
+    "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
-    "tools/page-templates.mjs": "c14db0a14fe5bbf0bcbfc1efd5d6f14de1fb0c30f7b7f0fd06e053f054f0374d",
-    "tools/export-guide-examples.mjs": "a2954f85a24c38df5ea07b50cfc4738ae0af2fd2babf89405615c23d83862116",
+    "tools/page-templates.mjs": "4ab83cf61272cdd10a0e0bb9b54049bb74cd41f6f94608be9aecc8bfb7784ebd",
+    "tools/export-guide-examples.mjs": "0c1f31a7c9742ac8cde728c0d54cb6f13e7f47c0ee94b91512761bf5abb3308b",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
     "src/templates/shared/practice-review.html": "cd21f121c3ee65f387f5e263e46a046e26214b51e681da4339d26371e26c31c0",
     "src/templates/shared/session-run.html": "eed45b5ebf5d95c265e57d2df1039eac3478272dee3f72def1d4afe9e109e1b1",
-    "src/templates/shared/session-review.html": "7e0e4ecc2bd1f2ba74f252925dcaef0fcd99987f75a23f4689982e54bf71ab03"
+    "src/templates/shared/session-review.html": "7e0e4ecc2bd1f2ba74f252925dcaef0fcd99987f75a23f4689982e54bf71ab03",
+    "apps/web/src/styles/foundation.css": "706dda161bd34041a3820e9e86b288f813fd0fc96c426154b9018daaa67dbafc",
+    "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
+    "packages/ui/src/BrandHeader/BrandHeader.css": "d7ab4f9b64f59b0402293eba82d31611f9f436ea29628758528cf4c412dd35e8",
+    "apps/web/src/styles/legacy-base-content.css": "144b95bbe2f9396997d3f29af97faf97e505c808bd35043b0d3e1802597a7112",
+    "packages/ui/src/BottomNavigation/BottomNavigation.css": "5708fbb98df65fe43f6ec0e2a4f2b1bfb8c973a9c5c95098e78b220975fd0ac4",
+    "apps/web/src/styles/legacy-cards.css": "1859a192b56f8d040b6380ab4b85ae8317245d353ba93ab3f4715b799ef1cc54",
+    "apps/web/src/styles/legacy-controls-content.css": "a4f12d812ef793246adfeed279ae1c82c691452278c5db7730781c6b3fdbc299",
+    "packages/ui/src/InfoFooter/InfoFooter.css": "c067b2816187a004a3168219ec42e6091b5517065faceeed7ff22beed70b6b9b",
+    "apps/web/src/styles/legacy-info-visibility.css": "20364cba9bf4a2abdb5e25bf69477773b3f021a34c6c19b13fbc7895ee2ccf99",
+    "apps/web/src/styles/legacy-theme-core.css": "1284499ece8a920ccd8123c2154dc2ffc623473e3511c2455d5aa8f6efc8c346",
+    "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css": "540275a1d8e8edd8aff06cf4834bfbbf91ce9685ae770dbe4c01cb6046b21262",
+    "apps/web/src/styles/legacy-control-theme.css": "950dace7750fb8a5809dce43ecf8188aebc9aff037d0186a6f0fccc2b46c33ff",
+    "packages/ui/src/NumberInput/NumberInput.css": "6b25ec1e508798cc1e6fe16c90c80100f60d71556f9cf1e6b5cf98dce058d806",
+    "apps/web/src/styles/legacy-session-theme.css": "3b60e0c3f4bdeba40743aad02d7c84057fc9e13cda254c2a675b8b04be345080",
+    "src/practiceModes.js": "951d9789e040f8dc39255bfbabcf2c7c6d6f57bc57b166f8bf8ecfc2f348666e"
   },
   "exports": [
     {
@@ -137,5 +152,7 @@
       "width": 358,
       "height": 750
     }
-  ]
+  ],
+  "structuralInputReview": "docs/design/baselines/shared-shell-refactor-review.json",
+  "exportStatus": "Existing encoded bytes retained: complete original/current scenario snapshots and initialized presentation are equivalent; CSS is byte-identical. This is input-equivalence review, not re-encoding."
 }
