@@ -5,6 +5,7 @@ import { gzipSync } from 'node:zlib';
 import { chromium, webkit } from '@playwright/test';
 import { measureArtifact, payloadViolations } from './artifact.mjs';
 import { usableInitialScreen } from './readiness.mjs';
+import { timingStatistics as statistic, timingEvidence } from './timing-policy.mjs';
 import { installSyntheticMedia } from '../../visual-tests/media.js';
 
 const argument = name => process.argv.find(value => value.startsWith(`--${name}=`))?.slice(name.length+3);
@@ -12,7 +13,7 @@ const candidateDir = resolve(argument('candidate') || 'dist');
 if (!argument('baseline')) throw new Error('Provide --baseline=/path/to/original/dist.');
 const baselineDir = resolve(argument('baseline'));
 const output = argument('output') || 'performance-results/report.json';
-const runs = Number(argument('runs') || 10);
+const runs = Number(argument('runs') || 20);
 if (!Number.isInteger(runs) || runs < 2 || process.env.CI && runs < 10) throw new Error('Use at least ten CI samples (two for local diagnostics).');
 const rendering = JSON.parse(readFileSync('visual-tests/environment.json'));
 if (process.env.CI && process.env.VISUAL_IMAGE !== rendering.image) throw new Error('Performance comparisons require the pinned rendering image.');
@@ -25,11 +26,9 @@ if (errors.length) {
   throw new Error(errors.join('\n'));
 }
 const sameAssets = JSON.stringify(reports[0].hashes) === JSON.stringify(reports[1].hashes);
+const timingProbe=process.argv.includes('--timing-probe');
+const identicalRuntime=sameAssets&&!timingProbe;
 const timingMetrics = ['cold','warm','returning','firstAction','navigation','clickFeedback'];
-const statistic = values => {
-  const sorted = [...values].sort((a,b)=>a-b);
-  return { median: sorted[Math.floor(sorted.length/2)], p95: sorted[Math.ceil(sorted.length*.95)-1], samples: values };
-};
 async function serve(root) {
   const privateEdition = JSON.parse(readFileSync(resolve(root,'edition.json'))).edition === 'preview';
   const server = createServer((request,response) => {
@@ -48,7 +47,8 @@ async function serve(root) {
   return { url:`http://127.0.0.1:${server.address().port}`, close:() => new Promise(resolve => server.close(resolve)) };
 }
 const servers = await Promise.all([baselineDir,candidateDir].map(serve));
-const results = { version:1, measuredAt:new Date().toISOString(), node:process.version, image:process.env.VISUAL_IMAGE || 'local-diagnostic', reports, identicalApplicationAssets:sameAssets, browsers:{} };
+const results = { version:1, measuredAt:new Date().toISOString(), node:process.version, image:process.env.VISUAL_IMAGE || 'local-diagnostic', reports, identicalApplicationAssets:sameAssets,
+  runtimeProbe:timingProbe?'Deliberate candidate-only 250 ms startup CPU stall; expected regression.':null,browsers:{} };
 try {
   const names = argument('browser') ? [argument('browser')] : ['chromium','webkit'];
   for (const name of names) {
@@ -60,6 +60,9 @@ try {
         ...(reports[index].edition === 'preview' ? {storageState:{cookies:[],origins:[{origin:servers[index].url,localStorage:[{name:'dryfire-private-preview-mode',value:'full'}]}]}} : {})});
       try {
         await context.addInitScript(installSyntheticMedia);
+        if(timingProbe&&index===1) await context.addInitScript(()=>{
+          const until=performance.now()+250;while(performance.now()<until){ /* Deliberate test-only startup regression. */ }
+        });
         await context.addInitScript({content:`window.__performanceUsableScreen = (${usableInitialScreen.toString()});`});
         await context.addInitScript(() => {
           window.__performanceReview = {ready:null,longTasks:[],frameGaps:[]};
@@ -171,17 +174,14 @@ try {
     try {
       for (let i=0;i<runs;i++) { const order=i%2 ? [1,0] : [0,1]; for (const index of order) await measure(index,i===runs-1); }
       const slower = () => timingMetrics.filter(metric=>statistic(data[1][metric]).median > statistic(data[0][metric]).median || statistic(data[1][metric]).p95 > statistic(data[0][metric]).p95);
-      if (!sameAssets && slower().length) {
+      if (!identicalRuntime && slower().length) {
         for (let i=0;i<runs;i++) for (const index of i%2 ? [0,1] : [1,0]) await measure(index);
       }
       const comparisons = Object.fromEntries(timingMetrics.map(metric=>{
-        const baseline=statistic(data[0][metric]),candidate=statistic(data[1][metric]);
-        const slowerPairs=data[1][metric].filter((value,i)=>value>data[0][metric][i]).length;
-        const repeatedSlowdown = slowerPairs >= Math.ceil(data[1][metric].length*.8) && candidate.median > baseline.median;
-        const slowerTail = candidate.p95 > baseline.p95*1.05 && data[1][metric].filter(value=>value>baseline.p95).length >= Math.ceil(data[1][metric].length*.2);
-        const regression = !sameAssets && (repeatedSlowdown || slowerTail);
-        if (regression) errors.push(`${name} ${metric}: ${repeatedSlowdown ? 'paired median' : 'p95 tail'} signal (${slowerPairs}/${data[1][metric].length} slower pairs); baseline median/p95 ${baseline.median}/${baseline.p95}, candidate ${candidate.median}/${candidate.p95}.`);
-        return [metric,{baseline,candidate,slowerPairs,observedSignal:repeatedSlowdown || slowerTail,regression,interpretation:sameAssets?'Identical application assets; timing variance is diagnostic.':regression?'Regression: stop migration.':'No repeatable slowdown detected; no speedup claimed.'}];
+        const result=timingEvidence(data[0][metric],data[1][metric],identicalRuntime);
+        const {baseline,candidate,slowerPairs,regression,medianConfirmed,confidence}=result;
+        if (regression) errors.push(`${name} ${metric}: confirmed ${medianConfirmed ? 'paired median' : 'p95 tail'} slowdown (${slowerPairs}/${data[1][metric].length} slower pairs); baseline median/p95 ${baseline.median}/${baseline.p95}, candidate ${candidate.median}/${candidate.p95}; 99% difference interval ${JSON.stringify(confidence)}.`);
+        return [metric,result];
       }));
       for(let i=0;i<data[1].startupPayload.length;i++) {
         errors.push(...payloadViolations({edition:reports[1].edition,critical:data[1].startupPayload[i]},

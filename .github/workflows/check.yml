@@ -108,7 +108,7 @@ jobs:
       matrix:
         edition: [public, preview]
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     container:
       image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
       options: --ipc=host
@@ -152,6 +152,9 @@ jobs:
       - name: Publish identical-build control evidence
         if: always()
         run: node tools/performance/report.mjs performance-results/control.json
+      - name: Prove the gate rejects a deliberate runtime slowdown
+        if: always() && matrix.edition == 'public'
+        run: node tools/performance/probe-timing.mjs --baseline=.performance-baseline/dist
       - uses: actions/upload-artifact@v4
         if: always()
         with:

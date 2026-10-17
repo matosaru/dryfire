@@ -7,11 +7,13 @@ test('a paired failure exposes actual payload and timing evidence without hiding
   const sample = { median: 4.2, p95: 8.1, samples: [2, 4.2, 8.1] };
   const report = { measuredAt: '2026-10-17', identicalApplicationAssets: false,
     reports: [0,1].map(value => ({critical:{js:{raw:100+value,gzip:50+value},css:{raw:20,gzip:10}}})),
-    browsers: { webkit: {version:'1.2',comparisons:{navigation:{baseline:sample,candidate:sample,slowerPairs:3,regression:true}}} }, errors:['webkit navigation: repeated paired slowdown'] };
+    browsers: { webkit: {version:'1.2',comparisons:{navigation:{baseline:sample,candidate:sample,slowerPairs:3,regression:true,confidence:{median:{lower:1,upper:2},p95:{lower:3,upper:4}},interpretation:'Confirmed regression'}}} }, errors:['webkit navigation: repeated paired slowdown'] };
   const text = performanceSummary(report);
   expect(text).toContain('| JS gzip bytes | 50 | 51 |');
   expect(text).toContain('| navigation | 4.20 / 8.10 | 4.20 / 8.10 | 3 / 3 | FAIL |');
   expect(text).toContain('webkit navigation: repeated paired slowdown');
+  expect(text).toContain('99% difference interval');
+  expect(text).toContain('median 1.00 to 2.00');
 });
 
 test('summaries append to the job file and escape workflow command characters', () => {
