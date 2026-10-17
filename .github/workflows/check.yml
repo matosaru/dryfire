@@ -143,6 +143,9 @@ jobs:
       - run: npm run verify:dist -- --edition=${{ matrix.edition }}
       - name: Compare actual critical payload, cold/warm startup, input and cleanup
         run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist
+      - name: Publish performance evidence and failure annotations
+        if: always()
+        run: node tools/performance/report.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

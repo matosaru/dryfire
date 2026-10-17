@@ -18,7 +18,11 @@ if (process.env.CI && process.env.VISUAL_IMAGE !== rendering.image) throw new Er
 const library = readFileSync('visual-tests/fixtures/library.json');
 const reports = [baselineDir,candidateDir].map(measureArtifact);
 const errors = payloadViolations(reports[1],reports[0]);
-if (errors.length) throw new Error(errors.join('\n'));
+if (errors.length) {
+  mkdirSync(resolve(output,'..'),{recursive:true});
+  writeFileSync(output,JSON.stringify({version:1,reports,errors},null,2)+'\n');
+  throw new Error(errors.join('\n'));
+}
 const sameAssets = JSON.stringify(reports[0].hashes) === JSON.stringify(reports[1].hashes);
 const timingMetrics = ['cold','warm','returning','firstAction','navigation','clickFeedback'];
 const statistic = values => {
