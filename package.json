@@ -36,6 +36,10 @@
     "verify:profile": "node tools/verify-build-profile.mjs",
     "typecheck": "tsc --noEmit",
     "verify:architecture": "node tools/verify-component-packages.mjs",
+    "coverage:check": "node tools/verify-coverage.mjs",
+    "perf:payload": "node --experimental-vm-modules tools/performance/check-payload.mjs",
+    "perf:compare": "node --experimental-vm-modules tools/performance/measure-browser.mjs",
+    "perf:react-shell": "node tools/performance/probe-react-shell.mjs",
     "lint:components": "eslint apps packages",
     "verify:private-target": "node tools/verify-private-deploy-target.mjs"
   },

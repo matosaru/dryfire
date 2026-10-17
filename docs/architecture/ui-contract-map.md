@@ -1,0 +1,17 @@
+# Refactor UI ownership and audit triage
+
+CHG-049 · existing contracts, not a redesign. [Functional requirements](../requirements/README.md), [shared design](../design/screens/shared/README.md) and [the component map](component-map.json) remain canonical. Existing CSS variables and ordered styles own runtime values; documentation mirrors their meaning rather than defining a competing palette.
+
+| Capability | Current canonical owner | Migration invariant | Verification |
+| --- | --- | --- | --- |
+| Header/footer/tabs | Shared HTML fragments, pageDefinitions and main displayView/navigation | One instance; same BETA, text, native buttons, active/current/disabled state, safe areas and contextual visibility | pageTemplates, screenNavigation, page-layout and About browser workflows |
+| Safety capture confirmation | safetyGate.js and shared safety-modal.html | Same page-session acknowledgement, pending intent/gun identity, cancel/Escape, labels/focus and capture resume | safetyGate and practiceController unit tests; practice-start/guide/preview browser tests |
+| Gun/sound/history destructive confirmation | Existing main.js handlers and native browser confirmation | Preserve current text, scopes and cancellation during structural work; replacing browser confirmation is separate product work under the explicit unchanged-behavior requirement | dataDeletion, gunManagement, storage and browser workflows |
+| Native select/listbox | Existing Drills, History, Practice, Live Listen, Sequence and Settings page templates | OS/browser popup remains native; retain labels, values, selection and keyboard semantics | built-app both-browser workflows, including 320 px History filtering |
+| Forms/numeric inputs | Existing four forms, native validation and inputLimits/domain validation | Same bounds, error ownership, invalid drafts and submit behavior; do not add a new validation UX during parity | inputLimits, practiceController and existing form/browser tests |
+| Preferences/theme | main preferences and audioPreferences/feedback capability boundaries | Same device/gun ownership and honest supported/applied reporting; preserve Dark white primary text and all Light values | preference/storage tests, all-theme screenshots, page-layout |
+| Run/review/help | Four shared fragments and sessionPresentation.js | Live and simulated snapshots share one presentation and actual sequence/endpoints; examples never capture/save | practice/sequence engines and controller tests, practice-guides/browser/media fingerprints |
+
+The generic strict UI audit records 72 findings at the inspected baseline: six native-select declarations, 62 statically actionless buttons and four forms without novalidate. The six native-owner choices are deliberate, documented above and in the existing architecture. Button action findings require tracing central addEventListener bindings and runtime tests; they are not 62 confirmed broken controls. Native validation remains established behavior. Do not weaken the audit, claim full compliance or alter controls to silence it. Preserve this triage as evidence; investigate concrete accessibility or data-loss defects separately and test any approved correction before including it in a migration.
+
+Shared UI may render props/callbacks only; it cannot own microphone/database APIs. Legacy DOM writes must leave a region before React takes ownership. Every extracted source package needs its own CSS, export and meaningful tests. Keep the mapping and source/test references current when a screen migrates.

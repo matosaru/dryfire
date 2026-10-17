@@ -22,8 +22,14 @@ jobs:
       - run: npm run verify:architecture
       - run: npm run docs:check
       - run: npm run test:smoke
-      - run: npm test
+      - run: npm run test:coverage
         timeout-minutes: 3
+      - run: npm run coverage:check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: runtime-test-coverage
+          path: coverage/
+          retention-days: 14
       - run: npm run build
       - run: npm run verify:dist
       - run: npm run deploy:check
@@ -95,13 +101,63 @@ jobs:
             test-results-probe/
           retention-days: 14
           if-no-files-found: error
+  performance_editions:
+    name: performance (${{ matrix.edition }})
+    strategy:
+      fail-fast: false
+      matrix:
+        edition: [public, preview]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      options: --ipc=host
+    env:
+      VISUAL_IMAGE: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      APP_EDITION: ${{ matrix.edition }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Choose the immutable matching application baseline
+        id: baseline
+        run: |
+          node --input-type=module -e "import { readBuildProfile } from './tools/build-profile.mjs'; console.log('source=' + (readBuildProfile() === 'preview' ? 'a5b76e8d524c311bcbde1dc5740b2f5d0fa8e8bd' : '6c38bff81662d30279d94d41ca5c949bdbbe1c6e'));" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.baseline.outputs.source }}
+          path: .performance-baseline
+          persist-credentials: false
+      - name: Trust only the two test checkouts in the rendering container
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/.performance-baseline"
+      - run: npm ci --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
+        working-directory: .performance-baseline
+      - run: npm run build
+        working-directory: .performance-baseline
+      - run: npm run build
+      - run: npm run verify:dist -- --edition=${{ matrix.edition }}
+      - name: Compare actual critical payload, cold/warm startup, input and cleanup
+        run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-checks-${{ matrix.edition }}
+          path: performance-results/
+          retention-days: 14
+          if-no-files-found: warn
   screenshots:
     # Preserve the existing required-check name while requiring both editions.
-    needs: screenshot_editions
+    needs: [screenshot_editions, performance_editions]
     if: always()
     runs-on: ubuntu-24.04
     steps:
       - name: Require both edition jobs to succeed
         env:
           EDITION_RESULT: ${{ needs.screenshot_editions.result }}
-        run: test "$EDITION_RESULT" = 'success'
+          PERFORMANCE_RESULT: ${{ needs.performance_editions.result }}
+        run: test "$EDITION_RESULT" = 'success' && test "$PERFORMANCE_RESULT" = 'success'

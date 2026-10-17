@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "measuredOn": "2026-10-17",
+  "applicationRevision": "a5b76e8d524c311bcbde1dc5740b2f5d0fa8e8bd",
+  "note": "Original Full profile: pre-existing Full initial simulation; runtime source is unchanged by the P0 merge. Separate from the Free checkout preview-build default.",
+  "editions": {
+    "preview": {
+      "version": 1,
+      "edition": "preview",
+      "sourceRevision": "3a2dac2bb889bd5e4aa6ee9d5ad92f4f9536a690",
+      "critical": {
+        "js": {
+          "raw": 172083,
+          "gzip": 51148,
+          "files": [
+            "/assets/index-Dn1kJwnO.js"
+          ]
+        },
+        "css": {
+          "raw": 61451,
+          "gzip": 13011,
+          "files": [
+            "/assets/index-DnLrZEQ0.css"
+          ]
+        }
+      },
+      "total": {
+        "js": {
+          "raw": 406197,
+          "gzip": 125618,
+          "files": [
+            "/assets/eventDetector-DtBbU0H0.js",
+            "/assets/index-Dn1kJwnO.js",
+            "/assets/informationPages-C9U3Z7d7.js",
+            "/assets/previewTesting-DOgcQ7pB.js",
+            "/assets/progressView-BPyBgWbR.js",
+            "/pcm-capture.worklet.js",
+            "/sw.js"
+          ]
+        },
+        "css": {
+          "raw": 61451,
+          "gzip": 13011,
+          "files": [
+            "/assets/index-DnLrZEQ0.css"
+          ]
+        }
+      },
+      "hashes": {
+        "/assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+        "/assets/index-Dn1kJwnO.js": "0452d0db4f04de634b3a4847afb5e8de7be9ec879c58c1192fc0093c32091e51",
+        "/assets/index-DnLrZEQ0.css": "235ad2e132f412f60103792e215d91f6e0c8cfa9d23f6c78410182caebb28ec7",
+        "/assets/informationPages-C9U3Z7d7.js": "c8ebb8300cb535d28c788912acf1ea30eeba4743f91995f776c9fce5b391c301",
+        "/assets/previewTesting-DOgcQ7pB.js": "7191ba096e2de7a45cf638c575e4ef9e3f14dfb70ceb747eb971dcf5e17ee2b5",
+        "/assets/progressView-BPyBgWbR.js": "994735a79411d08e487638a8b3a217c5db9196b92bf3482f37346c64033b9516",
+        "/pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+        "/sw.js": "c308fce36125c70efb8c71ccc3ff673114ff78a8290890b728b874bf7743104d",
+        "index.html": "2f821e9cc58bbf7e4997808a7c9c293cdd073e8d38447c06bd0f1b29e424b7a8"
+      }
+    }
+  }
+}

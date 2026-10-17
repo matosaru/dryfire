@@ -1,8 +1,8 @@
 # Remaining React refactor plan
 
-CHG-048 · revision 1 · 2026-10-17 (Europe/Vilnius) · **Awaiting owner approval; no new implementation started.**
+CHG-048 · revision 1 · 2026-10-17 (Europe/Vilnius) · **Approved by CHG-049; P0 implementation in progress.**
 
-[spec.md](spec.md) is the refactor contract, source analysis and test baseline. This is the single active execution plan, superseding the earlier CHG-046/047 roadmap for remaining work. The latest instruction is **“Show me this plan before processing.”** Do not begin the stages below until the owner approves. Existing CHG-047 code remains released and unchanged.
+[spec.md](spec.md) is the refactor contract, source analysis and test baseline. This is the single active execution plan, superseding the earlier CHG-046/047 roadmap for remaining work. The owner has reviewed this plan and approved **“full autonomy for implementation”** with initial changes on b/dev (CHG-049). The planning pause is satisfied; continue through the gates without repeated approval. Existing CHG-047 code remains released.
 
 ## Current status
 
@@ -12,17 +12,17 @@ CHG-048 · revision 1 · 2026-10-17 (Europe/Vilnius) · **Awaiting owner approva
 | Workspace/TypeScript/React test foundation | Already implemented |
 | About/Contact, PageHeading, InformationCard | Already implemented and released by owner PR #24 |
 | Current structure and expanded coverage inventory | Complete for this planning pass; meaningful coverage gaps identified |
-| Additional characterization/coverage gates | Proposed; not implemented |
+| Additional characterization/coverage gates | P0 implementation in progress; broader coverage, controller/worker tests and payload/browser harness prepared |
 | AppShell and eleven remaining screens | Not migrated |
-| Application changes in this request | None; documents only |
+| Current increment | Test/measurement foundation; application rendering and behavior unchanged |
 
 The goal is structural improvement with equivalent design and behavior and no performance downgrade. Keep JavaScript/CSS minification, tree shaking and lazy loading; demonstrate improvements with measurements rather than assuming React or a folder change is faster. Build the safety net first; then work from lower-risk shared/persistent views toward audio/session lifecycles. Do not combine a framework transfer, algorithm rewrite, CSS redesign and storage migration in one step.
 
 ## Stages and exit gates
 
-| Stage | Work after approval | Required evidence before advancing | Status |
+| Stage | Approved work | Required evidence before advancing | Status |
 | --- | --- | --- | --- |
-| P0 — Strengthen the baseline | Expand coverage to actual runtime modules; discover .test.ts and .test.tsx; map screen/component → requirements → unit/integration/visual tests. Add missing characterization for the first shell boundary and classify the strict audit's 72 findings. Measure exact payload/critical requests, repeated cold/warm startup, interaction, audio/timer rendering and cleanup/memory. | Legacy code passes new tests before any app refactor; reproducible coverage/performance reports and enforceable budgets, explicit outstanding gaps; full source/visual baseline green in both editions | Not started |
+| P0 — Strengthen the baseline | Expand coverage to actual runtime modules; discover .test.ts and .test.tsx; map screen/component → requirements → unit/integration/visual tests. Add missing characterization for the first shell boundary and classify the strict audit's 72 findings. Measure exact payload/critical requests, repeated cold/warm startup, interaction, audio/timer rendering and cleanup/memory. | Legacy code passes new tests before any app refactor; reproducible coverage/performance reports and enforceable budgets, explicit outstanding gaps; full source/visual baseline green in both editions | In progress; canonical CI pending |
 | P1 — Define tested boundaries | Add small navigation/context/edition/service interfaces and reusable fixtures. Add tests before extracting responsibilities from main.js. Keep existing controllers/engines as the implementation. | Import/ownership checks, real compiled-HTML integration tests, unchanged emitted CSS and all reference comparisons | Not started |
 | P2 — Migrate the shared shell | Extract BrandHeader, InfoFooter and BottomNavigation, then AppShell. Prove a loading/ownership strategy that does not move the lazy React cost onto the critical startup path without mitigation. Transfer chrome events/state once through explicit callbacks/adapters. Keep legacy page interiors and drafts intact during coexistence. Migrate gun/safety context only after its own guard/focus tests pass. | One header/main/footer/nav across all 13 states; BETA/context/focus/scroll/safe-area/keyboard parity; no duplicate handlers or lost drafts; 320/390/1024 checks, unchanged screenshots and passing critical-payload/startup budgets | Not started |
 | P3 — Home and gun management | Migrate HomePage, GunsPage and GunSetupPage with feature-owned form state and existing storage APIs; retain About/Contact. | First/add/edit/delete/last-delete, async profile loading, invalid drafts, type images, atomic two/five-gun limits and old-library restore/export tested in both editions | Not started |
@@ -69,7 +69,7 @@ Update the existing component map rather than adding a second runtime screen reg
 - Start from a checked, recorded branch revision and clean lockfile installation. Preserve a rollback commit.
 - Run the existing baseline commands below, then add focused characterization and integration tests that pass before moving the implementation.
 - List the slice's DOM/event/draft/effect owners and asynchronous boundaries. Resolve ownership before editing; a legacy writer and React cannot share control of the same region.
-- Record coverage for affected modules, not only the existing narrow configured total. Enforce the spec's proposed package floors and higher-baseline ratchets once approved.
+- Record coverage for affected modules, not only the existing narrow configured total. Enforce the spec's approved package floors and higher-baseline ratchets.
 - Freeze the current 390 browser references, 83 captures and 12 guide exports. Use existing deterministic libraries, clock, media fakes and selected sequence endpoints.
 - Record initial critical request bytes and repeated cold/warm timings. Preserve minification and verify the entire lazy chunk graph. Do not begin a shell transfer without an acceptable startup strategy.
 
@@ -133,4 +133,4 @@ Each accepted shared slice goes directly to b, then into dev with its Full confi
 
 If a behavior/image/data/security gate fails, stop that slice, retain logs and revert only the responsible new changes. Do not reset browser storage or update expected references to make a structural refactor pass. Resume from the last verified increment after addressing the cause. Keep branch ancestry and published history intact.
 
-Approval is requested for this specification, stage order and proposed coverage gates. After approval, begin **P0 only**, then advance through the documented exit gates without repeatedly requesting permission for unchanged scope. Any actual change to product design/functionality is a separate requirement revision and approval. Until that approval, application code, tests/configuration, CSS, screenshots and GIFs remain untouched.
+CHG-049 approves this specification, order and gates. Begin with P0, then advance through verified exit gates without repeatedly requesting permission for unchanged scope. Any actual change to product design/functionality is a separate requirement revision and approval. Publish shared work to b/dev; main remains a later checked production PR.

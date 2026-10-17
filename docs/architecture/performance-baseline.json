@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "measuredOn": "2026-10-17",
+  "applicationRevision": "6c38bff81662d30279d94d41ca5c949bdbbe1c6e",
+  "note": "Transfer budgets measured from the unchanged released application. Runtime timings are recorded separately by the pinned browser benchmark.",
+  "editions": {
+    "public": {
+      "version": 1,
+      "edition": "public",
+      "sourceRevision": "54903d6e2f37916cf7aab445aadf77e40c8c8132",
+      "critical": {
+        "js": {
+          "raw": 170917,
+          "gzip": 50807,
+          "files": [
+            "/assets/index-DkxK-nx7.js"
+          ]
+        },
+        "css": {
+          "raw": 61451,
+          "gzip": 13011,
+          "files": [
+            "/assets/index-DnLrZEQ0.css"
+          ]
+        }
+      },
+      "total": {
+        "js": {
+          "raw": 397914,
+          "gzip": 122020,
+          "files": [
+            "/assets/eventDetector-DtBbU0H0.js",
+            "/assets/index-DkxK-nx7.js",
+            "/assets/informationPages-vUBqtYat.js",
+            "/pcm-capture.worklet.js",
+            "/sw.js"
+          ]
+        },
+        "css": {
+          "raw": 61451,
+          "gzip": 13011,
+          "files": [
+            "/assets/index-DnLrZEQ0.css"
+          ]
+        }
+      },
+      "hashes": {
+        "/assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+        "/assets/index-DkxK-nx7.js": "153a33be9556e1880637e39281bd213b8d1142701b847c6bc6af5816cfd26eb0",
+        "/assets/index-DnLrZEQ0.css": "235ad2e132f412f60103792e215d91f6e0c8cfa9d23f6c78410182caebb28ec7",
+        "/assets/informationPages-vUBqtYat.js": "9772d72d664b8baa17d9b0a81fa98eb35cd2aaf7f4333a1045d6b37b217936f1",
+        "/pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+        "/sw.js": "5719790e0e61e8eba27dfd8d86045dd8a8acbdfcbae3a5fc7731f70db2491ba5",
+        "index.html": "02cabdb501f6034ee3a7715377197468bf9beb6dee61d49eee09578ea48050bd"
+      }
+    },
+    "preview": {
+      "version": 1,
+      "edition": "preview",
+      "sourceRevision": "54903d6e2f37916cf7aab445aadf77e40c8c8132",
+      "critical": {
+        "js": {
+          "raw": 172083,
+          "gzip": 51146,
+          "files": [
+            "/assets/index-CDXvLH-X.js"
+          ]
+        },
+        "css": {
+          "raw": 61451,
+          "gzip": 13011,
+          "files": [
+            "/assets/index-DnLrZEQ0.css"
+          ]
+        }
+      },
+      "total": {
+        "js": {
+          "raw": 406206,
+          "gzip": 125615,
+          "files": [
+            "/assets/eventDetector-DtBbU0H0.js",
+            "/assets/index-CDXvLH-X.js",
+            "/assets/informationPages-B9wt4m61.js",
+            "/assets/previewTesting--ccOK4gM.js",
+            "/assets/progressView-BPyBgWbR.js",
+            "/pcm-capture.worklet.js",
+            "/sw.js"
+          ]
+        },
+        "css": {
+          "raw": 61451,
+          "gzip": 13011,
+          "files": [
+            "/assets/index-DnLrZEQ0.css"
+          ]
+        }
+      },
+      "hashes": {
+        "/assets/eventDetector-DtBbU0H0.js": "160532cdf7652223598ee6a5d04cf2871e0d9576bbcc50b0dd8de35b50053cd6",
+        "/assets/index-CDXvLH-X.js": "d99d6ab9e49e0d9d7a19d676d518dc43a4cceefac20e53b704f6ffdabac86c9e",
+        "/assets/index-DnLrZEQ0.css": "235ad2e132f412f60103792e215d91f6e0c8cfa9d23f6c78410182caebb28ec7",
+        "/assets/informationPages-B9wt4m61.js": "0c26c0c44f160cc5ef99d794a65dbff07e46c8448541397359fa02fa7be15a5f",
+        "/assets/previewTesting--ccOK4gM.js": "9f47356c3bb4599fef932c5ac51cd4bb0a64d6c4d688c75b455789281d5e0107",
+        "/assets/progressView-BPyBgWbR.js": "994735a79411d08e487638a8b3a217c5db9196b92bf3482f37346c64033b9516",
+        "/pcm-capture.worklet.js": "73b72d70b7e4d03468733d1be7ce3443076746427d82851427fa816f8f770f6f",
+        "/sw.js": "c308fce36125c70efb8c71ccc3ff673114ff78a8290890b728b874bf7743104d",
+        "index.html": "eb5ea2a6f1b37d0dd962bda6136a72efa128e3e6540e461485ac48932ce0b234"
+      }
+    }
+  }
+}
