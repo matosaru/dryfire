@@ -1,7 +1,7 @@
+import { resolveRouteView } from '@dryfire/web/route-context';
 import { createInformationBridge } from '@dryfire/web/information-bridge';
 import { PAGE_IDS } from './pageDefinitions.js';
 import { createPracticeGuideController } from './practiceGuideController.js';
-import { isGuideContextCurrent } from './practiceGuides.js';
 import { analyzeRecording, recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
@@ -503,16 +503,7 @@ function renderDrillCatalog() {
 function routeFor(name) { return { view: name, gunId: activeGun?.id || null,
   context: name === 'practiceGuide' ? practiceGuideController?.current()?.contextKey : name === 'practice' ? practiceController?.routeKey() : name === 'session' ? sessionController?.routeKey() : null }; }
 function resolveRoute(route) {
-  if (!activeGun || activeGun.needsDetails) return routeFor(['gunSetup', 'guns', 'settings', 'about', 'contact'].includes(route.view) ? route.view : 'gunSetup');
-  if (route.gunId !== activeGun.id) return routeFor(route.view === 'practiceGuide' ? 'drills' : 'home');
-  if (route.view === 'practiceGuide') {
-    const guide = practiceGuideController?.current();
-    const owner = guide?.parent === 'practice' ? practiceController : sessionController;
-    if (!owner?.guideContext() || !isGuideContextCurrent(guide, activeGun.id, owner?.routeKey()) || route.context !== guide.contextKey) return routeFor('drills');
-  }
-  if (route.view === 'practice' && (!practiceController?.routeKey() || route.context !== practiceController.routeKey())) return routeFor('drills');
-  if (route.view === 'session' && (!sessionController?.routeKey() || route.context !== sessionController.routeKey())) return routeFor('drills');
-  return routeFor(PAGE_IDS.includes(route.view) ? route.view : 'home');
+  return routeFor(resolveRouteView(route, [activeGun, practiceController, sessionController, practiceGuideController]));
 }
 function switchView(name) { return screenNavigation ? screenNavigation.navigate(routeFor(name)) : displayView(name); }
 function goBack(fallback = 'home') { return screenNavigation ? screenNavigation.back(routeFor(fallback)) : switchView(fallback); }
