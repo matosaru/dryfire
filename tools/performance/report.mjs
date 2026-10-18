@@ -33,9 +33,14 @@ export function performanceSummary(report) {
 
 // Make the reason visible in public check annotations and the job summary,
 // without needing authenticated access to raw logs/artifact downloads.
-export function publishPerformanceReport(report, { summaryPath, annotate = value => process.stdout.write(value + '\n') } = {}) {
+export function publishPerformanceReport(report, { summaryPath, outputPath, annotate = value => process.stdout.write(value + '\n') } = {}) {
   const summary = performanceSummary(report);
   if (summaryPath) appendFileSync(summaryPath, summary);
+  if (outputPath) {
+    const outcome = report.errors?.length ? `FAIL: ${report.errors.join('; ')}`
+      : Object.values(report.browsers ?? {}).some(browser => Object.keys(browser.comparisons ?? {}).length) ? 'pass' : 'not measured';
+    appendFileSync(outputPath, `outcome=${outcome.replace(/[\r\n]/g, ' ').slice(0, 1000)}\n`);
+  }
   const command = value => String(value).replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A');
   for (const error of report.errors ?? []) annotate(`::error title=Performance gate::${command(error)}`);
   if (report.identicalApplicationAssets && !report.runtimeProbe) for (const [browser, data] of Object.entries(report.browsers ?? {})) {
@@ -54,6 +59,6 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     // This does not replace the failing measurement step's outcome.
     report = { errors: [`No readable performance report: ${error.message}. The comparison may have failed before measurements.`] };
   }
-  const summary = publishPerformanceReport(report, { summaryPath: process.env.GITHUB_STEP_SUMMARY });
+  const summary = publishPerformanceReport(report, { summaryPath: process.env.GITHUB_STEP_SUMMARY, outputPath: process.env.GITHUB_OUTPUT });
   if (!process.env.GITHUB_STEP_SUMMARY) process.stdout.write(summary);
 }

@@ -45,3 +45,15 @@ test('identical-build timing signals are disclosed as controls and never turn a 
   expect(annotations[0]).toContain('::notice title=Identical-build timing control::');
   expect(annotations[0]).toContain('calibration evidence, not a passing candidate result');
 });
+
+test('live step outcomes expose failures before a job ends, without output-line injection or false passes',()=>{
+  const dir=mkdtempSync(join(tmpdir(),'dryfire-perf-outcome-')),path=join(dir,'outputs');
+  try{
+    publishPerformanceReport({errors:['webkit warm: 40 → 52 ms\r\ninjected=value']},{outputPath:path,annotate:()=>{}});
+    const sample={median:1,p95:1,samples:[1]};
+    publishPerformanceReport({errors:[],browsers:{webkit:{version:'1',comparisons:{warm:{baseline:sample,candidate:sample,slowerPairs:0,regression:false}}}}},{outputPath:path});
+    publishPerformanceReport({errors:[],browsers:{webkit:{version:'1',comparisons:{}}}},{outputPath:path});
+    publishPerformanceReport({errors:[]},{outputPath:path});
+    expect(readFileSync(path,'utf8')).toBe('outcome=FAIL: webkit warm: 40 → 52 ms  injected=value\noutcome=pass\noutcome=not measured\noutcome=not measured\n');
+  }finally{rmSync(dir,{recursive:true,force:true});}
+});

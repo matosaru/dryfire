@@ -54,7 +54,7 @@ try {
   for (const name of names) {
     if (!['chromium','webkit'].includes(name)) throw new Error(`Unknown browser ${name}`);
     const browser = await ({chromium,webkit}[name]).launch(name === 'chromium' && process.env.PERFORMANCE_EXECUTABLE_PATH ? {executablePath:process.env.PERFORMANCE_EXECUTABLE_PATH} : {});
-    const data = [0,1].map(()=>({...Object.fromEntries(timingMetrics.map(key=>[key,[]])),resources:[],startupPayload:[],cleanup:[],memory:[]}));
+    const data = [0,1].map(()=>({...Object.fromEntries(timingMetrics.map(key=>[key,[]])),resources:[],startupPayload:[],cleanup:[],memory:[],warmNavigation:[]}));
     const measure = async (index, repeatCleanup = false) => {
       const context = await browser.newContext({viewport:rendering.viewport,locale:rendering.locale,timezoneId:rendering.timezoneId,reducedMotion:'reduce',serviceWorkers:'block',
         ...(reports[index].edition === 'preview' ? {storageState:{cookies:[],origins:[{origin:servers[index].url,localStorage:[{name:'dryfire-private-preview-mode',value:'full'}]}]}} : {})});
@@ -118,7 +118,14 @@ try {
         data[index].startupPayload.push(startup);
         await page.reload();
         await page.waitForFunction(()=>Number.isFinite(window.__performanceReview?.ready));
-        data[index].warm.push(await page.evaluate(()=>window.__performanceReview.ready));
+        // Collect navigation phases only after Ready; this does not instrument or
+        // add work to the measured application startup.
+        const warm = await page.evaluate(()=>{
+          const navigation = performance.getEntriesByType('navigation')[0];
+          return {ready:window.__performanceReview.ready,responseEnd:navigation?.responseEnd ?? null,domInteractive:navigation?.domInteractive ?? null};
+        });
+        data[index].warm.push(warm.ready);
+        data[index].warmNavigation.push(warm);
         await page.locator('#restoreGunBackupBtn').click();
         await page.locator('#importFile').setInputFiles({name:'fixture.json',mimeType:'application/json',buffer:library});
         await page.locator('#homeView:not(.hidden)').waitFor();
@@ -181,6 +188,10 @@ try {
         const result=timingEvidence(data[0][metric],data[1][metric],identicalRuntime);
         const {baseline,candidate,slowerPairs,regression,medianConfirmed,confidence}=result;
         if (regression) errors.push(`${name} ${metric}: confirmed ${medianConfirmed ? 'paired median' : 'p95 tail'} slowdown (${slowerPairs}/${data[1][metric].length} slower pairs); baseline median/p95 ${baseline.median}/${baseline.p95}, candidate ${candidate.median}/${candidate.p95}; 99% difference interval ${JSON.stringify(confidence)}.`);
+        if (metric === 'warm' && regression) {
+          const phases = data.map(item=>Object.fromEntries(['responseEnd','domInteractive','ready'].map(key=>[key,statistic(item.warmNavigation.map(sample=>sample[key]).filter(Number.isFinite)).median])));
+          errors.push(`${name} warm navigation phase medians (ms since navigation, diagnostic only): baseline ${JSON.stringify(phases[0])}; candidate ${JSON.stringify(phases[1])}.`);
+        }
         return [metric,result];
       }));
       for(let i=0;i<data[1].startupPayload.length;i++) {

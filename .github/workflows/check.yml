@@ -144,8 +144,12 @@ jobs:
       - name: Compare actual critical payload, cold/warm startup, input and cleanup
         run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist
       - name: Publish performance evidence and failure annotations
+        id: performance_report
         if: always()
         run: node tools/performance/report.mjs
+      - name: "Timing result: ${{ steps.performance_report.outputs.outcome || 'report unavailable' }}"
+        if: always()
+        run: ':'
       - name: Measure identical-build timing control on the same runner
         if: always()
         run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=.performance-baseline/dist --runs=20 --output=performance-results/control.json
