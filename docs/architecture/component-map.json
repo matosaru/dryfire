@@ -6,23 +6,26 @@
     {
       "id": "gunSetup",
       "targetOwner": "GunSetupPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/gunSetup.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/GunSetupPage/GunSetupPage.tsx",
       "behaviorTests": [
         "tests/multiGunStorage.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "apps/web/src/pages/GunSetupPage/GunSetupPage.test.tsx",
+        "tests/gunSetupPageMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
-        "src/storage.js"
+        "src/storage.js",
+        "apps/web/src/app/gunSetupPage.tsx"
       ],
       "stableSelectorExamples": [
         "gunForm",
         "gunName",
         "gunType"
       ],
-      "draftOwnership": "Mounted native form retains add/edit and invalid details; submit validates before atomic owned storage.",
+      "draftOwnership": "Native uncontrolled name and React type state; saving/notice updates retain nodes and invalid values; explicit Add/Edit reset alone replaces the form.",
       "effects": [
         "IndexedDB gun create/update; selected-gun context"
       ],
@@ -34,21 +37,24 @@
     {
       "id": "home",
       "targetOwner": "HomePage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/home.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/HomePage/HomePage.tsx",
       "behaviorTests": [
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "apps/web/src/pages/HomePage/HomePage.test.tsx",
+        "tests/homePresentation.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
-        "src/main.js"
+        "src/main.js",
+        "apps/web/src/app/homePage.tsx"
       ],
       "stableSelectorExamples": [
         "homeExamples",
         "homeEvents",
         "homeAccuracy"
       ],
-      "draftOwnership": "Derived from active gun; no independent persisted draft.",
+      "draftOwnership": "No form drafts; latest summary/context values transfer atomically and stale asynchronous results remain rejected.",
       "effects": [
         "Read owned examples/history and refresh summaries"
       ],

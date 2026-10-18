@@ -11,7 +11,8 @@ const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const implementation=source.slice(source.indexOf('async function renderHome()'),source.indexOf('async function renderHistory()'));
 function setup(){
  document.body.innerHTML=renderPageTemplates('{{app}}');
- const context={activeGun:{id:'a'},homeRenderToken:0,getEvents:jest.fn(async()=>[]),evaluateEvents,$:selector=>document.querySelector(selector)};
+ const homePage=undefined;
+ const context={homePage,activeGun:{id:'a'},homeRenderToken:0,getEvents:jest.fn(async()=>[]),evaluateEvents,$:selector=>document.querySelector(selector)};
  const render=vm.runInNewContext(implementation+'\nrenderHome;',context);
  return{context,render};
 }
@@ -44,4 +45,8 @@ test('newer Home refresh wins even when the same gun read resolves out of order'
 test('rejected storage reads propagate without replacing the displayed summary',async()=>{
  const {context,render}=setup();document.querySelector('#homeEvents').textContent='7';context.getEvents.mockRejectedValue(new Error('storage unavailable'));
  await expect(render()).rejects.toThrow('storage unavailable');expect(document.querySelector('#homeEvents').textContent).toBe('7');
+});
+
+test('after Home mounts, results go to the React owner without competing native writes',async()=>{
+ const {context,render}=setup(),update=jest.fn();context.homePage={update};context.getEvents.mockResolvedValue([{label:'trigger',actualLabel:'trigger'}]);document.querySelector('#homeEvents').textContent='Owned';await render();expect(update).toHaveBeenCalledWith({events:1,accuracy:'100%'});expect(document.querySelector('#homeEvents').textContent).toBe('Owned');
 });

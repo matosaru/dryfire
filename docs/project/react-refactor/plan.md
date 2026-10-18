@@ -1,6 +1,6 @@
 # Remaining React refactor plan
 
-CHG-048 · revision 1 · 2026-10-17 (Europe/Vilnius) · **Approved by CHG-049/050; P0/P1 complete; P2 structural slice verified; P3 gun library runtime migration in progress.**
+CHG-048 · revision 1 · 2026-10-17 (Europe/Vilnius) · **Approved by CHG-049/050; P0/P1 complete; P2 structural slice verified; P3 Home/gun presentation implemented; final verification in progress.**
 
 [spec.md](spec.md) is the refactor contract, source analysis and test baseline. This is the single active execution plan, superseding the earlier CHG-046/047 roadmap for remaining work. The owner has reviewed this plan and approved **“full autonomy for implementation”** with initial changes on b/dev (CHG-049). The planning pause is satisfied; continue through the gates without repeated approval. Existing CHG-047 code remains released.
 
@@ -15,7 +15,7 @@ CHG-048 · revision 1 · 2026-10-17 (Europe/Vilnius) · **Approved by CHG-049/05
 | Additional characterization/coverage gates | P0 complete on b/dev; canonical both-edition screenshot/performance jobs green |
 | AppShell/header/footer/navigation | Published: b d63ef77 / dev 741f46e. Latest dev CI is fully green; b 44e8e90 validation, screenshots and preview candidate timing pass, but public WebKit warm startup fails (37→44 ms median; 36/40 slower pairs). The measured timing debt is deferred to final optimization under the owner’s 2026-10-18 sequencing update. |
 | Gun/safety context and eleven remaining screen interiors | Gun/safety typed-source extraction published and verified; My Guns runtime React slice implemented; remaining page interiors continue in stages |
-| Current increment | P3: GunsPage runtime React owner implemented and undergoing final checks; Home/GunSetup remain native with characterized behavior |
+| Current increment | P3: Home, My Guns and Gun Setup typed presentations/runtime handoffs implemented; final verification and canonical CI pending |
 
 The goal is structural improvement with equivalent design and behavior and no performance downgrade. Keep JavaScript/CSS minification, tree shaking and lazy loading; demonstrate improvements with measurements rather than assuming React or a folder change is faster. Build the safety net first; then work from lower-risk shared/persistent views toward audio/session lifecycles. Do not combine a framework transfer, algorithm rewrite, CSS redesign and storage migration in one step.
 
@@ -30,7 +30,7 @@ The goal is structural improvement with equivalent design and behavior and no pe
 - [x] P2 performance corrections published: defer hidden Learning reconstruction; skip repeated identical chrome writes.
 - [ ] Final performance acceptance: resolve Public WebKit warm-startup debt against the original baseline; do not weaken the gate.
 - [x] P2 remaining portion: GunSwitcher, SafetyDisclosure and SafetyDialog published in 21948d4; canonical validation and both screenshot editions pass. They are build-time source components; native runtime ownership is preserved.
-- [ ] P3: My Guns runtime migration implemented and locally verified; Home and Gun Setup runtime migration remains.
+- [ ] P3: all three typed page presentations and guarded runtime handoffs implemented; canonical verification pending. P7 retains responsibility for startup-fallback retirement.
 - [ ] P4: migrate Settings, Learn and Live Listen separately.
 - [ ] P5: migrate Drills and History, including existing edition boundaries.
 - [ ] P6: migrate Practice, Sequence and guides with shared real/demo run/review components.
@@ -173,3 +173,9 @@ Known debt: b d508672 Public WebKit warm median 38→46 ms (37/40 slower pairs);
 GunsPage becomes the single React owner of the My Guns interior, loaded only when the library opens. Typed callbacks reuse existing guarded storage/select/edit/delete/backup workflows. Stable row keys and explicit lock updates replace native card construction and per-card native event listeners. GunSetup remains a mounted native form, preserving invalid/unsaved drafts. Home remains native, now with six additional pre-migration asynchronous/accuracy characterization tests. P3 is partial until those two pages and their feature state ownership migrate. All image references and animation bytes remain frozen.
 
 P2 21948d4 canonical validation and both screenshot editions passed; Full-preview timing passed, while Public WebKit warm debt remains 36→45 ms. CHG-050 defers that debt to final optimization rather than blocking this structural slice.
+
+### P3 Home/GunSetup increment — 2026-10-18
+
+Both pages now have typed source/CSS/tests, prerender adapters and explicit React runtime owners in the shared lazy profile entry. Home/GunSetup retain immediate native startup fallbacks; they transfer ownership on a subsequent Home visit or explicit Add/Edit after the runtime is available. Draft names/types, current summaries, form validation and focus are characterized before/after. Existing storage/async owner guards remain unchanged. Canonical screenshots remain a required observation; no new reference is accepted. P7 tracks final startup-fallback removal alongside the original-baseline performance contract.
+
+Interim optimization ledger: Public entry gzip is currently 50,869 bytes vs the 50,807-byte original budget (+62 bytes); preview is 51,200 vs 51,146 (+54 bytes). The size gates remain failing, unchanged. This is explicit temporary debt under the owner's refactor-first sequencing, together with the prior WebKit startup slowdown, and must be resolved before final acceptance. Do not spend another structural stage optimizing intermediate byte differences. Keep reporting failures honestly and retain all original limits/baselines.

@@ -38,3 +38,7 @@ CHG-049 P2 context preparation replaces the two remaining shared context/dialog 
 ### P3 My Guns owner
 
 `apps/web/src/pages/GunsPage/` owns both prerendered and live library markup. `app/gunsPage.tsx` mounts one lazy React root in `#gunsView`, updates locks synchronously and restores native nodes/focus if its first commit fails. Main retains the guarded data workflow and ignores stale library reads, including a chunk that finishes after a newer render request. After mounting, main no longer writes library card or Add-button properties; callbacks route to the existing guarded actions. Home and the gun-details form retain their existing owners during the next P3 steps.
+
+### P3 Home and Gun Setup
+
+HomePage and GunSetupPage share a lazy profile-page entry with GunsPage; their build adapters prerender the same components. On the initial entry, existing native controls are immediately usable. Home takes over on a later Home visit, snapshotting the latest native summary/focus; its partial updates then go only to the React root. Gun Setup takes over on explicit Add/Edit once the profile runtime is available, before focusing the new form. Saving/notice updates retain draft nodes; only explicit reset replaces the form. The native startup fallback and each React owner are mutually exclusive. Root failures restore original nodes and handlers. Existing storage, navigation, capture/profile guards and stale-read tokens remain authoritative. P7 still must retire the startup fallback after final loading/performance strategy is verified.

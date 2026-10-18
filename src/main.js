@@ -71,6 +71,7 @@ let previewTesting = null;
 let screenNavigation = null;
 let historyRenderToken = 0;
 let homeRenderToken = 0;
+let homePage, homePagePending, profilePages, gunSetupPage;
 let gunLibraryPage;
 let gunLibraryToken = 0;
 let calibration = [];
@@ -126,6 +127,7 @@ function profileLocked() { return busy || profileLoading || preferencePending ||
 function currentDrill(id) { return getDrill(id, customDrills); }
 function renderGunControls() {
   informationPages.setNavigationDisabled(!activeGun || activeGun.needsDetails || profileLoading);
+  homePage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   $('#gunSwitcherBtn').disabled = profileLocked();
   $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
   $('#gunSwitcherBtn').title = profileLocked() ? 'Finish recording or stop listening before switching guns.' : 'Choose another gun';
@@ -143,8 +145,8 @@ function renderGunControls() {
     $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   }
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) $('#'+id).disabled = profileLocked() || !activeGun || activeGun.needsDetails;
-  document.querySelectorAll('.gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
-  document.querySelectorAll('.gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
+  document.querySelectorAll(homePage ? '.view:not(#homeView) .gun-context-name' : '.gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
+  document.querySelectorAll(homePage ? '.view:not(#homeView) .gun-context' : '.gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
   if (!activeGun || activeGun.needsDetails) document.querySelectorAll('#resetModelBtn, #clearHistoryBtn, #verifyLatestBtn').forEach(button => { button.disabled = true; });
   $('#exportBtn').disabled = profileLocked();
   $('#importBtn').disabled = profileLocked();
@@ -203,20 +205,26 @@ function openGunSetup(gun = null) {
   if (profileLocked()) return;
   if (!gun && guns.length >= CAPABILITIES.gunCreationLimit) { setMessage('This version cannot create another gun. Existing saved guns remain available.'); return; }
   setupGunId = gun?.id ?? null;
-  $('#gunForm').reset();
-  $('#gunName').value = gun?.name ?? '';
-  $('#gunType').value = gun?.type ?? '';
-  document.querySelectorAll('[name="gunTypeChoice"]').forEach(input => { input.checked = input.value === gun?.type; });
-  $('#gunSetupTitle').textContent = gun?.needsDetails ? 'Name your existing gun' : gun ? 'Edit gun' : guns.length ? 'Add your gun' : 'Add your first gun';
-  $('#gunSetupDescription').textContent = gun?.needsDetails
-    ? 'Your learned sounds and recognition history have been preserved together. Add the name and type of the gun they belong to.'
-    : gun ? 'Update the name or type. This gun’s learned sounds, presets and history stay saved.'
-    : 'Give this gun a name and type. Its learned sounds, presets and history will be saved separately on this device.';
-  $('#saveGunBtn').textContent = gun ? 'Save Changes' : 'Save Gun & Continue';
-  $('#cancelGunSetupBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
+  const props = {name:gun?.name ?? '',type:gun?.type ?? '',
+    title:gun?.needsDetails ? 'Name your existing gun' : gun ? 'Edit gun' : guns.length ? 'Add your gun' : 'Add your first gun',
+    description:gun?.needsDetails ? 'Your learned sounds and recognition history have been preserved together. Add the name and type of the gun they belong to.'
+      : gun ? 'Update the name or type. This gun’s learned sounds, presets and history stay saved.'
+      : 'Give this gun a name and type. Its learned sounds, presets and history will be saved separately on this device.',
+    submitLabel:gun ? 'Save Changes' : 'Save Gun & Continue',cancelHidden:!activeGun || !!activeGun.needsDetails};
+  if (profilePages) {
+    if(gunSetupPage)gunSetupPage.reset(props);
+    else gunSetupPage=profilePages.mountGunSetupPage(document,{...props,onSubmit:event=>{submitGun(event).catch(showError);},onCancel:()=>switchView('guns'),onRestore:()=>switchView('settings')});
+  } else {
+    $('#gunForm').reset(); $('#gunName').value=props.name; $('#gunType').value=props.type;
+    document.querySelectorAll('[name="gunTypeChoice"]').forEach(input=>{input.checked=input.value===props.type;});
+    $('#gunSetupTitle').textContent=props.title; $('#gunSetupDescription').textContent=props.description;
+    $('#saveGunBtn').textContent=props.submitLabel; $('#cancelGunSetupBtn').classList.toggle('hidden',props.cancelHidden);
+  }
   switchView('gunSetup');
   $('#gunName').focus();
 }
+
+async function loadProfilePages() { return profilePages ||= await import('../apps/web/src/app/profilePages/index.ts'); }
 
 async function renderGunLibrary() {
   const token = ++gunLibraryToken;
@@ -234,13 +242,13 @@ async function renderGunLibrary() {
       optionalReady: Object.values(counts).filter(count => count >= MIN_EXAMPLES_PER_CLASS).length - (triggerTrained ? 1 : 0),
       samples: samples.length, presets: presets.length });
   }
-  const { mountGunsPage } = await import('../apps/web/src/app/gunsPage.tsx');
+  const pages = await loadProfilePages();
   if (token !== gunLibraryToken) return;
   const props = { rows, selectedId: activeGun?.id, locked: profileLocked(), full: CAPABILITIES.edition !== 'public', limit: CAPABILITIES.gunCreationLimit, loaded: true,
     onSelect: id => { selectGunProfile(id).catch(showError); }, onEdit: gun => openGunSetup(gun),
     onDelete: gun => { deleteGunProfile(gun).catch(showError); }, onAdd: () => openGunSetup(), onBackup: () => switchView('settings') };
   if (gunLibraryPage) gunLibraryPage.update(props);
-  else gunLibraryPage = mountGunsPage(document, props);
+  else gunLibraryPage = pages.mountGunsPage(document, props);
 }
 
 async function flushLibraryWork() {
@@ -291,6 +299,8 @@ async function selectGunProfile(id) {
   else switchView('home');
 }
 
+function setGunSaving(saving) { if(gunSetupPage)gunSetupPage.setSaving(saving);else $('#saveGunBtn').disabled=saving; }
+
 async function submitGun(event) {
   event.preventDefault();
   if (profileLocked()) return;
@@ -298,7 +308,7 @@ async function submitGun(event) {
   const type = $('#gunType').value;
   if (!name) { setMessage('Enter a gun name.'); $('#gunName').focus(); return; }
   setBusy(true);
-  $('#saveGunBtn').disabled = true;
+  setGunSaving(true);
   try {
     const editing = !!setupGunId;
     const completingLegacy = editing && activeGun?.id === setupGunId && activeGun.needsDetails;
@@ -309,7 +319,7 @@ async function submitGun(event) {
     switchView(editing && !completingLegacy ? 'guns' : 'home');
     setStatus('Gun saved');
   } catch (error) { showError(error); }
-  finally { setBusy(false); $('#saveGunBtn').disabled = false; }
+  finally { setBusy(false); setGunSaving(false); }
 }
 
 function selectDrillCollection(custom) {
@@ -408,8 +418,9 @@ function renderClassCards() {
     : `Learn at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before trigger practice. Other sound types are optional.`;
   $('#listenBtn').disabled = busy || livePendingStart || !!sessionController?.locked() || !!practiceController?.locked() || (!ready && !liveSession);
   $('#singleShotBtn').disabled = profileLocked() || !ready;
-  $('#homeExamples').textContent = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
-  $('#homeListenBtn').disabled = busy || !ready;
+  const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
+  if(homePage)homePage.update({training,listenDisabled:busy || !ready});
+  else { $('#homeExamples').textContent = training; $('#homeListenBtn').disabled = busy || !ready; }
 }
 
 async function toggleOptionalSound(label, enabled) {
@@ -497,6 +508,9 @@ function displayView(name) {
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name)) { openGunSetup(activeGun); return; }
   if (name === 'recognize') { $('#drillSelect').value = ''; resetDrill(); }
   informationPages.show(name);
+  if(name==='home' && document.body.dataset.view!=='loading' && !homePage && !homePagePending){
+    homePagePending=loadProfilePages().then(module=>{if(!profileLocked() && !$('#safetyModal').open)homePage=module.mountHomePage($('#homeView'),view=>switchView(view));}).catch(showError).finally(()=>{homePagePending=null;});
+  }
   activeView=name;
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
@@ -831,8 +845,9 @@ async function renderHome() {
   const rows = gunId ? await getEvents(gunId) : [];
   if (token !== homeRenderToken || gunId !== activeGun?.id) return;
   const stats = evaluateEvents(rows);
-  $('#homeEvents').textContent = String(rows.length);
-  $('#homeAccuracy').textContent = stats.accuracy === null ? '—' : `${Math.round(stats.accuracy * 100)}%`;
+  const accuracy = stats.accuracy === null ? '—' : `${Math.round(stats.accuracy * 100)}%`;
+  if(homePage)homePage.update({events:rows.length,accuracy});
+  else { $('#homeEvents').textContent = String(rows.length); $('#homeAccuracy').textContent = accuracy; }
 }
 
 async function renderHistory() {
@@ -846,7 +861,7 @@ async function renderHistory() {
   if (CAPABILITIES.advancedGraphs) progressView?.render(sessions || [], gunId);
   else $('#progressContent').replaceChildren();
   renderEvaluation(rows);
-  $('#homeEvents').textContent = String(rows.length);
+  if(homePage)homePage.update({events:rows.length}); else $('#homeEvents').textContent = String(rows.length);
   const host = $('#historyList');
   host.replaceChildren();
   if (!rows.length) {
@@ -908,7 +923,8 @@ async function init() {
     const applyPresentation = () => {
       const full = CAPABILITIES.advancedGraphs;
       document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
-      $('#gunCapacityNotice').textContent = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
+      const notice = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
+      if(gunSetupPage)gunSetupPage.setNotice(notice);else $('#gunCapacityNotice').textContent=notice;
       $('#sequenceDescription').textContent = full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
       informationPages.setFull(full);
     };
@@ -991,6 +1007,9 @@ async function init() {
   $('#builtInDrillsTab').addEventListener('click', () => selectDrillCollection(false));
   $('#customDrillsTab').addEventListener('click', () => selectDrillCollection(true));
   document.querySelectorAll('[data-back]:not([data-react-back])').forEach(button => button.addEventListener('click', () => goBack()));
+  $('#homeLearnBtn').addEventListener('click', () => switchView('learn'));
+  $('#homeDrillsBtn').addEventListener('click', () => switchView('drills'));
+  $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
   $('#changeDrillBtn').addEventListener('click', () => switchView('drills'));
   $('#freeListenBtn').addEventListener('click', () => { if (!profileLocked()) switchView('recognize'); });
@@ -1000,9 +1019,6 @@ async function init() {
   $('#sensitivity').addEventListener('change', () => { if (profileLocked()) return; setGunSetting('sensitivity', $('#sensitivity').value, ownerId()).catch(showError); });
   $('#resetDrillBtn').addEventListener('click', resetDrill);
   resetDrill();
-  $('#homeLearnBtn').addEventListener('click', () => switchView('learn'));
-  $('#homeDrillsBtn').addEventListener('click', () => switchView('drills'));
-  $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));
   $('#importBtn').addEventListener('click', () => $('#importFile').click());
   $('#exportBtn').addEventListener('click', async () => {
     try {

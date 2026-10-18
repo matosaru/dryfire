@@ -8,7 +8,7 @@ import {act} from '@testing-library/react';
 import {readFileSync} from 'node:fs';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {GunsPage} from '../apps/web/src/pages/GunsPage/index.ts';
-import {mountGunsPage} from '../apps/web/src/app/gunsPage.tsx';
+import {mountGunsPage} from '../apps/web/src/app/profilePages/index.ts';
 function tree(node:Node):unknown{
  if(node.nodeType===Node.TEXT_NODE)return node.textContent?.replace(/\s+/g,' ').trim()||null;
  if(!(node instanceof Element))return null;

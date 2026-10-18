@@ -119,5 +119,11 @@
     "scope": "Guns page runtime React owner; existing storage and select/edit/delete workflows retained.",
     "evidence": "Frozen static-page DOM parity, mounted callback/focus/lock/rollback tests, existing real backup/edit/delete/draft workflows. Expanded and optimized CSS remain byte-identical. No practice/sequence/guide fragments, presentation, engines, example settings or GIF bytes change; coarse compiler and CSS-partition source fingerprints reviewed and updated only.",
     "canonicalValidation": "Pending normal both-edition pinned CI; no reference image or GIF modified. Known performance debt remains tracked under CHG-050."
+  },
+  "homeAndGunSetup": {
+    "reviewedOn": "2026-10-18",
+    "scope": "Typed Home/GunSetup source and runtime ownership transfer. Native controls remain functional until safe lazy handoff. No template or other page is replaced by a neighboring root.",
+    "evidence": "Frozen full Home/form DOM parity, actual controller async ownership/readiness characterization, mounted form native validation/draft/reset/focus and rollback tests. Ordered and optimized CSS unchanged; no guide engines/fragments, example settings or animation bytes changed. Initial image preload hints suppressed by build adapter to preserve request graph.",
+    "canonicalValidation": "Pending both-edition pinned CI; no reference image or GIF updated. All performance gates remain unchanged; interim debt stays open for final optimization."
   }
 }

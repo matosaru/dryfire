@@ -20,7 +20,7 @@
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
-    "tools/page-templates.mjs": "efb382bff4443103cb348a656283bea946707a37bb9d24bde5eff5fb03b6d9bd",
+    "tools/page-templates.mjs": "e52cbde9f9cae2fcef3dd967f23b8b5a086a81b6c07cadff656dd500adcd0a5f",
     "tools/export-guide-examples.mjs": "0c1f31a7c9742ac8cde728c0d54cb6f13e7f47c0ee94b91512761bf5abb3308b",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
@@ -45,14 +45,20 @@
     "apps/web/src/styles/legacy-card-foundation.css": "b8dc5ad4dc139ff9ae3f4d0ee31b46c2d3100f1d0f0e93f2681d21926337ebce",
     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
     "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
-    "apps/web/src/styles/legacy-theme-before-switcher.css": "9fc46ec4ac738829392f38de839fcc6699fa552dcd594c5960d2bcfecc358f77",
+    "apps/web/src/styles/legacy-theme-before-switcher.css": "6e33bab9934bdc271f4171f0fee501eb77e71e7594f5c3bcf932232219e1e78e",
     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
     "apps/web/src/styles/legacy-theme-after-switcher.css": "f61e56abdb700c87b380cfcbad03169beb2ce7f26a5514d93adf81f40fc0d171",
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
     "apps/web/src/styles/legacy-session-content.css": "da93d1361022fddbac4de0c80786d919aa33eb580804452ccbfd0d9c827eb2be",
-    "apps/web/src/styles/legacy-before-guns.css": "7f0ba3e01deb813ac1e4df9b82539082fa00912baa2b072420a91f7b3505639b",
+    "apps/web/src/styles/legacy-before-guns.css": "295ce7ddcfbeccd5cb08a2bcb4af0afe4f618913c57a677c61a78ebc0a2b7655",
     "apps/web/src/styles/legacy-after-guns.css": "7dcf6d8252347d765ab281e0f728c8e42d1fd3ec7ef83130c9f0207f2d9f8363",
-    "apps/web/src/pages/GunsPage/GunsPage.css": "0ca384aca93f0ca6da65a103ad75c156804cac9514d764397e1c387874061718"
+    "apps/web/src/pages/GunsPage/GunsPage.css": "0ca384aca93f0ca6da65a103ad75c156804cac9514d764397e1c387874061718",
+    "apps/web/src/styles/legacy-before-home.css": "616c2d34f63330b3b1d5ecaae332e9846f700460b3b77edb9c3d25ce536ee179",
+    "apps/web/src/pages/HomePage/HomePage.css": "70924e9e2f91e0402c65174ca01817b5e594a79ac95c0b2e37de487c513d7a59",
+    "apps/web/src/styles/legacy-after-home.css": "ab3383d06ac979fe543f60f59bebc77e55259137a7328fe0d6cf1e6d1673d6b8",
+    "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
+    "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
+    "apps/web/src/styles/legacy-after-gun-setup.css": "a672b0491c990644a45d06032e0d0756f2edc84ccc0240719c3290401dd1a0ee"
   },
   "exports": [
     {

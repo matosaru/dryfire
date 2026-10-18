@@ -15,7 +15,7 @@ function setup() {
   document.body.innerHTML=renderPageTemplates('{{app}}');
   const counts={trigger:3,draw:1,rack:0,reload:0};
   const record=jest.fn(),reset=jest.fn(),calibration=jest.fn();
-  const context={document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
+  const context={homePage:undefined,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
     titleFor:label=>label,labels:['draw','rack','trigger','reload'],getCounts:()=>counts,triggerReady:()=>counts.trigger>=3,
     MAX_EXAMPLES_PER_CLASS:10,MIN_EXAMPLES_PER_CLASS:3,RECOMMENDED_EXAMPLES_PER_CLASS:8,
     profileLocked:()=>context.busy,busy:false,livePendingStart:false,liveSession:null,sessionController:null,practiceController:null,
@@ -60,4 +60,9 @@ test('practice updates retain hidden Learning nodes while readiness stays curren
   expect(document.querySelector('[data-sound-label="trigger"]')).not.toBe(original);
   expect(document.querySelector('[data-sound-label="trigger"] .reset-class')).toBeDisabled();
   expect(s.calibration).toHaveBeenCalledTimes(2);
+});
+
+test('after Home ownership transfer, readiness is sent to its renderer without native Home mutations',()=>{
+ const s=setup(),update=jest.fn();s.context.homePage={update};document.querySelector('#homeExamples').textContent='Owned';s.render();
+ expect(update).toHaveBeenCalledWith({training:'3 / 8 trigger',listenDisabled:false});expect(document.querySelector('#homeExamples')).toHaveTextContent('Owned');
 });
