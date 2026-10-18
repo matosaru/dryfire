@@ -6,9 +6,9 @@ CHG-037 · 2026-10-12. All existing SPA screens at `/` use one shared template a
 index.html — metadata, Vite entry and one {{app}} mount
   packages/ui/src/AppShell — typed common shell (build adapter)
     BrandHeader — branding, BETA status and Settings
-    shared/safety-modal.html — modal overlay
+    SafetyDialog — native modal overlay
     main.page-content
-      shared/context.html — contextual messages/safety/gun selector
+      SafetyDisclosure + messages + GunSwitcher — native context
       view.html × pageDefinitions.js — stable accessible section wrapper
         pages/<screen-id>.html — 11 legacy screen interiors
         apps/web/src/pages/{AboutPage,ContactPage} — 2 React interiors
@@ -32,3 +32,5 @@ CHG-047 begins the [incremental React migration](react-migration.md). About/Cont
 
 
 CHG-049 P2 compiles the shared typed AppShell through `renderAppShell.tsx`; trusted safety/context/page slots retain the mounted native nodes. React's automatic header-logo hint is omitted to preserve the released request graph. Numeric inputs/hints and calibration cards are also prerendered from their tested packages. Their static DOM replaces startup construction; existing native validation, counters and service callbacks remain. The information chunk can transfer only the three chrome interiors after locks clear, with rollback/focus restoration on failed commit. See [ownership](react-migration.md) and [unchanged-input review](../design/baselines/shared-shell-refactor-review.json).
+
+CHG-049 P2 context preparation replaces the two remaining shared context/dialog compiler inputs with GunSwitcher, SafetyDisclosure and SafetyDialog packages. Each owns colocated CSS and tests; the build adapter renders them without adding client React or extra image hints. `main.js` still owns selected-gun state and `safetyGate.js` alone owns native showModal/close, focus and pending-action confirmation. No second event owner is mounted. Frozen DOM fixtures, complete ordered CSS hash and actual compiled-template gate integration cover this boundary. The former context/modal fragments are retained solely as legacy evidence until P7.

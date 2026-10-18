@@ -20,7 +20,7 @@
         "docs/requirements/build-editions.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
       "states": [
         {
           "key": "first-gun.dark",
@@ -131,7 +131,7 @@
         "docs/requirements/practice-improvements.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
       "states": [
         {
           "key": "overview.dark",
@@ -218,7 +218,7 @@
         "docs/requirements/practice-start.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
         {
           "key": "configure-single.dark",
@@ -576,7 +576,7 @@
         "docs/requirements/build-editions.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun\u2019s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
+      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
       "states": [
         {
           "key": "overview.dark",
@@ -713,7 +713,7 @@
       "domId": "aboutView",
       "title": "About",
       "parent": "home",
-      "entry": "Shared app footer \u2192 About, including before gun setup",
+      "entry": "Shared app footer → About, including before gun setup",
       "requirements": [
         "docs/requirements/about.md",
         "docs/requirements/core.md",
@@ -745,7 +745,7 @@
       "domId": "contactView",
       "title": "Contact",
       "parent": "home",
-      "entry": "Shared app footer \u2192 Contact, including before gun setup",
+      "entry": "Shared app footer → Contact, including before gun setup",
       "requirements": [
         "docs/requirements/contact.md",
         "docs/requirements/about.md",
@@ -812,7 +812,7 @@
     "src/optional/previewTesting.js": "636e98be5b0a50feb348c07725107010a0a922a7914c6c2b45c0fe99c4c4cfe8",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
-    "tools/page-templates.mjs": "4ab83cf61272cdd10a0e0bb9b54049bb74cd41f6f94608be9aecc8bfb7784ebd",
+    "tools/page-templates.mjs": "b69767cc02d2b16c26aa21c2902bf57dc8423f7e1d263e3a8558309ab50110c9",
     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
     "src/templates/layout.html": "883a5cc08416cf3325d18dc875640640e29c454e1e44467b9b0820f1a1f06591",
     "src/templates/pages/recognize.html": "744f7545bf30854009830181aa89350df0e7c52c97a09d05520658628863edac",
@@ -866,7 +866,7 @@
     "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "54e08b3086e792da9e69ddaacd976f07c1c2067df094cdf53648949202509ba0",
     "apps/web/src/app/chromeBridge.ts": "e3276d510da2db886b0ad226bf5a884a351252b79ba78f6696a847031b08e2f1",
     "apps/web/src/app/chromePages.tsx": "2bb3be816e7293d68837974cb9d05800eb87b89429ef1667d771dda29ff69bd5",
-    "apps/web/src/app/renderAppShell.tsx": "6ea211673a7e941eb53b5ac7cb6cfd6c3b91d4da042e859f7e68960f50289e51",
+    "apps/web/src/app/renderAppShell.tsx": "360b5abfd9d9cc3d757f2aad7f1f052531f900a37237102473b1b5a3045c9c5d",
     "apps/web/src/app/renderCalibrationCatalog.tsx": "bc607a2490a1a0e9f3134a220c0d0fdf41273d615a2a74b7c265d2cce7451a3d",
     "apps/web/src/app/renderNumberInput.tsx": "3e163f74c64013bfa45bb454fbdeceab04096cb4a1319aa9ff26ce1472b0fa08",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
@@ -891,14 +891,25 @@
     "packages/ui/src/PracticeCatalog/PracticeCatalog.css": "2ee549be7b5826e78b8cff5e3e89fab6feef9ec6251a3692158d17c11a4b4f1d",
     "packages/ui/src/PracticeCatalog/index.ts": "7ffc8cee1bd51dffcadcffc491f8ca2938d24627dd7dbb669ef2b287b6a350b3",
     "apps/web/src/styles/foundation.css": "706dda161bd34041a3820e9e86b288f813fd0fc96c426154b9018daaa67dbafc",
-    "apps/web/src/styles/legacy-base-content.css": "144b95bbe2f9396997d3f29af97faf97e505c808bd35043b0d3e1802597a7112",
+    "apps/web/src/styles/legacy-base-content.css": "92ec5f9ae96f358cb291309fadfaf689d960ce0e383bb85b8cb1d3e7dc1b65cd",
     "apps/web/src/styles/legacy-cards.css": "1859a192b56f8d040b6380ab4b85ae8317245d353ba93ab3f4715b799ef1cc54",
     "apps/web/src/styles/legacy-controls-content.css": "a4f12d812ef793246adfeed279ae1c82c691452278c5db7730781c6b3fdbc299",
     "apps/web/src/styles/legacy-info-visibility.css": "20364cba9bf4a2abdb5e25bf69477773b3f021a34c6c19b13fbc7895ee2ccf99",
-    "apps/web/src/styles/legacy-theme-core.css": "1284499ece8a920ccd8123c2154dc2ffc623473e3511c2455d5aa8f6efc8c346",
+    "apps/web/src/styles/legacy-theme-core.css": "cd2f4049eb44f1723b6b505e7c1f1f5fd72f66440f432a7f78a58df4f6043420",
     "apps/web/src/styles/legacy-control-theme.css": "950dace7750fb8a5809dce43ecf8188aebc9aff037d0186a6f0fccc2b46c33ff",
-    "apps/web/src/styles/legacy-session-theme.css": "3b60e0c3f4bdeba40743aad02d7c84057fc9e13cda254c2a675b8b04be345080",
-    "src/practiceModes.js": "951d9789e040f8dc39255bfbabcf2c7c6d6f57bc57b166f8bf8ecfc2f348666e"
+    "apps/web/src/styles/legacy-session-theme.css": "86178e34e5d84ea2e253a2473969f608bdf0a918e67f32f73962cce9f4780c89",
+    "src/practiceModes.js": "951d9789e040f8dc39255bfbabcf2c7c6d6f57bc57b166f8bf8ecfc2f348666e",
+    "packages/ui/src/GunSwitcher/GunSwitcher.tsx": "da6310e96bce26f52eb6964c9d93359d9af795113000a74a56529c73f8d0c1b9",
+    "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx": "ec94aca2ed7ca812312358f8a1c7b455f34847320bc991681cd73093ea091437",
+    "packages/ui/src/SafetyDialog/SafetyDialog.tsx": "d4e5e673dc6018c907e9e990b9d183d2d127165d9dbd62cd6512d1b5f0489d14",
+    "apps/web/src/styles/legacy-card-foundation.css": "b8dc5ad4dc139ff9ae3f4d0ee31b46c2d3100f1d0f0e93f2681d21926337ebce",
+    "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
+    "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
+    "apps/web/src/styles/legacy-theme-before-switcher.css": "9fc46ec4ac738829392f38de839fcc6699fa552dcd594c5960d2bcfecc358f77",
+    "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
+    "apps/web/src/styles/legacy-theme-after-switcher.css": "37913f6cfc3b8f28a6008940d3568051ced1fbd3fa30380d8d34a350df2c15d6",
+    "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
+    "apps/web/src/styles/legacy-session-content.css": "da93d1361022fddbac4de0c80786d919aa33eb580804452ccbfd0d9c827eb2be"
   },
   "implementationChanges": [
     "CHG-017",

@@ -25,6 +25,10 @@
       "draftOwnership": "Mounted native form retains add/edit and invalid details; submit validates before atomic owned storage.",
       "effects": [
         "IndexedDB gun create/update; selected-gun context"
+      ],
+      "integrationTests": [
+        "visual-tests/gun-management.spec.js",
+        "visual-tests/build-editions.spec.js"
       ]
     },
     {
@@ -47,6 +51,10 @@
       "draftOwnership": "Derived from active gun; no independent persisted draft.",
       "effects": [
         "Read owned examples/history and refresh summaries"
+      ],
+      "integrationTests": [
+        "visual-tests/gun-management.spec.js",
+        "visual-tests/build-editions.spec.js"
       ]
     },
     {
@@ -70,6 +78,10 @@
       "draftOwnership": "Selected profile owned by active gun context; capture locks switching.",
       "effects": [
         "Select profile; confirmed atomic owned deletion"
+      ],
+      "integrationTests": [
+        "visual-tests/gun-management.spec.js",
+        "visual-tests/build-editions.spec.js"
       ]
     },
     {
@@ -348,7 +360,10 @@
     "tests/routeSelection.test.js",
     "apps/web/src/app/chromeBridge.test.ts",
     "apps/web/src/app/chromePages.test.tsx",
-    "apps/web/src/app/informationBridge.test.ts"
+    "apps/web/src/app/informationBridge.test.ts",
+    "tests/contextTemplateParity.test.tsx",
+    "tests/safetyTemplateIntegration.test.ts",
+    "visual-tests/chrome-lifecycle.spec.js"
   ],
   "staticComponents": [
     {
@@ -362,6 +377,18 @@
     {
       "source": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx",
       "runtimeOwner": "src/main.js renderCalibrationCards/bindCalibrationActions"
+    },
+    {
+      "source": "packages/ui/src/GunSwitcher/GunSwitcher.tsx",
+      "runtimeOwner": "src/main.js selected-gun context and profile locks"
+    },
+    {
+      "source": "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx",
+      "runtimeOwner": "src/main.js page-session acknowledgment"
+    },
+    {
+      "source": "packages/ui/src/SafetyDialog/SafetyDialog.tsx",
+      "runtimeOwner": "src/safetyGate.js native modal/focus/pending intent"
     }
   ]
 }

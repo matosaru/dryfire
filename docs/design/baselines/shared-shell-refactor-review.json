@@ -101,5 +101,16 @@
     "reason": "All original/current synthetic frame snapshots and event timelines are identical. The guide/run/review presentation and fragments are unchanged. Only coarse engine metadata/compiler/CSS ownership sources moved; reviewed under this input-equivalence proof."
   },
   "browserChecks": "28 public + 29 preview local Chromium diagnostic workflows pass; complete pinned Chromium/WebKit comparison remains normal CI.",
-  "canonicalValidation": "Pending normal both-edition CI; no image reference or comparison tolerance updated."
+  "canonicalValidation": "Pending normal both-edition CI; no image reference or comparison tolerance updated.",
+  "contextExtraction": {
+    "reviewedOn": "2026-10-18",
+    "base": "44e8e901e3d91489bba96821983a9523285ade23",
+    "scope": "Build-only gun/safety source and ordered CSS extraction. Runtime owners unchanged.",
+    "tests": [
+      "tests/contextTemplateParity.test.tsx",
+      "tests/safetyTemplateIntegration.test.ts"
+    ],
+    "evidence": "Frozen complete shell/context/modal semantic parity and exact ordered/optimized CSS hash pass. Compiler diff removes only context/modal string slots; guide fragments, engines and presentation are unchanged from the prior complete scenario comparison. All 12 GIF hashes unchanged; retained, not re-encoded.",
+    "canonicalValidation": "Pending b both-edition pinned screenshots and timing evidence; CHG-050 defers known timing debt to final optimization without changing the original-baseline gate. Dev synchronization is paused."
+  }
 }

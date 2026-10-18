@@ -605,3 +605,10 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 - This approves the presented CHG-048 specification, staged plan, test/visual/performance gates and unchanged-design/functionality/data/edition constraints. The earlier plan-review pause is satisfied.
 - Execute P0 onward autonomously through the exit gates, without repeating approval for unchanged scope. Shared work enters b then synchronizes into dev retaining Full additions/profile. Main remains checked-PR-only; Cloudflare setup remains owner-managed.
 - A failed exit gate requires investigation and correction, not silently weakened tests, changed designs or a false completion claim. New product behavior and paused commercial/native features remain outside scope.
+
+## CHG-050 — Refactor sequencing and deferred optimization
+
+- Evidence, 2026-10-18: during CHG-049 implementation the owner said **“sometimes it makes sence to do all the refactoring, and then work on optimizations”**.
+- Scope: continue the approved structural migration with functional, visual, data/edition and payload checks; retain known timing debt for final optimization. No design, product behavior or test-baseline change is authorized.
+- Acceptance: timing reports and gates remain unchanged and honestly failing where applicable. Final release still requires original-baseline performance acceptance. Dev remains paused under the existing cost-saving instruction; main is unchanged/PR-only.
+- Tracking: [active refactor plan](react-refactor/plan.md).

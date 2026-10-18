@@ -53,3 +53,6 @@ Guide/run/review DOM and CSS are measured byte-identical, and pure presentation/
 
 
 CHG-049 P2 removes no existing page or data owner. Static NumberInput and CalibrationCatalog packages are pulled forward solely for prerender parity/startup work removal. CSS foundation rules move beside each component; ordered temporary global/theme chunks preserve all overrides. The old shell HTML fragments are no longer read by the production compiler; they remain temporarily as characterized legacy evidence until P7 cleanup. The current initial-byte measurements and pending canonical gates are in [implementation history](../project/implementation-history.md).
+
+
+CHG-049 P2 context extraction: GunSwitcher, SafetyDisclosure and SafetyDialog now provide typed build-time source and ordered component CSS. Native main/safetyGate code remains the single runtime writer; these are not client-hydrated components yet. Compiled-template integration tests cover focus, acknowledgment, exactly-once continuation, cancellation/Escape, owner changes and asynchronous rejection. Component tests cover explicit callbacks/disabled states and safe gun-name rendering. The complete compiled shell is semantically identical to frozen released context/modal fixtures; expanded and optimized CSS remain byte-identical. Eleven page interiors and the gun/form service migration remain outstanding.

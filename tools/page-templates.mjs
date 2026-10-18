@@ -45,7 +45,6 @@ export function renderPageTemplates(html) {
     id, titleId, visibility: id === 'home' ? '' : 'hidden', content: content(id),
   })).join('\n');
   const layout = fill(renderAppShell(), { pages,
-    context: read('shared/context'), safetyModal: read('shared/safety-modal'),
     footerNotice: '<!-- private-preview:start --><p id="previewModeBadge" class="preview-mode-badge" role="status">Private preview · Free mode</p><!-- private-preview:end -->',
   });
   return html.replace('{{app}}', () => layout);

@@ -1,0 +1,7 @@
+
+.safety-modal { box-sizing: border-box; width: min(440px, calc(100% - 32px)); padding: 24px; color: var(--session-text); background: var(--session-surface); border: 1px solid var(--session-border); border-radius: 20px; box-shadow: 0 24px 80px #0008; }
+.safety-modal::backdrop { background: #03090de0; }
+.safety-modal h2 { margin-top: 0; }
+.safety-modal p { line-height: 1.5; }
+.safety-modal .checkbox-row { padding: 16px 0; }
+.safety-modal .button { margin-top: 10px; }
