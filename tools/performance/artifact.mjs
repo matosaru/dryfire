@@ -34,8 +34,8 @@ export function measureArtifact(directory) {
   const assets = [...new Set([...metadata.assets, ...scripts, ...styles])];
   const hashes = Object.fromEntries(['index.html', ...assets].sort().map(path=>[path,createHash('sha256').update(readFileSync(owned(path))).digest('hex')]));
   return { version: 1, edition: metadata.edition, sourceRevision: metadata.sourceRevision,
-    critical: { js: totals(scripts), css: totals(styles) },
-    total: { js: totals(assets.filter(path=>path.endsWith('.js'))), css: totals(assets.filter(path=>path.endsWith('.css'))) }, hashes };
+    critical: { js: totals(scripts), css: totals(styles), html: totals(['index.html']) },
+    total: { js: totals(assets.filter(path=>path.endsWith('.js'))), css: totals(assets.filter(path=>path.endsWith('.css'))), html: totals(['index.html']) }, hashes };
 }
 
 export function payloadViolations(actual, baseline) {

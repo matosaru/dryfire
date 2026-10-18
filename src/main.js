@@ -405,23 +405,26 @@ function renderLearningLocks() {
 }
 
 function renderClassCards() {
-  const host = $('#classCards');
-  host.replaceChildren();
-  const optionalHost = $('#optionalClassCards');
-  optionalHost.replaceChildren();
   const counts = getCounts();
-  for (const label of ['trigger', ...labels.filter(label => label !== 'trigger')]) {
-    const count = counts[label];
-    (label === 'trigger' ? host : optionalHost).append(soundCard({
-      label, meta: labelMeta[label], count,
-      maxExamples: MAX_EXAMPLES_PER_CLASS,
-      minExamples: MIN_EXAMPLES_PER_CLASS,
-      recommendedExamples: RECOMMENDED_EXAMPLES_PER_CLASS,
-      locked: profileLocked(),
-      onRecord: () => recordExample(label),
-      onReset: () => resetSoundProfile(label), optional: label !== 'trigger', enabled: enabledSoundLabels.includes(label),
-      onToggle: enabled => toggleOptionalSound(label, enabled)
-    }));
+  if (activeView === 'learn') {
+    const host = $('#classCards');
+    host.replaceChildren();
+    const optionalHost = $('#optionalClassCards');
+    optionalHost.replaceChildren();
+    for (const label of ['trigger', ...labels.filter(label => label !== 'trigger')]) {
+      const count = counts[label];
+      (label === 'trigger' ? host : optionalHost).append(soundCard({
+        label, meta: labelMeta[label], count,
+        maxExamples: MAX_EXAMPLES_PER_CLASS,
+        minExamples: MIN_EXAMPLES_PER_CLASS,
+        recommendedExamples: RECOMMENDED_EXAMPLES_PER_CLASS,
+        locked: profileLocked(),
+        onRecord: () => recordExample(label),
+        onReset: () => resetSoundProfile(label), optional: label !== 'trigger', enabled: enabledSoundLabels.includes(label),
+        onToggle: enabled => toggleOptionalSound(label, enabled)
+      }));
+    }
+    renderCalibrationCards();
   }
   const ready = !!activeGun && !activeGun.needsDetails && triggerReady();
   $('#trainingSummary').textContent = ready
@@ -431,7 +434,6 @@ function renderClassCards() {
   $('#singleShotBtn').disabled = profileLocked() || !ready;
   $('#homeExamples').textContent = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
   $('#homeListenBtn').disabled = busy || !ready;
-  renderCalibrationCards();
 }
 
 async function toggleOptionalSound(label, enabled) {
@@ -524,6 +526,7 @@ function displayView(name) {
   window.scrollTo({top:0,behavior:'instant'});
   for(const view of PAGE_IDS) $('#'+view+'View').classList.toggle('hidden',view!==name);
   setMessage();
+  if(name==='learn')renderClassCards();
   if(name==='history')renderHistory().catch(showError);
   if(name==='home')renderHome().catch(showError);
   if(name==='guns')renderGunLibrary().catch(showError);
@@ -952,13 +955,13 @@ async function init() {
   safetyGate = createSafetyGate({ dialog: $('#safetyModal'), checkbox: $('#safetyModalAck'), confirmButton: $('#safetyConfirmBtn'), cancelButton: $('#safetyCancelBtn'),
     isConfirmed: () => $('#safetyAck').checked, confirmState: () => { $('#safetyAck').checked = true; $('#safetyAck').dispatchEvent(new Event('change')); },
     identity: () => `${activeGun?.id}|${activeView}`, onError: showError });
-  practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: name => { if (screenNavigation) switchView(name); }, onBack: () => goBack('drills'),
+  practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
     onError: showError, onStatus: setStatus, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
     vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
   practiceController.renderCatalog();
   sessionController = createSessionController({
     getContext: practiceContext,
-    titleFor, ensureSafe, onNavigate: name => { if (screenNavigation) switchView(name); }, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
+    titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
     onChange: () => { renderLiveButton(); renderClassCards(); },
     onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
     onVibration: reportVibration,

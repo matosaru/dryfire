@@ -10,6 +10,13 @@ export function performanceSummary(report) {
     for (const kind of ['js', 'css']) for (const encoding of ['raw', 'gzip']) {
       lines.push(`| ${kind.toUpperCase()} ${encoding} bytes | ${report.reports[0].critical[kind][encoding]} | ${report.reports[1].critical[kind][encoding]} |`);
     }
+    if (report.reports.every(item => item.critical.html)) {
+      for (const encoding of ['raw', 'gzip']) {
+        lines.push(`| HTML ${encoding} bytes | ${report.reports[0].critical.html[encoding]} | ${report.reports[1].critical.html[encoding]} |`);
+        const totals = report.reports.map(item => ['js', 'css', 'html'].reduce((sum, kind) => sum + item.critical[kind][encoding], 0));
+        lines.push(`| HTML + initial JS/CSS ${encoding} bytes | ${totals[0]} | ${totals[1]} |`);
+      }
+    }
     lines.push('');
   }
   for (const [browser, data] of Object.entries(report.browsers ?? {})) {

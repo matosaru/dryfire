@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-10-17",
+  "reviewedOn": "2026-10-18",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://dryfire.matosaru.workers.dev",
   "publicPaths": [
@@ -796,7 +796,7 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "e1c39017c60621635e6d0dc495382c59701e9174d6c89b4cbfd69dc9c3faa760",
+    "src/main.js": "25531794960c2bf1e358717646a00a7e67d17f5a9cf024066cea5020ab6d9323",
     "src/styles.css": "440f1e998cc2dc35c8b2da814e7ebfabc8d2a0968b0574741914b98c72816bed",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",

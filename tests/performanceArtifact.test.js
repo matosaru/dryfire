@@ -1,4 +1,5 @@
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { gzipSync } from 'node:zlib';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { measureArtifact, payloadViolations } from '../tools/performance/artifact.mjs';
@@ -13,6 +14,16 @@ beforeEach(() => {
   writeFileSync(join(directory,'edition.json'),JSON.stringify({edition:'public',sourceRevision:'fixture',assets:['/assets/app.js','/assets/required.js','/assets/lazy.js','/assets/app.css']}));
 });
 afterEach(()=>rmSync(directory,{recursive:true,force:true}));
+test('HTML transfer is reported separately when prerendering moves content out of startup JavaScript', () => {
+  const before = measureArtifact(directory);
+  const html = readFileSync(join(directory,'index.html'),'utf8') + '<p>Prerendered content and controls</p>';
+  writeFileSync(join(directory,'index.html'),html);
+  const after = measureArtifact(directory);
+  expect(after.critical.html).toEqual({raw:Buffer.byteLength(html),gzip:gzipSync(html).length,files:['index.html']});
+  expect(after.critical.html.raw).toBeGreaterThan(before.critical.html.raw);
+  expect(after.critical.js).toEqual(before.critical.js);
+  expect(after.total.html).toEqual(after.critical.html);
+});
 test('counts mandatory static imports and reports lazy/installed bytes separately', () => {
   const report = measureArtifact(directory);
   expect(report.critical.js.files).toEqual(['/assets/app.js','/assets/required.js']);
