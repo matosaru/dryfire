@@ -112,5 +112,12 @@
     ],
     "evidence": "Frozen complete shell/context/modal semantic parity and exact ordered/optimized CSS hash pass. Compiler diff removes only context/modal string slots; guide fragments, engines and presentation are unchanged from the prior complete scenario comparison. All 12 GIF hashes unchanged; retained, not re-encoded.",
     "canonicalValidation": "Pending b both-edition pinned screenshots and timing evidence; CHG-050 defers known timing debt to final optimization without changing the original-baseline gate. Dev synchronization is paused."
+  },
+  "gunsPageExtraction": {
+    "reviewedOn": "2026-10-18",
+    "base": "21948d438cbef5151a1095159fd12d808325cb3d",
+    "scope": "Guns page runtime React owner; existing storage and select/edit/delete workflows retained.",
+    "evidence": "Frozen static-page DOM parity, mounted callback/focus/lock/rollback tests, existing real backup/edit/delete/draft workflows. Expanded and optimized CSS remain byte-identical. No practice/sequence/guide fragments, presentation, engines, example settings or GIF bytes change; coarse compiler and CSS-partition source fingerprints reviewed and updated only.",
+    "canonicalValidation": "Pending normal both-edition pinned CI; no reference image or GIF modified. Known performance debt remains tracked under CHG-050."
   }
 }

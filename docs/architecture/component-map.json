@@ -60,16 +60,19 @@
     {
       "id": "guns",
       "targetOwner": "GunsPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/guns.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/GunsPage/GunsPage.tsx",
       "behaviorTests": [
         "tests/multiGunStorage.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "apps/web/src/pages/GunsPage/GunsPage.test.tsx",
+        "tests/gunsPageMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
-        "src/storage.js"
+        "src/storage.js",
+        "apps/web/src/app/gunsPage.tsx"
       ],
       "stableSelectorExamples": [
         "gunList",

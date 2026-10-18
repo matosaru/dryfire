@@ -22,7 +22,7 @@ import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLAS
 import {
   addExample, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
   addEvent, getEvents, verifyEvent, clearEvents, trimEvents, normalizeMaxResults, MAX_EXAMPLES_PER_CLASS, exportBackup, restoreBackup,
-  getGuns, createGun, updateGun, deleteGun, getActiveGun, setActiveGun, MAX_GUNS, resetLibrary, clearSessions,
+  getGuns, createGun, updateGun, deleteGun, getActiveGun, setActiveGun, resetLibrary, clearSessions,
   getGunSetting, setGunSetting, getCustomDrills, saveCustomDrill,
   getSetting, setSetting, recoverInterruptedSessions,
   getCalibrationExamples, addCalibrationExample, clearCalibrationExamples,
@@ -71,6 +71,7 @@ let previewTesting = null;
 let screenNavigation = null;
 let historyRenderToken = 0;
 let homeRenderToken = 0;
+let gunLibraryPage;
 let gunLibraryToken = 0;
 let calibration = [];
 let enabledSoundLabels = ['trigger'];
@@ -136,9 +137,11 @@ function renderGunControls() {
     ? `${examples.length} learned samples · ${calibration.length} calibration samples for ${activeGun.name}`
     : 'Choose a gun before resetting its learned sounds.';
   $('#resetLibraryBtn').disabled = profileLocked();
-  $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
-  $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
-  document.querySelectorAll('.gun-card, [data-edit-gun-id], [data-delete-gun-id]').forEach(button => { button.disabled = profileLocked(); });
+  if (gunLibraryPage) gunLibraryPage.setLocked(profileLocked());
+  else {
+    $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
+    $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
+  }
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) $('#'+id).disabled = profileLocked() || !activeGun || activeGun.needsDetails;
   document.querySelectorAll('.gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
   document.querySelectorAll('.gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
@@ -220,50 +223,24 @@ async function renderGunLibrary() {
   const library = await getGuns();
   if (token !== gunLibraryToken) return;
   guns = library;
-  $('#gunCapacity').textContent = CAPABILITIES.edition === 'public'
-    ? `${guns.length} saved gun${guns.length === 1 ? '' : 's'}`
-    : `${guns.length} of ${MAX_GUNS} guns saved · Saved on this device`;
-  $('#gunCreationNotice').classList.toggle('hidden', CAPABILITIES.edition !== 'public');
-  $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
-  $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
-  $('#addGunBtn').textContent = guns.length >= MAX_GUNS ? '5 of 5 guns saved' : '+ Add gun';
-  const host = $('#gunList');
-  host.replaceChildren();
+  const rows = [];
   for (const gun of guns) {
     const samples = await getExamples(gun.id);
     const presets = await getCustomDrills(gun.id);
     if (token !== gunLibraryToken) return;
-    const readySounds = Object.values(trainingCounts(samples)).filter(count => count >= MIN_EXAMPLES_PER_CLASS).length;
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'gun-card';
-    card.dataset.gunId = gun.id;
-    card.disabled = profileLocked();
-    card.setAttribute('aria-pressed', String(gun.id === activeGun?.id));
-    const name = document.createElement('strong'); name.className = 'gun-card-name'; name.textContent = gun.name || 'Existing gun — add details';
-    const type = document.createElement('span'); type.className = 'gun-card-type'; type.textContent = gun.type || 'Choose gun type';
-    const triggerTrained = trainingCounts(samples).trigger >= MIN_EXAMPLES_PER_CLASS;
-    const state = document.createElement('span'); state.className = `gun-readiness${triggerTrained ? ' ready' : ''}`; state.textContent = `${triggerTrained ? 'Trigger ready' : 'Learn trigger'} · ${readySounds - (triggerTrained ? 1 : 0)} optional sounds ready · ${samples.length} samples`;
-    const presetCount = document.createElement('span'); presetCount.className = 'gun-preset-count'; presetCount.textContent = `${presets.length} custom presets`;
-    const heading = document.createElement('span'); heading.className = 'gun-card-head';
-    const image = document.createElement('img'); image.className = 'gun-type-image'; image.src = gunImagePath(gun.type); image.width = 96; image.height = 56; image.alt = '';
-    const details = document.createElement('span'); details.className = 'gun-card-details'; details.append(name, type); heading.append(image, details);
-    if (gun.id === activeGun?.id) { const selected = document.createElement('span'); selected.className = 'gun-selected'; selected.textContent = 'Selected'; heading.append(selected); }
-    const status = document.createElement('span'); status.className = 'gun-card-status'; status.append(state, presetCount);
-    card.append(heading, status);
-    card.addEventListener('click', () => selectGunProfile(gun.id).catch(showError));
-    const profile = document.createElement('article'); profile.className = 'gun-profile';
-    const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'text-button edit-gun'; edit.textContent = 'Edit gun'; edit.dataset.editGunId = gun.id;
-    edit.setAttribute('aria-label', `Edit ${gun.name || 'existing gun'}`);
-    edit.disabled = profileLocked();
-    edit.addEventListener('click', () => openGunSetup(gun));
-    const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'text-button delete-gun'; remove.textContent = 'Delete gun'; remove.dataset.deleteGunId = gun.id;
-    remove.setAttribute('aria-label', `Delete ${gun.name || 'existing gun'}`);
-    remove.disabled = profileLocked();
-    remove.addEventListener('click', () => deleteGunProfile(gun).catch(showError));
-    const actions = document.createElement('div'); actions.className = 'gun-profile-actions'; actions.append(edit, remove);
-    profile.append(card, actions); host.append(profile);
+    const counts = trainingCounts(samples);
+    const triggerTrained = counts.trigger >= MIN_EXAMPLES_PER_CLASS;
+    rows.push({ gun, image: gunImagePath(gun.type), triggerReady: triggerTrained,
+      optionalReady: Object.values(counts).filter(count => count >= MIN_EXAMPLES_PER_CLASS).length - (triggerTrained ? 1 : 0),
+      samples: samples.length, presets: presets.length });
   }
+  const { mountGunsPage } = await import('../apps/web/src/app/gunsPage.tsx');
+  if (token !== gunLibraryToken) return;
+  const props = { rows, selectedId: activeGun?.id, locked: profileLocked(), full: CAPABILITIES.edition !== 'public', limit: CAPABILITIES.gunCreationLimit, loaded: true,
+    onSelect: id => { selectGunProfile(id).catch(showError); }, onEdit: gun => openGunSetup(gun),
+    onDelete: gun => { deleteGunProfile(gun).catch(showError); }, onAdd: () => openGunSetup(), onBackup: () => switchView('settings') };
+  if (gunLibraryPage) gunLibraryPage.update(props);
+  else gunLibraryPage = mountGunsPage(document, props);
 }
 
 async function flushLibraryWork() {

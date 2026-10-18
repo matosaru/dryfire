@@ -1,0 +1,20 @@
+.gun-context { border:1px solid #2f414f; border-radius:9px; padding:9px 11px; margin:0 0 15px; color:#b5c8db; font-size:.74rem; line-height:1.5; overflow-wrap:anywhere; }
+.gun-context strong { color:var(--primary-text,#deebf8); font-weight:650; }
+.gun-page-heading { margin:20px 0 21px; }
+.gun-page-heading h2,.gun-library-heading h2 { font-size:1.65rem; line-height:1.15; letter-spacing:-.035em; margin:0 0 10px; }
+.gun-page-heading p { color:#b5c8db; font-size:.94rem; line-height:1.55; margin-bottom:0; }
+.gun-form { display:grid; gap:17px; }
+.gun-form>label,.custom-drill-editor>label,.custom-action-controls>label { display:grid; gap:8px; color:var(--primary-text,#eef4fb); font-size:.87rem; }
+.gun-form input,.gun-form select,.custom-drill-editor input,.custom-drill-editor select { width:100%; min-width:0; min-height:49px; padding:12px; background:#101c26; border:1px solid #3b5267; border-radius:10px; color:var(--primary-text,#edf4fa); font:inherit; font-size:16px; }
+.gun-form input::placeholder,.custom-drill-editor input::placeholder { color:#8fa2b5; }
+.gun-form select,.custom-drill-editor select { appearance:auto; }
+.gun-form>.muted { margin:-3px 0 0; color:#a7bacd; }
+.gun-form .primary { min-height:51px; font-size:.93rem; }
+.storage-card { display:flex; gap:12px; padding:15px; margin:2px 0 5px; border:1px solid #314858; border-radius:13px; background:linear-gradient(135deg,#182630,#111b23); }
+.storage-symbol { display:grid; place-items:center; flex:none; width:42px; height:42px; border-radius:11px; background:#243646; color:#b0c8df; font-size:28px; }
+.storage-card>div { min-width:0; }
+.storage-card strong { display:block; margin:1px 0 6px; color:var(--primary-text,#f0f4f8); font-size:.87rem; }
+.storage-card p { margin:0; font-size:.73rem; line-height:1.55; color:#aec3d5; }
+.text-button { padding:11px 0; min-height:44px; background:none; border:0; color:#66bfff; font-size:.85rem; cursor:pointer; }
+.footer-links { display:flex; justify-content:center; align-items:center; gap:28px; padding-bottom:12px; margin-bottom:16px; border-bottom:1px solid #253139; }
+.footer-page-link { color:var(--primary-text,inherit); text-decoration:underline; text-underline-offset:3px; }

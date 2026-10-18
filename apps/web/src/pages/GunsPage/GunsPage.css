@@ -1,0 +1,20 @@
+.gun-library-heading { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin:20px 0 9px; }
+.gun-library-heading h2 { margin:0; }
+.gun-library-heading+.muted { font-size:.85rem; line-height:1.5; margin-bottom:18px; }
+.gun-capacity { padding:6px 9px; border:1px solid #3a5165; border-radius:99px; background:#1b2935; color:#bfd2e7; font-size:.68rem; white-space:nowrap; }
+.gun-list { display:grid; gap:11px; margin:0 0 13px; }
+.gun-card { display:grid; gap:12px; width:100%; min-width:0; padding:14px; text-align:left; border:1px solid #31485b; border-radius:13px; background:linear-gradient(135deg,#1a2935,#111b24); color:var(--primary-text,#f0f4f8); cursor:pointer; }
+.gun-card[aria-pressed="true"] { border:2px solid #ff8126; padding:13px; background:linear-gradient(135deg,#25303a,#172129); }
+.gun-card-head { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.gun-card-head>:first-child { min-width:0; }
+.gun-card-name { display:block; font-size:1rem; font-weight:750; line-height:1.4; overflow-wrap:anywhere; }
+.gun-card-type { display:block; margin-top:4px; font-size:.79rem; line-height:1.4; color:#b4c9dd; }
+.gun-selected { justify-self:start; background:#ff8126; color:#201409; font-size:.63rem; font-weight:800; border-radius:8px; padding:5px 7px; }
+.gun-card-chevron { color:#becfe0; font-size:27px; line-height:1; }
+.gun-card-status { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; font-size:.71rem; color:#aebfd1; }
+.gun-readiness { color:#ffd264; }
+.gun-readiness.ready { color:#69e5a0; }
+.gun-preset-count { color:#c294f1; }
+.add-gun-button { border-color:#d46f28!important; background:#151f27!important; color:#ff9141!important; min-height:48px; margin-bottom:17px; }
+.add-gun-button>span { margin-right:8px; font-size:25px; line-height:1; vertical-align:-2px; }
+.add-gun-button:disabled { border-color:#465460!important; color:#b8c6d4!important; opacity:1; }
