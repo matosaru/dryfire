@@ -85,9 +85,9 @@ function applyAppearance() {
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#f4f6f8' : '#0b1116');
 }
 async function loadDevicePreferences() {
-  const saved = await getSetting('appearance', 'dark');
+  const [saved, vibration] = await Promise.all([getSetting('appearance', 'dark'), getSetting('vibrationFeedback', false)]);
   appearance = ['dark', 'light', 'system'].includes(saved) ? saved : 'dark';
-  vibrationFeedback = await getSetting('vibrationFeedback', false) === true;
+  vibrationFeedback = vibration === true;
   vibrationRejected = false;
   applyAppearance();
 }
@@ -154,8 +154,8 @@ async function loadActiveGun() {
   gunLibraryToken += 1;
   sessionController?.reset();
   practiceController?.reset();
-  activeGun = await getActiveGun();
-  guns = await getGuns();
+  // Independent reads share the wait; profile content renders only after loading.
+  [activeGun, guns] = await Promise.all([getActiveGun(), getGuns(), loadDevicePreferences()]);
   const id = activeGun?.id;
   examples = id ? await getExamples(id) : [];
   customDrills = id ? await getCustomDrills(id) : [];
@@ -172,7 +172,6 @@ async function loadActiveGun() {
   const storedLabels = id ? await getGunSetting('enabledSoundLabels', null, id) : null;
   enabledSoundLabels = storedLabels ? normalizeEnabledLabels(storedLabels) : initialEnabledLabels(examples);
   processingReport = null;
-  await loadDevicePreferences();
   const select = $('#drillSelect');
   select.replaceChildren(new Option('Free listening (no sequence)', ''));
   for (const drill of [...DRILLS, ...customDrills]) select.add(new Option(drill.title, drill.id));
