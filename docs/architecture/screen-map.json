@@ -864,7 +864,7 @@
     "apps/web/src/app/routeContext.ts": "8edb4b9d133e4914784d4938581a3bfd63fcbbde42d201ff4057d94f2db19391",
     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
     "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "54e08b3086e792da9e69ddaacd976f07c1c2067df094cdf53648949202509ba0",
-    "apps/web/src/app/chromeBridge.ts": "58d46fe2d505f755b88bc3b5b7c0f18b3fac5fc3d20ab96f6696231114287ad0",
+    "apps/web/src/app/chromeBridge.ts": "e3276d510da2db886b0ad226bf5a884a351252b79ba78f6696a847031b08e2f1",
     "apps/web/src/app/chromePages.tsx": "2bb3be816e7293d68837974cb9d05800eb87b89429ef1667d771dda29ff69bd5",
     "apps/web/src/app/renderAppShell.tsx": "6ea211673a7e941eb53b5ac7cb6cfd6c3b91d4da042e859f7e68960f50289e51",
     "apps/web/src/app/renderCalibrationCatalog.tsx": "bc607a2490a1a0e9f3134a220c0d0fdf41273d615a2a74b7c265d2cce7451a3d",

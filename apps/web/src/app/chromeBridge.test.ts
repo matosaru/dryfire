@@ -63,3 +63,20 @@ test('failed setup retains native actions and disposal before enhancement never 
   document.querySelector('.tabs')!.remove();
   expect(()=>createChromeBridge(document,onNavigate)).toThrow('regions are missing');
 });
+
+test('repeated identical snapshots do not rewrite native chrome or schedule renderer work',()=>{
+  const bridge=createChromeBridge(document,jest.fn());
+  bridge.view('learn');bridge.status('Ready');bridge.navigationDisabled(true);
+  const observer=new MutationObserver(()=>{});
+  observer.observe(document.body,{subtree:true,attributes:true,childList:true,characterData:true});
+  bridge.view('learn');bridge.status('Ready');bridge.navigationDisabled(true);
+  expect(observer.takeRecords()).toHaveLength(0);
+  const renderer:ChromeRenderer={update:jest.fn(),dispose:jest.fn()};
+  bridge.enhance(()=>renderer);
+  bridge.view('learn');bridge.status('Ready');bridge.navigationDisabled(true);
+  expect(renderer.update).not.toHaveBeenCalled();
+  bridge.status('Listening');
+  expect(renderer.update).toHaveBeenCalledTimes(1);
+  expect(renderer.update).toHaveBeenCalledWith({view:'learn',status:'Listening',navigationDisabled:true});
+  observer.disconnect();bridge.dispose();
+});

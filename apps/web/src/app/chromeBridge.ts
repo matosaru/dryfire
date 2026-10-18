@@ -23,11 +23,12 @@ export function createChromeBridge(doc: Document, onNavigate: (view: string) => 
   };
   regions.forEach(host => host.addEventListener('click', activate));
   const removeNative = () => regions.forEach(host => host.removeEventListener('click', activate));
-  const update = (patch: Partial<ChromeSnapshot>) => {
-    if (disposed) return;
-    Object.assign(state, patch);
+  const applied: Partial<ChromeSnapshot> = {};
+  const update = <Key extends keyof ChromeSnapshot>(key: Key, value: ChromeSnapshot[Key]) => {
+    if (disposed || applied[key] === value) return;
+    applied[key] = state[key] = value;
     if (renderer) { renderer.update(state); return; }
-    if (patch.view !== undefined) {
+    if (key === 'view') {
       const value = state.view;
       for (const button of controls) {
         const route = button.dataset.view ?? destinations[button.id];
@@ -36,13 +37,13 @@ export function createChromeBridge(doc: Document, onNavigate: (view: string) => 
         button.ariaCurrent = selected ? 'page' : null;
       }
     }
-    if (patch.status !== undefined) doc.getElementById('statusPill')!.textContent = state.status;
-    if (patch.navigationDisabled !== undefined) controls.forEach(button => { if (button.dataset.view) button.disabled = state.navigationDisabled; });
+    if (key === 'status') doc.getElementById('statusPill')!.textContent = state.status;
+    if (key === 'navigationDisabled') controls.forEach(button => { if (button.dataset.view) button.disabled = state.navigationDisabled; });
   };
   return {
-    view(value: string) { update({ view: value }); },
-    status(value: string) { update({ status: value }); },
-    navigationDisabled(value: boolean) { update({ navigationDisabled: value }); },
+    view(value: string) { update('view', value); },
+    status(value: string) { update('status', value); },
+    navigationDisabled(value: boolean) { update('navigationDisabled', value); },
     enhance(mount: ChromeFactory) {
       if (disposed || renderer) return;
       // The factory must finish its synchronous commit before returning. Keep
