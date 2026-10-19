@@ -1,10 +1,9 @@
+import {PageHeading} from '@dryfire/ui/PageHeading';
 export type LiveListenState={gunName?:string;contextHidden?:boolean;texts?:Record<string,string>;disabled?:Record<string,boolean>;hidden?:Record<string,boolean>;selects?:Record<string,string>;listening?:boolean;options?:{value:string;title:string}[];steps?:{className:string;number:string;title:string}[];distances?:{title:string;value:string;width:string}[];timeline?:{name:string;detail:string}[]};
 export type LiveListenPageProps={state?:LiveListenState;onBack?:()=>void;onAction?:(id:string)=>void;onChange?:(id:string)=>void};
 /** Live presentation only: microphone, recognition, persistence and timing remain feature-owned. */
 export function LiveListenPage({state,onBack,onAction,onChange}:LiveListenPageProps){return <>
-<div className="section-head"><button type="button" className="back-button" data-back="" onClick={onBack} aria-label="Back to previous screen">‹</button>
-        <div><p className="eyebrow">03 / REAL-TIME DETECTION</p><h2 id="recognize-title">Live Listen</h2></div>
-      </div>
+<PageHeading id="recognize-title" title="Live Listen" eyebrow="03 / REAL-TIME DETECTION" reactBack={false} onBack={onBack}/>
       <p className={state?.contextHidden?"gun-context hidden":"gun-context"}>Listening uses the learned sounds of <strong className="gun-context-name">{state?.gunName}</strong>.</p>
       <section className="drill-panel" aria-labelledby="drill-heading">
         <div className="drill-panel-head">

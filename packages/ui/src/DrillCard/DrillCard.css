@@ -1,0 +1,5 @@
+.preset-card{border:1px solid #304048;background:#111a20;border-radius:17px;padding:15px;display:grid;gap:13px}
+.preset-card h3{font-size:1rem;margin:0}
+.preset-steps{display:flex;gap:7px;flex-wrap:wrap;align-items:center;font-size:.8rem}
+.preset-chip{border:1px solid #43515a;border-radius:99px;padding:7px 10px;background:#1b2830}
+.preset-card .button,.wide-action{width:100%}

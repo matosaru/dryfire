@@ -128,31 +128,40 @@
     {
       "id": "drills",
       "targetOwner": "DrillsPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/drills.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/DrillsPage/DrillsPage.tsx",
       "behaviorTests": [
         "tests/drills.test.js",
         "tests/pageTemplates.test.js",
         "packages/ui/src/PracticeCatalog/PracticeCatalog.test.tsx",
         "tests/practiceCatalogParity.test.tsx",
-        "tests/practiceController.test.js"
+        "tests/practiceController.test.js",
+        "apps/web/src/pages/DrillsPage/DrillsPage.test.tsx",
+        "packages/ui/src/DrillCard/DrillCard.test.tsx",
+        "packages/ui/src/RetainedNode/RetainedNode.test.tsx",
+        "tests/drillsPageMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
-        "src/optional/customDrillEditor.js"
+        "src/optional/customDrillEditor.js",
+        "apps/web/src/app/drillsPage.tsx",
+        "src/practiceController.js"
       ],
       "stableSelectorExamples": [
         "practiceCatalog",
         "drillCatalog",
         "customDrillForm"
       ],
-      "draftOwnership": "Mounted existing-preset edit draft; Full-only creation checks capabilities.",
+      "draftOwnership": "Typed page/card/mode-choice runtime after guarded later entry. Existing custom editor retains the exact native form, private state, validation and draft while its full UI migration remains P5. Captures and preset writes stay feature-owned.",
       "effects": [
         "Read/update owned presets; navigation only for a selected mode/preset"
       ],
       "prerenderedComponents": [
         "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx"
+      ],
+      "runtimeBrowserTests": [
+        "visual-tests/drills-runtime.spec.js"
       ]
     },
     {
@@ -394,7 +403,7 @@
   "staticComponents": [
     {
       "source": "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx",
-      "runtimeOwner": "src/practiceController.js"
+      "runtimeOwner": "DrillsPage after guarded handoff; practiceController native startup fallback and guarded actions"
     },
     {
       "source": "packages/ui/src/NumberInput/NumberInput.tsx",
@@ -402,7 +411,7 @@
     },
     {
       "source": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx",
-      "runtimeOwner": "src/main.js renderCalibrationCards/bindCalibrationActions"
+      "runtimeOwner": "LearnPage after guarded handoff; main count/action native startup fallback"
     },
     {
       "source": "packages/ui/src/GunSwitcher/GunSwitcher.tsx",
@@ -416,5 +425,13 @@
       "source": "packages/ui/src/SafetyDialog/SafetyDialog.tsx",
       "runtimeOwner": "src/safetyGate.js native modal/focus/pending intent"
     }
-  ]
+  ],
+  "retainedSubtreeBoundary": {
+    "source": "packages/ui/src/RetainedNode/RetainedNode.tsx",
+    "consumers": [
+      "apps/web/src/app/settingsPage.tsx",
+      "apps/web/src/app/drillsPage.tsx"
+    ],
+    "contract": "Preserve exact platform/independent native nodes and event state. display:contents contributes no box; an explicit structural class may preserve existing sibling selectors. Native visibility stays with the subtree owner. Full native custom-editor UI transfer is still P5."
+  }
 }

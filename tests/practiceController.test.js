@@ -195,3 +195,9 @@ test('ten start/stop cycles release every capture and leave no timer running', a
   for(const current of sessions) expect(current.stop).toHaveBeenCalledTimes(1);
   expect(callbacks.onError).not.toHaveBeenCalled();
 });
+
+test('a mounted catalog renderer owns lock updates without competing native button writes',()=>{
+ document.body.innerHTML='<input id="safetyAck" type="checkbox" checked>'+catalog+controllerPage('practice');
+ const onCatalogLock=jest.fn(()=>true);controller=createPracticeController({...callbacks,onCatalogLock,getContext:()=>context,titleFor:label=>label,vibrationEnabled:()=>false});
+ const button=document.querySelector('#practiceCatalog button');button.disabled=true;controller.renderCatalog();expect(onCatalogLock).toHaveBeenCalledWith(false);expect(button.disabled).toBe(true);onCatalogLock.mockReturnValue(false);controller.renderCatalog();expect(button.disabled).toBe(false);expect(capture).not.toHaveBeenCalled();
+});

@@ -1,11 +1,10 @@
+import {PageHeading} from '@dryfire/ui/PageHeading';
 import type {ReactNode} from 'react';
 import {SoundCard,type SoundCardProps} from '@dryfire/ui/SoundCard';
 export type LearnPageProps={cards?:SoundCardProps[];locked?:boolean;calibration?:ReactNode;gunName?:string;contextHidden?:boolean;notice?:string;noticeHidden?:boolean;optionalOpen?:boolean;calibrationOpen?:boolean;onBack?:()=>void};
 /** Learning presentation; recording, safety, limits and saved features stay feature-owned. */
 export function LearnPage({cards=[],locked,calibration,gunName,contextHidden=false,notice,noticeHidden=true,optionalOpen,calibrationOpen,onBack}:LearnPageProps){return <>
-<div className="section-head"><button type="button" className="back-button" data-back="" onClick={onBack} aria-label="Back to previous screen">‹</button>
-        <div><p className="eyebrow">01 / SOUND PROFILES</p><h2 id="learn-title">Learn Sounds</h2></div>
-      </div>
+<PageHeading id="learn-title" title="Learn Sounds" eyebrow="01 / SOUND PROFILES" reactBack={false} onBack={onBack}/>
       <p className={contextHidden?"gun-context hidden":"gun-context"}>Learned sounds for <strong className="gun-context-name">{gunName}</strong>.</p>
       <p className="muted">Start with <strong>3 Trigger pull samples</strong> (8–10 recommended). Other sound types are optional. Each capture gives you a two-second countdown followed by a two-second recording window.</p>
       <div id="modelNotice" className={noticeHidden?"info-note hidden":"info-note"} role="status">{notice}</div>

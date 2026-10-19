@@ -13,11 +13,11 @@ Work goes to **b only**. Dev synchronization is paused to save credits; main rem
 | P2 — Shared shell and reusable controls | Structural scope verified |
 | P3 — Home and gun management | Presentation/handoff scope verified; startup-fallback retirement stays in P7 |
 | P4 — Settings, Learn and Live Listen | Presentation/handoff scope verified for Settings, Learn and Live Listen; native fallback retirement stays in P7 |
-| P5 — Drills and History | Not started |
+| P5 — Drills and History | Active: Drills composition/card/catalog handoff verified; native editor UI and History remain |
 | P6 — Practice, Sequence and guides | Not started |
 | P7 — Cleanup, optimization and final acceptance | Not started |
 
-Latest published Learn runtime: b `5ce8b77`; canonical validation and both screenshot editions pass. Original performance budgets still fail; that public run's deliberate-slowdown proof also failed and needs diagnosis before final acceptance. Live Listen completes the local P4 presentation/handoff scope: **585 tests / 89 suites**, coverage/type/lint/architecture/docs/smoke, **21 public + 20 Full-preview Chromium workflows**, both minified artifacts and unchanged CSS/media checks pass. Its canonical CI remains pending publication. Initial native fallbacks and final performance acceptance remain P7.
+Latest published P4 runtime: b `a9c0a8b`; canonical validation and both screenshot editions pass. Original performance budgets remain failing. Current P5 Drills composition passes **596 tests / 93 suites**, coverage/type/lint/architecture/docs/smoke, **23 public + 22 Full-preview Chromium workflows**, both minified artifacts and unchanged CSS/media checks. Its canonical CI is pending publication. Custom-editor UI and History remain in P5; native startup cleanup/final performance acceptance remain P7.
 
 ## Completion checklist
 
@@ -31,7 +31,8 @@ Latest published Learn runtime: b `5ce8b77`; canonical validation and both scree
 - [x] P4: Settings typed source/runtime with stable file-picker/private-preview lifetimes.
 - [x] P4: Learn typed source/runtime and shared SoundCard; limits, optional/calibration/reset/safety and both-theme parity.
 - [x] P4: Live Listen presentation/handoff, repeated-recognition/unknown/verification/cleanup and both-edition verification.
-- [ ] P5: complete Drills and History with existing Free/Full boundaries.
+- [x] P5: DrillsPage, reusable DrillCard/PracticeCatalog, retained draft boundary and shared numbered headings.
+- [ ] P5: transfer native custom-editor UI, then History/saved results/optional graphs, preserving Free/Full boundaries.
 - [ ] P6: complete Practice, Sequence and guides using shared live/example run/review components.
 - [ ] P7: retire superseded templates/native fallbacks/adapters, finish package boundaries and optimize against the original baseline.
 - [ ] Final acceptance: resolve all original payload/timing failures; complete both-edition unit/integration/visual/offline checks.
@@ -122,7 +123,7 @@ Final acceptance compares against the original released source, never a slower i
 - Public baseline: `6c38bff81662d30279d94d41ca5c949bdbbe1c6e`.
 - Full baseline: `a5b76e8d524c311bcbde1dc5740b2f5d0fa8e8bd`.
 - Original initial JS gzip: public **50,807 bytes**, preview **51,146 bytes**. Original CSS **61,451 raw / 13,011 gzip bytes**.
-- Latest published P3 initial JS: public **50,869 gzip (+62)**, preview **51,200 (+54)**. Gates remain failing and unchanged. P4 first-boundary measurements: public **51,092 gzip (+285 vs original)**, preview **51,412 (+266)**; CSS remains byte-identical. Settings runtime measurements: public **51,357 gzip (+550 vs original)**, preview **51,690 (+544)**; CSS still **61,451 raw / 13,011 gzip**. Learn runtime measurements: public **51,709 gzip (+902 vs original)**, preview **52,053 (+907)**. P4 Live Listen measurements: public **171,670 raw / 52,133 gzip** (+753 raw / +1326 gzip); preview **172,865 / 52,474** (+782 raw / +1328 gzip). These failures remain explicit optimization debt, not passing acceptance.
+- Latest published P3 initial JS: public **50,869 gzip (+62)**, preview **51,200 (+54)**. Gates remain failing and unchanged. P4 first-boundary measurements: public **51,092 gzip (+285 vs original)**, preview **51,412 (+266)**; CSS remains byte-identical. Settings runtime measurements: public **51,357 gzip (+550 vs original)**, preview **51,690 (+544)**; CSS still **61,451 raw / 13,011 gzip**. Learn runtime measurements: public **51,709 gzip (+902 vs original)**, preview **52,053 (+907)**. P4 Live Listen measurements: public **171,670 raw / 52,133 gzip** (+753 raw / +1326 gzip); preview **172,865 / 52,474** (+782 raw / +1328 gzip). P5 Drills composition measurements: public **172,841 raw / 52,448 gzip** (+1924 / +1641); preview **174,082 / 52,790** (+1999 / +1644). These failures remain explicit optimization debt, not passing acceptance.
 - Last completed public WebKit comparison before these size failures: warm startup **37→45 ms**, with the extra phase delay before interactive. No new passing timing result is inferred after a payload gate stops measurement.
 - Keep JS/CSS minification, tree shaking, lazy loading and full chunk/source-leak verification. Include HTML and actual critical requests in evidence; a smaller JS entry alone is not a faster app.
 - Diagnose the failed deliberate-slowdown proof in public run `39268272972`; its comparison summary confirms payload failures, but the probe-specific reason is not yet available. Keep it distinct from application validation/screenshot results.

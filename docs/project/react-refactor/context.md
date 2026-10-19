@@ -11,21 +11,21 @@ Updated 2026-10-19 (Europe/Vilnius). Compact handoff; detailed scope/results sta
 
 ## Current work
 
-Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: Learn `5ce8b77`.
+Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: P4 `a9c0a8b`.
 
-P0/P1 are complete. P2 shared presentation, P3 Home/gun and P4 Settings/Learn/Live Listen presentation/handoffs are verified locally. Initial native fallback retirement remains P7.
+P0/P1 are complete; P2 shell, P3 profile pages and P4 Settings/Learn/Live Listen presentation/handoffs are verified. Native startup fallback retirement remains P7.
 
-Settings retains native file/preview islands; Learn uses shared SoundCard/CalibrationCatalog; Live Listen has pure sequence/distance models and one presentation update port plus a direct meter path. Each loads on first visit and transfers only on a later explicit unlocked entry. Feature controllers still own data, capture, safety and cleanup. Roots preserve values/focus/drafts and restore native nodes/events on failed commit. Native startup/late-CSS cleanup and P5–P7 remain pending.
+**Active: P5. Drills composition is implemented.** DrillsPage/DrillCard and PracticeCatalog own presets/collections/mode choices after a later unlocked entry. The custom editor retains its exact native form/private draft/handlers/validation/selection inside reusable RetainedNode (also used by Settings). An explicit non-layout structural class preserves the editor-adjacent spacing selector. Full-caption/simulation changes use the page port. Four numbered headings reuse PageHeading with unchanged startup Back bindings. Custom-editor UI, History and P6/P7 remain pending.
 
 ## Next action
 
-Publish/observe P4 canonical CI, then continue **P5 Drills and History** automatically on b. Preserve built-ins/custom saved data, Free/Full guards, filters, charts and separate history/session reset scopes. Characterize existing owners before transfer; then P6 shared live/example pages and P7 cleanup/performance. No new approval is needed.
+Publish/observe this increment's canonical CI, then continue **P5 native custom-editor UI transfer and History** automatically on b. Preserve reorder/limits/invalid drafts/saved IDs and Free edit/use vs Full creation; then history/saved-session scopes/graphs and stale-owner guards. Continue P6 shared live/example pages, then P7 cleanup/performance. No new approval is needed.
 
 ## Verification and open debt
 
-This increment: **585 tests / 89 suites**, coverage/type/lint/architecture/docs, 16 smoke checks and both minified artifacts pass. **21 public + 20 Full-preview** Chromium workflows cover mounted Settings/Learn/Live Listen, profiles/drafts/backup/safety and repeated/unknown recognition/verification/Stop/navigation/background. Native/React Dark/Light pixels match exactly; CSS stays 61451 raw / 13011 gzip. Live adapter/models have 100% measured coverage. Canonical P4 CI is not yet observed; no deployment/device-mic claim.
+This increment: **596 tests / 93 suites**, coverage/type/lint/architecture/docs, 16 smoke checks and both minified artifacts pass. **23 public + 22 Full-preview** Chromium workflows cover all mounted pages, open invalid editor parity/draft retention, saved preset edits/selection, Full creation and private simulation. Offline refresh imports/mounts Drills from the original cache. UI packages have 100% measured coverage; Drills mount branches 94%. CSS remains 61451 raw/13011 gzip and every image/GIF baseline is unchanged. Canonical CI for this source is not yet observed.
 
-Learn 5ce8b77: canonical validation and both screenshot editions pass. Performance fails on raw/gzip budgets; public deliberate-slowdown proof also failed (run39268272972), with probe-specific diagnosis outstanding. Preserve all 390 image references, 83 captures and 12 guide exports. Local Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons. Current initial JS public 171670/52133 raw/gzip, preview172865/52474; +753/+1326 and +782/+1328 vs original. Keep debt visible.
+P4 a9c0a8b: canonical validation and both screenshot editions pass; performance fails. Prior public deliberate-slowdown proof failure (run39268272972) remains in the final-gate ledger. Preserve 390 image references, 83 captures, 12 guide exports. Local Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons. Current initial JS public 172841/52448 raw/gzip, preview 174082/52790; +1924/+1641 and +1999/+1644 vs original. Keep debt visible.
 
 CHG-050 defers optimization until structural work is done. Original gzip/timing gates remain unchanged and failing honestly; see the plan's ledger. Do not claim fresh timing after a size gate stops measurement. Resolve all debt before final release.
 

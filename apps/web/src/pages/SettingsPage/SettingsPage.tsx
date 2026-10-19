@@ -1,8 +1,9 @@
+import {PageHeading} from '@dryfire/ui/PageHeading';
 import type {ReactNode,ChangeEventHandler} from 'react';
 export type SettingsState={gunName?:string;contextHidden?:boolean;installationOpen?:boolean;texts?:Record<string,string>;disabled?:Record<string,boolean>};
 export type SettingsPageProps={state?:SettingsState;fileInput?:ReactNode;preview?:ReactNode;onBack?:()=>void;onAction?:(id:string)=>void;onPreference?:(id:string,value:string|boolean)=>void;onImport?:ChangeEventHandler<HTMLInputElement>};
 /** Shared source for Settings; persistence/capabilities/preview lifetimes remain feature-owned. */
-export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreference,onImport}:SettingsPageProps){return <><div className="section-head"><button type="button" className="back-button" data-back="" onClick={onBack} aria-label="Back to previous screen">‹</button><div><p className="eyebrow">05 / DEVICE &amp; PRIVACY</p><h2 id="settings-title">Settings</h2></div></div>
+export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreference,onImport}:SettingsPageProps){return <><PageHeading id="settings-title" title="Settings" eyebrow="05 / DEVICE & PRIVACY" reactBack={false} onBack={onBack}/>
       {preview}
       <p className={state?.contextHidden?"gun-context hidden":"gun-context"}>Sound resets affect <strong className="gun-context-name">{state?.gunName}</strong> only.</p>
       <details className="install-details" open={state?.installationOpen}><summary>Install on your iPhone <span>›</span></summary><div className="install-card">

@@ -1,16 +1,11 @@
-import {StrictMode,useLayoutEffect,useRef} from 'react';
+import {StrictMode} from 'react';
+import {RetainedNode} from '@dryfire/ui/RetainedNode';
 import {createRoot} from 'react-dom/client';
 import {flushSync} from 'react-dom';
 import {SettingsPage,type SettingsPageProps,type SettingsState} from '../pages/SettingsPage/index.ts';
 import type {preferencePresentation} from '../features/settings/preferencePresentation.ts';
 type Preferences=ReturnType<typeof preferencePresentation>;
 type Update=SettingsState&{preferences?:Preferences};
-/** Platform-owned controls retain their exact nodes and listeners through page handoff. */
-function NativeIsland({node}:{node:HTMLElement}){
- const ref=useRef<HTMLDivElement>(null);
- useLayoutEffect(()=>{ref.current!.append(node);},[node]);
- return <div style={{display:'contents'}} ref={ref}/>;
-}
 export function mountSettingsPage(host:Element,callbacks:Pick<SettingsPageProps,'onAction'|'onPreference'|'onBack'>){
  const get=<T extends HTMLElement>(id:string)=>host.querySelector<T>('#'+id)!;
  const file=get<HTMLInputElement>('importFile'),preview=get<HTMLElement>('previewTestingSection');
@@ -23,7 +18,7 @@ export function mountSettingsPage(host:Element,callbacks:Pick<SettingsPageProps,
  const active=host.ownerDocument.activeElement as HTMLElement|null,focusId=host.contains(active)?active?.id:undefined;
  let disposed=false,failure:unknown;
  const root=createRoot(host,{onUncaughtError(error){failure=error;}});
- const render=()=>{flushSync(()=>root.render(<StrictMode><SettingsPage {...callbacks} state={state} fileInput={<NativeIsland node={file}/>} preview={preview?<NativeIsland node={preview}/>:undefined}/></StrictMode>));if(failure)throw failure;};
+ const render=()=>{flushSync(()=>root.render(<StrictMode><SettingsPage {...callbacks} state={state} fileInput={<RetainedNode node={file}/>} preview={preview?<RetainedNode node={preview}/>:undefined}/></StrictMode>));if(failure)throw failure;};
  try{render();host.setAttribute('data-react-settings','');for(const item of values){const input=get<HTMLInputElement>(item.id);input.value=item.value;input.checked=item.checked;input.disabled=item.disabled;}for(const item of statuses)get(item.id).textContent=item.text;if(focusId)get(focusId).focus();}
  catch(error){host.removeAttribute('data-react-settings');flushSync(()=>root.unmount());host.replaceChildren(...backup);fileParent.insertBefore(file,fileNext);if(preview)previewParent!.insertBefore(preview,previewNext);active?.focus();throw error;}
  return{

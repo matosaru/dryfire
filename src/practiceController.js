@@ -15,7 +15,7 @@ const node = (tag, text, className = '') => { const element = document.createEle
 
 /** Six modes share one capture lifecycle, engine, configuration and durable review. */
 export function createPracticeController({ getContext, titleFor, ensureSafe, onNavigate, onBack, onChange, onError, onStatus,
-  onProcessing, vibrationEnabled, onVibration }) {
+  onProcessing, vibrationEnabled, onVibration, onCatalogLock }) {
   let mode = 'single', state = null, review = null, microphone = null, cue = null, abortCapture = null;
   let pending = false, saving = false, closing = false, saveError = null, savedRevision = null;
   let operation = 0, captureToken = 0, readToken = 0, timer = null, tickQueued = false, interruption = null;
@@ -283,6 +283,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     fillConfig(record.config); changed(); onNavigate('practice');
   }
   function renderCatalog() {
+    if(onCatalogLock?.(locked()))return;
     for (const button of $('practiceCatalog').querySelectorAll('[data-practice-mode]')) button.disabled = locked();
   }
   // The cards are compiled from the typed component. Bind once to their stable

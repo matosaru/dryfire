@@ -20,7 +20,7 @@
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
-    "tools/page-templates.mjs": "54ffff00205df38afd016fca8ce8ec04afe6c46d89e4a3cfb6eb4abed0a15518",
+    "tools/page-templates.mjs": "82a519c036b47f2725e8483b929c62857a9dbbdf361686ef4d7df2cb63d35e92",
     "tools/export-guide-examples.mjs": "0c1f31a7c9742ac8cde728c0d54cb6f13e7f47c0ee94b91512761bf5abb3308b",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
@@ -66,8 +66,12 @@
     "packages/ui/src/SoundCard/SoundCard.css": "eb3a52e26d1d1ea910e0c1002b852982ac16a2424b3a8781b280b7ffbb57a18d",
     "apps/web/src/styles/legacy-after-sound-card.css": "95fd1863dd1e44a77fe77f627189f93565a4cd4d7e3a360648fc1190e96b052e",
     "apps/web/src/styles/legacy-before-live-listen.css": "1351bd3f07949fe353ce8743c61a280badaa2b16eb007801a9d52357f490d497",
-    "apps/web/src/styles/legacy-after-live-listen.css": "fc59f433700c1bd61152decf6ee56d0968f78a6bdcfbb0af39268e4c43662331",
-    "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe"
+    "apps/web/src/styles/legacy-after-live-listen.css": "f53c50d2ebeff706148f5c34e5622c565b4345129df19619ccceaae0975dc776",
+    "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
+    "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
+    "apps/web/src/styles/legacy-after-drill-cards.css": "ae1940919209156d5062cbe05a767490ca2c86c9410fecdf8f2baf8b58c523e4",
+    "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+    "packages/ui/src/DrillCard/DrillCard.css": "2ce2d7f7a9202ef9974c7dd0531e6afa98f6f9ca339a2653d4ba8e3ebc7f9e20"
   },
   "exports": [
     {

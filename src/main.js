@@ -77,6 +77,7 @@ let homePage, homePagePending, profilePages, gunSetupPage;
 let settingsPage, settingsModule, settingsModulePending;
 let learnPage, learnModule, learnModulePending;
 let livePage, liveModule, liveModulePending;
+let drillsPage, drillsModule, drillsModulePending;
 const liveHandlers=new Map();
 const settingsHandlers = new Map();
 function liveText(id,text){if(livePage)livePage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
@@ -158,11 +159,12 @@ function renderGunControls() {
     $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   }
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) $('#'+id).disabled = profileLocked() || !activeGun || activeGun.needsDetails;
-  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
   document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
   settingsPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   learnPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   livePage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+  drillsPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   if (!activeGun || activeGun.needsDetails) {settingsDisabled('resetModelBtn',true);liveDisabled('verifyLatestBtn',true);document.querySelectorAll('#clearHistoryBtn').forEach(button => { button.disabled = true; });}
   settingsDisabled('exportBtn',profileLocked());
   settingsDisabled('importBtn',profileLocked());
@@ -334,17 +336,21 @@ async function submitGun(event) {
   finally { setBusy(false); setGunSaving(false); }
 }
 
-function selectDrillCollection(custom) {
-  if (custom && !CAPABILITIES.customDrillCreation && !customDrills.length) custom = false;
-  $('#customDrillsTab').classList.toggle('hidden', !CAPABILITIES.customDrillCreation && !customDrills.length);
-  $('#builtInDrillsTab').parentElement.classList.toggle('hidden', !CAPABILITIES.customDrillCreation && !customDrills.length);
-  $('#builtInDrillsTab').setAttribute('aria-pressed', String(!custom));
-  $('#customDrillsTab').setAttribute('aria-pressed', String(custom));
-  $('#drillCatalog').classList.toggle('hidden', custom);
-  $('#newCustomDrillBtn').classList.toggle('hidden', !custom || !CAPABILITIES.customDrillCreation);
-  $('#customDrillCatalog').classList.toggle('hidden', !custom);
-  $('#customDrillForm').classList.add('hidden');
+function selectDrillCollection(custom){
+ if(custom && !CAPABILITIES.customDrillCreation && !customDrills.length)custom=false;
+ const limited=!CAPABILITIES.customDrillCreation && !customDrills.length;
+ if(drillsPage)drillsPage.update({collectionHidden:limited,customTabHidden:limited,customSelected:custom,createHidden:!custom||!CAPABILITIES.customDrillCreation});
+ else{
+  $('#customDrillsTab').classList.toggle('hidden',limited);$('#builtInDrillsTab').parentElement.classList.toggle('hidden',limited);
+  $('#builtInDrillsTab').setAttribute('aria-pressed',String(!custom));$('#customDrillsTab').setAttribute('aria-pressed',String(custom));
+  $('#drillCatalog').classList.toggle('hidden',custom);$('#newCustomDrillBtn').classList.toggle('hidden',!custom||!CAPABILITIES.customDrillCreation);$('#customDrillCatalog').classList.toggle('hidden',!custom);
+ }
+ $('#customDrillForm').classList.add('hidden');
 }
+function drillCards(){return{
+ builtIns:DRILLS.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id)})),
+ customs:customDrills.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id),onEdit:()=>customEditor.open(drill)})),emptyCustom:!customDrills.length,
+};}
 async function chooseDrill(id) {
   if (profileLocked() || !activeGun || activeGun.needsDetails) return;
   const drill = currentDrill(id);
@@ -359,6 +365,7 @@ async function chooseDrill(id) {
   sessionController.open(drill).catch(showError);
 }
 function renderCustomCatalog() {
+  if(drillsPage){const view=drillCards();drillsPage.update({customs:view.customs,emptyCustom:view.emptyCustom});return;}
   const host = $('#customDrillCatalog');
   host.replaceChildren();
   if (!customDrills.length) { const empty = document.createElement('p'); empty.className = 'empty-state'; empty.textContent = 'No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.'; host.append(empty); }
@@ -510,6 +517,7 @@ async function resetSoundProfile(label) {
 }
 
 function renderDrillCatalog() {
+  if(drillsPage){drillsPage.update({builtIns:drillCards().builtIns});return;}
   const host = $('#drillCatalog');
   host.replaceChildren();
   for (const [index, item] of DRILLS.entries()) {
@@ -544,6 +552,13 @@ function displayView(name) {
   window.scrollTo({top:0,behavior:'instant'});
   for(const view of PAGE_IDS) $('#'+view+'View').classList.toggle('hidden',view!==name);
   setMessage();
+  if(name==='drills'){
+    if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
+      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
+    }else if(!drillsModule && !drillsModulePending){
+      drillsModulePending=import('../apps/web/src/app/drillsPage.tsx').then(module=>{drillsModule=module;}).catch(showError).finally(()=>{drillsModulePending=null;});
+    }
+  }
   if(name==='recognize'){
     if(!livePage && liveModule && !profileLocked() && !$('#safetyModal').open){
       try{livePage=liveModule.mountLiveListenPage($('#recognizeView'),{onBack:()=>goBack(),onAction:id=>liveHandlers.get(id)?.(),onChange:id=>liveHandlers.get(id)?.()});}catch(error){showError(error);}
@@ -712,7 +727,7 @@ function renderLiveButton() {
   renderGunControls();
   renderPreferences();
   practiceController?.refresh();
-  document.querySelectorAll('#practiceCatalog button').forEach(button => { button.disabled = profileLocked(); });
+  if(drillsPage)drillsPage.update({practiceDisabled:profileLocked()});else document.querySelectorAll('#practiceCatalog button').forEach(button => { button.disabled = profileLocked(); });
 }
 
 async function stopLive() {
@@ -914,7 +929,8 @@ async function init() {
       document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
       const notice = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
       if(gunSetupPage)gunSetupPage.setNotice(notice);else $('#gunCapacityNotice').textContent=notice;
-      $('#sequenceDescription').textContent = full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
+      const sequenceDescription=full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
+      if(drillsPage)drillsPage.update({sequenceDescription});else $('#sequenceDescription').textContent=sequenceDescription;
       informationPages.setFull(full);
     };
     previewTesting = createPreviewTesting({ doc: document, storage,
@@ -937,7 +953,7 @@ async function init() {
     isConfirmed: () => $('#safetyAck').checked, confirmState: () => { $('#safetyAck').checked = true; $('#safetyAck').dispatchEvent(new Event('change')); },
     identity: () => `${activeGun?.id}|${activeView}`, onError: showError });
   practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
-    onError: showError, onStatus: setStatus, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
+    onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
     vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
   practiceController.renderCatalog();
   sessionController = createSessionController({

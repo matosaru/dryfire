@@ -1,0 +1,9 @@
+<form id="customDrillForm" class="custom-drill-editor hidden" aria-labelledby="customDrillEditorTitle">
+        <h3 id="customDrillEditorTitle">Create a drill</h3>
+        <label for="customDrillName">Drill name<input id="customDrillName" name="customDrillName" type="text" required minlength="1" maxlength="80" placeholder="Name your drill" autocomplete="off" /></label>
+        <p class="editor-label">Action sequence</p>
+        <ol id="customDrillSteps" class="custom-drill-steps" aria-label="Custom drill action order"></ol>
+        <div class="custom-action-controls"><label for="customAction">Add a sound<select id="customAction"><option value="draw">Draw from holster</option><option value="rack">Rack slide</option><option value="trigger">Trigger pull</option><option value="reload">Change magazine</option></select></label><button id="addCustomActionBtn" class="button secondary" type="button">+ Add Action</button></div>
+        <p class="muted small">Use the arrow buttons to reorder. Sounds can repeat.</p>
+        <div class="custom-editor-actions"><button id="saveCustomDrillBtn" class="button primary" type="submit">Save Drill</button><button id="cancelCustomDrillBtn" class="button secondary" type="button">Cancel</button></div>
+      </form>
