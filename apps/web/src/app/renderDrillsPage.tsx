@@ -1,3 +1,4 @@
 import {renderToStaticMarkup} from 'react-dom/server';
 import {DrillsPage} from '../pages/DrillsPage/index.ts';
-export function renderDrillsPage(practice:string,editor:string){return renderToStaticMarkup(<DrillsPage practice="{{practiceCatalog}}" editor="{{customEditor}}"/>).replace('{{practiceCatalog}}',()=>practice).replace('{{customEditor}}',()=>editor);}
+import {CustomDrillEditor} from '@dryfire/ui/CustomDrillEditor';
+export function renderDrillsPage(practice:string){return renderToStaticMarkup(<DrillsPage practice="{{practiceCatalog}}" editor={<CustomDrillEditor/>}/>).replace('{{practiceCatalog}}',()=>practice);}

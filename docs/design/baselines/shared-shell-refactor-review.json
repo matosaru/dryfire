@@ -147,5 +147,9 @@
   "drillsComposition": {
     "source": "apps/web/src/app/drillsPage.tsx",
     "review": "Frozen full Drills template/editor and native preset-card parity, byte-identical CSS and both-theme native/React browser pixels protect composition. Existing custom editor keeps its exact form/draft/lifetime inside a reusable retained-node boundary; its full UI transfer remains P5. An explicit non-layout structural class preserves the existing adjacent-editor/free-button spacing selector. Settings reuses the same boundary. Full-mode description and simulation changes use the React port. Four migrated pages reuse the existing PageHeading with unchanged numbered-heading/native-back DOM. Guide engines/fragments/scenarios/media are unchanged; only equivalent coarse compiler/CSS fingerprints change."
+  },
+  "customEditorFields": {
+    "source": "apps/web/src/app/customDrillFields.tsx",
+    "review": "Complete frozen form DOM and action tests protect the typed editor source; original native behavior was characterized before extraction and the same cases now run against native and React fields. Native form host/submit lifetime is retained, field UI owns its children after guarded entry, and failed initial commit restores native nodes/focus. Explicit open/reset preserves dropdown and draft semantics. Native/React Dark/Light pixels, Free saved edit vs Full create/simulation, and byte-identical CSS protect the handoff. Shared raw HTML is removed; guide engines/fragments/scenarios/media remain unchanged with coarse compiler/CSS equivalence review."
   }
 }

@@ -41,7 +41,7 @@ const numberInputs = Object.fromEntries([
   ['maxResults', '50']
 ].map(([id, value, name]) => [id + 'Input', renderNumberInput(id, value, name)]));
 const fragments = { ...runFragments, ...numberInputs, calibrationCatalog: renderCalibrationCatalog(), practiceCatalog: renderPracticeCatalog(PRACTICE_MODES) };
-const content = id => id === 'drills' ? renderDrillsPage(fragments.practiceCatalog,read('shared/custom-drill-editor').trimEnd()) : id === 'recognize' ? renderLiveListenPage() : id === 'learn' ? renderLearnPage(fragments.calibrationCatalog) : id === 'settings' ? renderSettingsPage(read('shared/preview-testing')) : id === 'gunSetup' ? renderGunSetupPage() : id === 'home' ? renderHomePage() : id === 'guns' ? renderGunsPage() : ['about', 'contact'].includes(id) ? renderInformationPage(id) : fill(read(`pages/${id}`), fragments);
+const content = id => id === 'drills' ? renderDrillsPage(fragments.practiceCatalog) : id === 'recognize' ? renderLiveListenPage() : id === 'learn' ? renderLearnPage(fragments.calibrationCatalog) : id === 'settings' ? renderSettingsPage(read('shared/preview-testing')) : id === 'gunSetup' ? renderGunSetupPage() : id === 'home' ? renderHomePage() : id === 'guns' ? renderGunsPage() : ['about', 'contact'].includes(id) ? renderInformationPage(id) : fill(read(`pages/${id}`), fragments);
 
 // Only trusted, repository-owned templates are compiled. User data still uses
 // the application's existing textContent/form APIs after the page is loaded.

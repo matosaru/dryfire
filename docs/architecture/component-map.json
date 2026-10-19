@@ -139,21 +139,25 @@
         "apps/web/src/pages/DrillsPage/DrillsPage.test.tsx",
         "packages/ui/src/DrillCard/DrillCard.test.tsx",
         "packages/ui/src/RetainedNode/RetainedNode.test.tsx",
-        "tests/drillsPageMount.test.tsx"
+        "tests/drillsPageMount.test.tsx",
+        "packages/ui/src/CustomDrillEditor/CustomDrillEditor.test.tsx",
+        "tests/customDrillEditor.test.js",
+        "tests/customDrillFieldsMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
         "src/optional/customDrillEditor.js",
         "apps/web/src/app/drillsPage.tsx",
-        "src/practiceController.js"
+        "src/practiceController.js",
+        "apps/web/src/app/customDrillFields.tsx"
       ],
       "stableSelectorExamples": [
         "practiceCatalog",
         "drillCatalog",
         "customDrillForm"
       ],
-      "draftOwnership": "Typed page/card/mode-choice runtime after guarded later entry. Existing custom editor retains the exact native form, private state, validation and draft while its full UI migration remains P5. Captures and preset writes stay feature-owned.",
+      "draftOwnership": "Typed page/cards/catalog and CustomDrillEditor fields after guarded later entry. The stable native form host retains one submit/visibility lifetime; feature owns private steps/capabilities/persistence. Typed field ports preserve invalid drafts, selection and explicit-open/reset semantics. Initial native UI fallbacks remain P7.",
       "effects": [
         "Read/update owned presets; navigation only for a selected mode/preset"
       ],
@@ -432,6 +436,6 @@
       "apps/web/src/app/settingsPage.tsx",
       "apps/web/src/app/drillsPage.tsx"
     ],
-    "contract": "Preserve exact platform/independent native nodes and event state. display:contents contributes no box; an explicit structural class may preserve existing sibling selectors. Native visibility stays with the subtree owner. Full native custom-editor UI transfer is still P5."
+    "contract": "Preserve exact platform/independent native nodes and event state. display:contents contributes no box; an explicit structural class preserves existing sibling selectors. Settings file/preview nodes and the custom editor native form host keep their platform lifetimes; CustomDrillEditor now owns its live field UI."
   }
 }

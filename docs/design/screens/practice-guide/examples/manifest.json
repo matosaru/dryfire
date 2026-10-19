@@ -20,7 +20,7 @@
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
-    "tools/page-templates.mjs": "82a519c036b47f2725e8483b929c62857a9dbbdf361686ef4d7df2cb63d35e92",
+    "tools/page-templates.mjs": "475643f68fdf4a5bc9a4322c422650f0df61ea7f106139699e979784bfe37a64",
     "tools/export-guide-examples.mjs": "0c1f31a7c9742ac8cde728c0d54cb6f13e7f47c0ee94b91512761bf5abb3308b",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
@@ -51,7 +51,7 @@
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
     "apps/web/src/styles/legacy-session-content.css": "da93d1361022fddbac4de0c80786d919aa33eb580804452ccbfd0d9c827eb2be",
     "apps/web/src/styles/legacy-before-guns.css": "295ce7ddcfbeccd5cb08a2bcb4af0afe4f618913c57a677c61a78ebc0a2b7655",
-    "apps/web/src/styles/legacy-after-guns.css": "7dcf6d8252347d765ab281e0f728c8e42d1fd3ec7ef83130c9f0207f2d9f8363",
+    "apps/web/src/styles/legacy-after-guns.css": "a6498dd3962bb9626aa231582681c7a589d17fb905b7820ef642ef85ed807495",
     "apps/web/src/pages/GunsPage/GunsPage.css": "0ca384aca93f0ca6da65a103ad75c156804cac9514d764397e1c387874061718",
     "apps/web/src/styles/legacy-before-home.css": "616c2d34f63330b3b1d5ecaae332e9846f700460b3b77edb9c3d25ce536ee179",
     "apps/web/src/pages/HomePage/HomePage.css": "70924e9e2f91e0402c65174ca01817b5e594a79ac95c0b2e37de487c513d7a59",
@@ -71,7 +71,10 @@
     "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
     "apps/web/src/styles/legacy-after-drill-cards.css": "ae1940919209156d5062cbe05a767490ca2c86c9410fecdf8f2baf8b58c523e4",
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
-    "packages/ui/src/DrillCard/DrillCard.css": "2ce2d7f7a9202ef9974c7dd0531e6afa98f6f9ca339a2653d4ba8e3ebc7f9e20"
+    "packages/ui/src/DrillCard/DrillCard.css": "2ce2d7f7a9202ef9974c7dd0531e6afa98f6f9ca339a2653d4ba8e3ebc7f9e20",
+    "apps/web/src/styles/legacy-before-custom-editor.css": "ad9a9b3fc449f79cedbc0c657aad43dd635c20b80f45d6d1891ab5b0b101b546",
+    "apps/web/src/styles/legacy-after-custom-editor.css": "7a21fbccca33c410d5254a0ddd860139a02598185aba356f407d9bce918e32fe",
+    "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588"
   },
   "exports": [
     {

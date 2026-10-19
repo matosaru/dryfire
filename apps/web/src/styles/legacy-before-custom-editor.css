@@ -1,0 +1,5 @@
+
+/* Gun-owned custom presets keep the existing continuous drill mode. */
+.segmented-control button { flex:1; min-width:0; min-height:38px; padding:8px 6px; border:0; border-radius:9px; background:none; color:#b5c3d1; font-size:.74rem; cursor:pointer; }
+.segmented-control button[aria-pressed="true"] { background:linear-gradient(135deg,#ff9638,#ff751c); color:#15100a; font-weight:750; }
+#newCustomDrillBtn { margin-top:14px; }

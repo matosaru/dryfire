@@ -1,0 +1,14 @@
+.custom-drill-editor { display:grid; gap:14px; padding:16px; border:1px solid #344958; border-radius:15px; background:linear-gradient(135deg,#1a2630,#111a21); margin:15px 0; }
+.custom-drill-editor h3 { margin:0; font-size:1.12rem; }
+.custom-drill-editor .editor-label { margin:1px 0 -5px; text-transform:uppercase; color:#b8cbdc; font-size:.7rem; letter-spacing:.07em; }
+.custom-drill-steps { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+.custom-drill-steps>li { display:flex; align-items:center; gap:8px; padding:9px; background:#14222d; border:1px solid #354a5b; border-radius:10px; }
+.custom-step-number { display:grid; place-items:center; width:27px; height:27px; flex:none; background:#23546a; border-radius:50%; color:#c1eeff; font-size:.8rem; font-weight:800; }
+.custom-step-name { flex:1; min-width:0; font-size:.79rem; line-height:1.35; }
+.custom-step-controls { display:flex; gap:4px; flex:none; }
+.custom-step-controls button { width:34px; height:34px; min-height:34px; padding:0; border:1px solid #40566b; background:#1e2e3b; border-radius:7px; color:var(--primary-text,#e3eef8); cursor:pointer; font-size:1rem; }
+.custom-step-controls button:disabled { opacity:.35; cursor:not-allowed; }
+.custom-action-controls { display:grid; gap:10px; }
+.custom-drill-editor>.muted { margin:0; font-size:.71rem; }
+.custom-editor-actions { display:grid; gap:9px; }
+.custom-drill-editor+.button { margin-top:7px; }

@@ -558,6 +558,7 @@ function displayView(name) {
     }else if(!drillsModule && !drillsModulePending){
       drillsModulePending=import('../apps/web/src/app/drillsPage.tsx').then(module=>{drillsModule=module;}).catch(showError).finally(()=>{drillsModulePending=null;});
     }
+    if(drillsPage && !profileLocked() && !$('#safetyModal').open){try{customEditor.connectView(drillsModule.mountCustomDrillFields);}catch(error){showError(error);}}
   }
   if(name==='recognize'){
     if(!livePage && liveModule && !profileLocked() && !$('#safetyModal').open){

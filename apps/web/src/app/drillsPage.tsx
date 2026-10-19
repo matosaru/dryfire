@@ -23,3 +23,4 @@ export function mountDrillsPage(host:Element,initial:DrillsRuntimeProps,onPracti
   dispose(){if(disposed)return;disposed=true;host.removeAttribute('data-react-drills');flushSync(()=>root.unmount());},
  };
 }
+export {mountCustomDrillFields} from './customDrillFields.tsx';
