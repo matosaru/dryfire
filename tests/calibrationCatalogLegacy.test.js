@@ -11,7 +11,7 @@ function setup({locked=false,calibration=[]}={}) {
   document.body.innerHTML=fixture;
   for(const text of document.querySelectorAll('article p')) text.dataset.description=text.textContent.replace(' 0 / 10 samples.','');
   const recordCalibration=jest.fn(), clearCalibrationExamples=jest.fn(async()=>{}), setBusy=jest.fn(), confirm=jest.fn(()=>true);
-  const context={document,calibrationProgress,$:selector=>document.querySelector(selector),MAX_EXAMPLES_PER_CLASS:10,calibration,
+  const context={learnPage:null,document,calibrationProgress,$:selector=>document.querySelector(selector),MAX_EXAMPLES_PER_CLASS:10,calibration,
     profileLocked:()=>locked,recordCalibration,clearCalibrationExamples,ownerId:()=> 'gun-one',getCalibrationExamples:async()=>[],
     setBusy,confirm,showError:jest.fn(),renderClassCards:jest.fn()};
   const render=vm.runInNewContext(body+';bindCalibrationActions();renderCalibrationCards;',context);

@@ -1,3 +1,4 @@
+import {createHash} from 'node:crypto';
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 const library=readFileSync(new URL('./fixtures/library.json',import.meta.url));
@@ -111,5 +112,5 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   await page.locator('.tab[data-view="home"]').click();await page.locator('#settingsShortcut').click();
   await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
   expect(await file.evaluate(node=>node===document.getElementById('importFile'))).toBe(true);
-  expect(await page.locator('#settingsView').screenshot({animations:'disabled'})).toEqual(before);
+  expect(createHash('sha256').update(await page.locator('#settingsView').screenshot({animations:'disabled'})).digest('hex')).toBe(createHash('sha256').update(before).digest('hex'));
 });

@@ -96,26 +96,31 @@
     {
       "id": "learn",
       "targetOwner": "LearnPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/learn.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/LearnPage/LearnPage.tsx",
       "behaviorTests": [
         "tests/storage.test.js",
         "tests/pageTemplates.test.js",
         "tests/calibrationCatalogLegacy.test.js",
-        "tests/calibrationCatalogParity.test.tsx"
+        "tests/calibrationCatalogParity.test.tsx",
+        "apps/web/src/pages/LearnPage/LearnPage.test.tsx",
+        "packages/ui/src/SoundCard/SoundCard.test.tsx",
+        "tests/learnPageMount.test.tsx",
+        "tests/learningPresentation.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
         "src/audio.js",
-        "src/calibration.js"
+        "src/calibration.js",
+        "apps/web/src/app/learnPage.tsx"
       ],
       "stableSelectorExamples": [
         "classCards",
         "optionalClassCards",
         "calibrationCards"
       ],
-      "draftOwnership": "Sound/calibration class and gun ID captured before async microphone permission.",
+      "draftOwnership": "Typed page/card/calibration runtime on later unlocked entry; disclosure and focus snapshots preserve drafts. Capture, feature data, sample limits and safety remain native feature controllers. Initial fallback remains P7.",
       "effects": [
         "Safety-gated recording and track/context cleanup; owned numeric feature writes/resets"
       ]

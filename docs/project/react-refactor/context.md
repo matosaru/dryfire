@@ -11,21 +11,21 @@ Updated 2026-10-19 (Europe/Vilnius). Compact handoff; detailed scope/results sta
 
 ## Current work
 
-Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: `54e8f29`.
+Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: Settings `6a32cb1`.
 
 P0/P1 are complete. P2 shared presentation and P3 Home/gun page handoffs are verified. Initial native fallback retirement remains P7.
 
-**Active: P4. Settings runtime is implemented.** The typed page mounts on a later explicit unlocked visit after lazy loading. Exact native file-input and private-preview nodes remain platform-owned islands; existing handlers transfer to React callbacks. One runtime update port owns preference/context/reset/lock presentation. Failed mount restores native nodes/focus/events. First-visit native fallback remains P7. Learn/Live Listen and P5–P7 remain pending.
+**Active: P4. Settings and Learn runtime are implemented.** Settings retains exact native file/preview islands; Learn uses shared SoundCard/CalibrationCatalog with guarded feature callbacks. Both load on first visit and transfer only on a later explicit unlocked entry. Update ports own presentation; root failure restores native nodes/focus/events. Learn preserves disclosure drafts, semantic focus, limits/optional/calibration/reset/safety. Learn mount coverage is 100% statement/function/line and 96% branch. Native startup fallbacks remain P7. Live Listen and P5–P7 remain pending.
 
 ## Next action
 
-Finish publication/observe canonical Settings CI, then characterize and migrate Learn followed by Live Listen. Preserve ten-sample limits, optional/calibration sounds, cancellation/late permission, resets, repeated recognition, safety and teardown. Continue automatically on b; no new approval is needed.
+Observe canonical Learn CI after publication; characterize and migrate Live Listen. Preserve continuous detection, ignored unknowns, sensitivity/sequence drafts, capture/safety guards, background/stop and microphone cleanup. Continue automatically on b, then P5–P7; no new approval is needed.
 
 ## Verification and open debt
 
-This increment: **567 tests / 83 suites**, coverage/type/lint/architecture/docs and both minified artifacts pass. Local public and Full-preview workflows cover actual Settings runtime, backup/import/export/reset, theme, drafts, navigation and retained file/preview controls. Delayed-module tests compare native/mounted pixels in Dark/Light without replacing any screenshot baseline. Canonical CI for this increment is not yet observed.
+This increment: **577 tests / 86 suites**, coverage/type/lint/architecture/docs, smoke and both minified artifacts pass. Public/Full-preview workflows cover profiles, drafts, backup/reset and actual mounted Settings/Learn. Native/React Dark/Light pixels match exactly with the existing SVG-clock fixture. CSS remains 61451 raw / 13011 gzip; current screenshots and encoded guide media are unchanged. Learn canonical CI is not yet observed.
 
-Previous milestone 54e8f29: canonical validation and both screenshot editions pass; performance gates fail. Preserve 390 image references, 83 captures and 12 guide exports. Local system Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons.
+Settings 6a32cb1: canonical validation and both screenshot editions pass; performance fails. Preserve 390 image references, 83 captures and 12 guide exports. Local system Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons. Initial JS now public 51709 gzip / preview 52053, +902/+907 vs original; keep this debt visible.
 
 CHG-050 defers optimization until structural work is done. Original gzip/timing gates remain unchanged and failing honestly; see the plan's ledger. Do not claim fresh timing after a size gate stops measurement. Resolve all debt before final release.
 

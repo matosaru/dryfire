@@ -74,6 +74,7 @@ let historyRenderToken = 0;
 let homeRenderToken = 0;
 let homePage, homePagePending, profilePages, gunSetupPage;
 let settingsPage, settingsModule, settingsModulePending;
+let learnPage, learnModule, learnModulePending;
 const settingsHandlers = new Map();
 function bindSettings(id,type,handler){settingsHandlers.set(id,handler);$('#'+id).addEventListener(type,handler);}
 function settingsText(id,text){if(settingsPage)settingsPage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
@@ -141,9 +142,10 @@ function renderGunControls() {
     $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   }
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) $('#'+id).disabled = profileLocked() || !activeGun || activeGun.needsDetails;
-  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
-  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
   settingsPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+  learnPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   if (!activeGun || activeGun.needsDetails) {settingsDisabled('resetModelBtn',true);document.querySelectorAll('#clearHistoryBtn, #verifyLatestBtn').forEach(button => { button.disabled = true; });}
   settingsDisabled('exportBtn',profileLocked());
   settingsDisabled('importBtn',profileLocked());
@@ -162,8 +164,7 @@ async function loadActiveGun() {
   examples = id ? await getExamples(id) : [];
   customDrills = id ? await getCustomDrills(id) : [];
   const legacy = id ? await getOutdatedExampleCount(id) : 0;
-  $('#modelNotice').textContent = `${legacy} older training sample(s) use an incompatible feature format and are ignored. Reset this gun's sounds and record new samples for the updated model.`;
-  $('#modelNotice').classList.toggle('hidden', legacy === 0);
+  renderModelNotice(`${legacy} older training sample(s) use an incompatible feature format and are ignored. Reset this gun's sounds and record new samples for the updated model.`,legacy===0);
   $('#maxResults').value = id ? normalizeMaxResults(await getGunSetting('maxResults', 50, id)) : 50;
   $('#sensitivity').value = id ? await getGunSetting('sensitivity', 'normal', id) : 'normal';
   if (!$('#sensitivity').value) $('#sensitivity').value = 'normal';
@@ -379,8 +380,19 @@ function setBusy(next) {
 }
 function getCounts() { return trainingCounts(examples); }
 
+function renderModelNotice(notice,noticeHidden){if(learnPage)learnPage.update({notice,noticeHidden});else{$('#modelNotice').textContent=notice;$('#modelNotice').classList.toggle('hidden',noticeHidden);}}
+function learningProps(){
+  const counts=getCounts();
+  return{locked:profileLocked(),cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
+    label,meta:labelMeta[label],count:counts[label],maxExamples:MAX_EXAMPLES_PER_CLASS,minExamples:MIN_EXAMPLES_PER_CLASS,recommendedExamples:RECOMMENDED_EXAMPLES_PER_CLASS,locked:profileLocked(),
+    onRecord:()=>recordExample(label),onReset:()=>resetSoundProfile(label),optional:label!=='trigger',enabled:enabledSoundLabels.includes(label),onToggle:enabled=>toggleOptionalSound(label,enabled),
+  })),calibrationProps:{counts:Object.fromEntries(['reset','noise','cue'].map(kind=>[kind,calibration.filter(row=>row.kind===kind).length])),maximum:MAX_EXAMPLES_PER_CLASS,locked:profileLocked(),
+    onRecord:kind=>{if(!profileLocked())recordCalibration(kind);},onReset:kind=>resetCalibration(kind,{reset:'Trigger reset clicks',noise:'Other noise / handling',cue:'External start beep'}[kind]),
+  }};
+}
 function renderLearningLocks() {
   const counts = getCounts(), locked = profileLocked() || !activeGun || activeGun.needsDetails;
+  if(learnPage){learnPage.update({locked});return;}
   document.querySelectorAll('.class-card[data-sound-label]').forEach(card => {
     const count = counts[card.getAttribute('data-sound-label')] || 0;
     card.querySelector('.record-example').disabled = locked || count >= MAX_EXAMPLES_PER_CLASS;
@@ -390,7 +402,8 @@ function renderLearningLocks() {
 
 function renderClassCards() {
   const counts = getCounts();
-  if (activeView === 'learn') {
+  if (activeView === 'learn' && learnPage) learnPage.update(learningProps());
+  else if (activeView === 'learn') {
     const host = $('#classCards');
     host.replaceChildren();
     const optionalHost = $('#optionalClassCards');
@@ -433,6 +446,7 @@ async function toggleOptionalSound(label, enabled) {
   finally { preferencePending = false; renderLiveButton(); renderClassCards(); }
 }
 function renderCalibrationCards() {
+  if(learnPage){learnPage.update({calibrationProps:learningProps().calibrationProps});return;}
   for (const card of $('#calibrationCards').children) {
     const record = card.querySelector('[data-calibration-kind]');
     const count = calibration.filter(row => row.kind === record.dataset.calibrationKind).length;
@@ -450,11 +464,14 @@ function bindCalibrationActions() {
     const kind = card.querySelector('[data-calibration-kind]').dataset.calibrationKind;
     if (button.dataset.calibrationKind) { recordCalibration(kind); return; }
     const title = card.querySelector('h3').textContent;
-    if (!confirm(`Remove ${title} calibration for this gun? Learned action sounds and all history stay saved.`)) return;
-    setBusy(true);
-    try { await clearCalibrationExamples(kind, ownerId()); calibration = await getCalibrationExamples(ownerId()); }
-    catch (error) { showError(error); } finally { setBusy(false); renderClassCards(); }
+    await resetCalibration(kind,title);
   });
+}
+async function resetCalibration(kind,title){
+  if(profileLocked() || !confirm(`Remove ${title} calibration for this gun? Learned action sounds and all history stay saved.`))return;
+  setBusy(true);
+  try{await clearCalibrationExamples(kind,ownerId());calibration=await getCalibrationExamples(ownerId());}
+  catch(error){showError(error);}finally{setBusy(false);renderClassCards();}
 }
 async function recordCalibration(kind) {
   const gunId = ownerId();
@@ -514,7 +531,14 @@ function displayView(name) {
   window.scrollTo({top:0,behavior:'instant'});
   for(const view of PAGE_IDS) $('#'+view+'View').classList.toggle('hidden',view!==name);
   setMessage();
-  if(name==='learn')renderClassCards();
+  if(name==='learn'){
+    if(!learnPage && learnModule && !profileLocked() && !$('#safetyModal').open){
+      try{learnPage=learnModule.mountLearnPage($('#learnView'),{...learningProps(),onBack:()=>goBack()});}catch(error){showError(error);}
+    }else if(!learnModule && !learnModulePending){
+      learnModulePending=import('../apps/web/src/app/learnPage.tsx').then(module=>{learnModule=module;}).catch(showError).finally(()=>{learnModulePending=null;});
+    }
+    renderClassCards();
+  }
   if(name==='history')renderHistory().catch(showError);
   if(name==='home')renderHome().catch(showError);
   if(name==='guns')renderGunLibrary().catch(showError);
@@ -1100,7 +1124,7 @@ async function init() {
       await clearExamples(ownerId());
       examples = [];
       calibration = [];
-      $('#modelNotice').classList.add('hidden');
+      if(learnPage)learnPage.update({noticeHidden:true});else $('#modelNotice').classList.add('hidden');
       setStatus('All learned sounds reset');
       setMessage(`All learned sounds for ${activeGun.name} were reset. Other guns and recognition history were kept.`);
       settingsText('soundResetOutcome',`All learned sounds and calibration for ${activeGun.name} were reset. Saved guns, presets and history were kept.`);

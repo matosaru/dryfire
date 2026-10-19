@@ -20,7 +20,7 @@
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
-    "tools/page-templates.mjs": "e9ff834162c6116ed00c05e7815dc2d070b8c0f7dbd155ff58474f69745715ad",
+    "tools/page-templates.mjs": "ae6d98a8d06e8e5688c0095e2fd76716598787f7c005a973d99d74dd4c7dee8f",
     "tools/export-guide-examples.mjs": "0c1f31a7c9742ac8cde728c0d54cb6f13e7f47c0ee94b91512761bf5abb3308b",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
@@ -33,7 +33,7 @@
     "apps/web/src/styles/legacy-base-content.css": "92ec5f9ae96f358cb291309fadfaf689d960ce0e383bb85b8cb1d3e7dc1b65cd",
     "packages/ui/src/BottomNavigation/BottomNavigation.css": "5708fbb98df65fe43f6ec0e2a4f2b1bfb8c973a9c5c95098e78b220975fd0ac4",
     "apps/web/src/styles/legacy-cards.css": "1859a192b56f8d040b6380ab4b85ae8317245d353ba93ab3f4715b799ef1cc54",
-    "apps/web/src/styles/legacy-controls-content.css": "a4f12d812ef793246adfeed279ae1c82c691452278c5db7730781c6b3fdbc299",
+    "apps/web/src/styles/legacy-controls-content.css": "f7aa144e2e11aeb48a65fe3b22c7d0cc8f4810019f369498f909850f9f73cbd6",
     "packages/ui/src/InfoFooter/InfoFooter.css": "c067b2816187a004a3168219ec42e6091b5517065faceeed7ff22beed70b6b9b",
     "apps/web/src/styles/legacy-info-visibility.css": "20364cba9bf4a2abdb5e25bf69477773b3f021a34c6c19b13fbc7895ee2ccf99",
     "apps/web/src/styles/legacy-theme-core.css": "cd2f4049eb44f1723b6b505e7c1f1f5fd72f66440f432a7f78a58df4f6043420",
@@ -61,7 +61,10 @@
     "apps/web/src/styles/legacy-after-gun-setup.css": "a672b0491c990644a45d06032e0d0756f2edc84ccc0240719c3290401dd1a0ee",
     "apps/web/src/styles/legacy-before-settings.css": "7dc974973ff4720c2075a21ce2229b2e91e03c14044e0ef8d907e81db6615d11",
     "apps/web/src/pages/SettingsPage/SettingsPage.css": "a2140e42d6ee524b59cb95fd26f22335d8a4f1556336dae40c422a6a91298880",
-    "apps/web/src/styles/legacy-after-settings.css": "7636861c06b84a20f4e4ba6599a4078c44e8b7ddc8acc24bc220c3abbef63b6a"
+    "apps/web/src/styles/legacy-after-settings.css": "7636861c06b84a20f4e4ba6599a4078c44e8b7ddc8acc24bc220c3abbef63b6a",
+    "apps/web/src/pages/LearnPage/LearnPage.css": "1be7874e8228e2159550a7d8f41ef0c0e6cd6bfe73b481eeffc8afdd3cb8da2d",
+    "packages/ui/src/SoundCard/SoundCard.css": "eb3a52e26d1d1ea910e0c1002b852982ac16a2424b3a8781b280b7ffbb57a18d",
+    "apps/web/src/styles/legacy-after-sound-card.css": "95fd1863dd1e44a77fe77f627189f93565a4cd4d7e3a360648fc1190e96b052e"
   },
   "exports": [
     {

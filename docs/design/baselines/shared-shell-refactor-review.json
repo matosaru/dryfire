@@ -135,5 +135,9 @@
   "settingsRuntime": {
     "source": "apps/web/src/app/settingsPage.tsx",
     "review": "No visible design/CSS/media change. Lazy later-entry root handoff retains original file/preview nodes in display-contents islands. Frozen static DOM parity, native presentation characterization, focus/rollback/picker/state tests and real browser import/export/theme/reset workflows protect the boundary. Canonical screenshots remain required and unchanged."
+  },
+  "learnRuntime": {
+    "source": "apps/web/src/app/learnPage.tsx",
+    "review": "Frozen complete Learn template parity, every native SoundCard count/lock/optional state and byte-identical expanded/optimized CSS protect source equivalence. Guide engines, fragments, scenario settings and encoded exports are unchanged; coarse compiler/style fingerprints are updated for unchanged inputs. Runtime disclosures, focus, rollback, limits and action ownership have unit/integration coverage. Both-theme native/React pixel checks and both-edition workflows are required before publication."
   }
 }

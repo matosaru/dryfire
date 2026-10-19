@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { renderLearnPage } from '../apps/web/src/app/renderLearnPage.tsx';
 import { renderSettingsPage } from '../apps/web/src/app/renderSettingsPage.tsx';
 import { renderGunSetupPage } from '../apps/web/src/app/renderGunSetupPage.tsx';
 import { renderHomePage } from '../apps/web/src/app/renderHomePage.tsx';
@@ -38,7 +39,7 @@ const numberInputs = Object.fromEntries([
   ['maxResults', '50']
 ].map(([id, value, name]) => [id + 'Input', renderNumberInput(id, value, name)]));
 const fragments = { ...runFragments, ...numberInputs, calibrationCatalog: renderCalibrationCatalog(), practiceCatalog: renderPracticeCatalog(PRACTICE_MODES) };
-const content = id => id === 'settings' ? renderSettingsPage(read('shared/preview-testing')) : id === 'gunSetup' ? renderGunSetupPage() : id === 'home' ? renderHomePage() : id === 'guns' ? renderGunsPage() : ['about', 'contact'].includes(id) ? renderInformationPage(id) : fill(read(`pages/${id}`), fragments);
+const content = id => id === 'learn' ? renderLearnPage(fragments.calibrationCatalog) : id === 'settings' ? renderSettingsPage(read('shared/preview-testing')) : id === 'gunSetup' ? renderGunSetupPage() : id === 'home' ? renderHomePage() : id === 'guns' ? renderGunsPage() : ['about', 'contact'].includes(id) ? renderInformationPage(id) : fill(read(`pages/${id}`), fragments);
 
 // Only trusted, repository-owned templates are compiled. User data still uses
 // the application's existing textContent/form APIs after the page is loaded.

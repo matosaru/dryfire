@@ -10,16 +10,16 @@ import {renderPageTemplates} from '../tools/page-templates.mjs';
 import {soundCard} from '../src/uiComponents.js';
 const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const start=source.indexOf('const labelMeta ='), metadata=source.slice(start,source.indexOf('};',start)+2);
-const rendering=source.slice(source.indexOf('function renderLearningLocks()'),source.indexOf('async function toggleOptionalSound'));
+const rendering=source.slice(source.indexOf('function learningProps()'),source.indexOf('async function toggleOptionalSound'));
 function setup() {
   document.body.innerHTML=renderPageTemplates('{{app}}');
   const counts={trigger:3,draw:1,rack:0,reload:0};
   const record=jest.fn(),reset=jest.fn(),calibration=jest.fn();
-  const context={homePage:undefined,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
+  const context={learnPage:null,homePage:undefined,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
     titleFor:label=>label,labels:['draw','rack','trigger','reload'],getCounts:()=>counts,triggerReady:()=>counts.trigger>=3,
     MAX_EXAMPLES_PER_CLASS:10,MIN_EXAMPLES_PER_CLASS:3,RECOMMENDED_EXAMPLES_PER_CLASS:8,
     profileLocked:()=>context.busy,busy:false,livePendingStart:false,liveSession:null,sessionController:null,practiceController:null,
-    enabledSoundLabels:['trigger','draw'],recordExample:record,resetSoundProfile:reset,toggleOptionalSound:jest.fn(),renderCalibrationCards:calibration,
+    calibration:[],recordCalibration:jest.fn(),resetCalibration:jest.fn(),enabledSoundLabels:['trigger','draw'],recordExample:record,resetSoundProfile:reset,toggleOptionalSound:jest.fn(),renderCalibrationCards:calibration,
   };
   const {renderClassCards,renderLearningLocks}=vm.runInNewContext(metadata+'\n'+rendering+'\n;({renderClassCards,renderLearningLocks});',context);
   return{context,counts,record,reset,calibration,render:renderClassCards,locks:renderLearningLocks};
@@ -65,4 +65,8 @@ test('practice updates retain hidden Learning nodes while readiness stays curren
 test('after Home ownership transfer, readiness is sent to its renderer without native Home mutations',()=>{
  const s=setup(),update=jest.fn();s.context.homePage={update};document.querySelector('#homeExamples').textContent='Owned';s.render();
  expect(update).toHaveBeenCalledWith({training:'3 / 8 trigger',listenDisabled:false});expect(document.querySelector('#homeExamples')).toHaveTextContent('Owned');
+});
+
+test('mounted Learn receives the owned model and callbacks without native card writes',()=>{
+ const s=setup();s.context.learnPage={update:jest.fn()};s.context.calibration=[{kind:'noise'}];s.render();const view=s.context.learnPage.update.mock.calls[0][0];expect(view.cards.map(card=>card.label)).toEqual(['trigger','draw','rack','reload']);expect(view.calibrationProps.counts).toEqual({reset:0,noise:1,cue:0});expect(document.querySelector('#classCards').children).toHaveLength(0);view.cards[0].onRecord();view.cards[1].onReset();view.cards[1].onToggle(false);expect(s.record).toHaveBeenCalledWith('trigger');expect(s.reset).toHaveBeenCalledWith('draw');expect(s.context.toggleOptionalSound).toHaveBeenCalledWith('draw',false);view.calibrationProps.onRecord('noise');view.calibrationProps.onReset('noise');expect(s.context.recordCalibration).toHaveBeenCalledWith('noise');expect(s.context.resetCalibration).toHaveBeenCalledWith('noise','Other noise / handling');s.context.busy=true;view.calibrationProps.onRecord('cue');expect(s.context.recordCalibration).toHaveBeenCalledTimes(1);s.locks();expect(s.context.learnPage.update).toHaveBeenLastCalledWith({locked:true});
 });

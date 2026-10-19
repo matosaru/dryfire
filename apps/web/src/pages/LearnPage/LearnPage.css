@@ -1,0 +1,1 @@
+.class-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:13px; margin:22px 0 16px; }
