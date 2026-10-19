@@ -11,11 +11,11 @@ Updated 2026-10-19 (Europe/Vilnius). Compact handoff; detailed scope/results sta
 
 ## Current work
 
-Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: `b02bc5c`.
+Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: `38dec7e`.
 
 P0/P1 are complete. P2 shared presentation and P3 Home/gun page handoffs are verified. Initial native fallback retirement remains P7.
 
-**Active: P4 Settings.** Pure preference model and typed SettingsPage build source are implemented. The full-page DOM matches frozen public/preview fixtures; CSS is byte-identical. Private preview markup has its own shared template. **Settings runtime/events remain native**; Learn/Live Listen roots and P5–P7 remain pending.
+**Active: P4 Settings.** Pure preference model and typed SettingsPage build source are implemented. The full-page DOM matches frozen public/preview fixtures; CSS is byte-identical. Private preview markup has its own shared template. Preview simulation now safely rebinds replacement controls without recreating state or retaining stale listeners. **Settings runtime/events remain native**; Learn/Live Listen roots and P5–P7 remain pending.
 
 ## Next action
 
@@ -23,9 +23,9 @@ Transfer Settings runtime only after protecting backup file-picker lifetime and 
 
 ## Verification and open debt
 
-This increment: **560 tests / 81 suites**, coverage/type/lint/architecture/docs checks and minified public/preview artifacts pass. Native preference behavior and frozen Settings DOM parity are tested. **11 public + 10 Full-preview** Chromium workflows and all 16 smoke checks pass. Canonical CI for this new source is pending publication.
+This increment: **562 tests / 82 suites**, coverage/type/architecture/docs checks and the minified preview artifact pass. Two DOM regressions failed before the listener fix and pass afterward. Both Full-preview Chromium edition workflows pass. No markup/CSS/media or public behavior changes. Canonical CI for this increment is not yet observed.
 
-Previous milestone b02bc5c: canonical validation and both screenshot editions pass; performance gates fail. Preserve 390 image references, 83 captures and 12 guide exports. Local system Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons.
+Previous milestone 38dec7e: canonical validation and both screenshot editions pass; performance gates fail. Preserve 390 image references, 83 captures and 12 guide exports. Local system Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons.
 
 CHG-050 defers optimization until structural work is done. Original gzip/timing gates remain unchanged and failing honestly; see the plan's ledger. Do not claim fresh timing after a size gate stops measurement. Resolve all debt before final release.
 

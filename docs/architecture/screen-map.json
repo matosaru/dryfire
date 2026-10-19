@@ -809,7 +809,7 @@
     "src/optional/customDrillEditor.js": "f2cfbb0dd516db78a9c82c78f6369842f38911c25f96abcc1ed2cb7ae1f5642d",
     "src/storage.js": "1f3efb7fe822f3acd74b0a5a82d8073826126ce58b8fff38aa3fba5efb88f067",
     "vite.config.js": "925dede87e9117422336fb290ffaedf7414ef8457a02f5aee0ecbee06f33a6c2",
-    "src/optional/previewTesting.js": "636e98be5b0a50feb348c07725107010a0a922a7914c6c2b45c0fe99c4c4cfe8",
+    "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
     "tools/page-templates.mjs": "e9ff834162c6116ed00c05e7815dc2d070b8c0f7dbd155ff58474f69745715ad",
