@@ -275,7 +275,7 @@
     {
       "id": "settings",
       "targetOwner": "SettingsPage",
-      "renderer": "legacy",
+      "renderer": "react",
       "source": "apps/web/src/pages/SettingsPage/SettingsPage.tsx",
       "behaviorTests": [
         "tests/audioPreferences.test.js",
@@ -283,14 +283,17 @@
         "tests/settingsPreferencesPresentation.test.js",
         "apps/web/src/features/settings/preferencePresentation.test.ts",
         "apps/web/src/pages/SettingsPage/SettingsPage.test.tsx",
-        "tests/settingsTemplateParity.test.tsx"
+        "tests/settingsTemplateParity.test.tsx",
+        "tests/settingsPageMount.test.tsx",
+        "tests/previewTestingDom.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
         "src/audioPreferences.js",
         "src/optional/previewTesting.js",
-        "apps/web/src/features/settings/preferencePresentation.ts"
+        "apps/web/src/features/settings/preferencePresentation.ts",
+        "apps/web/src/app/settingsPage.tsx"
       ],
       "stableSelectorExamples": [
         "appearance",
@@ -298,7 +301,7 @@
         "importFile",
         "maxResults"
       ],
-      "draftOwnership": "Typed build-time page source; native Settings inputs/events and private simulation remain runtime owners until guarded transfer.",
+      "draftOwnership": "Typed prerender and lazy Settings runtime; guarded later-entry handoff preserves original file-input/private-preview nodes. React owns page structure and callbacks; one typed update port owns dynamic presentation. Initial native fallback remains until P7.",
       "effects": [
         "Capability checks and preference writes; validated restore/export; confirmed full-library reset"
       ]

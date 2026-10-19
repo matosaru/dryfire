@@ -70,3 +70,46 @@ test('invalid edit drafts survive About and Contact, then Cancel preserves every
   const after=await backup(page);
   for(const key of Object.keys(before).filter(key=>key!=='exportedAt'))expect(after[key]).toEqual(before[key]);
 });
+
+test('React Settings retains backup picker, disclosure, theme and action ownership across repeated visits',async({page})=>{
+  const errors=[];page.on('pageerror',error=>errors.push(error.message));
+  page.on('dialog',dialog=>dialog.accept());
+  const loaded=page.waitForResponse(response=>/\/assets\/settingsPage-/.test(response.url()));
+  await restore(page);await loaded;
+  await page.locator('#settingsShortcut').click();
+  await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
+  if(await page.locator('#previewTestMode').count()){await page.locator('#previewTestMode').selectOption('free');await expect(page.locator('#previewModeBadge')).toContainText('Free mode');await page.locator('#previewTestMode').selectOption('full');await expect(page.locator('#previewModeBadge')).toContainText('Full mode');}
+  await page.locator('.install-details summary').click();
+  await expect(page.locator('.install-details')).toHaveAttribute('open','');
+  await page.locator('#appearance').selectOption('light');await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+  const input=await page.locator('#importFile').elementHandle();
+  await page.locator('.tab[data-view="home"]').click();await page.locator('#settingsShortcut').click();
+  await expect(page.locator('.install-details')).toHaveAttribute('open','');
+  expect(await input.evaluate(node=>node===document.getElementById('importFile'))).toBe(true);
+  await expect(page.locator('#appearance')).toHaveValue('light');
+  const download=page.waitForEvent('download');await page.locator('#exportBtn').click();
+  const saved=JSON.parse(readFileSync(await(await download).path(),'utf8'));expect(saved.guns).toHaveLength(3);
+  const picker=page.waitForEvent('filechooser');await page.locator('#importBtn').click();
+  await(await picker).setFiles({name:'library.json',mimeType:'application/json',buffer:library});
+  await expect(page.locator('#homeView')).toBeVisible();
+  await page.locator('#settingsShortcut').click();await page.locator('#resetModelBtn').click();await expect(page.locator('#soundResetOutcome')).toContainText('Saved guns, presets and history were kept.');
+  expect(errors).toEqual([]);
+});
+
+for(const theme of ['dark','light'])test(`delayed Settings code keeps controls and pixel-identical ${theme} handoff`,async({page})=>{
+  let release;const blocked=new Promise(resolve=>{release=resolve;});
+  await page.route('**/assets/settingsPage-*.js',async route=>{await blocked;await route.continue();});
+  page.on('dialog',dialog=>dialog.accept());await restore(page);
+  await page.locator('#settingsShortcut').click();
+  await expect(page.locator('#settingsView')).not.toHaveAttribute('data-react-settings');
+  await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
+  const file=await page.locator('#importFile').elementHandle();
+  const before=await page.locator('#settingsView').screenshot({animations:'disabled'});
+  const loaded=page.waitForResponse(response=>/\/assets\/settingsPage-/.test(response.url()));release();await loaded;
+  expect(await file.evaluate(node=>node===document.getElementById('importFile'))).toBe(true);
+  await expect(page.locator('#settingsView')).not.toHaveAttribute('data-react-settings');
+  await page.locator('.tab[data-view="home"]').click();await page.locator('#settingsShortcut').click();
+  await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
+  expect(await file.evaluate(node=>node===document.getElementById('importFile'))).toBe(true);
+  expect(await page.locator('#settingsView').screenshot({animations:'disabled'})).toEqual(before);
+});

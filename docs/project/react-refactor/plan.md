@@ -52,8 +52,8 @@ Structural work continues under CHG-050 while known performance debt is recorded
 
 ## P4 next steps
 
-1. **Settings preference boundary — active.** Characterize the existing native presentation first, then extract a pure feature model reusable by native fallback and React. Preserve gun-owned audio preferences, device appearance/vibration, actual-track reports, Safari unsupported states and lock scopes.
-2. **Settings source/runtime — source implemented, runtime pending.** Typed SettingsPage, CSS, callback and frozen DOM-parity tests now supply the build; runtime remains native. Protect backup/import, single-gun sound reset, complete-library deletion, system theme, file-picker lifetime and private Free/Full simulation. Never replace an active file input or detach the preview controller without an explicit handoff. Preview-control rebinding is now implemented and regression-tested: rendering onto replacement controls preserves simulation state, removes the stale listener and retains locks. The Settings runtime root and file-picker lifetime transfer remain pending.
+1. **Settings preference boundary — implemented.** Characterize the existing native presentation first, then extract a pure feature model reusable by native fallback and React. Preserve gun-owned audio preferences, device appearance/vibration, actual-track reports, Safari unsupported states and lock scopes.
+2. **Settings source/runtime — implemented and locally verified.** Typed SettingsPage, CSS, callback and frozen DOM-parity tests now supply the build; runtime transfers on a later explicit unlocked entry while preserving native file/preview nodes. Protect backup/import, single-gun sound reset, complete-library deletion, system theme, file-picker lifetime and private Free/Full simulation. Never replace an active file input or detach the preview controller without an explicit handoff. Preview-control rebinding is now implemented and regression-tested: rendering onto replacement controls preserves simulation state, removes the stale listener and retains locks. The guarded runtime root and file-picker lifetime transfer are implemented and covered by unit and real-browser workflow tests; initial fallback retirement remains P7.
 3. **Learn.** Preserve required trigger/optional categories, recording/calibration limits, cancellation/late permission, per-sound reset, previews and details state.
 4. **Live Listen.** Preserve continuous detections, ignored unknowns, sensitivity/sequence state, safety, stop/background/pagehide and microphone cleanup. Reuse the existing audio/session engines.
 5. Verify each slice, update source ownership/architecture/history and push to b. Then proceed to P5 without another approval request.
@@ -65,7 +65,7 @@ Structural work continues under CHG-050 while known performance debt is recorded
 | gunSetup | GunSetupPage | Typed page and handoff verified; invalid drafts/native validation, cancel/reset, restore and capacity protected; initial fallback remains P7. |
 | home | HomePage | Typed page and handoff verified; current gun summaries, stale reads, readiness, focus and navigation protected; initial fallback remains P7. |
 | guns | GunsPage | React library owner verified; edit/delete/selection locks, owned-data isolation and final-gun fallback protected. |
-| settings | SettingsPage | P4 preference boundary active; page root still native. |
+| settings | SettingsPage | Lazy runtime/root handoff implemented; stable file/preview islands, exclusive update port, preference/reset/backup behavior verified. Initial fallback remains P7. |
 | learn | LearnPage | P4 pending; recording/calibration, optional categories and cleanup characterization before transfer. |
 | recognize | LiveListenPage | P4 pending; repeated recognition, ignored unknowns, safety and stream teardown. |
 | drills | DrillsPage | P5 pending; static PracticeCatalog already extracted, whole page/editor remains native. |
@@ -120,7 +120,7 @@ Final acceptance compares against the original released source, never a slower i
 - Public baseline: `6c38bff81662d30279d94d41ca5c949bdbbe1c6e`.
 - Full baseline: `a5b76e8d524c311bcbde1dc5740b2f5d0fa8e8bd`.
 - Original initial JS gzip: public **50,807 bytes**, preview **51,146 bytes**. Original CSS **61,451 raw / 13,011 gzip bytes**.
-- Latest published P3 initial JS: public **50,869 gzip (+62)**, preview **51,200 (+54)**. Gates remain failing and unchanged. P4 first-boundary measurements: public **51,092 gzip (+285 vs original)**, preview **51,412 (+266)**; CSS remains byte-identical. These failures remain explicit optimization debt, not passing acceptance.
+- Latest published P3 initial JS: public **50,869 gzip (+62)**, preview **51,200 (+54)**. Gates remain failing and unchanged. P4 first-boundary measurements: public **51,092 gzip (+285 vs original)**, preview **51,412 (+266)**; CSS remains byte-identical. Settings runtime measurements: public **51,357 gzip (+550 vs original)**, preview **51,690 (+544)**; CSS still **61,451 raw / 13,011 gzip**. These failures remain explicit optimization debt, not passing acceptance.
 - Last completed public WebKit comparison before these size failures: warm startup **37→45 ms**, with the extra phase delay before interactive. No new passing timing result is inferred after a payload gate stops measurement.
 - Keep JS/CSS minification, tree shaking, lazy loading and full chunk/source-leak verification. Include HTML and actual critical requests in evidence; a smaller JS entry alone is not a faster app.
 - At P7 rerun repeated paired cold/warm/returning startup, input/navigation/recognition feedback and cleanup/memory checks. Identical-build controls do not override a candidate failure. Resolve all reproducible regressions before final release.

@@ -73,6 +73,11 @@ let screenNavigation = null;
 let historyRenderToken = 0;
 let homeRenderToken = 0;
 let homePage, homePagePending, profilePages, gunSetupPage;
+let settingsPage, settingsModule, settingsModulePending;
+const settingsHandlers = new Map();
+function bindSettings(id,type,handler){settingsHandlers.set(id,handler);$('#'+id).addEventListener(type,handler);}
+function settingsText(id,text){if(settingsPage)settingsPage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
+function settingsDisabled(id,disabled){if(settingsPage)settingsPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
 let gunLibraryPage;
 let gunLibraryToken = 0;
 let calibration = [];
@@ -99,6 +104,7 @@ function renderPreferences() {
   const view=preferencePresentation({capabilities:getAudioCapabilities(),audioPreferences,processingReport,appearance,
     gunAvailable:!!activeGun && !activeGun.needsDetails,locked:profileLocked(),deviceLocked:busy || profileLoading || preferencePending,
     vibrationFeedback,vibrationSupported:getVibrationCapability(),vibrationRejected});
+  if(settingsPage){settingsPage.update({preferences:view});return;}
   for(const item of view.audio){
     const input=$('#'+item.inputId);input.checked=item.checked;input.disabled=item.disabled;$('#'+item.statusId).textContent=item.status;
   }
@@ -125,21 +131,22 @@ function renderGunControls() {
   $('#activeGunName').textContent = activeGun?.name || 'Your gun';
   $('#activeGunType').textContent = activeGun?.type || 'Add profile details';
   $('#activeGunImage').src = gunImagePath(activeGun?.type);
-  $('#soundResetSummary').textContent = activeGun && !activeGun.needsDetails
+  settingsText('soundResetSummary',activeGun && !activeGun.needsDetails
     ? `${examples.length} learned samples · ${calibration.length} calibration samples for ${activeGun.name}`
-    : 'Choose a gun before resetting its learned sounds.';
-  $('#resetLibraryBtn').disabled = profileLocked();
+    : 'Choose a gun before resetting its learned sounds.');
+  settingsDisabled('resetLibraryBtn',profileLocked());
   if (gunLibraryPage) gunLibraryPage.setLocked(profileLocked());
   else {
     $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
     $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   }
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) $('#'+id).disabled = profileLocked() || !activeGun || activeGun.needsDetails;
-  document.querySelectorAll(homePage ? '.view:not(#homeView) .gun-context-name' : '.gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
-  document.querySelectorAll(homePage ? '.view:not(#homeView) .gun-context' : '.gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
-  if (!activeGun || activeGun.needsDetails) document.querySelectorAll('#resetModelBtn, #clearHistoryBtn, #verifyLatestBtn').forEach(button => { button.disabled = true; });
-  $('#exportBtn').disabled = profileLocked();
-  $('#importBtn').disabled = profileLocked();
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
+  settingsPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+  if (!activeGun || activeGun.needsDetails) {settingsDisabled('resetModelBtn',true);document.querySelectorAll('#clearHistoryBtn, #verifyLatestBtn').forEach(button => { button.disabled = true; });}
+  settingsDisabled('exportBtn',profileLocked());
+  settingsDisabled('importBtn',profileLocked());
   $('#verifyLatestBtn').disabled = !latestEventId || profileLocked();
 }
 
@@ -364,7 +371,8 @@ function setMessage(text = '') {
 function ensureSafe(action) { return safetyGate.ensure(action); }
 function setBusy(next) {
   busy = next;
-  document.querySelectorAll('#singleShotBtn, #resetModelBtn, #clearHistoryBtn').forEach(button => { button.disabled = next; });
+  settingsDisabled('resetModelBtn',next);
+  document.querySelectorAll('#singleShotBtn, #clearHistoryBtn').forEach(button => { button.disabled = next; });
   renderLearningLocks();
   renderGunControls();
   renderPreferences();
@@ -510,7 +518,15 @@ function displayView(name) {
   if(name==='history')renderHistory().catch(showError);
   if(name==='home')renderHome().catch(showError);
   if(name==='guns')renderGunLibrary().catch(showError);
-  if(name==='settings')renderPreferences();
+  if(name==='settings'){
+    if(!settingsPage && settingsModule && !profileLocked() && !$('#safetyModal').open){
+      try{settingsPage=settingsModule.mountSettingsPage($('#settingsView'),{onBack:()=>goBack(),onAction:id=>settingsHandlers.get(id)?.(),onPreference:id=>settingsHandlers.get(id)?.()});}
+      catch(error){showError(error);}
+    }else if(!settingsModule && !settingsModulePending){
+      settingsModulePending=import('../apps/web/src/app/settingsPage.tsx').then(module=>{settingsModule=module;}).catch(showError).finally(()=>{settingsModulePending=null;});
+    }
+    renderPreferences();
+  }
 }
 
 function renderDistances(distances) {
@@ -706,7 +722,8 @@ function renderLiveButton() {
   const ready = triggerReady();
   $('#listenBtn').disabled = busy || profileLoading || livePendingStart || timed || (!ready && !listening);
   $('#singleShotBtn').disabled = listening || busy || profileLoading || livePendingStart || timed || !ready;
-  document.querySelectorAll('#resetModelBtn, #clearHistoryBtn').forEach(button => {
+  settingsDisabled('resetModelBtn',busy || profileLoading || listening || livePendingStart || timed);
+  document.querySelectorAll('#clearHistoryBtn').forEach(button => {
     button.disabled = busy || profileLoading || listening || livePendingStart || timed;
   });
   renderLearningLocks();
@@ -960,18 +977,18 @@ async function init() {
     });
   }
   darkPreference?.addEventListener?.('change', () => { if (appearance === 'system') applyAppearance(); });
-  $('#appearance').addEventListener('change', async () => {
+  bindSettings('appearance','change', async () => {
     const value = $('#appearance').value;
     if (!['dark', 'light', 'system'].includes(value)) return;
     try { await setSetting('appearance', value); appearance = value; applyAppearance(); } catch (error) { showError(error); renderPreferences(); }
   });
-  $('#vibrationFeedback').addEventListener('change', async () => {
+  bindSettings('vibrationFeedback','change', async () => {
     if (profileLocked()) { renderPreferences(); return; }
     try { vibrationFeedback = $('#vibrationFeedback').checked; await setSetting('vibrationFeedback', vibrationFeedback); renderPreferences(); }
     catch (error) { showError(error); await loadDevicePreferences(); renderPreferences(); }
   });
   for (const [id, key] of [['noiseFilter', 'noiseFilter'], ['autoGainControl', 'autoGain']]) {
-    $('#'+id).addEventListener('change', async () => {
+    bindSettings(id,'change', async () => {
       if (profileLocked()) { renderPreferences(); return; }
       const previous = audioPreferences;
       try {
@@ -1009,8 +1026,8 @@ async function init() {
   $('#sensitivity').addEventListener('change', () => { if (profileLocked()) return; setGunSetting('sensitivity', $('#sensitivity').value, ownerId()).catch(showError); });
   $('#resetDrillBtn').addEventListener('click', resetDrill);
   resetDrill();
-  $('#importBtn').addEventListener('click', () => $('#importFile').click());
-  $('#exportBtn').addEventListener('click', async () => {
+  bindSettings('importBtn','click', () => $('#importFile').click());
+  bindSettings('exportBtn','click', async () => {
     try {
       await sessionController.flush();
       await practiceController.flush();
@@ -1076,7 +1093,7 @@ async function init() {
     if (!$('#safetyAck').checked && sessionController.locked()) sessionController.interrupt('safety-check').catch(showError);
     if (!$('#safetyAck').checked && practiceController.locked()) practiceController.interrupt('safety-check').catch(showError);
   });
-  $('#resetModelBtn').addEventListener('click', async () => {
+  bindSettings('resetModelBtn','click', async () => {
     if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Reset all learned sounds and reset/noise/beep calibration for ${activeGun.name}? Gun profiles, presets, saved sessions, recognition history and other guns will be kept.`)) return;
     setBusy(true);
     try {
@@ -1086,14 +1103,14 @@ async function init() {
       $('#modelNotice').classList.add('hidden');
       setStatus('All learned sounds reset');
       setMessage(`All learned sounds for ${activeGun.name} were reset. Other guns and recognition history were kept.`);
-      $('#soundResetOutcome').textContent = `All learned sounds and calibration for ${activeGun.name} were reset. Saved guns, presets and history were kept.`;
+      settingsText('soundResetOutcome',`All learned sounds and calibration for ${activeGun.name} were reset. Saved guns, presets and history were kept.`);
       renderDrillCatalog();
       renderCustomCatalog();
       await renderHome();
     } catch (error) { showError(error); }
     finally { setBusy(false); renderClassCards(); }
   });
-  $('#resetLibraryBtn').addEventListener('click', async () => {
+  bindSettings('resetLibraryBtn','click', async () => {
     if (profileLocked() || !confirm('Delete ALL guns and app data from this browser? This removes every gun, learned sound, calibration, preset, setting, recognition result and saved session. Export a backup first. This cannot be undone without a backup.')) return;
     setBusy(true);
     try {

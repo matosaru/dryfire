@@ -131,5 +131,9 @@
     "scope": "Build-only SettingsPage source and ordered CSS extraction; native runtime owners retained.",
     "evidence": "Frozen full-page DOM parity for public/preview plus callbacks/disclosure tests. Expanded CSS remains byte-identical. Shared native preview fragment retains edition markers. Guide fragments, engines, settings and media bytes are unchanged; only coarse compiler/CSS ownership fingerprints move.",
     "canonicalValidation": "Pending normal pinned both-edition CI; no new image reference or GIF accepted."
+  },
+  "settingsRuntime": {
+    "source": "apps/web/src/app/settingsPage.tsx",
+    "review": "No visible design/CSS/media change. Lazy later-entry root handoff retains original file/preview nodes in display-contents islands. Frozen static DOM parity, native presentation characterization, focus/rollback/picker/state tests and real browser import/export/theme/reset workflows protect the boundary. Canonical screenshots remain required and unchanged."
   }
 }

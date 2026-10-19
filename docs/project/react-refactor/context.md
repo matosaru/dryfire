@@ -11,21 +11,21 @@ Updated 2026-10-19 (Europe/Vilnius). Compact handoff; detailed scope/results sta
 
 ## Current work
 
-Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: `38dec7e`.
+Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: `54e8f29`.
 
 P0/P1 are complete. P2 shared presentation and P3 Home/gun page handoffs are verified. Initial native fallback retirement remains P7.
 
-**Active: P4 Settings.** Pure preference model and typed SettingsPage build source are implemented. The full-page DOM matches frozen public/preview fixtures; CSS is byte-identical. Private preview markup has its own shared template. Preview simulation now safely rebinds replacement controls without recreating state or retaining stale listeners. **Settings runtime/events remain native**; Learn/Live Listen roots and P5–P7 remain pending.
+**Active: P4. Settings runtime is implemented.** The typed page mounts on a later explicit unlocked visit after lazy loading. Exact native file-input and private-preview nodes remain platform-owned islands; existing handlers transfer to React callbacks. One runtime update port owns preference/context/reset/lock presentation. Failed mount restores native nodes/focus/events. First-visit native fallback remains P7. Learn/Live Listen and P5–P7 remain pending.
 
 ## Next action
 
-Transfer Settings runtime only after protecting backup file-picker lifetime and private preview simulation listeners. Preserve preference/reset scopes, track reports, unsupported Safari states, native form values and capture/profile/safety locks. Then continue Learn and Live Listen according to the plan. Do not ask for another approval for this unchanged scope.
+Finish publication/observe canonical Settings CI, then characterize and migrate Learn followed by Live Listen. Preserve ten-sample limits, optional/calibration sounds, cancellation/late permission, resets, repeated recognition, safety and teardown. Continue automatically on b; no new approval is needed.
 
 ## Verification and open debt
 
-This increment: **562 tests / 82 suites**, coverage/type/architecture/docs checks and the minified preview artifact pass. Two DOM regressions failed before the listener fix and pass afterward. Both Full-preview Chromium edition workflows pass. No markup/CSS/media or public behavior changes. Canonical CI for this increment is not yet observed.
+This increment: **567 tests / 83 suites**, coverage/type/lint/architecture/docs and both minified artifacts pass. Local public and Full-preview workflows cover actual Settings runtime, backup/import/export/reset, theme, drafts, navigation and retained file/preview controls. Delayed-module tests compare native/mounted pixels in Dark/Light without replacing any screenshot baseline. Canonical CI for this increment is not yet observed.
 
-Previous milestone 38dec7e: canonical validation and both screenshot editions pass; performance gates fail. Preserve 390 image references, 83 captures and 12 guide exports. Local system Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons.
+Previous milestone 54e8f29: canonical validation and both screenshot editions pass; performance gates fail. Preserve 390 image references, 83 captures and 12 guide exports. Local system Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons.
 
 CHG-050 defers optimization until structural work is done. Original gzip/timing gates remain unchanged and failing honestly; see the plan's ledger. Do not claim fresh timing after a size gate stops measurement. Resolve all debt before final release.
 
