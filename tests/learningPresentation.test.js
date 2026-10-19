@@ -15,13 +15,13 @@ function setup() {
   document.body.innerHTML=renderPageTemplates('{{app}}');
   const counts={trigger:3,draw:1,rack:0,reload:0};
   const record=jest.fn(),reset=jest.fn(),calibration=jest.fn();
-  const context={learnPage:null,homePage:undefined,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
+  const context={learnPage:null,livePage:null,homePage:undefined,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
     titleFor:label=>label,labels:['draw','rack','trigger','reload'],getCounts:()=>counts,triggerReady:()=>counts.trigger>=3,
     MAX_EXAMPLES_PER_CLASS:10,MIN_EXAMPLES_PER_CLASS:3,RECOMMENDED_EXAMPLES_PER_CLASS:8,
     profileLocked:()=>context.busy,busy:false,livePendingStart:false,liveSession:null,sessionController:null,practiceController:null,
     calibration:[],recordCalibration:jest.fn(),resetCalibration:jest.fn(),enabledSoundLabels:['trigger','draw'],recordExample:record,resetSoundProfile:reset,toggleOptionalSound:jest.fn(),renderCalibrationCards:calibration,
   };
-  const {renderClassCards,renderLearningLocks}=vm.runInNewContext(metadata+'\n'+rendering+'\n;({renderClassCards,renderLearningLocks});',context);
+  const {renderClassCards,renderLearningLocks}=vm.runInNewContext(metadata+'\n'+source.slice(source.indexOf('function liveText('),source.indexOf('function bindSettings('))+'\n'+rendering+'\n;({renderClassCards,renderLearningLocks});',context);
   return{context,counts,record,reset,calibration,render:renderClassCards,locks:renderLearningLocks};
 }
 

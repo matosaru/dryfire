@@ -89,5 +89,14 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
     await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);
     if (edition === 'preview') await expect(page.locator('.progress-chart')).toBeVisible();
     else await expect(page.locator('#progressSection')).not.toBeVisible();
+    const modules=JSON.parse(readFileSync(new URL('../dist/edition.json',import.meta.url))).assets;
+    for(const [view,entry,mount,marker] of [['settings','settingsPage','mountSettingsPage','data-react-settings'],['learn','learnPage','mountLearnPage','data-react-learn'],['recognize','liveListenPage','mountLiveListenPage','data-react-live-listen']]){
+      if(view==='settings')await page.locator('#settingsShortcut').click();else await page.locator(`.tab[data-view="${view}"]`).click();
+      const module=modules.find(path=>path.includes(`/assets/${entry}-`));expect(module).toBeTruthy();
+      expect(await page.evaluate(async({module,mount})=>typeof(await import(module))[mount]==='function',{module,mount})).toBe(true);
+      await page.locator('.tab[data-view="home"]').click();if(view==='settings')await page.locator('#settingsShortcut').click();else await page.locator(`.tab[data-view="${view}"]`).click();
+      await expect(page.locator(`#${view}View`)).toHaveAttribute(marker,'');
+    }
+
   } finally { await disconnect(); }
 });

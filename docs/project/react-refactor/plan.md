@@ -12,12 +12,12 @@ Work goes to **b only**. Dev synchronization is paused to save credits; main rem
 | P1 — Typed route/context/service boundaries | Complete |
 | P2 — Shared shell and reusable controls | Structural scope verified |
 | P3 — Home and gun management | Presentation/handoff scope verified; startup-fallback retirement stays in P7 |
-| P4 — Settings, Learn and Live Listen | Active: Settings and Learn typed runtime handoffs verified; Live Listen remains |
+| P4 — Settings, Learn and Live Listen | Presentation/handoff scope verified for Settings, Learn and Live Listen; native fallback retirement stays in P7 |
 | P5 — Drills and History | Not started |
 | P6 — Practice, Sequence and guides | Not started |
 | P7 — Cleanup, optimization and final acceptance | Not started |
 
-Latest published Settings runtime: b `6a32cb1`; canonical validation and both screenshot editions pass. Performance jobs still fail on original budgets. Learn runtime is implemented locally with **577 tests / 86 suites**, coverage ratchet, type/lint/architecture/docs, both-edition browser workflows and unchanged CSS/media checks. Its canonical CI remains pending publication. Do not describe this as completion of P4 or a green release.
+Latest published Learn runtime: b `5ce8b77`; canonical validation and both screenshot editions pass. Original performance budgets still fail; that public run's deliberate-slowdown proof also failed and needs diagnosis before final acceptance. Live Listen completes the local P4 presentation/handoff scope: **585 tests / 89 suites**, coverage/type/lint/architecture/docs/smoke, **21 public + 20 Full-preview Chromium workflows**, both minified artifacts and unchanged CSS/media checks pass. Its canonical CI remains pending publication. Initial native fallbacks and final performance acceptance remain P7.
 
 ## Completion checklist
 
@@ -30,7 +30,7 @@ Latest published Settings runtime: b `6a32cb1`; canonical validation and both sc
 - [x] P3: typed HomePage, GunsPage and GunSetupPage; guarded runtime handoffs, draft/async ownership and both-edition visual verification.
 - [x] P4: Settings typed source/runtime with stable file-picker/private-preview lifetimes.
 - [x] P4: Learn typed source/runtime and shared SoundCard; limits, optional/calibration/reset/safety and both-theme parity.
-- [ ] P4: Live Listen; then complete the stage exit gates.
+- [x] P4: Live Listen presentation/handoff, repeated-recognition/unknown/verification/cleanup and both-edition verification.
 - [ ] P5: complete Drills and History with existing Free/Full boundaries.
 - [ ] P6: complete Practice, Sequence and guides using shared live/example run/review components.
 - [ ] P7: retire superseded templates/native fallbacks/adapters, finish package boundaries and optimize against the original baseline.
@@ -57,7 +57,7 @@ Structural work continues under CHG-050 while known performance debt is recorded
 1. **Settings preference boundary — implemented.** Characterize the existing native presentation first, then extract a pure feature model reusable by native fallback and React. Preserve gun-owned audio preferences, device appearance/vibration, actual-track reports, Safari unsupported states and lock scopes.
 2. **Settings source/runtime — implemented and locally verified.** Typed SettingsPage, CSS, callback and frozen DOM-parity tests now supply the build; runtime transfers on a later explicit unlocked entry while preserving native file/preview nodes. Protect backup/import, single-gun sound reset, complete-library deletion, system theme, file-picker lifetime and private Free/Full simulation. Never replace an active file input or detach the preview controller without an explicit handoff. Preview-control rebinding is now implemented and regression-tested: rendering onto replacement controls preserves simulation state, removes the stale listener and retains locks. The guarded runtime root and file-picker lifetime transfer are implemented and covered by unit and real-browser workflow tests; initial fallback retirement remains P7.
 3. **Learn — implemented and locally verified.** Preserve required trigger/optional categories, recording/calibration limits, cancellation/late permission, per-sound reset, previews and details state.
-4. **Live Listen.** Preserve continuous detections, ignored unknowns, sensitivity/sequence state, safety, stop/background/pagehide and microphone cleanup. Reuse the existing audio/session engines.
+4. **Live Listen — implemented and locally verified.** Preserve continuous detections, ignored unknowns, sensitivity/sequence state, safety, stop/background/pagehide and microphone cleanup. Reuse the existing audio/session engines.
 5. Verify each slice, update source ownership/architecture/history and push to b. Then proceed to P5 without another approval request.
 
 ## Page migration and test ownership
@@ -69,7 +69,7 @@ Structural work continues under CHG-050 while known performance debt is recorded
 | guns | GunsPage | React library owner verified; edit/delete/selection locks, owned-data isolation and final-gun fallback protected. |
 | settings | SettingsPage | Lazy runtime/root handoff implemented; stable file/preview islands, exclusive update port, preference/reset/backup behavior verified. Initial fallback remains P7. |
 | learn | LearnPage | Typed lazy page/card/calibration runtime verified; disclosures/focus, late module arrival, per-type limits, optional/reset/safety and Dark/Light parity covered. Initial native fallback remains P7. |
-| recognize | LiveListenPage | P4 pending; repeated recognition, ignored unknowns, safety and stream teardown. |
+| recognize | LiveListenPage | Typed lazy runtime and pure feedback models verified; values/focus/results/sequence/timeline preserved. Dedicated meter port, synthetic repeated/unknown detection, verification and Stop/navigation/background cleanup covered; initial fallback remains P7. |
 | drills | DrillsPage | P5 pending; static PracticeCatalog already extracted, whole page/editor remains native. |
 | history | HistoryPage | P5 pending; per-gun results, independent clearing, old records and Full graphs. |
 | practice | PracticePage | P6 pending; six-mode configure/run/review, early/first click, automatic repeats and durable retry. |
@@ -122,9 +122,10 @@ Final acceptance compares against the original released source, never a slower i
 - Public baseline: `6c38bff81662d30279d94d41ca5c949bdbbe1c6e`.
 - Full baseline: `a5b76e8d524c311bcbde1dc5740b2f5d0fa8e8bd`.
 - Original initial JS gzip: public **50,807 bytes**, preview **51,146 bytes**. Original CSS **61,451 raw / 13,011 gzip bytes**.
-- Latest published P3 initial JS: public **50,869 gzip (+62)**, preview **51,200 (+54)**. Gates remain failing and unchanged. P4 first-boundary measurements: public **51,092 gzip (+285 vs original)**, preview **51,412 (+266)**; CSS remains byte-identical. Settings runtime measurements: public **51,357 gzip (+550 vs original)**, preview **51,690 (+544)**; CSS still **61,451 raw / 13,011 gzip**. Learn runtime measurements: public **51,709 gzip (+902 vs original)**, preview **52,053 (+907)**. These failures remain explicit optimization debt, not passing acceptance.
+- Latest published P3 initial JS: public **50,869 gzip (+62)**, preview **51,200 (+54)**. Gates remain failing and unchanged. P4 first-boundary measurements: public **51,092 gzip (+285 vs original)**, preview **51,412 (+266)**; CSS remains byte-identical. Settings runtime measurements: public **51,357 gzip (+550 vs original)**, preview **51,690 (+544)**; CSS still **61,451 raw / 13,011 gzip**. Learn runtime measurements: public **51,709 gzip (+902 vs original)**, preview **52,053 (+907)**. P4 Live Listen measurements: public **171,670 raw / 52,133 gzip** (+753 raw / +1326 gzip); preview **172,865 / 52,474** (+782 raw / +1328 gzip). These failures remain explicit optimization debt, not passing acceptance.
 - Last completed public WebKit comparison before these size failures: warm startup **37→45 ms**, with the extra phase delay before interactive. No new passing timing result is inferred after a payload gate stops measurement.
 - Keep JS/CSS minification, tree shaking, lazy loading and full chunk/source-leak verification. Include HTML and actual critical requests in evidence; a smaller JS entry alone is not a faster app.
+- Diagnose the failed deliberate-slowdown proof in public run `39268272972`; its comparison summary confirms payload failures, but the probe-specific reason is not yet available. Keep it distinct from application validation/screenshot results.
 - At P7 rerun repeated paired cold/warm/returning startup, input/navigation/recognition feedback and cleanup/memory checks. Identical-build controls do not override a candidate failure. Resolve all reproducible regressions before final release.
 
 ## Publication, rollback and approval

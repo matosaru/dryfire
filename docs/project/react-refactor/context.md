@@ -11,21 +11,21 @@ Updated 2026-10-19 (Europe/Vilnius). Compact handoff; detailed scope/results sta
 
 ## Current work
 
-Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: Settings `6a32cb1`.
+Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: Learn `5ce8b77`.
 
-P0/P1 are complete. P2 shared presentation and P3 Home/gun page handoffs are verified. Initial native fallback retirement remains P7.
+P0/P1 are complete. P2 shared presentation, P3 Home/gun and P4 Settings/Learn/Live Listen presentation/handoffs are verified locally. Initial native fallback retirement remains P7.
 
-**Active: P4. Settings and Learn runtime are implemented.** Settings retains exact native file/preview islands; Learn uses shared SoundCard/CalibrationCatalog with guarded feature callbacks. Both load on first visit and transfer only on a later explicit unlocked entry. Update ports own presentation; root failure restores native nodes/focus/events. Learn preserves disclosure drafts, semantic focus, limits/optional/calibration/reset/safety. Learn mount coverage is 100% statement/function/line and 96% branch. Native startup fallbacks remain P7. Live Listen and P5–P7 remain pending.
+Settings retains native file/preview islands; Learn uses shared SoundCard/CalibrationCatalog; Live Listen has pure sequence/distance models and one presentation update port plus a direct meter path. Each loads on first visit and transfers only on a later explicit unlocked entry. Feature controllers still own data, capture, safety and cleanup. Roots preserve values/focus/drafts and restore native nodes/events on failed commit. Native startup/late-CSS cleanup and P5–P7 remain pending.
 
 ## Next action
 
-Observe canonical Learn CI after publication; characterize and migrate Live Listen. Preserve continuous detection, ignored unknowns, sensitivity/sequence drafts, capture/safety guards, background/stop and microphone cleanup. Continue automatically on b, then P5–P7; no new approval is needed.
+Publish/observe P4 canonical CI, then continue **P5 Drills and History** automatically on b. Preserve built-ins/custom saved data, Free/Full guards, filters, charts and separate history/session reset scopes. Characterize existing owners before transfer; then P6 shared live/example pages and P7 cleanup/performance. No new approval is needed.
 
 ## Verification and open debt
 
-This increment: **577 tests / 86 suites**, coverage/type/lint/architecture/docs, smoke and both minified artifacts pass. Public/Full-preview workflows cover profiles, drafts, backup/reset and actual mounted Settings/Learn. Native/React Dark/Light pixels match exactly with the existing SVG-clock fixture. CSS remains 61451 raw / 13011 gzip; current screenshots and encoded guide media are unchanged. Learn canonical CI is not yet observed.
+This increment: **585 tests / 89 suites**, coverage/type/lint/architecture/docs, 16 smoke checks and both minified artifacts pass. **21 public + 20 Full-preview** Chromium workflows cover mounted Settings/Learn/Live Listen, profiles/drafts/backup/safety and repeated/unknown recognition/verification/Stop/navigation/background. Native/React Dark/Light pixels match exactly; CSS stays 61451 raw / 13011 gzip. Live adapter/models have 100% measured coverage. Canonical P4 CI is not yet observed; no deployment/device-mic claim.
 
-Settings 6a32cb1: canonical validation and both screenshot editions pass; performance fails. Preserve 390 image references, 83 captures and 12 guide exports. Local system Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons. Initial JS now public 51709 gzip / preview 52053, +902/+907 vs original; keep this debt visible.
+Learn 5ce8b77: canonical validation and both screenshot editions pass. Performance fails on raw/gzip budgets; public deliberate-slowdown proof also failed (run39268272972), with probe-specific diagnosis outstanding. Preserve all 390 image references, 83 captures and 12 guide exports. Local Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons. Current initial JS public 171670/52133 raw/gzip, preview172865/52474; +753/+1326 and +782/+1328 vs original. Keep debt visible.
 
 CHG-050 defers optimization until structural work is done. Original gzip/timing gates remain unchanged and failing honestly; see the plan's ledger. Do not claim fresh timing after a size gate stops measurement. Resolve all debt before final release.
 

@@ -231,24 +231,29 @@
     {
       "id": "recognize",
       "targetOwner": "LiveListenPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/recognize.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx",
       "behaviorTests": [
         "tests/recognition.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "apps/web/src/pages/LiveListenPage/LiveListenPage.test.tsx",
+        "apps/web/src/features/live-listen/presentation.test.ts",
+        "tests/liveListenPageMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
         "src/audio.js",
-        "src/recognition.js"
+        "src/recognition.js",
+        "apps/web/src/app/liveListenPage.tsx",
+        "apps/web/src/features/live-listen/presentation.ts"
       ],
       "stableSelectorExamples": [
         "listenBtn",
         "drillSelect",
         "sessionTimeline"
       ],
-      "draftOwnership": "Continuous recognition owner captures selected gun and processing preferences.",
+      "draftOwnership": "Typed lazy page after later unlocked entry; select/result/sequence/timeline presentation uses one update port. Microphone levels use a direct dedicated port; native audio/event queue/storage/safety remain controller-owned. Startup fallback remains P7.",
       "effects": [
         "Safety-gated microphone and explicit cleanup; known-event storage and verification"
       ]
@@ -303,8 +308,7 @@
       "stableSelectorExamples": [
         "appearance",
         "exportBtn",
-        "importFile",
-        "maxResults"
+        "importFile"
       ],
       "draftOwnership": "Typed prerender and lazy Settings runtime; guarded later-entry handoff preserves original file-input/private-preview nodes. React owns page structure and callbacks; one typed update port owns dynamic presentation. Initial native fallback remains until P7.",
       "effects": [

@@ -139,5 +139,9 @@
   "learnRuntime": {
     "source": "apps/web/src/app/learnPage.tsx",
     "review": "Frozen complete Learn template parity, every native SoundCard count/lock/optional state and byte-identical expanded/optimized CSS protect source equivalence. Guide engines, fragments, scenario settings and encoded exports are unchanged; coarse compiler/style fingerprints are updated for unchanged inputs. Runtime disclosures, focus, rollback, limits and action ownership have unit/integration coverage. Both-theme native/React pixel checks and both-edition workflows are required before publication."
+  },
+  "liveListenRuntime": {
+    "source": "apps/web/src/app/liveListenPage.tsx",
+    "review": "Frozen complete template parity, frozen native sequence/distance renderer comparison, root snapshot/rollback/focus/select/timeline/meter tests and byte-identical expanded CSS protect the handoff. The actual mounted browser page preserves Dark/Light pixels and synthetic consecutive detection, unknown rejection, verification and microphone cleanup. Guide engines/fragments/scenarios/encoded exports are unchanged; only coarse compiler/CSS fingerprints are refreshed for equivalent inputs. No threshold or image baseline changed."
   }
 }
