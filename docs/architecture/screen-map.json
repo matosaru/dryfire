@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-10-18",
+  "reviewedOn": "2026-10-19",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://dryfire.matosaru.workers.dev",
   "publicPaths": [
@@ -796,7 +796,7 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "bf9957328802950215e59f5874af71af1dea82d8751742de2f7e892ead01f388",
+    "src/main.js": "09476aa6f4a337f7a409e6dcd3fce4700dca219aecd3e1fb53bdae6481cc3e95",
     "src/styles.css": "440f1e998cc2dc35c8b2da814e7ebfabc8d2a0968b0574741914b98c72816bed",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
@@ -928,7 +928,8 @@
     "apps/web/src/styles/legacy-before-home.css": "616c2d34f63330b3b1d5ecaae332e9846f700460b3b77edb9c3d25ce536ee179",
     "apps/web/src/styles/legacy-after-home.css": "ab3383d06ac979fe543f60f59bebc77e55259137a7328fe0d6cf1e6d1673d6b8",
     "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
-    "apps/web/src/styles/legacy-after-gun-setup.css": "a672b0491c990644a45d06032e0d0756f2edc84ccc0240719c3290401dd1a0ee"
+    "apps/web/src/styles/legacy-after-gun-setup.css": "a672b0491c990644a45d06032e0d0756f2edc84ccc0240719c3290401dd1a0ee",
+    "apps/web/src/features/settings/preferencePresentation.ts": "1779dc0d8b0703f6d0d6cc1068c90d6b8e8cce3bbcbffc136aa8403de5411062"
   },
   "implementationChanges": [
     "CHG-017",

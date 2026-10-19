@@ -1,3 +1,4 @@
+import { preferencePresentation } from '../apps/web/src/features/settings/preferencePresentation.ts';
 import { resolveRouteView } from '@dryfire/web/route-context';
 import { createInformationBridge } from '@dryfire/web/information-bridge';
 import { PAGE_IDS } from './pageDefinitions.js';
@@ -95,26 +96,15 @@ async function loadDevicePreferences() {
 }
 function renderPreferences() {
   previewTesting?.render();
-  const capabilities = getAudioCapabilities();
-  for (const [key, inputId, statusId] of [['noiseFilter', 'noiseFilter', 'noiseFilterStatus'], ['autoGain', 'autoGainControl', 'autoGainStatus']]) {
-    const input = $('#'+inputId);
-    input.checked = audioPreferences[key];
-    input.disabled = !activeGun || activeGun.needsDetails || profileLocked() || !capabilities[key];
-    const report = processingReport?.[key];
-    $('#'+statusId).textContent = !capabilities[key] ? 'Unsupported by this browser. Recording remains available.'
-      : report?.status === 'confirmed' ? `Last capture: ${report.applied ? 'On' : 'Off'}, confirmed by the audio track.`
-      : report?.status === 'not-applied' ? `The last audio track did not apply the requested ${report.requested ? 'On' : 'Off'} setting.`
-      : report?.status === 'unconfirmed' ? 'The browser did not confirm this setting on the last audio track.'
-      : `Saved ${audioPreferences[key] ? 'On' : 'Off'} · applies to the next capture.`;
+  const view=preferencePresentation({capabilities:getAudioCapabilities(),audioPreferences,processingReport,appearance,
+    gunAvailable:!!activeGun && !activeGun.needsDetails,locked:profileLocked(),deviceLocked:busy || profileLoading || preferencePending,
+    vibrationFeedback,vibrationSupported:getVibrationCapability(),vibrationRejected});
+  for(const item of view.audio){
+    const input=$('#'+item.inputId);input.checked=item.checked;input.disabled=item.disabled;$('#'+item.statusId).textContent=item.status;
   }
-  $('#appearance').value = appearance;
-  $('#appearance').disabled = busy || profileLoading || preferencePending;
-  $('#vibrationFeedback').checked = vibrationFeedback;
-  const vibrationSupported = getVibrationCapability();
-  $('#vibrationFeedback').disabled = !vibrationSupported || vibrationRejected || profileLocked();
-  $('#vibrationStatus').textContent = !vibrationSupported ? 'Vibration is unavailable in this browser.'
-    : vibrationRejected ? 'The browser declined vibration. Visual feedback remains available.'
-    : `${vibrationFeedback ? 'On' : 'Off'} · requests vibration at GO and repetition completion. Device output is not verified.`;
+  $('#appearance').value=view.appearance.value;$('#appearance').disabled=view.appearance.disabled;
+  $('#vibrationFeedback').checked=view.vibration.checked;$('#vibrationFeedback').disabled=view.vibration.disabled;
+  $('#vibrationStatus').textContent=view.vibration.status;
 }
 function reportAudioProcessing(report) { processingReport = report; renderPreferences(); }
 function reportVibration(result) { if (!result.supported || !result.accepted) { vibrationRejected = true; renderPreferences(); } }

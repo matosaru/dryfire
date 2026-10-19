@@ -279,13 +279,16 @@
       "source": "src/templates/pages/settings.html",
       "behaviorTests": [
         "tests/audioPreferences.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/settingsPreferencesPresentation.test.js",
+        "apps/web/src/features/settings/preferencePresentation.test.ts"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
         "src/audioPreferences.js",
-        "src/optional/previewTesting.js"
+        "src/optional/previewTesting.js",
+        "apps/web/src/features/settings/preferencePresentation.ts"
       ],
       "stableSelectorExamples": [
         "appearance",
