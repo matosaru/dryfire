@@ -1,5 +1,7 @@
 # Repository instructions
 
+Maintain [refactor working context](docs/project/react-refactor/context.md) after each completed task/increment. Keep only current authorization, source/task, verified evidence, open debt and the next action; link to the spec/plan/history instead of duplicating them. Offload detailed decisions/results to their authoritative documents, remove superseded status from the handoff, and preserve user constraints, approval evidence and unresolved failures. Do not claim unobserved CI/deployment or background progress.
+
 CHG-050 changes refactor sequencing: continue structural migration after functional/visual/data/edition/payload verification and track known timing debt for final optimization. Do not suppress timing failures or change the original baseline. Final release still requires passing performance acceptance. The owner has paused dev synchronization to save credits; work on b only until resumed.
 
 CHG-049 approves [spec.md](docs/project/react-refactor/spec.md) and [plan.md](docs/project/react-refactor/plan.md): **“proceed with a plan”**, **“full autonomy for implementation”**, initial changes to **b and dev**. The CHG-048 review gate is satisfied. Execute the stages without repeated approval, beginning with characterization/coverage/performance; preserve all design, behavior, data, minification and edition invariants. Main remains PR-only and Cloudflare remains owner-managed. Do not skip an exit gate or claim the entire migration complete after a partial increment.

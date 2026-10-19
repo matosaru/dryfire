@@ -125,5 +125,11 @@
     "scope": "Typed Home/GunSetup source and runtime ownership transfer. Native controls remain functional until safe lazy handoff. No template or other page is replaced by a neighboring root.",
     "evidence": "Frozen full Home/form DOM parity, actual controller async ownership/readiness characterization, mounted form native validation/draft/reset/focus and rollback tests. Ordered and optimized CSS unchanged; no guide engines/fragments, example settings or animation bytes changed. Initial image preload hints suppressed by build adapter to preserve request graph.",
     "canonicalValidation": "Pending both-edition pinned CI; no reference image or GIF updated. All performance gates remain unchanged; interim debt stays open for final optimization."
+  },
+  "settingsSource": {
+    "reviewedOn": "2026-10-19",
+    "scope": "Build-only SettingsPage source and ordered CSS extraction; native runtime owners retained.",
+    "evidence": "Frozen full-page DOM parity for public/preview plus callbacks/disclosure tests. Expanded CSS remains byte-identical. Shared native preview fragment retains edition markers. Guide fragments, engines, settings and media bytes are unchanged; only coarse compiler/CSS ownership fingerprints move.",
+    "canonicalValidation": "Pending normal pinned both-edition CI; no new image reference or GIF accepted."
   }
 }

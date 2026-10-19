@@ -20,7 +20,7 @@
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
-    "tools/page-templates.mjs": "e52cbde9f9cae2fcef3dd967f23b8b5a086a81b6c07cadff656dd500adcd0a5f",
+    "tools/page-templates.mjs": "e9ff834162c6116ed00c05e7815dc2d070b8c0f7dbd155ff58474f69745715ad",
     "tools/export-guide-examples.mjs": "0c1f31a7c9742ac8cde728c0d54cb6f13e7f47c0ee94b91512761bf5abb3308b",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
@@ -55,10 +55,13 @@
     "apps/web/src/pages/GunsPage/GunsPage.css": "0ca384aca93f0ca6da65a103ad75c156804cac9514d764397e1c387874061718",
     "apps/web/src/styles/legacy-before-home.css": "616c2d34f63330b3b1d5ecaae332e9846f700460b3b77edb9c3d25ce536ee179",
     "apps/web/src/pages/HomePage/HomePage.css": "70924e9e2f91e0402c65174ca01817b5e594a79ac95c0b2e37de487c513d7a59",
-    "apps/web/src/styles/legacy-after-home.css": "ab3383d06ac979fe543f60f59bebc77e55259137a7328fe0d6cf1e6d1673d6b8",
+    "apps/web/src/styles/legacy-after-home.css": "26ce6baee09ae9e9349ee9e2f8792ecd1debedec08a8872927bcf4d100dd2d9e",
     "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
-    "apps/web/src/styles/legacy-after-gun-setup.css": "a672b0491c990644a45d06032e0d0756f2edc84ccc0240719c3290401dd1a0ee"
+    "apps/web/src/styles/legacy-after-gun-setup.css": "a672b0491c990644a45d06032e0d0756f2edc84ccc0240719c3290401dd1a0ee",
+    "apps/web/src/styles/legacy-before-settings.css": "7dc974973ff4720c2075a21ce2229b2e91e03c14044e0ef8d907e81db6615d11",
+    "apps/web/src/pages/SettingsPage/SettingsPage.css": "a2140e42d6ee524b59cb95fd26f22335d8a4f1556336dae40c422a6a91298880",
+    "apps/web/src/styles/legacy-after-settings.css": "7636861c06b84a20f4e4ba6599a4078c44e8b7ddc8acc24bc220c3abbef63b6a"
   },
   "exports": [
     {

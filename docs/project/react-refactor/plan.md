@@ -1,6 +1,6 @@
 # Remaining React refactor plan
 
-Updated 2026-10-19 (Europe/Vilnius). Approved for autonomous implementation by CHG-049; CHG-050 defers intermediate optimization until structural refactoring is finished. [spec.md](spec.md) is the contract. This is the single active execution plan; completed increment evidence belongs in [implementation history](../implementation-history.md).
+Updated 2026-10-19 (Europe/Vilnius). Approved for autonomous implementation by CHG-049; CHG-050 defers intermediate optimization until structural refactoring is finished. [spec.md](spec.md) is the contract; [context.md](context.md) is the compact resume handoff. This is the single active execution plan; completed increment evidence belongs in [implementation history](../implementation-history.md).
 
 ## Current status
 
@@ -12,12 +12,12 @@ Work goes to **b only**. Dev synchronization is paused to save credits; main rem
 | P1 — Typed route/context/service boundaries | Complete |
 | P2 — Shared shell and reusable controls | Structural scope verified |
 | P3 — Home and gun management | Presentation/handoff scope verified; startup-fallback retirement stays in P7 |
-| P4 — Settings, Learn and Live Listen | Active: Settings preference boundary; page roots not transferred yet |
+| P4 — Settings, Learn and Live Listen | Active: Settings typed page source and preference boundary verified locally; page roots not transferred yet |
 | P5 — Drills and History | Not started |
 | P6 — Practice, Sequence and guides | Not started |
 | P7 — Cleanup, optimization and final acceptance | Not started |
 
-Latest published P3 source is b `9829212`. Its canonical validation and both screenshot editions pass. Local evidence: **548 tests / 77 suites**, **13 public + 12 Full-preview Chromium workflows**, coverage/type/lint/architecture/docs and both minified artifact checks pass. Overall CI is red on the original gzip budgets; do not describe it as fully green. P4 first boundary now passes **555 tests / 79 suites**, coverage/type/lint/architecture/docs, **8 public + 7 Full-preview** local Chromium workflows and both minified artifact checks. Its canonical CI remains pending publication.
+Latest published P3 source is b `9829212`. Its canonical validation and both screenshot editions pass. Local evidence: **548 tests / 77 suites**, **13 public + 12 Full-preview Chromium workflows**, coverage/type/lint/architecture/docs and both minified artifact checks pass. Overall CI is red on the original gzip budgets; do not describe it as fully green. Current P4 source increment passes **560 tests / 81 suites**, coverage/type/lint/architecture/docs, **11 public + 10 Full-preview** local Chromium workflows and both minified artifact checks. Its canonical CI remains pending publication.
 
 ## Completion checklist
 
@@ -53,7 +53,7 @@ Structural work continues under CHG-050 while known performance debt is recorded
 ## P4 next steps
 
 1. **Settings preference boundary — active.** Characterize the existing native presentation first, then extract a pure feature model reusable by native fallback and React. Preserve gun-owned audio preferences, device appearance/vibration, actual-track reports, Safari unsupported states and lock scopes.
-2. **Settings source/runtime.** Protect backup/import, single-gun sound reset, complete-library deletion, system theme, file-picker lifetime and private Free/Full simulation. Never replace an active file input or detach the preview controller without an explicit handoff.
+2. **Settings source/runtime — source implemented, runtime pending.** Typed SettingsPage, CSS, callback and frozen DOM-parity tests now supply the build; runtime remains native. Protect backup/import, single-gun sound reset, complete-library deletion, system theme, file-picker lifetime and private Free/Full simulation. Never replace an active file input or detach the preview controller without an explicit handoff.
 3. **Learn.** Preserve required trigger/optional categories, recording/calibration limits, cancellation/late permission, per-sound reset, previews and details state.
 4. **Live Listen.** Preserve continuous detections, ignored unknowns, sensitivity/sequence state, safety, stop/background/pagehide and microphone cleanup. Reuse the existing audio/session engines.
 5. Verify each slice, update source ownership/architecture/history and push to b. Then proceed to P5 without another approval request.

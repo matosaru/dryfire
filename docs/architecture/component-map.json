@@ -276,12 +276,14 @@
       "id": "settings",
       "targetOwner": "SettingsPage",
       "renderer": "legacy",
-      "source": "src/templates/pages/settings.html",
+      "source": "apps/web/src/pages/SettingsPage/SettingsPage.tsx",
       "behaviorTests": [
         "tests/audioPreferences.test.js",
         "tests/pageTemplates.test.js",
         "tests/settingsPreferencesPresentation.test.js",
-        "apps/web/src/features/settings/preferencePresentation.test.ts"
+        "apps/web/src/features/settings/preferencePresentation.test.ts",
+        "apps/web/src/pages/SettingsPage/SettingsPage.test.tsx",
+        "tests/settingsTemplateParity.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -296,7 +298,7 @@
         "importFile",
         "maxResults"
       ],
-      "draftOwnership": "Device appearance and gun-owned recognition preferences retain existing validation.",
+      "draftOwnership": "Typed build-time page source; native Settings inputs/events and private simulation remain runtime owners until guarded transfer.",
       "effects": [
         "Capability checks and preference writes; validated restore/export; confirmed full-library reset"
       ]
