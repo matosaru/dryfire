@@ -599,3 +599,8 @@ Added P8 to the [active refactor plan](react-refactor/plan.md): after final acce
 ### P7 test-only session renderer ownership — 2026-10-20
 
 Moved the eight-variant session fragment renderer from application source to the public `@dryfire/testing/session-fragments` test-support entry. Updated its two test consumers and current architecture/export registries. Production composition, runtime, CSS, media and saved data remain unchanged.32 affected tests pass before/after, plus type/lint/architecture/docs,16 smoke checks and both minified edition verifiers. Emitted critical filenames remain public `index-BE-dFKDe.js`, preview `index-CVwqfLTV.js`, CSS `index-DnLrZEQ0.css`. No speedup claimed; original performance failures remain P7 debt. Targets b only; no main/dev or deployment changes.
+
+
+### P7 performance-control tooling repair — 2026-10-20
+
+Fixed two issues in the deliberate startup-slowdown control: its former error classifier rejected the warm-phase diagnostic accompanying a valid slowdown, and its pre-network stall could overlap loading without producing a confirmed regression. The candidate-only CPU stall now runs at the readiness boundary; ordinary readiness, frame-gap/long-task collection and all original statistical/payload policies remain intact.39 affected performance-tooling tests pass. A local identical-artifact Chromium control confirms cold/warm/returning slowdown and the wrapper correctly accepts that expected rejection; [samples/fingerprints](react-refactor/p7-probe-evidence.json) are retained. No application assets, visuals, data, thresholds, main/dev or deployments changed. Application payload/timing acceptance and native fallback retirement remain open P7 work.
