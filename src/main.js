@@ -80,6 +80,7 @@ let livePage, liveModule, liveModulePending;
 let drillsPage, drillsModule, drillsModulePending;
 let practiceModule, practiceModulePending;
 let sequenceModule, sequenceModulePending;
+let guideModule, guideModulePending;
 let historyPage, historyModule, historyModulePending, historyOwner, historyRows=[], historySessions=[];
 const historyHandlers=new Map();
 function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
@@ -560,6 +561,13 @@ function displayView(name) {
   window.scrollTo({top:0,behavior:'instant'});
   for(const view of PAGE_IDS) $('#'+view+'View').classList.toggle('hidden',view!==name);
   setMessage();
+  if(name==='practiceGuide'){
+    if(guideModule && !profileLocked() && !$('#safetyModal').open){
+      try{practiceGuideController.connectView(guideModule.mountGuideContents);}catch(error){showError(error);}
+    }else if(!guideModule && !guideModulePending){
+      guideModulePending=import('../apps/web/src/app/guideContents.tsx').then(module=>{guideModule=module;}).catch(showError).finally(()=>{guideModulePending=null;});
+    }
+  }
   if(name==='session'){
     if(sequenceModule && !profileLocked() && !$('#safetyModal').open){
       try{sessionController.connectView(sequenceModule.mountSequenceContents);}catch(error){showError(error);}

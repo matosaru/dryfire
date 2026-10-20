@@ -22,8 +22,9 @@ function renderControls(model,$){
   for(const [id,disabled]of Object.entries(model.disabled))$(id).disabled=disabled;
 }
 
-export function renderPracticeReview(record,{ $,node,state,savedRevision,saveError,saving,interruption,locked,getContext,details,present }){
+export function renderPracticeReview(record,{ $,node,state,savedRevision,saveError,saving,interruption,locked,getContext,details,present,reviewNote }){
   const model=practiceReviewPresentation(record,{state,savedRevision,saveError:!!saveError,saving,interruption:!!interruption,locked:locked(),gunId:getContext().gun?.id,continuous:continuousPractice(record.practiceMode),stats:practiceStatistics(record)});
+  if(reviewNote!==undefined)model.savedNote=reviewNote;
   if(present?.(model))return;
   $('practiceReviewStatus').textContent=model.title;$('practiceReviewStatus').dataset.status=model.status;
   $('practiceSummary').replaceChildren(...model.summary.map(row=>node('p',row.text,row.className)));
@@ -47,8 +48,9 @@ export function sequenceResultDetails(row,{node,titleFor}){
   return resultDetailsNode(sequenceResultPresentation(row,titleFor),node);
 }
 
-export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails,present }){
+export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails,present,reviewNote }){
   const model=sequenceReviewPresentation(record,{state,savedRevision,saveError:!!saveError,saving,pending,locked:locked(),gunId:getContext().gun?.id});
+  if(reviewNote!==undefined)model.savedNote=reviewNote;
   if(present?.(model))return;
   $('#sessionReviewStatus').dataset.status=model.status;$('#sessionReviewStatus').textContent=model.title;
   $('#sessionReviewSummary').replaceChildren(...model.summary.map(row=>node('p',row.text,row.className)));

@@ -105,6 +105,10 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
       await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="drills"]').click();await page.locator(selector).first().click();
       await expect(page.locator(host)).toHaveAttribute('data-react-session','');
     }
+    const guideModule=modules.find(path=>path.includes('/assets/guideContents-'));expect(guideModule).toBeTruthy();
+    await page.locator('#sessionGuideLink').click();
+    expect(await page.evaluate(async path=>typeof(await import(path)).mountGuideContents==='function',guideModule)).toBe(true);
+    await page.locator('#practiceGuideReturnBtn').click();await page.locator('#sessionGuideLink').click();await expect(page.locator('#example-sessionRun')).toHaveAttribute('data-react-session','');
     const progressModule=modules.find(path=>path.includes('/assets/progressContent-'));
     if(edition==='preview'){
       expect(progressModule).toBeTruthy();

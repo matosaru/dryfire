@@ -12,7 +12,10 @@ export function createGuideExampleRenderer(doc) {
   const titleFor = guideSoundTitle;
   const details = row => practiceResultDetails(row, { node, titleFor });
   const resultDetails = row => sequenceResultDetails(row, { node, titleFor });
-  return (frame, guide) => {
+  let view=null;
+  const models={};
+  const present=key=>model=>{models[key]=model;if(!view)return false;view[key](model);return true;};
+  const render = (frame, guide) => {
     const { state, config, atMs: now } = frame;
     const sequence = guide.kind === 'sequence', review = state?.phase === 'review';
     for (const type of ['practice', 'session']) {
@@ -24,13 +27,11 @@ export function createGuideExampleRenderer(doc) {
       getContext: () => ({ gun: { id: 'guide-example' } }) };
     if (sequence) {
       if (review) {
-        renderSequenceReview(toSessionRecord(state), { ...common, $: query, resultDetails, retrySaveButton: doc.createElement('button') });
-        query('#sessionReview .session-saved-note').textContent = 'Example only · nothing saved';
-      } else renderSequenceRun({ ...common, $: query, resultDetails, announce: value => { get('sessionAnnouncement').textContent = value; } });
+        renderSequenceReview(toSessionRecord(state), { ...common, $: query, resultDetails, retrySaveButton: doc.createElement('button'), reviewNote:'Example only · nothing saved',present:present('setSequenceReview') });
+      } else renderSequenceRun({ ...common, $: query, resultDetails, present:present('setSequenceRun'), announce: value => { get('sessionAnnouncement').textContent = value; } });
     } else if (review) {
-      renderPracticeReview(toPracticeRecord(state), { ...common, $: get, details, interruption: false });
-      get('practiceSaved').textContent = 'Example only · nothing saved';
-    } else renderPracticeRun({ ...common, $: get, mode: guide.id, interruption: false, closing: false, details,
+      renderPracticeReview(toPracticeRecord(state), { ...common, $: get, details, interruption: false,reviewNote:'Example only · nothing saved',present:present('setPracticeReview') });
+    } else renderPracticeRun({ ...common, $: get, mode: guide.id, interruption: false, closing: false, details,present:present('setPracticeRun'),
       inputFeedback: frame.beep ? 'Example start signal · silent illustration' : '',
       renderInput: () => {
         const level = state ? frame.pulse ? 72 : 9 : 0;
@@ -42,4 +43,6 @@ export function createGuideExampleRenderer(doc) {
       } });
     doc.getElementById('practiceGuideExample').dataset.phase = frame.phase;
   };
+  render.connectView=(mount,onAction)=>{if(view)return false;view=mount(doc,{models,titleFor,onAction});return true;};
+  return render;
 }

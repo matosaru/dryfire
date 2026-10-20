@@ -292,13 +292,19 @@
         "packages/ui/src/SequenceReview/SequenceReview.test.tsx",
         "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
         "apps/web/src/features/sessions/resultPresentation.test.ts",
-        "apps/web/src/features/sessions/phasePresentation.test.ts"
+        "apps/web/src/features/sessions/phasePresentation.test.ts",
+        "tests/guideContentsMount.test.tsx",
+        "tests/guideControllerHandoff.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/practiceGuideController.js",
         "src/practiceGuideExamples.js",
-        "src/practiceGuideRendering.js"
+        "src/practiceGuideRendering.js",
+        "apps/web/src/app/guideContents.tsx",
+        "apps/web/src/app/practiceContents.tsx",
+        "apps/web/src/app/sequenceContents.tsx",
+        "apps/web/src/app/sessionContents.tsx"
       ],
       "stableSelectorExamples": [
         "practiceGuideView",
@@ -318,13 +324,15 @@
       "integrationTests": [
         "visual-tests/practice-start.spec.js",
         "visual-tests/practice-guides.spec.js",
-        "visual-tests/session-fragment-parity.spec.js"
+        "visual-tests/session-fragment-parity.spec.js",
+        "visual-tests/guide-runtime.spec.js"
       ],
       "presentationSources": [
         "src/sessionPresentation.js",
         "apps/web/src/features/sessions/resultPresentation.ts",
         "apps/web/src/features/sessions/phasePresentation.ts"
-      ]
+      ],
+      "runtimeOwner": "Shared live/example React contents after explicit paused-context handoff; guide controller retains synthetic clock, outer hosts, manual text and playback; parent page composition remains P6. No microphone/storage/feedback effects."
     },
     {
       "id": "recognize",

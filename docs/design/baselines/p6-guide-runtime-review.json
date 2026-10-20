@@ -1,0 +1,78 @@
+{
+  "change": "CHG-049 P6 shared live/example runtime handoff",
+  "reviewedOn": "2026-10-20",
+  "candidateBase": "f94e063",
+  "sourceHashes": {
+    "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
+    "src/practiceGuideController.js": "8ce13ca047c4598d01a2eb9a98430ae8d07f349cd11a660da229efdab0239a79",
+    "src/practiceGuideRendering.js": "1de34884ff15a2e9cd4cf0559850daa7acacc5ed0554c2589dff43239a700eb5",
+    "tools/export-guide-examples.mjs": "cddb5d9c17ee587a0548350af9e43c9832a2ab2b52240bc260353a5367eccc34",
+    "packages/ui/src/PracticeRun/PracticeRun.tsx": "b089ff892895183559846cc95c0b996291f710f6965886b2c57560797551e8f6",
+    "packages/ui/src/SequenceRun/SequenceRun.tsx": "20423e2f4c7a57e48961b9cc56fdda30c5d0716911db70bee8237080327c80df",
+    "apps/web/src/app/sessionContents.tsx": "ad58a14f24a7c0e7c4a856683d1280b661ee82a7e0280e4e0b0570465690d600",
+    "apps/web/src/app/practiceContents.tsx": "af784e775b94452f22a0b6bcedef031904e9e9292b4762ccf193f85253f1e8d8",
+    "apps/web/src/app/sequenceContents.tsx": "2b5461e4e38d2af6affb365b7d35dd9f77432e46a83ee590a606bbb023318838",
+    "apps/web/src/app/guideContents.tsx": "9bd995cb7c81a9cb36bcef991751a6808473921e587a0538727d5c02b049638c",
+    "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
+    "packages/ui/src/RepetitionResult/RepetitionResult.tsx": "0ab5ca95f294b59879cf33f0e4864a3d051d6fa37b92c1ba3d6787ac89447149",
+    "packages/ui/src/RepetitionResult/index.ts": "3ce259aabc5f6c35a147c068e686bfa5cf4719b7a382b4ce24fd51065dd43f5d"
+  },
+  "contracts": [
+    "All 1,333 original full-frame guide signatures remain unchanged in the native fallback.",
+    "All 1,333 React guide frames match the frozen native guide orchestrator across 12 engine scenarios; only documented data-react-session attributes and the display:contents retained-meter boundary are normalized for DOM comparison.",
+    "Both-theme native/React guide poster pixels remain identical; existing guide poster/review comparisons retain their original references.",
+    "Silent example statuses, Stop example label, no live retry button, example-only saved notes, meter identity and original playback/back callbacks are preserved.",
+    "No capture/storage/feedback dependency is introduced by guide presentation.",
+    "Original GIF/screenshot bytes, CSS cascade and thresholds remain unchanged; source-equivalence review retains encoded media."
+  ],
+  "cases": {
+    "single": {
+      "frames": 91,
+      "sha256": "b9bdb4feeaa709e0006ce4a812093a506bd2b3d7fff5bf27158292a9d05d63d8"
+    },
+    "single-early": {
+      "frames": 81,
+      "sha256": "94c5e9011b0076581e5e364b8dacf5df7f4003854be330d8f29bcfca2286c663"
+    },
+    "repeated": {
+      "frames": 68,
+      "sha256": "df650f7007016d29fd04bc7b6ac34d19e0e79010ca61e123c8a7ff7dcd2d7172"
+    },
+    "par": {
+      "frames": 133,
+      "sha256": "c832db96c622325f93cd2f37ef57ad2c0711de505c961d85c33d838da675f8c9"
+    },
+    "control": {
+      "frames": 68,
+      "sha256": "df650f7007016d29fd04bc7b6ac34d19e0e79010ca61e123c8a7ff7dcd2d7172"
+    },
+    "reload": {
+      "frames": 123,
+      "sha256": "dfe791a9cd0b942c43fdec3bae84937c55b4c03fcba3d2cefb941dd744578aab"
+    },
+    "free": {
+      "frames": 128,
+      "sha256": "f62cb6cac3122a91e27deda8bece0bad976e954e8b353c4738cb43a648f9f790"
+    },
+    "sequence-trigger-only": {
+      "frames": 109,
+      "sha256": "d1428b519e6bd53146bea21bed374cc10f72755c4021ddf06baf5b94df9c377c"
+    },
+    "sequence-rack-trigger": {
+      "frames": 125,
+      "sha256": "2daa7e9a0bfad861fbdddcf780ba44ddb59920fe4ffd2659cdb143b3a86226e5"
+    },
+    "sequence-mag-trigger": {
+      "frames": 125,
+      "sha256": "011d1f919acb4f3fef17ae2cf8b75004e623738c1e6bb55c1dde0e5d5880fa98"
+    },
+    "sequence-draw-mag-trigger": {
+      "frames": 141,
+      "sha256": "66ff59c51862ebeff61168c9c3a727f47fc2ca1769267603f72b7228d8a7a599"
+    },
+    "sequence-custom": {
+      "frames": 141,
+      "sha256": "66ff59c51862ebeff61168c9c3a727f47fc2ca1769267603f72b7228d8a7a599"
+    }
+  }
+}

@@ -11,9 +11,9 @@
     "apps/web/src/pages/ContactPage/ContactPage.css": "48411add5890d908e191a4340ec2a2154fa4a328c578e4daf4b1240ed3775d71",
     "apps/web/src/styles/legacy-theme-and-layout.css": "40e996df61f0f92278150f099f81405ba56553a6df359c9de42b85c2a778dcc9",
     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
-    "src/sessionPresentation.js": "497230e70f637237f59be44d1ca152a1347583e0500729065c5e4e283e510674",
-    "src/practiceGuideController.js": "978daa3edf0db71157cf5e4c10dff3a9437f87ec952dcf408190dd07fe7d6e4e",
-    "src/practiceGuideRendering.js": "2cd900f757cfb2a860c5c64b9cfc6c48b59d29ca845661ec6493f3ef02d89580",
+    "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
+    "src/practiceGuideController.js": "8ce13ca047c4598d01a2eb9a98430ae8d07f349cd11a660da229efdab0239a79",
+    "src/practiceGuideRendering.js": "1de34884ff15a2e9cd4cf0559850daa7acacc5ed0554c2589dff43239a700eb5",
     "src/practiceGuideExamples.js": "6a597a7ad94169334a98a3f58ec5af4ddfd9aa4f3284208f929c0e7b299a183b",
     "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
     "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
@@ -21,7 +21,7 @@
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
     "tools/page-templates.mjs": "6f37cc9bd29b7a14e48c8b74bb503c46b587dd4d6fedbac67b8744db52a462e2",
-    "tools/export-guide-examples.mjs": "595493b2b11aab0f76917216dc024ba07422fa389cbfb101ebff4a0c6b459da2",
+    "tools/export-guide-examples.mjs": "cddb5d9c17ee587a0548350af9e43c9832a2ab2b52240bc260353a5367eccc34",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "apps/web/src/styles/foundation.css": "706dda161bd34041a3820e9e86b288f813fd0fc96c426154b9018daaa67dbafc",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
@@ -96,11 +96,11 @@
     "apps/web/src/styles/legacy-practice-select.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
     "packages/ui/src/PracticeRun/PracticeRun.meter.css": "a73b0d8d204019b3bfdda61a773c6a0cb06e0c7f86117bfb576f69d61b2bb08a",
     "apps/web/src/app/renderSessionFragments.tsx": "36b22fd867e153d4c95d7253eff529f39f1bd3f315cc62c539a36b564a59be4c",
-    "packages/ui/src/PracticeRun/PracticeRun.tsx": "ae960a84696a7882797a391e06923243e142762aead1fb8af389e43610719fc1",
+    "packages/ui/src/PracticeRun/PracticeRun.tsx": "b089ff892895183559846cc95c0b996291f710f6965886b2c57560797551e8f6",
     "packages/ui/src/PracticeRun/index.ts": "f55f10e07db39a44c21d9938ddc251ceba7835ffcdc4032d160682187cdde8d4",
     "packages/ui/src/PracticeReview/PracticeReview.tsx": "1ac7376704bc331caa7a0465b5dd2c0fa2dc15cd9e138780495eac1b42b332e4",
     "packages/ui/src/PracticeReview/index.ts": "9c5505f720fbbb76719cc0e7d124cd40794a5126977c636dc3c795c5bebcd904",
-    "packages/ui/src/SequenceRun/SequenceRun.tsx": "ec5b98fffb920ac6a4c418cacbcaa947910f66eebd17e7007677a3d8baadbbd1",
+    "packages/ui/src/SequenceRun/SequenceRun.tsx": "20423e2f4c7a57e48961b9cc56fdda30c5d0716911db70bee8237080327c80df",
     "packages/ui/src/SequenceRun/index.ts": "f320c4332689a07ed20a7a3b9223a65e5dc6a6149bba1758c14166f319b95701",
     "packages/ui/src/SequenceReview/SequenceReview.tsx": "b6723e2fe002859120cb4f0bbf2bf3e1f8282fbac4bb4b83e3aae2812a0dc874",
     "packages/ui/src/SequenceReview/index.ts": "8a778eaff0f4799346ba6dc47b85bd0f04cf04079e49fa427fa3059af7332184",
@@ -111,7 +111,14 @@
     "packages/ui/src/RepetitionResult/RepetitionResult.details.css": "5b6ac899b74b36ec7bd9ba67dd347abd99024c57177d8e8c5e4cdee07dc5bc27",
     "apps/web/src/styles/legacy-session-review-actions.css": "89addcb480760d6aea765aee8a238569b18c3d5d7ca9b95f438bca9af7914ba9",
     "apps/web/src/features/sessions/resultPresentation.ts": "781e1189119cc9a5e3d284497799827bcff2768ce7687f49235b783cbb007542",
-    "apps/web/src/features/sessions/phasePresentation.ts": "e637cb3e32dea5759d16daa63333498a1f800e1a65ed7d8bfc29ec680ea3df42"
+    "apps/web/src/features/sessions/phasePresentation.ts": "e637cb3e32dea5759d16daa63333498a1f800e1a65ed7d8bfc29ec680ea3df42",
+    "apps/web/src/app/sessionContents.tsx": "ad58a14f24a7c0e7c4a856683d1280b661ee82a7e0280e4e0b0570465690d600",
+    "apps/web/src/app/practiceContents.tsx": "af784e775b94452f22a0b6bcedef031904e9e9292b4762ccf193f85253f1e8d8",
+    "apps/web/src/app/sequenceContents.tsx": "2b5461e4e38d2af6affb365b7d35dd9f77432e46a83ee590a606bbb023318838",
+    "apps/web/src/app/guideContents.tsx": "9bd995cb7c81a9cb36bcef991751a6808473921e587a0538727d5c02b049638c",
+    "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
+    "packages/ui/src/RepetitionResult/RepetitionResult.tsx": "0ab5ca95f294b59879cf33f0e4864a3d051d6fa37b92c1ba3d6787ac89447149",
+    "packages/ui/src/RepetitionResult/index.ts": "3ce259aabc5f6c35a147c068e686bfa5cf4719b7a382b4ce24fd51065dd43f5d"
   },
   "exports": [
     {
@@ -234,5 +241,10 @@
     "reviewedOn": "2026-10-20",
     "evidence": "docs/design/baselines/p6-stateful-session-review.json",
     "note": "Default guide structures/frame pixels remain equivalent; retain reviewed encoded GIFs rather than introduce a new renderer baseline."
+  },
+  "guideRuntimeInputReview": {
+    "reviewedOn": "2026-10-20",
+    "evidence": "docs/design/baselines/p6-guide-runtime-review.json",
+    "note": "Native and React full-frame equivalence plus both-theme runtime pixel review retain original encoded media."
   }
 }

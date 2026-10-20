@@ -6,6 +6,8 @@ import { createGuideExampleRenderer } from './practiceGuideRendering.js';
 export function createPracticeGuideController({ onBack, document: doc = document }) {
   const $ = id => doc.getElementById(id);
   const renderExample = createGuideExampleRenderer(doc);
+  const actions=new Map();
+  const bind=(id,handler)=>{actions.set(id,handler);$('example-'+id).addEventListener('click',handler);};
   // Demo statuses are read on demand; repeated animation frames must not flood
   // screen readers. Only the real session keeps live announcements.
   $('practiceGuideExample').querySelectorAll('[role="status"], [aria-live]').forEach(el => el.setAttribute('aria-live', 'off'));
@@ -69,11 +71,11 @@ export function createPracticeGuideController({ onBack, document: doc = document
   }
   $('practiceGuidePlayBtn').addEventListener('click', togglePlay);
   for (const id of ['practiceStopBtn', 'practicePauseBtn', 'practiceEndBtn', 'pauseSessionBtn', 'endSessionBtn'])
-    $('example-' + id).addEventListener('click', pause);
-  for (const id of ['practiceResumeBtn', 'resumeSessionBtn']) $('example-' + id).addEventListener('click', togglePlay);
-  for (const id of ['practiceRepeatBtn', 'repeatSessionBtn']) $('example-' + id).addEventListener('click', () => { selectExample(early); togglePlay(); });
-  for (const id of ['practiceDoneBtn', 'backToDrillsBtn']) $('example-' + id).addEventListener('click', () => { pause(); onBack(guide?.parent ?? 'drills'); });
-  $('example-practiceNextBtn').addEventListener('click', () => {
+    bind(id, pause);
+  for (const id of ['practiceResumeBtn', 'resumeSessionBtn']) bind(id, togglePlay);
+  for (const id of ['practiceRepeatBtn', 'repeatSessionBtn']) bind(id, () => { selectExample(early); togglePlay(); });
+  for (const id of ['practiceDoneBtn', 'backToDrillsBtn']) bind(id, () => { pause(); onBack(guide?.parent ?? 'drills'); });
+  bind('practiceNextBtn', () => {
     const next = scenario.events.find(e => e.kind === 'user-selects-next' && e.atMs > position);
     if (next) { pause(); position = next.atMs; paint(Math.floor(position / FRAME_MS)); }
   });
@@ -81,5 +83,5 @@ export function createPracticeGuideController({ onBack, document: doc = document
   $('practiceGuideEarlyBtn').addEventListener('click', () => { if (guide?.id === 'single') selectExample(true); });
   for (const id of ['practiceGuideBackBtn', 'practiceGuideReturnBtn']) $(id).addEventListener('click', () => { pause(); onBack(guide?.parent ?? 'drills'); });
   doc.addEventListener('visibilitychange', () => { if (doc.hidden) pause(); });
-  return { open, pause, current: () => guide };
+  return { open, pause, current: () => guide,connectView(mount){if(playing||!guide)return false;return renderExample.connectView(mount,id=>actions.get(id)?.());} };
 }
