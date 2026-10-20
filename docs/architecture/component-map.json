@@ -212,7 +212,6 @@
       "structuralSources": [
         "packages/ui/src/PracticeRun/PracticeRun.tsx",
         "packages/ui/src/PracticeReview/PracticeReview.tsx",
-        "apps/web/src/app/renderSessionFragments.tsx",
         "apps/web/src/pages/PracticePage/PracticePage.tsx",
         "apps/web/src/app/renderSessionPages.tsx"
       ],
@@ -273,7 +272,6 @@
       "structuralSources": [
         "packages/ui/src/SequenceRun/SequenceRun.tsx",
         "packages/ui/src/SequenceReview/SequenceReview.tsx",
-        "apps/web/src/app/renderSessionFragments.tsx",
         "apps/web/src/pages/SequencePage/SequencePage.tsx",
         "apps/web/src/app/renderSessionPages.tsx"
       ],
@@ -338,7 +336,6 @@
         "packages/ui/src/PracticeReview/PracticeReview.tsx",
         "packages/ui/src/SequenceRun/SequenceRun.tsx",
         "packages/ui/src/SequenceReview/SequenceReview.tsx",
-        "apps/web/src/app/renderSessionFragments.tsx",
         "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx",
         "apps/web/src/app/renderSessionPages.tsx"
       ],

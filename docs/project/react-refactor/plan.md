@@ -161,3 +161,7 @@ Requested by the owner on 2026-10-20. Start only after P7 final acceptance; this
 - [ ] Verify every screen maps to its final template/components and tests; document any remaining limitations explicitly. Run architecture and documentation checks against the accepted revision.
 
 Deliver the reviewed final structure and entry-point explanation to the owner. Documentation only unless the review discovers a separately tracked defect; do not silently reopen product scope or change main/dev.
+
+### P7 test-only renderer boundary — 2026-10-20
+
+Completed the remaining test-only fragment adapter move into `@dryfire/testing/session-fragments`. Its only consumers are the template containment and frozen guide-frame tests; production uses typed parent composition. Removed the obsolete application source from current component/media registries, preserving historical evidence and every PNG/GIF/frame baseline.32 affected tests pass before/after; typecheck, component lint, architecture/docs,16 smoke checks and both minified editions pass. Critical JS/CSS hashes remain unchanged. This is source ownership cleanup, not a performance improvement or startup fallback retirement. The first-entry fallback still supplies behavior while lazy React modules prepare; removing it requires an equivalent guarded first-entry owner without remounting inputs or delaying readiness. P7 performance/acceptance debt and P8 remain pending.

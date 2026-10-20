@@ -594,3 +594,8 @@ The audit and response comparison guidance were pushed directly to `main` in [`6
 ### Post-acceptance architecture handoff requested — 2026-10-20
 
 Added P8 to the [active refactor plan](react-refactor/plan.md): after final acceptance, review page architecture again, publish the final component structure through the existing ownership map, and explain application entry points and startup/mount flow with exact source links. P8 is pending; P7 remains active and its performance/acceptance debt is unchanged. This request changes documentation scope only; no application, test baseline, deployment, main or dev changes.
+
+
+### P7 test-only session renderer ownership — 2026-10-20
+
+Moved the eight-variant session fragment renderer from application source to the public `@dryfire/testing/session-fragments` test-support entry. Updated its two test consumers and current architecture/export registries. Production composition, runtime, CSS, media and saved data remain unchanged.32 affected tests pass before/after, plus type/lint/architecture/docs,16 smoke checks and both minified edition verifiers. Emitted critical filenames remain public `index-BE-dFKDe.js`, preview `index-CVwqfLTV.js`, CSS `index-DnLrZEQ0.css`. No speedup claimed; original performance failures remain P7 debt. Targets b only; no main/dev or deployment changes.

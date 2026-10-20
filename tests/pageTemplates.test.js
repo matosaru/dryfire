@@ -1,4 +1,4 @@
-import {renderSessionFragments} from '../apps/web/src/app/renderSessionFragments.tsx';
+import {renderSessionFragments} from '@dryfire/testing/session-fragments';
 import { readFileSync } from 'node:fs';
 import { renderPageTemplates } from '../tools/page-templates.mjs';
 import { PAGE_DEFINITIONS, PAGE_IDS } from '../src/pageDefinitions.js';

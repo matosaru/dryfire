@@ -3,7 +3,7 @@ import {PracticeRun} from '@dryfire/ui/PracticeRun';
 import {PracticeReview} from '@dryfire/ui/PracticeReview';
 import {SequenceRun} from '@dryfire/ui/SequenceRun';
 import {SequenceReview} from '@dryfire/ui/SequenceReview';
-/** Live and synthetic examples compile from the same typed structural components. */
+/** Test-only structural oracle for live and synthetic variants; production uses typed page composition. */
 export function renderSessionFragments(){return{
  practiceRun:renderToStaticMarkup(<PracticeRun/>),practiceReview:renderToStaticMarkup(<PracticeReview/>),
  sessionRun:renderToStaticMarkup(<SequenceRun/>),sessionReview:renderToStaticMarkup(<SequenceReview/>),

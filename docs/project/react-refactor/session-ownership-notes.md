@@ -4,7 +4,7 @@ P6 implementation notes within CHG-049, not new product behavior. [Plan](plan.md
 
 ## Verified structural preparation
 
-- PracticeRun/PracticeReview/SequenceRun/SequenceReview supply identical live and `example-` structures through `app/renderSessionFragments`. Frozen original fragments and complete-frame digests cover all12 scenarios/1,333 frames. Native controllers and `sessionPresentation.js` still own initialized DOM; typed prerender alone is not a runtime migration.
+- PracticeRun/PracticeReview/SequenceRun/SequenceReview supply identical live and `example-` structures through the test-only `@dryfire/testing/session-fragments` oracle (formerly `app/renderSessionFragments`; production now composes typed parent pages). Frozen original fragments and complete-frame digests cover all12 scenarios/1,333 frames. Native controllers and `sessionPresentation.js` still own initialized DOM; typed prerender alone is not a runtime migration.
 - The Practice controller already has actual-controller tests. `tests/sequenceController.test.js` now covers actual Sequence setup, numeric drafts/bounds, safety/training guards, late permission cancellation, cue/countdown/onset/persistence/review, pause/resume, owned review, failed save/retry and stale configuration reads before its runtime handoff. Storage/capture/feedback are injected test boundaries; the session engine, classifier and synthetic PCM recognition are real. This is not hardware verification.
 
 ## Next extraction and handoff

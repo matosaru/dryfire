@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
-import {renderSessionFragments} from '../apps/web/src/app/renderSessionFragments.tsx';
+import {renderSessionFragments} from '@dryfire/testing/session-fragments';
 import {readFileSync} from 'node:fs';
 import {serialize,deserialize} from 'node:v8';
 import {guideCases,guideScenario,nativeExampleMarkup,guideDigest} from './helpers/guidePresentation.js';
