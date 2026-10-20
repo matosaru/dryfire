@@ -1,3 +1,4 @@
+import {renderSessionFragments} from '../apps/web/src/app/renderSessionFragments.tsx';
 import { readFileSync } from 'node:fs';
 import { renderPageTemplates } from '../tools/page-templates.mjs';
 import { PAGE_DEFINITIONS, PAGE_IDS } from '../src/pageDefinitions.js';
@@ -46,13 +47,9 @@ test('the public/preview filter still has the private controls in its trusted so
 
 test('guide examples compile the exact live run and review fragments with unique IDs', () => {
   const html = renderPageTemplates('{{app}}');
-  for (const name of ['practice-run', 'practice-review', 'session-run', 'session-review']) {
-    const fragment = readFileSync(new URL(`../src/templates/shared/${name}.html`, import.meta.url), 'utf8');
-    expect(html).toContain(fragment.trim());
-    const example = fragment.replace(/\bid="([^"]+)"/g, (_, id) => `id="example-${id}"`)
-      .replace(/\b(aria-labelledby|aria-describedby|for)="([^"]+)"/g, (_, attr, ids) => `${attr}="${ids.split(' ').map(id => `example-${id}`).join(' ')}"`);
-    expect(html).toContain(example.trim());
-  }
+  // Production compiler and both live/example branches use the same typed owner.
+  // Independent frozen native DOM and complete-frame parity live in component/sharedSessionFragments tests.
+  for (const fragment of Object.values(renderSessionFragments())) expect(html).toContain(fragment);
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
   expect(new Set(ids).size).toBe(ids.length);
 });

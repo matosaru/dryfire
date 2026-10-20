@@ -1,0 +1,10 @@
+import {createHash} from 'node:crypto';
+import {readFileSync} from 'node:fs';
+import {getPracticeGuide} from '../../src/practiceGuides.js';
+import {createScenario} from '../../src/practiceGuideExamples.js';
+import {createGuideExampleRenderer} from '../../src/practiceGuideRendering.js';
+export const guideCases=['single','single-early','repeated','par','control','reload','free','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
+export function guideScenario(name){const sequence=name.startsWith('sequence-');const context={type:sequence?'sequence':'practice',gunId:'qa-gun-a',routeKey:'parity',config:{}};if(sequence)context.drill=name==='sequence-custom'?{id:'custom-qa-a',title:'Custom sequence',steps:['draw','reload','trigger']}:{id:name.slice(9)};else context.mode=name==='single-early'?'single':name;const guide=getPracticeGuide(context);return{guide,scenario:createScenario(guide,{early:name==='single-early'})};}
+export function nativeExampleMarkup(){return '<div id="practiceGuideExample">'+['practice-run','practice-review','session-run','session-review'].map(name=>readFileSync(new URL('../fixtures/session-fragments/'+name+'.html',import.meta.url),'utf8').replace(/\bid="([^"]+)"/g,(_match,id)=>`id="example-${id}"`).replace(/\b(aria-labelledby|aria-describedby|for)="([^"]+)"/g,(_match,attr,ids)=>`${attr}="${ids.split(' ').map(id=>'example-'+id).join(' ')}"`)).join('')+'</div>';}
+export function semanticTree(node){if(node.nodeType===3)return node.textContent.replace(/\s+/g,' ').trim()||null;if(node.nodeType!==1)return null;return[node.tagName,[...node.attributes].map(a=>[a.name,a.value]).sort(),[...node.childNodes].map(semanticTree).filter(Boolean)];}
+export function guideDigest(doc,guide,scenario){const render=createGuideExampleRenderer(doc),hash=createHash('sha256');for(const frame of scenario.frames){render(frame,guide);hash.update(JSON.stringify(semanticTree(doc.getElementById('practiceGuideExample')))+'\n');}return{frames:scenario.frames.length,sha256:hash.digest('hex')};}

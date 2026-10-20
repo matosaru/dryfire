@@ -1,0 +1,49 @@
+.gun-switcher:focus-visible,.gun-card:focus-visible,.text-button:focus-visible,.segmented-control button:focus-visible,.gun-form select:focus-visible,.custom-drill-editor select:focus-visible { outline:2px solid #ffad62; outline-offset:3px; }
+@media(max-width:360px) {
+  .gun-switcher { padding:12px; gap:9px; }
+  .gun-switcher-action { font-size:.64rem; }
+  .gun-library-heading h2 { font-size:1.5rem; }
+  .custom-drill-editor { padding:11px; }
+  .custom-step-controls { gap:3px; }
+  .custom-step-controls button { width:29px; }
+}
+
+/* Timed sessions keep configuration, a live repetition and saved review in one view. */
+:root {
+  --session-surface:#14212b;
+  --session-surface-raised:#1a2935;
+  --session-border:#344a5a;
+  --session-muted:#b2c5d5;
+  --session-text:var(--primary-text,#eef5fb);
+  --session-positive:#73e2ad;
+}
+.session-preset-name { color:var(--session-muted); font-size:.79rem; line-height:1.5; margin:0 0 10px; overflow-wrap:anywhere; }
+.session-sequence { margin:0 0 19px; flex-direction:row; gap:6px; }
+.session-sequence .drill-step { min-width:0; max-width:100%; padding:8px; font-size:.75rem; overflow-wrap:anywhere; }
+.session-config-form { display:grid; gap:12px; }
+.session-config-fields { display:grid; gap:12px; padding:0; margin:0; border:0; min-width:0; }
+.session-config-fields legend { color:var(--session-muted); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; padding:0 0 12px; }
+.session-field { display:grid; gap:7px; color:var(--session-text); font-size:.8rem; min-width:0; }
+.session-field input,.session-field select,.preference-select select { width:100%; min-width:0; min-height:46px; border:1px solid var(--session-border); border-radius:10px; padding:10px; background:#0e1a23; color:var(--session-text); font:inherit; font-size:16px; }
+.session-repetition-field { display:flex; justify-content:space-between; align-items:center; padding:13px; border:1px solid var(--session-border); border-radius:12px; background:var(--session-surface); font-weight:700; }
+.session-repetition-field input { width:86px; text-align:center; }
+.session-delay-card { display:grid; gap:13px; padding:13px; border:1px solid var(--session-border); border-radius:12px; background:var(--session-surface); }
+.session-delay-card>.session-field { display:flex; align-items:center; justify-content:space-between; font-weight:700; }
+.session-delay-card>.session-field select { width:55%; }
+.session-delay-card>.muted { margin:0; font-size:.72rem; }
+.session-delay-range { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.preference-toggle { display:flex; align-items:center; justify-content:space-between; gap:14px; min-height:64px; padding:14px; color:var(--session-text); cursor:pointer; }
+.preference-toggle>span { display:grid; gap:5px; min-width:0; }
+.preference-toggle strong { font-weight:650; font-size:.85rem; }
+.preference-toggle small { color:var(--session-muted); font-size:.71rem; line-height:1.5; overflow-wrap:anywhere; }
+.preference-toggle input { appearance:none; position:relative; width:48px; height:28px; margin:8px 0; padding:0; flex:none; border:1px solid #627587; border-radius:99px; background:#344654; cursor:pointer; }
+.preference-toggle input::before { content:""; position:absolute; width:22px; height:22px; left:2px; top:2px; background:#f5f7fa; border-radius:50%; box-shadow:0 1px 3px #0003; transition:transform .15s ease; }
+.preference-toggle input:checked { background:#ff8126; border-color:#ff8126; }
+.preference-toggle input:checked::before { transform:translateX(20px); }
+.preference-toggle input:disabled { cursor:not-allowed; opacity:.55; }
+.session-sound-toggle { border:1px solid var(--session-border); border-radius:12px; background:var(--session-surface); }
+#sessionCueGuardNote { margin:0; padding:0 3px; color:var(--session-muted); }
+.session-readiness { margin:0; padding:11px 12px; border:1px solid var(--session-border); border-radius:10px; color:var(--session-muted); background:var(--session-surface); font-size:.75rem; line-height:1.5; }
+.session-readiness.ready { color:var(--session-positive); }
+#sessionStartBtn { min-height:50px; }
+.session-timing-note { margin:13px 0 0; color:var(--session-muted); font-size:.7rem; text-align:center; line-height:1.6; }

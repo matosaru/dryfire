@@ -1,3 +1,4 @@
+import {renderSessionFragments} from '../apps/web/src/app/renderSessionFragments.tsx';
 import {renderHistoryPage} from '../apps/web/src/app/renderHistoryPage.tsx';
 import { readFileSync } from 'node:fs';
 import { renderDrillsPage } from '../apps/web/src/app/renderDrillsPage.tsx';
@@ -21,13 +22,7 @@ const fill = (template, slots) => template.replace(/\{\{([a-zA-Z]+)\}\}/g, (_, n
   return slots[name];
 });
 
-const runFragments = Object.fromEntries(['practice', 'session'].flatMap(name => ['run', 'review'].flatMap(state => {
-  const html = read(`shared/${name}-${state}`).trim();
-  const example = html.replace(/\bid="([^"]+)"/g, (_, id) => `id="example-${id}"`)
-    .replace(/\b(aria-labelledby|aria-describedby|for)="([^"]+)"/g, (_, attr, ids) => `${attr}="${ids.split(' ').map(id => `example-${id}`).join(' ')}"`);
-  const slot = name + state[0].toUpperCase() + state.slice(1);
-  return [[slot, html], ['example' + slot[0].toUpperCase() + slot.slice(1), example]];
-})));
+const runFragments = renderSessionFragments();
 const numberInputs = Object.fromEntries([
   ['practiceRepetitions', '10'],
   ['practiceDuration', '60'],

@@ -1,0 +1,3 @@
+.practice-counters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px 12px; border: 1px solid var(--session-border); background: var(--session-surface); border-radius: 16px; text-align: center; margin: 18px 0; }
+.practice-counters strong { display: block; font-size: 1.8rem; }
+.practice-counters span { color: var(--session-muted); font-size: .8rem; }

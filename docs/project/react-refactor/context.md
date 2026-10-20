@@ -15,19 +15,19 @@ Source: b HEAD (`git log -1` identifies the exact increment). Published History 
 
 P0/P1 are complete; P2 shell, P3 profiles and P4 Settings/Learn/Live Listen presentation/handoffs are verified. Native startup fallback retirement remains P7.
 
-**P5 presentation/runtime handoffs verified.** Drills/editor and History/results/optional graphs now have typed presentation owners. Private ProgressContent prepares/mounts only on explicit later entry; grouping/statistics/filters stay feature-owned. Free simulation clears through the renderer; public JS excludes it. Exact numeric/filter nodes and native startup fallbacks remain protected. Final fallback retirement remains P7.
+**P5 presentation/runtime handoffs verified; P6 active.** Four shared Practice/Sequence run/review packages now compile live and namespaced example structures. Frozen native fragments and1,333 complete-frame signatures protect all12 guide scenarios; initialized controls still use native sessionPresentation/controllers. Eight actual Sequence-controller characterization tests now protect the next runtime transfer. Raw production run/review fragments are removed; test oracles remain. This is structural preparation, not completed P6 runtime migration.
 
 ## Next action
 
-Continue **P6 Practice/Sequence/shared live-guide components** automatically on b. Characterize controllers/fragment snapshots before each handoff; preserve capture/readiness/early click/beep, engine clocks, automatic repetitions, invalid numeric forms, save retries, background cleanup and all12 guide exports. Start with shared run/review source packages and frozen live/example DOM parity; then explicit runtime ownership. No approval needed.
+Continue **P6 shared result/run/review models and live page handoffs** automatically on b. Read [session ownership notes](session-ownership-notes.md). Start with shared typed repetition-result presentation, reusing its pure model in the native fallback; keep acoustic/timing/saving ownership. Then connect pages and the synthetic guide through the same presentation. Retain exact config form/badInput nodes, high-frequency meter path, retry guards and all12 export behavior. No approval needed.
 
 ## Verification and open debt
 
-Latest P5 increment: **678 tests /109 suites**, coverage/type/lint/architecture/docs,16 smoke checks and both minified artifacts pass. **7 public +8 preview targeted Chromium workflows** include exact Dark/Light chart pixels, filters, Free/Full transitions, clearing and offline/edition ownership. Earlier History increment passed26/25 browser workflows. New graph model/component/adapter100% measured coverage;30 UI/page packages checked. CSS61451/13011 and all image/GIF baselines unchanged.
+Latest P6 increment: **722 tests /115 suites**, coverage/type/lint/architecture/docs,16 smoke checks and both minified artifacts pass. **14 public +14 preview Chromium workflows** include exact native/typed guide poster/review pixels in both themes, setup drafts, microphone preparation/timeout/cancel, early/fast clicks and automatic repetitions. All1,333 native/typed guide-frame digests match. New structural components/adapter100% coverage;34 UI/page packages checked. CSS61451/13011 and all media baselines unchanged; initial HTML718 bytes smaller per edition.
 
-Published editor `91d9d01`: canonical validation and both screenshot edition jobs pass; both performance jobs and the public deliberate-slowdown proof fail. Aggregate screenshots fails because it requires performance. Prior editor browser evidence remains 23 public +22 preview Chromium workflows. Preserve 390 image references, 83 captures, 12 guide exports. Local Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons.
+Canonical P5 `d4d5aa9`: validation and both screenshot edition jobs pass; original performance jobs and public deliberate-slowdown proof fail. Aggregate screenshots remains red because it requires performance. Local Chromium remains diagnostic; pinned Chromium/WebKit owns canonical comparisons. Keep390 image references,83 captures and12 guide exports intact.
 
-Initial JS now public174408/52975 raw/gzip, preview175703/53347; +3491/+2168 and+3620/+2201 vs original. No fresh timing claimed after payload gate failure. See plan ledger for performance/probe debt.
+Critical JS remains public174408/52975 raw/gzip, preview175703/53347; +3491/+2168 and+3620/+2201 vs original. No fresh timing claimed after payload gate failure. See plan ledger for performance/probe debt.
 
 CHG-050 defers optimization until structural work is done. Original gzip/timing gates remain unchanged and failing honestly; see the plan's ledger. Do not claim fresh timing after a size gate stops measurement. Resolve all debt before final release.
 

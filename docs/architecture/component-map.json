@@ -175,7 +175,10 @@
       "source": "src/templates/pages/practice.html",
       "behaviorTests": [
         "tests/practiceSession.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/sharedSessionFragments.test.js",
+        "packages/ui/src/PracticeRun/PracticeRun.test.tsx",
+        "packages/ui/src/PracticeReview/PracticeReview.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -191,6 +194,16 @@
       "draftOwnership": "Controller keeps mode/gun route key and mounted invalid configuration while opening a guide.",
       "effects": [
         "Readiness/capture/beep/timers; background/navigation cancellation; owned partial/final session saves"
+      ],
+      "structuralSources": [
+        "packages/ui/src/PracticeRun/PracticeRun.tsx",
+        "packages/ui/src/PracticeReview/PracticeReview.tsx",
+        "apps/web/src/app/renderSessionFragments.tsx"
+      ],
+      "integrationTests": [
+        "visual-tests/practice-start.spec.js",
+        "visual-tests/practice-guides.spec.js",
+        "visual-tests/session-fragment-parity.spec.js"
       ]
     },
     {
@@ -200,7 +213,11 @@
       "source": "src/templates/pages/session.html",
       "behaviorTests": [
         "tests/drillSession.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/sharedSessionFragments.test.js",
+        "packages/ui/src/SequenceRun/SequenceRun.test.tsx",
+        "packages/ui/src/SequenceReview/SequenceReview.test.tsx",
+        "tests/sequenceController.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -215,6 +232,16 @@
       "draftOwnership": "Controller keeps selected sequence/gun route key and mounted invalid configuration.",
       "effects": [
         "Ordered capture/beep/countdown; interruption and durable owned repetitions"
+      ],
+      "structuralSources": [
+        "packages/ui/src/SequenceRun/SequenceRun.tsx",
+        "packages/ui/src/SequenceReview/SequenceReview.tsx",
+        "apps/web/src/app/renderSessionFragments.tsx"
+      ],
+      "integrationTests": [
+        "visual-tests/practice-start.spec.js",
+        "visual-tests/practice-guides.spec.js",
+        "visual-tests/session-fragment-parity.spec.js"
       ]
     },
     {
@@ -224,7 +251,12 @@
       "source": "src/templates/pages/practiceGuide.html",
       "behaviorTests": [
         "tests/practiceGuides.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/sharedSessionFragments.test.js",
+        "packages/ui/src/PracticeRun/PracticeRun.test.tsx",
+        "packages/ui/src/PracticeReview/PracticeReview.test.tsx",
+        "packages/ui/src/SequenceRun/SequenceRun.test.tsx",
+        "packages/ui/src/SequenceReview/SequenceReview.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -239,6 +271,18 @@
       "draftOwnership": "Exact source/gun/context snapshot; return preserves original setup draft.",
       "effects": [
         "Synthetic clock only; pause on navigation/visibility; no capture or persistence"
+      ],
+      "structuralSources": [
+        "packages/ui/src/PracticeRun/PracticeRun.tsx",
+        "packages/ui/src/PracticeReview/PracticeReview.tsx",
+        "packages/ui/src/SequenceRun/SequenceRun.tsx",
+        "packages/ui/src/SequenceReview/SequenceReview.tsx",
+        "apps/web/src/app/renderSessionFragments.tsx"
+      ],
+      "integrationTests": [
+        "visual-tests/practice-start.spec.js",
+        "visual-tests/practice-guides.spec.js",
+        "visual-tests/session-fragment-parity.spec.js"
       ]
     },
     {
