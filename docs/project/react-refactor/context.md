@@ -21,7 +21,7 @@ P7 consumer audit removed12 superseded layout/chrome/page HTML templates and unu
 
 ## Next action
 
-Continue **P7 native startup fallback retirement, remaining package boundaries and original-baseline optimization** on b. Audit each remaining consumer/owner before removal. Preserve retained input/child-root lifetimes, runtime model/controller services, all templates/media/data/edition behavior and original thresholds. Then resolve payload/startup/probe regressions and complete canonical both-edition acceptance. Main/dev stay frozen; no approval needed.
+Continue **P7 native startup fallback retirement, remaining package boundaries and original-baseline optimization** on b. Audit each remaining consumer/owner before removal. Preserve retained input/child-root lifetimes, runtime model/controller services, all templates/media/data/edition behavior and original thresholds. Then resolve payload/startup/probe regressions and complete canonical both-edition acceptance. After acceptance, execute P8: final page/component architecture review, maintained structure map and exact application entry-point/startup explanation. Main/dev stay frozen; no approval needed.
 
 ## Verification and open debt
 

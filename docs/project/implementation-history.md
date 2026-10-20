@@ -589,3 +589,8 @@ The complete implementation, requirements, updated designs, generated architectu
 ### Production minification audit publication — 2026-10-11
 
 The audit and response comparison guidance were pushed directly to `main` in [`60e720e`](https://github.com/matosaru/dryfire/commit/60e720e). Remote hash **60e720e2710de60c22e2f3c46a23501b60d378d5** matched local HEAD after successful push. [GitHub Actions run 38145974854](https://github.com/matosaru/dryfire/actions/runs/38145974854) **completed successfully**, observed through public GitHub HTML; the earlier documentation follow-up run 38144779220 also passed for `3b3c720`. All 24 locally generated production files retain their pre-benchmark SHA-256 values. This final documentation follow-up records delivery evidence only; it does not change minifiers, dependencies, application behavior or reviewed screens. Exact filenames supplied by the user match the local release, while both live body requests remain blocked by workspace-gateway 403. No failed deployment, formatting cause or live transfer encoding is inferred. Further diagnosis can compare a saved raw response with the published audit; production/iPhone and other explicitly pending work remain separate.
+
+
+### Post-acceptance architecture handoff requested — 2026-10-20
+
+Added P8 to the [active refactor plan](react-refactor/plan.md): after final acceptance, review page architecture again, publish the final component structure through the existing ownership map, and explain application entry points and startup/mount flow with exact source links. P8 is pending; P7 remains active and its performance/acceptance debt is unchanged. This request changes documentation scope only; no application, test baseline, deployment, main or dev changes.

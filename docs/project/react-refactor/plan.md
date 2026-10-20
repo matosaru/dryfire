@@ -150,3 +150,14 @@ When dev synchronization resumes, preserve its Full configuration/simulation; sh
 If behavior, image, data or security verification fails, stop the affected slice and fix/revert only the responsible changes. Preserve history and user data. Performance debt is deferred under CHG-050, not erased. No further approval is needed for this unchanged approved scope; product design/functionality changes require their own explicit approval.
 
 Native packaging, SEO implementation, accounts, billing, monetization and cloud storage remain outside this refactor. Their earlier requirements/plans are not silently included in P0–P7.
+
+## P8 — Post-acceptance architecture review and handoff
+
+Requested by the owner on 2026-10-20. Start only after P7 final acceptance; this task does not replace or weaken any functional, visual, data, edition or performance gate.
+
+- [ ] Review the final page architecture against the approved specification and reusable-template boundaries; identify any remaining adapters or intentional native islands.
+- [ ] Publish the final component structure/tree with pages, shared shell/templates, UI packages, feature services and their source/CSS/test/public-entry locations. Update the existing [component map](../../architecture/component-map.json) and [page-template documentation](../../architecture/page-templates.md), keeping one maintained ownership registry rather than a duplicate map.
+- [ ] Explain the application entry points with exact file links: HTML/build entry, browser bootstrap, React root/mount boundaries, lazy page loading, shared layout and edition selection. Include a short startup-flow diagram and distinguish build-time rendering from browser runtime.
+- [ ] Verify every screen maps to its final template/components and tests; document any remaining limitations explicitly. Run architecture and documentation checks against the accepted revision.
+
+Deliver the reviewed final structure and entry-point explanation to the owner. Documentation only unless the review discovers a separately tracked defect; do not silently reopen product scope or change main/dev.
