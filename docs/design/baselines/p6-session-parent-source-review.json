@@ -1,0 +1,37 @@
+{
+  "change": "CHG-049 P6 typed parent source/prerender packages",
+  "reviewedOn": "2026-10-20",
+  "candidateBase": "fef43a4",
+  "sourceHashes": {
+    "tools/page-templates.mjs": "cc559566eb1014f63bdc327ff6b3059f4637ad52bd838ec19942dbc35d0a501d",
+    "tools/export-guide-examples.mjs": "86a17075001b0e487be46743949b73c00cc9bc97ad3c9c3425c4339a7aa83a4d",
+    "apps/web/src/styles/foundation.css": "2e687e3090bf67f93b11ca59d44ddd17315f807a9b5b719a0eb123733f2c6afc",
+    "apps/web/src/styles/legacy-session-configuration.css": "c579caae593cbc84b09d7051bb2a94bdb2e0914dbff004ce32c325447a4192ca",
+    "apps/web/src/styles/legacy-practice-select.css": "8fddfd45a0f242e72c1cec781f3db3bece234d301166cf9d9045992f15e66c7e",
+    "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
+    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "8009730b34473677566e6bec07a950d75446ba39ab08bde6f4557cfc8cb95e82",
+    "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
+    "apps/web/src/styles/legacy-before-sequence-page.css": "687daa485d1e63a71364d3c8b9c64ab66d7038f687607a88ff9ef76c92a6d3f5",
+    "apps/web/src/pages/SequencePage/SequencePage.css": "3395c37a1d09c0a6f3001ce2308d75ad58789892847dba6e317bc50c3500acf4",
+    "apps/web/src/styles/legacy-after-sequence-page.css": "33c4fdf9e1d68e7f7c2310f9acb9cb1ad25040472f900d38fc419a185f461c5f",
+    "apps/web/src/pages/PracticePage/PracticePage.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
+    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "5ec336334f797a629f64606b9fb64081bbf7e710fd6d6616c5ccef6e07f4ae1f",
+    "apps/web/src/pages/PracticeGuidePage/index.ts": "cbaa34b0c350d037b794d8112a741d5e4d191d0f19cf941e3a0a457d74665f52",
+    "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
+    "packages/ui/src/PageHeading/PageHeading.tsx": "49f5e8c76db7f93c4bc5300116b068c1635519fc68c354188eb7a2027d53da58",
+    "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
+    "tests/sessionParentBaseline.test.js": "ffc8a3620616a72efba82f12d5fb29b1bc71d75a1a6830aa732a445c9a0244be",
+    "apps/web/src/pages/PracticePage/PracticePage.tsx": "b821b35863c758b011267e99be882a035a45ae80649f4b9fc4860adbdbec748c",
+    "apps/web/src/pages/SequencePage/SequencePage.tsx": "17190c473bfde32373c78145da097dc1a826f056f33889887a8b3de67494d71f",
+    "tests/fixtures/session-pages/practice.html": "8dcd3472bb6a22497c7aae0dbf10f68588b8b4a02613229df9127402361a10fe",
+    "tests/fixtures/session-pages/session.html": "81a544c9dda50f6f92c8282022791fd550a90c1c73d6b877379787dc5483477f",
+    "tests/fixtures/session-pages/practiceGuide.html": "d171e8c62920b353569bb91239e19b2af970480a4f975d6f110adffd736f434f"
+  },
+  "contracts": [
+    "Three complete parent DOM signatures match frozen pre-extraction compiled pages, including all numeric rules/defaults, headers, guides, form controls and example structures.",
+    "All original 1,333 native guide frame signatures and 1,333 shared React guide frames remain equivalent.",
+    "Expanded CSS bytes and production minified CSS hash remain identical to the original; imports use ordered top-level wrappers so Vite preserves every rule.",
+    "Existing Run/Review and guide runtime handoffs remain unchanged; parent runtime ownership is still pending.",
+    "Original screenshot/GIF bytes and performance gates are unchanged; input-equivalence review retains existing exports."
+  ]
+}

@@ -1,0 +1,11 @@
+/**
+ * @jest-environment jsdom
+ * @jest-environment-options {"customExportConditions":["node","node-addons"]}
+ */
+import '@dryfire/testing/setup';
+import {render,cleanup,fireEvent} from '@testing-library/react';
+import {jest} from '@jest/globals';
+import {PracticeGuidePage} from './PracticeGuidePage';
+afterEach(cleanup);
+test('manual parent retains named Back, options/play/return actions and shared example structures',()=>{const back=jest.fn(),action=jest.fn(),v=render(<PracticeGuidePage onBack={back} onAction={action}/>);const button=v.container.querySelector<HTMLButtonElement>('#practiceGuideBackBtn')!;fireEvent.click(button);expect(back).toHaveBeenCalledTimes(1);expect(button).not.toHaveAttribute('data-back');for(const id of ['practiceGuideNormalBtn','practiceGuideEarlyBtn','practiceGuidePlayBtn','practiceGuideReturnBtn'])fireEvent.click(v.container.querySelector('#'+id)!);expect(action.mock.calls.map(row=>row[0])).toEqual(['practiceGuideNormalBtn','practiceGuideEarlyBtn','practiceGuidePlayBtn','practiceGuideReturnBtn']);expect(v.container.querySelector('#example-practiceRun')).toBeInTheDocument();expect(v.container.querySelector('#example-sessionReview')).toBeInTheDocument();});
+test('manual state and retained example slot support escaped text, ordered steps and independent visibility',()=>{const v=render(<PracticeGuidePage title="Custom practice" texts={{practiceGuideKind:'ORDERED SEQUENCE GUIDE',practiceGuideName:'<script>',practiceGuidePurpose:'Purpose',practiceGuideMeasures:'Time',practiceGuideExpect:'Wait',practiceGuideRequires:'Trigger',practiceGuideExampleNote:'Example'}} early sequenceHidden examplesHidden sequence={<span>Trigger pull</span>} steps={<li>Wait</li>} example={<figure data-testid="example"/>}/>);expect(v.getByTestId('example')).toBeInTheDocument();expect(v.container.querySelector('#example-practiceRun')).toBeNull();expect(v.container.querySelector('#practiceGuideSequence')).toHaveClass('hidden');expect(v.container.querySelector('#practiceGuideExamples')).toHaveClass('hidden');expect(v.container.querySelector('#practiceGuideEarlyBtn')).toHaveAttribute('aria-pressed','true');expect(v.getByText('<script>')).toBeInTheDocument();expect(v.container.querySelector('script')).toBeNull();});

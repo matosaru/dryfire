@@ -172,7 +172,7 @@
       "id": "practice",
       "targetOwner": "PracticePage",
       "renderer": "legacy",
-      "source": "src/templates/pages/practice.html",
+      "source": "apps/web/src/pages/PracticePage/PracticePage.tsx",
       "behaviorTests": [
         "tests/practiceSession.test.js",
         "tests/pageTemplates.test.js",
@@ -185,7 +185,9 @@
         "tests/sessionComponentStates.test.tsx",
         "tests/sessionPresentationPort.test.js",
         "tests/sessionContentsMount.test.tsx",
-        "tests/practiceController.test.js"
+        "tests/practiceController.test.js",
+        "apps/web/src/pages/PracticePage/PracticePage.test.tsx",
+        "tests/sessionParentBaseline.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -207,7 +209,9 @@
       "structuralSources": [
         "packages/ui/src/PracticeRun/PracticeRun.tsx",
         "packages/ui/src/PracticeReview/PracticeReview.tsx",
-        "apps/web/src/app/renderSessionFragments.tsx"
+        "apps/web/src/app/renderSessionFragments.tsx",
+        "apps/web/src/pages/PracticePage/PracticePage.tsx",
+        "apps/web/src/app/renderSessionPages.tsx"
       ],
       "integrationTests": [
         "visual-tests/practice-start.spec.js",
@@ -221,13 +225,13 @@
         "apps/web/src/features/sessions/phasePresentation.ts",
         "apps/web/src/features/sessions/controlClasses.ts"
       ],
-      "runtimeOwner": "Shared typed Run/Review contents after synchronous later unlocked entry; controller retains configure form, outer hosts, timing/capture/save ownership and first-entry native fallback. Parent page migration remains P6."
+      "runtimeOwner": "Typed parent prerender; live/guide inner React contents verified. Native parent/manual/configuration ownership remains until explicit P6 parent-root handoff."
     },
     {
       "id": "session",
       "targetOwner": "SequencePage",
       "renderer": "legacy",
-      "source": "src/templates/pages/session.html",
+      "source": "apps/web/src/pages/SequencePage/SequencePage.tsx",
       "behaviorTests": [
         "tests/drillSession.test.js",
         "tests/pageTemplates.test.js",
@@ -240,7 +244,9 @@
         "apps/web/src/features/sessions/phasePresentation.test.ts",
         "tests/sessionComponentStates.test.tsx",
         "tests/sessionPresentationPort.test.js",
-        "tests/sessionContentsMount.test.tsx"
+        "tests/sessionContentsMount.test.tsx",
+        "apps/web/src/pages/SequencePage/SequencePage.test.tsx",
+        "tests/sessionParentBaseline.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -261,7 +267,9 @@
       "structuralSources": [
         "packages/ui/src/SequenceRun/SequenceRun.tsx",
         "packages/ui/src/SequenceReview/SequenceReview.tsx",
-        "apps/web/src/app/renderSessionFragments.tsx"
+        "apps/web/src/app/renderSessionFragments.tsx",
+        "apps/web/src/pages/SequencePage/SequencePage.tsx",
+        "apps/web/src/app/renderSessionPages.tsx"
       ],
       "integrationTests": [
         "visual-tests/practice-start.spec.js",
@@ -275,13 +283,13 @@
         "apps/web/src/features/sessions/phasePresentation.ts",
         "apps/web/src/features/sessions/controlClasses.ts"
       ],
-      "runtimeOwner": "Shared typed Run/Review contents after synchronous later unlocked entry; controller retains configure form, outer hosts, timing/capture/save ownership and first-entry native fallback. Parent page migration remains P6."
+      "runtimeOwner": "Typed parent prerender; live/guide inner React contents verified. Native parent/manual/configuration ownership remains until explicit P6 parent-root handoff."
     },
     {
       "id": "practiceGuide",
       "targetOwner": "PracticeGuidePage",
       "renderer": "legacy",
-      "source": "src/templates/pages/practiceGuide.html",
+      "source": "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx",
       "behaviorTests": [
         "tests/practiceGuides.test.js",
         "tests/pageTemplates.test.js",
@@ -294,7 +302,9 @@
         "apps/web/src/features/sessions/resultPresentation.test.ts",
         "apps/web/src/features/sessions/phasePresentation.test.ts",
         "tests/guideContentsMount.test.tsx",
-        "tests/guideControllerHandoff.test.js"
+        "tests/guideControllerHandoff.test.js",
+        "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.test.tsx",
+        "tests/sessionParentBaseline.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -319,7 +329,9 @@
         "packages/ui/src/PracticeReview/PracticeReview.tsx",
         "packages/ui/src/SequenceRun/SequenceRun.tsx",
         "packages/ui/src/SequenceReview/SequenceReview.tsx",
-        "apps/web/src/app/renderSessionFragments.tsx"
+        "apps/web/src/app/renderSessionFragments.tsx",
+        "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx",
+        "apps/web/src/app/renderSessionPages.tsx"
       ],
       "integrationTests": [
         "visual-tests/practice-start.spec.js",
@@ -332,7 +344,7 @@
         "apps/web/src/features/sessions/resultPresentation.ts",
         "apps/web/src/features/sessions/phasePresentation.ts"
       ],
-      "runtimeOwner": "Shared live/example React contents after explicit paused-context handoff; guide controller retains synthetic clock, outer hosts, manual text and playback; parent page composition remains P6. No microphone/storage/feedback effects."
+      "runtimeOwner": "Typed parent prerender; live/guide inner React contents verified. Native parent/manual/configuration ownership remains until explicit P6 parent-root handoff."
     },
     {
       "id": "recognize",
