@@ -11,25 +11,23 @@ Updated 2026-10-20 (Europe/Vilnius). Compact handoff; detailed scope/results sta
 
 ## Current work
 
-Source: b HEAD (`git log -1` identifies the exact increment). Published shared-result milestone: `15cae13`.
+Source: b HEAD (`git log -1` identifies the exact published increment).
 
-P0/P1 are complete; P2 shell, P3 profiles and P4 Settings/Learn/Live Listen presentation/handoffs are verified. Native startup fallback retirement remains P7.
+P0/P1 complete; P2–P5 presentation/runtime handoffs verified. Native startup fallback retirement remains P7.
 
-**P5 presentation/runtime handoffs verified; P6 active.** Four shared run/review packages compile live and namespaced guide structures; initialized pages still use native controllers/sessionPresentation. Shared result builders feed native detail factories and prepared RepetitionResult UI. Pure run/review models now feed the native adapters too;38 frozen-renderer contracts preserve fields/classes/guards. Frozen DOM and1,333 complete-frame signatures protect all12 guide scenarios. Native Practice/Sequence controller tests cover safety, timing/capture, ownership and retry before handoff. Raw production run/review fragments are removed; test oracles remain. P6 runtime migration is not complete.
+**P6 active:** stateful shared Practice/Sequence Run/Review contents now mount through explicit later unlocked entry. Async module completion only prepares. Controllers cache models and preserve original guarded actions, numeric/config forms, outer visibility, capture/timing/storage and save ownership. Shared two-host mount has atomic rollback, initial focus/open details restoration and epoch-based refresh reset. Practice retains the exact native high-frequency meter. Sequence retry invokes its handler directly. The four component packages still compile identical live/example structures.
 
 ## Next action
 
-Continue **P6 stateful shared components and live page handoffs** automatically on b. Read [session ownership notes](session-ownership-notes.md). Result/run/review models are shared/verified. Next extend the four structural components to consume model state, then connect explicit later-entry controller ports. Then connect pages and synthetic guide through the same presentation. Retain exact config/badInput nodes, high-frequency meter path, retry/owner guards and all12 export behavior. No approval needed.
+Continue **P6 guide runtime and parent Practice/Sequence/Guide page composition** on b. Read [session ownership notes](session-ownership-notes.md). Connect read-only synthetic examples through the same contents/models, preserving prefixed IDs, silent status semantics, Stop/Resume/Replay/Next actions and example saved-note wording. Move that note override into the presentation boundary before exclusive React ownership. Then transfer parent headings/configuration composition, retaining exact numeric forms. No approval needed; main/dev remain frozen.
 
 ## Verification and open debt
 
-Latest P6 increment: **772 tests /118 suites**, coverage/type/lint/architecture/docs,16 smoke checks and both minified artifacts pass. **14 public +14 preview Chromium workflows** include exact native/typed guide poster/review pixels, setup drafts, microphone preparation/timeout/cancel, early/fast clicks and automatic repetitions. All1,333 native/typed guide-frame digests match; result/phase models and result component100% coverage.35 UI/page packages checked. CSS61451/13011 and all media baselines unchanged; structural extraction reduced initial HTML718 bytes per edition.
+Latest live handoff: **861 tests /122 suites**, coverage/type/lint/architecture/docs,16 smoke checks and both minified artifacts pass. **18 public +18 preview Chromium workflows** pass, including actual React handoff, both-theme native/React saved-review pixels, setup drafts, meter identity, readiness/cancel/early/fast/automatic timing, guide poster/review parity and offline/cache behavior. Actual Practice and Sequence suites execute both native and React presentation paths. New live adapters/class helper have100% measured coverage; two-host mount100% statements/functions/lines and93.87% branches. All1,333 original complete-frame guide digests,390 screenshot references,83 current captures and12 encoded GIFs remain intact. CSS61451/13011 and hash unchanged. Worker cache v55 precaches new lazy chunks through edition metadata.
 
-Canonical P5 `d4d5aa9`: validation and both screenshot edition jobs pass; original performance jobs and public deliberate-slowdown proof fail. Aggregate screenshots remains red because it requires performance. Local Chromium remains diagnostic; pinned Chromium/WebKit owns canonical comparisons. Keep390 image references,83 captures and12 guide exports intact.
+Local Chromium is diagnostic; canonical pinned Chromium/WebKit CI remains separate. Canonical P5 d4d5aa9 validation and screenshot editions pass; original performance and public deliberate-slowdown proof fail. No new CI/deployment success inferred. Generic strict UI audit reports34 existing static findings; RF-11 preserves existing native validation/control policy, and no audit compliance pass is claimed.
 
-Critical JS now public175719/53503 raw/gzip, preview177011/53864; +4802/+2696 and+4928/+2718 vs original. No fresh timing claimed after payload gate failure. See plan ledger for performance/probe debt.
-
-CHG-050 defers optimization until structural work is done. Original gzip/timing gates remain unchanged and failing honestly; see the plan's ledger. Do not claim fresh timing after a size gate stops measurement. Resolve all debt before final release.
+Critical JS public176869/53952 raw/gzip (+5952/+3145 vs original), preview178164/54300 (+6081/+3154). Original performance gates remain failing; no fresh timing inferred after size failure. CHG-050 defers optimization until structural work is complete, without weakening gates/baselines. Resolve debt before release. Real iPhone microphone/beep acceptance remains owner/hardware work.
 
 ## Sources of truth
 

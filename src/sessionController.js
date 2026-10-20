@@ -43,7 +43,11 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   let saveError = null;
   let readToken = 0;
   let lastAnnouncement = '';
-  let routeKey = null;
+  let routeKey = null, view = null, runModel, reviewModel;
+  const actions = new Map();
+  const bind = (id, handler) => { actions.set(id,handler); $('#'+id).addEventListener('click',handler); };
+  const presentRun = model => { runModel=model; if(!view)return false; view.setRun(model); return true; };
+  const presentReview = model => { reviewModel=model; if(!view)return false; view.setReview(model); return true; };
 
   const locked = () => pending || saving || finishing || !!interruption || !!state && state.phase !== 'review';
   const times = () => ({ monoNow: clock(), epochNow: Date.now(), randomValue: Math.random() });
@@ -114,7 +118,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   }
 
   const resultDetails = row => sequenceResultDetails(row, { node, titleFor });
-  const renderReview = record => renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails });
+  const renderReview = record => renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails, present:presentReview });
 
   function announce(text) {
     if (text !== lastAnnouncement) {
@@ -135,7 +139,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if (record && !running) { renderReview(record); return; }
     updateReadiness();
     if (!running) return;
-    renderSequenceRun({ $, state, pending, clock, microphone, readConfig, savedRevision, titleFor, resultDetails, announce, node });
+    renderSequenceRun({ $, state, pending, clock, microphone, readConfig, savedRevision, titleFor, resultDetails, announce, node, present:presentRun });
   }
 
   async function persist() {
@@ -375,7 +379,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
 
   const retrySaveButton = node('button', 'Retry saving results', 'button secondary wide-action hidden');
   retrySaveButton.type = 'button';
-  retrySaveButton.addEventListener('click', () => { enqueue(persist).then(changed).catch(onError); });
+  const retrySave = () => { enqueue(persist).then(changed).catch(onError); };
+  actions.set('retrySessionSave',retrySave);retrySaveButton.addEventListener('click',retrySave);
   $('#sessionReview .session-review-card').append(retrySaveButton);
   $('#sessionConfigForm').addEventListener('submit', event => { event.preventDefault(); start().catch(onError); });
   $('#sessionConfigForm').addEventListener('input', updateReadiness);
@@ -391,13 +396,13 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
       } catch { /* Invalid draft remains editable. */ }
     }
   });
-  $('#pauseSessionBtn').addEventListener('click', () => pause().catch(onError));
-  $('#resumeSessionBtn').addEventListener('click', () => start(true).catch(onError));
-  $('#endSessionBtn').addEventListener('click', () => interrupt().catch(onError));
+  bind('pauseSessionBtn', () => pause().catch(onError));
+  bind('resumeSessionBtn', () => start(true).catch(onError));
+  bind('endSessionBtn', () => interrupt().catch(onError));
   $('#sessionBackBtn').addEventListener('click', () => onBack());
-  $('#backToDrillsBtn').addEventListener('click', () => onNavigate('drills'));
+  bind('backToDrillsBtn', () => onNavigate('drills'));
   $('#sessionLearnBtn').addEventListener('click', () => onNavigate('learn'));
-  $('#repeatSessionBtn').addEventListener('click', () => {
+  bind('repeatSessionBtn', () => {
     const record = state ? toSessionRecord(state) : review;
     if (record) open({ id: record.drillId, title: record.drillTitle, steps: record.drillSteps }, record.config).catch(onError);
   });
@@ -408,6 +413,11 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     return { type: 'sequence', gunId: getContext().gun?.id, routeKey, drill: structuredClone(selection),
       config: { soundAtStart: $('#sessionStartSound').checked } };
   }
-  return { open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
+  function connectView(mount) {
+    if(view||locked()||saveError)return false;
+    view=mount($('#sessionRun'),$('#sessionReview'),{runModel,reviewModel,titleFor,onAction:id=>actions.get(id)?.()});
+    return true;
+  }
+  return { connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

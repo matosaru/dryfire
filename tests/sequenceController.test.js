@@ -2,7 +2,8 @@
  * @jest-environment jsdom
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
-import '@dryfire/testing/setup';
+import '@testing-library/jest-dom';
+import {mountSequenceContents} from '../apps/web/src/app/sequenceContents.tsx';
 import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import {serialize,deserialize} from 'node:v8';
@@ -18,6 +19,8 @@ const library=JSON.parse(readFileSync(new URL('../visual-tests/fixtures/library.
 const originalClone=globalThis.structuredClone;
 const config={repetitions:1,delayMode:'fixed',fixedDelaySeconds:1,soundAtStart:true};
 const drill={id:'trigger-only',title:'Trigger pull',steps:['trigger']};
+describe.each([false,true])('Sequence controller React presentation %s',react=>{
+let mounted;
 let controller,context,callbacks,options,session,captureCalled;
 const $=id=>document.getElementById(id);
 const submit=()=>$('sessionConfigForm').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
@@ -30,8 +33,9 @@ beforeEach(()=>{
  capture.mockReset().mockImplementation(async value=>{options=value;captureCalled.resolve();return session;});save.mockReset().mockResolvedValue(undefined);set.mockReset().mockResolvedValue(undefined);get.mockReset().mockImplementation(async(_key,fallback)=>fallback);getSessions.mockReset().mockResolvedValue([]);
  cue.prepare.mockReset().mockResolvedValue(true);cue.play.mockReset().mockReturnValue(true);cue.close.mockReset().mockResolvedValue(undefined);
  controller=createSessionController({...callbacks,getContext:()=>context,titleFor:label=>label,vibrationEnabled:()=>false});
+ if(react)controller.connectView((...args)=>(mounted=mountSequenceContents(...args)));
 });
-afterEach(async()=>{save.mockResolvedValue(undefined);await controller.interrupt('navigation');await controller.flush();jest.useRealTimers();globalThis.structuredClone=originalClone;});
+afterEach(async()=>{save.mockResolvedValue(undefined);await controller.interrupt('navigation');await controller.flush();mounted?.dispose();mounted=null;jest.useRealTimers();globalThis.structuredClone=originalClone;});
 async function begin(){await controller.open(drill,config);submit();await captureCalled.promise;await jest.advanceTimersByTimeAsync(0);await controller.flush();}
 test('opening/configuring retains action order, native bounds and setup focus without requesting audio',async()=>{await controller.open(drill,config);expect(callbacks.onNavigate).toHaveBeenCalledWith('session');expect(document.activeElement).toBe($('session-title'));expect($('sessionRepetitions').value).toBe('1');expect($('sessionRepetitions').min).toBe('1');expect($('sessionRepetitions').max).toBe('100');expect($('sessionSteps').textContent).toContain('trigger');expect(capture).not.toHaveBeenCalled();$('sessionRepetitions').value='';$('sessionRepetitions').dispatchEvent(new Event('change',{bubbles:true}));expect($('sessionRepetitions').value).toBe('');expect(set).not.toHaveBeenCalled();});
 test('safety and learned-sound guards prevent capture before a valid start',async()=>{await controller.open(drill,config);callbacks.ensureSafe.mockReturnValue(false);submit();await jest.advanceTimersByTimeAsync(0);expect(capture).not.toHaveBeenCalled();callbacks.ensureSafe.mockReturnValue(true);context.examples=[];submit();await jest.advanceTimersByTimeAsync(0);expect(capture).not.toHaveBeenCalled();expect($('sessionStartBtn')).toBeDisabled();});
@@ -42,3 +46,5 @@ test('owned saved reviews stay read-only and another gun cannot open them',()=>{
 
 test('failed saving retains an owned review and explicit retry clears the unsaved guard',async()=>{await begin();await jest.advanceTimersByTimeAsync(1500);await controller.flush();const failure=new Error('Storage full');save.mockRejectedValue(failure);const {samples,rate}=clickPcm();options.onEvent(samples,rate,{onsetMs:performance.now()});await controller.flush();expect(controller.hasUnsavedResults()).toBe(true);expect(document.querySelector('#sessionReview .session-saved-note')).toHaveTextContent('Results are not saved. Keep this page open and retry saving.');const retry=document.querySelector('#sessionReview .session-review-card button');expect(retry).not.toHaveClass('hidden');expect(session.stop).toHaveBeenCalled();save.mockResolvedValue(undefined);retry.click();await controller.flush();await jest.advanceTimersByTimeAsync(0);expect(controller.hasUnsavedResults()).toBe(false);expect(document.querySelector('#sessionReview .session-saved-note')).toHaveTextContent('Saved on this device');expect(retry).toHaveClass('hidden');});
 test('a delayed configuration read cannot open another gun’s session',async()=>{const delayed=deferred();get.mockReturnValue(delayed.promise);const pending=controller.open(drill);await Promise.resolve();context={...context,gun:library.guns[1]};delayed.resolve(config);await pending;expect(callbacks.onNavigate).not.toHaveBeenCalled();expect(capture).not.toHaveBeenCalled();});
+
+});

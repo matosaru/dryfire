@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { installSyntheticMedia } from './media.js';
 const library = readFileSync(new URL('./fixtures/library.json', import.meta.url));
 
-async function configure(page, autoReady = true, delay = '1') {
+async function configure(page, autoReady = true, delay = '1', handoff = false) {
   await page.addInitScript(installSyntheticMedia);
   if (!autoReady) await page.addInitScript(() => { window.__visualAudioAutoReady = false; });
   await page.clock.install({ time: new Date('2026-10-11T11:00:00Z') });
@@ -14,7 +14,9 @@ async function configure(page, autoReady = true, delay = '1') {
   await page.locator('#importFile').setInputFiles({ name: 'fixture.json', mimeType: 'application/json', buffer: library });
   await expect(page.locator('#homeView')).toBeVisible();
   await page.locator('.tab[data-view="drills"]').click();
+  const loaded=handoff?page.waitForResponse(response=>/\/assets\/practiceContents-/.test(response.url())):null;
   await page.locator('[data-practice-mode="single"]').click();
+  if(loaded){await loaded;await expect(page.locator('#practiceRun')).not.toHaveAttribute('data-react-session');await page.locator('#practiceBackBtn').click();await page.locator('[data-practice-mode="single"]').click();await expect(page.locator('#practiceRun')).toHaveAttribute('data-react-session','');}
   await page.locator('#practiceDelayMode').selectOption('fixed');
   await page.locator('#practiceFixedDelay').fill(delay);
   await page.locator('#practiceFixedDelay').dispatchEvent('change');
@@ -105,4 +107,21 @@ test('zero-delay automatic repetitions re-arm and accept successive clicks', asy
   }
   await expect(page.locator('#practiceReview')).toBeVisible();
   await expect(page.locator('#practiceSummary')).toContainText('2 accepted shots');
+});
+
+
+test('React run/review handoff retains microphone identity, readiness, pause/resume and review actions',async({page})=>{
+ await configure(page,false,'1',true);
+ const meter=await page.locator('#practiceLevelPanel').elementHandle();
+ await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase','connecting');
+ await page.evaluate(()=>window.__visualAudio.ready());await countdown(page);
+ expect(await meter.evaluate(node=>node===document.getElementById('practiceLevelPanel'))).toBe(true);
+ await page.clock.runFor(1120);await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase','active');
+ await page.locator('#practicePauseBtn').click();await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase','paused');
+ expect(await page.evaluate(()=>window.__visualAudio.inputActive())).toBe(false);
+ await page.locator('#practiceResumeBtn').click();await page.evaluate(()=>window.__visualAudio.ready());await countdown(page);
+ await page.locator('#practiceStopBtn').click();await expect(page.locator('#practiceReview')).toBeVisible();
+ await expect(page.locator('#practiceReview')).toHaveAttribute('data-react-session','');
+ await expect(page.locator('#practiceSaved')).toHaveText('Saved on this device');
+ await page.locator('#practiceDoneBtn').click();await expect(page.locator('#drillsView')).toBeVisible();
 });

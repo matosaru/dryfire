@@ -181,13 +181,19 @@
         "packages/ui/src/PracticeReview/PracticeReview.test.tsx",
         "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
         "apps/web/src/features/sessions/resultPresentation.test.ts",
-        "apps/web/src/features/sessions/phasePresentation.test.ts"
+        "apps/web/src/features/sessions/phasePresentation.test.ts",
+        "tests/sessionComponentStates.test.tsx",
+        "tests/sessionPresentationPort.test.js",
+        "tests/sessionContentsMount.test.tsx",
+        "tests/practiceController.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/practiceController.js",
         "src/practiceSession.js",
-        "src/sessionPresentation.js"
+        "src/sessionPresentation.js",
+        "apps/web/src/app/practiceContents.tsx",
+        "apps/web/src/app/sessionContents.tsx"
       ],
       "stableSelectorExamples": [
         "practiceConfigForm",
@@ -206,13 +212,16 @@
       "integrationTests": [
         "visual-tests/practice-start.spec.js",
         "visual-tests/practice-guides.spec.js",
-        "visual-tests/session-fragment-parity.spec.js"
+        "visual-tests/session-fragment-parity.spec.js",
+        "visual-tests/session-runtime.spec.js"
       ],
       "presentationSources": [
         "src/sessionPresentation.js",
         "apps/web/src/features/sessions/resultPresentation.ts",
-        "apps/web/src/features/sessions/phasePresentation.ts"
-      ]
+        "apps/web/src/features/sessions/phasePresentation.ts",
+        "apps/web/src/features/sessions/controlClasses.ts"
+      ],
+      "runtimeOwner": "Shared typed Run/Review contents after synchronous later unlocked entry; controller retains configure form, outer hosts, timing/capture/save ownership and first-entry native fallback. Parent page migration remains P6."
     },
     {
       "id": "session",
@@ -228,13 +237,18 @@
         "tests/sequenceController.test.js",
         "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
         "apps/web/src/features/sessions/resultPresentation.test.ts",
-        "apps/web/src/features/sessions/phasePresentation.test.ts"
+        "apps/web/src/features/sessions/phasePresentation.test.ts",
+        "tests/sessionComponentStates.test.tsx",
+        "tests/sessionPresentationPort.test.js",
+        "tests/sessionContentsMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/sessionController.js",
         "src/drillSession.js",
-        "src/sessionPresentation.js"
+        "src/sessionPresentation.js",
+        "apps/web/src/app/sequenceContents.tsx",
+        "apps/web/src/app/sessionContents.tsx"
       ],
       "stableSelectorExamples": [
         "sessionConfigForm",
@@ -252,13 +266,16 @@
       "integrationTests": [
         "visual-tests/practice-start.spec.js",
         "visual-tests/practice-guides.spec.js",
-        "visual-tests/session-fragment-parity.spec.js"
+        "visual-tests/session-fragment-parity.spec.js",
+        "visual-tests/session-runtime.spec.js"
       ],
       "presentationSources": [
         "src/sessionPresentation.js",
         "apps/web/src/features/sessions/resultPresentation.ts",
-        "apps/web/src/features/sessions/phasePresentation.ts"
-      ]
+        "apps/web/src/features/sessions/phasePresentation.ts",
+        "apps/web/src/features/sessions/controlClasses.ts"
+      ],
+      "runtimeOwner": "Shared typed Run/Review contents after synchronous later unlocked entry; controller retains configure form, outer hosts, timing/capture/save ownership and first-entry native fallback. Parent page migration remains P6."
     },
     {
       "id": "practiceGuide",

@@ -21,7 +21,11 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   let operation = 0, captureToken = 0, readToken = 0, timer = null, tickQueued = false, interruption = null;
   let inputLevel = 0, inputSeen = false, inputAt = 0, inputStartedAt = 0, holdLevelUntil = 0, inputFeedback = '';
   let clock = () => 0, queue = Promise.resolve(), configQueue = Promise.resolve();
-  let routeKey = null;
+  let routeKey = null, view = null, runModel, reviewModel;
+  const actions = new Map();
+  const bind = (id, handler) => { actions.set(id,handler); $(id).addEventListener('click',handler); };
+  const presentRun = model => { runModel=model; if(!view)return false; view.setRun(model); return true; };
+  const presentReview = model => { reviewModel=model; if(!view)return false; view.setReview(model); return true; };
   const locked = () => pending || saving || closing || !!interruption || !!saveError || !!state && state.phase !== 'review';
   const times = () => ({ monoNow: clock(), epochNow: Date.now(), randomValue: Math.random() });
   const changed = () => { render(); onChange(); };
@@ -109,7 +113,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     $('practiceSteps').replaceChildren(...required.map(label => node('span', titleFor(label), 'preset-chip')));
   }
   const details = row => practiceResultDetails(row, { node, titleFor });
-  const renderReview = record => renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details });
+  const renderReview = record => renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details, present:presentReview });
   function render() {
     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
     const running = pending || state && state.phase !== 'review';
@@ -123,7 +127,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       renderReview(record); return;
     }
     if (!running) { configure(); return; }
-    renderPracticeRun({ $, state, mode, pending, clock, microphone, readConfig, interruption, closing, saving, inputFeedback, renderInput, details, node });
+    renderPracticeRun({ $, state, mode, pending, clock, microphone, readConfig, interruption, closing, saving, inputFeedback, renderInput, details, node, present:presentRun });
   }
   async function persist() {
     if (!state) return;
@@ -301,16 +305,16 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       configQueue = configQueue.then(async () => { const previous = await getGunSetting('practiceConfig', {}, owner); await setGunSetting('practiceConfig', { ...previous, [id]: config }, owner); }).catch(onError);
     } catch { /* Keep invalid drafts editable. */ }
   });
-  $('practicePauseBtn').addEventListener('click', () => pause().catch(onError));
-  $('practiceResumeBtn').addEventListener('click', () => start(true).catch(onError));
-  $('practiceNextBtn').addEventListener('click', () => next().catch(onError));
-  $('practiceEndBtn').addEventListener('click', () => interrupt().catch(onError));
-  $('practiceStopBtn').addEventListener('click', () => interrupt().catch(onError));
+  bind('practicePauseBtn', () => pause().catch(onError));
+  bind('practiceResumeBtn', () => start(true).catch(onError));
+  bind('practiceNextBtn', () => next().catch(onError));
+  bind('practiceEndBtn', () => interrupt().catch(onError));
+  bind('practiceStopBtn', () => interrupt().catch(onError));
   $('practiceBackBtn').addEventListener('click', () => onBack());
-  $('practiceDoneBtn').addEventListener('click', () => { if (!locked()) onNavigate('drills'); });
+  bind('practiceDoneBtn', () => { if (!locked()) onNavigate('drills'); });
   $('practiceLearnBtn').addEventListener('click', () => onNavigate('learn'));
-  $('practiceRepeatBtn').addEventListener('click', () => { const record = state ? toPracticeRecord(state) : review; if (record) open(record.practiceMode, record.config).catch(onError); });
-  $('practiceRetryBtn').addEventListener('click', () => { enqueue(persist).then(changed).catch(onError); });
+  bind('practiceRepeatBtn', () => { const record = state ? toPracticeRecord(state) : review; if (record) open(record.practiceMode, record.config).catch(onError); });
+  bind('practiceRetryBtn', () => { enqueue(persist).then(changed).catch(onError); });
   $('safetyAck').addEventListener('change', () => { if (!state && !review) configure(); });
   function guideContext() {
     if (!routeKey || locked() || state || review) return null;
@@ -318,6 +322,11 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       config: { reloadStart: $('practiceReloadStart').value, reloadEnd: $('practiceReloadEnd').value,
         startSource: $('practiceStartSource').value, soundAtStart: $('practiceStartSound').checked } };
   }
-  return { open, showRecord, guideContext, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
+  function connectView(mount) {
+    if(view||locked())return false;
+    view=mount($('practiceRun'),$('practiceReview'),{runModel,reviewModel,titleFor,onAction:id=>actions.get(id)?.()});
+    return true;
+  }
+  return { connectView, open, showRecord, guideContext, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken++; routeKey = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

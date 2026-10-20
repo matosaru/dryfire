@@ -1,13 +1,6 @@
-export type SequenceReviewProps={prefix?:string;onAction?:(id:string)=>void};
-/** Shared live/example structure; capture, timers, state transitions and saving remain controller-owned. */
-export function SequenceReview({prefix='',onAction}:SequenceReviewProps){
- const id=(value:string)=>prefix+value;
- return (
-<div id={id('sessionReview')} className="hidden">
-        <section className="session-review-card" aria-labelledby={id('sessionReviewStatus')}><h3 id={id('sessionReviewStatus')}>Session review</h3><div id={id('sessionReviewSummary')}></div><p className="session-saved-note">Saved on this device</p></section>
-        <section className="session-records" aria-labelledby={id('sessionRecordsTitle')}><h3 id={id('sessionRecordsTitle')}>Repetition results</h3><div id={id('sessionResultList')} className="session-result-list"></div></section>
-        <div className="session-review-actions"><button id={id('repeatSessionBtn')} type="button" className="button primary wide-action" onClick={()=>onAction?.('repeatSessionBtn')}>Repeat Session</button><button id={id('backToDrillsBtn')} type="button" className="button secondary wide-action" onClick={()=>onAction?.('backToDrillsBtn')}>Back to Drills</button></div>
-        <p className="muted small session-timing-note">Times reflect sound detection. The app cannot verify physical actions or whether a firearm is unloaded.</p>
-      </div>
- );
-}
+import type {ReactNode} from 'react';
+import type {SessionReviewView} from '../PracticeReview/PracticeReview.tsx';
+export type SequenceReviewProps={prefix?:string;onAction?:(id:string)=>void;view?:SessionReviewView;results?:ReactNode;withRetry?:boolean};
+/** Shared live/example structure; the live-only retry action is explicit. */
+export function SequenceReview(props:SequenceReviewProps){const {prefix=''}=props;return <div id={prefix+'sessionReview'} className="hidden"><SequenceReviewContents {...props}/></div>;}
+export function SequenceReviewContents({prefix='',onAction,view,results,withRetry=false}:SequenceReviewProps){const id=(value:string)=>prefix+value;return <><section className="session-review-card" aria-labelledby={id('sessionReviewStatus')}><h3 id={id('sessionReviewStatus')} data-status={view?.status}>{view?.title??'Session review'}</h3><div id={id('sessionReviewSummary')}>{view?.summary.map((row,index)=><p className={row.className} key={index}>{row.text}</p>)}</div><p className="session-saved-note">{view?.savedNote??'Saved on this device'}</p>{withRetry&&<button type="button" className={'button secondary wide-action'+((view?.retryHidden??true)?' hidden':'')} disabled={view?.retryDisabled} onClick={()=>onAction?.('retrySessionSave')}>Retry saving results</button>}</section><section className="session-records" aria-labelledby={id('sessionRecordsTitle')}><h3 id={id('sessionRecordsTitle')}>Repetition results</h3><div id={id('sessionResultList')} className="session-result-list">{results??(view?<p className="empty-state">No repetition was completed before this session ended.</p>:null)}</div></section><div className="session-review-actions"><button id={id('repeatSessionBtn')} type="button" className="button primary wide-action" disabled={view?.repeatDisabled} onClick={()=>onAction?.('repeatSessionBtn')}>Repeat Session</button><button id={id('backToDrillsBtn')} type="button" className="button secondary wide-action" onClick={()=>onAction?.('backToDrillsBtn')}>Back to Drills</button></div><p className="muted small session-timing-note">Times reflect sound detection. The app cannot verify physical actions or whether a firearm is unloaded.</p></>;}

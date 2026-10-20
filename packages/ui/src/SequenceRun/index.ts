@@ -1,1 +1,1 @@
-export {SequenceRun,type SequenceRunProps} from './SequenceRun.tsx';
+export {SequenceRun,SequenceRunContents,type SequenceRunProps} from './SequenceRun.tsx';

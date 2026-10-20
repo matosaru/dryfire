@@ -1,1 +1,1 @@
-export {SequenceReview,type SequenceReviewProps} from './SequenceReview.tsx';
+export {SequenceReview,SequenceReviewContents,type SequenceReviewProps} from './SequenceReview.tsx';

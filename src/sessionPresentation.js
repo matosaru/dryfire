@@ -22,8 +22,9 @@ function renderControls(model,$){
   for(const [id,disabled]of Object.entries(model.disabled))$(id).disabled=disabled;
 }
 
-export function renderPracticeReview(record,{ $,node,state,savedRevision,saveError,saving,interruption,locked,getContext,details }){
+export function renderPracticeReview(record,{ $,node,state,savedRevision,saveError,saving,interruption,locked,getContext,details,present }){
   const model=practiceReviewPresentation(record,{state,savedRevision,saveError:!!saveError,saving,interruption:!!interruption,locked:locked(),gunId:getContext().gun?.id,continuous:continuousPractice(record.practiceMode),stats:practiceStatistics(record)});
+  if(present?.(model))return;
   $('practiceReviewStatus').textContent=model.title;$('practiceReviewStatus').dataset.status=model.status;
   $('practiceSummary').replaceChildren(...model.summary.map(row=>node('p',row.text,row.className)));
   $('practiceSaved').textContent=model.savedNote;
@@ -33,10 +34,11 @@ export function renderPracticeReview(record,{ $,node,state,savedRevision,saveErr
   $('practiceRepeatBtn').disabled=model.repeatDisabled;
 }
 
-export function renderPracticeRun({ $,state,mode,pending,clock,microphone,readConfig,interruption,closing,saving,inputFeedback,renderInput,details,node }){
+export function renderPracticeRun({ $,state,mode,pending,clock,microphone,readConfig,interruption,closing,saving,inputFeedback,renderInput,details,node,present }){
   const elapsed=state?practiceElapsed(state,clock()):0;
   const model=practiceRunPresentation({state,mode,pending,clock,microphone:!!microphone,readConfig,interruption:!!interruption,closing,saving,inputFeedback,elapsed,continuous:continuousPractice(mode)});
   $('practiceRun').dataset.phase=model.phase;
+  if(present?.(model)){renderInput();return;}
   renderControls(model,$);renderInput();
   $('practiceLatest').replaceChildren(model.latest?details(model.latest):node('p','Recognized clicks and repetition outcomes appear here.','muted small'));
 }
@@ -45,8 +47,9 @@ export function sequenceResultDetails(row,{node,titleFor}){
   return resultDetailsNode(sequenceResultPresentation(row,titleFor),node);
 }
 
-export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails }){
+export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails,present }){
   const model=sequenceReviewPresentation(record,{state,savedRevision,saveError:!!saveError,saving,pending,locked:locked(),gunId:getContext().gun?.id});
+  if(present?.(model))return;
   $('#sessionReviewStatus').dataset.status=model.status;$('#sessionReviewStatus').textContent=model.title;
   $('#sessionReviewSummary').replaceChildren(...model.summary.map(row=>node('p',row.text,row.className)));
   const host=$('#sessionResultList');host.replaceChildren();
@@ -57,8 +60,9 @@ export function renderSequenceReview(record,{ $,node,state,savedRevision,saveErr
   $('#repeatSessionBtn').disabled=model.repeatDisabled;
 }
 
-export function renderSequenceRun({ $,state,pending,clock,microphone,readConfig,savedRevision,titleFor,resultDetails,announce,node }){
+export function renderSequenceRun({ $,state,pending,clock,microphone,readConfig,savedRevision,titleFor,resultDetails,announce,node,present }){
   const model=sequenceRunPresentation({state,pending,clock,microphone:!!microphone,readConfig,savedRevision,titleFor});
+  if(present?.(model))return;
   const get=id=>$('#'+id);renderControls(model,get);
   $('#sessionProgressMeter').max=model.progress.max;$('#sessionProgressMeter').value=model.progress.value;
   announce(model.announcement);

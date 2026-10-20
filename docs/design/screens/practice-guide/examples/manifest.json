@@ -11,7 +11,7 @@
     "apps/web/src/pages/ContactPage/ContactPage.css": "48411add5890d908e191a4340ec2a2154fa4a328c578e4daf4b1240ed3775d71",
     "apps/web/src/styles/legacy-theme-and-layout.css": "40e996df61f0f92278150f099f81405ba56553a6df359c9de42b85c2a778dcc9",
     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
-    "src/sessionPresentation.js": "943ff6256d380285b9a55533e6a5574641336e8cef23082da9059b8c5942513d",
+    "src/sessionPresentation.js": "497230e70f637237f59be44d1ca152a1347583e0500729065c5e4e283e510674",
     "src/practiceGuideController.js": "978daa3edf0db71157cf5e4c10dff3a9437f87ec952dcf408190dd07fe7d6e4e",
     "src/practiceGuideRendering.js": "2cd900f757cfb2a860c5c64b9cfc6c48b59d29ca845661ec6493f3ef02d89580",
     "src/practiceGuideExamples.js": "6a597a7ad94169334a98a3f58ec5af4ddfd9aa4f3284208f929c0e7b299a183b",
@@ -96,14 +96,14 @@
     "apps/web/src/styles/legacy-practice-select.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
     "packages/ui/src/PracticeRun/PracticeRun.meter.css": "a73b0d8d204019b3bfdda61a773c6a0cb06e0c7f86117bfb576f69d61b2bb08a",
     "apps/web/src/app/renderSessionFragments.tsx": "36b22fd867e153d4c95d7253eff529f39f1bd3f315cc62c539a36b564a59be4c",
-    "packages/ui/src/PracticeRun/PracticeRun.tsx": "e7c5d932087a744e8f7314784244cef2776b2cb7b02c4c1d2b34180c053c053d",
-    "packages/ui/src/PracticeRun/index.ts": "65bb2aa09e187dd55eb5976da0f209c6e9e063cf19f0d821f2b3a3a01ea45170",
-    "packages/ui/src/PracticeReview/PracticeReview.tsx": "89f2e20453b5653dc40d5861650106e41e9d3006f7e1a2bdf796099c9a507d1d",
-    "packages/ui/src/PracticeReview/index.ts": "c05e305eb7ca1ece8b56f6d1ede725531f487c938597efe55c31a30f1a27b717",
-    "packages/ui/src/SequenceRun/SequenceRun.tsx": "399c695a396e126b46bb63da463b287a58c913eb925c18d468cab5281f746502",
-    "packages/ui/src/SequenceRun/index.ts": "4c5c9a57f0efc40ecfc6f0b8605f8fc2cb199515349a743a6c06b85b5e5a7224",
-    "packages/ui/src/SequenceReview/SequenceReview.tsx": "d8c6ecc53e89e2848db900d29406eaabd5f2b0d557a881c9828294f923eeaf0d",
-    "packages/ui/src/SequenceReview/index.ts": "95fddf2ed6c4147d311127b3999ea45ab07bbbe2ec09085916c779dae5079800",
+    "packages/ui/src/PracticeRun/PracticeRun.tsx": "ae960a84696a7882797a391e06923243e142762aead1fb8af389e43610719fc1",
+    "packages/ui/src/PracticeRun/index.ts": "f55f10e07db39a44c21d9938ddc251ceba7835ffcdc4032d160682187cdde8d4",
+    "packages/ui/src/PracticeReview/PracticeReview.tsx": "1ac7376704bc331caa7a0465b5dd2c0fa2dc15cd9e138780495eac1b42b332e4",
+    "packages/ui/src/PracticeReview/index.ts": "9c5505f720fbbb76719cc0e7d124cd40794a5126977c636dc3c795c5bebcd904",
+    "packages/ui/src/SequenceRun/SequenceRun.tsx": "ec5b98fffb920ac6a4c418cacbcaa947910f66eebd17e7007677a3d8baadbbd1",
+    "packages/ui/src/SequenceRun/index.ts": "f320c4332689a07ed20a7a3b9223a65e5dc6a6149bba1758c14166f319b95701",
+    "packages/ui/src/SequenceReview/SequenceReview.tsx": "b6723e2fe002859120cb4f0bbf2bf3e1f8282fbac4bb4b83e3aae2812a0dc874",
+    "packages/ui/src/SequenceReview/index.ts": "8a778eaff0f4799346ba6dc47b85bd0f04cf04079e49fa427fa3059af7332184",
     "apps/web/src/styles/legacy-session-section-headings.css": "1bbd376c87ae14eb275e22f6b9943f64fe1a89d8687f85588933cd09fe6a8230",
     "packages/ui/src/RepetitionResult/RepetitionResult.css": "103745e188f46e5712152e774d0eb60a8563f751fa917f7d18bef91b59c2b0c6",
     "apps/web/src/styles/legacy-session-run-actions.css": "ea9bfe9db6ec15e855704300ca72b0537749f0c88144a1b58872edcd7338cdef",
@@ -229,5 +229,10 @@
   "progressInputReview": "P5 private ProgressContent CSS ownership: expanded and optimized CSS remain byte-identical. Guide scenario engines, shared fragments, page compiler and encoded GIF bytes unchanged.",
   "sessionFragmentInputReview": "docs/design/baselines/p6-shared-session-review.json",
   "resultPresentationInputReview": "docs/design/baselines/p6-result-presentation-review.json",
-  "phaseModelInputReview": "docs/design/baselines/p6-phase-model-review.json"
+  "phaseModelInputReview": "docs/design/baselines/p6-phase-model-review.json",
+  "statefulInputReview": {
+    "reviewedOn": "2026-10-20",
+    "evidence": "docs/design/baselines/p6-stateful-session-review.json",
+    "note": "Default guide structures/frame pixels remain equivalent; retain reviewed encoded GIFs rather than introduce a new renderer baseline."
+  }
 }

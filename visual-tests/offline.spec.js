@@ -98,6 +98,13 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
       await expect(page.locator(`#${view}View`)).toHaveAttribute(marker,'');
     }
 
+    for(const [entry,view,selector,host] of [['practiceContents','practice','[data-practice-mode="single"]','#practiceRun'],['sequenceContents','session','#drillCatalog .preset-card button','#sessionRun']]){
+      const module=modules.find(path=>path.includes(`/assets/${entry}-`));expect(module).toBeTruthy();
+      await page.locator('.tab[data-view="drills"]').click();await page.locator(selector).first().click();
+      expect(await page.evaluate(async({module,entry})=>typeof(await import(module))[entry==='practiceContents'?'mountPracticeContents':'mountSequenceContents']==='function',{module,entry})).toBe(true);
+      await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="drills"]').click();await page.locator(selector).first().click();
+      await expect(page.locator(host)).toHaveAttribute('data-react-session','');
+    }
     const progressModule=modules.find(path=>path.includes('/assets/progressContent-'));
     if(edition==='preview'){
       expect(progressModule).toBeTruthy();

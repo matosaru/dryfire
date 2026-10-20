@@ -78,6 +78,8 @@ let settingsPage, settingsModule, settingsModulePending;
 let learnPage, learnModule, learnModulePending;
 let livePage, liveModule, liveModulePending;
 let drillsPage, drillsModule, drillsModulePending;
+let practiceModule, practiceModulePending;
+let sequenceModule, sequenceModulePending;
 let historyPage, historyModule, historyModulePending, historyOwner, historyRows=[], historySessions=[];
 const historyHandlers=new Map();
 function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
@@ -558,6 +560,20 @@ function displayView(name) {
   window.scrollTo({top:0,behavior:'instant'});
   for(const view of PAGE_IDS) $('#'+view+'View').classList.toggle('hidden',view!==name);
   setMessage();
+  if(name==='session'){
+    if(sequenceModule && !profileLocked() && !$('#safetyModal').open){
+      try{sessionController.connectView(sequenceModule.mountSequenceContents);}catch(error){showError(error);}
+    }else if(!sequenceModule && !sequenceModulePending){
+      sequenceModulePending=import('../apps/web/src/app/sequenceContents.tsx').then(module=>{sequenceModule=module;}).catch(showError).finally(()=>{sequenceModulePending=null;});
+    }
+  }
+  if(name==='practice'){
+    if(practiceModule && !profileLocked() && !$('#safetyModal').open){
+      try{practiceController.connectView(practiceModule.mountPracticeContents);}catch(error){showError(error);}
+    }else if(!practiceModule && !practiceModulePending){
+      practiceModulePending=import('../apps/web/src/app/practiceContents.tsx').then(module=>{practiceModule=module;}).catch(showError).finally(()=>{practiceModulePending=null;});
+    }
+  }
   if(name==='drills'){
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
