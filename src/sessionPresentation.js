@@ -1,20 +1,18 @@
+import {practiceResultPresentation,sequenceResultPresentation,sessionSeconds as seconds} from '../apps/web/src/features/sessions/resultPresentation.ts';
 // Shared read-only presentation for live sessions and explicitly simulated help examples.
 import { continuousPractice, practiceElapsed, practiceStatistics } from './practiceSession.js';
-const seconds = value => Number.isFinite(value) ? `${(value / 1000).toFixed(2)} s` : '—';
 
-export function practiceResultDetails(row, { node, titleFor }) {
-  const card = node('details', '', 'session-result-card');
-  const status = row.status === 'hit' ? 'Recognized' : row.status === 'miss' ? (row.reason === 'early' ? 'Miss · early trigger' : row.reason === 'late' ? 'Miss · late click' : 'Miss · no click') : `Partial · ${row.reason}`;
-  card.append(node('summary', `${row.ordinal} · ${status} · ${seconds(row.elapsedMs)}`));
-  const body = node('div', '', 'session-result-body');
-  if (row.intervalMs !== null) body.append(node('p', `Interval since previous click: ${seconds(row.intervalMs)}`, 'small'));
-  for (const step of row.stepTimings) body.append(node('p', `${titleFor(step.label)} · ${seconds(step.offsetMs)} · split ${seconds(step.splitMs)}`, 'small'));
-  if (row.detections.length) {
-    const list = node('ol', '', 'session-detection-list');
-    for (const event of row.detections) list.append(node('li', `${titleFor(event.label)} · ${seconds(event.offsetMs)} · ${event.outcome} · score ${event.score}/100`));
-    body.append(list);
-  }
-  card.append(body); return card;
+function resultDetailsNode(model,node){
+  const card=node('details','','session-result-card');
+  card.append(node('summary',model.summary));
+  const body=node('div','','session-result-body');
+  for(const paragraph of model.paragraphs)body.append(node('p',paragraph.text,paragraph.className));
+  if(model.detections.length){const list=node('ol','','session-detection-list');for(const text of model.detections)list.append(node('li',text));body.append(list);}
+  card.append(body);return card;
+}
+
+export function practiceResultDetails(row,{node,titleFor}){
+  return resultDetailsNode(practiceResultPresentation(row,titleFor),node);
 }
 
 export function renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details }) {
@@ -72,24 +70,8 @@ export function renderPracticeRun({ $, state, mode, pending, clock, microphone, 
   $('practiceLatest').replaceChildren(latest ? details(latest) : node('p', 'Recognized clicks and repetition outcomes appear here.', 'muted small'));
 }
 
-export function sequenceResultDetails(row, { node, titleFor }) {
-  const details = node('details', '', 'session-result-card');
-  const outcome = row.status === 'completed' ? 'Completed' : `Partial · ${row.reason || 'interrupted'}`;
-  details.append(node('summary', `Repetition ${row.ordinal} · ${outcome} · ${seconds(row.elapsedMs)}`));
-  const body = node('div', '', 'session-result-body');
-  body.append(node('p', `${row.unknown} unknown · ${row.incorrect} out of order`, 'muted small'));
-  for (const step of row.stepTimings) {
-    body.append(node('p', `${titleFor(step.label)}: ${seconds(step.offsetMs)} from GO · split ${seconds(step.splitMs)}`, 'small'));
-  }
-  if (row.detections.length) {
-    const list = node('ol', '', 'session-detection-list');
-    for (const detection of row.detections) {
-      list.append(node('li', `${titleFor(detection.label)} · ${seconds(detection.offsetMs)} · ${detection.outcome} · score ${detection.score}/100`));
-    }
-    body.append(list);
-  }
-  details.append(body);
-  return details;
+export function sequenceResultDetails(row,{node,titleFor}){
+  return resultDetailsNode(sequenceResultPresentation(row,titleFor),node);
 }
 
 export function renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails }) {

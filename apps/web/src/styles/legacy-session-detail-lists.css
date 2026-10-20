@@ -1,0 +1,6 @@
+.session-result-list { display:grid; gap:9px; }
+.session-result-list>details { min-width:0; border:1px solid var(--session-border); border-radius:11px; background:var(--session-surface); color:var(--session-text); overflow-wrap:anywhere; }
+.session-result-list>details>summary { padding:14px; min-height:48px; cursor:pointer; font-size:.79rem; line-height:1.5; }
+.session-result-list>details[open]>summary { border-bottom:1px solid var(--session-border); }
+.session-result-list>details>:not(summary) { margin-left:14px; margin-right:14px; }
+.session-result-list>details>p { color:var(--session-muted); font-size:.73rem; line-height:1.5; }

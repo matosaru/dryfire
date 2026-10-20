@@ -1,0 +1,7 @@
+.session-result-card>summary { cursor:pointer; min-height:44px; font-size:.79rem; line-height:1.6; }
+.session-result-card>.session-result-body { padding-top:12px; }
+.session-result-body { font-size:.74rem; line-height:1.6; }
+.session-result-body>p { margin-bottom:9px; }
+.session-result-list>details>.session-result-body { margin-top:0; margin-bottom:12px; }
+.session-detection-list { padding-left:18px; color:var(--session-muted); font-size:.74rem; line-height:1.6; }
+.session-detection-list li { padding:4px 0; }

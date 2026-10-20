@@ -1,0 +1,68 @@
+{
+  "change": "CHG-049 P6 shared repetition result model",
+  "reviewedOn": "2026-10-20",
+  "candidateBase": "2a96ed2",
+  "scope": "Native Practice/Sequence detail factories reuse the same formatting model as the prepared typed RepetitionResult component; live React page/run/review handoff remains pending.",
+  "sources": {
+    "src/sessionPresentation.js": "54224bc73a5e4be07a5fbb227b4f3c206bcd000dd2fb97accc2abc6fce467576",
+    "apps/web/src/features/sessions/resultPresentation.ts": "781e1189119cc9a5e3d284497799827bcff2768ce7687f49235b783cbb007542",
+    "packages/ui/src/RepetitionResult/RepetitionResult.tsx": "0ab5ca95f294b59879cf33f0e4864a3d051d6fa37b92c1ba3d6787ac89447149"
+  },
+  "evidence": [
+    "12 frozen-native/typed row/model checks cover exact DOM, missing timing, early/late/no-click/partial outcomes, interval/sequence splits, score precision and escaped text.",
+    "All1,333 original/typed complete guide-frame signatures remain unchanged across12 engine-generated scenarios.",
+    "14 public and14 preview Chromium workflows pass, including both-theme native/typed poster/review pixels and actual synthetic capture/start/repetition workflows.",
+    "Expanded and optimized CSS remain byte-identical; encoded GIFs and original image/threshold baselines unchanged."
+  ],
+  "expandedCSSSha256": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
+  "retainedGifBytes": [
+    {
+      "file": "single.gif",
+      "sha256": "5a54b915c3e89ce9c9dc4c1654533f1100ae8e69e0fe20b4eeb1c0b7ef646888"
+    },
+    {
+      "file": "single-early.gif",
+      "sha256": "a9c97db122e3915ba2ac2d9967a794245d3bbd04515a4a3e32bf6f70b174d9cc"
+    },
+    {
+      "file": "repeated.gif",
+      "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182"
+    },
+    {
+      "file": "par.gif",
+      "sha256": "13dc5caa54b004d3ae240bb74c6579a6240ac4d0a1d97dc7e27b2906d607334a"
+    },
+    {
+      "file": "control.gif",
+      "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182"
+    },
+    {
+      "file": "reload.gif",
+      "sha256": "e368a9f55028260969757a4d14139dbc0eaee58e8614452fcdc01e946261c97c"
+    },
+    {
+      "file": "free.gif",
+      "sha256": "bb1e2a8b9b62a650ab3fa3f99e57eaca1b3fc075bd84e5d03bea970645c0af58"
+    },
+    {
+      "file": "sequence-trigger-only.gif",
+      "sha256": "e33b277c31155abd1fe024dadad2fbe0905e747d84af4b4bcbc3a3afdab1e1cf"
+    },
+    {
+      "file": "sequence-rack-trigger.gif",
+      "sha256": "ea25a1da44c8d815d89c38124e249d7bc30e579aa1ec7e7c64b7eaf528092614"
+    },
+    {
+      "file": "sequence-mag-trigger.gif",
+      "sha256": "21042b77c1f62af2f489961f84a6e98c613c75fa6e4a42caaf07ce72f1c3fd66"
+    },
+    {
+      "file": "sequence-draw-mag-trigger.gif",
+      "sha256": "28f3d78736d0b457b779d1ae3ca6e3658192988adfec5598038bca5c8174ef51"
+    },
+    {
+      "file": "sequence-custom.gif",
+      "sha256": "bb9904dce957cee1052bc408a7a54eff19502e7f4f6c459fe95efc05a3953cd8"
+    }
+  ]
+}

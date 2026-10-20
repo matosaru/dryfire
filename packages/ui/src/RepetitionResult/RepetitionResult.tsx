@@ -1,0 +1,3 @@
+export type RepetitionDetails={summary:string;paragraphs:{text:string;className:string}[];detections:string[]};
+/** The same read-only disclosure for Practice and ordered Sequence outcomes. */
+export function RepetitionResult({value}:{value:RepetitionDetails}){return <details className="session-result-card"><summary className="">{value.summary}</summary><div className="session-result-body">{value.paragraphs.map((paragraph,index)=><p key={index} className={paragraph.className}>{paragraph.text}</p>)}{value.detections.length>0&&<ol className="session-detection-list">{value.detections.map((text,index)=><li className="" key={index}>{text}</li>)}</ol>}</div></details>;}
