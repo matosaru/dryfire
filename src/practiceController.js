@@ -5,7 +5,7 @@ import { classify, MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.j
 import { compatibleCalibration, classifyExternalCue } from './calibration.js';
 import { practiceDefinition, normalizePracticeConfig, practiceLabels, continuousPractice,
   createPractice, tickPractice, detectPractice, nextPractice, pausePractice, resumePractice, endPractice,
-  toPracticeRecord, practiceStatistics, PRACTICE_CUE_GUARD_MS } from './practiceSession.js';
+  toPracticeRecord, PRACTICE_CUE_GUARD_MS } from './practiceSession.js';
 import { getGunSetting, setGunSetting, saveSession } from './storage.js';
 import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';

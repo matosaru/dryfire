@@ -4,7 +4,7 @@ import { resolveRouteView } from '@dryfire/web/route-context';
 import { createInformationBridge } from '@dryfire/web/information-bridge';
 import { PAGE_IDS } from './pageDefinitions.js';
 import { createPracticeGuideController } from './practiceGuideController.js';
-import { analyzeRecording, recordFeatureVector, startContinuousListening } from './audio.js';
+import { recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
 import { calibrationProgress } from '@dryfire/ui/calibration-copy';
@@ -56,7 +56,6 @@ let customDrills = [];
 let setupGunId = null;
 let customEditor = null;
 let profileLoading = false;
-let selectedTimedDrillId = '';
 let audioPreferences = normalizeAudioPreferences();
 let appearance = 'dark';
 let vibrationFeedback = false;
@@ -200,7 +199,8 @@ async function loadActiveGun() {
   liveValue("sensitivity",id ? await getGunSetting('sensitivity', 'normal', id) : 'normal');
   if (!$('#sensitivity').value) liveValue("sensitivity",'normal');
   const savedDrill = id ? await getGunSetting('selectedDrill', '', id) : '';
-  selectedTimedDrillId = currentDrill(savedDrill) ? savedDrill : '';
+  // Preserve saved-preset validation and its read/error ordering; selection lives in the session controller.
+  currentDrill(savedDrill);
   audioPreferences = normalizeAudioPreferences(id ? await getGunSetting('audioPreferences', {}, id) : {});
   calibration = id ? await getCalibrationExamples(id) : [];
   const storedLabels = id ? await getGunSetting('enabledSoundLabels', null, id) : null;
@@ -371,7 +371,6 @@ async function chooseDrill(id) {
   renderLiveButton(); renderClassCards();
   try {
     await setGunSetting('selectedDrill', id, activeGun.id);
-    selectedTimedDrillId = id;
   } catch (error) { showError(error); return; }
   finally { preferencePending = false; renderLiveButton(); renderClassCards(); }
   sessionController.open(drill).catch(showError);
@@ -816,7 +815,7 @@ async function toggleLive() {
           if (token !== liveToken) return;
           let prediction;
           try { prediction = recognizeRecording(examples, pcm, sampleRate, recognitionOptions(calibration, enabledSoundLabels)); }
-          catch (error) {
+          catch {
             ignoredEventCount += 1;
             liveText("eventCounter",`${sessionEventCount} detected · ${ignoredEventCount} discarded`);
             return;

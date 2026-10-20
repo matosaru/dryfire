@@ -15,13 +15,13 @@ const deferred=()=>{let resolve;const promise=new Promise(yes=>{resolve=yes;});r
 function setup(gun={id:'a',name:'Test',type:'Handguns'}){
  document.body.innerHTML=renderPageTemplates('{{app}}');
  const context={historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
-  activeGun:null,guns:[],examples:[],customDrills:[],selectedTimedDrillId:'',audioPreferences:{},calibration:[],enabledSoundLabels:[],
+  activeGun:null,guns:[],examples:[],customDrills:[],audioPreferences:{},calibration:[],enabledSoundLabels:[],
   processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',vibrationFeedback:false,vibrationRejected:true,
   getActiveGun:jest.fn(async()=>gun),getGuns:jest.fn(async()=>gun?[gun]:[]),
   getExamples:jest.fn(async()=>[{label:'trigger',gunId:'a'}]),getCustomDrills:jest.fn(async()=>[]),getOutdatedExampleCount:jest.fn(async()=>2),
   getGunSetting:jest.fn(async(key,fallback)=>({maxResults:75,sensitivity:'high',selectedDrill:'valid',audioPreferences:{noiseFilter:false},enabledSoundLabels:['trigger','rack']})[key]??fallback),
   getCalibrationExamples:jest.fn(async()=>[{kind:'noise'}]),getSetting:jest.fn(async(key)=>key==='appearance'?'light':true),
-  normalizeAudioPreferences,normalizeEnabledLabels,initialEnabledLabels,normalizeMaxResults,currentDrill:id=>id==='valid'?{id}:null,
+  normalizeAudioPreferences,normalizeEnabledLabels,initialEnabledLabels,normalizeMaxResults,currentDrill:jest.fn(id=>id==='valid'?{id}:null),
   sessionController:{reset:jest.fn()},practiceController:{reset:jest.fn()},customEditor:{reset:jest.fn()},DRILLS:[{id:'valid',title:'Valid sequence'}],
   applyAppearance:jest.fn(),selectDrillCollection:jest.fn(),renderGunControls:jest.fn(),renderClassCards:jest.fn(),renderDrillCatalog:jest.fn(),
   renderCustomCatalog:jest.fn(),resetDrill:jest.fn(),renderPreferences:jest.fn(),renderHome:jest.fn(async()=>{}),
@@ -34,7 +34,7 @@ test('profile loading preserves owned values, preference normalization and final
  expect(c.activeGun.id).toBe('a');expect(c.guns).toEqual([c.activeGun]);
  for(const getter of ['getExamples','getCustomDrills','getOutdatedExampleCount','getCalibrationExamples'])expect(c[getter]).toHaveBeenCalledWith('a');
  expect(document.querySelector('#maxResults').value).toBe('75');expect(document.querySelector('#sensitivity').value).toBe('high');
- expect(c.selectedTimedDrillId).toBe('valid');expect(c.audioPreferences.noiseFilter).toBe(false);expect(c.enabledSoundLabels).toEqual(['rack','trigger']);
+ expect(c.getGunSetting).toHaveBeenCalledWith('selectedDrill','','a');expect(c.currentDrill).toHaveBeenCalledWith('valid');expect(c.audioPreferences.noiseFilter).toBe(false);expect(c.enabledSoundLabels).toEqual(['rack','trigger']);
  expect(c.appearance).toBe('light');expect(c.vibrationFeedback).toBe(true);expect(c.vibrationRejected).toBe(false);expect(c.applyAppearance).toHaveBeenCalledTimes(1);
  expect(c.processingReport).toBeNull();expect(c.latestEventId).toBeNull();expect(c.sessionEventCount).toBe(0);expect(c.ignoredEventCount).toBe(0);
  expect(c.sessionController.reset).toHaveBeenCalledTimes(1);expect(c.practiceController.reset).toHaveBeenCalledTimes(1);
@@ -70,4 +70,18 @@ test('device preferences can load while gun selection is pending without present
  const pending=load();
  try{expect(c.getSetting).toHaveBeenCalledWith('appearance','dark');expect(c.renderGunControls).not.toHaveBeenCalled();}
  finally{selection.resolve({id:'a',name:'Test',type:'Handguns'});await pending;}
+});
+
+test('saved-preset validation still fails before later settings and profile presentation',async()=>{
+ const {context:c,load}=setup();c.currentDrill.mockImplementation(()=>{throw new Error('invalid saved preset');});
+ await expect(load()).rejects.toThrow('invalid saved preset');
+ expect(c.getGunSetting).toHaveBeenCalledWith('selectedDrill','','a');
+ expect(c.getGunSetting).not.toHaveBeenCalledWith('audioPreferences',{},'a');
+ expect(c.renderHome).not.toHaveBeenCalled();expect(c.renderGunControls).not.toHaveBeenCalled();
+});
+test('saved-preset read failure remains observable before validation and later settings',async()=>{
+ const {context:c,load}=setup(),read=c.getGunSetting.getMockImplementation();
+ c.getGunSetting.mockImplementation((...args)=>args[0]==='selectedDrill'?Promise.reject(new Error('preset read failed')):read(...args));
+ await expect(load()).rejects.toThrow('preset read failed');
+ expect(c.currentDrill).not.toHaveBeenCalled();expect(c.renderHome).not.toHaveBeenCalled();
 });

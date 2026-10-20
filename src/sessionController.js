@@ -1,7 +1,7 @@
 import { sequenceResultDetails, renderSequenceRun, renderSequenceReview } from './sessionPresentation.js';
 import { startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
-import { classify, labels, MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
+import { MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
 import {
   DEFAULT_SESSION_CONFIG, normalizeSessionConfig, createSession, tickSession,
   recordSessionDetection, pauseSession, resumeSession, endSession, toSessionRecord,
@@ -17,7 +17,6 @@ const node = (tag, text, className = '') => {
   item.className = className;
   return item;
 };
-const seconds = ms => Number.isFinite(ms) ? `${(ms / 1000).toFixed(2)} s` : '—';
 
 /** Dedicated timed sessions; free listening retains its own capture lifecycle. */
 export function createSessionController({ getContext, titleFor, ensureSafe, onNavigate, onBack,

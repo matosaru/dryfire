@@ -85,7 +85,7 @@ export function soundCard({
   card.append(top);
   return card;
 }
-export function drillCard({ drill, index, titleFor, onChoose }, doc = document) {
+export function drillCard({ drill, titleFor, onChoose }, doc = document) {
   const card = doc.createElement('article');
   card.className = 'preset-card';
   const heading = textNode(doc, 'h3', '', drill.title);

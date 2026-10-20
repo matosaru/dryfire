@@ -40,7 +40,8 @@
     "perf:payload": "node --experimental-vm-modules tools/performance/check-payload.mjs",
     "perf:compare": "node --experimental-vm-modules tools/performance/measure-browser.mjs",
     "perf:react-shell": "node tools/performance/probe-react-shell.mjs",
-    "lint:components": "eslint apps packages"
+    "lint:components": "eslint apps packages",
+    "lint:runtime": "eslint src workers"
   },
   "dependencies": {
     "@capacitor/core": "^8.0.0",
