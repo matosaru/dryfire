@@ -1,6 +1,0 @@
-@import "./foundation.css";
-@import "../../../../packages/ui/src/AppShell/AppShell.css";
-@import "../../../../packages/ui/src/BrandHeader/BrandHeader.css";
-@import "./legacy-base-content.css";
-@import "../../../../packages/ui/src/BottomNavigation/BottomNavigation.css";
-@import "./legacy-cards.css";

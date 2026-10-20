@@ -15,7 +15,7 @@ Work goes to **b only**. Dev synchronization is paused to save credits; main rem
 | P4 — Settings, Learn and Live Listen | Presentation/handoff scope verified for Settings, Learn and Live Listen; native fallback retirement stays in P7 |
 | P5 — Drills and History | Presentation/runtime handoffs verified; startup cleanup stays P7 |
 | P6 — Practice, Sequence and guides | Presentation/runtime handoffs locally verified; native startup cleanup remains P7 |
-| P7 — Cleanup, optimization and final acceptance | Active:12 obsolete templates and unused compiler work retired; native startup/CSS/optimization remain |
+| P7 — Cleanup, optimization and final acceptance | Active:12 templates, unused compiler work and25 CSS wrappers retired; native startup/package/optimization remain |
 
 Latest P6 live run/review increment passes **895 tests /131 suites**, coverage/type/lint/architecture/docs/smoke, both-edition Chromium workflows, both minified artifacts and original CSS/media/frame equivalence checks. Shared structural packages, controller safety net and pure result/run/review models are verified. Stateful component composition and live Practice/Sequence Run/Review handoffs are verified. Shared read-only guide runtime is verified too; parent sources and runtime handoffs are verified with retained configuration/service islands. Canonical P5 `d4d5aa9` validation and both screenshot editions pass; original performance budgets and public deliberate-slowdown proof remain failing. Native startup cleanup and final performance acceptance remain P7.
 
@@ -45,7 +45,8 @@ Latest P6 live run/review increment passes **895 tests /131 suites**, coverage/t
 - [x] P6: typed PracticePage/SequencePage/PracticeGuidePage source/CSS/test packages and prerender; complete frozen parent DOM and byte-identical compiled CSS verified.
 - [x] P6: parent runtime handoffs preserve exact native Configure nodes, live child roots and guide figure; exclusive parent/context/manual ports, direct guarded actions, drafts/focus/rollback and both-edition checks verified.
 - [x] P7: retire12 unused layout/chrome/page templates and unused run-fragment compilation; readiness tests use actual compiled UI and complete app HTML remains byte-identical.
-- [ ] P7: retire native startup fallbacks/adapters, finish CSS/package boundaries and optimize against the original baseline.
+- [x] P7: flatten25 import-only CSS wrappers into the single ordered entry, preserving leaf owners and exact expanded/minified CSS.
+- [ ] P7: retire native startup fallbacks/adapters, finish remaining package boundaries and optimize against the original baseline.
 - [ ] Final acceptance: resolve all original payload/timing failures; complete both-edition unit/integration/visual/offline checks.
 - [ ] Owner release: checked b→main PR, owner-managed deployment and physical iPhone acceptance.
 
