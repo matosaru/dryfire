@@ -15,7 +15,7 @@ Source: b HEAD (`git log -1` identifies the exact published increment). P0/P1 co
 
 All13 parent pages have typed owners. Later explicit unlocked/paused visits mount React; asynchronous import completion only prepares modules. Exact native Configure fields, Run/Review hosts, meter, guide figure and independent child roots retain lifetimes. First-entry native fallbacks still provide behavior and cannot be deleted until equivalent loading/ownership is verified.
 
-Completed cleanup:12 obsolete HTML templates,25 import-only CSS wrappers, test-only fragment renderer moved to @dryfire/testing, obsolete numeric initializer moved to frozen fixture, unused guide wrapper and runtime imports/helpers/arguments/write-only selection state removed. Saved-preset reads/validation/error order and persistence writes remain intact. CI lint:runtime prevents new unused declarations while preserving deliberate rest-sibling schema omissions.
+Completed cleanup:12 obsolete HTML templates,25 import-only CSS wrappers, test-only fragment renderer moved to @dryfire/testing, obsolete numeric initializer moved to frozen fixture, unused guide wrapper and runtime imports/helpers/arguments/write-only selection state removed. Saved-preset reads/validation/error order and persistence writes remain intact. CI lint:runtime prevents new unused declarations while preserving deliberate rest-sibling schema omissions. Eight lazy-page import chains now share src/modulePreparation.js; completion caches only, with no DOM or mount effects. Distinct profile/info loader contracts remain separate.
 
 ## Next action
 
@@ -23,11 +23,11 @@ Continue P7 semantic-duplicate/first-entry-owner audit and measured fallback ret
 
 ## Latest verification and open debt
 
-Runtime cleanup: **920 tests /133 suites**, original coverage ratchet,86 affected tests,16 smoke checks, type/component+runtime lint/architecture/docs and both minified builds pass. **13 public +12 preview system-Chromium workflows** cover readiness, early/fast/automatic clicks, live/native↔React handoffs, edition guards and offline/cache behavior. Source/check details: [runtime cleanup evidence](p7-runtime-cleanup-evidence.json).
+Module-preparation cleanup: **923 tests /134 suites**, original coverage ratchet, helper100% coverage,16 smoke checks,12 service-worker checks after cache bump, type/component+runtime lint/architecture/docs and both minified builds pass. **34 public +33 preview system-Chromium workflows** cover retained inputs, delayed handoffs, same-theme pixels, readiness/early clicks, guides, owned data and offline/cache behavior. Source/check details: [module preparation evidence](p7-module-preparation-evidence.json). Prior cleanup evidence remains linked in plan/history.
 
-Compiled HTML and CSS remain byte-identical;390 references,83 captures,12 GIFs and original1,333-frame guide signatures remain intact. Cache v59 covers the changed entry; private cache retirement unchanged. Prior full parent/meter/draft/context coverage remains detailed in plan/history.
+Compiled HTML and CSS remain byte-identical;390 references,83 captures,12 GIFs and original1,333-frame guide signatures remain intact. Cache v60 covers the changed entry; private cache retirement unchanged. Prior full parent/meter/draft/context coverage remains detailed in plan/history.
 
-Current public JS178738/54609 raw/gzip (index-BkM5Qdv2.js), preview180033/54987 (index-yzBFcvT-.js). Public is8raw/10gzip bytes smaller than prior; preview8raw smaller/2gzip larger. Original-baseline regressions remain public+7821/+3802 and preview+7950/+3841. CSS61451/13011 (index-DnLrZEQ0.css), HTML55757/12459 public and56396/12627 preview unchanged. **Original performance acceptance remains failing debt.** No fresh passing application startup timing inferred.
+Current public JS178499/54491 raw/gzip (index-B8dhljjM.js), preview179795/54854 (index-C7DrJoDH.js). Compared with prior, public-239/-118 and preview-238/-133 raw/gzip bytes. Original-baseline regressions remain public+7582/+3684 and preview+7712/+3708. CSS61451/13011 (index-DnLrZEQ0.css), HTML55757/12459 public and56396/12627 preview unchanged. **Original performance acceptance remains failing debt**; the latest preview payload command confirms failure. No fresh passing application startup timing inferred.
 
 Slowdown tooling repair passes39 affected tests and a local identical-artifact control: stall at readiness avoids network overlap; warm diagnostic requires matching confirmed warm slowdown. Original candidate statistical/payload gates unchanged. See [probe evidence](p7-probe-evidence.json); pinned-image confirmation remains separate.
 

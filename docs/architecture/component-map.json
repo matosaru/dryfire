@@ -570,5 +570,13 @@
       "apps/web/src/app/drillsPage.tsx"
     ],
     "contract": "Preserve exact platform/independent native nodes and event state. display:contents contributes no box; an explicit structural class preserves existing sibling selectors. Settings file/preview nodes and the custom editor native form host keep their platform lifetimes; CustomDrillEditor now owns its live field UI."
+  },
+  "modulePreparation": {
+    "source": "src/modulePreparation.js",
+    "consumer": "src/main.js",
+    "tests": [
+      "tests/modulePreparation.test.js"
+    ],
+    "contract": "Caches eight lazy page modules and deduplicates pending imports. Import completion never mounts a page; existing route/capture/safety/context guards retain later-entry ownership. Failed imports report and may retry on another explicit entry."
   }
 }

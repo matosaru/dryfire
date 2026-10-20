@@ -1,3 +1,4 @@
+import { createModulePreparation } from './modulePreparation.js';
 import {distancePresentation,liveDrillPresentation} from '../apps/web/src/features/live-listen/presentation.ts';
 import { preferencePresentation } from '../apps/web/src/features/settings/preferencePresentation.ts';
 import { resolveRouteView } from '@dryfire/web/route-context';
@@ -73,14 +74,12 @@ let screenNavigation = null;
 let historyRenderToken = 0;
 let homeRenderToken = 0;
 let homePage, homePagePending, profilePages, gunSetupPage;
-let settingsPage, settingsModule, settingsModulePending;
-let learnPage, learnModule, learnModulePending;
-let livePage, liveModule, liveModulePending;
-let drillsPage, drillsModule, drillsModulePending;
-let practiceModule, practiceModulePending;
-let sequenceModule, sequenceModulePending;
-let guideModule, guideModulePending;
-let historyPage, historyModule, historyModulePending, historyOwner, historyRows=[], historySessions=[];
+let settingsPage;
+let learnPage;
+let livePage;
+let drillsPage;
+let historyPage, historyOwner, historyRows=[], historySessions=[];
+const preparePageModule=createModulePreparation(showError);
 const guideHandlers=new Map();
 const historyHandlers=new Map();
 function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
@@ -564,64 +563,58 @@ function displayView(name) {
   for(const view of PAGE_IDS) $('#'+view+'View').classList.toggle('hidden',view!==name);
   setMessage();
   if(name==='practiceGuide'){
+    const guideModule=preparePageModule('practiceGuide',()=>import('../apps/web/src/app/guideContents.tsx'));
     if(guideModule && !profileLocked() && !$('#safetyModal').open){
       try{practiceGuideController.connectView(guideModule.mountGuideContents);practiceGuideController.connectPage(guideModule.mountGuidePage);}catch(error){showError(error);}
-    }else if(!guideModule && !guideModulePending){
-      guideModulePending=import('../apps/web/src/app/guideContents.tsx').then(module=>{guideModule=module;}).catch(showError).finally(()=>{guideModulePending=null;});
     }
   }
   if(name==='session'){
+    const sequenceModule=preparePageModule('session',()=>import('../apps/web/src/app/sequenceContents.tsx'));
     if(sequenceModule && !profileLocked() && !$('#safetyModal').open){
       try{sessionController.connectView(sequenceModule.mountSequenceContents);sessionController.connectPage(sequenceModule.mountSequencePage,guideHandlers.get('sessionGuideLink'));}catch(error){showError(error);}
-    }else if(!sequenceModule && !sequenceModulePending){
-      sequenceModulePending=import('../apps/web/src/app/sequenceContents.tsx').then(module=>{sequenceModule=module;}).catch(showError).finally(()=>{sequenceModulePending=null;});
     }
   }
   if(name==='practice'){
+    const practiceModule=preparePageModule('practice',()=>import('../apps/web/src/app/practiceContents.tsx'));
     if(practiceModule && !profileLocked() && !$('#safetyModal').open){
       try{practiceController.connectView(practiceModule.mountPracticeContents);practiceController.connectPage(practiceModule.mountPracticePage,guideHandlers.get('practiceGuideLink'));}catch(error){showError(error);}
-    }else if(!practiceModule && !practiceModulePending){
-      practiceModulePending=import('../apps/web/src/app/practiceContents.tsx').then(module=>{practiceModule=module;}).catch(showError).finally(()=>{practiceModulePending=null;});
     }
   }
   if(name==='drills'){
+    const drillsModule=preparePageModule('drills',()=>import('../apps/web/src/app/drillsPage.tsx'));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
-    }else if(!drillsModule && !drillsModulePending){
-      drillsModulePending=import('../apps/web/src/app/drillsPage.tsx').then(module=>{drillsModule=module;}).catch(showError).finally(()=>{drillsModulePending=null;});
     }
     if(drillsPage && !profileLocked() && !$('#safetyModal').open){try{customEditor.connectView(drillsModule.mountCustomDrillFields);}catch(error){showError(error);}}
   }
   if(name==='recognize'){
+    const liveModule=preparePageModule('recognize',()=>import('../apps/web/src/app/liveListenPage.tsx'));
     if(!livePage && liveModule && !profileLocked() && !$('#safetyModal').open){
       try{livePage=liveModule.mountLiveListenPage($('#recognizeView'),{onBack:()=>goBack(),onAction:id=>liveHandlers.get(id)?.(),onChange:id=>liveHandlers.get(id)?.()});}catch(error){showError(error);}
-    }else if(!liveModule && !liveModulePending){
-      liveModulePending=import('../apps/web/src/app/liveListenPage.tsx').then(module=>{liveModule=module;}).catch(showError).finally(()=>{liveModulePending=null;});
     }
   }
   if(name==='learn'){
+    const learnModule=preparePageModule('learn',()=>import('../apps/web/src/app/learnPage.tsx'));
     if(!learnPage && learnModule && !profileLocked() && !$('#safetyModal').open){
       try{learnPage=learnModule.mountLearnPage($('#learnView'),{...learningProps(),onBack:()=>goBack()});}catch(error){showError(error);}
-    }else if(!learnModule && !learnModulePending){
-      learnModulePending=import('../apps/web/src/app/learnPage.tsx').then(module=>{learnModule=module;}).catch(showError).finally(()=>{learnModulePending=null;});
     }
     renderClassCards();
   }
   if(name==='history'){
+    const historyModule=preparePageModule('history',()=>import('../apps/web/src/app/historyPage.tsx'));
     if(!historyPage && historyModule && historyOwner===activeGun?.id && !profileLocked() && !$('#safetyModal').open){
       try{historyPage=historyModule.mountHistoryPage($('#historyView'),{rows:historyRows,sessions:historySessions,stats:evaluateEvents(historyRows),gunId:historyOwner},{onBack:()=>goBack(),onAction:id=>historyHandlers.get(id)?.(),onOpen:record=>sessionController.openSavedRecord(record),onVerify:async(id,value,gunId)=>{try{await verifyEvent(id,value||null,gunId);await renderHistory();}catch(error){showError(error);}},titleFor,drillTitleFor:id=>currentDrill(id)?.title,labels,actual:ACTUAL_CLASSES,predicted:PREDICTED_CLASSES});}catch(error){showError(error);}
-    }else if(!historyModule && !historyModulePending){historyModulePending=import('../apps/web/src/app/historyPage.tsx').then(module=>{historyModule=module;}).catch(showError).finally(()=>{historyModulePending=null;});}
+    }
     if(historyPage && !profileLocked() && !$('#safetyModal').open){try{progressView?.prepare();}catch(error){showError(error);}}
     renderHistory().catch(showError);
   }
   if(name==='home')renderHome().catch(showError);
   if(name==='guns')renderGunLibrary().catch(showError);
   if(name==='settings'){
+    const settingsModule=preparePageModule('settings',()=>import('../apps/web/src/app/settingsPage.tsx'));
     if(!settingsPage && settingsModule && !profileLocked() && !$('#safetyModal').open){
       try{settingsPage=settingsModule.mountSettingsPage($('#settingsView'),{onBack:()=>goBack(),onAction:id=>settingsHandlers.get(id)?.(),onPreference:id=>settingsHandlers.get(id)?.()});}
       catch(error){showError(error);}
-    }else if(!settingsModule && !settingsModulePending){
-      settingsModulePending=import('../apps/web/src/app/settingsPage.tsx').then(module=>{settingsModule=module;}).catch(showError).finally(()=>{settingsModulePending=null;});
     }
     renderPreferences();
   }

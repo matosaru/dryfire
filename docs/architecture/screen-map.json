@@ -796,7 +796,7 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "6e18fa38d4b1f1251e155cbcf80516208fa44049f15e1a95a162b8195ab54025",
+    "src/main.js": "71bf047fa67d3ad1be9c86919ea90cdddce7fbcb49729603d4b286ab841bfe64",
     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
@@ -985,7 +985,8 @@
     "apps/web/src/app/practicePage.tsx": "22ec666b9bc219ebbc22a3052089a7e7f7dd3a96a7f494bd8d5fa382add7063a",
     "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
-    "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35"
+    "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+    "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93"
   },
   "implementationChanges": [
     "CHG-017",
