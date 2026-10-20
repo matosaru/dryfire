@@ -1,5 +1,4 @@
 import {renderSessionPage} from '../apps/web/src/app/renderSessionPages.tsx';
-import {renderSessionFragments} from '../apps/web/src/app/renderSessionFragments.tsx';
 import {renderHistoryPage} from '../apps/web/src/app/renderHistoryPage.tsx';
 import { readFileSync } from 'node:fs';
 import { renderDrillsPage } from '../apps/web/src/app/renderDrillsPage.tsx';
@@ -23,7 +22,6 @@ const fill = (template, slots) => template.replace(/\{\{([a-zA-Z]+)\}\}/g, (_, n
   return slots[name];
 });
 
-const runFragments = renderSessionFragments();
 const numberInputs = Object.fromEntries([
   ['practiceRepetitions', '10'],
   ['practiceDuration', '60'],
@@ -37,8 +35,22 @@ const numberInputs = Object.fromEntries([
   ['sessionMaxDelay', '5', 'maxDelay'],
   ['maxResults', '50']
 ].map(([id, value, name]) => [id + 'Input', renderNumberInput(id, value, name)]));
-const fragments = { ...runFragments, ...numberInputs, calibrationCatalog: renderCalibrationCatalog(), practiceCatalog: renderPracticeCatalog(PRACTICE_MODES) };
-const content = id => ['practice','session','practiceGuide'].includes(id) ? fill(renderSessionPage(id),fragments) : id === 'history' ? renderHistoryPage(read('shared/history-progress'),fragments.maxResultsInput) : id === 'drills' ? renderDrillsPage(fragments.practiceCatalog) : id === 'recognize' ? renderLiveListenPage() : id === 'learn' ? renderLearnPage(fragments.calibrationCatalog) : id === 'settings' ? renderSettingsPage(read('shared/preview-testing')) : id === 'gunSetup' ? renderGunSetupPage() : id === 'home' ? renderHomePage() : id === 'guns' ? renderGunsPage() : ['about', 'contact'].includes(id) ? renderInformationPage(id) : fill(read(`pages/${id}`), fragments);
+const fragments = { ...numberInputs, calibrationCatalog: renderCalibrationCatalog(), practiceCatalog: renderPracticeCatalog(PRACTICE_MODES) };
+function content(id) {
+  switch(id) {
+    case 'practice': case 'session': case 'practiceGuide': return fill(renderSessionPage(id),fragments);
+    case 'history': return renderHistoryPage(read('shared/history-progress'),fragments.maxResultsInput);
+    case 'drills': return renderDrillsPage(fragments.practiceCatalog);
+    case 'recognize': return renderLiveListenPage();
+    case 'learn': return renderLearnPage(fragments.calibrationCatalog);
+    case 'settings': return renderSettingsPage(read('shared/preview-testing'));
+    case 'gunSetup': return renderGunSetupPage();
+    case 'home': return renderHomePage();
+    case 'guns': return renderGunsPage();
+    case 'about': case 'contact': return renderInformationPage(id);
+    default: throw new Error(`Unknown page definition: ${id}`);
+  }
+}
 
 // Only trusted, repository-owned templates are compiled. User data still uses
 // the application's existing textContent/form APIs after the page is loaded.

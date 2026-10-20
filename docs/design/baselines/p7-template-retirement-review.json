@@ -1,0 +1,32 @@
+{
+  "change": "CHG-049 P7 obsolete template retirement",
+  "reviewedOn": "2026-10-20",
+  "candidateBase": "2a023d6",
+  "removedPaths": [
+    "src/templates/layout.html",
+    "src/templates/shared/header.html",
+    "src/templates/shared/footer.html",
+    "src/templates/shared/navigation.html",
+    "src/templates/shared/context.html",
+    "src/templates/shared/safety-modal.html",
+    "src/templates/pages/home.html",
+    "src/templates/pages/guns.html",
+    "src/templates/pages/gunSetup.html",
+    "src/templates/pages/practice.html",
+    "src/templates/pages/session.html",
+    "src/templates/pages/practiceGuide.html"
+  ],
+  "compiledAppBeforeSha256": "444dc123f23d634e75b51da9c6bb9bb68e031ac5f08bd3211e57dc2812cb9f38",
+  "compiledAppBeforeBytes": 56407,
+  "sourceHashes": {
+    "tools/page-templates.mjs": "f7bbb70a6129b2760ef29c65f477e6bfa1aea04333d1481fcd731339e599423d",
+    "tests/performanceReadiness.test.js": "0a4d6a63fe08e6281f7904325c7c02cd3d46e51c70514ad7c38f5dfd1626df79"
+  },
+  "contracts": [
+    "All 13 screen/compiler cases produce exactly the same complete compiled app HTML before and after cleanup.",
+    "The readiness test now uses actual typed compiled app composition while preserving all negative usable-startup assertions; readiness implementation/budgets remain unchanged.",
+    "Unused shell/page templates and unused run-fragment compilation are removed only after consumer audit. The run-fragment adapter remains a test oracle helper.",
+    "Current view wrapper, private progress and preview-testing fragments remain active and retained.",
+    "No runtime source, CSS, data, route, original image/GIF or performance baseline is changed."
+  ]
+}

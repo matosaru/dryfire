@@ -19,8 +19,7 @@
     "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
-    "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
-    "tools/page-templates.mjs": "cc559566eb1014f63bdc327ff6b3059f4637ad52bd838ec19942dbc35d0a501d",
+    "tools/page-templates.mjs": "f7bbb70a6129b2760ef29c65f477e6bfa1aea04333d1481fcd731339e599423d",
     "tools/export-guide-examples.mjs": "ce81399883cca3b2aaa08e7e01a4ffca96c78fb77abcbca71b70fb9e714d8e47",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "apps/web/src/styles/foundation.css": "2e687e3090bf67f93b11ca59d44ddd17315f807a9b5b719a0eb123733f2c6afc",
@@ -276,5 +275,10 @@
     "reviewedOn": "2026-10-20",
     "evidence": "docs/design/baselines/p6-parent-runtime-review.json",
     "note": "Reviewed parent/child ownership and real browser pixel equivalence preserve the original media."
+  },
+  "templateRetirementInputReview": {
+    "reviewedOn": "2026-10-20",
+    "evidence": "docs/design/baselines/p7-template-retirement-review.json",
+    "note": "Dead template/compiler work is removed after all-screen compiled HTML remains byte-identical."
   }
 }

@@ -1,10 +1,12 @@
-/** @jest-environment jsdom */
-import { readFileSync } from 'node:fs';
+/**
+ * @jest-environment jsdom
+ * @jest-environment-options {"customExportConditions":["node","node-addons"]}
+ */
+import {renderPageTemplates} from '../tools/page-templates.mjs';
 import { usableInitialScreen } from '../tools/performance/readiness.mjs';
 
 beforeEach(() => {
-  const read = name => readFileSync(new URL(`../src/templates/${name}.html`,import.meta.url),'utf8');
-  document.body.innerHTML = read('shared/header') + '<section id="homeView">'+read('pages/home')+'</section><section id="gunSetupView" class="hidden">'+read('pages/gunSetup')+'</section>';
+  document.body.innerHTML=renderPageTemplates('{{app}}');
   document.body.dataset.view = 'loading';
 });
 

@@ -14,8 +14,8 @@ Work goes to **b only**. Dev synchronization is paused to save credits; main rem
 | P3 — Home and gun management | Presentation/handoff scope verified; startup-fallback retirement stays in P7 |
 | P4 — Settings, Learn and Live Listen | Presentation/handoff scope verified for Settings, Learn and Live Listen; native fallback retirement stays in P7 |
 | P5 — Drills and History | Presentation/runtime handoffs verified; startup cleanup stays P7 |
-| P6 — Practice, Sequence and guides | Active: live Practice/Sequence run/review handoffs verified; guide runtime and typed parent sources verified; parent runtime handoffs pending |
-| P7 — Cleanup, optimization and final acceptance | Not started |
+| P6 — Practice, Sequence and guides | Presentation/runtime handoffs locally verified; native startup cleanup remains P7 |
+| P7 — Cleanup, optimization and final acceptance | Active:12 obsolete templates and unused compiler work retired; native startup/CSS/optimization remain |
 
 Latest P6 live run/review increment passes **895 tests /131 suites**, coverage/type/lint/architecture/docs/smoke, both-edition Chromium workflows, both minified artifacts and original CSS/media/frame equivalence checks. Shared structural packages, controller safety net and pure result/run/review models are verified. Stateful component composition and live Practice/Sequence Run/Review handoffs are verified. Shared read-only guide runtime is verified too; parent sources and runtime handoffs are verified with retained configuration/service islands. Canonical P5 `d4d5aa9` validation and both screenshot editions pass; original performance budgets and public deliberate-slowdown proof remain failing. Native startup cleanup and final performance acceptance remain P7.
 
@@ -44,7 +44,8 @@ Latest P6 live run/review increment passes **895 tests /131 suites**, coverage/t
 - [x] P6: guide runtime uses the same live/example components;12 native/React scenarios, silent semantics, playback/return, atomic four-host rollback and offline loading verified.
 - [x] P6: typed PracticePage/SequencePage/PracticeGuidePage source/CSS/test packages and prerender; complete frozen parent DOM and byte-identical compiled CSS verified.
 - [x] P6: parent runtime handoffs preserve exact native Configure nodes, live child roots and guide figure; exclusive parent/context/manual ports, direct guarded actions, drafts/focus/rollback and both-edition checks verified.
-- [ ] P7: retire superseded templates/native fallbacks/adapters, finish package boundaries and optimize against the original baseline.
+- [x] P7: retire12 unused layout/chrome/page templates and unused run-fragment compilation; readiness tests use actual compiled UI and complete app HTML remains byte-identical.
+- [ ] P7: retire native startup fallbacks/adapters, finish CSS/package boundaries and optimize against the original baseline.
 - [ ] Final acceptance: resolve all original payload/timing failures; complete both-edition unit/integration/visual/offline checks.
 - [ ] Owner release: checked b→main PR, owner-managed deployment and physical iPhone acceptance.
 
@@ -63,7 +64,7 @@ Latest P6 live run/review increment passes **895 tests /131 suites**, coverage/t
 
 Structural work continues under CHG-050 while known performance debt is recorded. Keep every performance limit and failure visible; do not lower thresholds, replace the original baseline or call a red run green. Behavior/image/data/security failures still block the affected slice.
 
-## P4 next steps
+## Completed P4 sequence (historical execution detail)
 
 1. **Settings preference boundary — implemented.** Characterize the existing native presentation first, then extract a pure feature model reusable by native fallback and React. Preserve gun-owned audio preferences, device appearance/vibration, actual-track reports, Safari unsupported states and lock scopes.
 2. **Settings source/runtime — implemented and locally verified.** Typed SettingsPage, CSS, callback and frozen DOM-parity tests now supply the build; runtime transfers on a later explicit unlocked entry while preserving native file/preview nodes. Protect backup/import, single-gun sound reset, complete-library deletion, system theme, file-picker lifetime and private Free/Full simulation. Never replace an active file input or detach the preview controller without an explicit handoff. Preview-control rebinding is now implemented and regression-tested: rendering onto replacement controls preserves simulation state, removes the stale listener and retains locks. The guarded runtime root and file-picker lifetime transfer are implemented and covered by unit and real-browser workflow tests; initial fallback retirement remains P7.
