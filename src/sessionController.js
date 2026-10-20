@@ -1,3 +1,4 @@
+import { textElement as node } from './textElement.js';
 import { sequenceResultDetails, renderSequenceRun, renderSequenceReview } from './sessionPresentation.js';
 import { startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
@@ -11,12 +12,7 @@ import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
 
 const $ = selector => document.querySelector(selector);
-const node = (tag, text, className = '') => {
-  const item = document.createElement(tag);
-  item.textContent = text;
-  item.className = className;
-  return item;
-};
+
 
 /** Dedicated timed sessions; free listening retains its own capture lifecycle. */
 export function createSessionController({ getContext, titleFor, ensureSafe, onNavigate, onBack,

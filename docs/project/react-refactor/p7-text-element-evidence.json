@@ -1,0 +1,54 @@
+{
+  "scope": "P7 semantic duplicate cleanup: one native literal-text element primitive.",
+  "baseRevision": "7908b1b",
+  "sourceHashes": {
+    "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+    "src/practiceController.js": "99ffcf7100aa4a1e2a68ca850d9da76476bbab281a415ab9dcb3a53028134d72",
+    "src/sessionController.js": "f6308bb01179468d03ed31198185a62e8f279a6cc61834158771150af9b3024a",
+    "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
+    "src/optional/progressView.js": "805ba1662d80ef752939044aefc1497842d7bd914fb9fc5c49b941fe7ee4bf69",
+    "tests/textElement.test.js": "e03ac13e1e2ad0c9b560d4639b7250ccdc2420070963b257dfedeb35d212cd03",
+    "workers/sw.js": "4d2b2bac563f07affeee3f31873403cc8a222a813e6a84961196ae5339787584"
+  },
+  "contract": [
+    "textContent remains literal; no HTML injection or string formatting changes.",
+    "className remains explicitly assigned, including empty class.",
+    "Default document lookup occurs only when called, not at controller import.",
+    "Guide/progress retain injected-document ownership.",
+    "Card factory and independent frozen test oracles remain separate because their contracts differ."
+  ],
+  "artifacts": {
+    "public": {
+      "jsRaw": 178365,
+      "jsGzip": 54458,
+      "js": "index-EaLuveam.js",
+      "deltaFromOriginalRaw": 7448,
+      "deltaFromOriginalGzip": 3651
+    },
+    "preview": {
+      "jsRaw": 179668,
+      "jsGzip": 54822,
+      "js": "index-B9_uomK3.js",
+      "deltaFromOriginalRaw": 7585,
+      "deltaFromOriginalGzip": 3676
+    },
+    "cssRaw": 61451,
+    "cssGzip": 13011,
+    "html": "Complete compiled app HTML unchanged; emitted filename-dependent gzip is12457 public/12628 preview.",
+    "cacheVersion": 61
+  },
+  "verification": {
+    "affectedTests": 117,
+    "publicBrowserWorkflows": 11,
+    "smokeChecks": 16,
+    "typeLintArchitectureDocs": "Passed.",
+    "browser": "System Chromium diagnostic; canonical CI remains separate.",
+    "media": "Original guide frame signatures and current GIF/PNG bytes remain unchanged; export dependency manifest now includes the shared primitive.",
+    "fullTests": 925,
+    "suites": 135,
+    "coverageRatchet": "Passed unchanged.",
+    "primitiveCoverage": "100% statements/branches/functions/lines.",
+    "previewBrowserWorkflows": 13
+  },
+  "openDebt": "First-entry fallback retirement, final semantic-duplicate audit and original performance acceptance remain open; both initial JS payloads exceed original budgets."
+}

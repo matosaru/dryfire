@@ -800,11 +800,11 @@
     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
-    "src/practiceController.js": "507579f91dc536e5d7f9bb2fca820ee3a3f8357135678b5855a501e65f487021",
-    "src/sessionController.js": "2ead2e4a390eda73c20a40f92282c096f8c6353293a05f2eab5daf90cc58c9a0",
+    "src/practiceController.js": "99ffcf7100aa4a1e2a68ca850d9da76476bbab281a415ab9dcb3a53028134d72",
+    "src/sessionController.js": "f6308bb01179468d03ed31198185a62e8f279a6cc61834158771150af9b3024a",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "ddb90d63a692d8fdd1d4fb3ba98a46e5ddd17175d132e0c1f43b3168924442e2",
-    "src/optional/progressView.js": "ceab59494d95a04983715f24a24bbc86d92d3519f605c2a6f92a68addc3a1606",
+    "src/optional/progressView.js": "805ba1662d80ef752939044aefc1497842d7bd914fb9fc5c49b941fe7ee4bf69",
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
     "src/storage.js": "1f3efb7fe822f3acd74b0a5a82d8073826126ce58b8fff38aa3fba5efb88f067",
@@ -818,7 +818,7 @@
     "src/practiceGuideController.js": "3424acff9a54c769315a13a378763cb58215ca8f52abd3b6d94051b08cd8d508",
     "src/practiceGuideExamples.js": "f9320f63d1d6435bbd7bcf08b9e95ce516a5b1a644441fb74b2d36fd9a1a68a4",
     "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
-    "src/practiceGuideRendering.js": "1de34884ff15a2e9cd4cf0559850daa7acacc5ed0554c2589dff43239a700eb5",
+    "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
     "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
     "apps/web/src/app/informationPages.tsx": "442185805bb7faf789afcdf2f636e9e6d195e32d0be0a9b281a470880531f48d",
     "apps/web/src/app/informationBridge.ts": "e84274388661321ce8ce1624a01395f26172257dfd153bf2973a0a46f4494e42",
@@ -986,7 +986,8 @@
     "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
-    "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93"
+    "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93",
+    "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275"
   },
   "implementationChanges": [
     "CHG-017",

@@ -1,3 +1,4 @@
+import { textElement } from './textElement.js';
 import { renderPracticeRun, renderPracticeReview, practiceResultDetails, renderSequenceRun, renderSequenceReview, sequenceResultDetails } from './sessionPresentation.js';
 import { toPracticeRecord } from './practiceSession.js';
 import { toSessionRecord } from './drillSession.js';
@@ -8,7 +9,7 @@ import { guideSoundTitle } from './practiceGuides.js';
 export function createGuideExampleRenderer(doc) {
   const get = id => doc.getElementById('example-' + id);
   const query = selector => doc.querySelector(selector.replace(/#([\w-]+)/g, '#example-$1'));
-  const node = (tag, text, className = '') => { const el = doc.createElement(tag); el.textContent = text; el.className = className; return el; };
+  const node = (tag, text, className = '') => textElement(tag, text, className, doc);
   const titleFor = guideSoundTitle;
   const details = row => practiceResultDetails(row, { node, titleFor });
   const resultDetails = row => sequenceResultDetails(row, { node, titleFor });

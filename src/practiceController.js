@@ -1,3 +1,4 @@
+import { textElement as node } from './textElement.js';
 import { practiceResultDetails, renderPracticeRun, renderPracticeReview } from './sessionPresentation.js';
 import { startContinuousListening } from './audio.js';
 import { recognitionFeatures, recognizeRecording, selectRecognition } from './recognition.js';
@@ -11,7 +12,6 @@ import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
 
 const $ = id => document.getElementById(id);
-const node = (tag, text, className = '') => { const element = document.createElement(tag); element.textContent = text; element.className = className; return element; };
 
 /** Six modes share one capture lifecycle, engine, configuration and durable review. */
 export function createPracticeController({ getContext, titleFor, ensureSafe, onNavigate, onBack, onChange, onError, onStatus,

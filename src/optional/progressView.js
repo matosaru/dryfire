@@ -1,6 +1,7 @@
+import { textElement } from '../textElement.js';
 import {progressPresentation} from '../../apps/web/src/features/history/progressPresentation.ts';
 import { progressGroups, progressSummary, summarize } from '../practiceProgress.js';
-const element = (doc, tag, text, className = '') => { const node = doc.createElement(tag); node.textContent = text; node.className = className; return node; };
+const element = (doc, tag, text, className = '') => textElement(tag, text, className, doc);
 const format = (value, unit = 'ms') => value === null ? '—' : unit === 'ms' ? `${(value / 1000).toFixed(2)} s` : `${value.toFixed(1)} ${unit}`;
 const timing = group => {
   const c = group.config;

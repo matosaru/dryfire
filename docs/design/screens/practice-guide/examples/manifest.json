@@ -10,14 +10,14 @@
     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
     "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
     "src/practiceGuideController.js": "3424acff9a54c769315a13a378763cb58215ca8f52abd3b6d94051b08cd8d508",
-    "src/practiceGuideRendering.js": "1de34884ff15a2e9cd4cf0559850daa7acacc5ed0554c2589dff43239a700eb5",
+    "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
     "src/practiceGuideExamples.js": "f9320f63d1d6435bbd7bcf08b9e95ce516a5b1a644441fb74b2d36fd9a1a68a4",
     "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
     "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "tools/page-templates.mjs": "f7bbb70a6129b2760ef29c65f477e6bfa1aea04333d1481fcd731339e599423d",
-    "tools/export-guide-examples.mjs": "2f4477b379713cee1f559449d86b5171ddf89ac1f65cce51e6c3a88c48f85a66",
+    "tools/export-guide-examples.mjs": "5f52829d13aef07fa0f4dd474907db4072f10e28b10ef1323233ee4d653172e4",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
     "packages/ui/src/BrandHeader/BrandHeader.css": "d7ab4f9b64f59b0402293eba82d31611f9f436ea29628758528cf4c412dd35e8",
@@ -111,7 +111,8 @@
     "apps/web/src/app/practicePage.tsx": "22ec666b9bc219ebbc22a3052089a7e7f7dd3a96a7f494bd8d5fa382add7063a",
     "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
-    "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35"
+    "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+    "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275"
   },
   "exports": [
     {

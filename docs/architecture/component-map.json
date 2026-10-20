@@ -578,5 +578,18 @@
       "tests/modulePreparation.test.js"
     ],
     "contract": "Caches eight lazy page modules and deduplicates pending imports. Import completion never mounts a page; existing route/capture/safety/context guards retain later-entry ownership. Failed imports report and may retry on another explicit entry."
+  },
+  "nativeTextPrimitive": {
+    "source": "src/textElement.js",
+    "consumers": [
+      "src/practiceController.js",
+      "src/sessionController.js",
+      "src/practiceGuideRendering.js",
+      "src/optional/progressView.js"
+    ],
+    "tests": [
+      "tests/textElement.test.js"
+    ],
+    "contract": "Literal textContent and explicit className; document acquired on call. Guide/progress retain injected document ownership. Card factories with different empty-class semantics remain separate."
   }
 }
