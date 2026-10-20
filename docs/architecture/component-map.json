@@ -180,7 +180,8 @@
         "packages/ui/src/PracticeRun/PracticeRun.test.tsx",
         "packages/ui/src/PracticeReview/PracticeReview.test.tsx",
         "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
-        "apps/web/src/features/sessions/resultPresentation.test.ts"
+        "apps/web/src/features/sessions/resultPresentation.test.ts",
+        "apps/web/src/features/sessions/phasePresentation.test.ts"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -209,7 +210,8 @@
       ],
       "presentationSources": [
         "src/sessionPresentation.js",
-        "apps/web/src/features/sessions/resultPresentation.ts"
+        "apps/web/src/features/sessions/resultPresentation.ts",
+        "apps/web/src/features/sessions/phasePresentation.ts"
       ]
     },
     {
@@ -225,7 +227,8 @@
         "packages/ui/src/SequenceReview/SequenceReview.test.tsx",
         "tests/sequenceController.test.js",
         "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
-        "apps/web/src/features/sessions/resultPresentation.test.ts"
+        "apps/web/src/features/sessions/resultPresentation.test.ts",
+        "apps/web/src/features/sessions/phasePresentation.test.ts"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -253,7 +256,8 @@
       ],
       "presentationSources": [
         "src/sessionPresentation.js",
-        "apps/web/src/features/sessions/resultPresentation.ts"
+        "apps/web/src/features/sessions/resultPresentation.ts",
+        "apps/web/src/features/sessions/phasePresentation.ts"
       ]
     },
     {
@@ -270,7 +274,8 @@
         "packages/ui/src/SequenceRun/SequenceRun.test.tsx",
         "packages/ui/src/SequenceReview/SequenceReview.test.tsx",
         "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
-        "apps/web/src/features/sessions/resultPresentation.test.ts"
+        "apps/web/src/features/sessions/resultPresentation.test.ts",
+        "apps/web/src/features/sessions/phasePresentation.test.ts"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -300,7 +305,8 @@
       ],
       "presentationSources": [
         "src/sessionPresentation.js",
-        "apps/web/src/features/sessions/resultPresentation.ts"
+        "apps/web/src/features/sessions/resultPresentation.ts",
+        "apps/web/src/features/sessions/phasePresentation.ts"
       ]
     },
     {

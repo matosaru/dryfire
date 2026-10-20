@@ -831,7 +831,7 @@
     "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
     "src/practiceGuideRendering.js": "2cd900f757cfb2a860c5c64b9cfc6c48b59d29ca845661ec6493f3ef02d89580",
-    "src/sessionPresentation.js": "54224bc73a5e4be07a5fbb227b4f3c206bcd000dd2fb97accc2abc6fce467576",
+    "src/sessionPresentation.js": "943ff6256d380285b9a55533e6a5574641336e8cef23082da9059b8c5942513d",
     "apps/web/src/styles/legacy-controls.css": "ecaf0403aaa5bce2dbc92e6c95d28815d421635d3a3bc092000bed6687891cf6",
     "apps/web/src/styles/legacy-base.css": "e81dbed6e8d3087350711e8dcb86e6f2bc9b9da71e0662aa9934340e1f480635",
     "apps/web/src/styles/legacy-theme-and-layout.css": "40e996df61f0f92278150f099f81405ba56553a6df359c9de42b85c2a778dcc9",
@@ -1001,7 +1001,8 @@
     "apps/web/src/styles/legacy-session-detail-lists.css": "20adeaaff527223f1a9f4181cab78c86daf2024071e89d3c583274d8e09954ce",
     "apps/web/src/styles/legacy-session-section-headings.css": "1bbd376c87ae14eb275e22f6b9943f64fe1a89d8687f85588933cd09fe6a8230",
     "apps/web/src/styles/legacy-session-review-actions.css": "89addcb480760d6aea765aee8a238569b18c3d5d7ca9b95f438bca9af7914ba9",
-    "apps/web/src/styles/legacy-session-run-actions.css": "ea9bfe9db6ec15e855704300ca72b0537749f0c88144a1b58872edcd7338cdef"
+    "apps/web/src/styles/legacy-session-run-actions.css": "ea9bfe9db6ec15e855704300ca72b0537749f0c88144a1b58872edcd7338cdef",
+    "apps/web/src/features/sessions/phasePresentation.ts": "e637cb3e32dea5759d16daa63333498a1f800e1a65ed7d8bfc29ec680ea3df42"
   },
   "implementationChanges": [
     "CHG-017",

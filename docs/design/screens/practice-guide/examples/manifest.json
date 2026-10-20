@@ -11,7 +11,7 @@
     "apps/web/src/pages/ContactPage/ContactPage.css": "48411add5890d908e191a4340ec2a2154fa4a328c578e4daf4b1240ed3775d71",
     "apps/web/src/styles/legacy-theme-and-layout.css": "40e996df61f0f92278150f099f81405ba56553a6df359c9de42b85c2a778dcc9",
     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
-    "src/sessionPresentation.js": "54224bc73a5e4be07a5fbb227b4f3c206bcd000dd2fb97accc2abc6fce467576",
+    "src/sessionPresentation.js": "943ff6256d380285b9a55533e6a5574641336e8cef23082da9059b8c5942513d",
     "src/practiceGuideController.js": "978daa3edf0db71157cf5e4c10dff3a9437f87ec952dcf408190dd07fe7d6e4e",
     "src/practiceGuideRendering.js": "2cd900f757cfb2a860c5c64b9cfc6c48b59d29ca845661ec6493f3ef02d89580",
     "src/practiceGuideExamples.js": "6a597a7ad94169334a98a3f58ec5af4ddfd9aa4f3284208f929c0e7b299a183b",
@@ -21,7 +21,7 @@
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
     "tools/page-templates.mjs": "6f37cc9bd29b7a14e48c8b74bb503c46b587dd4d6fedbac67b8744db52a462e2",
-    "tools/export-guide-examples.mjs": "5b4123556237314bd6cf83a82daa4962a1579c06026ab87a9ecc4fe89c274652",
+    "tools/export-guide-examples.mjs": "595493b2b11aab0f76917216dc024ba07422fa389cbfb101ebff4a0c6b459da2",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "apps/web/src/styles/foundation.css": "706dda161bd34041a3820e9e86b288f813fd0fc96c426154b9018daaa67dbafc",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
@@ -110,7 +110,8 @@
     "apps/web/src/styles/legacy-session-detail-lists.css": "20adeaaff527223f1a9f4181cab78c86daf2024071e89d3c583274d8e09954ce",
     "packages/ui/src/RepetitionResult/RepetitionResult.details.css": "5b6ac899b74b36ec7bd9ba67dd347abd99024c57177d8e8c5e4cdee07dc5bc27",
     "apps/web/src/styles/legacy-session-review-actions.css": "89addcb480760d6aea765aee8a238569b18c3d5d7ca9b95f438bca9af7914ba9",
-    "apps/web/src/features/sessions/resultPresentation.ts": "781e1189119cc9a5e3d284497799827bcff2768ce7687f49235b783cbb007542"
+    "apps/web/src/features/sessions/resultPresentation.ts": "781e1189119cc9a5e3d284497799827bcff2768ce7687f49235b783cbb007542",
+    "apps/web/src/features/sessions/phasePresentation.ts": "e637cb3e32dea5759d16daa63333498a1f800e1a65ed7d8bfc29ec680ea3df42"
   },
   "exports": [
     {
@@ -227,5 +228,6 @@
   "historyInputReview": "P5 History: native/typed static DOM parity; expanded CSS matches the original byte for byte; guide engines, shared run/review fragments, scenarios and encoded GIF files unchanged. Only unrelated History compiler dispatch and ordered CSS source ownership changed.",
   "progressInputReview": "P5 private ProgressContent CSS ownership: expanded and optimized CSS remain byte-identical. Guide scenario engines, shared fragments, page compiler and encoded GIF bytes unchanged.",
   "sessionFragmentInputReview": "docs/design/baselines/p6-shared-session-review.json",
-  "resultPresentationInputReview": "docs/design/baselines/p6-result-presentation-review.json"
+  "resultPresentationInputReview": "docs/design/baselines/p6-result-presentation-review.json",
+  "phaseModelInputReview": "docs/design/baselines/p6-phase-model-review.json"
 }
