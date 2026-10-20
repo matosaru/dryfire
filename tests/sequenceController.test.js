@@ -3,6 +3,7 @@
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
 import '@testing-library/jest-dom';
+import {mountSequencePage} from '../apps/web/src/app/sequencePage.tsx';
 import {mountSequenceContents} from '../apps/web/src/app/sequenceContents.tsx';
 import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
@@ -20,23 +21,24 @@ const originalClone=globalThis.structuredClone;
 const config={repetitions:1,delayMode:'fixed',fixedDelaySeconds:1,soundAtStart:true};
 const drill={id:'trigger-only',title:'Trigger pull',steps:['trigger']};
 describe.each([false,true])('Sequence controller React presentation %s',react=>{
-let mounted;
+let mounted,parent;
 let controller,context,callbacks,options,session,captureCalled;
 const $=id=>document.getElementById(id);
 const submit=()=>$('sessionConfigForm').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
 beforeEach(()=>{
  globalThis.structuredClone=value=>deserialize(serialize(value));jest.useFakeTimers();
- document.body.innerHTML='<input id="safetyAck" type="checkbox" checked><div id="savedSessions"></div>'+controllerPage('session');
+ document.body.innerHTML='<input id="safetyAck" type="checkbox" checked><div id="savedSessions"></div>'+'<div id="sessionView">'+controllerPage('session')+'</div>';
  context={gun:library.guns[0],examples:library.examples.filter(row=>row.gunId===library.guns[0].id),calibration:[],audioPreferences:{noiseFilter:true},sensitivity:'medium'};
  callbacks=Object.fromEntries(['onNavigate','onBack','onChange','onError','onStatus','onProcessing','onVibration','onPracticeRecord'].map(key=>[key,jest.fn()]));callbacks.ensureSafe=jest.fn(()=>true);
  session={nowMs:()=>performance.now(),stop:jest.fn(async()=>{}),armDetection:jest.fn(),disarmDetection:jest.fn()};captureCalled=deferred();
  capture.mockReset().mockImplementation(async value=>{options=value;captureCalled.resolve();return session;});save.mockReset().mockResolvedValue(undefined);set.mockReset().mockResolvedValue(undefined);get.mockReset().mockImplementation(async(_key,fallback)=>fallback);getSessions.mockReset().mockResolvedValue([]);
  cue.prepare.mockReset().mockResolvedValue(true);cue.play.mockReset().mockReturnValue(true);cue.close.mockReset().mockResolvedValue(undefined);
  controller=createSessionController({...callbacks,getContext:()=>context,titleFor:label=>label,vibrationEnabled:()=>false});
- if(react)controller.connectView((...args)=>(mounted=mountSequenceContents(...args)));
+ if(react){controller.connectView((...args)=>(mounted=mountSequenceContents(...args)));controller.connectPage((...args)=>(parent=mountSequencePage(...args)),event=>event.preventDefault());}
 });
-afterEach(async()=>{save.mockResolvedValue(undefined);await controller.interrupt('navigation');await controller.flush();mounted?.dispose();mounted=null;jest.useRealTimers();globalThis.structuredClone=originalClone;});
+afterEach(async()=>{save.mockResolvedValue(undefined);await controller.interrupt('navigation');await controller.flush();mounted?.dispose();mounted=null;parent?.dispose();parent=null;jest.useRealTimers();globalThis.structuredClone=originalClone;});
 async function begin(){await controller.open(drill,config);submit();await captureCalled.promise;await jest.advanceTimersByTimeAsync(0);await controller.flush();}
+test('parent ownership keeps context updates exclusive and cannot connect during capture',async()=>{const mount=jest.fn((...args)=>(parent=mountSequencePage(...args)));if(react){expect(controller.hasPage()).toBe(true);expect(controller.connectPage(mount)).toBe(false);controller.updateContext({gunName:'Changed gun',contextHidden:false});expect(document.querySelector('.gun-context-name').textContent).toBe('Changed gun');return;}expect(controller.hasPage()).toBe(false);controller.updateContext({gunName:'Ignored'});expect(()=>controller.connectPage(()=>{throw new Error('mount failed');})).toThrow('mount failed');await begin();expect(controller.connectPage(mount)).toBe(false);await controller.interrupt('navigation');await controller.flush();expect(controller.connectPage(mount)).toBe(true);});
 test('opening/configuring retains action order, native bounds and setup focus without requesting audio',async()=>{await controller.open(drill,config);expect(callbacks.onNavigate).toHaveBeenCalledWith('session');expect(document.activeElement).toBe($('session-title'));expect($('sessionRepetitions').value).toBe('1');expect($('sessionRepetitions').min).toBe('1');expect($('sessionRepetitions').max).toBe('100');expect($('sessionSteps').textContent).toContain('trigger');expect(capture).not.toHaveBeenCalled();$('sessionRepetitions').value='';$('sessionRepetitions').dispatchEvent(new Event('change',{bubbles:true}));expect($('sessionRepetitions').value).toBe('');expect(set).not.toHaveBeenCalled();});
 test('safety and learned-sound guards prevent capture before a valid start',async()=>{await controller.open(drill,config);callbacks.ensureSafe.mockReturnValue(false);submit();await jest.advanceTimersByTimeAsync(0);expect(capture).not.toHaveBeenCalled();callbacks.ensureSafe.mockReturnValue(true);context.examples=[];submit();await jest.advanceTimersByTimeAsync(0);expect(capture).not.toHaveBeenCalled();expect($('sessionStartBtn')).toBeDisabled();});
 test('late microphone permission cannot revive a cancelled start',async()=>{const permission=deferred();capture.mockImplementation(value=>{options=value;captureCalled.resolve();return permission.promise;});await controller.open(drill,config);submit();await captureCalled.promise;expect(controller.locked()).toBe(true);await controller.interrupt('navigation');expect(options.signal.aborted).toBe(true);permission.resolve(session);await jest.advanceTimersByTimeAsync(0);expect(session.stop).toHaveBeenCalledTimes(1);expect(save).not.toHaveBeenCalled();expect(controller.locked()).toBe(false);});

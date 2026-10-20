@@ -21,7 +21,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   let operation = 0, captureToken = 0, readToken = 0, timer = null, tickQueued = false, interruption = null;
   let inputLevel = 0, inputSeen = false, inputAt = 0, inputStartedAt = 0, holdLevelUntil = 0, inputFeedback = '';
   let clock = () => 0, queue = Promise.resolve(), configQueue = Promise.resolve();
-  let routeKey = null, view = null, runModel, reviewModel;
+  let routeKey = null, view = null, page = null, runModel, reviewModel;
   const actions = new Map();
   const bind = (id, handler) => { actions.set(id,handler); $(id).addEventListener('click',handler); };
   const presentRun = model => { runModel=model; if(!view)return false; view.setRun(model); return true; };
@@ -110,20 +110,21 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     $('practiceStartBtn').disabled = locked() || context.available === false || missing.length > 0 || missingCue || !config || !context.gun || context.gun.needsDetails;
     $('practiceCueNote').textContent = external ? 'Waiting for your calibrated beep starts the acoustic timer. The app does not play a second cue.'
       : $('practiceStartSound').checked ? `Microphone ready before countdown. ${mode === 'single' ? 'A trigger before the beep fails the attempt. ' : ''}Set your device volume for the start beep. The first 0.08 s after GO is excluded to reject the cue.` : 'Microphone ready before countdown. Silent start uses the on-screen signal; Single triggers before it fail the attempt.';
-    $('practiceSteps').replaceChildren(...required.map(label => node('span', titleFor(label), 'preset-chip')));
+    renderSteps(required);
   }
+  function renderSteps(labels){const steps=labels.map(label=>({text:titleFor(label),className:'preset-chip'}));if(page)page.update({steps});else $('practiceSteps').replaceChildren(...steps.map(step=>node('span',step.text,step.className)));}
   const details = row => practiceResultDetails(row, { node, titleFor });
   const renderReview = record => renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details, present:presentReview });
   function render() {
     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
     const running = pending || state && state.phase !== 'review';
-    $('practiceGuideLink').classList.toggle('hidden', !!running || !!record);
-    $('practice-title').textContent = practiceDefinition(record?.practiceMode || mode)?.title || 'Practice';
+    const parent={guideHidden:!!running||!!record,title:practiceDefinition(record?.practiceMode||mode)?.title||'Practice'};
+    if(page)page.update(parent);else{$('practiceGuideLink').classList.toggle('hidden',parent.guideHidden);$('practice-title').textContent=parent.title;}
     $('practiceConfigure').classList.toggle('hidden', !!running || !!record);
     $('practiceRun').classList.toggle('hidden', !running); $('practiceReview').classList.toggle('hidden', !!running || !record);
     $('practiceConfigFields').disabled = !!running;
     if (!running && record) {
-      $('practiceSteps').replaceChildren(...record.drillSteps.map(label => node('span', titleFor(label), 'preset-chip')));
+      renderSteps(record.drillSteps);
       renderReview(record); return;
     }
     if (!running) { configure(); return; }
@@ -327,6 +328,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     view=mount($('practiceRun'),$('practiceReview'),{runModel,reviewModel,titleFor,onAction:id=>actions.get(id)?.()});
     return true;
   }
-  return { connectView, open, showRecord, guideContext, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
+  function connectPage(mount,onGuide){if(page||locked())return false;page=mount($('practiceView'),{onBack,onGuide});return true;}
+  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken++; routeKey = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

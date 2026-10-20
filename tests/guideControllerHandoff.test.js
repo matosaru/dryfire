@@ -12,7 +12,7 @@ test('guide handoff waits for a paused context, connects once and invokes origin
  document.body.innerHTML=controllerPage('practiceGuide');let actions;const port=Object.fromEntries(['setPracticeRun','setPracticeReview','setSequenceRun','setSequenceReview'].map(key=>[key,jest.fn()]));const mount=jest.fn((_doc,options)=>{actions=options.onAction;return port;}),back=jest.fn();
  try{
   const controller=createPracticeGuideController({onBack:back});expect(controller.connectView(mount)).toBe(false);
-  controller.open({type:'practice',mode:'single',gunId:'one',routeKey:'setup',config:{}});document.getElementById('practiceGuidePlayBtn').click();expect(controller.connectView(mount)).toBe(false);expect(mount).not.toHaveBeenCalled();
+  controller.open({type:'practice',mode:'single',gunId:'one',routeKey:'setup',config:{}});document.getElementById('practiceGuidePlayBtn').click();expect(controller.connectView(mount)).toBe(false);expect(controller.connectPage(mount)).toBe(false);expect(mount).not.toHaveBeenCalled();
   controller.pause();expect(controller.connectView(mount)).toBe(true);expect(controller.connectView(mount)).toBe(false);expect(mount).toHaveBeenCalledTimes(1);
   actions('practiceResumeBtn');expect(document.getElementById('practiceGuidePlayBtn').textContent).toBe('Pause');actions('practicePauseBtn');expect(document.getElementById('practiceGuidePlayBtn').textContent).toMatch(/Resume|Play/);
   actions('practiceRepeatBtn');expect(port.setPracticeRun).toHaveBeenCalled();actions('practiceNextBtn');actions('practiceDoneBtn');expect(back).toHaveBeenCalledWith('practice');actions('unknown');

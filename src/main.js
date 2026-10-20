@@ -82,6 +82,7 @@ let practiceModule, practiceModulePending;
 let sequenceModule, sequenceModulePending;
 let guideModule, guideModulePending;
 let historyPage, historyModule, historyModulePending, historyOwner, historyRows=[], historySessions=[];
+const guideHandlers=new Map();
 const historyHandlers=new Map();
 function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
 function historyText(id,text){if(historyPage)historyPage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
@@ -167,8 +168,10 @@ function renderGunControls() {
     $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   }
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) historyDisabled(id,profileLocked() || !activeGun || activeGun.needsDetails);
-  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+(historyPage ? ':not(#historyView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
-  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(historyPage ? ':not(#historyView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
+  sessionController?.updateContext({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+  practiceController?.updateContext({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   settingsPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   learnPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   livePage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
@@ -563,21 +566,21 @@ function displayView(name) {
   setMessage();
   if(name==='practiceGuide'){
     if(guideModule && !profileLocked() && !$('#safetyModal').open){
-      try{practiceGuideController.connectView(guideModule.mountGuideContents);}catch(error){showError(error);}
+      try{practiceGuideController.connectView(guideModule.mountGuideContents);practiceGuideController.connectPage(guideModule.mountGuidePage);}catch(error){showError(error);}
     }else if(!guideModule && !guideModulePending){
       guideModulePending=import('../apps/web/src/app/guideContents.tsx').then(module=>{guideModule=module;}).catch(showError).finally(()=>{guideModulePending=null;});
     }
   }
   if(name==='session'){
     if(sequenceModule && !profileLocked() && !$('#safetyModal').open){
-      try{sessionController.connectView(sequenceModule.mountSequenceContents);}catch(error){showError(error);}
+      try{sessionController.connectView(sequenceModule.mountSequenceContents);sessionController.connectPage(sequenceModule.mountSequencePage,guideHandlers.get('sessionGuideLink'));}catch(error){showError(error);}
     }else if(!sequenceModule && !sequenceModulePending){
       sequenceModulePending=import('../apps/web/src/app/sequenceContents.tsx').then(module=>{sequenceModule=module;}).catch(showError).finally(()=>{sequenceModulePending=null;});
     }
   }
   if(name==='practice'){
     if(practiceModule && !profileLocked() && !$('#safetyModal').open){
-      try{practiceController.connectView(practiceModule.mountPracticeContents);}catch(error){showError(error);}
+      try{practiceController.connectView(practiceModule.mountPracticeContents);practiceController.connectPage(practiceModule.mountPracticePage,guideHandlers.get('practiceGuideLink'));}catch(error){showError(error);}
     }else if(!practiceModule && !practiceModulePending){
       practiceModulePending=import('../apps/web/src/app/practiceContents.tsx').then(module=>{practiceModule=module;}).catch(showError).finally(()=>{practiceModulePending=null;});
     }
@@ -1003,13 +1006,13 @@ async function init() {
   });
   practiceGuideController = createPracticeGuideController({ onBack: parent => goBack(parent) });
   for (const [id, parent] of [['practiceGuideLink', 'practice'], ['sessionGuideLink', 'session']]) {
-    $('#' + id).addEventListener('click', event => {
+    const handler=event => {
       event.preventDefault();
       if (activeView !== parent || profileLocked()) return;
       const context = (parent === 'practice' ? practiceController : sessionController).guideContext();
       if (!context || context.gunId !== activeGun?.id) return;
       try { practiceGuideController.open(context); switchView('practiceGuide'); } catch (error) { showError(error); }
-    });
+    };guideHandlers.set(id,handler);$('#'+id).addEventListener('click',handler);
   }
   darkPreference?.addEventListener?.('change', () => { if (appearance === 'system') applyAppearance(); });
   bindSettings('appearance','change', async () => {

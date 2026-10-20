@@ -1,3 +1,4 @@
+export {mountSequencePage} from './sequencePage';
 import {mountSessionContents,type SequenceContents} from './sessionContents';
 import {applyControlClasses} from '../features/sessions/controlClasses';
 import type {sequenceRunPresentation,sequenceReviewPresentation} from '../features/sessions/phasePresentation';

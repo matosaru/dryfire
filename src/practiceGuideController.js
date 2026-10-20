@@ -6,6 +6,9 @@ import { createGuideExampleRenderer } from './practiceGuideRendering.js';
 export function createPracticeGuideController({ onBack, document: doc = document }) {
   const $ = id => doc.getElementById(id);
   const renderExample = createGuideExampleRenderer(doc);
+  let page=null;
+  const parentActions=new Map();
+  const bindParent=(id,handler)=>{parentActions.set(id,handler);$(id).addEventListener('click',handler);};
   const actions=new Map();
   const bind=(id,handler)=>{actions.set(id,handler);$('example-'+id).addEventListener('click',handler);};
   // Demo statuses are read on demand; repeated animation frames must not flood
@@ -40,25 +43,20 @@ export function createPracticeGuideController({ onBack, document: doc = document
     $('practiceGuideExample').setAttribute('aria-label', early
       ? 'Example: listening before the beep, early trigger fails with zero shots, then an automatic countdown and a successful trigger.'
       : `${guide.title}. ${guide.stages.join(' → ')}. Synthetic example; no live microphone data.`);
-    $('practiceGuideNormalBtn').setAttribute('aria-pressed', String(!early));
-    $('practiceGuideEarlyBtn').setAttribute('aria-pressed', String(early));
+    if(page)page.update({early});else{$('practiceGuideNormalBtn').setAttribute('aria-pressed',String(!early));$('practiceGuideEarlyBtn').setAttribute('aria-pressed',String(early));}
     text('practiceGuidePlayBtn', 'Play example');
   }
   function open(context) {
     pause(); guide = getPracticeGuide(context);
-    text('practiceGuideKind', guide.kind === 'practice' ? 'PRACTICE GUIDE' : 'ORDERED SEQUENCE GUIDE');
-    for (const [id, value] of Object.entries({ practiceGuideName: guide.title, practiceGuidePurpose: guide.purpose,
-      practiceGuideCurrentSetup: guide.currentSetup, practiceGuideMeasures: guide.measures,
-      practiceGuideExpect: guide.expect, practiceGuideRequires: guide.requires,
-      practiceGuideExampleNote: `${guide.exampleConfig}. Safety already confirmed; microphone preparation time varies.` })) text(id, value);
-    $('practiceGuideSteps').replaceChildren(...guide.steps.map(step => { const li = doc.createElement('li'); li.textContent = step; return li; }));
-    const showSteps = guide.kind === 'sequence' || guide.id === 'reload';
-    $('practiceGuideSequence').classList.toggle('hidden', !showSteps);
-    $('practiceGuideSequence').replaceChildren(...(showSteps ? guide.sequence.flatMap((label, i) => {
-      const chip = doc.createElement('span'); chip.className = 'preset-chip'; chip.dataset.sound = label; chip.textContent = guideSoundTitle(label);
-      return i ? [doc.createTextNode(' → '), chip] : [chip];
-    }) : []));
-    $('practiceGuideExamples').classList.toggle('hidden', guide.id !== 'single');
+    const showSteps=guide.kind==='sequence'||guide.id==='reload';
+    const manual={texts:{practiceGuideKind:guide.kind==='practice'?'PRACTICE GUIDE':'ORDERED SEQUENCE GUIDE',practiceGuideName:guide.title,practiceGuidePurpose:guide.purpose,practiceGuideCurrentSetup:guide.currentSetup,practiceGuideMeasures:guide.measures,practiceGuideExpect:guide.expect,practiceGuideRequires:guide.requires,practiceGuideExampleNote:`${guide.exampleConfig}. Safety already confirmed; microphone preparation time varies.`},steps:guide.steps,sequenceHidden:!showSteps,examplesHidden:guide.id!=='single',sequence:(showSteps?guide.sequence:[]).map(label=>({label,text:guideSoundTitle(label)}))};
+    if(page)page.update(manual);else{
+      for(const[id,value]of Object.entries(manual.texts))text(id,value);
+      $('practiceGuideSteps').replaceChildren(...manual.steps.map(step=>{const li=doc.createElement('li');li.textContent=step;return li;}));
+      $('practiceGuideSequence').classList.toggle('hidden',manual.sequenceHidden);
+      $('practiceGuideSequence').replaceChildren(...manual.sequence.flatMap((step,index)=>{const chip=doc.createElement('span');chip.className='preset-chip';chip.dataset.sound=step.label;chip.textContent=step.text;return index?[doc.createTextNode(' → '),chip]:[chip];}));
+      $('practiceGuideExamples').classList.toggle('hidden',manual.examplesHidden);
+    }
     selectExample(false); return guide;
   }
   function togglePlay() {
@@ -79,9 +77,10 @@ export function createPracticeGuideController({ onBack, document: doc = document
     const next = scenario.events.find(e => e.kind === 'user-selects-next' && e.atMs > position);
     if (next) { pause(); position = next.atMs; paint(Math.floor(position / FRAME_MS)); }
   });
-  $('practiceGuideNormalBtn').addEventListener('click', () => { if (guide?.id === 'single') selectExample(false); });
-  $('practiceGuideEarlyBtn').addEventListener('click', () => { if (guide?.id === 'single') selectExample(true); });
-  for (const id of ['practiceGuideBackBtn', 'practiceGuideReturnBtn']) $(id).addEventListener('click', () => { pause(); onBack(guide?.parent ?? 'drills'); });
+  bindParent('practiceGuideNormalBtn', () => { if (guide?.id === 'single') selectExample(false); });
+  bindParent('practiceGuideEarlyBtn', () => { if (guide?.id === 'single') selectExample(true); });
+  for (const id of ['practiceGuideBackBtn', 'practiceGuideReturnBtn']) bindParent(id, () => { pause(); onBack(guide?.parent ?? 'drills'); });
   doc.addEventListener('visibilitychange', () => { if (doc.hidden) pause(); });
-  return { open, pause, current: () => guide,connectView(mount){if(playing||!guide)return false;return renderExample.connectView(mount,id=>actions.get(id)?.());} };
+  function connectPage(mount){if(page||playing||!guide)return false;page=mount($('practiceGuideView'),{onBack:()=>parentActions.get('practiceGuideBackBtn')?.(),onAction:id=>parentActions.get(id)?.()});return true;}
+  return { connectPage,open, pause, current: () => guide,connectView(mount){if(playing||!guide)return false;return renderExample.connectView(mount,id=>actions.get(id)?.());} };
 }

@@ -1,3 +1,4 @@
+export {mountGuidePage} from './guidePage';
 import {mountPracticeContents} from './practiceContents';
 import {mountSequenceContents} from './sequenceContents';
 type PracticeOptions=Parameters<typeof mountPracticeContents>[2];

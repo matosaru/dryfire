@@ -171,7 +171,7 @@
     {
       "id": "practice",
       "targetOwner": "PracticePage",
-      "renderer": "legacy",
+      "renderer": "react",
       "source": "apps/web/src/pages/PracticePage/PracticePage.tsx",
       "behaviorTests": [
         "tests/practiceSession.test.js",
@@ -187,7 +187,8 @@
         "tests/sessionContentsMount.test.tsx",
         "tests/practiceController.test.js",
         "apps/web/src/pages/PracticePage/PracticePage.test.tsx",
-        "tests/sessionParentBaseline.test.js"
+        "tests/sessionParentBaseline.test.js",
+        "tests/practiceParentMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -195,7 +196,9 @@
         "src/practiceSession.js",
         "src/sessionPresentation.js",
         "apps/web/src/app/practiceContents.tsx",
-        "apps/web/src/app/sessionContents.tsx"
+        "apps/web/src/app/sessionContents.tsx",
+        "apps/web/src/app/practicePage.tsx",
+        "apps/web/src/app/retainedPage.tsx"
       ],
       "stableSelectorExamples": [
         "practiceConfigForm",
@@ -225,12 +228,12 @@
         "apps/web/src/features/sessions/phasePresentation.ts",
         "apps/web/src/features/sessions/controlClasses.ts"
       ],
-      "runtimeOwner": "Typed parent prerender; live/guide inner React contents verified. Native parent/manual/configuration ownership remains until explicit P6 parent-root handoff."
+      "runtimeOwner": "Typed parent root and shared live/example child contents after guarded later entry. Exact Configure nodes/child hosts or guide figure are retained islands; controller owns their services and native configuration/clock lifetimes. First-entry native fallback retirement remains P7."
     },
     {
       "id": "session",
       "targetOwner": "SequencePage",
-      "renderer": "legacy",
+      "renderer": "react",
       "source": "apps/web/src/pages/SequencePage/SequencePage.tsx",
       "behaviorTests": [
         "tests/drillSession.test.js",
@@ -246,7 +249,8 @@
         "tests/sessionPresentationPort.test.js",
         "tests/sessionContentsMount.test.tsx",
         "apps/web/src/pages/SequencePage/SequencePage.test.tsx",
-        "tests/sessionParentBaseline.test.js"
+        "tests/sessionParentBaseline.test.js",
+        "tests/sequenceParentMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -254,7 +258,9 @@
         "src/drillSession.js",
         "src/sessionPresentation.js",
         "apps/web/src/app/sequenceContents.tsx",
-        "apps/web/src/app/sessionContents.tsx"
+        "apps/web/src/app/sessionContents.tsx",
+        "apps/web/src/app/sequencePage.tsx",
+        "apps/web/src/app/retainedPage.tsx"
       ],
       "stableSelectorExamples": [
         "sessionConfigForm",
@@ -283,12 +289,12 @@
         "apps/web/src/features/sessions/phasePresentation.ts",
         "apps/web/src/features/sessions/controlClasses.ts"
       ],
-      "runtimeOwner": "Typed parent prerender; live/guide inner React contents verified. Native parent/manual/configuration ownership remains until explicit P6 parent-root handoff."
+      "runtimeOwner": "Typed parent root and shared live/example child contents after guarded later entry. Exact Configure nodes/child hosts or guide figure are retained islands; controller owns their services and native configuration/clock lifetimes. First-entry native fallback retirement remains P7."
     },
     {
       "id": "practiceGuide",
       "targetOwner": "PracticeGuidePage",
-      "renderer": "legacy",
+      "renderer": "react",
       "source": "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx",
       "behaviorTests": [
         "tests/practiceGuides.test.js",
@@ -304,7 +310,8 @@
         "tests/guideContentsMount.test.tsx",
         "tests/guideControllerHandoff.test.js",
         "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.test.tsx",
-        "tests/sessionParentBaseline.test.js"
+        "tests/sessionParentBaseline.test.js",
+        "tests/guideParentMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
@@ -314,7 +321,9 @@
         "apps/web/src/app/guideContents.tsx",
         "apps/web/src/app/practiceContents.tsx",
         "apps/web/src/app/sequenceContents.tsx",
-        "apps/web/src/app/sessionContents.tsx"
+        "apps/web/src/app/sessionContents.tsx",
+        "apps/web/src/app/guidePage.tsx",
+        "apps/web/src/app/retainedPage.tsx"
       ],
       "stableSelectorExamples": [
         "practiceGuideView",
@@ -344,7 +353,7 @@
         "apps/web/src/features/sessions/resultPresentation.ts",
         "apps/web/src/features/sessions/phasePresentation.ts"
       ],
-      "runtimeOwner": "Typed parent prerender; live/guide inner React contents verified. Native parent/manual/configuration ownership remains until explicit P6 parent-root handoff."
+      "runtimeOwner": "Typed parent root and shared live/example child contents after guarded later entry. Exact Configure nodes/child hosts or guide figure are retained islands; controller owns their services and native configuration/clock lifetimes. First-entry native fallback retirement remains P7."
     },
     {
       "id": "recognize",

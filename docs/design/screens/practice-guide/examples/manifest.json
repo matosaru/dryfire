@@ -12,7 +12,7 @@
     "apps/web/src/styles/legacy-theme-and-layout.css": "40e996df61f0f92278150f099f81405ba56553a6df359c9de42b85c2a778dcc9",
     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
     "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
-    "src/practiceGuideController.js": "8ce13ca047c4598d01a2eb9a98430ae8d07f349cd11a660da229efdab0239a79",
+    "src/practiceGuideController.js": "3424acff9a54c769315a13a378763cb58215ca8f52abd3b6d94051b08cd8d508",
     "src/practiceGuideRendering.js": "1de34884ff15a2e9cd4cf0559850daa7acacc5ed0554c2589dff43239a700eb5",
     "src/practiceGuideExamples.js": "6a597a7ad94169334a98a3f58ec5af4ddfd9aa4f3284208f929c0e7b299a183b",
     "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
@@ -21,7 +21,7 @@
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
     "tools/page-templates.mjs": "cc559566eb1014f63bdc327ff6b3059f4637ad52bd838ec19942dbc35d0a501d",
-    "tools/export-guide-examples.mjs": "86a17075001b0e487be46743949b73c00cc9bc97ad3c9c3425c4339a7aa83a4d",
+    "tools/export-guide-examples.mjs": "ce81399883cca3b2aaa08e7e01a4ffca96c78fb77abcbca71b70fb9e714d8e47",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "apps/web/src/styles/foundation.css": "2e687e3090bf67f93b11ca59d44ddd17315f807a9b5b719a0eb123733f2c6afc",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
@@ -113,9 +113,9 @@
     "apps/web/src/features/sessions/resultPresentation.ts": "781e1189119cc9a5e3d284497799827bcff2768ce7687f49235b783cbb007542",
     "apps/web/src/features/sessions/phasePresentation.ts": "e637cb3e32dea5759d16daa63333498a1f800e1a65ed7d8bfc29ec680ea3df42",
     "apps/web/src/app/sessionContents.tsx": "ad58a14f24a7c0e7c4a856683d1280b661ee82a7e0280e4e0b0570465690d600",
-    "apps/web/src/app/practiceContents.tsx": "af784e775b94452f22a0b6bcedef031904e9e9292b4762ccf193f85253f1e8d8",
-    "apps/web/src/app/sequenceContents.tsx": "2b5461e4e38d2af6affb365b7d35dd9f77432e46a83ee590a606bbb023318838",
-    "apps/web/src/app/guideContents.tsx": "9bd995cb7c81a9cb36bcef991751a6808473921e587a0538727d5c02b049638c",
+    "apps/web/src/app/practiceContents.tsx": "b2ebc00e6385080155f27b7fac16d964c8f914100b742f0ecdcdce33f2e3cee6",
+    "apps/web/src/app/sequenceContents.tsx": "47229b751bc654749387ead6278e542de272ba5e4c75552120982733b554e512",
+    "apps/web/src/app/guideContents.tsx": "52da80bafebfe6213fb93dd34f75792998ed70d1bccadbc9331b3190eabb9209",
     "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
     "packages/ui/src/RepetitionResult/RepetitionResult.tsx": "0ab5ca95f294b59879cf33f0e4864a3d051d6fa37b92c1ba3d6787ac89447149",
     "packages/ui/src/RepetitionResult/index.ts": "3ce259aabc5f6c35a147c068e686bfa5cf4719b7a382b4ce24fd51065dd43f5d",
@@ -134,7 +134,11 @@
     "apps/web/src/pages/PracticePage/PracticePage.tsx": "b821b35863c758b011267e99be882a035a45ae80649f4b9fc4860adbdbec748c",
     "apps/web/src/pages/PracticePage/index.ts": "5b5b81bf639048fdae1497102f8195e6f3e88390603e112e39e0ec56f5ae5876",
     "apps/web/src/pages/SequencePage/SequencePage.tsx": "17190c473bfde32373c78145da097dc1a826f056f33889887a8b3de67494d71f",
-    "apps/web/src/pages/SequencePage/index.ts": "35d27d3e9d6ca4e0b66385e97fb718a7aebe519045baa635d7d0cb77dc0465ec"
+    "apps/web/src/pages/SequencePage/index.ts": "35d27d3e9d6ca4e0b66385e97fb718a7aebe519045baa635d7d0cb77dc0465ec",
+    "apps/web/src/app/practicePage.tsx": "22ec666b9bc219ebbc22a3052089a7e7f7dd3a96a7f494bd8d5fa382add7063a",
+    "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
+    "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
+    "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35"
   },
   "exports": [
     {
@@ -267,5 +271,10 @@
     "reviewedOn": "2026-10-20",
     "evidence": "docs/design/baselines/p6-session-parent-source-review.json",
     "note": "Typed complete parent DOM, same shared frame presentation and byte-identical production CSS retain reviewed media."
+  },
+  "parentRuntimeInputReview": {
+    "reviewedOn": "2026-10-20",
+    "evidence": "docs/design/baselines/p6-parent-runtime-review.json",
+    "note": "Reviewed parent/child ownership and real browser pixel equivalence preserve the original media."
   }
 }

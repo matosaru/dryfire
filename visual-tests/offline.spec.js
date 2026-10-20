@@ -104,11 +104,12 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
       expect(await page.evaluate(async({module,entry})=>typeof(await import(module))[entry==='practiceContents'?'mountPracticeContents':'mountSequenceContents']==='function',{module,entry})).toBe(true);
       await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="drills"]').click();await page.locator(selector).first().click();
       await expect(page.locator(host)).toHaveAttribute('data-react-session','');
+      await expect(page.locator('#'+view+'View')).toHaveAttribute(view==='practice'?'data-react-practice':'data-react-session-page','');
     }
     const guideModule=modules.find(path=>path.includes('/assets/guideContents-'));expect(guideModule).toBeTruthy();
     await page.locator('#sessionGuideLink').click();
     expect(await page.evaluate(async path=>typeof(await import(path)).mountGuideContents==='function',guideModule)).toBe(true);
-    await page.locator('#practiceGuideReturnBtn').click();await page.locator('#sessionGuideLink').click();await expect(page.locator('#example-sessionRun')).toHaveAttribute('data-react-session','');
+    await page.locator('#practiceGuideReturnBtn').click();await page.locator('#sessionGuideLink').click();await expect(page.locator('#example-sessionRun')).toHaveAttribute('data-react-session','');await expect(page.locator('#practiceGuideView')).toHaveAttribute('data-react-guide','');
     const progressModule=modules.find(path=>path.includes('/assets/progressContent-'));
     if(edition==='preview'){
       expect(progressModule).toBeTruthy();

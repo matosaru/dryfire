@@ -7,6 +7,7 @@ import { readFileSync } from 'node:fs';
 import { serialize, deserialize } from 'node:v8';
 import { controllerPage, deferred, clickPcm } from './helpers/controllerDom.js';
 import { PRACTICE_MODES } from '../src/practiceSession.js';
+import {mountPracticePage} from '../apps/web/src/app/practicePage.tsx';
 import {mountPracticeContents} from '../apps/web/src/app/practiceContents.tsx';
 
 const audio = await import('../src/audio.js');
@@ -20,7 +21,7 @@ const catalog = readFileSync(new URL('./fixtures/practice-catalog.html', import.
 const library = JSON.parse(readFileSync(new URL('../visual-tests/fixtures/library.json', import.meta.url)));
 const originalClone = globalThis.structuredClone;
 describe.each([false,true])('Practice controller React presentation %s',react=>{
-let mounted;
+let mounted,parent;
 let controller, context, callbacks, input, captureCalled, session, options, cueTimes;
 const $ = id => document.getElementById(id);
 const submit = () => $('practiceConfigForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
@@ -28,7 +29,7 @@ const config = { repetitions: 2, delayMode: 'fixed', fixedDelaySeconds: 1, sound
 beforeEach(() => {
   globalThis.structuredClone = value => deserialize(serialize(value));
   jest.useFakeTimers();
-  document.body.innerHTML = '<input id="safetyAck" type="checkbox" checked>' + catalog + controllerPage('practice');
+  document.body.innerHTML = '<input id="safetyAck" type="checkbox" checked>' + catalog + '<div id="practiceView">'+controllerPage('practice')+'</div>';
   context = { gun: library.guns[0], examples: library.examples.filter(row => row.gunId === library.guns[0].id), calibration: [], available: true, audioPreferences: { noiseFilter: true } };
   callbacks = Object.fromEntries(['onNavigate','onBack','onChange','onError','onStatus','onProcessing','onVibration'].map(key => [key, jest.fn()]));
   callbacks.ensureSafe = jest.fn(() => true);
@@ -39,11 +40,11 @@ beforeEach(() => {
   get.mockReset().mockImplementation(async (_key, fallback) => fallback); set.mockReset().mockResolvedValue(undefined); save.mockReset().mockResolvedValue(undefined);
   cue.prepare.mockReset().mockResolvedValue(true); cue.play.mockReset().mockImplementation(() => { cueTimes.push(performance.now()); return true; }); cue.close.mockReset().mockResolvedValue(undefined);
   controller = createPracticeController({ ...callbacks, getContext: () => context, titleFor: label => label, vibrationEnabled: () => false });
-  if(react)controller.connectView((...args)=>(mounted=mountPracticeContents(...args)));
+  if(react){controller.connectView((...args)=>(mounted=mountPracticeContents(...args)));controller.connectPage((...args)=>(parent=mountPracticePage(...args)),event=>event.preventDefault());}
 });
 afterEach(async () => {
   await controller.interrupt('test-cleanup');
-  mounted?.dispose();mounted=null;
+  mounted?.dispose();mounted=null;parent?.dispose();parent=null;
   jest.useRealTimers(); globalThis.structuredClone = originalClone; document.body.replaceChildren();
 });
 
@@ -56,6 +57,13 @@ test('presentation connects once, rejects locked handoff and can retry after a f
   expect(controller.connectView(mount)).toBe(false);expect(mount).not.toHaveBeenCalled();
   await controller.interrupt('cancel');input.resolve(0);await controller.flush();
   expect(controller.connectView(mount)).toBe(true);expect(controller.connectView(mount)).toBe(false);
+});
+
+test('parent ownership is guarded and context updates use its exclusive port',async()=>{
+ const mount=jest.fn((...args)=>(parent=mountPracticePage(...args)));
+ if(react){expect(controller.hasPage()).toBe(true);expect(controller.connectPage(mount)).toBe(false);controller.updateContext({gunName:'Changed gun',contextHidden:false});expect(document.querySelector('.gun-context-name').textContent).toBe('Changed gun');return;}
+ expect(controller.hasPage()).toBe(false);controller.updateContext({gunName:'Ignored'});expect(()=>controller.connectPage(()=>{throw new Error('mount failed');})).toThrow('mount failed');
+ await controller.open('single',config);submit();await captureCalled.promise;expect(controller.connectPage(mount)).toBe(false);await controller.interrupt('cancel');input.resolve(0);await controller.flush();expect(controller.connectPage(mount)).toBe(true);
 });
 
 test('the six catalog choices preserve copy/order and configure exactly once without microphone access', async () => {

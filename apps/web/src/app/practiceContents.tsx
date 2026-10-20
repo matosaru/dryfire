@@ -1,3 +1,4 @@
+export {mountPracticePage} from './practicePage';
 import {mountSessionContents,type PracticeContents} from './sessionContents';
 import {applyControlClasses} from '../features/sessions/controlClasses';
 import type {practiceRunPresentation,practiceReviewPresentation} from '../features/sessions/phasePresentation';

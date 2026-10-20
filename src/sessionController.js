@@ -43,7 +43,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   let saveError = null;
   let readToken = 0;
   let lastAnnouncement = '';
-  let routeKey = null, view = null, runModel, reviewModel;
+  let routeKey = null, view = null, page = null, runModel, reviewModel;
   const actions = new Map();
   const bind = (id, handler) => { actions.set(id,handler); $('#'+id).addEventListener('click',handler); };
   const presentRun = model => { runModel=model; if(!view)return false; view.setRun(model); return true; };
@@ -104,17 +104,9 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
 
   function renderSequence(record) {
     const steps = record?.drillSteps || selection?.steps || [];
-    const host = $('#sessionSteps');
-    host.replaceChildren();
-    steps.forEach((label, index) => {
-      const item = node('li', titleFor(label), 'drill-step');
-      if (state?.phase === 'active') {
-        if (index < state.current.stepIndex) item.classList.add('done');
-        else if (index === state.current.stepIndex) item.classList.add('current');
-      }
-      host.append(item);
-    });
-    $('#sessionPresetName').textContent = `${steps.length} sound action${steps.length === 1 ? '' : 's'} · ${record ? 'Saved session' : 'Session setup'}`;
+    const rows=steps.map((label,index)=>({text:titleFor(label),className:'drill-step'+(state?.phase==='active'?(index<state.current.stepIndex?' done':index===state.current.stepIndex?' current':''):'')}));
+    const presetName=`${steps.length} sound action${steps.length===1?'':'s'} · ${record?'Saved session':'Session setup'}`;
+    if(page)page.update({steps:rows,presetName});else{const host=$('#sessionSteps');host.replaceChildren(...rows.map(row=>node('li',row.text,row.className)));$('#sessionPresetName').textContent=presetName;}
   }
 
   const resultDetails = row => sequenceResultDetails(row, { node, titleFor });
@@ -130,7 +122,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   function render() {
     const record = state?.phase === 'review' ? toSessionRecord(state) : review;
     const running = pending || !!state && state.phase !== 'review';
-    $('#sessionGuideLink').classList.toggle('hidden', !!running || !!record);
+    if(page)page.update({guideHidden:!!running||!!record});else $('#sessionGuideLink').classList.toggle('hidden',!!running||!!record);
     $('#sessionConfigure').classList.toggle('hidden', running || !!record);
     $('#sessionRun').classList.toggle('hidden', !running);
     $('#sessionReview').classList.toggle('hidden', running || !record);
@@ -418,6 +410,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     view=mount($('#sessionRun'),$('#sessionReview'),{runModel,reviewModel,titleFor,onAction:id=>actions.get(id)?.()});
     return true;
   }
-  return { connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
+  function connectPage(mount,onGuide){if(page||locked()||saveError)return false;page=mount($('#sessionView'),{onBack,onGuide});return true;}
+  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

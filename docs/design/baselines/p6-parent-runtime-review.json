@@ -1,0 +1,24 @@
+{
+  "change": "CHG-049 P6 guarded parent runtime handoffs",
+  "reviewedOn": "2026-10-20",
+  "candidateBase": "015a873",
+  "sourceHashes": {
+    "src/practiceGuideController.js": "3424acff9a54c769315a13a378763cb58215ca8f52abd3b6d94051b08cd8d508",
+    "tools/export-guide-examples.mjs": "ce81399883cca3b2aaa08e7e01a4ffca96c78fb77abcbca71b70fb9e714d8e47",
+    "apps/web/src/app/practiceContents.tsx": "b2ebc00e6385080155f27b7fac16d964c8f914100b742f0ecdcdce33f2e3cee6",
+    "apps/web/src/app/sequenceContents.tsx": "47229b751bc654749387ead6278e542de272ba5e4c75552120982733b554e512",
+    "apps/web/src/app/guideContents.tsx": "52da80bafebfe6213fb93dd34f75792998ed70d1bccadbc9331b3190eabb9209",
+    "apps/web/src/app/practicePage.tsx": "22ec666b9bc219ebbc22a3052089a7e7f7dd3a96a7f494bd8d5fa382add7063a",
+    "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
+    "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
+    "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35"
+  },
+  "contracts": [
+    "Parent roots retain the exact configuration forms, Run/Review hosts and guide figure; child React roots are not remounted by parent updates.",
+    "Exclusive parent ports supply titles, guide visibility/actions, gun context, ordered/current steps and manual/options state. Main stops native gun-context writes in mounted parent regions.",
+    "Synchronous guarded later-entry mounts preserve invalid badInput, focus/tabindex and original callbacks; failed commits restore original DOM/listeners.",
+    "Actual Practice/Sequence controller suites exercise native and parent/child React paths. Guide controller tests preserve nested examples through Single/early/Reload/custom manuals.",
+    "Both-theme native/React saved-review and guide-poster pixels, all 12 guide scenarios/1,333 original frames and byte-identical CSS retain original screenshot/GIF exports.",
+    "First-entry native fallback retirement and original-baseline performance acceptance remain P7."
+  ]
+}

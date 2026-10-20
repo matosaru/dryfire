@@ -16,7 +16,7 @@ async function configure(page, autoReady = true, delay = '1', handoff = false) {
   await page.locator('.tab[data-view="drills"]').click();
   const loaded=handoff?page.waitForResponse(response=>/\/assets\/practiceContents-/.test(response.url())):null;
   await page.locator('[data-practice-mode="single"]').click();
-  if(loaded){await loaded;await expect(page.locator('#practiceRun')).not.toHaveAttribute('data-react-session');await page.locator('#practiceBackBtn').click();await page.locator('[data-practice-mode="single"]').click();await expect(page.locator('#practiceRun')).toHaveAttribute('data-react-session','');}
+  if(loaded){await loaded;await expect(page.locator('#practiceRun')).not.toHaveAttribute('data-react-session');await page.locator('#practiceBackBtn').click();await page.locator('[data-practice-mode="single"]').click();await expect(page.locator('#practiceRun')).toHaveAttribute('data-react-session','');await expect(page.locator('#practiceView')).toHaveAttribute('data-react-practice','');}
   await page.locator('#practiceDelayMode').selectOption('fixed');
   await page.locator('#practiceFixedDelay').fill(delay);
   await page.locator('#practiceFixedDelay').dispatchEvent('change');
