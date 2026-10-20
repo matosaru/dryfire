@@ -1,5 +1,7 @@
 # History ownership notes
 
+**2026-10-20 implementation:** History page, saved sessions, evaluation and recognition presentation now transfer through `app/historyPage`; session queries accept `paint=false` after the same ownership guard, and review dispatch stays in `sessionController`. Exact numeric/progress/filter nodes are retained. Private progress content remains the next isolated transfer.
+
 Implementation notes within the approved P5 scope, not new product requirements. Keep [plan.md](plan.md) as the execution checklist.
 
 - `main.js renderHistory` owns the request token and selected-gun ID. It reads events, awaits `sessionController.renderSavedSessions(gunId,isCurrent)`, checks ownership again, then renders progress, evaluation and recognition rows. Preserve these checks around every async boundary and any presentation callback.

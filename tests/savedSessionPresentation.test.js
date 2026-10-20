@@ -3,7 +3,7 @@ import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const source=readFileSync(new URL('../src/sessionController.js',import.meta.url),'utf8');
-const rendering=source.slice(source.indexOf('  async function renderSavedSessions('),source.indexOf('  const retrySaveButton'));
+const rendering=source.slice(source.indexOf('  function openSavedRecord('),source.indexOf('  const retrySaveButton'));
 function setup(){
   document.body.innerHTML='<div id="savedSessions"><p>Previous results</p></div>';
   const context={gun:{id:'one'}};
@@ -48,3 +48,5 @@ test('older sequence records without a kind still open the sequence review',asyn
   const s=setup();const older={...sequence};delete older.kind;s.getSessions.mockResolvedValue([older]);await s.render('one');
   s.host.querySelector('button').click();expect(s.showRecord).toHaveBeenCalledWith(older);expect(s.onPracticeRecord).not.toHaveBeenCalled();
 });
+
+test('React-owned presentation reads current records without competing native mutations',async()=>{const s=setup();s.getSessions.mockResolvedValue([sequence]);expect(await s.render('one',()=>true,false)).toEqual([sequence]);expect(s.host.textContent).toBe('Previous results');});

@@ -20,7 +20,7 @@
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/templates/pages/practiceGuide.html": "2d860606b02ab48c15afef74608fa8ff91fdd34491e5e9fe9a69c9656dd70f1c",
-    "tools/page-templates.mjs": "475643f68fdf4a5bc9a4322c422650f0df61ea7f106139699e979784bfe37a64",
+    "tools/page-templates.mjs": "2e1a86d4bffc4c066af134d067a4374d494665543e673557c5bb18f75c476bca",
     "tools/export-guide-examples.mjs": "0c1f31a7c9742ac8cde728c0d54cb6f13e7f47c0ee94b91512761bf5abb3308b",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "src/templates/shared/practice-run.html": "36a2b3c6ddce1db7620667822a8b7e225e1358cb33709f9d7d2d5cf01bfd7fd2",
@@ -53,7 +53,7 @@
     "apps/web/src/styles/legacy-before-guns.css": "295ce7ddcfbeccd5cb08a2bcb4af0afe4f618913c57a677c61a78ebc0a2b7655",
     "apps/web/src/styles/legacy-after-guns.css": "a6498dd3962bb9626aa231582681c7a589d17fb905b7820ef642ef85ed807495",
     "apps/web/src/pages/GunsPage/GunsPage.css": "0ca384aca93f0ca6da65a103ad75c156804cac9514d764397e1c387874061718",
-    "apps/web/src/styles/legacy-before-home.css": "616c2d34f63330b3b1d5ecaae332e9846f700460b3b77edb9c3d25ce536ee179",
+    "apps/web/src/styles/legacy-before-home.css": "f1b4ee6ab73aa2273bc328845df11d649ef0f637238fb9d9a59f2e8ca0878863",
     "apps/web/src/pages/HomePage/HomePage.css": "70924e9e2f91e0402c65174ca01817b5e594a79ac95c0b2e37de487c513d7a59",
     "apps/web/src/styles/legacy-after-home.css": "26ce6baee09ae9e9349ee9e2f8792ecd1debedec08a8872927bcf4d100dd2d9e",
     "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
@@ -64,7 +64,7 @@
     "apps/web/src/styles/legacy-after-settings.css": "8c3e4aec3aed517579f4e67f9b67aa9fa0ab7b53c509a8520b4e06fae69ffd6a",
     "apps/web/src/pages/LearnPage/LearnPage.css": "1be7874e8228e2159550a7d8f41ef0c0e6cd6bfe73b481eeffc8afdd3cb8da2d",
     "packages/ui/src/SoundCard/SoundCard.css": "eb3a52e26d1d1ea910e0c1002b852982ac16a2424b3a8781b280b7ffbb57a18d",
-    "apps/web/src/styles/legacy-after-sound-card.css": "95fd1863dd1e44a77fe77f627189f93565a4cd4d7e3a360648fc1190e96b052e",
+    "apps/web/src/styles/legacy-after-sound-card.css": "35306b2f1703e35e9aae6f15fef25a7bfd9ded25c3263bb3c060608e7c1a1dae",
     "apps/web/src/styles/legacy-before-live-listen.css": "1351bd3f07949fe353ce8743c61a280badaa2b16eb007801a9d52357f490d497",
     "apps/web/src/styles/legacy-after-live-listen.css": "f53c50d2ebeff706148f5c34e5622c565b4345129df19619ccceaae0975dc776",
     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
@@ -73,8 +73,18 @@
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
     "packages/ui/src/DrillCard/DrillCard.css": "2ce2d7f7a9202ef9974c7dd0531e6afa98f6f9ca339a2653d4ba8e3ebc7f9e20",
     "apps/web/src/styles/legacy-before-custom-editor.css": "ad9a9b3fc449f79cedbc0c657aad43dd635c20b80f45d6d1891ab5b0b101b546",
-    "apps/web/src/styles/legacy-after-custom-editor.css": "7a21fbccca33c410d5254a0ddd860139a02598185aba356f407d9bce918e32fe",
-    "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588"
+    "apps/web/src/styles/legacy-after-custom-editor.css": "8109a69f3576773a3336cc2aa1638ce76360b17f9d40cdfa52a0d726974ec4e3",
+    "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
+    "apps/web/src/styles/legacy-before-history-list.css": "000531fa0d4af1f326e5998ed8a3f31fb280b86b45fca1e53c2e10addc264d7a",
+    "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
+    "apps/web/src/styles/legacy-after-history-list.css": "fcadfa3ceda88072b3008771d894c55ab2c6db4881616cde7ba29b055b3a8b7d",
+    "apps/web/src/styles/legacy-before-evaluation.css": "bc3c7495e2cb342a0b60182bc654eb334dc204ee55f91be3421eded18d6fffee",
+    "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
+    "apps/web/src/styles/legacy-after-evaluation.css": "14626bc045626136df9cdfa1bb947a74647f37139727ade34fc85ed59b37e14e",
+    "apps/web/src/styles/legacy-before-saved-sessions.css": "eab747c2b37702a97db3482076f93ed50c54b9b58c252089d2626c382762b316",
+    "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
+    "packages/ui/src/SavedSessionList/SavedSessionList.css": "f9a0c565ff87a62a2488e41cff9a05a0ef23a953cf1f153163d2cc6740ae67b1",
+    "apps/web/src/styles/legacy-after-saved-sessions.css": "f0949bd914a43db5b644f1aabe77cd036592e8a63dc5379fbf38b0b8bdd89d2e"
   },
   "exports": [
     {
@@ -187,5 +197,6 @@
     }
   ],
   "structuralInputReview": "docs/design/baselines/shared-shell-refactor-review.json",
-  "exportStatus": "Existing encoded bytes retained: complete original/current scenario snapshots and initialized presentation are equivalent; CSS is byte-identical. This is input-equivalence review, not re-encoding."
+  "exportStatus": "Existing encoded bytes retained: complete original/current scenario snapshots and initialized presentation are equivalent; CSS is byte-identical. This is input-equivalence review, not re-encoding.",
+  "historyInputReview": "P5 History: native/typed static DOM parity; expanded CSS matches the original byte for byte; guide engines, shared run/review fragments, scenarios and encoded GIF files unchanged. Only unrelated History compiler dispatch and ordered CSS source ownership changed."
 }

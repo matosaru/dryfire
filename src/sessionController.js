@@ -353,9 +353,12 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     routeKey = crypto.randomUUID(); changed(); onNavigate('session');
   }
 
-  async function renderSavedSessions(gunId, isCurrent = () => true) {
+  function openSavedRecord(record){return record.kind === 'practice' ? onPracticeRecord(record) : showRecord(record);}
+
+  async function renderSavedSessions(gunId, isCurrent = () => true, paint = true) {
     const records = gunId ? await getSessions(gunId) : [];
     if (gunId !== getContext().gun?.id || !isCurrent()) return;
+    if(!paint)return records;
     const host = $('#savedSessions');
     host.replaceChildren();
     if (!records.length) host.append(node('p', 'No saved drill sessions for this gun yet.', 'empty-state'));
@@ -364,7 +367,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
       const count = record.kind === 'practice' ? `${record.shots} shots · ${record.completed} attempts` : `${record.completed}/${record.config.repetitions}`;
       const button = node('button', `${new Date(record.startedAt).toLocaleString()} · ${count} · ${record.status}`, 'button secondary wide-action');
       button.type = 'button';
-      button.addEventListener('click', () => record.kind === 'practice' ? onPracticeRecord(record) : showRecord(record));
+      button.addEventListener('click', () => openSavedRecord(record));
       card.append(node('strong', record.drillTitle), button); host.append(card);
     }
     return records;
@@ -405,6 +408,6 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     return { type: 'sequence', gunId: getContext().gun?.id, routeKey, drill: structuredClone(selection),
       config: { soundAtStart: $('#sessionStartSound').checked } };
   }
-  return { open, showRecord, guideContext, interrupt, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
+  return { open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

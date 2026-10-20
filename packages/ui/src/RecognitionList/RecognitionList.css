@@ -1,0 +1,4 @@
+.history-list { display:grid; gap:9px; margin:20px 0; }
+.history-item { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:13px 15px; }
+.history-item p { margin:4px 0 0; font-size:.8rem; }
+.history-item span { color:#ff9b56; font-size:1.12rem; font-weight:800; }

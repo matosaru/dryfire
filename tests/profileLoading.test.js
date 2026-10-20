@@ -14,7 +14,7 @@ const extract=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end
 const deferred=()=>{let resolve;const promise=new Promise(yes=>{resolve=yes;});return{promise,resolve};};
 function setup(gun={id:'a',name:'Test',type:'Handguns'}){
  document.body.innerHTML=renderPageTemplates('{{app}}');
- const context={learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
+ const context={historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
   activeGun:null,guns:[],examples:[],customDrills:[],selectedTimedDrillId:'',audioPreferences:{},calibration:[],enabledSoundLabels:[],
   processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',vibrationFeedback:false,vibrationRejected:true,
   getActiveGun:jest.fn(async()=>gun),getGuns:jest.fn(async()=>gun?[gun]:[]),
@@ -26,7 +26,7 @@ function setup(gun={id:'a',name:'Test',type:'Handguns'}){
   applyAppearance:jest.fn(),selectDrillCollection:jest.fn(),renderGunControls:jest.fn(),renderClassCards:jest.fn(),renderDrillCatalog:jest.fn(),
   renderCustomCatalog:jest.fn(),resetDrill:jest.fn(),renderPreferences:jest.fn(),renderHome:jest.fn(async()=>{}),
  };
- const load=vm.runInNewContext(extract('function liveText(', 'function bindSettings(')+'\n'+extract('async function loadDevicePreferences()','function renderPreferences()')+'\n'+extract('function renderModelNotice(', 'function learningProps(')+'\n'+extract('async function loadActiveGun()','function openGunSetup(')+'\nloadActiveGun;',context);
+ const load=vm.runInNewContext(extract('function historyDisabled(', 'const liveHandlers')+'\n'+extract('function liveText(', 'function bindSettings(')+'\n'+extract('async function loadDevicePreferences()','function renderPreferences()')+'\n'+extract('function renderModelNotice(', 'function learningProps(')+'\n'+extract('async function loadActiveGun()','function openGunSetup(')+'\nloadActiveGun;',context);
  return{context,load};
 }
 test('profile loading preserves owned values, preference normalization and final reset/render state',async()=>{

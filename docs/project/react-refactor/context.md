@@ -15,19 +15,19 @@ Source: b HEAD (`git log -1` identifies the exact increment). Published editor m
 
 P0/P1 are complete; P2 shell, P3 profiles and P4 Settings/Learn/Live Listen presentation/handoffs are verified. Native startup fallback retirement remains P7.
 
-**Active: P5 History.** Drills/editor presentation is implemented. History foundation now includes seven existing-controller characterization cases and an isolated SavedSessionList component, with exact native/typed DOM parity and escaped stored-title tests. The component is not connected to the live page yet; no runtime/CSS/media behavior changed in this increment. Keep History unchecked until its actual handoff and both-edition integration checks pass.
+**Active: P5 private progress content.** HistoryPage, SavedSessionList, RecognitionList and EvaluationPanel now own result presentation after guarded later entry. Session queries return guarded records without native painting after handoff. Numeric row and private graph/filter section retain exact nodes/lifetimes; locks, outcomes and gun context use the History port. Native initial renderers remain P7. The production raw History template is removed; frozen parity fixtures stay in tests.
 
 ## Next action
 
-Continue **P5 History runtime handoff** automatically on b. Read [History ownership notes](history-ownership-notes.md): preserve exact invalid numeric input, progress filter/control nodes and private-only graph loading; port saved/evaluation/recognition UI with stale-owner checks and distinct clear scopes. Then P6 shared live/example pages and P7 cleanup/performance. No new approval is needed.
+Continue the **private-only graph-content renderer** automatically on b, then P6 shared live/example pages and P7 cleanup/performance. Keep graph implementation outside the public dependency graph and avoid eager React at private startup; retain filter nodes and first native presentation until explicit later entry. No approval needed. See [History ownership notes](history-ownership-notes.md).
 
 ## Verification and open debt
 
-This increment: **627 tests / 98 suites**, full coverage ratchet, type/lint/architecture/docs, 16 smoke checks and public minified artifact verification pass. SavedSessionList has 100% measured coverage. 26 isolated UI/page packages are checked. No new screenshot comparison was run because the new component is not wired into runtime; no visual baseline changed.
+This increment: **650 tests /104 suites**, coverage/type/lint/architecture/docs,16 smoke checks and both minified artifacts pass. **26 public +25 preview Chromium workflows** include exact Dark/Light History pixels, badInput node identity, filters, verification, review, separate clearing, profile switch and offline. 29 UI/page packages checked. History/model components100% coverage; adapter100% statements/functions/lines,87.5% branches. CSS remains61451/13011 with identical expanded bytes/hash; all image/GIF baselines unchanged.
 
 Published editor `91d9d01`: canonical validation and both screenshot edition jobs pass; both performance jobs and the public deliberate-slowdown proof fail. Aggregate screenshots fails because it requires performance. Prior editor browser evidence remains 23 public +22 preview Chromium workflows. Preserve 390 image references, 83 captures, 12 guide exports. Local Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons.
 
-Initial JS remains public 173511/52662 raw/gzip, preview 174752/53007; +2594/+1855 and +2669/+1861 vs original. No fresh timing claimed after payload gate failure. See plan ledger for performance/probe debt.
+Initial JS now public174375/52969 raw/gzip, preview175600/53320; +3458/+2162 and+3517/+2174 vs original. No fresh timing claimed after payload gate failure. See plan ledger for performance/probe debt.
 
 CHG-050 defers optimization until structural work is done. Original gzip/timing gates remain unchanged and failing honestly; see the plan's ledger. Do not claim fresh timing after a size gate stops measurement. Resolve all debt before final release.
 

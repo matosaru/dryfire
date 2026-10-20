@@ -78,6 +78,11 @@ let settingsPage, settingsModule, settingsModulePending;
 let learnPage, learnModule, learnModulePending;
 let livePage, liveModule, liveModulePending;
 let drillsPage, drillsModule, drillsModulePending;
+let historyPage, historyModule, historyModulePending, historyOwner, historyRows=[], historySessions=[];
+const historyHandlers=new Map();
+function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
+function historyText(id,text){if(historyPage)historyPage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
+function bindHistory(id,handler){historyHandlers.set(id,handler);$('#'+id).addEventListener('click',handler);}
 const liveHandlers=new Map();
 const settingsHandlers = new Map();
 function liveText(id,text){if(livePage)livePage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
@@ -158,14 +163,15 @@ function renderGunControls() {
     $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
     $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   }
-  for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) $('#'+id).disabled = profileLocked() || !activeGun || activeGun.needsDetails;
-  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
-  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
+  for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) historyDisabled(id,profileLocked() || !activeGun || activeGun.needsDetails);
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+(historyPage ? ':not(#historyView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(historyPage ? ':not(#historyView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
   settingsPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   learnPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   livePage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+  historyPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   drillsPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
-  if (!activeGun || activeGun.needsDetails) {settingsDisabled('resetModelBtn',true);liveDisabled('verifyLatestBtn',true);document.querySelectorAll('#clearHistoryBtn').forEach(button => { button.disabled = true; });}
+  if (!activeGun || activeGun.needsDetails) {settingsDisabled('resetModelBtn',true);liveDisabled('verifyLatestBtn',true);historyDisabled('clearHistoryBtn',true);}
   settingsDisabled('exportBtn',profileLocked());
   settingsDisabled('importBtn',profileLocked());
   liveDisabled("verifyLatestBtn",!latestEventId || profileLocked());
@@ -202,8 +208,8 @@ async function loadActiveGun() {
   liveText("eventCounter",'0 detected · 0 discarded');
   sessionEventCount = 0;
   ignoredEventCount = 0;
-  $('#historyClearOutcome').textContent = '';
-  $('#sessionsClearOutcome').textContent = '';
+  historyText('historyClearOutcome','');
+  historyText('sessionsClearOutcome','');
   customEditor?.reset();
   selectDrillCollection(false);
   renderGunControls();
@@ -393,7 +399,7 @@ function setBusy(next) {
   busy = next;
   settingsDisabled('resetModelBtn',next);
   liveDisabled('singleShotBtn',next);
-  document.querySelectorAll('#clearHistoryBtn').forEach(button => { button.disabled = next; });
+  historyDisabled('clearHistoryBtn',next);
   renderLearningLocks();
   renderGunControls();
   renderPreferences();
@@ -575,7 +581,12 @@ function displayView(name) {
     }
     renderClassCards();
   }
-  if(name==='history')renderHistory().catch(showError);
+  if(name==='history'){
+    if(!historyPage && historyModule && historyOwner===activeGun?.id && !profileLocked() && !$('#safetyModal').open){
+      try{historyPage=historyModule.mountHistoryPage($('#historyView'),{rows:historyRows,sessions:historySessions,stats:evaluateEvents(historyRows),gunId:historyOwner},{onBack:()=>goBack(),onAction:id=>historyHandlers.get(id)?.(),onOpen:record=>sessionController.openSavedRecord(record),onVerify:async(id,value,gunId)=>{try{await verifyEvent(id,value||null,gunId);await renderHistory();}catch(error){showError(error);}},titleFor,drillTitleFor:id=>currentDrill(id)?.title,labels,actual:ACTUAL_CLASSES,predicted:PREDICTED_CLASSES});}catch(error){showError(error);}
+    }else if(!historyModule && !historyModulePending){historyModulePending=import('../apps/web/src/app/historyPage.tsx').then(module=>{historyModule=module;}).catch(showError).finally(()=>{historyModulePending=null;});}
+    renderHistory().catch(showError);
+  }
   if(name==='home')renderHome().catch(showError);
   if(name==='guns')renderGunLibrary().catch(showError);
   if(name==='settings'){
@@ -721,9 +732,7 @@ function renderLiveButton() {
   liveDisabled("listenBtn",busy || profileLoading || livePendingStart || timed || (!ready && !listening));
   liveDisabled("singleShotBtn",listening || busy || profileLoading || livePendingStart || timed || !ready);
   settingsDisabled('resetModelBtn',busy || profileLoading || listening || livePendingStart || timed);
-  document.querySelectorAll('#clearHistoryBtn').forEach(button => {
-    button.disabled = busy || profileLoading || listening || livePendingStart || timed;
-  });
+  historyDisabled('clearHistoryBtn',busy || profileLoading || listening || livePendingStart || timed);
   renderLearningLocks();
   renderGunControls();
   renderPreferences();
@@ -861,12 +870,14 @@ async function renderHistory() {
   const isCurrent = () => token === historyRenderToken && gunId === activeGun?.id;
   const rows = gunId ? await getEvents(gunId) : [];
   if (!isCurrent()) return;
-  const sessions = await sessionController.renderSavedSessions(gunId, isCurrent);
+  const sessions = await sessionController.renderSavedSessions(gunId, isCurrent, !historyPage);
   if (!isCurrent()) return;
   if (CAPABILITIES.advancedGraphs) progressView?.render(sessions || [], gunId);
   else $('#progressContent').replaceChildren();
-  renderEvaluation(rows);
+  historyRows=rows;historySessions=sessions||[];historyOwner=gunId;
+  if(!historyPage)renderEvaluation(rows);
   if(homePage)homePage.update({events:rows.length}); else $('#homeEvents').textContent = String(rows.length);
+  if(historyPage){historyPage.setResults({rows,sessions:historySessions,stats:evaluateEvents(rows),gunId});return;}
   const host = $('#historyList');
   host.replaceChildren();
   if (!rows.length) {
@@ -1120,7 +1131,7 @@ async function init() {
       window.location.reload();
     } catch (error) { showError(error); setBusy(false); }
   });
-  $('#clearHistoryBtn').addEventListener('click', async () => {
+  bindHistory('clearHistoryBtn', async () => {
     if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Clear recognition history for ${activeGun.name}? Saved drill sessions, progress statistics, learned sounds and other guns will be kept.`)) return;
     const gunId = ownerId();
     setBusy(true);
@@ -1140,12 +1151,12 @@ async function init() {
       await renderHistory();
       await renderHome();
       setStatus('Recognition history cleared');
-      $('#historyClearOutcome').textContent = `Recognition history for ${activeGun.name} was cleared. Saved sessions and learned sounds were kept.`;
+      historyText('historyClearOutcome',`Recognition history for ${activeGun.name} was cleared. Saved sessions and learned sounds were kept.`);
     }
     catch (error) { showError(error); }
     finally { setBusy(false); }
   });
-  $('#clearSessionsBtn').addEventListener('click', async () => {
+  bindHistory('clearSessionsBtn', async () => {
     if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Clear ALL saved practice and sequence sessions for ${activeGun.name}? Their results and progress statistics will be deleted. Learned sounds, custom drills, settings, recognition history and other guns will be kept. Export a backup first; this cannot be undone without one.`)) return;
     const gunId = ownerId();
     setBusy(true);
@@ -1157,7 +1168,7 @@ async function init() {
       practiceController.reset();
       await renderHistory();
       setStatus('Saved sessions cleared');
-      $('#sessionsClearOutcome').textContent = `Saved sessions and progress statistics for ${activeGun.name} were cleared. Learned sounds and recognition history were kept.`;
+      historyText('sessionsClearOutcome',`Saved sessions and progress statistics for ${activeGun.name} were cleared. Learned sounds and recognition history were kept.`);
     } catch (error) { showError(error); }
     finally { setBusy(false); }
   });

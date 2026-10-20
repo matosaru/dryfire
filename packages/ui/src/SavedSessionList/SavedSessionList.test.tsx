@@ -25,7 +25,7 @@ test('stored titles render as text rather than executable markup',()=>{const vie
 test('typed cards match the existing controller DOM without changing selectors or text nodes',async()=>{
  const records:SavedSessionSummary[]=[{id:'s',drillTitle:'Legacy sequence',startedAt:1700000000000,completed:2,config:{repetitions:10},status:'interrupted'}, {id:'p',kind:'practice',drillTitle:'Single trigger press',startedAt:1700000001000,shots:3,completed:4,config:{repetitions:10},status:'completed'}];
  const source=readFileSync(new URL('../../../../src/sessionController.js',import.meta.url),'utf8');
- const rendering=source.slice(source.indexOf('  async function renderSavedSessions('),source.indexOf('  const retrySaveButton'));
+ const rendering=source.slice(source.indexOf('  function openSavedRecord('),source.indexOf('  const retrySaveButton'));
  const native=document.createElement('div');
  const renderNative=vm.runInNewContext(rendering+'\nrenderSavedSessions',{getSessions:async()=>records,getContext:()=>({gun:{id:'one'}}),$:()=>native,onPracticeRecord:jest.fn(),showRecord:jest.fn(),node:(tag:string,text:string,className='')=>{const item=document.createElement(tag);item.textContent=text;item.className=className;return item;}});
  await renderNative('one');
