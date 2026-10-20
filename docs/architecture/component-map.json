@@ -278,7 +278,9 @@
       "source": "src/templates/pages/history.html",
       "behaviorTests": [
         "tests/sessionStorage.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/savedSessionPresentation.test.js",
+        "packages/ui/src/SavedSessionList/SavedSessionList.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [

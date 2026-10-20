@@ -1,6 +1,6 @@
 # Refactor working context
 
-Updated 2026-10-19 (Europe/Vilnius). Compact handoff; detailed scope/results stay in the linked documents.
+Updated 2026-10-20 (Europe/Vilnius). Compact handoff; detailed scope/results stay in the linked documents.
 
 ## Durable rules
 
@@ -11,21 +11,23 @@ Updated 2026-10-19 (Europe/Vilnius). Compact handoff; detailed scope/results sta
 
 ## Current work
 
-Source: b HEAD (`git log -1` identifies the exact increment). Previous published milestone: Drills composition `7879bd7`.
+Source: b HEAD (`git log -1` identifies the exact increment). Published editor milestone: `91d9d01`.
 
 P0/P1 are complete; P2 shell, P3 profiles and P4 Settings/Learn/Live Listen presentation/handoffs are verified. Native startup fallback retirement remains P7.
 
-**Active: P5. Drills/editor presentation is implemented.** DrillsPage/DrillCard/PracticeCatalog own catalog UI. CustomDrillEditor supplies shared full prerender/live fields; its original form host retains one submit/visibility lifetime while the feature owns steps, permissions and save. A field port prevents competing native child writes; ordinary drafts/selection, explicit Open/Reset and failed-commit recovery are protected. RetainedNode preserves form/Settings platform lifetimes and the existing sibling-spacing contract. History and P6/P7 remain.
+**Active: P5 History.** Drills/editor presentation is implemented. History foundation now includes seven existing-controller characterization cases and an isolated SavedSessionList component, with exact native/typed DOM parity and escaped stored-title tests. The component is not connected to the live page yet; no runtime/CSS/media behavior changed in this increment. Keep History unchecked until its actual handoff and both-edition integration checks pass.
 
 ## Next action
 
-Publish/observe this increment, then continue **P5 History** automatically on b. Read [History ownership notes](history-ownership-notes.md): preserve exact invalid numeric input, progress filter/control nodes and private-only graph loading; port saved/evaluation/recognition UI with stale-owner checks and distinct clear scopes. Then P6 shared live/example pages and P7 cleanup/performance. No new approval is needed.
+Continue **P5 History runtime handoff** automatically on b. Read [History ownership notes](history-ownership-notes.md): preserve exact invalid numeric input, progress filter/control nodes and private-only graph loading; port saved/evaluation/recognition UI with stale-owner checks and distinct clear scopes. Then P6 shared live/example pages and P7 cleanup/performance. No new approval is needed.
 
 ## Verification and open debt
 
-This increment: **616 tests / 96 suites**, coverage/type/lint/architecture/docs, 16 smoke checks and both minified artifacts pass. **23 public + 22 Full-preview** Chromium workflows protect exact Dark/Light editor pixels, saved edits, Full creation/simulation and all previously migrated pages/offline loads. Native and React editor behavior share 14 characterization cases; UI coverage 100%, adapter branches 95%. CSS remains 61451 raw /13011 gzip; every image/GIF baseline stays unchanged. Canonical CI for this source is not yet observed.
+This increment: **627 tests / 98 suites**, full coverage ratchet, type/lint/architecture/docs, 16 smoke checks and public minified artifact verification pass. SavedSessionList has 100% measured coverage. 26 isolated UI/page packages are checked. No new screenshot comparison was run because the new component is not wired into runtime; no visual baseline changed.
 
-P4 a9c0a8b: canonical validation and both screenshot editions pass; performance fails. Prior deliberate-slowdown proof failure (run39268272972) stays in final-gate ledger. Preserve 390 image references, 83 captures, 12 guide exports. Local Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons. Current initial JS public 173511/52662 raw/gzip, preview 174752/53007; +2594/+1855 and +2669/+1861 vs original. Keep debt visible.
+Published editor `91d9d01`: canonical validation and both screenshot edition jobs pass; both performance jobs and the public deliberate-slowdown proof fail. Aggregate screenshots fails because it requires performance. Prior editor browser evidence remains 23 public +22 preview Chromium workflows. Preserve 390 image references, 83 captures, 12 guide exports. Local Chromium is diagnostic; pinned Chromium/WebKit owns canonical comparisons.
+
+Initial JS remains public 173511/52662 raw/gzip, preview 174752/53007; +2594/+1855 and +2669/+1861 vs original. No fresh timing claimed after payload gate failure. See plan ledger for performance/probe debt.
 
 CHG-050 defers optimization until structural work is done. Original gzip/timing gates remain unchanged and failing honestly; see the plan's ledger. Do not claim fresh timing after a size gate stops measurement. Resolve all debt before final release.
 

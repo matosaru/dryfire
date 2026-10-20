@@ -17,7 +17,7 @@ Work goes to **b only**. Dev synchronization is paused to save credits; main rem
 | P6 — Practice, Sequence and guides | Not started |
 | P7 — Cleanup, optimization and final acceptance | Not started |
 
-Latest published Drills composition: b `7879bd7`. P4 `a9c0a8b` canonical validation and both screenshot editions passed; original performance budgets remain failing. Current custom-editor transfer passes **616 tests / 96 suites**, coverage/type/lint/architecture/docs/smoke, **23 public + 22 Full-preview Chromium workflows**, both minified artifacts and unchanged CSS/media checks. Its canonical CI is pending publication. History remains P5; native startup cleanup and final performance acceptance remain P7.
+Latest published Drills composition: b `7879bd7`. P4 `a9c0a8b` canonical validation and both screenshot editions passed; original performance budgets remain failing. Current custom-editor transfer passes **616 tests / 96 suites**, coverage/type/lint/architecture/docs/smoke, **23 public + 22 Full-preview Chromium workflows**, both minified artifacts and unchanged CSS/media checks. Published editor commit `91d9d01`: canonical validation and both screenshot edition jobs pass; both performance jobs and the public deliberate-slowdown proof fail. Aggregate screenshots is red because it requires those performance jobs. History remains P5; native startup cleanup and final performance acceptance remain P7.
 
 ## Completion checklist
 
@@ -33,6 +33,7 @@ Latest published Drills composition: b `7879bd7`. P4 `a9c0a8b` canonical validat
 - [x] P4: Live Listen presentation/handoff, repeated-recognition/unknown/verification/cleanup and both-edition verification.
 - [x] P5: DrillsPage, reusable DrillCard/PracticeCatalog, retained draft boundary and shared numbered headings.
 - [x] P5: CustomDrillEditor shared prerender/live fields with native form host, capability/save ownership and draft/reset/failed-commit protection.
+- [x] P5 History foundation: native saved-session characterization and isolated typed SavedSessionList with exact DOM parity. Live History handoff remains pending.
 - [ ] P5: History/saved results/optional graphs, preserving Free/Full boundaries; [ownership notes](history-ownership-notes.md).
 - [ ] P6: complete Practice, Sequence and guides using shared live/example run/review components.
 - [ ] P7: retire superseded templates/native fallbacks/adapters, finish package boundaries and optimize against the original baseline.
