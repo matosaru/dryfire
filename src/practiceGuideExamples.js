@@ -153,7 +153,3 @@ export function createScenario(manual, { early = false } = {}) {
   if (id === 'reload') assert(state.shots === (manual.sequence.includes('trigger') ? config.repetitions : 0) && state.repetitions.every(r => r.stepTimings[1].splitMs === 1200), 'Reload measures 1.20 s without counting handling as shots');
   return { id, config: state.config, durationMs: frames.length * FRAME_MS, readyAtMs: READY_AT_MS, frames, events, posterIndex };
 }
-
-export function createScenarios(manuals) {
-  return [...manuals.map(m => createScenario(m)), createScenario(manuals.find(m => m.id === 'single'), { early: true })];
-}

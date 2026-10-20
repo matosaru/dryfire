@@ -7,3 +7,6 @@ test.each(Object.keys(NUMBER_INPUTS))('%s accepts approved boundaries and reject
     expect(() => parseNumberInput(value, id)).toThrow(TypeError);
   }
 });
+test('unregistered numeric fields fail closed rather than accepting an unbounded value', () => {
+  expect(() => parseNumberInput(1, 'unregistered')).toThrow('Unknown numeric input.');
+});

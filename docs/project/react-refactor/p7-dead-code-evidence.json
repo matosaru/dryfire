@@ -1,0 +1,38 @@
+{
+  "scope": "P7 unused code consumer audit; application output unchanged.",
+  "baseRevision": "75f6e48",
+  "removed": [
+    "Unused src/practiceGuideExamples.js createScenarios wrapper (createScenario retained).",
+    "Test-only configureNumberInputs from src/inputLimits.js and its declaration."
+  ],
+  "retainedOracle": "tests/fixtures/legacy-number-input-initializer.js freezes original initializer and numeric rules, preserving independent parity checks.",
+  "sourceHashes": {
+    "src/inputLimits.js": "ddb90d63a692d8fdd1d4fb3ba98a46e5ddd17175d132e0c1f43b3168924442e2",
+    "src/inputLimits.d.ts": "bc18fe488baa582f476bdcf9033d64c1a2578c41a470fe059eb4073b07e05f84",
+    "src/practiceGuideExamples.js": "f9320f63d1d6435bbd7bcf08b9e95ce516a5b1a644441fb74b2d36fd9a1a68a4",
+    "tests/fixtures/legacy-number-input-initializer.js": "487bd2f0340055d18215e4933270444e1999de6878c562c77379dacc093b296f",
+    "tests/numberInputParity.test.tsx": "c2af2175aa717db14450c6e850676b1e1058898f71f7f509bfdd623627c2c73a",
+    "tests/routeSelection.test.js": "e56fe12dc62e0545949d66ae2c21c2c11e536543838be8cc58665ea451970888",
+    "tests/inputLimits.test.js": "30145cb4ea066b6e8f5d06d66d84d7a5d6b1aa6f4c06a4f1c76490302a3983fb"
+  },
+  "productionEquivalence": {
+    "publicCriticalJs": "index-BE-dFKDe.js",
+    "previewCriticalJs": "index-CVwqfLTV.js",
+    "css": "index-DnLrZEQ0.css",
+    "compiledHtml": "Byte-identical to retained pre-cleanup compiled HTML checkpoint.",
+    "media": "No changes to 390 references,83 captures,12 GIFs or frozen guide frame signatures."
+  },
+  "testRepair": "Route selection now uses actual compiled shell instead of computed paths to deleted templates; every active/aria-current/class assertion retained.",
+  "limitations": "No speedup claimed. Native first-entry fallback retirement and original performance acceptance remain P7 debt.",
+  "coverageRepair": "The unchanged ratchet exposed the previously uncovered unknown-field parser guard after dead initializer removal; added a fail-closed unknown-field boundary test, not a threshold change.",
+  "verification": {
+    "fullTests": 918,
+    "suites": 133,
+    "coverageRatchet": "Passed, original policy unchanged.",
+    "smokeChecks": 16,
+    "typecheck": "Passed; strict unused-local/parameter diagnostic also clean.",
+    "lint": "Component lint passed. Separate JS unused-variable diagnostic candidates remain recorded in plan.",
+    "builds": "Public and Full-preview minified artifact verification passed.",
+    "docsArchitecture": "Passed."
+  }
+}

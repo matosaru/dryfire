@@ -3,7 +3,7 @@
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
 import { readFileSync } from 'node:fs';
-import { configureNumberInputs } from '../src/inputLimits.js';
+import { configureNumberInputs } from './fixtures/legacy-number-input-initializer.js';
 import { renderNumberInput } from '../apps/web/src/app/renderNumberInput.tsx';
 const fields = JSON.parse(readFileSync(new URL('./fixtures/legacy-number-inputs.json', import.meta.url), 'utf8')) as Record<string,string>[];
 const attributes=(node: Element)=>[...node.attributes].map(attr=>[attr.name,attr.value]).sort();

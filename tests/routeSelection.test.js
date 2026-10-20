@@ -1,13 +1,15 @@
-/** @jest-environment jsdom */
-import { readFileSync } from 'node:fs';
+/**
+ * @jest-environment jsdom
+ * @jest-environment-options {"customExportConditions":["node","node-addons"]}
+ */
+import { renderPageTemplates } from '../tools/page-templates.mjs';
 import { createChromeBridge } from '../apps/web/src/app/chromeBridge.ts';
 import { PAGE_IDS } from '../src/pageDefinitions.js';
 
 // The same matrix passed before P2 moved the writer out of main.js.
 
 test('all screens transfer active/aria-current state without touching unrelated classes', () => {
-  document.body.innerHTML = ['header', 'footer', 'navigation'].map(name =>
-    readFileSync(new URL(`../src/templates/shared/${name}.html`, import.meta.url), 'utf8')).join('');
+  document.body.innerHTML = renderPageTemplates('{{app}}');
   const bridge = createChromeBridge(document, () => {});
   const select = view => bridge.view(view);
   const settings = document.getElementById('settingsShortcut');

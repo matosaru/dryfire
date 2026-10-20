@@ -21,14 +21,3 @@ export function parseNumberInput(value, id) {
   return n;
 }
 export function readNumberInput(input) { return parseNumberInput(input.value, input.id); }
-export function configureNumberInputs(doc) {
-  for (const [id, rule] of Object.entries(NUMBER_INPUTS)) {
-    const input = doc.getElementById(id);
-    if (!input) continue;
-    input.min = rule.min; input.max = rule.max; input.step = rule.step;
-    const hint = doc.createElement('small'); hint.id = `${id}Limit`; hint.className = 'numeric-hint';
-    hint.textContent = `${rule.min}–${rule.max} · ${rule.step === 1 ? 'whole numbers' : '0.1 increments'}`;
-    input.setAttribute('aria-describedby', [input.getAttribute('aria-describedby'), hint.id].filter(Boolean).join(' '));
-    input.parentElement.append(hint);
-  }
-}
