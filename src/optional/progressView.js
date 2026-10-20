@@ -1,3 +1,4 @@
+import {progressPresentation} from '../../apps/web/src/features/history/progressPresentation.ts';
 import { progressGroups, progressSummary, summarize } from '../practiceProgress.js';
 const element = (doc, tag, text, className = '') => { const node = doc.createElement(tag); node.textContent = text; node.className = className; return node; };
 const format = (value, unit = 'ms') => value === null ? '—' : unit === 'ms' ? `${(value / 1000).toFixed(2)} s` : `${value.toFixed(1)} ${unit}`;
@@ -5,10 +6,12 @@ const timing = group => {
   const c = group.config;
   return `${c.startSource === 'external' ? 'External beep' : c.soundAtStart ? 'App beep' : 'Silent start'} · ${c.delayMode === 'fixed' ? `${c.fixedDelaySeconds}s fixed` : `${c.randomMinSeconds}–${c.randomMaxSeconds}s random`}${group.mode === 'par' ? ` · ${c.parSeconds}s par` : ''}`;
 };
-export function createProgressView(doc, { enabled = () => true } = {}) {
+export function createProgressView(doc, { enabled = () => true, onError = () => {} } = {}) {
   const $ = id => doc.getElementById(id), select = $('progressGroup'), range = $('progressRange'), host = $('progressContent');
-  let groups = [], owner = null;
+  let groups = [], owner = null, view, module, pending;
+  function model(){if(!enabled())return{};const group=groups.find(row=>row.key===select.value);const data=group?progressSummary(group,{days:Number(range.value)}):undefined;return progressPresentation(group,data,data?summarize(data.points.map(point=>point.value)).mean:null);}
   function renderSelected() {
+    if(view){view.update(model());return;}
     host.replaceChildren();
     if (!enabled()) return;
     const group = groups.find(row => row.key === select.value);
@@ -62,7 +65,15 @@ export function createProgressView(doc, { enabled = () => true } = {}) {
     table.append(body); details.append(table); host.append(details);
   }
   select.addEventListener('change', renderSelected); range.addEventListener('change', renderSelected);
-  return { render(records, gunId) {
+  return {
+    prepare(){
+      if(!enabled()||view)return;
+      if(module){view=module.mountProgressContent(host,model());return;}
+      if(!pending)pending=import('../../apps/web/src/app/progressContent.tsx').then(loaded=>{module=loaded;}).catch(onError).finally(()=>{pending=null;});
+      return pending;
+    },
+    clear(){if(view)view.update({});else host.replaceChildren();},
+    render(records, gunId) {
     const previous = owner === gunId ? select.value : null; owner = gunId; groups = progressGroups(records, gunId);
     select.replaceChildren(...groups.map(group => { const option = element(doc, 'option', `${group.title} · ${timing(group)}`); option.value = group.key; return option; }));
     select.disabled = !groups.length;

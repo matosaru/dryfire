@@ -98,5 +98,13 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
       await expect(page.locator(`#${view}View`)).toHaveAttribute(marker,'');
     }
 
+    const progressModule=modules.find(path=>path.includes('/assets/progressContent-'));
+    if(edition==='preview'){
+      expect(progressModule).toBeTruthy();
+      expect(await page.evaluate(async path=>typeof(await import(path)).mountProgressContent==='function',progressModule)).toBe(true);
+      await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="history"]').click();
+      await expect(page.locator('#progressContent')).toHaveAttribute('data-react-progress','');
+    }else expect(progressModule).toBeUndefined();
+
   } finally { await disconnect(); }
 });

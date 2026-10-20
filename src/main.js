@@ -585,6 +585,7 @@ function displayView(name) {
     if(!historyPage && historyModule && historyOwner===activeGun?.id && !profileLocked() && !$('#safetyModal').open){
       try{historyPage=historyModule.mountHistoryPage($('#historyView'),{rows:historyRows,sessions:historySessions,stats:evaluateEvents(historyRows),gunId:historyOwner},{onBack:()=>goBack(),onAction:id=>historyHandlers.get(id)?.(),onOpen:record=>sessionController.openSavedRecord(record),onVerify:async(id,value,gunId)=>{try{await verifyEvent(id,value||null,gunId);await renderHistory();}catch(error){showError(error);}},titleFor,drillTitleFor:id=>currentDrill(id)?.title,labels,actual:ACTUAL_CLASSES,predicted:PREDICTED_CLASSES});}catch(error){showError(error);}
     }else if(!historyModule && !historyModulePending){historyModulePending=import('../apps/web/src/app/historyPage.tsx').then(module=>{historyModule=module;}).catch(showError).finally(()=>{historyModulePending=null;});}
+    if(historyPage && !profileLocked() && !$('#safetyModal').open){try{progressView?.prepare();}catch(error){showError(error);}}
     renderHistory().catch(showError);
   }
   if(name==='home')renderHome().catch(showError);
@@ -873,7 +874,7 @@ async function renderHistory() {
   const sessions = await sessionController.renderSavedSessions(gunId, isCurrent, !historyPage);
   if (!isCurrent()) return;
   if (CAPABILITIES.advancedGraphs) progressView?.render(sessions || [], gunId);
-  else $('#progressContent').replaceChildren();
+  else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();
   historyRows=rows;historySessions=sessions||[];historyOwner=gunId;
   if(!historyPage)renderEvaluation(rows);
   if(homePage)homePage.update({events:rows.length}); else $('#homeEvents').textContent = String(rows.length);
@@ -952,7 +953,7 @@ async function init() {
         renderGunControls(); renderPreferences(); renderHistory().catch(showError);
       } });
     CAPABILITIES = previewTesting.capabilities; applyPresentation();
-    progressView = createProgressView(document, { enabled: () => CAPABILITIES.advancedGraphs });
+    progressView = createProgressView(document, { enabled: () => CAPABILITIES.advancedGraphs, onError:showError });
   }
   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });

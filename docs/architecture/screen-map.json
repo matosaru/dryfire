@@ -796,7 +796,7 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "abd8ead6bb41259a5b84c37890e85ec50a0bd8d5de927f16311c1eb525cd5934",
+    "src/main.js": "be8bd930ed0b03f1f1401d6434b2760472cf094cd9b13d31792c743554ff8cc1",
     "src/styles.css": "440f1e998cc2dc35c8b2da814e7ebfabc8d2a0968b0574741914b98c72816bed",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
@@ -804,7 +804,7 @@
     "src/sessionController.js": "e6624790eb81d627a72dcb45aded6a7e98a4975ff2a21bd0cf7b4f1f504a3adf",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "0e7be09afb1e9f6b652f6837d4f3dac3400db56cc21575642013da29a539864d",
-    "src/optional/progressView.js": "15797163f4fd188661c4dcd98954c7c4dd61765d55a29114e5bf4b3f2d25ab5e",
+    "src/optional/progressView.js": "ceab59494d95a04983715f24a24bbc86d92d3519f605c2a6f92a68addc3a1606",
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
     "src/storage.js": "1f3efb7fe822f3acd74b0a5a82d8073826126ce58b8fff38aa3fba5efb88f067",
@@ -904,7 +904,7 @@
     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
     "apps/web/src/styles/legacy-theme-after-switcher.css": "f61e56abdb700c87b380cfcbad03169beb2ce7f26a5514d93adf81f40fc0d171",
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
-    "apps/web/src/styles/legacy-session-content.css": "da93d1361022fddbac4de0c80786d919aa33eb580804452ccbfd0d9c827eb2be",
+    "apps/web/src/styles/legacy-session-content.css": "2df9aa2684211b40b2cf67be553709ae717155cef31e6fe44622f85342b7f881",
     "apps/web/src/pages/GunsPage/GunsPage.tsx": "ce34fec219cf0fcce5b601ca9ce06c6e3686b7102d37781a44ddc0a9d58b0cb2",
     "apps/web/src/app/gunsPage.tsx": "d1c5f687da8c2415d4b15c09aea288c2dc98ca805690efd6c03216c943277d37",
     "apps/web/src/app/renderGunsPage.tsx": "18a8bbd8533454c305b37be107e37a10df53d5ef840e887bad1fcf69595af9db",
@@ -975,7 +975,13 @@
     "apps/web/src/styles/legacy-before-saved-sessions.css": "eab747c2b37702a97db3482076f93ed50c54b9b58c252089d2626c382762b316",
     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
     "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
-    "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae"
+    "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
+    "apps/web/src/app/progressContent.tsx": "31b9f81b382a66bfa898269988e25f5176406f1a6293d9a094f6bae62a64f68d",
+    "apps/web/src/features/history/progressPresentation.ts": "47a37628c501782397cae65a4041604f3bf82cb67a425a9b1f54e23a3850f3ce",
+    "packages/ui/src/ProgressContent/ProgressContent.tsx": "9e1b2e56449cd01d57e0faeba3e4d7c26171a3c5c5cef2805a07c421f4bbe9c3",
+    "packages/ui/src/ProgressContent/ProgressContent.css": "51d807fae23db615339543ed09d3659468b282bdcfa42e0a24d73a1b4807afbd",
+    "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
+    "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd"
   },
   "implementationChanges": [
     "CHG-017",

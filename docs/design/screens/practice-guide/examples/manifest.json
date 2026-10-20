@@ -49,7 +49,7 @@
     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
     "apps/web/src/styles/legacy-theme-after-switcher.css": "f61e56abdb700c87b380cfcbad03169beb2ce7f26a5514d93adf81f40fc0d171",
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
-    "apps/web/src/styles/legacy-session-content.css": "da93d1361022fddbac4de0c80786d919aa33eb580804452ccbfd0d9c827eb2be",
+    "apps/web/src/styles/legacy-session-content.css": "2df9aa2684211b40b2cf67be553709ae717155cef31e6fe44622f85342b7f881",
     "apps/web/src/styles/legacy-before-guns.css": "295ce7ddcfbeccd5cb08a2bcb4af0afe4f618913c57a677c61a78ebc0a2b7655",
     "apps/web/src/styles/legacy-after-guns.css": "a6498dd3962bb9626aa231582681c7a589d17fb905b7820ef642ef85ed807495",
     "apps/web/src/pages/GunsPage/GunsPage.css": "0ca384aca93f0ca6da65a103ad75c156804cac9514d764397e1c387874061718",
@@ -84,7 +84,10 @@
     "apps/web/src/styles/legacy-before-saved-sessions.css": "eab747c2b37702a97db3482076f93ed50c54b9b58c252089d2626c382762b316",
     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
     "packages/ui/src/SavedSessionList/SavedSessionList.css": "f9a0c565ff87a62a2488e41cff9a05a0ef23a953cf1f153163d2cc6740ae67b1",
-    "apps/web/src/styles/legacy-after-saved-sessions.css": "f0949bd914a43db5b644f1aabe77cd036592e8a63dc5379fbf38b0b8bdd89d2e"
+    "apps/web/src/styles/legacy-after-saved-sessions.css": "f0949bd914a43db5b644f1aabe77cd036592e8a63dc5379fbf38b0b8bdd89d2e",
+    "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
+    "packages/ui/src/ProgressContent/ProgressContent.css": "51d807fae23db615339543ed09d3659468b282bdcfa42e0a24d73a1b4807afbd",
+    "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd"
   },
   "exports": [
     {
@@ -198,5 +201,6 @@
   ],
   "structuralInputReview": "docs/design/baselines/shared-shell-refactor-review.json",
   "exportStatus": "Existing encoded bytes retained: complete original/current scenario snapshots and initialized presentation are equivalent; CSS is byte-identical. This is input-equivalence review, not re-encoding.",
-  "historyInputReview": "P5 History: native/typed static DOM parity; expanded CSS matches the original byte for byte; guide engines, shared run/review fragments, scenarios and encoded GIF files unchanged. Only unrelated History compiler dispatch and ordered CSS source ownership changed."
+  "historyInputReview": "P5 History: native/typed static DOM parity; expanded CSS matches the original byte for byte; guide engines, shared run/review fragments, scenarios and encoded GIF files unchanged. Only unrelated History compiler dispatch and ordered CSS source ownership changed.",
+  "progressInputReview": "P5 private ProgressContent CSS ownership: expanded and optimized CSS remain byte-identical. Guide scenario engines, shared fragments, page compiler and encoded GIF bytes unchanged."
 }

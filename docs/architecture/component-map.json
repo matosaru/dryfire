@@ -286,28 +286,35 @@
         "apps/web/src/features/history/presentation.test.ts",
         "apps/web/src/pages/HistoryPage/HistoryPage.test.tsx",
         "packages/ui/src/RecognitionList/RecognitionList.test.tsx",
-        "packages/ui/src/EvaluationPanel/EvaluationPanel.test.tsx"
+        "packages/ui/src/EvaluationPanel/EvaluationPanel.test.tsx",
+        "tests/progressView.test.js",
+        "tests/progressContentMount.test.tsx",
+        "tests/progressLoading.test.js",
+        "apps/web/src/features/history/progressPresentation.test.ts",
+        "packages/ui/src/ProgressContent/ProgressContent.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
         "src/optional/progressView.js",
         "src/sessionController.js",
-        "apps/web/src/app/historyPage.tsx"
+        "apps/web/src/app/historyPage.tsx",
+        "apps/web/src/app/progressContent.tsx"
       ],
       "stableSelectorExamples": [
         "savedSessions",
         "historyList",
         "progressSection"
       ],
-      "draftOwnership": "Later unlocked entry transfers result/evaluation/session presentation; exact numeric row and private progress/filter section remain independently retained. Native startup renderer remains P7.",
+      "draftOwnership": "Later unlocked entry transfers result/evaluation/session presentation; exact numeric row and private filter nodes are retained. Private progress content has its own later-entry renderer; grouping/statistics, filters and entitlements remain feature-owned. Startup fallbacks remain P7.",
       "effects": [
         "Read history; separate confirmed recognition/session deletion; saved-review navigation"
       ],
       "integrationTests": [
         "visual-tests/history-runtime.spec.js",
         "visual-tests/history-controls.spec.js",
-        "visual-tests/offline.spec.js"
+        "visual-tests/offline.spec.js",
+        "visual-tests/progress-runtime.spec.js"
       ]
     },
     {
