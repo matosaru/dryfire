@@ -1,6 +1,6 @@
 # Remaining React refactor plan
 
-Updated 2026-10-20 (Europe/Vilnius). Approved for autonomous implementation by CHG-049; CHG-050 defers intermediate optimization until structural refactoring is finished. [spec.md](spec.md) is the contract; [context.md](context.md) is the compact resume handoff. This is the single active execution plan; completed increment evidence belongs in [implementation history](../implementation-history.md).
+Updated 2026-10-21 (Europe/Vilnius). Approved for autonomous implementation by CHG-049; CHG-050 defers intermediate optimization until structural refactoring is finished. [spec.md](spec.md) is the contract; [context.md](context.md) is the compact resume handoff. This is the single active execution plan; completed increment evidence belongs in [implementation history](../implementation-history.md).
 
 ## Current status
 
@@ -17,7 +17,7 @@ Work goes to **b only**. Dev synchronization is paused to save credits; main rem
 | P6 — Practice, Sequence and guides | Presentation/runtime handoffs locally verified; native startup cleanup remains P7 |
 | P7 — Cleanup, optimization and final acceptance | Active:12 templates, unused compiler work and25 CSS wrappers retired; native startup/package/optimization remain |
 
-Latest P6 live run/review increment passes **895 tests /131 suites**, coverage/type/lint/architecture/docs/smoke, both-edition Chromium workflows, both minified artifacts and original CSS/media/frame equivalence checks. Shared structural packages, controller safety net and pure result/run/review models are verified. Stateful component composition and live Practice/Sequence Run/Review handoffs are verified. Shared read-only guide runtime is verified too; parent sources and runtime handoffs are verified with retained configuration/service islands. Canonical P5 `d4d5aa9` validation and both screenshot editions pass; original performance budgets and public deliberate-slowdown proof remain failing. Native startup cleanup and final performance acceptance remain P7.
+Canonical checkpoint `496c850` is fully green: [run39556414876](https://github.com/matosaru/dryfire/actions/runs/39556414876) passes validation, public/preview Chromium+WebKit screenshots, both original performance gates, identical-build controls and the public deliberate-slowdown proof.945 tests /138 suites and the unchanged coverage ratchet pass. Earlier timing/payload failures remain in historical evidence, but are not the status of this revision. P7 remains active for measured native first-entry retirement, remaining package/semantic-duplicate cleanup and memory audit; P8 follows cleanup acceptance. See [retained-owner audit](p7-retained-owner-audit.md).
 
 ## Completion checklist
 
@@ -47,7 +47,8 @@ Latest P6 live run/review increment passes **895 tests /131 suites**, coverage/t
 - [x] P7: retire12 unused layout/chrome/page templates and unused run-fragment compilation; readiness tests use actual compiled UI and complete app HTML remains byte-identical.
 - [x] P7: flatten25 import-only CSS wrappers into the single ordered entry, preserving leaf owners and exact expanded/minified CSS.
 - [ ] P7: retire native startup fallbacks/adapters, finish remaining package boundaries and optimize against the original baseline.
-- [ ] Final acceptance: resolve all original payload/timing failures; complete both-edition unit/integration/visual/offline checks.
+- [x] Original payload/timing and both-edition automated acceptance pass for496c850 in canonical run39556414876.
+- [ ] Final acceptance: finish remaining P7 cleanup/memory review, then rerun acceptance for the final implementation revision.
 - [ ] Owner release: checked b→main PR, owner-managed deployment and physical iPhone acceptance.
 
 ## Stages and exit gates
@@ -235,3 +236,9 @@ Canonical run39543701173 at539692c passed validation and both screenshot jobs bu
 Optional Drills module preparation now follows the native first frame. Private chart implementation loads only on Full History entry, with saved text rendered independently. Late completion rechecks history generation/gun/route/entitlement; failure preserves saved text and reports recovery. New browser cases exercise startup request exclusion, delayed/failed downloads, navigation, filter identity, Free simulation and old-gun completion. Cache v63 covers changed assets.
 
 Verified945 tests /138 suites, unchanged coverage ratchet, type/component+runtime lint/architecture/docs,16 smoke checks, both minified builds and original static payload limits;7 public +11 preview local Chromium workflows pass. Public JS165907/50417 raw/gzip; preview167480/50892; CSS61451/13011 unchanged. All390 screenshot references,83 captures and12 GIFs remain unchanged. Original-revision local4-pair Chromium diagnostic passes unchanged policy, but navigation median70.9→72.3ms and warm tail273.9→339.1ms retain uncertainty. This small local sample cannot supersede canonical failures, establish a speedup or resolve WebKit warm-start debt. [Retained failures and new evidence](p7-ci-performance-followup-evidence.json). P7 performance/fallback/memory audit and P8 remain unfinished. Publication targets b only; main/dev/deployment unchanged.
+
+### P7 green canonical checkpoint and retained-owner audit — 2026-10-21
+
+Observed canonical run39556414876 at496c850 fully green: validation, both public/preview screenshot and original performance jobs, aggregate acceptance, identical-build controls and public deliberate-slowdown proof. Original baselines/thresholds remain unchanged; prior failed results stay historical. P7 is not finished merely because this checkpoint passes.
+
+Completed a305-file exact-content scan (zero duplicate groups) and consumer review of remaining native/React writers. Their first-entry/pending/failure/rollback paths are still active, so they cannot be deleted as dead code. [Retained-owner audit](p7-retained-owner-audit.md) identifies retirement conditions and the next History presentation slice. Local60-repetition diagnostic confirms capture release but accumulates saved results. A separate30-cycle fixed-data navigation diagnostic shows stable DOM/listener counts after lazy initialization and no page errors; both heaps still grow, with additional candidate runtime overhead retained explicitly. [Samples and limits](p7-memory-owner-evidence.json). No product, CSS, schema, image/GIF, benchmark or gate changes; b only, main/dev/deployment unchanged. Remaining work: first-entry/package cleanup, bounded-memory follow-up for changed owners, final-revision acceptance, then P8.

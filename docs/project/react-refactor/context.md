@@ -23,13 +23,15 @@ Latest increment defers optional Drills preparation until after the native frame
 
 945 tests /138 suites and unchanged coverage ratchet pass; type/component+runtime lint/architecture/docs,16 smoke checks, both minified builds and static payload budgets pass.7 public +11 preview local Chromium workflows pass, including delayed/failed chart downloads, stale gun/navigation, exact filter identity, Free simulation and offline. Public JS165907/50417 raw/gzip; preview167480/50892. CSS61451/13011,390 image references,83 captures,12GIFs and frozen guide signatures unchanged. [Detailed evidence](p7-ci-performance-followup-evidence.json).
 
-Canonical run39543701173 at539692c: validation and both screenshot jobs pass; performance fails. Public WebKit warm37→44ms and Chromium navigation27.6→31.2ms. Preview startup JS55502>55101gzip, navigation21.8→25ms and returning674.7→682ms fail. New fixes target navigation and private startup bytes, not proven resolved until new canonical results. Original baselines/budgets/statistics unchanged. Current4-pair system-Chromium diagnostic passes unchanged policy, with navigation point increase and warm-tail uncertainty retained. Never equate that with canonical acceptance or speedup.
+Canonical [run39556414876](https://github.com/matosaru/dryfire/actions/runs/39556414876) at496c850 completed fully green: validation, both screenshot/performance editions, aggregate, identical-build controls and public slowdown proof. Original gates unchanged. Previous failures retained in historical evidence; they are no longer the checkpoint status. P7 cleanup remains open.
 
-Clean original public worktree:/tmp/dryfire-original-public at6c38bff, independently installed/built. Earlier memory diagnostic candidate3.37→4.59MB vs original2.89→3.17MB includes lazy owners; steady-state audit still needed. Capture released in recorded cycles; no memory-acceptance claim. Physical iPhone acceptance separate.
+[Retained-owner audit](p7-retained-owner-audit.md):305-file exact-content scan found zero duplicates. Native first-entry/pending/failure/rollback paths have active consumers; do not delete indiscriminately. History read-only evaluation/recognition presentation is the next measured consolidation slice.
+
+[Memory evidence](p7-memory-owner-evidence.json):60 repetitions release capture but accumulate saved records.30 fixed-data navigation cycles produce no page errors, stable original nodes/listeners2581/450 and candidate2302/1742 after warmup. Candidate heap cycle5→29 3.81→4.08MB vs original2.82→2.92MB; no ongoing DOM/listener accumulation observed, but no flat-heap/equal-memory/zero-leak claim. Private graph/editor, fixed-data practice and physical Safari remain outside this diagnostic. Original public worktree:/tmp/dryfire-original-public at6c38bff, independently installed/built.
 
 ## Next action
 
-Push verified increment to b and observe canonical CI; profile remaining WebKit warm/preview-returning debt. Continue measured first-entry fallback retirement, semantic duplicate and steady-state memory audits. Complete original acceptance before P8 final component/architecture map and application-entry handoff. Main/dev frozen; no deployment.
+Continue P7 with History first-entry presentation consolidation, preserving immediate text, native verification/numeric drafts, delayed/failed chunks and gun/generation guards. Measure against accepted496c850 and original gates; preserve byte/image references. Complete remaining owner/package cleanup and final-revision acceptance before P8 component/architecture map and exact application-entry handoff. Push b only; main/dev frozen; no deployment.
 
 ## Sources and maintenance
 
