@@ -10,20 +10,20 @@ P0–P6 structural/runtime scope verified. Cleanup retires12 templates,25 CSS wr
 
 ## Latest source and checks
 
-Parent7b6999f. Current candidate: two-host visibility update (same forced-toggle no-op semantics), body-only safe HTML quote compaction through build-only html-minifier-terser7.2.0, cache v66. Head/class/verifier marker syntax stays intact; parsed full-app DOM is exact. Strengthened layout tests assert one active host for every screen/theme/width. Vite/helper/export dependencies reviewed in media manifest; CSS,390 image references,83 captures,12 GIFs unchanged.
+Published parent65334f0. New candidate adds trusted static-catalog materialization: same typed Practice/calibration DOM embedded as non-executable data. Practice expands during normal startup renderCatalog; calibration before first Learn render. No idle/network delay, dropped controls or duplicate layout source. Host/delegated handlers retained; helpers restrict known roots/reject nested scripts and do not consume user/stored HTML. Cache v67. Body-only safe quote compaction and two-host visibility remain. Media manifest now tracks all build/runtime helpers. CSS/images/GIF/frame baselines unchanged.
 
-956 tests /139 suites and original coverage ratchet pass;23 affected cases, static/type/lint/architecture/docs,16 smoke checks,18 public +20 preview system-Chromium workflows and both static payload gates pass. Public JS166286/50575 raw/gzip, HTML54087/12376; preview JS167862/51042, HTML54708/12538; CSS61451/13011. [Evidence](final-acceptance-evidence.json). No pinned final CI result yet.
+959 tests /140 suites, original coverage ratchet and helper100% coverage pass.55 affected cases; static/type/lint/architecture/docs,16 smoke checks,19 public +18 preview system-Chromium workflows and both original payload limits pass. Public JS166415/50617 raw/gzip, HTML54193/12393; preview JS167989/51078, HTML54814/12559; CSS61451/13011. [Evidence](final-acceptance-evidence.json). Publish new candidate and observe canonical CI; no new-source acceptance yet.
 
 ## Failures and limits to retain
 
 CI39587543820 at785a69b: validate/public screenshots pass; preview317 passes plus1 Resume synchronization failure. Test-only repair7b6999f waits inputActive, explicitly delays resume permission and preserves Connecting/no-input until release;6 practice-start cases pass locally per edition. No clock/threshold/retry/image change. That CI also confirms public WebKit warm38→43ms (36/40 slower) and preview Chromium navigation21.6→22ms (32/40 slower). Superseded run39589082064 cancelled, not acceptance. Older fully green496c850/05733a1 do not supersede these later failures.
 
-Intermediate current-stage local4-pair timing failed click-feedback p95 before the final target-toggle variant; trace retained. Final canonical both-edition CI is required. Do not lower gates or call the refactor complete while it fails.
+CI39591151715 at65334f0 passes validate/both pinned screenshot editions/preview performance comparison but public WebKit warm42→50ms (36/40 slower; DOMInteractive17→25ms) fails. Do not claim older green checkpoints as acceptance. Intermediate local4-pair click-feedback failure is also retained. Final canonical both-edition CI is required. Do not lower gates or call the refactor complete while it fails.
 
 Memory: repeated60-repetition capture releases;30 fixed-data navigation cycles stabilize DOM/listeners, with disclosed heap overhead/growth. Extra30 private graph/editor/Free-Full cycles show stable2190 nodes/985 listeners after warmup, no page errors; heap4.12→4.48MB cycle5→29. No zero-leak/equal-memory/flat-heap claim. Physical iPhone acceptance and live deployment remain separate. Original baseline worktree:/tmp/dryfire-original-public at6c38bff, independently installed/built.
 
 ## Next
 
-Push verified candidate to b, observe final pinned both-edition CI and fix any reproducible failure. Once original gates pass, mark P7/P8 automated/architecture acceptance complete, update plan/history/context and publish final docs on b. Main/dev unchanged. No native/commercial/product scope expansion.
+Push the verified catalog candidate to b, observe its canonical both-edition CI, fix reproducible failure without relaxing original gates. Once green, mark P7/P8 automated/architecture acceptance complete and publish final docs/history/context on b. Main/dev frozen, no release PR or manual deployment. No native/commercial scope expansion.
 
 [Spec](spec.md) · [plan](plan.md) · [history](../implementation-history.md) · [approvals](../approval-log.md) · [component registry](../../architecture/component-map.json)

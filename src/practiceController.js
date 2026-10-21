@@ -10,6 +10,7 @@ import { practiceDefinition, normalizePracticeConfig, practiceLabels, continuous
 import { getGunSetting, setGunSetting, saveSession } from './storage.js';
 import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
+import {materializeStaticCatalog} from './staticCatalog.js';
 
 const $ = id => document.getElementById(id);
 
@@ -289,7 +290,8 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   }
   function renderCatalog() {
     if(onCatalogLock?.(locked()))return;
-    for (const button of $('practiceCatalog').querySelectorAll('[data-practice-mode]')) button.disabled = locked();
+    const host=$('practiceCatalog');materializeStaticCatalog(host);
+ for (const button of host.querySelectorAll('[data-practice-mode]')) button.disabled = locked();
   }
   // The cards are compiled from the typed component. Bind once to their stable
   // container; refreshing disabled state must never replace nodes/listeners.

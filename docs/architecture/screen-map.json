@@ -796,11 +796,11 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "5d2899de2f2deac320239f49158797e27c7691a773566e823231c8bb182f26ca",
+    "src/main.js": "36e130040e98fd0c62f16a2ba0b7102473c7ee849ddfa23a7e483574ab4f8932",
     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
-    "src/practiceController.js": "99ffcf7100aa4a1e2a68ca850d9da76476bbab281a415ab9dcb3a53028134d72",
+    "src/practiceController.js": "8fd0f28ff70830b1c89747586dfdf766a7ec60c0145e8f37178bad64a75a60a9",
     "src/sessionController.js": "f6308bb01179468d03ed31198185a62e8f279a6cc61834158771150af9b3024a",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "ddb90d63a692d8fdd1d4fb3ba98a46e5ddd17175d132e0c1f43b3168924442e2",
@@ -808,11 +808,11 @@
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
     "src/storage.js": "1f3efb7fe822f3acd74b0a5a82d8073826126ce58b8fff38aa3fba5efb88f067",
-    "vite.config.js": "1ae85bf61aa86ac7d936157c7bc62bdb164f04ba02190b5f9759e0d642ed4299",
+    "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
-    "tools/page-templates.mjs": "f7bbb70a6129b2760ef29c65f477e6bfa1aea04333d1481fcd731339e599423d",
+    "tools/page-templates.mjs": "37d1ed296f8c4875661b6fbf9bf77712f94a6cfaf5e86f334d0d44dce5ff51b7",
     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
     "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
     "src/practiceGuideController.js": "3424acff9a54c769315a13a378763cb58215ca8f52abd3b6d94051b08cd8d508",
@@ -990,7 +990,9 @@
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
     "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f",
-    "tools/minify-html.mjs": "cae3fc9ff539493a20f352e59735917dd9896ab4f2564f0b2e02dec90e5631e3"
+    "tools/minify-html.mjs": "cae3fc9ff539493a20f352e59735917dd9896ab4f2564f0b2e02dec90e5631e3",
+    "src/staticCatalog.js": "c3ec7297fb47746207ca88dbd299bf900a805b5415bdab4cc365817fa6bf01a5",
+    "tools/static-catalog.mjs": "e715be70a079a083a2494146e6fdf6b84a10dfad093fa210a2f4151c1465ab8e"
   },
   "implementationChanges": [
     "CHG-017",

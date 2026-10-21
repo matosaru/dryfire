@@ -1,3 +1,4 @@
+import {deferStaticCatalog} from './static-catalog.mjs';
 import {renderSessionPage} from '../apps/web/src/app/renderSessionPages.tsx';
 import {renderHistoryPage} from '../apps/web/src/app/renderHistoryPage.tsx';
 import { readFileSync } from 'node:fs';
@@ -35,7 +36,7 @@ const numberInputs = Object.fromEntries([
   ['sessionMaxDelay', '5', 'maxDelay'],
   ['maxResults', '50']
 ].map(([id, value, name]) => [id + 'Input', renderNumberInput(id, value, name)]));
-const fragments = { ...numberInputs, calibrationCatalog: renderCalibrationCatalog(), practiceCatalog: renderPracticeCatalog(PRACTICE_MODES) };
+const fragments = { ...numberInputs, calibrationCatalog: deferStaticCatalog(renderCalibrationCatalog()), practiceCatalog: deferStaticCatalog(renderPracticeCatalog(PRACTICE_MODES)) };
 function content(id) {
   switch(id) {
     case 'practice': case 'session': case 'practiceGuide': return fill(renderSessionPage(id),fragments);

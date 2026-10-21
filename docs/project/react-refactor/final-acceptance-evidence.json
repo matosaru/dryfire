@@ -838,5 +838,51 @@
       }
     },
     "limits": "Not canonical and not final-source acceptance; failure retained, not discarded."
+  },
+  "canonical65334f0": {
+    "id": 39591151715,
+    "conclusion": "failure",
+    "validate": "success",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "performancePreview": "comparison passes; overall job status recorded separately if needed",
+    "performancePublic": "WebKit warm confirmed median42->50ms,36/40 slower pairs; responseEnd3->6ms, DOMInteractive17->25ms; original policy unchanged"
+  },
+  "catalogParsingCandidate": {
+    "parent": "65334f081576f1c10a8bb8860f103b741e905f7f",
+    "change": "Same typed Practice/calibration card output carried as non-executable trusted HTML data; Practice materializes at normal startup renderCatalog, calibration immediately before first Learn render. No network/idle delay or removed controls.",
+    "validation": {
+      "tests": 959,
+      "suites": 140,
+      "coverageRatchet": "pass unchanged; new runtime helper100% measured statements/branches/functions/lines",
+      "affectedTests": 55,
+      "browserPublic": 19,
+      "browserPreview": 18,
+      "typedDom": "Both catalog roots materialize exactly to their typed/frozen shape; host and delegated handler survive, repeated calls preserve nodes, escaped malicious-looking title stays text",
+      "public": {
+        "jsRaw": 166415,
+        "jsGzip": 50617,
+        "htmlRaw": 54193,
+        "htmlGzip": 12393
+      },
+      "preview": {
+        "jsRaw": 167989,
+        "jsGzip": 51078,
+        "htmlRaw": 54814,
+        "htmlGzip": 12559
+      },
+      "css": {
+        "raw": 61451,
+        "gzip": 13011
+      }
+    },
+    "security": "Only build-owned typed catalog output; roots restricted and nested scripts rejected. Runtime receives no user/stored HTML strings.",
+    "references": "All image/GIF/frame baselines unchanged",
+    "cache": "v67",
+    "canonical": "pending new candidate publication",
+    "initialParserElements": {
+      "original": 813,
+      "candidate": 826
+    }
   }
 }

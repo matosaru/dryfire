@@ -32,6 +32,7 @@ import {
   getSetting, setSetting, recoverInterruptedSessions,
   getCalibrationExamples, addCalibrationExample, clearCalibrationExamples,
 } from './storage.js';
+import {materializeStaticCatalog} from './staticCatalog.js';
 
 const labelMeta = {
   draw: { title: 'Draw from holster', description: 'Holster release and presentation sounds', tone: 'blue' },
@@ -479,7 +480,8 @@ async function toggleOptionalSound(label, enabled) {
 }
 function renderCalibrationCards() {
   if(learnPage){learnPage.update({calibrationProps:learningProps().calibrationProps});return;}
-  for (const card of $('#calibrationCards').children) {
+  const host=$('#calibrationCards');materializeStaticCatalog(host);
+  for (const card of host.children) {
     const record = card.querySelector('[data-calibration-kind]');
     const count = calibration.filter(row => row.kind === record.dataset.calibrationKind).length;
     const text = card.querySelector('p');
