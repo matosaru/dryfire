@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-21",
+  "parent": "05733a1",
+  "change": "Native History and React History share typed recognitionRows/evaluationPresentation; native DOM/event/async ownership unchanged",
+  "verification": {
+    "before": {
+      "suites": 3,
+      "tests": 16
+    },
+    "afterTargeted": {
+      "suites": 3,
+      "tests": 24,
+      "oracle": "Frozen legacy History renderer remains independent; all caption/score/null-actual branches asserted against both renderers"
+    },
+    "full": {
+      "tests": 953,
+      "suites": 138
+    },
+    "browser": {
+      "public": 4,
+      "preview": 8,
+      "renderer": "system Chromium; canonical pinned-image CI remains separate",
+      "coverage": [
+        "same-theme native/React pixels",
+        "narrow native filters",
+        "invalid numeric drafts",
+        "progress filter identity",
+        "delayed/failed chart downloads",
+        "stale gun/navigation",
+        "public offline refresh"
+      ]
+    },
+    "static": [
+      "typecheck",
+      "lint:components",
+      "lint:runtime",
+      "verify:architecture",
+      "docs:check"
+    ],
+    "smoke": 16,
+    "payload": {
+      "public": {
+        "jsRaw": 166205,
+        "jsGzip": 50558
+      },
+      "preview": {
+        "jsRaw": 167781,
+        "jsGzip": 51027
+      },
+      "css": {
+        "raw": 61451,
+        "gzip": 13011
+      },
+      "originalBudgets": "unchanged; both pass"
+    },
+    "references": "390 images / 83 captures / 12 GIFs unchanged",
+    "cache": "v64"
+  },
+  "completionConstraint": {
+    "source": "Approved plan P7 first-entry retirement + original performance invariant",
+    "measuredReactHydrationOnlyGzip": 67811,
+    "originalPublicCriticalJsGzipBudget": 50807,
+    "finding": "An eager React startup implementation cannot meet this original budget even before application features. Retaining tested startup adapters or revising performance scope requires an explicit architecture resolution; no gate is weakened here."
+  },
+  "publication": "b only; main/dev/deployment unchanged"
+}

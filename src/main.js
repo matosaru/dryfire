@@ -1,3 +1,4 @@
+import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
 import { afterPaint } from './afterPaint.js';
 import { createModulePreparation } from './modulePreparation.js';
 import {distancePresentation,liveDrillPresentation} from '../apps/web/src/features/live-listen/presentation.ts';
@@ -835,10 +836,10 @@ async function toggleLive() {
 }
 
 function renderEvaluation(events) {
-  const stats = evaluateEvents(events);
+  const stats = evaluationPresentation(evaluateEvents(events), ACTUAL_CLASSES, PREDICTED_CLASSES);
   $('#verifiedCount').textContent = stats.verified;
-  $('#accuracyPct').textContent = stats.accuracy === null ? '—' : `${Math.round(stats.accuracy * 100)}%`;
-  $('#falsePositivePct').textContent = stats.otherFalsePositiveRate === null ? '—' : `${Math.round(stats.otherFalsePositiveRate * 100)}%`;
+  $('#accuracyPct').textContent = stats.accuracy;
+  $('#falsePositivePct').textContent = stats.falsePositive;
   const host = $('#confusionTable');
   host.replaceChildren();
   if (!stats.verified) {
@@ -920,21 +921,19 @@ async function renderHistory() {
     host.append(empty);
     return;
   }
-  for (const row of rows) {
+  for (const row of recognitionRows(rows, titleFor, id => currentDrill(id)?.title)) {
     const item = document.createElement('article');
     item.className = 'history-item';
     const copy = document.createElement('div');
     const title = document.createElement('strong');
-    title.textContent = titleFor(row.label);
+    title.textContent = row.title;
     const date = document.createElement('p');
-    date.textContent = new Date(row.createdAt).toLocaleString();
+    date.textContent = row.date;
     const score = document.createElement('span');
-    const value = Number.isFinite(row.score) ? row.score : Math.round((row.confidence || 0) * 100);
-    score.textContent = `${Math.round(value)}/100`;
-    const historicalDrillTitle = row.drillTitle || currentDrill(row.drillId)?.title;
-    if (row.drillId && historicalDrillTitle) {
+    score.textContent = row.score;
+    if (row.sequence) {
       const drillDescription = document.createElement('p');
-      drillDescription.textContent = `${historicalDrillTitle} · ${row.drillCompleted ? 'Sequence recognized ✓' : row.drillOutcome === 'incorrect' ? 'Out of order' : row.drillOutcome === 'unknown' ? 'Unknown sound' : 'Step detected'}`;
+      drillDescription.textContent = row.sequence;
       copy.append(drillDescription);
     }
     copy.append(title, date);
@@ -943,7 +942,7 @@ async function renderHistory() {
     const actualLabel = document.createElement('label');
     actualLabel.textContent = 'Actual:';
     const actual = document.createElement('select');
-    actual.setAttribute('aria-label', `Actual sound for ${new Date(row.createdAt).toLocaleString()}`);
+    actual.setAttribute('aria-label', `Actual sound for ${row.date}`);
     for (const [value, label] of [['', 'Not verified'], ...labels.map(key => [key, titleFor(key)]), ['other', 'Other / noise']]) {
       const option = document.createElement('option');
       option.value = value;

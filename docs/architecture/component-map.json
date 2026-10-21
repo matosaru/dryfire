@@ -417,7 +417,7 @@
         "historyList",
         "progressSection"
       ],
-      "draftOwnership": "Later unlocked entry transfers result/evaluation/session presentation; exact numeric row and private filter nodes are retained. Private progress content has its own later-entry renderer; grouping/statistics, filters and entitlements remain feature-owned. Startup fallbacks remain P7. Private chart implementation loads only for Full History; saved text renders independently. Pending completion rechecks history generation, active gun, route and entitlement before painting; failure preserves text and reports recovery.",
+      "draftOwnership": "Later unlocked entry transfers result/evaluation/session presentation; exact numeric row and private filter nodes are retained. Private progress content has its own later-entry renderer; grouping/statistics, filters and entitlements remain feature-owned. Startup fallbacks remain P7. Private chart implementation loads only for Full History; saved text renders independently. Pending completion rechecks history generation, active gun, route and entitlement before painting; failure preserves text and reports recovery. Native first-entry and React recognition/evaluation formatting share features/history/presentation.ts; async reads and native verification actions remain controller-owned.",
       "effects": [
         "Read history; separate confirmed recognition/session deletion; saved-review navigation"
       ],

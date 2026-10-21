@@ -21,7 +21,7 @@ Latest increment defers optional Drills preparation until after the native frame
 
 ## Evidence and unresolved debt
 
-945 tests /138 suites and unchanged coverage ratchet pass; type/component+runtime lint/architecture/docs,16 smoke checks, both minified builds and static payload budgets pass.7 public +11 preview local Chromium workflows pass, including delayed/failed chart downloads, stale gun/navigation, exact filter identity, Free simulation and offline. Public JS165907/50417 raw/gzip; preview167480/50892. CSS61451/13011,390 image references,83 captures,12GIFs and frozen guide signatures unchanged. [Detailed evidence](p7-ci-performance-followup-evidence.json).
+953 tests /138 suites and unchanged coverage ratchet pass; type/component+runtime lint/architecture/docs,16 smoke checks, both minified builds and static payload budgets pass.7 public +11 preview local Chromium workflows pass, including delayed/failed chart downloads, stale gun/navigation, exact filter identity, Free simulation and offline. Public JS166205/50558 raw/gzip; preview167781/51027. CSS61451/13011,390 image references,83 captures,12GIFs and frozen guide signatures unchanged. [Detailed evidence](p7-ci-performance-followup-evidence.json).
 
 Canonical [run39556414876](https://github.com/matosaru/dryfire/actions/runs/39556414876) at496c850 completed fully green: validation, both screenshot/performance editions, aggregate, identical-build controls and public slowdown proof. Original gates unchanged. Previous failures retained in historical evidence; they are no longer the checkpoint status. P7 cleanup remains open.
 
@@ -29,9 +29,11 @@ Canonical [run39556414876](https://github.com/matosaru/dryfire/actions/runs/3955
 
 [Memory evidence](p7-memory-owner-evidence.json):60 repetitions release capture but accumulate saved records.30 fixed-data navigation cycles produce no page errors, stable original nodes/listeners2581/450 and candidate2302/1742 after warmup. Candidate heap cycle5→29 3.81→4.08MB vs original2.82→2.92MB; no ongoing DOM/listener accumulation observed, but no flat-heap/equal-memory/zero-leak claim. Private graph/editor, fixed-data practice and physical Safari remain outside this diagnostic. Original public worktree:/tmp/dryfire-original-public at6c38bff, independently installed/built.
 
-## Next action
+## Current completion constraint and next action
 
-Continue P7 with History first-entry presentation consolidation, preserving immediate text, native verification/numeric drafts, delayed/failed chunks and gun/generation guards. Measure against accepted496c850 and original gates; preserve byte/image references. Complete remaining owner/package cleanup and final-revision acceptance before P8 component/architecture map and exact application-entry handoff. Push b only; main/dev frozen; no deployment.
+History native/React formatting now shares features/history/presentation.ts.953 tests /138 suites and unchanged coverage ratchet pass;4 public +8 preview targeted workflows and original static payload gates pass. [Current evidence](p7-history-shared-model-evidence.json). Cache v64; CSS/images/GIFs unchanged. New canonical CI must be observed after publication; prior fully green checkpoint applies to496c850 only.
+
+Owner question is pending: approve retained progressive startup adapters as final architecture, or revise startup performance scope. The existing hydration-only probe remeasures67811gzip before app features, above the original public50807budget. Eager first-entry React cannot satisfy that unchanged invariant. Do not silently weaken gates, reclassify unresolved P7 retirement as finished or start final P8 acceptance before this conflict is resolved. Continue independent verification and b publication; main/dev frozen; no deployment.
 
 ## Sources and maintenance
 
