@@ -560,10 +560,12 @@ function displayView(name) {
     homePagePending=loadProfilePages().then(module=>{if(!profileLocked() && !$('#safetyModal').open)homePage=module.mountHomePage($('#homeView'),view=>switchView(view));}).catch(showError).finally(()=>{homePagePending=null;});
   }
   if(name==='practice'||name==='session')void practiceGuideController.prepare().catch(()=>{});
+  const previousView=activeView;
   activeView=name;
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
-  for(const view of PAGE_IDS) document.getElementById(view+'View').classList.toggle('hidden',view!==name);
+  if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
+  document.getElementById(name+'View').classList.toggle('hidden',false);
   setMessage();
   if(name==='practiceGuide'){
     const guideModule=preparePageModule('practiceGuide',()=>import('../apps/web/src/app/guideContents.tsx'));

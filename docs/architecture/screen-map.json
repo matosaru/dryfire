@@ -796,7 +796,7 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "b77c54c2d77673ba789cc0d98096ee4542f6e74e6a3a81dbb31f0768048b81ea",
+    "src/main.js": "5d2899de2f2deac320239f49158797e27c7691a773566e823231c8bb182f26ca",
     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
@@ -808,7 +808,7 @@
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
     "src/storage.js": "1f3efb7fe822f3acd74b0a5a82d8073826126ce58b8fff38aa3fba5efb88f067",
-    "vite.config.js": "925dede87e9117422336fb290ffaedf7414ef8457a02f5aee0ecbee06f33a6c2",
+    "vite.config.js": "1ae85bf61aa86ac7d936157c7bc62bdb164f04ba02190b5f9759e0d642ed4299",
     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
@@ -989,7 +989,8 @@
     "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
-    "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f"
+    "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f",
+    "tools/minify-html.mjs": "cae3fc9ff539493a20f352e59735917dd9896ab4f2564f0b2e02dec90e5631e3"
   },
   "implementationChanges": [
     "CHG-017",

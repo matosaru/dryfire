@@ -517,7 +517,7 @@
     "privateMemoryInterpretation": "30 cycles alternate Full graph filters and canceled unsaved custom-editor drafts, then Free mode. No page errors; nodes/listeners stable2190/985 by cycle5 through29. Post-GC heap cycle5->29 4118832->4483740 bytes. No zero-leak/flat-heap claim; no new records saved."
   },
   "finalContentAudit": {
-    "files": 305,
+    "files": 306,
     "scopes": [
       "src",
       "apps/web/src",
@@ -532,7 +532,10 @@
     "validate": "success",
     "publicScreenshots": "success",
     "previewScreenshots": "317 passed,1 failed: resume test called synthetic ready before input attachment at practice-start:122",
-    "performance": "still running at this observation"
+    "performance": {
+      "public": "confirmed WebKit warm median38->43ms,36/40 slower pairs; DOMInteractive15->21ms, responseEnd3->5ms",
+      "preview": "confirmed Chromium navigation median21.6->22ms,32/40 slower pairs"
+    }
   },
   "testSynchronizationRepair": {
     "file": "visual-tests/practice-start.spec.js",
@@ -546,5 +549,294 @@
     ],
     "localPreview": 6,
     "localPublic": 6
+  },
+  "supersededTestOnlyRun": {
+    "id": 39589082064,
+    "action": "cancellation requested to avoid spending on superseded source; not treated as acceptance",
+    "conclusion": "cancelled"
+  },
+  "htmlAndVisibilityCandidate": {
+    "parent": "7b6999fbe3b18e349ff67850a2de90e8de9d8bcb",
+    "changes": [
+      "Only previous and destination registered hosts receive hidden-class updates; every route starts from one active host",
+      "Build-only html-minifier-terser7.2.0 removes safe body quotes; head, literal classes and preview marker preserved; no runtime dependency added"
+    ],
+    "tests": 956,
+    "suites": 139,
+    "originalCoverageRatchet": "pass after completion",
+    "parsedDomEquivalence": "3 tests preserve compiled full-app DOM, native values, text/whitespace, SVG, raw script/style and quoted edge values",
+    "previewBrowser": 20,
+    "previewDetail": "18 primary workflows plus2 guide pixel cases; six layout cases rerun with strengthened exactly-one-active-host assertions",
+    "publicBrowser": 18,
+    "references": "CSS/image/GIF/frame baselines unchanged",
+    "cache": "v66",
+    "payload": {
+      "public": {
+        "jsRaw": 166286,
+        "jsGzip": 50575,
+        "htmlRaw": 54087,
+        "htmlGzip": 12376
+      },
+      "preview": {
+        "jsRaw": 167862,
+        "jsGzip": 51042,
+        "htmlRaw": 54708,
+        "htmlGzip": 12538
+      },
+      "css": {
+        "raw": 61451,
+        "gzip": 13011
+      },
+      "originalBudgets": "unchanged and both static gates pass"
+    }
+  },
+  "retainedIntermediateLocalFailure": {
+    "renderer": "system Chromium,4 pairs; intermediate two-host remove() variant before final no-op-preserving toggle()",
+    "errors": [
+      "chromium clickFeedback: confirmed p95 tail slowdown (3/4 slower pairs); baseline median/p95 128.30000001192093/141.80000001192093, candidate 142.19999998807907/165.69999998807907; 99% difference interval {\"method\":\"paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds\",\"median\":{\"lower\":-9.500000059604645,\"upper\":64.69999998807907},\"p95\":{\"lower\":0.3999999761581421,\"upper\":44.59999996423721}}."
+    ],
+    "comparisons": {
+      "cold": {
+        "baseline": {
+          "median": 737.5,
+          "p95": 743.5,
+          "samples": [
+            716,
+            737.5,
+            729.5999999642372,
+            743.5
+          ]
+        },
+        "candidate": {
+          "median": 717.5999999642372,
+          "p95": 752.8999999761581,
+          "samples": [
+            682.5,
+            752.8999999761581,
+            717.5999999642372,
+            714.6000000238419
+          ]
+        },
+        "slowerPairs": 1,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -33.5,
+            "upper": 15.399999976158142
+          },
+          "p95": {
+            "lower": -28.899999976158142,
+            "upper": 15.399999976158142
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "warm": {
+        "baseline": {
+          "median": 244,
+          "p95": 272.69999998807907,
+          "samples": [
+            237.80000001192093,
+            242.89999997615814,
+            244,
+            272.69999998807907
+          ]
+        },
+        "candidate": {
+          "median": 251,
+          "p95": 256.19999998807907,
+          "samples": [
+            241.89999997615814,
+            241.4000000357628,
+            256.19999998807907,
+            251
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -21.69999998807907,
+            "upper": 12.199999988079071
+          },
+          "p95": {
+            "lower": -21.69999998807907,
+            "upper": 12.199999988079071
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "returning": {
+        "baseline": {
+          "median": 335.60000002384186,
+          "p95": 353.30000001192093,
+          "samples": [
+            323,
+            335.60000002384186,
+            353.30000001192093,
+            305.80000001192093
+          ]
+        },
+        "candidate": {
+          "median": 322.2999999523163,
+          "p95": 338.69999998807907,
+          "samples": [
+            298.30000001192093,
+            338.69999998807907,
+            322.2999999523163,
+            319.5
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -31.000000059604645,
+            "upper": 13.699999988079071
+          },
+          "p95": {
+            "lower": -31.000000059604645,
+            "upper": 3.099999964237213
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "firstAction": {
+        "baseline": {
+          "median": 69.60000002384186,
+          "p95": 76.39999997615814,
+          "samples": [
+            69.60000002384186,
+            76.39999997615814,
+            64.60000002384186,
+            60.69999998807907
+          ]
+        },
+        "candidate": {
+          "median": 68.29999995231628,
+          "p95": 71.90000003576279,
+          "samples": [
+            63,
+            71.90000003576279,
+            68.29999995231628,
+            66.10000002384186
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -6.600000023841858,
+            "upper": 5.400000035762787
+          },
+          "p95": {
+            "lower": -4.499999940395355,
+            "upper": 3.6999999284744263
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "navigation": {
+        "baseline": {
+          "median": 78.89999997615814,
+          "p95": 85.89999997615814,
+          "samples": [
+            78.89999997615814,
+            57.40000003576279,
+            85.89999997615814,
+            68.59999996423721
+          ]
+        },
+        "candidate": {
+          "median": 79.60000002384186,
+          "p95": 81.09999996423721,
+          "samples": [
+            81.09999996423721,
+            76.39999997615814,
+            72.59999996423721,
+            79.60000002384186
+          ]
+        },
+        "slowerPairs": 3,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -13.300000011920929,
+            "upper": 18.999999940395355
+          },
+          "p95": {
+            "lower": -9.5,
+            "upper": 11.000000059604645
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "clickFeedback": {
+        "baseline": {
+          "median": 128.30000001192093,
+          "p95": 141.80000001192093,
+          "samples": [
+            101,
+            121.10000002384186,
+            128.30000001192093,
+            141.80000001192093
+          ]
+        },
+        "candidate": {
+          "median": 142.19999998807907,
+          "p95": 165.69999998807907,
+          "samples": [
+            165.69999998807907,
+            132.10000002384186,
+            118.79999995231628,
+            142.19999998807907
+          ]
+        },
+        "slowerPairs": 3,
+        "observedSignal": true,
+        "confirmedSignal": true,
+        "medianConfirmed": false,
+        "tailConfirmed": true,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -9.500000059604645,
+            "upper": 64.69999998807907
+          },
+          "p95": {
+            "lower": 0.3999999761581421,
+            "upper": 44.59999996423721
+          }
+        },
+        "regression": true,
+        "interpretation": "Confirmed timing regression: stop migration."
+      }
+    },
+    "limits": "Not canonical and not final-source acceptance; failure retained, not discarded."
   }
 }

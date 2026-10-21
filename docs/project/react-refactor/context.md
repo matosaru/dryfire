@@ -2,30 +2,28 @@
 
 Updated 2026-10-21 (Europe/Vilnius).
 
-## Durable constraints
+## Rules and architecture
 
-Approved autonomous refactor. Push **b only**; main/dev frozen, no deployment/release PR. Preserve design/behavior/data/schema/edition/minification and all original coverage/image/performance gates. Update user every60 seconds while active; no unobserved CI/deployment/background claims. Keep this handoff compact; details belong in plan/history/evidence.
+Approved autonomous refactor. Push **b only**, main/dev frozen, no release PR/manual deployment. Preserve design/behavior/data/schema/edition/minification and original coverage/image/performance gates. Give meaningful updates every60 seconds; never claim unobserved CI/deployment or background work. CHG-051: owner said “use your judgement”; selected [progressive startup adapters](../../architecture/decisions/001-progressive-react-startup.md) with guarded lazy React owners, not eager React-only startup. This resolves unconditional-retirement scope, not performance acceptance.
 
-## Current architecture and work
+P0–P6 structural/runtime scope verified. Cleanup retires12 templates,25 CSS wrappers, test-only helpers/unused declarations and duplicate preparation/text/history presentation decisions.13 pages +25 UI components have source/CSS/tests/exports. Intentional native input/meter/file/rollback/service/first-entry boundaries remain.306-file exact-content audit finds no duplicate files, not proof of zero semantic duplication. P8 [architecture and entry-point guide](../../architecture/application-structure.md) is prepared; final acceptance remains open.
 
-P0–P6 structural/presentation/runtime work is verified. CHG-051: after renderer/performance explanation the owner said **“use your judgement”**. Selected retained progressive startup adapters plus guarded lazy React owners, original performance budgets unchanged. [Decision001](../../architecture/decisions/001-progressive-react-startup.md) resolves unconditional first-entry retirement; this is not React-only runtime rendering or a waiver of other requirements.
+## Latest source and checks
 
-Cleanup:12 obsolete templates,25 import-only CSS wrappers, test-only runtime helpers, unused declarations and duplicate preparation/text helpers removed/consolidated. All13 pages/25 shared UI packages have colocated source/CSS/test/export; module/presentation/controller ownership is mapped. Native/React History formatting now shares the typed model. Active startup, rollback and platform-input islands remain intentional; exact305-file scan found no duplicate files, not proof of zero semantic duplication. Known strict UI audit/native-validation findings are not silently declared compliant.
+Parent7b6999f. Current candidate: two-host visibility update (same forced-toggle no-op semantics), body-only safe HTML quote compaction through build-only html-minifier-terser7.2.0, cache v66. Head/class/verifier marker syntax stays intact; parsed full-app DOM is exact. Strengthened layout tests assert one active host for every screen/theme/width. Vite/helper/export dependencies reviewed in media manifest; CSS,390 image references,83 captures,12 GIFs unchanged.
 
-P7 final optimization uses direct ID lookup for the same13 screen hosts; cache v65. P8 factual guide prepared: [application structure and entry points](../../architecture/application-structure.md). P7/P8 completion awaits final implementation CI.
+956 tests /139 suites and original coverage ratchet pass;23 affected cases, static/type/lint/architecture/docs,16 smoke checks,18 public +20 preview system-Chromium workflows and both static payload gates pass. Public JS166286/50575 raw/gzip, HTML54087/12376; preview JS167862/51042, HTML54708/12538; CSS61451/13011. [Evidence](final-acceptance-evidence.json). No pinned final CI result yet.
 
-## Verification and outstanding evidence
+## Failures and limits to retain
 
-Prior History implementation:953 tests /138 suites, unchanged coverage ratchet, type/lint/architecture/docs,16 smoke checks, both static payload gates and4 public +8 preview browser workflows pass. Original CSS61451/13011 raw/gzip,390 image references,83 captures,12 GIFs unchanged.
+CI39587543820 at785a69b: validate/public screenshots pass; preview317 passes plus1 Resume synchronization failure. Test-only repair7b6999f waits inputActive, explicitly delays resume permission and preserves Connecting/no-input until release;6 practice-start cases pass locally per edition. No clock/threshold/retry/image change. That CI also confirms public WebKit warm38→43ms (36/40 slower) and preview Chromium navigation21.6→22ms (32/40 slower). Superseded run39589082064 cancelled, not acceptance. Older fully green496c850/05733a1 do not supersede these later failures.
 
-CI39584821542 at48466f8: validate and both screenshot editions pass, public performance page.goto timeout, preview confirmed navigation27.6→29ms (37/40 slower). Do not replace this with older green checkpoint496c850 or05733a1. Current direct-ID fix passes20 affected tests,10 public browser workflows, static public JS166223/50557 raw/gzip and a4-pair local original-revision timing diagnostic; new canonical CI must be observed. [Final evidence](final-acceptance-evidence.json).
+Intermediate current-stage local4-pair timing failed click-feedback p95 before the final target-toggle variant; trace retained. Final canonical both-edition CI is required. Do not lower gates or call the refactor complete while it fails.
 
-Memory:60 repetitions release capture but save growing results;30 fixed-data navigation cycles stabilize DOM/listeners after lazy initialization. Candidate heap overhead/growth remains disclosed; no zero-leak/equal-memory claim. See [samples](p7-memory-owner-evidence.json). Private editor/graph fixed-data heap and physical iPhone acceptance remain outside this measurement. Original public worktree:/tmp/dryfire-original-public at6c38bff, independently installed/built.
+Memory: repeated60-repetition capture releases;30 fixed-data navigation cycles stabilize DOM/listeners, with disclosed heap overhead/growth. Extra30 private graph/editor/Free-Full cycles show stable2190 nodes/985 listeners after warmup, no page errors; heap4.12→4.48MB cycle5→29. No zero-leak/equal-memory/flat-heap claim. Physical iPhone acceptance and live deployment remain separate. Original baseline worktree:/tmp/dryfire-original-public at6c38bff, independently installed/built.
 
-## Next action
+## Next
 
-Final application code785a69b is pushed.953 tests/138 suites and unchanged coverage ratchet pass;10 public +16 preview targeted workflows and original payload gates pass. CI39587543820 validates and passes public screenshots; preview has317 passes and1 synchronization failure, now repaired in the test harness by waiting for inputActive and explicitly delaying resume permission. Application/clock/thresholds/images unchanged.6 practice-start cases pass locally in each edition. Publish test/docs repair to b and observe canonical CI/performance without weakening gates. Fix any observed reproducible failure. Once green, mark P7 automated and P8 architecture handoff complete, preserve hardware/production-release limitations, update plan/history/context and push documentation on b. No main/dev changes or live deployment.
+Push verified candidate to b, observe final pinned both-edition CI and fix any reproducible failure. Once original gates pass, mark P7/P8 automated/architecture acceptance complete, update plan/history/context and publish final docs on b. Main/dev unchanged. No native/commercial/product scope expansion.
 
-## Sources
-
-[Spec](spec.md), [plan](plan.md), [history](../implementation-history.md), [approvals](../approval-log.md), [component registry](../../architecture/component-map.json), [screens](../../architecture/screen-map.json), [architecture](../../architecture/application-structure.md).
+[Spec](spec.md) · [plan](plan.md) · [history](../implementation-history.md) · [approvals](../approval-log.md) · [component registry](../../architecture/component-map.json)
