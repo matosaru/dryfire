@@ -1,10 +1,11 @@
+import { afterPaint } from './afterPaint.js';
 import { createModulePreparation } from './modulePreparation.js';
 import {distancePresentation,liveDrillPresentation} from '../apps/web/src/features/live-listen/presentation.ts';
 import { preferencePresentation } from '../apps/web/src/features/settings/preferencePresentation.ts';
 import { resolveRouteView } from '@dryfire/web/route-context';
 import { createInformationBridge } from '@dryfire/web/information-bridge';
 import { PAGE_IDS } from './pageDefinitions.js';
-import { createPracticeGuideController } from './practiceGuideController.js';
+import { createPracticeGuideBridge } from './practiceGuideBridge.js';
 import { recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
@@ -557,6 +558,7 @@ function displayView(name) {
   if(name==='home' && document.body.dataset.view!=='loading' && !homePage && !homePagePending){
     homePagePending=loadProfilePages().then(module=>{if(!profileLocked() && !$('#safetyModal').open)homePage=module.mountHomePage($('#homeView'),view=>switchView(view));}).catch(showError).finally(()=>{homePagePending=null;});
   }
+  if(name==='practice'||name==='session')void practiceGuideController.prepare().catch(()=>{});
   activeView=name;
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
@@ -611,7 +613,7 @@ function displayView(name) {
   if(name==='home')renderHome().catch(showError);
   if(name==='guns')renderGunLibrary().catch(showError);
   if(name==='settings'){
-    const settingsModule=preparePageModule('settings',()=>import('../apps/web/src/app/settingsPage.tsx'));
+    const settingsModule=preparePageModule('settings',()=>afterPaint(()=>import('../apps/web/src/app/settingsPage.tsx')));
     if(!settingsPage && settingsModule && !profileLocked() && !$('#safetyModal').open){
       try{settingsPage=settingsModule.mountSettingsPage($('#settingsView'),{onBack:()=>goBack(),onAction:id=>settingsHandlers.get(id)?.(),onPreference:id=>settingsHandlers.get(id)?.()});}
       catch(error){showError(error);}
@@ -996,14 +998,15 @@ async function init() {
     onVibration: reportVibration,
     onPracticeRecord: record => practiceController.showRecord(record),
   });
-  practiceGuideController = createPracticeGuideController({ onBack: parent => goBack(parent) });
+  practiceGuideController = createPracticeGuideBridge({ onBack: parent => goBack(parent), onNavigate: () => switchView('practiceGuide'), onError: showError });
   for (const [id, parent] of [['practiceGuideLink', 'practice'], ['sessionGuideLink', 'session']]) {
     const handler=event => {
       event.preventDefault();
-      if (activeView !== parent || profileLocked()) return;
-      const context = (parent === 'practice' ? practiceController : sessionController).guideContext();
-      if (!context || context.gunId !== activeGun?.id) return;
-      try { practiceGuideController.open(context); switchView('practiceGuide'); } catch (error) { showError(error); }
+      void practiceGuideController.open(() => {
+        if (activeView !== parent || profileLocked() || $('#safetyModal').open) return null;
+        const context = (parent === 'practice' ? practiceController : sessionController).guideContext();
+        return context?.gunId === activeGun?.id ? context : null;
+      });
     };guideHandlers.set(id,handler);$('#'+id).addEventListener('click',handler);
   }
   darkPreference?.addEventListener?.('change', () => { if (appearance === 'system') applyAppearance(); });

@@ -591,5 +591,22 @@
       "tests/textElement.test.js"
     ],
     "contract": "Literal textContent and explicit className; document acquired on call. Guide/progress retain injected document ownership. Card factories with different empty-class semantics remain separate."
+  },
+  "deferredGuideRuntime": {
+    "source": "src/practiceGuideBridge.js",
+    "consumer": "src/main.js",
+    "tests": [
+      "tests/practiceGuideBridge.test.js",
+      "visual-tests/guide-loading.spec.js"
+    ],
+    "contract": "Prepare read-only native guide code on practice/sequence setup entry, never startup. Import completion only caches. Explicit Open rechecks route/gun/capture/modal ownership and reads fresh settings; navigation cancels pending opens. Native and React guide controllers keep the existing presentation and document ownership."
+  },
+  "deferredSettingsPreparation": {
+    "source": "src/afterPaint.js",
+    "consumer": "src/main.js",
+    "tests": [
+      "tests/afterPaint.test.js"
+    ],
+    "contract": "Prepare optional Settings React enhancement in a task after the native screen frame. Initial controls/handlers remain immediately usable; later-entry handoff guards unchanged."
   }
 }

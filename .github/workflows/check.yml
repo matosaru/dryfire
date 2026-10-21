@@ -125,7 +125,7 @@ jobs:
       - name: Choose the immutable matching application baseline
         id: baseline
         run: |
-          node --input-type=module -e "import { readBuildProfile } from './tools/build-profile.mjs'; console.log('source=' + (readBuildProfile() === 'preview' ? 'a5b76e8d524c311bcbde1dc5740b2f5d0fa8e8bd' : '6c38bff81662d30279d94d41ca5c949bdbbe1c6e'));" >> "$GITHUB_OUTPUT"
+          node --input-type=module -e "import { readBuildProfile, resolveBuildEdition } from './tools/build-profile.mjs'; const edition = resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.env.APP_EDITION }); console.log('source=' + (edition === 'preview' ? 'a5b76e8d524c311bcbde1dc5740b2f5d0fa8e8bd' : '6c38bff81662d30279d94d41ca5c949bdbbe1c6e'));" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:
           ref: ${{ steps.baseline.outputs.source }}

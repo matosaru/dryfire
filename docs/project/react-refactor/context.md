@@ -1,42 +1,41 @@
 # Refactor working context
 
-Updated 2026-10-20 (Europe/Vilnius). Detailed evidence stays in the linked documents.
+Updated2026-10-21 (Europe/Vilnius). Keep detailed evidence in linked documents.
 
 ## Durable rules
 
-- Continue approved refactor automatically; publish verified increments to **b only**. **Main and dev stay unchanged.** No deployment or repeated approvals.
-- Preserve visuals, behavior, saved data/schema, Free/Full boundaries, minification and original image/performance/coverage thresholds. Never rebaseline failures away.
-- Give updates at least every60 seconds during active work. Save credits with relevant checks; no redundant dev synchronization.
-- Distinguish local verification, push, canonical CI, deployment and physical iPhone acceptance. Do not imply background work after the turn ends.
+- Execute approved refactor automatically; verified pushes to **b only**. **Main/dev unchanged.** No deployment, release PR or repeated step approvals.
+- Preserve visuals, behavior, data/schema, Free/Full boundaries and minification. Never change original coverage/image/performance thresholds to pass.
+- Update the user at least every60 seconds while active. Save credits with relevant checks and no dev synchronization. Never imply background progress after a turn ends.
+- Distinguish local tests, push, canonical CI, deployment and physical iPhone microphone/beep acceptance.
 
 ## Current work
 
-Source: b HEAD (`git log -1` identifies the exact published increment). P0/P1 complete; P2–P6 presentation/runtime handoffs locally verified. **P7 remains active; refactor is not complete.**
+Source:b HEAD (`git log -1` identifies published increment). P0/P1 complete; P2–P6 presentation/runtime handoffs verified locally. **P7 remains active; refactor not finished.**
 
-All13 parent pages have typed owners. Later explicit unlocked/paused visits mount React; asynchronous import completion only prepares modules. Exact native Configure fields, Run/Review hosts, meter, guide figure and independent child roots retain lifetimes. First-entry native fallbacks still provide behavior and cannot be deleted until equivalent loading/ownership is verified.
+All13 parent pages have typed owners; later unlocked/paused visits mount React, import completion only prepares. Retained Configure fields, Run/Review hosts, meter, guide figure and child roots preserve lifetimes. Native first-entry renderers remain, pending measured retirement.
 
-Completed cleanup:12 obsolete HTML templates,25 import-only CSS wrappers, test-only fragment renderer moved to @dryfire/testing, obsolete numeric initializer moved to frozen fixture, unused guide wrapper and runtime imports/helpers/arguments/write-only selection state removed. Saved-preset reads/validation/error order and persistence writes remain intact. CI lint:runtime prevents new unused declarations while preserving deliberate rest-sibling schema omissions. Eight lazy-page import chains share src/modulePreparation.js; completion caches only, with no DOM or mount effects. Distinct profile/info loader contracts remain separate. Identical text-element construction in live controllers, guide and progress now shares src/textElement.js; injected documents and intentional card-factory differences remain intact.
+Cleanup completed:12 obsolete templates,25 import-only CSS wrappers, test-only fragment/numeric initializers moved to testing/fixtures, unused guide wrapper and runtime declarations removed. Eight page-module preparation chains and four native text-element paths share tested helpers. CI runtime-unused gate preserves deliberate schema omissions. Profile/info loaders and card-factory variants stay distinct where contracts differ.
+
+Latest optimization:src/practiceGuideBridge.js removes native guide/manual/example preparation from startup. Setup may prefetch; explicit Open rechecks current route/type/gun/locks/modal and fresh endpoints. Navigation cancels pending opens; failures preserve setup and show a plain-language reload message. src/afterPaint.js defers optional Settings preparation until a task after the native screen frame. It changes no native controls or later handoff guards. Cache v62 includes all lazy assets offline.
 
 ## Next action
 
-Continue P7 semantic-duplicate/first-entry-owner audit and measured fallback retirement. Simple typed/native unused-declaration gates and exact nonempty source-file duplicate scan are clean; this does not prove all semantic duplication is gone. Preserve distinct Practice/Sequence timing policies and independent frozen oracles. Then resolve original payload/startup regressions and verify repaired slowdown probe in canonical CI; complete both-edition final acceptance. After acceptance, execute P8 final architecture/component-map and exact entry-point/startup handoff. Main/dev stay frozen.
+Observe canonical b CI after push, especially both-edition runtime/visual checks and corrected baseline selection. Continue P7 first-entry renderer/semantic-duplicate retirement and steady-state memory inspection; retain native input/draft/capture boundaries and distinct Practice/Sequence timing. Complete original performance/visual/data/edition acceptance before P8 final architecture/component-map and exact entry-point handoff. Main/dev frozen.
 
-## Latest verification and open debt
+## Latest evidence and remaining debt
 
-Native text-primitive cleanup: **925 tests /135 suites**, original coverage ratchet, primitive100% coverage,117 affected tests,16 smoke checks, type/component+runtime lint/architecture/docs and both minified builds pass. **11 public +13 preview system-Chromium workflows** cover live/guide/progress same-theme pixel equality, native drafts/filters, readiness/early clicks and offline. Source/check details: [text primitive evidence](p7-text-element-evidence.json). Previous module-preparation evidence:923 tests and34+33 workflows, linked in plan/history.
+**942 tests /137 suites**, original coverage ratchet, both new helpers100% coverage, type/component+runtime lint/architecture/docs,16 smoke checks and both minified builds pass. **24 public +24 preview system-Chromium workflows** pass, including delayed/failed guide loads, invalid drafts/fresh endpoints, navigation/capture guards, native↔React pixels, playback and offline. Three new CI baseline-command tests and20 affected performance-tooling tests pass separately. See [deferred guide evidence](p7-deferred-guide-evidence.json).
 
-Compiled HTML and CSS remain byte-identical;390 references,83 captures,12 GIFs and original1,333-frame guide signatures remain intact. Cache v61 covers the changed entry; private cache retirement unchanged. Prior full parent/meter/draft/context coverage remains detailed in plan/history.
+**Original JS/CSS payload limits now pass in both editions.** Public JS165900/50409 raw/gzip (index-DyUNti9R.js), preview167195/50783 (index-DTVDIyFT.js), versus original170917/50807 and172083/51146. CSS61451/13011 and compiled HTML unchanged; emitted HTML55757/12457 public and56396/12626 preview.390 references,83 captures,12 GIFs and frozen1,333-frame signatures unchanged. Previous payload failures remain historical evidence, not current byte-budget debt.
 
-Current public JS178365/54458 raw/gzip (index-EaLuveam.js), preview179668/54822 (index-B9_uomK3.js). Compared with prior, public-134/-33 and preview-127/-32 raw/gzip bytes. Original-baseline regressions remain public+7448/+3651 and preview+7585/+3676. CSS61451/13011 (index-DnLrZEQ0.css); emitted HTML55757/12457 public and56396/12628 preview, with compiled markup unchanged. **Original performance acceptance remains failing debt**; no fresh passing application startup timing inferred.
+Clean original public worktree:/tmp/dryfire-original-public at6c38bff, separately installed from its lockfile; baseline bytes match original. First local timing test failed first Settings action; after paint scheduling a4-pair system-Chromium repeat passes unchanged policy. Retain uncertainty: some point metrics remain slower, and this is not pinned-image/full-sample final acceptance. Both traces/samples retained in evidence. Capture released in all recorded cycles. Candidate heap3.37→4.59MB vs original2.89→3.17MB includes additional lazy owners and needs steady-state analysis; neither leak nor memory acceptance is established.
 
-Slowdown tooling repair passes39 affected tests and a local identical-artifact control: stall at readiness avoids network overlap; warm diagnostic requires matching confirmed warm slowdown. Original candidate statistical/payload gates unchanged. See [probe evidence](p7-probe-evidence.json); pinned-image confirmation remains separate.
-
-Canonical CI/deployment and physical iPhone microphone/beep acceptance remain separate; never infer success from local checks or push. Last observed503b4a9/f2fc0d0 CI runs were in progress. Default-root UI audit has2 retained native-select ownership declarations; not a comprehensive React audit or compliance pass. RF-11 preserves approved native controls.
+CI fixed to choose immutable original by effective matrix edition (public6c38bff, previewa5b76e8), rather than branch default. Original baselines/budgets/statistics/readiness unchanged. Latest canonical result for this optimization is unobserved; never infer CI/deployment from local pass/push. Hardware acceptance remains separate. Default-root audit's2 retained native-select ownership declarations remain, not comprehensive UI compliance; RF-11 preserves native validation.
 
 ## Sources and maintenance
 
-- [Repository rules](../../../AGENTS.md), [specification](spec.md), [active plan](plan.md), [implementation history](../implementation-history.md).
-- [Approvals](../approval-log.md), [requirements](../../requirements/README.md), [design catalog](../../design/README.md).
-- [Component map](../../architecture/component-map.json), [page handoffs](../../architecture/page-templates.md), [screen registry](../../architecture/screen-map.json).
+- [Rules](../../../AGENTS.md), [spec](spec.md), [plan](plan.md), [history](../implementation-history.md), [approvals](../approval-log.md).
+- [Requirements](../../requirements/README.md), [designs](../../design/README.md), [component map](../../architecture/component-map.json), [page handoffs](../../architecture/page-templates.md), [screen registry](../../architecture/screen-map.json).
 
-After each task, replace current work/evidence/open issues/next action here; offload detail to authoritative documents. Keep this handoff compact, preserve unresolved failures and user constraints, and resume from it plus git state.
+After each task, replace this handoff's current work/evidence/debt/next action. Offload details, preserve constraints/unresolved failures and keep it compact. Resume from this document plus git state.
