@@ -12,7 +12,7 @@ test.each([['practiceCatalog',()=>renderPracticeCatalog(PRACTICE_MODES)],['calib
  const html=render();document.body.innerHTML=deferStaticCatalog(html);const host=document.body.firstElementChild;const click=jest.fn();host.addEventListener('click',click);
  expect(host.querySelectorAll('button')).toHaveLength(0);materializeStaticCatalog(host);expect(document.body.firstElementChild).toBe(host);
  const original=document.createElement('div');original.innerHTML=html;expect(host.outerHTML).toBe(original.firstElementChild.outerHTML);
- const button=host.querySelector('button');button.disabled=false;button.click();expect(click).toHaveBeenCalledTimes(1);materializeStaticCatalog(host);expect(host.querySelector('button')).toBe(button);expect(host.querySelector('script')).toBeNull();
+ const button=host.querySelector('button');button.disabled=false;button.click();expect(click).toHaveBeenCalledTimes(1);materializeStaticCatalog(host);expect(host.querySelector('button')).toBe(button);expect(host.querySelector('script,template')).toBeNull();
 });
 test('the build refuses arbitrary roots or nested scripts and keeps escaped text inert',()=>{
  expect(()=>deferStaticCatalog('<div id="unknown"></div>')).toThrow('Unknown');expect(()=>deferStaticCatalog('<div id="practiceCatalog"><script>bad()</script></div>')).toThrow('scripts');

@@ -991,8 +991,8 @@
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
     "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f",
     "tools/minify-html.mjs": "cae3fc9ff539493a20f352e59735917dd9896ab4f2564f0b2e02dec90e5631e3",
-    "src/staticCatalog.js": "c3ec7297fb47746207ca88dbd299bf900a805b5415bdab4cc365817fa6bf01a5",
-    "tools/static-catalog.mjs": "e715be70a079a083a2494146e6fdf6b84a10dfad093fa210a2f4151c1465ab8e"
+    "src/staticCatalog.js": "244c43ad660c2e5eed5dfc0910fd4dcc811ea12a233a508b7c1367f9071e8513",
+    "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247"
   },
   "implementationChanges": [
     "CHG-017",

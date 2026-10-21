@@ -517,7 +517,7 @@
     "privateMemoryInterpretation": "30 cycles alternate Full graph filters and canceled unsaved custom-editor drafts, then Free mode. No page errors; nodes/listeners stable2190/985 by cycle5 through29. Post-GC heap cycle5->29 4118832->4483740 bytes. No zero-leak/flat-heap claim; no new records saved."
   },
   "finalContentAudit": {
-    "files": 306,
+    "files": 308,
     "scopes": [
       "src",
       "apps/web/src",
@@ -884,5 +884,48 @@
       "original": 813,
       "candidate": 826
     }
+  },
+  "canonicalD59c96d": {
+    "id": 39594094772,
+    "validation": "success",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "publicComparison": "WebKit warm median37->44ms,33/40 slower pairs; responseEnd3->5ms, DOMInteractive15->22ms",
+    "finalStatus": "observe before claiming full pipeline result"
+  },
+  "inertTemplateAndDiagnosticCandidate": {
+    "parent": "d59c96d533a89dd93c142e0096e09e601fd27566",
+    "changes": [
+      "Replace catalog HTML data scripts/runtime parsing with inert template node movement; no runtime HTML-string parsing",
+      "Add advisory crossed HTML/module startup probe before public comparison; injected diagnostic responses and server timing headers never modify actual dist or original benchmark commands/conditions/policy. Fresh independent browser closes before original gate."
+    ],
+    "verification": {
+      "tests": 959,
+      "suites": 140,
+      "coverageRatchet": "unchanged/pass; runtime catalog helper100% coverage",
+      "affectedTests": 50,
+      "publicBrowser": 19,
+      "publicFinalGuardCases": 4,
+      "previewBrowser": 18,
+      "public": {
+        "jsRaw": 166414,
+        "jsGzip": 50609,
+        "htmlRaw": 54129,
+        "htmlGzip": 12383
+      },
+      "preview": {
+        "jsRaw": 167988,
+        "jsGzip": 51082,
+        "htmlRaw": 54750,
+        "htmlGzip": 12548
+      },
+      "cssRaw": 61451,
+      "cssGzip": 13011,
+      "originalPayloadGates": "pass unchanged"
+    },
+    "diagnosticSmoke": "System Chromium; all crossed cases/no-module controls completed. For harness functionality only, not WebKit acceptance.",
+    "imageGifFrameBaselines": "unchanged",
+    "cache": "v68",
+    "canonical": "pending publication"
   }
 }

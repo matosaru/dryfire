@@ -10,9 +10,11 @@ P0–P6 structural/runtime scope verified. Cleanup retires12 templates,25 CSS wr
 
 ## Latest source and checks
 
-Published parent65334f0. New candidate adds trusted static-catalog materialization: same typed Practice/calibration DOM embedded as non-executable data. Practice expands during normal startup renderCatalog; calibration before first Learn render. No idle/network delay, dropped controls or duplicate layout source. Host/delegated handlers retained; helpers restrict known roots/reject nested scripts and do not consume user/stored HTML. Cache v67. Body-only safe quote compaction and two-host visibility remain. Media manifest now tracks all build/runtime helpers. CSS/images/GIF/frame baselines unchanged.
+Published parentd59c96d. New candidate: inert <template> catalog nodes move into their existing host, avoiding runtime HTML-string re-parsing. Practice materializes during normal startup catalog rendering; calibration before first Learn render. Same typed DOM/host/delegated callbacks; build helper restricts roots/rejects scripts. Cache v68. All image/GIF/frame references remain unchanged.
 
-959 tests /140 suites, original coverage ratchet and helper100% coverage pass.55 affected cases; static/type/lint/architecture/docs,16 smoke checks,19 public +18 preview system-Chromium workflows and both original payload limits pass. Public JS166415/50617 raw/gzip, HTML54193/12393; preview JS167989/51078, HTML54814/12559; CSS61451/13011. [Evidence](final-acceptance-evidence.json). Publish new candidate and observe canonical CI; no new-source acceptance yet.
+Added tools/performance/diagnose-startup.mjs: advisory crossed original/candidate HTML/module and no-module controls, marked diagnostic responses, same pinned viewport/locale/reduced-motion, gzip timings. Public CI runs it before the original benchmark in a separate browser/server which close first. No original command/baseline/threshold/statistics/readiness changes. Local Chromium smoke completes all variants; do not interpret that as WebKit evidence or acceptance. Remote notice should appear early in the public job and identify which work causes the persistent warm slowdown.
+
+959 tests /140 suites, original ratchet/runtime helper100%,50 affected cases, static/type/lint/architecture/docs/smoke,19 public +18 preview browser workflows plus4 final public guard cases pass. Original payload budgets pass: public JS166414/50609 raw/gzip, HTML54129/12383; preview JS167988/51082, HTML54750/12548; CSS61451/13011. [Evidence](final-acceptance-evidence.json). Publish candidate, read early diagnostic notice, then observe full canonical gates.
 
 ## Failures and limits to retain
 
@@ -24,6 +26,6 @@ Memory: repeated60-repetition capture releases;30 fixed-data navigation cycles s
 
 ## Next
 
-Push the verified catalog candidate to b, observe its canonical both-edition CI, fix reproducible failure without relaxing original gates. Once green, mark P7/P8 automated/architecture acceptance complete and publish final docs/history/context on b. Main/dev frozen, no release PR or manual deployment. No native/commercial scope expansion.
+Publish current inert-template/diagnostic candidate to b, read early WebKit crossed-source diagnostic notices and fix the identified bottleneck without weakening original gates. At d59c96d, public warm still fails37→44ms (33/40 slower); both screenshot editions and validate pass. Do not claim completion from earlier green revisions. Once green, mark P7/P8 automated/architecture acceptance complete and publish final docs/history/context on b. Main/dev frozen, no release PR or manual deployment. No native/commercial scope expansion.
 
 [Spec](spec.md) · [plan](plan.md) · [history](../implementation-history.md) · [approvals](../approval-log.md) · [component registry](../../architecture/component-map.json)

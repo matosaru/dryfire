@@ -618,5 +618,22 @@
     "buildEntry": "vite.config.js",
     "compositionEntry": "tools/page-templates.mjs",
     "policy": "Typed prerender plus immediate startup adapters; guarded lazy React ownership, one writer per region. Original performance gates unchanged."
+  },
+  "trustedStaticCatalogs": {
+    "buildSource": "tools/static-catalog.mjs",
+    "runtimeSource": "src/staticCatalog.js",
+    "consumers": [
+      "tools/page-templates.mjs",
+      "src/practiceController.js",
+      "src/main.js"
+    ],
+    "tests": [
+      "tests/staticCatalog.test.js",
+      "tests/practiceController.test.js",
+      "tests/calibrationCatalogLegacy.test.js",
+      "visual-tests/learning-runtime.spec.js",
+      "visual-tests/drills-runtime.spec.js"
+    ],
+    "contract": "Only two known typed catalog roots serialize to inert template nodes. Practice moves its parsed fragment during startup, calibration before first Learn render. Exact host, typed DOM and delegated handlers survive; no user/stored HTML strings or runtime HTML parsing."
   }
 }
