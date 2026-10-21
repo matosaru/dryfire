@@ -583,7 +583,7 @@ function displayView(name) {
     }
   }
   if(name==='drills'){
-    const drillsModule=preparePageModule('drills',()=>import('../apps/web/src/app/drillsPage.tsx'));
+    const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
     }
@@ -894,8 +894,19 @@ async function renderHistory() {
   if (!isCurrent()) return;
   const sessions = await sessionController.renderSavedSessions(gunId, isCurrent, !historyPage);
   if (!isCurrent()) return;
-  if (CAPABILITIES.advancedGraphs) progressView?.render(sessions || [], gunId);
-  else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();
+  if (CAPABILITIES.advancedGraphs) {
+    if (typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__ && activeView === 'history' && !progressView) {
+      // Saved text renders independently; a late chart may only paint its current owner.
+      void import('./optional/progressView.js').then(({ createProgressView }) => {
+        if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;
+        progressView ||= createProgressView(document, { enabled: () => CAPABILITIES.advancedGraphs, onError: showError });
+        progressView.render(sessions || [], gunId);
+      }).catch(error => {
+        if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;
+        showError(new Error('Progress charts could not load. Your saved history is still available. Check your connection and reload to try again.', { cause: error }));
+      });
+    } else progressView?.render(sessions || [], gunId);
+  } else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();
   historyRows=rows;historySessions=sessions||[];historyOwner=gunId;
   if(!historyPage)renderEvaluation(rows);
   if(homePage)homePage.update({events:rows.length}); else $('#homeEvents').textContent = String(rows.length);
@@ -953,7 +964,6 @@ async function renderHistory() {
 async function init() {
   bindCalibrationActions();
   if (typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__) {
-    const { createProgressView } = await import('./optional/progressView.js');
     const { createPreviewTesting, retirePreviewShell } = await import('./optional/previewTesting.js');
     await retirePreviewShell({ serviceWorker: navigator.serviceWorker, caches: window.caches, origin: location.origin });
     let storage;
@@ -974,7 +984,6 @@ async function init() {
         renderGunControls(); renderPreferences(); renderHistory().catch(showError);
       } });
     CAPABILITIES = previewTesting.capabilities; applyPresentation();
-    progressView = createProgressView(document, { enabled: () => CAPABILITIES.advancedGraphs, onError:showError });
   }
   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });

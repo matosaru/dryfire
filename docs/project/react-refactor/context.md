@@ -17,21 +17,19 @@ All13 parent pages have typed owners; later unlocked/paused visits mount React, 
 
 Cleanup completed:12 obsolete templates,25 import-only CSS wrappers, test-only fragment/numeric initializers moved to testing/fixtures, unused guide wrapper and runtime declarations removed. Eight page-module preparation chains and four native text-element paths share tested helpers. CI runtime-unused gate preserves deliberate schema omissions. Profile/info loaders and card-factory variants stay distinct where contracts differ.
 
-Latest optimization:src/practiceGuideBridge.js removes native guide/manual/example preparation from startup. Setup may prefetch; explicit Open rechecks current route/type/gun/locks/modal and fresh endpoints. Navigation cancels pending opens; failures preserve setup and show a plain-language reload message. src/afterPaint.js defers optional Settings preparation until a task after the native screen frame. It changes no native controls or later handoff guards. Cache v62 includes all lazy assets offline.
+Latest increment defers optional Drills preparation until after the native frame and private chart implementation until Full History entry. Saved text renders independently; delayed completion checks current history generation/gun/route/entitlement. Failure preserves text with recovery message. Cache v63. Earlier lazy guide bridge and Settings after-paint preparation remain.
+
+## Evidence and unresolved debt
+
+945 tests /138 suites and unchanged coverage ratchet pass; type/component+runtime lint/architecture/docs,16 smoke checks, both minified builds and static payload budgets pass.7 public +11 preview local Chromium workflows pass, including delayed/failed chart downloads, stale gun/navigation, exact filter identity, Free simulation and offline. Public JS165907/50417 raw/gzip; preview167480/50892. CSS61451/13011,390 image references,83 captures,12GIFs and frozen guide signatures unchanged. [Detailed evidence](p7-ci-performance-followup-evidence.json).
+
+Canonical run39543701173 at539692c: validation and both screenshot jobs pass; performance fails. Public WebKit warm37→44ms and Chromium navigation27.6→31.2ms. Preview startup JS55502>55101gzip, navigation21.8→25ms and returning674.7→682ms fail. New fixes target navigation and private startup bytes, not proven resolved until new canonical results. Original baselines/budgets/statistics unchanged. Current4-pair system-Chromium diagnostic passes unchanged policy, with navigation point increase and warm-tail uncertainty retained. Never equate that with canonical acceptance or speedup.
+
+Clean original public worktree:/tmp/dryfire-original-public at6c38bff, independently installed/built. Earlier memory diagnostic candidate3.37→4.59MB vs original2.89→3.17MB includes lazy owners; steady-state audit still needed. Capture released in recorded cycles; no memory-acceptance claim. Physical iPhone acceptance separate.
 
 ## Next action
 
-Observe canonical b CI after push, especially both-edition runtime/visual checks and corrected baseline selection. Continue P7 first-entry renderer/semantic-duplicate retirement and steady-state memory inspection; retain native input/draft/capture boundaries and distinct Practice/Sequence timing. Complete original performance/visual/data/edition acceptance before P8 final architecture/component-map and exact entry-point handoff. Main/dev frozen.
-
-## Latest evidence and remaining debt
-
-**942 tests /137 suites**, original coverage ratchet, both new helpers100% coverage, type/component+runtime lint/architecture/docs,16 smoke checks and both minified builds pass. **24 public +24 preview system-Chromium workflows** pass, including delayed/failed guide loads, invalid drafts/fresh endpoints, navigation/capture guards, native↔React pixels, playback and offline. Three new CI baseline-command tests and20 affected performance-tooling tests pass separately. See [deferred guide evidence](p7-deferred-guide-evidence.json).
-
-**Original JS/CSS payload limits now pass in both editions.** Public JS165900/50409 raw/gzip (index-DyUNti9R.js), preview167195/50783 (index-DTVDIyFT.js), versus original170917/50807 and172083/51146. CSS61451/13011 and compiled HTML unchanged; emitted HTML55757/12457 public and56396/12626 preview.390 references,83 captures,12 GIFs and frozen1,333-frame signatures unchanged. Previous payload failures remain historical evidence, not current byte-budget debt.
-
-Clean original public worktree:/tmp/dryfire-original-public at6c38bff, separately installed from its lockfile; baseline bytes match original. First local timing test failed first Settings action; after paint scheduling a4-pair system-Chromium repeat passes unchanged policy. Retain uncertainty: some point metrics remain slower, and this is not pinned-image/full-sample final acceptance. Both traces/samples retained in evidence. Capture released in all recorded cycles. Candidate heap3.37→4.59MB vs original2.89→3.17MB includes additional lazy owners and needs steady-state analysis; neither leak nor memory acceptance is established.
-
-CI fixed to choose immutable original by effective matrix edition (public6c38bff, previewa5b76e8), rather than branch default. Original baselines/budgets/statistics/readiness unchanged. Latest canonical result for this optimization is unobserved; never infer CI/deployment from local pass/push. Hardware acceptance remains separate. Default-root audit's2 retained native-select ownership declarations remain, not comprehensive UI compliance; RF-11 preserves native validation.
+Push verified increment to b and observe canonical CI; profile remaining WebKit warm/preview-returning debt. Continue measured first-entry fallback retirement, semantic duplicate and steady-state memory audits. Complete original acceptance before P8 final component/architecture map and application-entry handoff. Main/dev frozen; no deployment.
 
 ## Sources and maintenance
 

@@ -113,7 +113,7 @@
     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
-    "src/main.js": "56fc9edc6d3e3248305f086d7b04fce337733117180618464829428f5fd0240a",
+    "src/main.js": "3c04f2f1c54382273ea055805b7aa3429a2b3fa7e62af098c28f8bd024defd7d",
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
     "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f"
   },
@@ -263,5 +263,9 @@
     "reviewedOn": "2026-10-20",
     "evidence": "docs/design/baselines/p7-css-entry-review.json",
     "note": "Ordered leaf imports remove wrappers without changing expanded CSS, production CSS or app HTML."
+  },
+  "performanceLoadingReview": {
+    "reviewedOn": "2026-10-21",
+    "note": "Only Drills optional preparation and Full History chart loading changed. Guide loading/browser checks pass; shared guide presentation, CSS, frame sources and encoded GIF bytes remain unchanged."
   }
 }
