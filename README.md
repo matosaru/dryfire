@@ -6,6 +6,7 @@ An offline-first microphone-based dry-fire practice app, with gun-specific calib
 - [Implementation history and remaining plan](docs/project/implementation-history.md)
 - [Functional requirements](docs/requirements/README.md)
 - [Current designs and screen coverage](docs/design/README.md)
+- [Application components and entry points](docs/architecture/application-structure.md)
 - [Site architecture tree](docs/architecture/site-tree.md)
 - [SEO proposal](docs/seo/README.md)
 - [Development and deployment](docs/development/README.md)

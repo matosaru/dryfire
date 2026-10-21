@@ -2,11 +2,11 @@
 
 Repository workflow: [b/main Free, dev Full, PR protection and test-gated builds](../project/branching-strategy.md).
 
-CHG-046: [React refactor plan](../project/react-refactor-plan.md) maps all 13 existing screens, component/CSS/test ownership and regression gates. CHG-047 starts implementation: workspaces, typed About/Contact and shared heading/card packages are introduced first. The [migration architecture](../architecture/react-migration.md) and [component map](../architecture/component-map.json) distinguish current and remaining owners; the requested DEV.to article comparison still awaits access.
+The [active refactor plan](../project/react-refactor/plan.md) and [application structure/entry-point guide](../architecture/application-structure.md) describe the 13 typed pages,25 shared UI components, guarded lazy runtime owners and CHG-051 retained startup adapters. The requested structure article and first-party guidance have been reviewed in the [specification](../project/react-refactor/spec.md). [component-map.json](../architecture/component-map.json) is the authoritative source/controller/test registry; [migration architecture](../architecture/react-migration.md) retains historical increments. Consult the active plan for final CI acceptance rather than inferring it from structural completion.
 
 Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with dev/production verification.
 
-[Public-Free/private-full-preview testing](free-preview-testing.md) documents the authorized two-gun public build and retained full preview. Hosted preview protection and a proposed authenticated in-app tester switch remain unimplemented; broader billing/accounts/cloud work is still paused.
+[Public-Free/private-full-preview testing](free-preview-testing.md) documents the authorized two-gun public build and retained full preview. The private-preview Free/Full simulation and signed Access asset gate are implemented and tested; live Cloudflare Access policy/deployment remain owner-managed and separately verified. Broader billing/accounts/cloud work is still paused.
 
 Product planning: [Requirements and approvals](../requirements/README.md) · [Design catalog](../design/README.md). Read these before changing product behavior.
 

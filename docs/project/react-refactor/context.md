@@ -24,7 +24,7 @@ Memory:60 repetitions release capture but save growing results;30 fixed-data nav
 
 ## Next action
 
-Publish final navigation/architecture increment to b. Run final full coverage/ratchet and both-edition artifact/runtime checks; observe canonical both-edition CI without weakening gates. Fix any observed reproducible failure. Once green, mark P7 automated and P8 architecture handoff complete, preserve hardware/production-release limitations, update plan/history/context and push documentation on b. No main/dev changes or live deployment.
+Final application code785a69b is pushed.953 tests/138 suites and unchanged coverage ratchet pass;10 public +16 preview targeted workflows and original payload gates pass. CI39587543820 validates and passes public screenshots; preview has317 passes and1 synchronization failure, now repaired in the test harness by waiting for inputActive and explicitly delaying resume permission. Application/clock/thresholds/images unchanged.6 practice-start cases pass locally in each edition. Publish test/docs repair to b and observe canonical CI/performance without weakening gates. Fix any observed reproducible failure. Once green, mark P7 automated and P8 architecture handoff complete, preserve hardware/production-release limitations, update plan/history/context and push documentation on b. No main/dev changes or live deployment.
 
 ## Sources
 

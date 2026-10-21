@@ -267,5 +267,284 @@
   "architectureDecision": "CHG-051/decision001: retain tested startup adapters and original gates",
   "references": "CSS,390 reference images,83 captures,12 GIFs unchanged",
   "cache": "v65",
-  "publication": "b only; no main/dev/deployment"
+  "publication": "b only; no main/dev/deployment",
+  "finalLocalVerification": {
+    "source": "785a69be681f2bee661a70061588a380713b1ab2",
+    "tests": 953,
+    "suites": 138,
+    "coverageRatchet": "pass after full completion; unchanged",
+    "smoke": 16,
+    "static": [
+      "typecheck",
+      "lint:components",
+      "lint:runtime",
+      "verify:architecture",
+      "docs:check"
+    ],
+    "browser": {
+      "public": 10,
+      "preview": 16,
+      "renderer": "system Chromium; pinned canonical acceptance separate"
+    },
+    "previewPayload": {
+      "jsRaw": 167799,
+      "jsGzip": 51029,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "privateFixedDataMemory": {
+      "kind": "fixed-data route lifecycle diagnostic",
+      "source": "785a69b",
+      "samples": [
+        {
+          "index": 1,
+          "errors": [],
+          "samples": [
+            {
+              "cycle": 0,
+              "Documents": 5,
+              "JSEventListeners": 549,
+              "Nodes": 2189,
+              "JSHeapUsedSize": 3415480
+            },
+            {
+              "cycle": 1,
+              "Documents": 5,
+              "JSEventListeners": 842,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 3780540
+            },
+            {
+              "cycle": 2,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 3913424
+            },
+            {
+              "cycle": 3,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4001840
+            },
+            {
+              "cycle": 4,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4088600
+            },
+            {
+              "cycle": 5,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4118832
+            },
+            {
+              "cycle": 6,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4131044
+            },
+            {
+              "cycle": 7,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4141304
+            },
+            {
+              "cycle": 8,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4178844
+            },
+            {
+              "cycle": 9,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4203720
+            },
+            {
+              "cycle": 10,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4222344
+            },
+            {
+              "cycle": 11,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4230508
+            },
+            {
+              "cycle": 12,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4279756
+            },
+            {
+              "cycle": 13,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4285616
+            },
+            {
+              "cycle": 14,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4289576
+            },
+            {
+              "cycle": 15,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4304184
+            },
+            {
+              "cycle": 16,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4306348
+            },
+            {
+              "cycle": 17,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4312360
+            },
+            {
+              "cycle": 18,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4317048
+            },
+            {
+              "cycle": 19,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4327248
+            },
+            {
+              "cycle": 20,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4349408
+            },
+            {
+              "cycle": 21,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4367072
+            },
+            {
+              "cycle": 22,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4375696
+            },
+            {
+              "cycle": 23,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4382316
+            },
+            {
+              "cycle": 24,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4448344
+            },
+            {
+              "cycle": 25,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4450432
+            },
+            {
+              "cycle": 26,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4453800
+            },
+            {
+              "cycle": 27,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4474388
+            },
+            {
+              "cycle": 28,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4478532
+            },
+            {
+              "cycle": 29,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4483740
+            }
+          ]
+        }
+      ]
+    },
+    "privateMemoryInterpretation": "30 cycles alternate Full graph filters and canceled unsaved custom-editor drafts, then Free mode. No page errors; nodes/listeners stable2190/985 by cycle5 through29. Post-GC heap cycle5->29 4118832->4483740 bytes. No zero-leak/flat-heap claim; no new records saved."
+  },
+  "finalContentAudit": {
+    "files": 305,
+    "scopes": [
+      "src",
+      "apps/web/src",
+      "packages/ui/src",
+      "tools"
+    ],
+    "nonemptyExactDuplicateGroups": [],
+    "limits": "Does not establish zero semantic duplication or unreferenced CSS; active startup/platform adapters retained underCHG-051."
+  },
+  "canonicalRun785a69b": {
+    "runId": 39587543820,
+    "validate": "success",
+    "publicScreenshots": "success",
+    "previewScreenshots": "317 passed,1 failed: resume test called synthetic ready before input attachment at practice-start:122",
+    "performance": "still running at this observation"
+  },
+  "testSynchronizationRepair": {
+    "file": "visual-tests/practice-start.spec.js",
+    "change": "Wait for observable synthetic inputActive before manual ready; hold resume permission explicitly and assert connecting/no input until release",
+    "unchanged": [
+      "application sources",
+      "timing thresholds and clocks",
+      "existing scenario assertions",
+      "screenshot/image baselines",
+      "test retries and CI gates"
+    ],
+    "localPreview": 6,
+    "localPublic": 6
+  }
 }

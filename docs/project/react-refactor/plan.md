@@ -11,10 +11,10 @@ Work goes to **b only**. Dev synchronization is paused to save credits; main rem
 | P0 — Baselines and safety net | Complete |
 | P1 — Typed route/context/service boundaries | Complete |
 | P2 — Shared shell and reusable controls | Structural scope verified |
-| P3 — Home and gun management | Presentation/handoff scope verified; startup-fallback retirement stays in P7 |
-| P4 — Settings, Learn and Live Listen | Presentation/handoff scope verified for Settings, Learn and Live Listen; native fallback retirement stays in P7 |
-| P5 — Drills and History | Presentation/runtime handoffs verified; startup cleanup stays P7 |
-| P6 — Practice, Sequence and guides | Presentation/runtime handoffs locally verified; native startup cleanup remains P7 |
+| P3 — Home and gun management | Presentation/handoff scope verified; startup adapters retained under CHG-051 |
+| P4 — Settings, Learn and Live Listen | Presentation/handoff scope verified for Settings, Learn and Live Listen; startup adapters retained under CHG-051 |
+| P5 — Drills and History | Presentation/runtime handoffs verified; intentional startup ownership documented |
+| P6 — Practice, Sequence and guides | Presentation/runtime handoffs verified; intentional startup ownership documented |
 | P7 — Cleanup, optimization and final acceptance | Cleanup and CHG-051 architecture decision recorded; final navigation performance CI pending |
 
 Canonical checkpoint `496c850` is fully green: [run39556414876](https://github.com/matosaru/dryfire/actions/runs/39556414876) passes validation, public/preview Chromium+WebKit screenshots, both original performance gates, identical-build controls and the public deliberate-slowdown proof.945 tests /138 suites and the unchanged coverage ratchet pass. Earlier timing/payload failures remain in historical evidence, but are not the status of this revision. P7 remains active for measured native first-entry retirement, remaining package/semantic-duplicate cleanup and memory audit; P8 follows cleanup acceptance. See [retained-owner audit](p7-retained-owner-audit.md).

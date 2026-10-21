@@ -26,6 +26,10 @@ async function configure(page, autoReady = true, delay = '1', handoff = false) {
   await page.locator('#safetyModalAck').check();
   await page.locator('#safetyConfirmBtn').click();
 }
+const markInputReady = async page => {
+  await expect.poll(() => page.evaluate(() => window.__visualAudio.inputActive())).toBe(true);
+  await page.evaluate(() => window.__visualAudio.ready());
+};
 const countdown = async page => {
   await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase', 'countdown');
   await expect(page.locator('#practicePauseBtn')).toBeEnabled();
@@ -37,7 +41,7 @@ test('countdown waits for real input and shows microphone before GO', async ({ p
   await page.clock.runFor(1200);
   await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase', 'connecting');
   expect(await page.evaluate(() => window.__visualAudio.cues)).toEqual([]);
-  await page.evaluate(() => window.__visualAudio.ready());
+  await markInputReady(page);
   await countdown(page);
   await expect(page.locator('#practiceSignal')).toHaveText('1');
   await expect(page.locator('#practiceLevelPanel')).toBeVisible();
@@ -114,12 +118,20 @@ test('React run/review handoff retains microphone identity, readiness, pause/res
  await configure(page,false,'1',true);
  const meter=await page.locator('#practiceLevelPanel').elementHandle();
  await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase','connecting');
- await page.evaluate(()=>window.__visualAudio.ready());await countdown(page);
+ await markInputReady(page);await countdown(page);
  expect(await meter.evaluate(node=>node===document.getElementById('practiceLevelPanel'))).toBe(true);
  await page.clock.runFor(1120);await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase','active');
  await page.locator('#practicePauseBtn').click();await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase','paused');
  expect(await page.evaluate(()=>window.__visualAudio.inputActive())).toBe(false);
- await page.locator('#practiceResumeBtn').click();await page.evaluate(()=>window.__visualAudio.ready());await countdown(page);
+ await page.evaluate(()=>{
+  const acquire=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+  navigator.mediaDevices.getUserMedia=(...args)=>new Promise(resolve=>{window.__releaseResumeInput=()=>resolve(acquire(...args));});
+ });
+ await page.locator('#practiceResumeBtn').click();
+ await expect.poll(()=>page.evaluate(()=>typeof window.__releaseResumeInput)).toBe('function');
+ await expect(page.locator('#practiceRun')).toHaveAttribute('data-phase','connecting');
+ expect(await page.evaluate(()=>window.__visualAudio.inputActive())).toBe(false);
+ await page.evaluate(()=>window.__releaseResumeInput());await markInputReady(page);await countdown(page);
  await page.locator('#practiceStopBtn').click();await expect(page.locator('#practiceReview')).toBeVisible();
  await expect(page.locator('#practiceReview')).toHaveAttribute('data-react-session','');
  await expect(page.locator('#practiceSaved')).toHaveText('Saved on this device');
