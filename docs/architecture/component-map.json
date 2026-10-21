@@ -609,5 +609,14 @@
       "tests/afterPaint.test.js"
     ],
     "contract": "Prepare optional Settings React enhancement in a task after the native screen frame. Initial controls/handlers remain immediately usable; later-entry handoff guards unchanged."
+  },
+  "runtimeArchitecture": {
+    "decision": "docs/architecture/decisions/001-progressive-react-startup.md",
+    "guide": "docs/architecture/application-structure.md",
+    "htmlEntry": "index.html",
+    "browserEntry": "src/main.js",
+    "buildEntry": "vite.config.js",
+    "compositionEntry": "tools/page-templates.mjs",
+    "policy": "Typed prerender plus immediate startup adapters; guarded lazy React ownership, one writer per region. Original performance gates unchanged."
   }
 }

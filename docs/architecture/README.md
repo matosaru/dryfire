@@ -1,5 +1,7 @@
 # Site and application architecture
 
+Read the [component structure and application entry-point guide](application-structure.md) for build/browser startup, screen owners, shared packages and deliberate progressive startup boundaries. [Decision001](decisions/001-progressive-react-startup.md) records CHG-051.
+
 The [site tree](site-tree.md) is generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. The app has one public address, `/`; its thirteen functional screens, including separate CHG-029 About and Contact, are history-backed UI states, not separate server routes or indexable pages.
 
 CHG-026 adds a separate [future cloud-services proposal](cloud-services-proposal.md) and [planned public topology](../seo/README.md#planned-public-topology--chg-026). These are not implemented routes or registry entries. Contact is now an app state; its public server route remains proposed. Add account/public-page states to the maintained tree only when code and reviewed designs exist.

@@ -1,0 +1,271 @@
+{
+  "date": "2026-10-21",
+  "sourceParent": "48466f88f4ca5b4acee7ea34673e77d928207880",
+  "priorCI": {
+    "runId": 39584821542,
+    "validate": "success",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "performancePublic": "navigation load timed out at30000ms; no completed comparison",
+    "performancePreview": "confirmed Chromium navigation median27.6->29ms,37/40 slower pairs; original policy unchanged"
+  },
+  "change": "Look up registered screen hosts by direct document.getElementById instead of CSS selector parsing; same IDs/class toggles/ownership/order",
+  "localVerification": {
+    "affectedTests": 20,
+    "publicBrowserWorkflows": 10,
+    "payloadPublic": {
+      "jsRaw": 166223,
+      "jsGzip": 50557,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "timingErrors": [],
+    "timingComparisons": {
+      "cold": {
+        "baseline": {
+          "median": 734.2000000476837,
+          "p95": 746.8999999761581,
+          "samples": [
+            729.3999999761581,
+            734.2000000476837,
+            746.8999999761581,
+            728.0999999642372
+          ]
+        },
+        "candidate": {
+          "median": 701.1999999880791,
+          "p95": 729,
+          "samples": [
+            701.1999999880791,
+            695.4000000357628,
+            682.5,
+            729
+          ]
+        },
+        "slowerPairs": 1,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -64.39999997615814,
+            "upper": 0.9000000357627869
+          },
+          "p95": {
+            "lower": -51.499999940395355,
+            "upper": -0.3999999761581421
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "warm": {
+        "baseline": {
+          "median": 246,
+          "p95": 258.60000002384186,
+          "samples": [
+            246,
+            241.79999995231628,
+            242.5,
+            258.60000002384186
+          ]
+        },
+        "candidate": {
+          "median": 268.89999997615814,
+          "p95": 299.89999997615814,
+          "samples": [
+            299.89999997615814,
+            210.69999998807907,
+            215.30000001192093,
+            268.89999997615814
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": true,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -31.099999964237213,
+            "upper": 53.89999997615814
+          },
+          "p95": {
+            "lower": -27.19999998807907,
+            "upper": 53.89999997615814
+          }
+        },
+        "regression": false,
+        "interpretation": "Point signal not confirmed after resampling; retain uncertainty, no speedup claimed."
+      },
+      "returning": {
+        "baseline": {
+          "median": 339.2999999523163,
+          "p95": 346.10000002384186,
+          "samples": [
+            319.19999998807907,
+            346.10000002384186,
+            322.80000001192093,
+            339.2999999523163
+          ]
+        },
+        "candidate": {
+          "median": 393.5999999642372,
+          "p95": 417.5999999642372,
+          "samples": [
+            393.5999999642372,
+            309.7999999523163,
+            276.5999999642372,
+            417.5999999642372
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": true,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -46.200000047683716,
+            "upper": 78.30000001192093
+          },
+          "p95": {
+            "lower": -36.300000071525574,
+            "upper": 78.30000001192093
+          }
+        },
+        "regression": false,
+        "interpretation": "Point signal not confirmed after resampling; retain uncertainty, no speedup claimed."
+      },
+      "firstAction": {
+        "baseline": {
+          "median": 73,
+          "p95": 96.19999998807907,
+          "samples": [
+            96.19999998807907,
+            65.89999997615814,
+            59.89999997615814,
+            73
+          ]
+        },
+        "candidate": {
+          "median": 74.60000002384186,
+          "p95": 81.89999997615814,
+          "samples": [
+            60.5,
+            74.60000002384186,
+            69.80000001192093,
+            81.89999997615814
+          ]
+        },
+        "slowerPairs": 3,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -35.69999998807907,
+            "upper": 9.900000035762787
+          },
+          "p95": {
+            "lower": -26.399999976158142,
+            "upper": 8.899999976158142
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "navigation": {
+        "baseline": {
+          "median": 79.80000001192093,
+          "p95": 111.80000001192093,
+          "samples": [
+            111.80000001192093,
+            79.80000001192093,
+            74.19999998807907,
+            76.30000001192093
+          ]
+        },
+        "candidate": {
+          "median": 85.69999998807907,
+          "p95": 99.69999998807907,
+          "samples": [
+            85.69999998807907,
+            66.69999998807907,
+            67.20000004768372,
+            99.69999998807907
+          ]
+        },
+        "slowerPairs": 1,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -26.100000023841858,
+            "upper": 23.399999976158142
+          },
+          "p95": {
+            "lower": -26.100000023841858,
+            "upper": 23.399999976158142
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "clickFeedback": {
+        "baseline": {
+          "median": 158.80000001192093,
+          "p95": 168.69999998807907,
+          "samples": [
+            168.69999998807907,
+            135.19999998807907,
+            115.30000001192093,
+            158.80000001192093
+          ]
+        },
+        "candidate": {
+          "median": 140.29999995231628,
+          "p95": 140.4000000357628,
+          "samples": [
+            140.4000000357628,
+            116.10000002384186,
+            126.60000002384186,
+            140.29999995231628
+          ]
+        },
+        "slowerPairs": 1,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -28.299999952316284,
+            "upper": 11.300000011920929
+          },
+          "p95": {
+            "lower": -28.299999952316284,
+            "upper": -8.599999964237213
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      }
+    },
+    "timingScope": "4-pair system Chromium diagnostic; not canonical acceptance"
+  },
+  "architectureDecision": "CHG-051/decision001: retain tested startup adapters and original gates",
+  "references": "CSS,390 reference images,83 captures,12 GIFs unchanged",
+  "cache": "v65",
+  "publication": "b only; no main/dev/deployment"
+}

@@ -563,7 +563,7 @@ function displayView(name) {
   activeView=name;
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
-  for(const view of PAGE_IDS) $('#'+view+'View').classList.toggle('hidden',view!==name);
+  for(const view of PAGE_IDS) document.getElementById(view+'View').classList.toggle('hidden',view!==name);
   setMessage();
   if(name==='practiceGuide'){
     const guideModule=preparePageModule('practiceGuide',()=>import('../apps/web/src/app/guideContents.tsx'));

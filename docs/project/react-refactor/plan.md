@@ -15,7 +15,7 @@ Work goes to **b only**. Dev synchronization is paused to save credits; main rem
 | P4 — Settings, Learn and Live Listen | Presentation/handoff scope verified for Settings, Learn and Live Listen; native fallback retirement stays in P7 |
 | P5 — Drills and History | Presentation/runtime handoffs verified; startup cleanup stays P7 |
 | P6 — Practice, Sequence and guides | Presentation/runtime handoffs locally verified; native startup cleanup remains P7 |
-| P7 — Cleanup, optimization and final acceptance | Active:12 templates, unused compiler work and25 CSS wrappers retired; native startup/package/optimization remain |
+| P7 — Cleanup, optimization and final acceptance | Cleanup and CHG-051 architecture decision recorded; final navigation performance CI pending |
 
 Canonical checkpoint `496c850` is fully green: [run39556414876](https://github.com/matosaru/dryfire/actions/runs/39556414876) passes validation, public/preview Chromium+WebKit screenshots, both original performance gates, identical-build controls and the public deliberate-slowdown proof.945 tests /138 suites and the unchanged coverage ratchet pass. Earlier timing/payload failures remain in historical evidence, but are not the status of this revision. P7 remains active for measured native first-entry retirement, remaining package/semantic-duplicate cleanup and memory audit; P8 follows cleanup acceptance. See [retained-owner audit](p7-retained-owner-audit.md).
 
@@ -46,7 +46,8 @@ Canonical checkpoint `496c850` is fully green: [run39556414876](https://github.c
 - [x] P6: parent runtime handoffs preserve exact native Configure nodes, live child roots and guide figure; exclusive parent/context/manual ports, direct guarded actions, drafts/focus/rollback and both-edition checks verified.
 - [x] P7: retire12 unused layout/chrome/page templates and unused run-fragment compilation; readiness tests use actual compiled UI and complete app HTML remains byte-identical.
 - [x] P7: flatten25 import-only CSS wrappers into the single ordered entry, preserving leaf owners and exact expanded/minified CSS.
-- [ ] P7: retire native startup fallbacks/adapters, finish remaining package boundaries and optimize against the original baseline.
+- [x] P7: audit obsolete consumers and package boundaries; retain active progressive startup adapters under CHG-051, sharing tested presentation decisions and preserving original performance limits.
+- [ ] P7: verify final direct-ID navigation optimization in canonical both-edition CI.
 - [x] Original payload/timing and both-edition automated acceptance pass for496c850 in canonical run39556414876.
 - [ ] Final acceptance: finish remaining P7 cleanup/memory review, then rerun acceptance for the final implementation revision.
 - [ ] Owner release: checked b→main PR, owner-managed deployment and physical iPhone acceptance.
@@ -154,11 +155,11 @@ Native packaging, SEO implementation, accounts, billing, monetization and cloud 
 
 ## P8 — Post-acceptance architecture review and handoff
 
-Requested by the owner on 2026-10-20. Start only after P7 final acceptance; this task does not replace or weaken any functional, visual, data, edition or performance gate.
+Requested by the owner on 2026-10-20. The handoff may be prepared as factual documentation while final CI runs, but P8 is accepted only after P7 final acceptance; it does not replace or weaken any functional, visual, data, edition or performance gate. CHG-051 resolves the previously open architecture choice.
 
-- [ ] Review the final page architecture against the approved specification and reusable-template boundaries; identify any remaining adapters or intentional native islands.
-- [ ] Publish the final component structure/tree with pages, shared shell/templates, UI packages, feature services and their source/CSS/test/public-entry locations. Update the existing [component map](../../architecture/component-map.json) and [page-template documentation](../../architecture/page-templates.md), keeping one maintained ownership registry rather than a duplicate map.
-- [ ] Explain the application entry points with exact file links: HTML/build entry, browser bootstrap, React root/mount boundaries, lazy page loading, shared layout and edition selection. Include a short startup-flow diagram and distinguish build-time rendering from browser runtime.
+- [x] Review architecture and record intentional startup/platform islands in decision001 and the retained-owner audit.
+- [x] Prepare the component structure/tree, shared shell/templates, page source/CSS/test links, feature services and package entry locations in [application-structure.md](../../architecture/application-structure.md). Update the existing [component map](../../architecture/component-map.json) and [page-template documentation](../../architecture/page-templates.md), keeping one maintained ownership registry rather than a duplicate map.
+- [x] Explain the application entry points with exact file links: HTML/build entry, browser bootstrap, React root/mount boundaries, lazy page loading, shared layout and edition selection. Include a short startup-flow diagram and distinguish build-time rendering from browser runtime.
 - [ ] Verify every screen maps to its final template/components and tests; document any remaining limitations explicitly. Run architecture and documentation checks against the accepted revision.
 
 Deliver the reviewed final structure and entry-point explanation to the owner. Documentation only unless the review discovers a separately tracked defect; do not silently reopen product scope or change main/dev.
@@ -248,3 +249,9 @@ Completed a305-file exact-content scan (zero duplicate groups) and consumer revi
 First-entry History now consumes the same typed recognition/evaluation models as React History. Score/date/caption/actual-label fallback and percentage formatting have one implementation; native verification listeners and asynchronous gun/generation guards remain unchanged. Independent frozen-renderer coverage now checks all sequence/score branches on both paths. Cache v64 delivers changed assets. Verified953 tests /138 suites, unchanged coverage ratchet,24 affected tests, type/lint/architecture/docs,16 smoke checks,4 public +8 preview local browser workflows, both minified editions and original static payload gates. Public critical JS166205/50558 raw/gzip, preview167781/51027; CSS61451/13011 and image/GIF references unchanged. [Evidence](p7-history-shared-model-evidence.json).
 
 Reconfirmed the existing React hydration-only floor:219424 raw /67811 gzip, before application features, exceeds the original public critical-JS50807gzip budget. Removing every native first-entry path by eagerly loading React cannot meet that unchanged requirement. The owner has been asked whether to retain tested progressive startup adapters as the final architecture, or revise the startup performance requirement. This is a concrete conflict between the approved P7 retirement approach and performance invariant, not permission to silently weaken gates or declare cleanup complete. Pending architecture resolution, remaining native startup writers stay active and P7/P8 are not marked finished. Main/dev remain frozen; deployment owner-managed.
+
+### CHG-051 architecture resolution and final navigation verification — 2026-10-21
+
+The owner delegated the startup decision with “use your judgement”. Selected progressive React with retained tested startup adapters; [decision001](../../architecture/decisions/001-progressive-react-startup.md) documents costs, one-writer guards and unchanged performance/visual/data/edition invariants. This replaces unconditional first-entry retirement, not the original acceptance gates. Prepared [application structure/entry-point handoff](../../architecture/application-structure.md), including all13 page source/CSS/test links,25 shared components,38 source packages, browser/build/lazy-root flow and maintenance boundaries.
+
+Observed CI39584821542 at48466f8: validation and both screenshot jobs pass; public performance times out on page.goto and preview confirms a small Chromium navigation slowdown27.6→29ms (37/40 slower pairs). Preserve that failure. The navigation loop now directly resolves the same13 registered screen host IDs instead of repeatedly parsing CSS selectors.20 affected tests,10 public all-theme/layout/History/offline workflows and original payload budget pass; a4-pair original-revision local timing diagnostic also passes unchanged policy. Cache v65. [Evidence](final-acceptance-evidence.json). Full final-revision canonical acceptance is pending; no refactor-completion, main/dev or deployment claim yet.

@@ -142,6 +142,6 @@ The generic strict UI audit reports **72 findings**: six native-select owner dec
 
 ## Completion and release
 
-All 13 screen interiors and the single shell must have tested owners; no obsolete parallel HTML/DOM renderer or duplicate styling remains. Pure/audio/storage implementations may keep their existing file locations when moving them has no value. Update ownership maps and remove obsolete code only after consumers and reference checks pass.
+All 13 screen interiors and the single shell must have tested owners; no obsolete parallel HTML/DOM renderer or duplicate styling remains. CHG-051 retains consumer-audited progressive startup adapters as intentional first-entry/failure boundaries, with exclusive guarded React ownership after handoff; unconditional eager React startup is not required. See [decision001](../../architecture/decisions/001-progressive-react-startup.md). Original performance/visual/data/coverage gates remain unchanged. Pure/audio/storage implementations may keep their existing file locations when moving them has no value. Update ownership maps and remove obsolete code only after consumers and reference checks pass.
 
 Shared increments enter b, then synchronize into dev preserving Full configuration. Only a checked b → main PR promotes production. The owner manages Cloudflare. A merged PR, test success or prepared artifact is not evidence of live deployment. [plan.md](plan.md) specifies gates, rollback and status; CHG-049 authorizes implementation through its gates.

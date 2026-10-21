@@ -612,3 +612,11 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 - Scope: continue the approved structural migration with functional, visual, data/edition and payload checks; retain known timing debt for final optimization. No design, product behavior or test-baseline change is authorized.
 - Acceptance: timing reports and gates remain unchanged and honestly failing where applicable. Final release still requires original-baseline performance acceptance. Dev remains paused under the existing cost-saving instruction; main is unchanged/PR-only.
 - Tracking: [active refactor plan](react-refactor/plan.md).
+
+## CHG-051 — Delegated startup architecture resolution
+
+- Date: 2026-10-21 (Europe/Vilnius).
+- Evidence: after asking what the native first-entry renderers were and receiving the explanation, the owner said **“use your judgement”** regarding retaining the tested adapters versus revising startup performance requirements.
+- Chosen implementation: retain progressive startup adapters and guarded lazy React ownership. Preserve the original performance budgets, visuals, behavior, data, edition and test invariants. This resolves the unconditional-retirement objective; active adapters are intentional boundaries, while obsolete consumers/duplicate formatting/styles must still be cleaned up.
+- Exact rationale and consequences: [architecture decision001](../architecture/decisions/001-progressive-react-startup.md). No claim of React-only runtime rendering, zero duplication, zero memory overhead or hardware/deployment acceptance.
+- Work remains b only; main/dev unchanged. Complete automated acceptance and the final component/entry-point handoff. No further product scope is authorized.
