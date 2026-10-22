@@ -634,6 +634,6 @@
       "visual-tests/learning-runtime.spec.js",
       "visual-tests/drills-runtime.spec.js"
     ],
-    "contract": "Only two known typed catalog roots serialize to non-executable text. Practice prepares after the first usable screen paints, with synchronous first-Drills fallback; calibration expands before first Learn. Only trusted compiler-escaped static output is parsed once into the existing host. Exact DOM, delegated handlers, current availability and exclusive page ownership survive; no stored/user HTML enters this path."
+    "contract": "Only two known typed catalog roots serialize compiler-escaped markup to data-catalog on the existing host; no extra script/template nodes. Practice prepares after the first usable screen paints, with synchronous first-Drills fallback; calibration expands before first Learn. Only trusted compiler-escaped static output is parsed once into the existing host. Exact DOM, delegated handlers, current availability and exclusive page ownership survive; no stored/user HTML enters this path."
   }
 }

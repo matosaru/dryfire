@@ -1,8 +1,9 @@
-/** Expand only repository-owned build output on entry to its hidden page.
- * This is never stored/user HTML; typed renderers escape all interpolated text. */
+/** Expand only trusted compiler-escaped catalog payloads, never stored/user HTML.
+ * The host and delegated actions survive; consumed payloads cannot run twice. */
 export function materializeStaticCatalog(host) {
-  const source=host.firstElementChild;
-  if(source?.tagName==='SCRIPT' && source.type==='text/plain') {
-    source.outerHTML=source.textContent;
+  const markup=host.dataset.catalog;
+  if(markup!==undefined) {
+    delete host.dataset.catalog;
+    host.innerHTML=markup;
   }
 }

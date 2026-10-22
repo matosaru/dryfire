@@ -588,7 +588,7 @@ function displayView(name) {
     }
   }
   if(name==='drills'){
-    if($('#practiceCatalog>script'))practiceController.renderCatalog();
+    if($('#practiceCatalog').dataset.catalog!==undefined)practiceController.renderCatalog();
     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}

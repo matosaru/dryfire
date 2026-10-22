@@ -101,5 +101,23 @@
       "ratchet": "pass"
     },
     "finalLocalPublicBrowser": 14
+  },
+  "normalCI39726986360": {
+    "source": "a190f9a",
+    "validate": "success, 963 tests/140 suites",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "performancePreview": "success",
+    "performancePublic": "failed: WebKit warm median 38 to 44 ms, p95 42 to 52, 38/40 slower",
+    "acceptance": "failed; original gates retained"
+  },
+  "v74Candidate": {
+    "change": "Existing-host escaped data-catalog, quoted attributes retained; no additional script/template parser nodes. OXC/LightningCSS and original gates unchanged.",
+    "advisoryRun": 39728971313,
+    "advisoryCheck": 119659352560,
+    "advisory": "Pinned 3-sample crossed-source diagnostic only; old HTML/old JS ready 54 ms, new HTML/new JS 48 ms. Not canonical acceptance.",
+    "localCoverage": "963 tests/140 suites and coverage ratchet passed",
+    "previewWorkflows": 14,
+    "canonicalCI": "pending publication"
   }
 }

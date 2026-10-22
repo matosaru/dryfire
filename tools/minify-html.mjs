@@ -4,7 +4,7 @@ import { minify } from 'html-minifier-terser';
  * text, SVG case, structure and raw script/style content retain their values. */
 export async function minifyProductionHtml(html) {
   const body = html.match(/(<body\b[^>]*>)([\s\S]*)(<\/body\s*>)/i);
-  const options = { removeAttributeQuotes: true, caseSensitive: true,
+  const options = { removeAttributeQuotes: false, collapseBooleanAttributes: true, caseSensitive: true,
     keepClosingSlash: true, collapseWhitespace: false, removeComments: false,
     ignoreCustomFragments: [/\bclass="[^"]*"/, /\bid="previewTestMode"/] };
   if (!body) return minify(html, options);
