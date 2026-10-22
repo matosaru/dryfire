@@ -1,5 +1,9 @@
 name: Diagnose parser representations
-on: workflow_dispatch
+on:
+  push:
+    branches: [b]
+    paths: [.github/workflows/diagnose-parser.yml, tools/performance/diagnose-parser.mjs]
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
