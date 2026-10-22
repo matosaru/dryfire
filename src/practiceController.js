@@ -1,5 +1,4 @@
 import { textElement as node } from './textElement.js';
-import { practiceResultDetails, renderPracticeRun, renderPracticeReview } from './sessionPresentation.js';
 import { startContinuousListening } from './audio.js';
 import { recognitionFeatures, recognizeRecording, selectRecognition } from './recognition.js';
 import { classify, MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
@@ -16,7 +15,9 @@ const $ = id => document.getElementById(id);
 
 /** Six modes share one capture lifecycle, engine, configuration and durable review. */
 export function createPracticeController({ getContext, titleFor, ensureSafe, onNavigate, onBack, onChange, onError, onStatus,
-  onProcessing, vibrationEnabled, onVibration, onCatalogLock }) {
+  onProcessing, vibrationEnabled, onVibration, onCatalogLock, loadPresentation = () => import('./sessionPresentation.js') }) {
+  let presentation;
+  const preparePresentation = async () => presentation ??= await loadPresentation();
   let mode = 'single', state = null, review = null, microphone = null, cue = null, abortCapture = null;
   let pending = false, saving = false, closing = false, saveError = null, savedRevision = null;
   let operation = 0, captureToken = 0, readToken = 0, timer = null, tickQueued = false, interruption = null;
@@ -114,8 +115,8 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     renderSteps(required);
   }
   function renderSteps(labels){const steps=labels.map(label=>({text:titleFor(label),className:'preset-chip'}));if(page)page.update({steps});else $('practiceSteps').replaceChildren(...steps.map(step=>node('span',step.text,step.className)));}
-  const details = row => practiceResultDetails(row, { node, titleFor });
-  const renderReview = record => renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details, present:presentReview });
+  const details = row => presentation.practiceResultDetails(row, { node, titleFor });
+  const renderReview = record => presentation.renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details, present:presentReview });
   function render() {
     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
     const running = pending || state && state.phase !== 'review';
@@ -129,7 +130,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       renderReview(record); return;
     }
     if (!running) { configure(); return; }
-    renderPracticeRun({ $, state, mode, pending, clock, microphone, readConfig, interruption, closing, saving, inputFeedback, renderInput, details, node, present:presentRun });
+    presentation.renderPracticeRun({ $, state, mode, pending, clock, microphone, readConfig, interruption, closing, saving, inputFeedback, renderInput, details, node, present:presentRun });
   }
   async function persist() {
     if (!state) return;
@@ -264,6 +265,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     finally { if (token === operation) { pending = false; changed(); } }
   }
   function interrupt(reason = 'ended') {
+    ++readToken; // Navigation cancels pending configuration/review imports as well as capture.
     if (interruption) return interruption;
     if (!pending && (!state || state.phase === 'review')) return Promise.resolve();
     ++operation; pending = true; stopTimer(); const capturedTimes = times();
@@ -277,14 +279,17 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   async function open(id, config = null) {
     if (locked() || getContext().available === false || !practiceDefinition(id)) return;
     const token = ++readToken, owner = getContext().gun?.id;
-    await configQueue; const saved = await getGunSetting('practiceConfig', {}, owner);
+    await configQueue; const [saved] = await Promise.all([getGunSetting('practiceConfig', {}, owner), preparePresentation()]);
     if (token !== readToken || owner !== getContext().gun?.id || locked() || getContext().available === false) return;
     routeKey = crypto.randomUUID(); mode = id; state = null; review = null; saveError = null; savedRevision = null;
     try { fillConfig(config || saved[id] || {}); } catch { fillConfig({}); }
     changed(); onNavigate('practice'); $('practice-title').setAttribute('tabindex', '-1'); $('practice-title').focus();
   }
-  function showRecord(record) {
+  async function showRecord(record) {
     if (locked() || record.gunId !== getContext().gun?.id || record.kind !== 'practice') return;
+    const token = ++readToken;
+    try { await preparePresentation(); } catch (error) { if (token === readToken) onError(error); return; }
+    if (token !== readToken || locked() || record.gunId !== getContext().gun?.id) return;
     routeKey = crypto.randomUUID(); mode = record.practiceMode; state = null; review = structuredClone(record); saveError = null; savedRevision = null;
     fillConfig(record.config); changed(); onNavigate('practice');
   }

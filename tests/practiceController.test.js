@@ -22,6 +22,7 @@ const library = JSON.parse(readFileSync(new URL('../visual-tests/fixtures/librar
 const originalClone = globalThis.structuredClone;
 describe.each([false,true])('Practice controller React presentation %s',react=>{
 let mounted,parent;
+let loadPresentation;
 let controller, context, callbacks, input, captureCalled, session, options, cueTimes;
 const $ = id => document.getElementById(id);
 const submit = () => $('practiceConfigForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
@@ -39,13 +40,50 @@ beforeEach(() => {
   capture.mockReset().mockImplementation(async value => { options = value; captureCalled.resolve(); return session; });
   get.mockReset().mockImplementation(async (_key, fallback) => fallback); set.mockReset().mockResolvedValue(undefined); save.mockReset().mockResolvedValue(undefined);
   cue.prepare.mockReset().mockResolvedValue(true); cue.play.mockReset().mockImplementation(() => { cueTimes.push(performance.now()); return true; }); cue.close.mockReset().mockResolvedValue(undefined);
-  controller = createPracticeController({ ...callbacks, getContext: () => context, titleFor: label => label, vibrationEnabled: () => false });
+  loadPresentation=()=>import('../src/sessionPresentation.js');
+  controller = createPracticeController({ ...callbacks,loadPresentation:()=>loadPresentation(), getContext: () => context, titleFor: label => label, vibrationEnabled: () => false });
   if(react){controller.connectView((...args)=>(mounted=mountPracticeContents(...args)));controller.connectPage((...args)=>(parent=mountPracticePage(...args)),event=>event.preventDefault());}
 });
 afterEach(async () => {
   await controller.interrupt('test-cleanup');
   mounted?.dispose();mounted=null;parent?.dispose();parent=null;
   jest.useRealTimers(); globalThis.structuredClone = originalClone; document.body.replaceChildren();
+});
+
+
+test('presentation loading completes before configuration and a switched gun cancels the pending open',async()=>{
+ const loading=deferred();loadPresentation=jest.fn(()=>loading.promise);
+ const opening=controller.open('single',config);await jest.advanceTimersByTimeAsync(0);
+ expect(loadPresentation).toHaveBeenCalledTimes(1);expect(capture).not.toHaveBeenCalled();expect(callbacks.onNavigate).not.toHaveBeenCalled();
+ context={...context,gun:library.guns[1]};controller.reset();loading.resolve(await import('../src/sessionPresentation.js'));await opening;
+ expect(callbacks.onNavigate).not.toHaveBeenCalled();expect(capture).not.toHaveBeenCalled();
+});
+test('navigation cancels a pending configuration import without reopening its page',async()=>{
+ const loading=deferred();loadPresentation=()=>loading.promise;const opening=controller.open('single',config);
+ await jest.advanceTimersByTimeAsync(0);await controller.interrupt('navigation');loading.resolve(await import('../src/sessionPresentation.js'));await opening;
+ expect(callbacks.onNavigate).not.toHaveBeenCalled();expect(capture).not.toHaveBeenCalled();
+});
+test('a cancelled saved-review load does not announce a stale network error',async()=>{
+ const loading=deferred();loadPresentation=()=>loading.promise;const opening=controller.showRecord(library.sessions[0]);
+ await controller.interrupt('navigation');loading.reject(new Error('Late unavailable chunk'));await opening;
+ expect(callbacks.onError).not.toHaveBeenCalled();expect(callbacks.onNavigate).not.toHaveBeenCalled();expect(capture).not.toHaveBeenCalled();
+});
+test('a failed presentation import leaves configuration retryable without acquiring audio',async()=>{
+ const failure=new Error('Presentation unavailable');loadPresentation=jest.fn().mockRejectedValueOnce(failure).mockImplementation(()=>import('../src/sessionPresentation.js'));
+ await expect(controller.open('single',config)).rejects.toBe(failure);expect(callbacks.onNavigate).not.toHaveBeenCalled();expect(capture).not.toHaveBeenCalled();
+ await controller.open('single',config);expect(callbacks.onNavigate).toHaveBeenCalled();expect(capture).not.toHaveBeenCalled();
+});
+test('a reset invalidates a delayed saved-review load',async()=>{
+ const loading=deferred();loadPresentation=()=>loading.promise;const record=library.sessions[0];
+ const opening=controller.showRecord(record);expect(callbacks.onNavigate).not.toHaveBeenCalled();controller.reset();
+ loading.resolve(await import('../src/sessionPresentation.js'));await opening;expect(callbacks.onNavigate).not.toHaveBeenCalled();expect(capture).not.toHaveBeenCalled();
+ await controller.showRecord(record);expect(callbacks.onNavigate).toHaveBeenCalled();expect(capture).not.toHaveBeenCalled();
+});
+test('saved-review load errors are visible and a retry preserves the record',async()=>{
+ const record=library.sessions[0],before=JSON.stringify(record),failure=new Error('Presentation unavailable');
+ loadPresentation=jest.fn().mockRejectedValueOnce(failure).mockImplementation(()=>import('../src/sessionPresentation.js'));
+ await controller.showRecord(record);expect(callbacks.onError).toHaveBeenCalledWith(failure);expect(callbacks.onNavigate).not.toHaveBeenCalled();
+ await controller.showRecord(record);expect(callbacks.onNavigate).toHaveBeenCalled();expect(JSON.stringify(record)).toBe(before);expect(capture).not.toHaveBeenCalled();
 });
 
 test('presentation connects once, rejects locked handoff and can retry after a failed mount',async()=>{

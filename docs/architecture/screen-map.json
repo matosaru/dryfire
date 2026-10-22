@@ -796,12 +796,12 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "d30a5438fd60716cc8dce4d8df2ecebc4a8e8b017ea53bfcd1c7bf2c5e089ac9",
+    "src/main.js": "aaf5ef37fb1d38e9c689262eb099d9566bfde6fb1c97760988434287577ddccc",
     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
-    "src/practiceController.js": "fc5d92b133f0fa03c2d5d96b78cb6edf156bad56761752ee33fe24f58409230a",
-    "src/sessionController.js": "f6308bb01179468d03ed31198185a62e8f279a6cc61834158771150af9b3024a",
+    "src/practiceController.js": "28d1d29937e8255b5e9f1542df2d0ce58a6a80df6dbdfcbe0c5afea3cdd433b8",
+    "src/sessionController.js": "79ff9a03fa2855fa9e356077e3941fccd24eb44730f8dc995349b54a9028b342",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "ddb90d63a692d8fdd1d4fb3ba98a46e5ddd17175d132e0c1f43b3168924442e2",
     "src/optional/progressView.js": "805ba1662d80ef752939044aefc1497842d7bd914fb9fc5c49b941fe7ee4bf69",
@@ -991,8 +991,8 @@
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "tools/minify-html.mjs": "987c8e851e7b9efba787bd4e45608b4512c7c20cc65ce3a05c908303584187f8",
-    "src/staticCatalog.js": "050f48277d3261b0fe2ffa081953297519b3632e14dc216a4c129e30ba9af782",
-    "tools/static-catalog.mjs": "179826ddd7810c6ff322f171e4a860881ddcac5c5c97767d4c08c80b4de08374"
+    "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
+    "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247"
   },
   "implementationChanges": [
     "CHG-017",

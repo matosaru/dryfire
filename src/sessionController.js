@@ -1,5 +1,4 @@
 import { textElement as node } from './textElement.js';
-import { sequenceResultDetails, renderSequenceRun, renderSequenceReview } from './sessionPresentation.js';
 import { startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
@@ -16,7 +15,9 @@ const $ = selector => document.querySelector(selector);
 
 /** Dedicated timed sessions; free listening retains its own capture lifecycle. */
 export function createSessionController({ getContext, titleFor, ensureSafe, onNavigate, onBack,
-  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord }) {
+  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord, loadPresentation = () => import('./sessionPresentation.js') }) {
+  let presentation;
+  const preparePresentation = async () => presentation ??= await loadPresentation();
   let selection = null;
   let state = null;
   let review = null;
@@ -104,8 +105,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if(page)page.update({steps:rows,presetName});else{const host=$('#sessionSteps');host.replaceChildren(...rows.map(row=>node('li',row.text,row.className)));$('#sessionPresetName').textContent=presetName;}
   }
 
-  const resultDetails = row => sequenceResultDetails(row, { node, titleFor });
-  const renderReview = record => renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails, present:presentReview });
+  const resultDetails = row => presentation.sequenceResultDetails(row, { node, titleFor });
+  const renderReview = record => presentation.renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails, present:presentReview });
 
   function announce(text) {
     if (text !== lastAnnouncement) {
@@ -126,7 +127,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if (record && !running) { renderReview(record); return; }
     updateReadiness();
     if (!running) return;
-    renderSequenceRun({ $, state, pending, clock, microphone, readConfig, savedRevision, titleFor, resultDetails, announce, node, present:presentRun });
+    presentation.renderSequenceRun({ $, state, pending, clock, microphone, readConfig, savedRevision, titleFor, resultDetails, announce, node, present:presentRun });
   }
 
   async function persist() {
@@ -289,6 +290,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   }
 
   function interrupt(reason = 'ended') {
+    ++readToken; // Navigation cancels pending configuration/review imports as well as capture.
     if (interruption) return interruption;
     if (!locked()) return Promise.resolve();
     const token = ++operation;
@@ -324,7 +326,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     const token = ++readToken;
     const gunId = getContext().gun?.id;
     await configQueue;
-    const saved = config || await getGunSetting('drillConfig', DEFAULT_SESSION_CONFIG, gunId);
+    const [saved] = await Promise.all([config || getGunSetting('drillConfig', DEFAULT_SESSION_CONFIG, gunId), preparePresentation()]);
     if (token !== readToken || getContext().gun?.id !== gunId || locked()) return;
     selection = structuredClone(drill);
     state = null;
@@ -336,8 +338,11 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     $('#session-title').setAttribute('tabindex', '-1'); $('#session-title').focus();
   }
 
-  function showRecord(record) {
+  async function showRecord(record) {
     if (locked() || record.gunId !== getContext().gun?.id) return;
+    const token = ++readToken;
+    try { await preparePresentation(); } catch (error) { if (token === readToken) onError(error); return; }
+    if (token !== readToken || locked() || record.gunId !== getContext().gun?.id) return;
     state = null; review = structuredClone(record); saveError = null; savedRevision = null;
     selection = { id: record.drillId, title: record.drillTitle, steps: [...record.drillSteps] };
     fillConfig(record.config);

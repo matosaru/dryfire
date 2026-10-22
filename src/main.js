@@ -588,7 +588,7 @@ function displayView(name) {
     }
   }
   if(name==='drills'){
-    if($('#practiceCatalog').dataset.catalog!==undefined)practiceController.renderCatalog();
+    if($('#practiceCatalog').firstElementChild?.tagName==='TEMPLATE')practiceController.renderCatalog();
     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
@@ -1226,8 +1226,8 @@ async function init() {
   else switchView('home');
   const recoveredForGun = recovered.find(record => record.gunId === activeGun?.id);
   if (recoveredForGun && !activeGun?.needsDetails) {
-    if (recoveredForGun.kind === 'practice') practiceController.showRecord(recoveredForGun);
-    else sessionController.showRecord(recoveredForGun);
+    if (recoveredForGun.kind === 'practice') await practiceController.showRecord(recoveredForGun);
+    else await sessionController.showRecord(recoveredForGun);
   }
   setStatus('Ready');
   afterPaint(practiceController.renderCatalog).catch(showError);

@@ -167,5 +167,30 @@
         13011
       ]
     }
+  },
+  "normalCI39817683863": {
+    "source": "c3c8903",
+    "validate": "success",
+    "performancePreviewPrimary": "pass",
+    "performancePublicPrimary": "FAIL: WebKit warm40/42 to46/53 ms,39/40 slower; median interval5 to8 ms. DOMInteractive16 to23.",
+    "remainingJobs": "Cancellation requested after failure because v76 supersedes source. Do not infer passing whole-run acceptance.",
+    "conclusion": "not accepted; onboarding guard alone does not solve startup"
+  },
+  "v76Candidate": {
+    "change": "Shared sessionPresentation module now loads before configuration/saved-review instead of startup. Controllers preserve models/capture and invalidate pending imports on navigation/reset/gun changes; failures are visible/retryable. Restore established inert-template catalog movement; remove experimental runtime HTML-string expansion.",
+    "focused": "106 tests/5 suites pass",
+    "coverage": "987 tests/140 suites + original ratchet pass",
+    "publicWorkflows": "20 pass, including native/React parity, guides, session lifetime and installed offline refresh",
+    "publicCriticalRawGzip": [
+      156872,
+      47683
+    ],
+    "cssRawGzip": [
+      61451,
+      13011
+    ],
+    "preview": "20 workflows pass; critical JS158445raw/48147gzip",
+    "canonicalCI": "pending publication",
+    "staticChecks": "type/lints/architecture/docs and16 smoke pass"
   }
 }

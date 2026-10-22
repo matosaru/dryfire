@@ -113,13 +113,13 @@
     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
-    "src/main.js": "d30a5438fd60716cc8dce4d8df2ecebc4a8e8b017ea53bfcd1c7bf2c5e089ac9",
+    "src/main.js": "aaf5ef37fb1d38e9c689262eb099d9566bfde6fb1c97760988434287577ddccc",
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
     "tools/minify-html.mjs": "987c8e851e7b9efba787bd4e45608b4512c7c20cc65ce3a05c908303584187f8",
-    "src/staticCatalog.js": "050f48277d3261b0fe2ffa081953297519b3632e14dc216a4c129e30ba9af782",
-    "tools/static-catalog.mjs": "179826ddd7810c6ff322f171e4a860881ddcac5c5c97767d4c08c80b4de08374",
+    "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
+    "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
     "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c"
   },
@@ -313,5 +313,9 @@
   "chg052SettingsPreparationReview": {
     "date": "2026-10-22",
     "scope": "Skip optional Settings framework preparation before gun setup. Native onboarding controls and post-profile React handoff pass browser workflows. No guide/run/template/CSS/frame change; retain reviewed GIF bytes."
+  },
+  "chg052LazyPresentationReview": {
+    "date": "2026-10-22",
+    "scope": "Same shared Practice/Sequence presentation loads before configuration/review, outside initial startup. Inert catalogs move compiler-owned template nodes; no runtime stored/user HTML parsing. Full987/140 suite and20 public guide/layout/session/offline workflows pass. Frame models, compiled CSS and encoded GIF bytes unchanged; no media rebaseline."
   }
 }

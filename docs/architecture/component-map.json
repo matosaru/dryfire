@@ -634,6 +634,22 @@
       "visual-tests/learning-runtime.spec.js",
       "visual-tests/drills-runtime.spec.js"
     ],
-    "contract": "Only two known typed catalog roots serialize compiler-escaped markup to data-catalog on the existing host; no extra script/template nodes. Practice prepares after the first usable screen paints, with synchronous first-Drills fallback; calibration expands before first Learn. Only trusted compiler-escaped static output is parsed once into the existing host. Exact DOM, delegated handlers, current availability and exclusive page ownership survive; no stored/user HTML enters this path."
+    "contract": "Two known typed catalog roots use inert template nodes; Practice prepares after usable paint with synchronous first-entry fallback, calibration before Learn. Move trusted nodes once without parsing stored/user HTML, preserving host, handlers, current availability and exclusive ownership."
+  },
+  "sessionPresentationLoading": {
+    "source": "src/sessionPresentation.js",
+    "consumers": [
+      "src/practiceController.js",
+      "src/sessionController.js"
+    ],
+    "contract": "On-demand shared presentation resolves before configuration/review and therefore before microphone/countdown. Navigation/reset/gun changes invalidate pending reads; failures keep data and allow retry. Same shared models/native/React renderers.",
+    "tests": [
+      "tests/practiceController.test.js",
+      "tests/sequenceController.test.js",
+      "tests/sessionPresentationPort.test.js",
+      "visual-tests/session-runtime.spec.js",
+      "visual-tests/practice-guides.spec.js",
+      "visual-tests/offline.spec.js"
+    ]
   }
 }

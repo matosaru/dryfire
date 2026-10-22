@@ -10,7 +10,7 @@ import {renderCalibrationCatalog} from '../apps/web/src/app/renderCalibrationCat
 import {PRACTICE_MODES} from '../src/practiceSession.js';
 test.each([['practiceCatalog',()=>renderPracticeCatalog(PRACTICE_MODES)],['calibrationCards',renderCalibrationCatalog]])('%s expands to the exact typed DOM once without replacing its host or delegated handlers',(_id,render)=>{
  const html=render();document.body.innerHTML=deferStaticCatalog(html);const host=document.body.firstElementChild;const click=jest.fn();host.addEventListener('click',click);
- expect(host.querySelectorAll('button')).toHaveLength(0);expect(host.children).toHaveLength(0);expect(typeof host.dataset.catalog).toBe('string');materializeStaticCatalog(host);expect(document.body.firstElementChild).toBe(host);
+ expect(host.querySelectorAll('button')).toHaveLength(0);expect(host.children).toHaveLength(1);expect(host.firstElementChild.tagName).toBe('TEMPLATE');expect(host.firstElementChild.content.querySelector('button')).not.toBeNull();materializeStaticCatalog(host);expect(document.body.firstElementChild).toBe(host);
  const original=document.createElement('div');original.innerHTML=html;expect(host.outerHTML).toBe(original.firstElementChild.outerHTML);
  const button=host.querySelector('button');button.disabled=false;button.click();expect(click).toHaveBeenCalledTimes(1);materializeStaticCatalog(host);expect(host.querySelector('button')).toBe(button);expect(host.querySelector('script,template')).toBeNull();
 });
