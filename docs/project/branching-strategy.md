@@ -61,3 +61,9 @@ The opt-in [Actions deployment workflow](../../.github/workflows/deploy.yml) acc
 Tag the exact verified production commit after release. Record its PR, CI, Worker deployment/version and data-format implications. Roll back to a known-good Worker version when necessary, then follow with a checked b → main fix PR. Never rewrite main or delete browser data. Schema 3 / backup format 4 stay unchanged.
 
 Publication, PR merge, server enforcement, Cloudflare deployment and physical-device validation are separate facts in [the delivery tracker](implementation-history.md).
+
+## CHG-056 pre-merge acceptance
+
+Check the entire application candidate before merging/promoting into any branch: unit/coverage, integration, public/preview builds/artifact verification, pinned Chromium/WebKit screenshot suites and the unchanged performance gate. Focused checks are useful during development but are insufficient for merge acceptance. Pending/cancelled/failing checks block the merge. Keep the current b-only/main-dev freeze instruction until the owner changes it.
+
+For an unmerged worktree lacking local pinned browsers, commit a review-only patch below `docs/design/review-inputs/` and run `Test and build` via workflow_dispatch with `candidate_patch` set to its repository-relative path. The existing gates apply the patch only to the candidate root checkout, never the immutable performance baseline. Record the exact patch hash/run, resolve all failures, then apply/publish that accepted application candidate. A patch does not prove that a later differing candidate passed. Standard post-push CI remains enabled.
