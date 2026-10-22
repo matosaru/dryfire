@@ -1,5 +1,7 @@
 # P7 retained owner and memory audit
 
+> Final status (2026-10-22): this audit records the496c850 checkpoint. Shared History presentation was subsequently delivered; CHG-051 intentionally retains active startup owners. P7/P8 now pass final acceptance at8a8906e; see the [completed plan](plan.md). Retirement conditions below are optional future redesign conditions, not unfinished approved work.
+
 Reviewed 2026-10-21 against b application revision `496c850`.
 
 ## Canonical acceptance checkpoint

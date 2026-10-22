@@ -927,5 +927,32 @@
     "imageGifFrameBaselines": "unchanged",
     "cache": "v68",
     "canonical": "pending publication"
+  },
+  "finalAcceptance": {
+    "observedDate": "2026-10-22",
+    "sourceRevision": "8a8906e42c3d9342c9343f2e096ee5f5469d5f68",
+    "runId": 39598533411,
+    "url": "https://github.com/matosaru/dryfire/actions/runs/39598533411",
+    "conclusion": "success",
+    "jobs": {
+      "validate": "success",
+      "screenshots (public)": "success",
+      "screenshots (preview)": "success",
+      "performance (public)": "success",
+      "performance (preview)": "success",
+      "screenshots": "success"
+    },
+    "localFullCoverage": {
+      "tests": 959,
+      "suites": 140
+    },
+    "originalGatesPreserved": true,
+    "architectureDecision": "CHG-051: retain tested progressive startup adapters and guarded lazy React owners",
+    "scope": "b only; no main/dev updates, release merge or manual deployment",
+    "remainingOwnerChecks": [
+      "release promotion",
+      "Cloudflare deployment verification",
+      "physical iPhone Safari/Home Screen acceptance"
+    ]
   }
 }

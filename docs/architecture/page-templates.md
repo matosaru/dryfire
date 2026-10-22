@@ -1,5 +1,7 @@
 # Reusable page architecture
 
+> Final status (2026-10-22): refactor accepted under CHG-051 with retained progressive startup adapters. The [application structure guide](application-structure.md) and [completed plan](../project/react-refactor/plan.md) describe current ownership; migration milestones below are historical.
+
 CHG-037 · 2026-10-12. All existing SPA screens at `/` use one shared template architecture; there is no separate wrapper copied into each page.
 
 ```text

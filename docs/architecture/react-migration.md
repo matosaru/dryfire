@@ -1,5 +1,7 @@
 # Incremental React architecture — CHG-047
 
+> Final status (2026-10-22): refactor accepted under CHG-051 with retained progressive startup adapters. The [application structure guide](application-structure.md) and [completed plan](../project/react-refactor/plan.md) describe current ownership; migration milestones below are historical.
+
 CHG-048 prepares the remaining migration in [spec.md](../project/react-refactor/spec.md) and [plan.md](../project/react-refactor/plan.md). CHG-049 approves those documents and autonomous staged implementation. The linked article is now read, and expanded coverage/performance preparation must precede the next production-code slice.
 
 The owner started the [refactor plan](../project/react-refactor-plan.md). This is an incremental migration, not a completed React rewrite. [component-map.json](component-map.json) records all 13 screen owners and their existing behavior-test entry points. Browser screen/state coverage remains in [screen-map.json](screen-map.json) and the pinned visual catalog. Neither map claims complete branch coverage.
