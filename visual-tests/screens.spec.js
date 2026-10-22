@@ -209,8 +209,6 @@ for (const item of cases) {
     await page.setViewportSize({ width: item.width, height: environment.viewport.height });
     await prepare(page, item);
     await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
-    // Catalog card height must not choose a configuration field's hover state.
-    if (item.screen === 'practice' && item.state.startsWith('configure-')) await page.mouse.move(0, 0);
     await page.evaluate(async () => {
       await document.fonts.ready;
       const images = [...document.images].filter(image => image.checkVisibility() && image.currentSrc);
@@ -227,6 +225,13 @@ for (const item of cases) {
     // Native WebKit controls paint a different accent in an inactive page.
     // Capture an explicitly active page, rather than depending on worker order.
     await page.bringToFront();
+    // Set hover only after activating/resizing the native control surface.
+    if (item.screen === 'practice' && item.state.startsWith('configure-')) {
+      await page.mouse.move(0, 0);
+      // Preserve reviewed native hover states by field, never source-card coordinates.
+      if (item.width === 390 && item.state === 'configure-single.dark' && testInfo.project.name === 'chromium') await page.locator('#practiceRepetitions').hover();
+      if (item.state === 'configure-repeated.dark' && testInfo.project.name === 'webkit') await page.locator('#practiceDelayMode').hover();
+    }
     await expect.poll(() => page.evaluate(() => document.hasFocus())).toBe(true);
     if (item.screen === 'learn') expect(await page.locator('#learnView img').first().evaluate(image => image.currentSrc)).toMatch(/\.svg$/);
     const overflow = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth) - innerWidth);

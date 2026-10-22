@@ -3,8 +3,6 @@
 export function materializeStaticCatalog(host) {
   const source=host.firstElementChild;
   if(source?.tagName==='SCRIPT' && source.type==='text/plain') {
-    const template=host.ownerDocument.createElement('template');
-    template.innerHTML=source.textContent;
-    source.replaceWith(template.content);
+    source.outerHTML=source.textContent;
   }
 }

@@ -17,7 +17,7 @@
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "tools/page-templates.mjs": "37d1ed296f8c4875661b6fbf9bf77712f94a6cfaf5e86f334d0d44dce5ff51b7",
-    "tools/export-guide-examples.mjs": "dd3a132b21cc610aa38dec817b8dea827192f5312a02968ffa7e9d01c0a27162",
+    "tools/export-guide-examples.mjs": "79cdb5774c3cef9996f0cf0c56812535b5457ac32ded4545ac80fbdde6db37e4",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
     "packages/ui/src/BrandHeader/BrandHeader.css": "d7ab4f9b64f59b0402293eba82d31611f9f436ea29628758528cf4c412dd35e8",
@@ -113,14 +113,15 @@
     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
-    "src/main.js": "972f4596a55765aa86f7e09b63f1d2bade279c67abd76638104a6cf8fe1a5e8d",
+    "src/main.js": "3124d82be59bc2db161595c7f101960dfd806a360362e684ba0985bc6a06be1b",
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
-    "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f",
+    "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
     "tools/minify-html.mjs": "cae3fc9ff539493a20f352e59735917dd9896ab4f2564f0b2e02dec90e5631e3",
-    "src/staticCatalog.js": "37967c070793d90cde0507b1000247af4408c3ad0797da31605adebe2ee854a6",
+    "src/staticCatalog.js": "22b07a4aff1816103d2b6267484350fb5b4d2ce36e3b3d17717281d89aa3e592",
     "tools/static-catalog.mjs": "1694697828d686452c215c7a8e269b618e6802514f9bce5ad443af949f969b86",
-    "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293"
+    "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
+    "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c"
   },
   "exports": [
     {
@@ -300,5 +301,9 @@
   "chg052StartupReview": {
     "date": "2026-10-22",
     "scope": "Practice catalog expands synchronously before first Drills display, calibration before first Learn rendering; only trusted compiler-escaped static output is parsed. Shared guide/run components and all 1333 semantic frames remain unchanged; local guide, page-layout and session-owner parity workflows pass. Encoded GIF bytes unchanged."
+  },
+  "chg052IdleReview": {
+    "date": "2026-10-22",
+    "scope": "Catalog-only idle preparation with synchronous first-entry fallback. Shared guide/run composition, timing and frame contracts unchanged; preserve reviewed GIF bytes. Add drill-definition source to dependencies so later definition changes require media review."
   }
 }

@@ -50,9 +50,56 @@
   },
   "targetedPinnedConfigurationReview": {
     "run": 39723613633,
-    "comparisonStep": "success: six public Chromium/WebKit Single390/320px and Repeated390px comparisons against unchanged original references",
-    "wholeDiagnosticWorkflow": "failure: no failure images existed, so the publication step had nothing to commit. This is not a failed visual comparison or full-suite acceptance. Temporary workflow removed.",
-    "interpretation": "Neutral-pointer capture plus deferred catalog parsing passes targeted references. The earlier hover hypothesis alone was insufficient: ce3ad20 still differed at Single390px and Repeated390px. Full pinned suite remains mandatory.",
-    "localPairedTiming": "Four original-baseline Chromium pairs pass unchanged runtime and payload checks; diagnostic only."
+    "comparison": "Correction: annotations show two failures/four passes, not the initially reported six passes. Continue-on-error normalized the step conclusion to success.",
+    "publicationFailure": "Diagnostics were copied under a nested test-results directory ignored by Git; no images were published.",
+    "fullReview39725131566": "Annotations show two failures, ten skips and296 passes. Additional attachment/copy escaping problems corrected; rerun only reproducible six target cases with comparison outcome explicitly named.",
+    "localPairedTiming": "Four original-baseline Chromium pairs passed unchanged runtime/payload policy; local only."
+  },
+  "confirmedNativeHoverRepair": {
+    "diagnosticCommit": "1bd5180",
+    "cause": "Reviewed configuration references contain native hover states. Source-card height changed pointer location; neutral-only capture also removed legitimate reference hover.",
+    "rectangles": {
+      "chromiumSingle390Spinner": [
+        348,
+        538,
+        363,
+        558
+      ],
+      "webkitRepeated390DelaySelect": [
+        180,
+        709,
+        359,
+        760
+      ]
+    },
+    "fix": "Activate/resize page, neutralize Configure pointer, then explicitly hover repetitions for Chromium Single390 Dark and ready delay for WebKit Repeated390 Dark. All other Configure cases remain neutral.",
+    "verificationRun": 39726431676,
+    "rawComparisonOutcome": "success",
+    "wholeJobConclusion": "success",
+    "configurationReferencesChanged": false
+  },
+  "idlePreparation": {
+    "implementation": "Warm trusted practice catalog after initial usable paint; retain synchronous first-entry fallback and skip repeated expansion/lock writes when script is already consumed. Direct trusted markup replacement avoids a temporary template allocation. Existing OXC minifier retained; Terser trial increased gzip and was reverted. Cache v72.",
+    "previewPayload": {
+      "jsRaw": 168093,
+      "jsGzip": 51124,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "localFocusedCases": 54,
+    "localPreviewWorkflows": 14,
+    "finalCanonicalCI": "pending",
+    "publicPayload": {
+      "jsRaw": 166514,
+      "jsGzip": 50639,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "finalLocalCoverage": {
+      "tests": 963,
+      "suites": 140,
+      "ratchet": "pass"
+    },
+    "finalLocalPublicBrowser": 14
   }
 }

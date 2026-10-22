@@ -1,5 +1,4 @@
 import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
-import { afterPaint } from './afterPaint.js';
 import { createModulePreparation } from './modulePreparation.js';
 import {distancePresentation,liveDrillPresentation} from '../apps/web/src/features/live-listen/presentation.ts';
 import { preferencePresentation } from '../apps/web/src/features/settings/preferencePresentation.ts';
@@ -33,6 +32,7 @@ import {
   getCalibrationExamples, addCalibrationExample, clearCalibrationExamples,
 } from './storage.js';
 import {materializeStaticCatalog} from './staticCatalog.js';
+import { afterPaint } from './afterPaint.js';
 
 const labelMeta = {
   draw: { title: 'Draw from holster', description: 'Holster release and presentation sounds', tone: 'blue' },
@@ -588,7 +588,7 @@ function displayView(name) {
     }
   }
   if(name==='drills'){
-    practiceController.renderCatalog();
+    if($('#practiceCatalog>script'))practiceController.renderCatalog();
     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
@@ -1229,6 +1229,7 @@ async function init() {
     else sessionController.showRecord(recoveredForGun);
   }
   setStatus('Ready');
+  afterPaint(practiceController.renderCatalog).catch(showError);
 }
 
 const informationPages = createInformationBridge({ onBack: () => goBack(), onError: showError, onNavigate: name => { if (screenNavigation) switchView(name); },

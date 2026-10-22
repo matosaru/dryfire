@@ -796,7 +796,7 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "972f4596a55765aa86f7e09b63f1d2bade279c67abd76638104a6cf8fe1a5e8d",
+    "src/main.js": "3124d82be59bc2db161595c7f101960dfd806a360362e684ba0985bc6a06be1b",
     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
@@ -989,9 +989,9 @@
     "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
-    "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f",
+    "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "tools/minify-html.mjs": "cae3fc9ff539493a20f352e59735917dd9896ab4f2564f0b2e02dec90e5631e3",
-    "src/staticCatalog.js": "37967c070793d90cde0507b1000247af4408c3ad0797da31605adebe2ee854a6",
+    "src/staticCatalog.js": "22b07a4aff1816103d2b6267484350fb5b4d2ce36e3b3d17717281d89aa3e592",
     "tools/static-catalog.mjs": "1694697828d686452c215c7a8e269b618e6802514f9bce5ad443af949f969b86"
   },
   "implementationChanges": [

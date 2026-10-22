@@ -25,8 +25,8 @@ export const DRILLS = Object.freeze([
   }),
 ]);
 
-// Display only multi-action built-ins; retain every definition for saved sessions.
-export const SEQUENCE_DRILLS = Object.freeze(DRILLS.filter(drill => drill.steps.length > 1));
+// The first definition is retained legacy trigger-only; display the remaining built-ins.
+export const SEQUENCE_DRILLS = Object.freeze(DRILLS.slice(1));
 
 const SOUND_LABELS = Object.freeze(['draw', 'rack', 'trigger', 'reload']);
 
