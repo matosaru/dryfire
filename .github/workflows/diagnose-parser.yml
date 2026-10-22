@@ -25,12 +25,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Trust the two diagnostic checkouts
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/.performance-baseline"
       - run: npm ci --no-audit --no-fund
       - run: npm ci --no-audit --no-fund
         working-directory: .performance-baseline
       - run: npm run build
         working-directory: .performance-baseline
-      - run: npm run build
+      - name: Build candidate and expose any build failure
+        run: |
+          node --input-type=module <<'JS'
+          import {spawnSync} from 'node:child_process';
+          const result=spawnSync('npm',['run','build'],{encoding:'utf8'});
+          process.stdout.write(result.stdout||'');process.stderr.write(result.stderr||'');
+          if(result.status){const message=((result.stderr||'')+(result.stdout||'')).replaceAll('%','%25').replaceAll('\r','%0D').replaceAll('\n','%0A');console.log('::error title=Diagnostic build failure::'+message);process.exit(result.status);}
+          JS
       - run: node --experimental-vm-modules tools/performance/diagnose-parser.mjs
       - uses: actions/upload-artifact@v4
         if: always()
