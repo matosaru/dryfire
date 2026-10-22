@@ -1,4 +1,4 @@
-name: Inspect configuration screenshots in full suite
+name: Inspect configuration screenshot differences
 on:
   push:
     branches: [b]
@@ -30,20 +30,22 @@ jobs:
         run: |
           node --input-type=module - <<'JS'
           import {readFileSync,writeFileSync} from 'node:fs';
-          const p='visual-tests/screens.spec.js';let s=readFileSync(p,'utf8');s=s.replace("    await expect(page).toHaveScreenshot(baselineName(item).split('/'));", "    if (item.screen === 'practice' && /^configure-(single|repeated)\\./.test(item.state)) await testInfo.attach('configuration-review', {body:await page.screenshot({animations:'disabled',caret:'hide',scale:'css'}),contentType:'image/png'});\n    await expect(page).toHaveScreenshot(baselineName(item).split('/'));");writeFileSync(p,s);
+          const p='visual-tests/screens.spec.js';let s=readFileSync(p,'utf8');s=s.replace("    await expect(page).toHaveScreenshot(baselineName(item).split('/'));", "    if (item.screen === 'practice' && (item.state.startsWith('configure-single') || item.state.startsWith('configure-repeated'))) await testInfo.attach('configuration-review', {body:await page.screenshot({animations:'disabled',caret:'hide',scale:'css'}),contentType:'image/png'});\n    await expect(page).toHaveScreenshot(baselineName(item).split('/'));");writeFileSync(p,s);
           JS
       - run: npm ci --no-audit --no-fund
       - run: npm run build
-      - name: Run normal full public browser suite
+      - name: Reproduce the same two full-suite differences
         id: compare
         continue-on-error: true
-        run: npx playwright test
+        run: npx playwright test screens.spec.js --grep 'practice/configure-(single|repeated)'
+      - name: 'Actual comparison outcome: ${{ steps.compare.outcome }}'
+        run: echo 'Actual comparison outcome: ${{ steps.compare.outcome }}'
       - name: Publish actual configuration and failure images for review
         if: always()
         run: |
           node --input-type=module - <<'JS'
           import {readdirSync,mkdirSync,copyFileSync,existsSync} from 'node:fs';import {join,dirname} from 'node:path';
-          function copy(dir){if(!existsSync(dir))return;for(const x of readdirSync(dir,{withFileTypes:true})){const p=join(dir,x.name);if(x.isDirectory())copy(p);else if(/configuration-review.*\.png$|-(actual|diff|expected)\.png$|error-context\.md$/.test(p)){const out=join('docs/design/review-candidates/chg-052-full-config',p);mkdirSync(dirname(out),{recursive:true});copyFileSync(p,out);}}}copy('test-results');
+          function copy(dir){if(!existsSync(dir))return;for(const x of readdirSync(dir,{withFileTypes:true})){const p=join(dir,x.name);if(x.isDirectory())copy(p);else if(p.endsWith('.png') && (p.includes('configuration-review') || ['-actual.png','-diff.png','-expected.png'].some(s=>p.endsWith(s)))){const out=join('docs/design/review-candidates/chg-052-full-config',p.slice('test-results/'.length));mkdirSync(dirname(out),{recursive:true});copyFileSync(p,out);}}}copy('test-results');
           JS
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
