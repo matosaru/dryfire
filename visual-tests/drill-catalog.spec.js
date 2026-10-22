@@ -13,11 +13,14 @@ test('practice and sequence cards share presentation without duplicate trigger c
   await expect(page.locator('#homeView')).toBeVisible();
   for (let visit = 0; visit < 2; visit++) {
     await page.locator('.tab[data-view="drills"]').click();
+    await expect(page.getByRole('heading', { name: 'Trigger Press Group', exact: true })).toBeVisible();
+    await expect(page.locator('#practiceCatalog h3')).toHaveText(['Single trigger press', 'Repeated trigger press', 'Par time practice', 'Trigger control']);
+    await expect(page.locator('[data-practice-mode="reload"], [data-practice-mode="free"]')).toHaveCount(0);
     await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(3);
     await expect(page.locator('#drillCatalog h3')).toHaveText(['Rack slide → Trigger pull', 'Magazine change → Trigger pull', 'Draw from holster → Magazine change → Trigger pull']);
-    await expect(page.locator('#practiceCatalog .preset-header .drill-target')).toHaveCount(6);
-    await expect(page.locator('#practiceCatalog .drill-description')).toHaveCount(6);
-    await expect(page.locator('#practiceCatalog button')).toHaveText(Array(6).fill('▶ Start Drill'));
+    await expect(page.locator('#practiceCatalog .preset-header .drill-target')).toHaveCount(4);
+    await expect(page.locator('#practiceCatalog .drill-description')).toHaveCount(4);
+    await expect(page.locator('#practiceCatalog button')).toHaveText(Array(4).fill('▶ Start Drill'));
     await page.locator('[data-practice-mode="single"]').click();
     await expect(page.locator('#practiceConfigure')).toBeVisible();
     await expect(page.locator('#practiceStartBtn')).toBeVisible();

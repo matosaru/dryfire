@@ -80,7 +80,7 @@ test('older over-cap profiles and calibration restore and export intact while ne
 });
 test('running practice recovers as interrupted without erasing its partial', async () => {
   const gun = await createGun({ name: 'A', type: 'Handguns' });
-  let state = createPractice({ id: 'in-progress', gun, mode: 'reload', config, monoNow: 0, epochNow: 1000 });
+  let state = createPractice({ id: 'in-progress', gun, mode: 'single', config, monoNow: 0, epochNow: 1000 });
   state = tickPractice(state, { monoNow: 0, epochNow: 1000 });
   state = detectPractice(state, { label: 'rack', score: 80, detectedAtMs: 100 }, { monoNow: 200, epochNow: 1200 });
   await saveSession(toPracticeRecord(state), gun.id);

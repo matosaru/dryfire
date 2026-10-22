@@ -9,11 +9,12 @@ This is the single current functional index. Markdown requirements define behavi
 | Specification | Authoritative scope | Current application status |
 | --- | --- | --- |
 | [Page layout](page-layout.md) | Shared header/main/footer/fixed navigation across all screens, safe-area/scroll/readiness guards | Implemented with reusable templates; current capture acceptance and CI/publication in the delivery tracker |
+| [Live Listen availability](live-listen-readiness.md) | Consistent navigation, capture readiness and visible reasons | Approved CHG-053; queued after CHG-052 acceptance |
 | [Core](core.md) | Learning, recognition, safety, resets and navigation invariants | Implemented |
 | [Branding](branding.md) | Dry Fire With Ease display name, DF / WITH EASE lockup, BETA status and shared copyright | Implemented |
 | [Gun profiles](gun-profiles.md) | Names/types, up to five guns and independent owned data | Implemented, including CHG-019 Edit/type images and CHG-020 single-gun/all-owned-data deletion |
 | [Drill sessions](drill-sessions.md) | Built-in/custom sequence editor, Configure / Run / Review | Implemented |
-| [Practice modes](practice-modes.md) | Trigger-first learning, six modes, current run/STOP/microphone behavior | Implemented |
+| [Practice modes](practice-modes.md) | Four discoverable trigger practices, four-mode support, current run/STOP/microphone behavior | Implemented |
 | [Practice start timing](practice-start.md) | CHG-022 actual microphone readiness, early Single failures and louder cue | Implemented and pushed; source CI passes, device/deployment evidence in the delivery tracker |
 | [Practice improvements and input limits](practice-improvements.md) | UPDATE-01–06 and LIMIT-01–03: automatic Single, charts, unknown filtering, screen history, safety modal and complete approved bounds | Implemented |
 | [Persistence](persistence.md) | Local durability, migrations, backups and ownership | Implemented: schema 3 / backup 4; compatible backups and CHG-020 separate recognition/session clearing |

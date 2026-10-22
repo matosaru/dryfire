@@ -50,7 +50,7 @@ packages/
 src/
   main.js                          application orchestration and startup ports
   *Controller.js                   feature/capture/save ownership
-  practiceSession.js               six-mode practice engine
+  practiceSession.js               four-mode practice engine
   drillSession.js                  ordered-sequence engine
   sessionPresentation.js           shared live/example adapter contracts
   audio.js / eventDetector.js      microphone capture and segmentation
@@ -112,3 +112,7 @@ React UI receives props and callbacks; it does not acquire microphones, IndexedD
 For a changed screen, update component-map.json and screen-map.json, retain unique runtime ownership, add meaningful component/integration tests and preserve the source/CSS/test/export package contract. Update this overview when directory roles or entry points change; do not create a competing component registry. Run typecheck, component/runtime lint, verify:architecture, docs:check, coverage:check, both-edition builds/asset checks and affected browser workflows. Use docs:review only after reviewing changed UI sources; regenerate site-tree with docs:generate. Final implementation acceptance uses the original pinned-image both-edition CI gates. iPhone microphone/beep/vibration testing and live deployment remain separately observed work.
 
 Before a valid gun profile exists, Settings keeps its immediately usable native restore/help/preferences controls and does not fetch the React Settings enhancement. Once a valid profile exists, the existing guarded lazy Settings handoff applies. This avoids loading unused framework code during onboarding; no control or feature is hidden. `visual-tests/startup-settings.spec.js` covers both paths.
+
+### Drills discovery — CHG-054
+
+`tools/page-templates.mjs` renders the four-entry `PRACTICE_MODES` discovery list from `src/practiceModes.js` through `PracticeCatalog`; shared `DrillsPage` titles the section Trigger Press Group. The React handoff reuses the prerendered mode descriptors. Sequence drills are unchanged. CHG-055 removes the two retired engines and uses schema 4 to selectively remove only their sessions/configuration; supported practice/sequence records are preserved. The four-mode list now drives discovery and the engine directly.

@@ -9,15 +9,15 @@
     "apps/web/src/pages/ContactPage/ContactPage.css": "48411add5890d908e191a4340ec2a2154fa4a328c578e4daf4b1240ed3775d71",
     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
     "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
-    "src/practiceGuideController.js": "3424acff9a54c769315a13a378763cb58215ca8f52abd3b6d94051b08cd8d508",
+    "src/practiceGuideController.js": "575c8769883a797c8c1ebe73498175548b4618fd50264ad3f9bbce5ec32d7b2f",
     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
-    "src/practiceGuideExamples.js": "f9320f63d1d6435bbd7bcf08b9e95ce516a5b1a644441fb74b2d36fd9a1a68a4",
-    "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
-    "src/practiceGuideManuals.js": "74dd50cccee8826aa572707ca4dee11c9fd8267f7e49c4861a5d9c6e0bd0785d",
-    "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
+    "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
+    "src/practiceGuides.js": "58f31bcb12c220f8f15688a6b2c1173a406945660c7386c52aa0c0a1e6e8dc2e",
+    "src/practiceGuideManuals.js": "da39dc4e262d951d39b854c10364507730509acb3f01f33f94eb37edb189238e",
+    "src/practiceSession.js": "be725b4a893221d0aad3edfd80644a1de308897d26e6601ccd55296b061cb07d",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
-    "tools/page-templates.mjs": "37d1ed296f8c4875661b6fbf9bf77712f94a6cfaf5e86f334d0d44dce5ff51b7",
-    "tools/export-guide-examples.mjs": "79cdb5774c3cef9996f0cf0c56812535b5457ac32ded4545ac80fbdde6db37e4",
+    "tools/page-templates.mjs": "bb899733efa8a4347c5cd6b19774931b9907ebf3e050aea083ea87601b4f1a4a",
+    "tools/export-guide-examples.mjs": "5cf9a642dff74dcc1a39ada83255322c9becec5a073947c3f6bf5f078235a758",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
     "packages/ui/src/BrandHeader/BrandHeader.css": "d7ab4f9b64f59b0402293eba82d31611f9f436ea29628758528cf4c412dd35e8",
@@ -27,7 +27,7 @@
     "apps/web/src/styles/legacy-info-visibility.css": "20364cba9bf4a2abdb5e25bf69477773b3f021a34c6c19b13fbc7895ee2ccf99",
     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css": "540275a1d8e8edd8aff06cf4834bfbbf91ce9685ae770dbe4c01cb6046b21262",
     "packages/ui/src/NumberInput/NumberInput.css": "6b25ec1e508798cc1e6fe16c90c80100f60d71556f9cf1e6b5cf98dce058d806",
-    "src/practiceModes.js": "951d9789e040f8dc39255bfbabcf2c7c6d6f57bc57b166f8bf8ecfc2f348666e",
+    "src/practiceModes.js": "c1a5d624bbaa18c0c7257b27b4c076d048027cf4c79e958dc97488a270278242",
     "apps/web/src/styles/legacy-card-foundation.css": "b8dc5ad4dc139ff9ae3f4d0ee31b46c2d3100f1d0f0e93f2681d21926337ebce",
     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
     "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
@@ -84,7 +84,7 @@
     "packages/ui/src/RepetitionResult/RepetitionResult.details.css": "5b6ac899b74b36ec7bd9ba67dd347abd99024c57177d8e8c5e4cdee07dc5bc27",
     "apps/web/src/styles/legacy-session-review-actions.css": "89addcb480760d6aea765aee8a238569b18c3d5d7ca9b95f438bca9af7914ba9",
     "apps/web/src/features/sessions/resultPresentation.ts": "781e1189119cc9a5e3d284497799827bcff2768ce7687f49235b783cbb007542",
-    "apps/web/src/features/sessions/phasePresentation.ts": "e637cb3e32dea5759d16daa63333498a1f800e1a65ed7d8bfc29ec680ea3df42",
+    "apps/web/src/features/sessions/phasePresentation.ts": "5c788b0f902338a4ec81352b69d8d3d1f1270203e23d0d29510098f583ad9836",
     "apps/web/src/app/sessionContents.tsx": "ad58a14f24a7c0e7c4a856683d1280b661ee82a7e0280e4e0b0570465690d600",
     "apps/web/src/app/practiceContents.tsx": "b2ebc00e6385080155f27b7fac16d964c8f914100b742f0ecdcdce33f2e3cee6",
     "apps/web/src/app/sequenceContents.tsx": "47229b751bc654749387ead6278e542de272ba5e4c75552120982733b554e512",
@@ -104,7 +104,7 @@
     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
     "packages/ui/src/PageHeading/PageHeading.tsx": "49f5e8c76db7f93c4bc5300116b068c1635519fc68c354188eb7a2027d53da58",
     "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "b821b35863c758b011267e99be882a035a45ae80649f4b9fc4860adbdbec748c",
+    "apps/web/src/pages/PracticePage/PracticePage.tsx": "0e79a5db2fc2f9513584c1d7c1dc06e5cfac01fc80540e95c49544ed681fde50",
     "apps/web/src/pages/PracticePage/index.ts": "5b5b81bf639048fdae1497102f8195e6f3e88390603e112e39e0ec56f5ae5876",
     "apps/web/src/pages/SequencePage/SequencePage.tsx": "17190c473bfde32373c78145da097dc1a826f056f33889887a8b3de67494d71f",
     "apps/web/src/pages/SequencePage/index.ts": "35d27d3e9d6ca4e0b66385e97fb718a7aebe519045baa635d7d0cb77dc0465ec",
@@ -166,24 +166,6 @@
       "frameMs": 200,
       "file": "control.gif",
       "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182",
-      "width": 358,
-      "height": 949
-    },
-    {
-      "name": "reload",
-      "frames": 63,
-      "frameMs": 200,
-      "file": "reload.gif",
-      "sha256": "e368a9f55028260969757a4d14139dbc0eaee58e8614452fcdc01e946261c97c",
-      "width": 358,
-      "height": 1004
-    },
-    {
-      "name": "free",
-      "frames": 65,
-      "frameMs": 200,
-      "file": "free.gif",
-      "sha256": "bb1e2a8b9b62a650ab3fa3f99e57eaca1b3fc075bd84e5d03bea970645c0af58",
       "width": 358,
       "height": 949
     },
@@ -317,5 +299,6 @@
   "chg052LazyPresentationReview": {
     "date": "2026-10-22",
     "scope": "Same shared Practice/Sequence presentation loads before configuration/review, outside initial startup. Inert catalogs move compiler-owned template nodes; no runtime stored/user HTML parsing. Full987/140 suite and20 public guide/layout/session/offline workflows pass. Frame models, compiled CSS and encoded GIF bytes unchanged; no media rebaseline."
-  }
+  },
+  "reviewNote": "CHG-055 removes two obsolete examples; ten retained example media hashes are unchanged. All retained native/typed full-frame characterizations pass (40 focused regression checks incl. migration/statistics). Four-mode configuration/header labels updated in separately collected pinned screenshots. Removed duration/endpoints and engine branches do not change retained example frames or timing."
 }

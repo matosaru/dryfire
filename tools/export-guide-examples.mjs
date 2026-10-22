@@ -34,14 +34,14 @@ try {
   await page.locator('#importFile').setInputFiles({ name:'example-library.json', mimeType:'application/json', buffer:Buffer.from(JSON.stringify(library)) });
   await page.locator('#homeView').waitFor({ state:'visible' });
   const now = new Date('2026-10-11T11:00:00Z'); await page.clock.install({ time: now }); await page.clock.pauseAt(now);
-  const cases = ['single','single-early','repeated','par','control','reload','free','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
+  const cases = ['single','single-early','repeated','par','control','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
   const exports = [];
   for (const name of cases.filter(name => !process.argv.includes('--only') || name === process.argv[process.argv.indexOf('--only') + 1])) {
     await page.locator('.tab[data-view="drills"]').click();
     if (name.startsWith('sequence-')) {
       if (name==='sequence-custom') { await page.locator('#customDrillsTab').click(); await page.locator('#customDrillCatalog').getByRole('button', { name:'Start Drill' }).first().click(); }
       else if (name==='sequence-trigger-only') await openLegacySequence(page);
-      else await page.locator('#drillCatalog .preset-card').nth(cases.slice(8).indexOf(name)).getByRole('button', { name:'Start Drill' }).click();
+      else await page.locator('#drillCatalog .preset-card').nth(cases.slice(6).indexOf(name)).getByRole('button', { name:'Start Drill' }).click();
       await page.locator('#sessionGuideLink').click();
     } else { await page.locator(`[data-practice-mode="${name==='single-early'?'single':name}"]`).click(); await page.locator('#practiceGuideLink').click(); }
     if (name==='single-early') await page.locator('#practiceGuideEarlyBtn').click();

@@ -3,7 +3,7 @@ import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import * as presentation from '../src/sessionPresentation.js';
 import {semanticTree} from './helpers/guidePresentation.js';
-const config={repetitions:2,durationSeconds:10,startSource:'app',soundAtStart:true,parSeconds:1.5};
+const config={repetitions:2,startSource:'app',soundAtStart:true,parSeconds:1.5};
 const state={phase:'active',completed:0,remaining:2,revision:0,shots:0,config,repetitions:[],countdownEndsAtMs:null,segmentStartMs:0,elapsedMs:0,practiceMode:'single',drillSteps:['trigger'],current:{stepIndex:0}};
 const record={status:'completed',shots:0,completed:0,remaining:2,gunId:'one',gunName:'One',elapsedMs:0,startedAt:0,practiceMode:'single',config,repetitions:[]};
 function setup(name){document.body.innerHTML=readFileSync(new URL('./fixtures/session-fragments/'+name+'.html',import.meta.url),'utf8');const get=id=>document.getElementById(id),query=selector=>document.querySelector(selector),node=(tag,text,className='')=>{const el=document.createElement(tag);el.textContent=text;el.className=className;return el;};return{get,query,node};}

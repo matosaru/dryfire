@@ -8,7 +8,7 @@ import { normalizePracticeConfig, practiceDefinition, validatePracticeRecord, re
 import { normalizeCalibration, compatibleCalibration, normalizeEnabledLabels, CALIBRATION_KINDS } from './calibration.js';
 
 const DB_NAME = 'dryfire-sound-trainer';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 const EXAMPLES = 'examples';
 const EVENTS = 'events';
 const SETTINGS = 'settings';
@@ -68,6 +68,44 @@ function migrateLegacy(tx) {
   }
 }
 
+// Project prior practice data onto the supported catalog during upgrade/import.
+// Historical IDs occur only at this retirement boundary, never in the engine/UI.
+const retiredPractice = mode => ['reload', 'free'].includes(mode);
+const supportedSession = row => row?.kind !== 'practice' || !retiredPractice(row.practiceMode);
+function currentPracticeConfig(config) {
+  if (!config || typeof config !== 'object' || Array.isArray(config)) return config;
+  return Object.fromEntries(Object.entries(config).filter(([key]) => !['durationSeconds', 'reloadStart', 'reloadEnd'].includes(key)));
+}
+function currentPracticeSettings(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return value;
+  return Object.fromEntries(Object.entries(value).filter(([mode]) => !retiredPractice(mode))
+    .map(([mode, config]) => [mode, currentPracticeConfig(config)]));
+}
+function currentPracticeRecord(row) {
+  if (row.kind !== 'practice') return row;
+  const previousTitles = { repeated: 'Repeated trigger presses', par: 'Par-time practice' };
+  return { ...row, config: currentPracticeConfig(row.config),
+    drillTitle: row.drillTitle === previousTitles[row.practiceMode] ? practiceDefinition(row.practiceMode).title : row.drillTitle };
+}
+function migratePracticeCatalog(tx) {
+  const sessions = tx.objectStore(SESSIONS).openCursor();
+  sessions.onsuccess = () => {
+    const cursor = sessions.result;
+    if (!cursor) return;
+    if (!supportedSession(cursor.value)) cursor.delete();
+    else if (cursor.value.kind === 'practice') cursor.update(currentPracticeRecord(cursor.value));
+    cursor.continue();
+  };
+  const settings = tx.objectStore(GUN_SETTINGS).openCursor();
+  settings.onsuccess = () => {
+    const cursor = settings.result;
+    if (!cursor) return;
+    if (cursor.value.key === 'practiceConfig') cursor.update({ ...cursor.value,
+      value: validatePracticeSetting('practiceConfig', currentPracticeSettings(cursor.value.value)) });
+    cursor.continue();
+  };
+}
+
 function openDb() {
   if (!globalThis.indexedDB) return Promise.reject(new Error('IndexedDB is unavailable on this device.'));
   return new Promise((resolve, reject) => {
@@ -98,6 +136,7 @@ function openDb() {
         if (!store.indexNames.contains('gunId')) store.createIndex('gunId', 'gunId', { unique: false });
       }
       if (event.oldVersion > 0 && event.oldVersion < 2) migrateLegacy(tx);
+      if (event.oldVersion > 0 && event.oldVersion < 4) migratePracticeCatalog(tx);
     };
     request.onsuccess = () => {
       request.result.onversionchange = () => request.result.close();
@@ -764,6 +803,7 @@ function validateBackup(backup) {
     let value = structuredClone(row.value);
     if (row.key === 'customDrills') value = validateCustomDrills(value);
     if (row.key === 'maxResults') value = normalizeMaxResults(value);
+    if (row.key === 'practiceConfig') value = currentPracticeSettings(value);
     value = validatePracticeSetting(row.key, value);
     return { gunId: row.gunId, key: row.key, value };
   });
@@ -833,10 +873,12 @@ function validateBackup(backup) {
   }
   const sessionRows = backup.version >= 3 ? backup.sessions ?? [] : [];
   if (!Array.isArray(sessionRows)) throw new Error('Backup contains invalid saved sessions.');
-  const sessionIds = new Set();
-  const sessions = Array.from(sessionRows, row => {
+  for (const row of sessionRows) {
     if (!row || !gunIds.has(row.gunId)) throw new Error('Backup contains a saved session with an unknown gun owner.');
-    const record = validateSession(row, row.gunId);
+  }
+  const sessionIds = new Set();
+  const sessions = Array.from(sessionRows.filter(supportedSession), row => {
+    const record = validateSession(currentPracticeRecord(row), row.gunId);
     if (sessionIds.has(record.id)) throw new Error('Backup contains duplicated saved session IDs.');
     sessionIds.add(record.id);
     return record;

@@ -69,28 +69,25 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       return readNumberInput($(id));
     };
     return normalizePracticeConfig({
-      repetitions: number('practiceRepetitions', 'repetitions', mode !== 'free'),
-      durationSeconds: number('practiceDuration', 'durationSeconds', mode === 'free'),
+      repetitions: number('practiceRepetitions', 'repetitions'),
       parSeconds: number('practicePar', 'parSeconds', mode === 'par'),
       delayMode, fixedDelaySeconds: number('practiceFixedDelay', 'fixedDelaySeconds', app && delayMode === 'fixed'),
       randomMinSeconds: number('practiceMinDelay', 'randomMinSeconds', app && delayMode === 'random'),
       randomMaxSeconds: number('practiceMaxDelay', 'randomMaxSeconds', app && delayMode === 'random'),
       startSource: $('practiceStartSource').value, soundAtStart: $('practiceStartSound').checked,
-      reloadStart: mode === 'reload' ? $('practiceReloadStart').value : defaults.reloadStart,
-      reloadEnd: mode === 'reload' ? $('practiceReloadEnd').value : defaults.reloadEnd,
     });
   }
   function fillConfig(config) {
     const value = normalizePracticeConfig(config);
-    for (const [id, key] of [['practiceRepetitions','repetitions'],['practiceDuration','durationSeconds'],['practicePar','parSeconds'],
+    for (const [id, key] of [['practiceRepetitions','repetitions'],['practicePar','parSeconds'],
       ['practiceDelayMode','delayMode'],['practiceFixedDelay','fixedDelaySeconds'],['practiceMinDelay','randomMinSeconds'],['practiceMaxDelay','randomMaxSeconds'],
-      ['practiceStartSource','startSource'],['practiceReloadStart','reloadStart'],['practiceReloadEnd','reloadEnd']]) $(id).value = value[key];
+      ['practiceStartSource','startSource']]) $(id).value = value[key];
     $('practiceStartSound').checked = value.soundAtStart;
   }
   function configure() {
     const external = $('practiceStartSource').value === 'external';
-    const visibility = { practiceCountRow: mode !== 'free', practiceDurationRow: mode === 'free', practiceParRow: mode === 'par',
-      practiceReloadFields: mode === 'reload', practiceAppTiming: !external,
+    const visibility = { practiceCountRow: true, practiceParRow: mode === 'par',
+      practiceAppTiming: !external,
       practiceFixedRow: !external && $('practiceDelayMode').value === 'fixed', practiceRandomFields: !external && $('practiceDelayMode').value === 'random' };
     for (const [id, visible] of Object.entries(visibility)) {
       $(id).classList.toggle('hidden', !visible);
@@ -100,7 +97,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const context = getContext();
     let message = '', config;
     try { config = readConfig(); } catch (error) { message = error.message; }
-    const required = practiceLabels(mode, config || normalizePracticeConfig());
+    const required = practiceLabels();
     const counts = trainingCounts(context.examples);
     const missing = required.filter(label => counts[label] < MIN_EXAMPLES_PER_CLASS);
     const missingCue = external && compatibleCalibration(context.calibration || []).filter(row => row.kind === 'cue').length < MIN_EXAMPLES_PER_CLASS;
@@ -224,7 +221,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const context = structuredClone(getContext()), config = resuming ? state.config : readConfig();
     if (context.available === false) return;
     const counts = trainingCounts(context.examples);
-    if (!context.gun || practiceLabels(mode, config).some(label => counts[label] < 3) ||
+    if (!context.gun || practiceLabels().some(label => counts[label] < 3) ||
         (config.startSource === 'external' && context.calibration.filter(row => row.kind === 'cue').length < 3)) { configure(); return; }
     const token = ++operation; pending = true; resetInput(); inputFeedback = ''; changed();
     cue = createStartCuePlayer();
@@ -328,8 +325,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   function guideContext() {
     if (!routeKey || locked() || state || review) return null;
     return { type: 'practice', gunId: getContext().gun?.id, routeKey, mode,
-      config: { reloadStart: $('practiceReloadStart').value, reloadEnd: $('practiceReloadEnd').value,
-        startSource: $('practiceStartSource').value, soundAtStart: $('practiceStartSound').checked } };
+      config: { startSource: $('practiceStartSource').value, soundAtStart: $('practiceStartSound').checked } };
   }
   function connectView(mount) {
     if(view||locked())return false;

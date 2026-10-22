@@ -10,7 +10,7 @@ for(const theme of ['dark','light'])test(`shared session fragments retain native
  const images=new Map();
  for(const variant of ['native','typed']){
   native=variant==='native';await page.goto('/');await expect(page.locator('body')).toHaveAttribute('data-view',/^(home|gunSetup)$/);if(await page.locator('#gunSetupView').isVisible())await page.locator('#restoreGunBackupBtn').click();else await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});await expect(page.locator('#homeView')).toBeVisible();await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#appearance').selectOption(theme);
-  for(const name of ['single','single-early','reload','sequence-custom']){
+  for(const name of ['single','single-early','par','sequence-custom']){
    await page.locator('.tab[data-view="drills"]').click();if(name==='sequence-custom'){await page.locator('#customDrillsTab').click();await page.locator('#customDrillCatalog').getByRole('button',{name:'Start Drill'}).first().click();await page.locator('#sessionGuideLink').click();}else{await page.locator(`[data-practice-mode="${name==='single-early'?'single':name}"]`).click();await page.locator('#practiceGuideLink').click();}if(name==='single-early')await page.locator('#practiceGuideEarlyBtn').click();
    for(const phase of ['poster','review']){
     if(phase==='review'){await page.locator('#practiceGuidePlayBtn').click();await page.clock.runFor(20000);await expect(page.locator('#practiceGuidePlayBtn')).toHaveText('Replay example');}

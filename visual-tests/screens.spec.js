@@ -52,6 +52,7 @@ async function prepare(page, item) {
   await visible(page, 'gunSetupView');
   if (item.state !== 'first-gun.dark') {
     const backup = structuredClone(library);
+    if (['practice', 'practiceGuide'].includes(item.screen) && /reload|free/.test(item.state))
     if (item.screen === 'session' || item.state.startsWith('sequence-trigger-only')) addLegacySequence(backup);
     backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
     if (item.state.startsWith('add-second-gun')) {
@@ -95,7 +96,7 @@ async function prepare(page, item) {
       break;
     case 'drills':
       await tab(page, 'drills');
-      await expect(page.locator('[data-practice-mode]')).toHaveCount(6);
+      await expect(page.locator('[data-practice-mode]')).toHaveCount(4);
       await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(3);
       if (item.state.startsWith('custom')) await page.locator('#customDrillsTab').click();
       if (item.state.startsWith('custom-editor')) {
@@ -159,9 +160,8 @@ async function prepare(page, item) {
         }
         await page.locator('#sessionGuideLink').click();
       } else {
-        const mode = ['single-early', 'external-start', 'silent-start'].includes(state) ? 'single' : state.startsWith('reload-') ? 'reload' : state;
+        const mode = ['single-early', 'external-start', 'silent-start'].includes(state) ? 'single' : state;
         await practice(page, mode);
-        if (state === 'reload-selected-endpoints') { await page.locator('#practiceReloadStart').selectOption('trigger'); await page.locator('#practiceReloadEnd').selectOption('draw'); }
         if (state === 'external-start') await page.locator('#practiceStartSource').selectOption('external');
         if (state === 'silent-start') await page.locator('#practiceStartSound').uncheck();
         await page.locator('#practiceGuideLink').click();

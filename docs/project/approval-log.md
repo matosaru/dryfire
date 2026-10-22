@@ -625,3 +625,15 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 ## CHG-052 — Consistent practice cards and distinct sequence catalog
 
 2026-10-22. Direct user instruction: “remove Trigger pull from sequnce drills … match sequence drills styles, add icon, first goes label, then sublabel, and same styleand naming buttons as in sequence drills”. Approved scope: hide the built-in one-action Trigger pull from the displayed sequence catalog; retain its stable definition and saved-data compatibility. All six practice cards reuse sequence-card header/icon/description/button styling and the exact “▶ Start Drill” action label. Actions still open their existing configuration screens before capture. No timing, safety, custom presets, recordings or history changes. Main/dev remain unchanged; publish b only.
+
+## CHG-053 — Consistent Live Listen entry and visible readiness guidance
+
+2026-10-22. Direct request: “review live listen section … it isnot always enabled … still available and accessible in floating bottom menu … sync states of all entry points … add some explanation, visible for a user, why it is not enabled”. User says this follows the current card work and green tests. [Requirements](../requirements/live-listen-readiness.md) preserve the existing trigger minimum/safety/data policies. Engineering choice: navigation consistently opens setup guidance for a valid loaded gun; capture controls alone require training and current-operation readiness. Work remains b-only; main/dev unchanged. Implementation is queued after CHG-052 acceptance, without another confirmation request.
+
+## CHG-054 — Four trigger practices and unchanged sequences
+
+2026-10-22. Direct owner instruction: show “Trigger Press Group” with Single trigger press, Repeated trigger press, Par time practice and Trigger control; remove Reload practice and Free practice; leave Sequence drills as is. Supersedes CHG-052’s six visible practice choices only. Retain saved sessions, their review/repeat/manual compatibility and the existing sequence catalog. No storage migration or deletion. Update catalog tests, documentation and reviewed screen evidence. Work on b only; main/dev remain unchanged.
+
+## CHG-055 — Retire two practice modes and clean their data
+
+2026-10-22. Owner supersedes CHG-054 compatibility decision: “remove all sessions from history, cleanup the code, leave no refence to removed drills”, “optmize the code and structure after removal”. Clarified History scope explicitly: **“Only Reload/Free sessions”**. Remove these two practice engines, controls, manuals, examples and current screenshot states. Delete only their saved sessions/configurations across guns during local schema migration and omit them from old-backup restores. Preserve every other session, sequence drills, magazine-change sound labels/calibration, guns and recordings. Simplify four-mode catalog and shared presentation instead of keeping dormant implementations. Necessary migration regression fixtures and historical change records explain the removal; no user-facing retired choices remain. b only; main/dev unchanged.

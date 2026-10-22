@@ -26,19 +26,6 @@ export function getPracticeGuide(context) {
     guide.requires = 'Learn each distinct sound shown in this preset. A sound can appear more than once.';
     guide.exampleConfig = `${drill.steps.length > 3 ? 1 : 2} example attempts · random 2–5 s delay · app beep on`;
   }
-  if (id === 'reload') {
-    const sequence = [config.reloadStart ?? 'rack', config.reloadEnd ?? 'reload'];
-    if (sequence.some(s => !labels[s])) throw new TypeError('Choose known endpoints.');
-    guide.sequence = sequence;
-    guide.stages = ['Microphone ready', 'Countdown and app signal', sequence.map(s => labels[s]).join(' → '), 'Event interval and Next repetition'];
-    guide.steps[0] = `Your selected endpoints are ${labels[sequence[0]]} and ${labels[sequence[1]]}. Learn both sounds.`;
-    guide.steps[1] = `After the signal, complete ${labels[sequence[0]]}, then ${labels[sequence[1]]}.`;
-    guide.requires = `Learn ${sequence.map(s => labels[s]).join(' and ')}. Only a selected Trigger endpoint can add a shot.`;
-    if (sequence[0] === sequence[1]) {
-      guide.exampleSequence = ['rack', 'reload'];
-      guide.requires = 'Choose two different endpoints before starting. The illustration uses Rack slide → Change magazine.';
-    }
-  }
   if (context.type === 'practice' && config.startSource === 'external') {
     guide.currentSetup = 'Your setup uses a calibrated external beep: no app countdown or app beep. The illustration below demonstrates the app-signal option.';
     guide.steps = guide.steps.map(s => s.replace(/ready delay/g, 'start signal').replace(/countdown/g, 'external-cue wait'));

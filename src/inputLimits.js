@@ -1,7 +1,6 @@
 export const NUMBER_INPUTS = Object.freeze({
   practiceRepetitions: { min: 1, max: 100, step: 1, label: 'Repetitions or clicks' },
   sessionRepetitions: { min: 1, max: 100, step: 1, label: 'Repetitions' },
-  practiceDuration: { min: 1, max: 3600, step: 1, label: 'Active seconds' },
   practicePar: { min: .1, max: 30, step: .1, label: 'Par seconds' },
   practiceFixedDelay: { min: 0, max: 30, step: .1, label: 'Delay seconds' },
   sessionFixedDelay: { min: 0, max: 30, step: .1, label: 'Delay seconds' },

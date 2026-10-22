@@ -21,7 +21,7 @@ import {practiceElapsed,continuousPractice,practiceStatistics} from '../src/prac
 // @ts-expect-error Shared normalization compares meaningful DOM without formatting whitespace.
 import {semanticTree} from './helpers/guidePresentation.js';
 afterEach(cleanup);
-const config={repetitions:2,durationSeconds:10,startSource:'app',soundAtStart:true,parSeconds:1.5};
+const config={repetitions:2,startSource:'app',soundAtStart:true,parSeconds:1.5};
 const hit={ordinal:1,status:'hit',elapsedMs:500,intervalMs:null,goAt:0,stepTimings:[{label:'trigger',offsetMs:500,splitMs:500}],detections:[]};
 const sequenceHit={...hit,status:'completed',unknown:0,incorrect:1};
 const base={completed:1,remaining:1,revision:2,shots:1,config,repetitions:[hit],countdownEndsAtMs:5000,segmentStartMs:null,elapsedMs:1234,practiceMode:'single'};

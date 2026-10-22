@@ -7,32 +7,22 @@ const definitions = Object.freeze([
   },
   {
     "id": "repeated",
-    "title": "Repeated trigger presses"
+    "title": "Repeated trigger press"
   },
   {
     "id": "par",
-    "title": "Par-time practice"
+    "title": "Par time practice"
   },
   {
     "id": "control",
     "title": "Trigger control"
-  },
-  {
-    "id": "reload",
-    "title": "Reload practice"
-  },
-  {
-    "id": "free",
-    "title": "Free practice"
   }
 ]);
 const descriptions = {
   "single": "Reaction time for one click after each start signal.",
   "repeated": "Count distinct clicks and the intervals between them.",
   "par": "Recognize a click within your chosen time limit.",
-  "control": "Compare the consistency of your detected click intervals.",
-  "reload": "Time two calibrated events in your chosen order.",
-  "free": "Count clicks during a timed practice session."
+  "control": "Compare the consistency of your detected click intervals."
 };
 export const PRACTICE_MODES = /* @__PURE__ */ Object.freeze(
   /* @__PURE__ */ definitions.map(mode => ({ ...mode, description: descriptions[mode.id] }))

@@ -6,7 +6,7 @@ import { jest } from '@jest/globals';
 import { readFileSync } from 'node:fs';
 import { serialize, deserialize } from 'node:v8';
 import { controllerPage, deferred, clickPcm } from './helpers/controllerDom.js';
-import { PRACTICE_MODES } from '../src/practiceSession.js';
+import { PRACTICE_MODES } from '../src/practiceModes.js';
 import {mountPracticePage} from '../apps/web/src/app/practicePage.tsx';
 import {mountPracticeContents} from '../apps/web/src/app/practiceContents.tsx';
 
@@ -104,7 +104,7 @@ test('parent ownership is guarded and context updates use its exclusive port',as
  await controller.open('single',config);submit();await captureCalled.promise;expect(controller.connectPage(mount)).toBe(false);await controller.interrupt('cancel');input.resolve(0);await controller.flush();expect(controller.connectPage(mount)).toBe(true);
 });
 
-test('the six catalog choices preserve copy/order and configure exactly once without microphone access', async () => {
+test('the four catalog choices preserve copy/order and configure exactly once without microphone access', async () => {
   controller.renderCatalog(); controller.renderCatalog();
   const buttons = [...document.querySelectorAll('#practiceCatalog button')];
   expect(buttons.map(button => button.dataset.practiceMode)).toEqual(PRACTICE_MODES.map(mode => mode.id));
@@ -142,13 +142,12 @@ test('delegated catalog actions ignore headings and disabled controls', async ()
   expect(capture).not.toHaveBeenCalled();
 });
 
-test.each(['single','repeated','par','control','reload','free'])('%s configuration keeps a focused, editable setup without requesting audio', async mode => {
+test.each(['single','repeated','par','control'])('%s configuration keeps a focused, editable setup without requesting audio', async mode => {
   await controller.open(mode, config);
   expect(document.activeElement).toBe($('practice-title'));
   expect($('practiceConfigure').classList.contains('hidden')).toBe(false);
   expect($('practiceStartBtn').disabled).toBe(false);
   expect(capture).not.toHaveBeenCalled();
-  expect($('practiceDuration').disabled).toBe(mode !== 'free');
   expect($('practicePar').disabled).toBe(mode !== 'par');
 });
 

@@ -1,0 +1,107 @@
+[
+  {
+    "kind": "practice",
+    "practiceMode": "reload",
+    "id": "legacy-reload-review",
+    "gunId": "qa-gun-a",
+    "gunName": "QA Handgun",
+    "gunType": "Handguns",
+    "drillId": "practice-reload",
+    "drillTitle": "Reload practice",
+    "drillSteps": [
+      "rack",
+      "reload"
+    ],
+    "config": {
+      "repetitions": 10,
+      "delayMode": "random",
+      "fixedDelaySeconds": 3,
+      "randomMinSeconds": 2,
+      "randomMaxSeconds": 5,
+      "soundAtStart": true,
+      "startSource": "app",
+      "durationSeconds": 60,
+      "parSeconds": 1.5,
+      "reloadStart": "rack",
+      "reloadEnd": "reload"
+    },
+    "revision": 2,
+    "startedAt": 1791712800000,
+    "updatedAt": 1791712800000,
+    "endedAt": 1791712800000,
+    "endReason": "ended",
+    "status": "ended",
+    "completed": 0,
+    "remaining": 10,
+    "shots": 0,
+    "elapsedMs": 0,
+    "repetitions": [
+      {
+        "attempt": 1,
+        "ordinal": 1,
+        "status": "partial",
+        "startedAt": 1791712800000,
+        "goAt": null,
+        "endedAt": 1791712800000,
+        "reason": "ended",
+        "elapsedMs": null,
+        "intervalMs": null,
+        "detections": [],
+        "stepTimings": []
+      }
+    ],
+    "currentAttempt": null
+  },
+  {
+    "kind": "practice",
+    "practiceMode": "free",
+    "id": "legacy-free-review",
+    "gunId": "qa-gun-a",
+    "gunName": "QA Handgun",
+    "gunType": "Handguns",
+    "drillId": "practice-free",
+    "drillTitle": "Free practice",
+    "drillSteps": [
+      "trigger"
+    ],
+    "config": {
+      "repetitions": 10,
+      "delayMode": "random",
+      "fixedDelaySeconds": 3,
+      "randomMinSeconds": 2,
+      "randomMaxSeconds": 5,
+      "soundAtStart": true,
+      "startSource": "app",
+      "durationSeconds": 60,
+      "parSeconds": 1.5,
+      "reloadStart": "rack",
+      "reloadEnd": "reload"
+    },
+    "revision": 2,
+    "startedAt": 1791712800000,
+    "updatedAt": 1791712800000,
+    "endedAt": 1791712800000,
+    "endReason": "ended",
+    "status": "ended",
+    "completed": 0,
+    "remaining": null,
+    "shots": 0,
+    "elapsedMs": 0,
+    "repetitions": [
+      {
+        "attempt": 1,
+        "ordinal": 1,
+        "status": "partial",
+        "startedAt": 1791712800000,
+        "goAt": null,
+        "endedAt": 1791712800000,
+        "reason": "ended",
+        "elapsedMs": null,
+        "intervalMs": null,
+        "detections": [],
+        "stepTimings": []
+      }
+    ],
+    "currentAttempt": null
+  }
+]

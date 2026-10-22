@@ -14,7 +14,7 @@ import { renderCalibrationCatalog } from '../apps/web/src/app/renderCalibrationC
 import { renderAppShell } from '../apps/web/src/app/renderAppShell.tsx';
 import { renderNumberInput } from '../apps/web/src/app/renderNumberInput.tsx';
 import { renderPracticeCatalog } from '../apps/web/src/app/renderPracticeCatalog.tsx';
-import { PRACTICE_MODES } from '../src/practiceSession.js';
+import { PRACTICE_MODES } from '../src/practiceModes.js';
 import { PAGE_DEFINITIONS } from '../src/pageDefinitions.js';
 
 const read = name => readFileSync(new URL(`../src/templates/${name}.html`, import.meta.url), 'utf8');
@@ -25,7 +25,6 @@ const fill = (template, slots) => template.replace(/\{\{([a-zA-Z]+)\}\}/g, (_, n
 
 const numberInputs = Object.fromEntries([
   ['practiceRepetitions', '10'],
-  ['practiceDuration', '60'],
   ['practicePar', '1.5'],
   ['practiceFixedDelay', '3'],
   ['practiceMinDelay', '2'],

@@ -38,7 +38,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
   }
   function selectExample(isEarly) {
     pause(); early = isEarly;
-    scenario = createScenario(guide.exampleSequence ? { ...guide, sequence: guide.exampleSequence } : guide, { early });
+    scenario = createScenario(guide, { early });
     position = 0; lastPainted = -1; paint(scenario.posterIndex);
     $('practiceGuideExample').setAttribute('aria-label', early
       ? 'Example: listening before the beep, early trigger fails with zero shots, then an automatic countdown and a successful trigger.'
@@ -48,7 +48,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
   }
   function open(context) {
     pause(); guide = getPracticeGuide(context);
-    const showSteps=guide.kind==='sequence'||guide.id==='reload';
+    const showSteps=guide.kind==='sequence';
     const manual={texts:{practiceGuideKind:guide.kind==='practice'?'PRACTICE GUIDE':'ORDERED SEQUENCE GUIDE',practiceGuideName:guide.title,practiceGuidePurpose:guide.purpose,practiceGuideCurrentSetup:guide.currentSetup,practiceGuideMeasures:guide.measures,practiceGuideExpect:guide.expect,practiceGuideRequires:guide.requires,practiceGuideExampleNote:`${guide.exampleConfig}. Safety already confirmed; microphone preparation time varies.`},steps:guide.steps,sequenceHidden:!showSteps,examplesHidden:guide.id!=='single',sequence:(showSteps?guide.sequence:[]).map(label=>({label,text:guideSoundTitle(label)}))};
     if(page)page.update(manual);else{
       for(const[id,value]of Object.entries(manual.texts))text(id,value);

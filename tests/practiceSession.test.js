@@ -6,10 +6,9 @@ function start(mode = 'single', config = {}) {
 }
 const event = (s, label, n, score = 90) => detectPractice(s, { label, score, detectedAtMs: n }, clock(n + 100));
 describe('one practice engine supports all modes', () => {
-  test('six modes and validated shared defaults', () => {
-    expect(PRACTICE_MODES.map(x => x.id)).toEqual(['single', 'repeated', 'par', 'control', 'reload', 'free']);
-    expect(normalizePracticeConfig()).toMatchObject({ repetitions: 10, delayMode: 'random', soundAtStart: true, parSeconds: 1.5, durationSeconds: 60 });
-    expect(() => normalizePracticeConfig({ reloadStart: 'rack', reloadEnd: 'rack' })).toThrow();
+  test('four modes and validated shared defaults', () => {
+    expect(PRACTICE_MODES.map(x => x.id)).toEqual(['single', 'repeated', 'par', 'control']);
+    expect(normalizePracticeConfig()).toMatchObject({ repetitions: 10, delayMode: 'random', soundAtStart: true, parSeconds: 1.5 });
     expect(() => normalizePracticeConfig({ repetitions: 0 })).toThrow();
     expect(() => normalizePracticeConfig({ parSeconds: .05 })).toThrow();
   });
@@ -52,20 +51,6 @@ describe('one practice engine supports all modes', () => {
     expect(s).toMatchObject({ phase: 'result', completed: 1, shots: 0 });
     expect(s.repetitions[0].status).toBe('miss');
   });
-  test('reload requires defined order and handling completion is not a shot', () => {
-    let s = start('reload');
-    s = event(s, 'reload', 100);
-    expect(s.completed).toBe(0);
-    s = event(s, 'rack', 300);
-    s = event(s, 'reload', 700);
-    expect(s).toMatchObject({ completed: 1, shots: 0, phase: 'result' });
-    expect(s.repetitions[0].stepTimings[1].splitMs).toBe(400);
-  });
-  test('free practice finishes at its active duration and retains all accepted clicks', () => {
-    let s = event(start('free', { durationSeconds: 1 }), 'trigger', 300);
-    s = tickPractice(s, clock(3200));
-    expect(s).toMatchObject({ status: 'completed', shots: 1, remaining: null, elapsedMs: 1000 });
-  });
   test('pause releases logical attempt, resume uses fresh clocks and no interval spans pause', () => {
     let s = event(start('repeated'), 'trigger', 200);
     s = pausePractice(s, clock(500));
@@ -90,7 +75,7 @@ describe('one practice engine supports all modes', () => {
     expect(event(s, 'trigger', 100).shots).toBe(1);
   });
   test('interrupt/recovery preserves a partial and does not auto-resume capture', () => {
-    let s = event(start('reload'), 'rack', 200);
+    let s = event(start('single'), 'rack', 200);
     const saved = validatePracticeRecord(toPracticeRecord(s), gun.id);
     const recovered = recoverPracticeRecord(saved, 14000);
     expect(recovered).toMatchObject({ status: 'interrupted', currentAttempt: null, completed: 0 });
@@ -99,7 +84,7 @@ describe('one practice engine supports all modes', () => {
     s = endPractice(s, { ...clock(500), reason: 'background', interrupted: true });
     expect(validatePracticeRecord(toPracticeRecord(s), gun.id).status).toBe('interrupted');
   });
-  test.each(['single', 'repeated', 'par', 'control', 'reload', 'free'])('%s portable records validate and reject corrupt counts', mode => {
+  test.each(['single', 'repeated', 'par', 'control'])('%s portable records validate and reject corrupt counts', mode => {
     const record = toPracticeRecord(start(mode));
     expect(validatePracticeRecord(record, gun.id)).toEqual(record);
     expect(() => validatePracticeRecord({ ...record, shots: 55 }, gun.id)).toThrow();
@@ -195,9 +180,8 @@ test('portable results reject contradictory shot outcomes and future result time
 
 test.each([
   null, [], {delayMode:'unknown'}, {startSource:'unknown'}, {soundAtStart:'yes'},
-  {randomMinSeconds:4,randomMaxSeconds:2}, {durationSeconds:0}, {durationSeconds:3601},
+  {randomMinSeconds:4,randomMaxSeconds:2},
   {fixedDelaySeconds:31}, {fixedDelaySeconds:NaN}, {fixedDelaySeconds:0.15},
-  {reloadStart:'unknown'}, {reloadEnd:'unknown'},
 ])('invalid configuration is rejected before a session can start: %p', config => {
   expect(()=>normalizePracticeConfig(config)).toThrow(TypeError);
 });
@@ -207,4 +191,39 @@ test('unknown mode and invalid acquisition clocks cannot create a practice sessi
   expect(()=>createPractice({...input,mode:'unknown'})).toThrow(TypeError);
   expect(()=>createPractice({...input,monoNow:NaN})).toThrow(TypeError);
   expect(()=>createPractice({...input,epochNow:-1})).toThrow(TypeError);
+});
+
+test('terminal sessions cannot resume, advance or acquire another partial result', () => {
+  const completed = event(start('single', { repetitions: 1 }), 'trigger', 300);
+  expect(pausePractice(completed, clock(500))).toBe(completed);
+  expect(endPractice(completed, clock(500))).toBe(completed);
+  expect(() => nextPractice(completed, clock(500))).toThrow();
+  expect(() => resumePractice(completed, clock(500))).toThrow();
+  const recovered = recoverPracticeRecord(toPracticeRecord(completed), 14000);
+  expect(recovered).toEqual(toPracticeRecord(completed));
+  expect(() => recoverPracticeRecord(recovered, NaN)).toThrow();
+});
+test('recovery of a paused practice preserves its durable partial without creating a new attempt', () => {
+  const paused = pausePractice(start('repeated'), clock(500));
+  expect(pausePractice(paused, clock(700))).toBe(paused);
+  const record = toPracticeRecord(paused), recovered = recoverPracticeRecord(record, 14000);
+  expect(recovered.repetitions).toEqual(record.repetitions);
+  expect(recovered.currentAttempt).toBeNull();
+  expect(validatePracticeRecord(recovered, gun.id)).toEqual(recovered);
+});
+test('practice validation rejects mismatched sound snapshots and forged completion data', () => {
+  const original = toPracticeRecord(event(start('single', { repetitions: 1 }), 'trigger', 300));
+  for (const patch of [{ drillSteps: ['rack'] }, { config: { ...original.config, unexpected: 1 } }, { remaining: 1 }, { endedAt: original.startedAt - 1 }]) {
+    expect(() => validatePracticeRecord({ ...structuredClone(original), ...patch }, gun.id)).toThrow();
+  }
+  const bad = structuredClone(original); bad.repetitions[0].elapsedMs++;
+  expect(() => validatePracticeRecord(bad, gun.id)).toThrow();
+  const missing = structuredClone(original); missing.repetitions[0].stepTimings=[];
+  expect(() => validatePracticeRecord(missing, gun.id)).toThrow();
+});
+test('active practice rejects invalid acoustic labels and incomplete detections', () => {
+  const active = start('par');
+  expect(() => event(active, 'invalid', 300)).toThrow();
+  expect(() => detectPractice(active, undefined, clock(500))).toThrow();
+  expect(() => nextPractice(active, clock(500))).toThrow();
 });

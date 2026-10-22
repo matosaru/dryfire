@@ -6,12 +6,11 @@ const TYPES = ['Handguns', 'Rifles and Carbines', 'Shotguns'];
 export const PRACTICE_CUE_GUARD_MS = 80;
 // Let segmentation finish an event captured before a deadline; score by onset.
 export const DETECTION_SETTLE_MS = 2000;
-export const continuousPractice = mode => ['repeated', 'control', 'free'].includes(mode);
+export const continuousPractice = mode => ['repeated', 'control'].includes(mode);
 const terminal = state => ['completed', 'ended', 'interrupted'].includes(state.status);
 const finite = n => typeof n === 'number' && Number.isFinite(n) && n >= 0;
 const defaults = { repetitions: 10, delayMode: 'random', fixedDelaySeconds: 3, randomMinSeconds: 2,
-  randomMaxSeconds: 5, soundAtStart: true, startSource: 'app', durationSeconds: 60, parSeconds: 1.5,
-  reloadStart: 'rack', reloadEnd: 'reload' };
+  randomMaxSeconds: 5, soundAtStart: true, startSource: 'app', parSeconds: 1.5 };
 
 export function normalizePracticeConfig(value = {}) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError('Invalid practice configuration.');
@@ -23,11 +22,9 @@ export function normalizePracticeConfig(value = {}) {
     if (!finite(n) || n > 30 || Math.abs(n * 10 - Math.round(n * 10)) > 1e-8 || (key === 'parSeconds' && n < .1)) throw new TypeError('Choose valid timing in tenths of a second, up to 30 seconds.');
   }
   if (config.randomMinSeconds > config.randomMaxSeconds) throw new TypeError('Random minimum must not exceed maximum.');
-  if (!Number.isInteger(config.durationSeconds) || config.durationSeconds < 1 || config.durationSeconds > 3600) throw new TypeError('Choose 1–3600 active seconds.');
-  if (!LABELS.includes(config.reloadStart) || !LABELS.includes(config.reloadEnd) || config.reloadStart === config.reloadEnd) throw new TypeError('Choose two different reload timing events.');
   return config;
 }
-export const practiceLabels = (mode, config) => mode === 'reload' ? [config.reloadStart, config.reloadEnd] : ['trigger'];
+export const practiceLabels = () => ['trigger'];
 function clockValue(clock) {
   if (!finite(clock?.monoNow) || !finite(clock?.epochNow)) throw new TypeError('Valid practice clocks are required.');
   return clock;
@@ -61,22 +58,21 @@ export function createPractice({ id, gun, mode = 'single', config, ...clock } = 
   if (typeof id !== 'string' || !id || id.length > 80 || !practiceDefinition(mode) || !gun?.id || !gun.name?.trim() || !TYPES.includes(gun.type)) throw new TypeError('A valid gun and practice mode are required.');
   const normalized = normalizePracticeConfig(config);
   return ready({ kind: 'practice', practiceMode: mode, id, gunId: gun.id, gunName: gun.name, gunType: gun.type,
-    drillId: `practice-${mode}`, drillTitle: practiceDefinition(mode).title, drillSteps: practiceLabels(mode, normalized),
+    drillId: `practice-${mode}`, drillTitle: practiceDefinition(mode).title, drillSteps: practiceLabels(),
     config: normalized, revision: 0, startedAt: clock.epochNow, updatedAt: clock.epochNow, endedAt: null,
-    endReason: null, status: 'running', phase: 'countdown', completed: 0, remaining: mode === 'free' ? null : normalized.repetitions,
+    endReason: null, status: 'running', phase: 'countdown', completed: 0, remaining: normalized.repetitions,
     shots: 0, elapsedMs: 0, repetitions: [], current: null, activeBaseMs: 0, lastShotOffsetMs: null }, clock);
 }
 export function practiceElapsed(state, monoNow) {
-  const elapsed = state.segmentStartMs === null ? state.elapsedMs : state.activeBaseMs + Math.max(0, monoNow - state.segmentStartMs);
-  return state.practiceMode === 'free' ? Math.min(state.config.durationSeconds * 1000, elapsed) : elapsed;
+  return state.segmentStartMs === null ? state.elapsedMs : state.activeBaseMs + Math.max(0, monoNow - state.segmentStartMs);
 }
 function finishAttempt(state, clock, status, reason, current = state.current) {
   const elapsedMs = state.goAtMs === null ? null : Math.max(0, clock.monoNow - state.goAtMs);
   const row = { ...current, status, reason, elapsedMs: reason === 'early' ? null : current.elapsedMs ?? elapsedMs, endedAt: clock.epochNow };
   const completed = state.completed + (status === 'partial' ? 0 : 1);
-  const done = state.practiceMode !== 'free' && completed === state.config.repetitions;
+  const done = completed === state.config.repetitions;
   return change(state, clock, { current: null, repetitions: [...state.repetitions, row], completed,
-    remaining: state.practiceMode === 'free' ? null : state.config.repetitions - completed,
+    remaining: state.config.repetitions - completed,
     phase: done ? 'review' : 'result', status: done ? 'completed' : 'running',
     endedAt: done ? clock.epochNow : null, endReason: done ? 'target' : null,
     elapsedMs: practiceElapsed(state, clock.monoNow), segmentStartMs: null });
@@ -94,11 +90,7 @@ export function tickPractice(state, clock) {
     if (clock.monoNow > end + DETECTION_SETTLE_MS) return finishAttempt(state, clock, 'miss', state.current.detections.some(x => x.outcome === 'late') ? 'late' : 'no-click');
     if (clock.monoNow > end && state.phase !== 'closing') return change(state, clock, { phase: 'closing' });
   }
-  if (state.practiceMode === 'free') {
-    const end = state.segmentStartMs + state.config.durationSeconds * 1000 - state.activeBaseMs;
-    if (clock.monoNow > end + DETECTION_SETTLE_MS) return endPractice(state, { ...clock, reason: 'duration', completed: true });
-    if (clock.monoNow > end && state.phase !== 'closing') return change(state, clock, { phase: 'closing' });
-  }
+
   return state;
 }
 export function detectPractice(state, { label, score = 0, detectedAtMs } = {}, clock) {
@@ -121,14 +113,12 @@ export function detectPractice(state, { label, score = 0, detectedAtMs } = {}, c
   if (label === 'unknown') return state;
   const continuous = continuousPractice(state.practiceMode);
   const offsetMs = continuous ? state.activeBaseMs + detectedAtMs - state.segmentStartMs : detectedAtMs - state.goAtMs;
-  const late = (state.practiceMode === 'par' && offsetMs > state.config.parSeconds * 1000) || (state.practiceMode === 'free' && offsetMs > state.config.durationSeconds * 1000);
+  const late = state.practiceMode === 'par' && offsetMs > state.config.parSeconds * 1000;
   const steps = state.current.stepTimings;
   const expected = state.drillSteps[steps.length];
-  let accepted = !late && label === expected;
-  let nextSteps = accepted ? [...steps, { label, offsetMs, splitMs: offsetMs - (steps.at(-1)?.offsetMs ?? 0) }] : steps;
-  if (!late && state.practiceMode === 'reload' && label === state.drillSteps[0]) {
-    accepted = true; nextSteps = [{ label, offsetMs, splitMs: offsetMs }];
-  }
+  const accepted = !late && label === expected;
+  const nextSteps = accepted ? [...steps, { label, offsetMs, splitMs: offsetMs - (steps.at(-1)?.offsetMs ?? 0) }] : steps;
+
   const outcome = late ? 'late' : accepted ? (label === 'trigger' ? 'shot' : 'handling') : 'ignored';
   const current = { ...state.current, detections: [...state.current.detections, { label, score, offsetMs, outcome }], stepTimings: nextSteps };
   let next = change(state, clock, { current, lastDetectionAtMs: detectedAtMs, shots: state.shots + (outcome === 'shot' ? 1 : 0), elapsedMs: practiceElapsed(state, clock.monoNow) });
@@ -161,10 +151,10 @@ export function resumePractice(state, clock) {
   if (state.status !== 'paused') throw new TypeError('Only paused practice can resume.');
   return ready({ ...state, activeBaseMs: state.elapsedMs, lastShotOffsetMs: null }, clock);
 }
-export function endPractice(state, { reason = 'ended', interrupted = false, completed = false, ...clock } = {}) {
+export function endPractice(state, { reason = 'ended', interrupted = false, ...clock } = {}) {
   clockValue(clock);
   if (terminal(state)) return state;
-  return change(state, clock, { status: completed ? 'completed' : interrupted ? 'interrupted' : 'ended', phase: 'review',
+  return change(state, clock, { status: interrupted ? 'interrupted' : 'ended', phase: 'review',
     repetitions: partial(state, clock, reason), current: null, endedAt: clock.epochNow, endReason: reason,
     elapsedMs: practiceElapsed(state, clock.monoNow), segmentStartMs: null, goAtMs: null, countdownEndsAtMs: null });
 }
@@ -192,7 +182,7 @@ export function validatePracticeRecord(value, owner) {
       !Number.isInteger(value.revision) || value.revision < 0 || !finite(value.startedAt) || !finite(value.updatedAt) || value.updatedAt < value.startedAt ||
       !['running', 'paused', 'completed', 'ended', 'interrupted'].includes(value.status) || !finite(value.elapsedMs) || !Array.isArray(value.repetitions)) fail();
   const config = normalizePracticeConfig(value.config);
-  if (Object.keys(value.config).length !== Object.keys(config).length || Object.keys(config).some(key => config[key] !== value.config[key]) || JSON.stringify(value.drillSteps) !== JSON.stringify(practiceLabels(value.practiceMode, config))) fail();
+  if (Object.keys(value.config).length !== Object.keys(config).length || Object.keys(config).some(key => config[key] !== value.config[key]) || JSON.stringify(value.drillSteps) !== JSON.stringify(practiceLabels())) fail();
   const isTerminal = terminal(value);
   if ((isTerminal ? !finite(value.endedAt) || value.endedAt < value.startedAt || value.endedAt > value.updatedAt : value.endedAt !== null) ||
       (isTerminal && (typeof value.endReason !== 'string' || !value.endReason)) || (!isTerminal && value.endReason !== null) ||
@@ -236,8 +226,8 @@ export function validatePracticeRecord(value, owner) {
     if (['hit', 'miss'].includes(row.status)) completed++;
   }
   if (value.completed !== completed || value.shots !== shots ||
-      (value.practiceMode === 'free' ? value.remaining !== null : completed > config.repetitions || value.remaining !== config.repetitions - completed) ||
-      (value.status === 'completed' && value.practiceMode !== 'free' && value.remaining !== 0)) fail();
+      (completed > config.repetitions || value.remaining !== config.repetitions - completed) ||
+      (value.status === 'completed' && value.remaining !== 0)) fail();
   return structuredClone(value);
 }
 export function practiceStatistics(record) {

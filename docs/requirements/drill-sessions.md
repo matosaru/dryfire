@@ -2,7 +2,7 @@
 
 CHG-032 current public availability is governed by [build editions](build-editions.md): two-gun public creation under CHG-034, no new custom creation or advanced graphs publicly; full preview retains them. Existing data/preset editing/use/export/restore remain available. This overrides earlier all-free availability statements for these actions without implementing billing or deleting data. Publication/deployment are tracked separately.
 
-Revision: 1.6 · Scope: CHG-014 delivered; CHG-015 optional readiness/practice extension authorized · Implementation: legacy sequences and six practice modes implemented; deployment/device evidence separate
+Revision: 1.6 · Scope: CHG-014 delivered; CHG-015 optional readiness/practice extension authorized · Implementation: legacy sequences and four trigger practices implemented; deployment/device evidence separate
 
 The current app has built-in/custom drill selection, separate free listening and the approved configurable session runner with durable repetition results/start cue. CHG-014 is implemented and locally validated on 2026-10-11; GitHub publication, production deployment and physical-device verification remain separately tracked in [implementation history](../project/implementation-history.md).
 

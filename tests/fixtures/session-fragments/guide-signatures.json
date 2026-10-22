@@ -22,14 +22,6 @@
       "frames": 68,
       "sha256": "df650f7007016d29fd04bc7b6ac34d19e0e79010ca61e123c8a7ff7dcd2d7172"
     },
-    "reload": {
-      "frames": 123,
-      "sha256": "dfe791a9cd0b942c43fdec3bae84937c55b4c03fcba3d2cefb941dd744578aab"
-    },
-    "free": {
-      "frames": 128,
-      "sha256": "f62cb6cac3122a91e27deda8bece0bad976e954e8b353c4738cb43a648f9f790"
-    },
     "sequence-trigger-only": {
       "frames": 109,
       "sha256": "d1428b519e6bd53146bea21bed374cc10f72755c4021ddf06baf5b94df9c377c"

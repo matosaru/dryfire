@@ -5,11 +5,11 @@ import {renderPracticeRun,renderSequenceRun,renderPracticeReview,renderSequenceR
 import {continuousPractice,practiceElapsed,practiceStatistics} from '../../../../../src/practiceSession.js';
 import {sessionViewDriver} from '../../../../../tests/helpers/sessionViewDriver';
 import {practiceRunPresentation,sequenceRunPresentation,practiceReviewPresentation,sequenceReviewPresentation} from './phasePresentation';
-const config={repetitions:3,durationSeconds:10,startSource:'app',soundAtStart:true,parSeconds:1.5};
+const config={repetitions:3,startSource:'app',soundAtStart:true,parSeconds:1.5};
 const hit={ordinal:1,status:'hit',elapsedMs:500,intervalMs:500,goAt:0,stepTimings:[],detections:[]};
 const sequenceHit={...hit,status:'completed',unknown:1,incorrect:2};
 const state={phase:'active',completed:1,shots:1,remaining:2,revision:4,config,repetitions:[hit,{...hit,ordinal:2,status:'partial'}],countdownEndsAtMs:5000,segmentStartMs:null,elapsedMs:1234,activeBaseMs:0,practiceMode:'single'};
-const runCases:[string,string,boolean,boolean][]=[['connecting','single',true,false],['idle','single',false,false],['countdown','single',false,true],['active','single',false,true],['await-cue','single',false,true],['result','single',false,true],['early-result','single',false,true],['result','repeated',false,true],['paused','control',false,true],['closing','par',false,true],['active','reload',false,true],['active','free',false,true],['countdown','free',false,true],['paused','single',true,true]];
+const runCases:[string,string,boolean,boolean][]=[['connecting','single',true,false],['idle','single',false,false],['countdown','single',false,true],['active','single',false,true],['await-cue','single',false,true],['result','single',false,true],['early-result','single',false,true],['result','repeated',false,true],['paused','control',false,true],['closing','par',false,true],['paused','single',true,true]];
 test.each(runCases)('Practice %s/%s phase controls/text retain the native contract',(phase,mode,pending,hasState)=>{
  const current=hasState?{...state,phase:phase==='early-result'?'result':phase,practiceMode:mode,repetitions:phase==='early-result'?[{...hit,status:'miss',reason:'early'}]:state.repetitions}:null;
  const native=sessionViewDriver(),actual=sessionViewDriver();const clock=jest.fn(()=>1234),readConfig=jest.fn(()=>config),renderInput=jest.fn();

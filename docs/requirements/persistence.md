@@ -1,6 +1,6 @@
 # Persistence, migration and backups
 
-Revision: 1.6 · Scope: approved including CHG-014/015 storage and CHG-017 retention/limits · Implementation: schema 3 and version-4 compatible backups implemented; deployment verification separate
+Revision: 1.6 · Scope: approved including CHG-014/015 storage and CHG-017 retention/limits · Implementation: schema 4 and version-4 compatible backups implemented; deployment verification separate
 
 | ID | Requirement | State |
 | --- | --- | --- |
@@ -76,7 +76,7 @@ Accounts, authenticated cloud backup, cross-device synchronization and server-si
 
 ## Authorized trigger-first practice extension — CHG-015
 
-The [consolidated practice specification](practice-modes.md) implements the user's explicit automatic-work instruction. Reuse **schema 3** and the owned sessions/settings stores, preserving old records without a destructive migration.
+The [consolidated practice specification](practice-modes.md) implements the user's explicit automatic-work instruction. Use **schema 4** and the owned sessions/settings stores, preserving old records without a destructive migration.
 
 - Practice records discriminate `kind: practice` and snapshot mode, gun, configuration, accepted shots, resolved/remaining attempts, misses/partials, captured audio offsets and intervals. Validate identities, timing/outcome/count proofs and immutable snapshots before writes/restoration. Last-durable-snapshot recovery opens interrupted Review without capture.
 - Gun-owned settings hold typed `practiceConfig`, `enabledSoundLabels` and `calibrationExamples`. Derived reset/noise/cue examples contain no playable audio; compatible examples are used as rejection evidence. Trigger remains enabled; old trained optional sounds start enabled to preserve existing behavior.
@@ -98,3 +98,7 @@ The separately confirmed [SET-06 action](settings.md#explicit-data-reset--chg-01
 Flush queued event/configuration work before confirmed deletion, snapshot the intended owner, and block the controls while capture, saving, unsaved Review or library operations are active. Earlier async reads must not restore stale deleted rows on screen. Deleted Review routes resolve to the drill catalog rather than displaying stale results. A storage failure reports an error without claiming success; successful deletion persists through reload and export. No automatic retention or schema/backup-format change is introduced. GUN-12 deletion also removes all owned stores in one atomic transaction.
 
 Acceptance: clear recognition events and verify both visible logs/counts plus storage; preserve saved sessions/progress. Clear mixed practice/sequence sessions and verify cards/charts/Review after reload; preserve recognition/learned data and another gun's sessions. Test cancel, write/transaction failure, stale navigation/read handling and new sessions after clearing. Current design: [History](../design/screens/history/README.md).
+
+## CHG-055 selective practice retirement
+
+Schema 4 removes only retired practice sessions/configuration keys across all gun owners. Current-mode records retain their outcomes and get the smaller current configuration projection; approved retained-mode titles are normalized. Guns, sound examples, calibration, recognition events, custom presets and sequence sessions are untouched. Backup format 4 remains readable: restore filters the retired records/settings, validates retained rows before the atomic write and rejects unsupported future modes/corruption. The historical schema-3 evidence above describes the prior implementation, not current upgrade acceptance.

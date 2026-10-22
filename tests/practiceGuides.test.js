@@ -2,7 +2,7 @@ import { getPracticeGuide, isGuideContextCurrent } from '../src/practiceGuides.j
 import { createScenario } from '../src/practiceGuideExamples.js';
 const context = (mode, config = {}) => ({ type: 'practice', mode, gunId: 'gun-a', routeKey: 'setup-a', config });
 
-test.each(['single', 'repeated', 'par', 'control', 'reload', 'free'])('%s has its own short manual and an engine-checked example', mode => {
+test.each(['single', 'repeated', 'par', 'control'])('%s has its own short manual and an engine-checked example', mode => {
   const guide = getPracticeGuide(context(mode));
   expect(guide.steps).toHaveLength(3);
   expect(guide.measures.length).toBeGreaterThan(20);
@@ -18,15 +18,6 @@ test('early Single fails without a shot or reaction time, then automatically com
   const example = createScenario(getPracticeGuide(context('single')), { early: true });
   expect(example.events.filter(e => e.kind === 'outcome').map(e => [e.status, e.elapsedMs, e.shots])).toEqual([['miss', null, 0], ['hit', 600, 1]]);
 });
-test('Reload guide and example follow the selected endpoints, including a Trigger endpoint', () => {
-  const guide = getPracticeGuide(context('reload', { reloadStart: 'trigger', reloadEnd: 'draw' }));
-  expect(guide.sequence).toEqual(['trigger', 'draw']);
-  expect(guide.steps.join(' ')).toContain('Trigger pull');
-  expect(guide.steps.join(' ')).toContain('Draw from holster');
-  const example = createScenario(guide);
-  expect(example.events.filter(e => e.kind === 'recognized-event').map(e => e.label)).toEqual(['trigger', 'draw', 'trigger', 'draw']);
-  expect(example.events.filter(e => e.kind === 'outcome').at(-1).shots).toBe(2);
-});
 test('external-cue instructions do not promise a countdown, app beep or early-trigger failure', () => {
   const guide = getPracticeGuide(context('single', { startSource: 'external' }));
   expect(guide.currentSetup).toMatch(/external/i);
@@ -36,13 +27,6 @@ test('external-cue instructions do not promise a countdown, app beep or early-tr
 });
 test('silent setup explanation distinguishes the visual start from the illustrated beep', () => {
   expect(getPracticeGuide(context('single', { soundAtStart: false })).currentSetup).toMatch(/visual|silent/i);
-});
-test('an invalid equal-endpoint draft can still read help, with a disclosed valid example', () => {
-  const guide = getPracticeGuide(context('reload', { reloadStart: 'trigger', reloadEnd: 'trigger' }));
-  expect(guide.sequence).toEqual(['trigger', 'trigger']);
-  expect(guide.requires).toMatch(/two different endpoints/);
-  expect(guide.exampleSequence).toEqual(['rack', 'reload']);
-  expect(createScenario({ ...guide, sequence: guide.exampleSequence }).frames.at(-1).phase).toBe('review');
 });
 test('custom guide retains actual title and ordered steps without implying new custom creation', () => {
   const guide = getPracticeGuide({ type: 'sequence', gunId: 'gun-a', routeKey: 'setup-a', drill: { id: 'mine', title: '<img src=x onerror=alert(1)>', steps: ['reload', 'rack', 'trigger'] } });
@@ -66,6 +50,5 @@ test('guide context becomes stale for another gun, setup or missing context', ()
 });
 test('unknown modes, invalid endpoints and missing ownership do not create guide contexts', () => {
   expect(() => getPracticeGuide(context('missing'))).toThrow();
-  expect(() => getPracticeGuide(context('reload', { reloadStart: 'unknown' }))).toThrow();
   expect(() => getPracticeGuide({ ...context('single'), gunId: null })).toThrow();
 });
