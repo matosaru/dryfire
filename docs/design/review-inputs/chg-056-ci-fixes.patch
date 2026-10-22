@@ -1,5 +1,5 @@
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index 81456f3..3400dcc 100644
+index 81456f3..92c00a6 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -755,7 +755,7 @@
@@ -11,15 +11,17 @@ index 81456f3..3400dcc 100644
      "src/practiceController.js": "1bd762d0da108eafb1e24d851727c2b948300ad69e14733d6a11706312f6f5bd",
      "src/sessionController.js": "79ff9a03fa2855fa9e356077e3941fccd24eb44730f8dc995349b54a9028b342",
      "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
-@@ -763,7 +763,7 @@
+@@ -763,8 +763,8 @@
      "src/optional/progressView.js": "7cd6d75e07c89eeb7a9cf7f2b62874f71f789b6839408c87a5c3ad0d2f20e9de",
      "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
      "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
 -    "src/storage.js": "f1817f1f66fb3afe8cc03ffc865ab9f1658ea7c72793982d212e7dc5c36ac539",
+-    "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
 +    "src/storage.js": "f65e774744f633fa630b8437495ba80ecefbd318bf4ed16b3f63d1f60bcded79",
-     "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
++    "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
      "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
      "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
+     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
 @@ -824,7 +824,7 @@
      "packages/ui/src/PracticeCatalog/index.ts": "7ffc8cee1bd51dffcadcffc491f8ca2938d24627dd7dbb669ef2b287b6a350b3",
      "apps/web/src/styles/legacy-cards.css": "1859a192b56f8d040b6380ab4b85ae8317245d353ba93ab3f4715b799ef1cc54",
@@ -29,8 +31,17 @@ index 81456f3..3400dcc 100644
      "packages/ui/src/GunSwitcher/GunSwitcher.tsx": "da6310e96bce26f52eb6964c9d93359d9af795113000a74a56529c73f8d0c1b9",
      "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx": "ec94aca2ed7ca812312358f8a1c7b455f34847320bc991681cd73093ea091437",
      "packages/ui/src/SafetyDialog/SafetyDialog.tsx": "d4e5e673dc6018c907e9e990b9d183d2d127165d9dbd62cd6512d1b5f0489d14",
+@@ -944,7 +944,7 @@
+     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+     "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93",
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+-    "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
++    "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+     "tools/minify-html.mjs": "987c8e851e7b9efba787bd4e45608b4512c7c20cc65ce3a05c908303584187f8",
+     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
 diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
-index 06019ef..e7cbbce 100644
+index 06019ef..5338f79 100644
 --- a/docs/design/screens/practice-guide/examples/manifest.json
 +++ b/docs/design/screens/practice-guide/examples/manifest.json
 @@ -14,7 +14,7 @@
@@ -51,6 +62,18 @@ index 06019ef..e7cbbce 100644
      "apps/web/src/styles/legacy-card-foundation.css": "b8dc5ad4dc139ff9ae3f4d0ee31b46c2d3100f1d0f0e93f2681d21926337ebce",
      "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
      "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
+@@ -114,9 +114,9 @@
+     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+     "src/main.js": "aaf5ef37fb1d38e9c689262eb099d9566bfde6fb1c97760988434287577ddccc",
+-    "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
++    "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+-    "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
++    "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
+     "tools/minify-html.mjs": "987c8e851e7b9efba787bd4e45608b4512c7c20cc65ce3a05c908303584187f8",
+     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
 @@ -300,5 +300,5 @@
      "date": "2026-10-22",
      "scope": "Same shared Practice/Sequence presentation loads before configuration/review, outside initial startup. Inert catalogs move compiler-owned template nodes; no runtime stored/user HTML parsing. Full987/140 suite and20 public guide/layout/session/offline workflows pass. Frame models, compiled CSS and encoded GIF bytes unchanged; no media rebaseline."
@@ -68,6 +91,29 @@ index dd5fe15..59b8e6d 100644
  
 -Schema 4 removes only retired practice sessions/configuration keys across all gun owners. Current-mode records retain their outcomes and get the smaller current configuration projection; approved retained-mode titles are normalized. Guns, sound examples, calibration, recognition events, custom presets and sequence sessions are untouched. Backup format 4 remains readable: restore filters the retired records/settings, validates retained rows before the atomic write and rejects unsupported future modes/corruption. The historical schema-3 evidence above describes the prior implementation, not current upgrade acceptance.
 +Schema 4 removes only retired practice sessions/configuration keys across all gun owners. Current-mode records retain their outcomes and get the smaller current configuration projection; retained session title snapshots remain unchanged (known historical spellings still validate). Guns, sound examples, calibration, recognition events, custom presets and sequence sessions are untouched. Backup format 4 remains readable: restore filters the retired records/settings, validates retained rows before the atomic write and rejects unsupported future modes/corruption. The historical schema-3 evidence above describes the prior implementation, not current upgrade acceptance.
+diff --git a/src/practiceGuideBridge.js b/src/practiceGuideBridge.js
+index 2f23f67..1210793 100644
+--- a/src/practiceGuideBridge.js
++++ b/src/practiceGuideBridge.js
+@@ -1,7 +1,17 @@
++// Keep recovery code outside startup and the successful guide-loading path.
++function defaultGuideLoader() {
++  let failed = false;
++  return () => failed
++    ? import('../apps/web/src/features/practice-guide/retryGuideModule.ts').then(module => module.retryGuideModule({
++      expectedDigest: typeof __BUILD_SOURCE_DIGEST__ === 'undefined' ? '' : __BUILD_SOURCE_DIGEST__,
++    }))
++    : import('./practiceGuideController.js').catch(error => { failed = true; throw error; });
++}
++
+ /** Prepare read-only guides outside startup. Import completion never changes DOM;
+  * only an explicit, still-owned Open creates the controller and navigates. */
+ export function createPracticeGuideBridge({ onBack, onNavigate, onError,
+-  load = () => import('./practiceGuideController.js') }) {
++  load = defaultGuideLoader() }) {
+   let module, pending, controller, generation = 0;
+   function prepare() {
+     if (module) return Promise.resolve(module);
 diff --git a/src/practiceModes.js b/src/practiceModes.js
 index 89e3e80..4f4e4e5 100644
 --- a/src/practiceModes.js
@@ -155,9 +201,18 @@ index 08efe5a..ef93ac0 100644
    }
    await restoreBackup(await exportBackup());expect(await getSessions(a.id)).toEqual(restored);
 diff --git a/visual-tests/guide-loading.spec.js b/visual-tests/guide-loading.spec.js
-index 05e2193..0ab4084 100644
+index 05e2193..3c48251 100644
 --- a/visual-tests/guide-loading.spec.js
 +++ b/visual-tests/guide-loading.spec.js
+@@ -11,7 +11,7 @@ async function restore(page){
+ 
+ test('guide code stays outside startup and delayed loading preserves drafts, navigation and fresh endpoints',async({page})=>{
+  let release;const blocked=new Promise(resolve=>{release=resolve;});const requests=[];page.on('request',request=>{if(guideChunk.test(request.url()))requests.push(request.url());});
+- await page.route('**/assets/practiceGuideController-*.js',async route=>{await blocked;await route.continue();});
++ await page.route('**/assets/practiceGuideController-*.js*',async route=>{await blocked;await route.continue();});
+  try{
+   await restore(page);expect(requests).toHaveLength(0);await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();expect(requests).toHaveLength(0);
+   await practice(page);await expect.poll(()=>requests.length).toBe(1);await page.locator('#practiceRepetitions').fill('17');await page.locator('#practiceMinDelay').fill('');
 @@ -24,8 +24,9 @@ test('guide code stays outside startup and delayed loading preserves drafts, nav
   }finally{release();}
  });
@@ -165,10 +220,11 @@ index 05e2193..0ab4084 100644
 - await page.route('**/assets/practiceGuideController-*.js',route=>route.abort());await restore(page);
 - const failed=page.waitForEvent('requestfailed',request=>guideChunk.test(request.url()));await practice(page,'single');await failed;
 + let rejected;const failed=new Promise(resolve=>{rejected=resolve;});
-+ await page.route('**/assets/practiceGuideController-*.js',async route=>{await route.abort();rejected();});await restore(page);
++ await page.route('**/assets/practiceGuideController-*.js*',async route=>{await route.abort();rejected();});await restore(page);
 + await practice(page,'single');await failed;
   await page.locator('#practiceRepetitions').fill('23');await page.locator('#practiceGuideLink').click();await expect(page.locator('#appMessage')).toContainText('Your setup is unchanged');await expect(page.locator('#practiceConfigure')).toBeVisible();await expect(page.locator('#practiceRepetitions')).toHaveValue('23');
-  await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.unroute('**/assets/practiceGuideController-*.js');await page.reload();await expect(page.locator('#homeView')).toBeVisible();await practice(page,'single');await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceGuideView')).toBeVisible();expect(await page.evaluate(()=>window.__guideMicRequests)).toBe(0);
+- await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.unroute('**/assets/practiceGuideController-*.js');await page.reload();await expect(page.locator('#homeView')).toBeVisible();await practice(page,'single');await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceGuideView')).toBeVisible();expect(await page.evaluate(()=>window.__guideMicRequests)).toBe(0);
++ await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.unroute('**/assets/practiceGuideController-*.js*');await page.reload();await expect(page.locator('#homeView')).toBeVisible();await practice(page,'single');await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceGuideView')).toBeVisible();expect(await page.evaluate(()=>window.__guideMicRequests)).toBe(0);
  });
 diff --git a/visual-tests/gun-management.spec.js b/visual-tests/gun-management.spec.js
 index 5516d2d..d2f8846 100644
@@ -197,3 +253,110 @@ index 9bc0602..0df739d 100644
      if (item.screen === 'session' || item.state.startsWith('sequence-trigger-only')) addLegacySequence(backup);
      backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
      if (item.state.startsWith('add-second-gun')) {
+diff --git a/vite.config.js b/vite.config.js
+index ff64381..ba87e70 100644
+--- a/vite.config.js
++++ b/vite.config.js
+@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
+   const sourceDigest = createHash('sha256');
+   for (const path of trackedSources) sourceDigest.update(path).update(readFileSync(path));
+   return {
+-  define: { __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
++  define: { __BUILD_SOURCE_DIGEST__: JSON.stringify(sourceDigest.copy().digest('hex')), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
+   server: { host: '127.0.0.1' },
+   // The optimized preview serves same-origin assets, like the production Worker.
+   // Avoid development CORS Vary headers invalidating preloaded offline assets.
+diff --git a/workers/sw.js b/workers/sw.js
+index 1267bcb..ed13a6b 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -1,6 +1,6 @@
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v77`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v78`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {
+diff --git a/apps/web/src/features/practice-guide/retryGuideModule.test.ts b/apps/web/src/features/practice-guide/retryGuideModule.test.ts
+new file mode 100644
+index 0000000..43eb80d
+--- /dev/null
++++ b/apps/web/src/features/practice-guide/retryGuideModule.test.ts
+@@ -0,0 +1,47 @@
++import {jest} from '@jest/globals';
++import {retryGuideModule} from './retryGuideModule';
++const digest='a'.repeat(64),path='/assets/practiceGuideController-abc_123.js';
++function setup(value:unknown={sourceDigest:digest,assets:[path]},ok=true){
++ const imported=jest.fn<(url:string)=>Promise<unknown>>().mockResolvedValue({controller:true});
++ const fetchManifest=jest.fn<()=>Promise<{ok:boolean;json:()=>Promise<unknown>}>>().mockResolvedValue({ok,json:async()=>value});
++ return{imported,fetchManifest,options:{expectedDigest:digest,fetchManifest,importModule:imported,nonce:()=> 'fresh & safe'}};
++}
++test('recovery imports only the matching build asset with a fresh encoded query',async()=>{
++ const {options,imported,fetchManifest}=setup();
++ await expect(retryGuideModule(options)).resolves.toEqual({controller:true});
++ expect(fetchManifest).toHaveBeenCalledTimes(1);expect(imported).toHaveBeenCalledWith(path+'?retry=fresh%20%26%20safe');
++});
++test.each([null,{}, {sourceDigest:'b'.repeat(64),assets:[path]}, {sourceDigest:digest,assets:null}, {sourceDigest:digest,assets:[]},
++ {sourceDigest:digest,assets:['https://other.example/assets/practiceGuideController-x.js']},
++ {sourceDigest:digest,assets:['/assets/../practiceGuideController-x.js']},
++ {sourceDigest:digest,assets:[path,'/assets/practiceGuideController-second.js']},
++ {sourceDigest:digest,assets:[null,42,'/assets/index.js']}])('invalid/stale/foreign manifest cannot supply executable code: %j',async value=>{
++ const {options,imported}=setup(value);await expect(retryGuideModule(options)).rejects.toThrow();expect(imported).not.toHaveBeenCalled();
++});
++test('missing build identity and failed requests never import code',async()=>{
++ const {options,imported,fetchManifest}=setup();await expect(retryGuideModule({...options,expectedDigest:''})).rejects.toThrow('Reload');expect(fetchManifest).not.toHaveBeenCalled();
++ const denied=setup(undefined,false);await expect(retryGuideModule(denied.options)).rejects.toThrow('unavailable');expect(denied.imported).not.toHaveBeenCalled();
++ fetchManifest.mockRejectedValueOnce(new Error('offline'));await expect(retryGuideModule(options)).rejects.toThrow('offline');expect(imported).not.toHaveBeenCalled();
++});
++test('module download errors remain actionable and do not produce a false success',async()=>{
++ const {options,imported}=setup();imported.mockRejectedValueOnce(new Error('download failed'));await expect(retryGuideModule(options)).rejects.toThrow('download failed');
++});
++
++test('default request bypasses a stale manifest cache and creates fresh retry URLs',async()=>{
++ const originalFetch=globalThis.fetch;
++ const fetchMock=jest.fn<typeof fetch>().mockResolvedValue({ok:true,json:async()=>({sourceDigest:digest,assets:[path]})} as Response);
++ globalThis.fetch=fetchMock;
++ try {
++  const imported=jest.fn<(url:string)=>Promise<unknown>>().mockResolvedValue({});
++  await retryGuideModule({expectedDigest:digest,importModule:imported});
++  await retryGuideModule({expectedDigest:digest,importModule:imported});
++  expect(fetchMock).toHaveBeenCalledWith('/edition.json',{cache:'no-store'});
++  expect(imported.mock.calls[0][0]).toMatch(/^\/assets\/practiceGuideController-abc_123\.js\?retry=\d+-[a-z0-9]+$/);
++  expect(imported.mock.calls[0][0]).not.toBe(imported.mock.calls[1][0]);
++ } finally {globalThis.fetch=originalFetch;}
++});
++
++test('the native importer rejects an unavailable manifest-listed asset',async()=>{
++ const {options}=setup();
++ await expect(retryGuideModule({expectedDigest:digest,fetchManifest:options.fetchManifest,nonce:options.nonce})).rejects.toThrow();
++});
+diff --git a/apps/web/src/features/practice-guide/retryGuideModule.ts b/apps/web/src/features/practice-guide/retryGuideModule.ts
+new file mode 100644
+index 0000000..3aa5a4c
+--- /dev/null
++++ b/apps/web/src/features/practice-guide/retryGuideModule.ts
+@@ -0,0 +1,23 @@
++// A failed module URL can remain rejected in WebKit across reloads. Recover only
++// from the current build's same-origin manifest; never import an arbitrary URL.
++type ManifestResponse = {ok:boolean;json:()=>Promise<unknown>};
++type Options = {
++ expectedDigest:string;
++ fetchManifest?:()=>Promise<ManifestResponse>;
++ importModule?:(url:string)=>Promise<unknown>;
++ nonce?:()=>string;
++};
++export async function retryGuideModule({expectedDigest,
++ fetchManifest=()=>fetch('/edition.json',{cache:'no-store'}),
++ importModule=url=>import(/* @vite-ignore */ url),
++ nonce=()=>`${Date.now()}-${Math.random().toString(36).slice(2)}`}:Options){
++ if(!/^[a-f0-9]{64}$/.test(expectedDigest))throw new Error('Reload the app before retrying this guide.');
++ const response=await fetchManifest();
++ if(!response.ok)throw new Error('The current guide manifest is unavailable.');
++ const value:unknown=await response.json();
++ const manifest=value as {sourceDigest?:unknown;assets?:unknown}|null;
++ if(!manifest||manifest.sourceDigest!==expectedDigest||!Array.isArray(manifest.assets))throw new Error('The app was updated. Reload before opening this guide.');
++ const assets=manifest.assets.filter((path:unknown):path is string=>typeof path==='string'&&/^\/assets\/practiceGuideController-[A-Za-z0-9_-]+\.js$/.test(path));
++ if(assets.length!==1)throw new Error('The current guide module is unavailable.');
++ return importModule(`${assets[0]}?retry=${encodeURIComponent(nonce())}`);
++}
