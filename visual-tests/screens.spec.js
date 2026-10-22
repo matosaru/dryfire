@@ -209,6 +209,8 @@ for (const item of cases) {
     await page.setViewportSize({ width: item.width, height: environment.viewport.height });
     await prepare(page, item);
     await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
+    // Catalog card height must not choose a configuration field's hover state.
+    if (item.screen === 'practice' && item.state.startsWith('configure-')) await page.mouse.move(0, 0);
     await page.evaluate(async () => {
       await document.fonts.ready;
       const images = [...document.images].filter(image => image.checkVisibility() && image.currentSrc);

@@ -18,5 +18,11 @@
     "39721357879: obsolete four-card assertion; changed to approved three-card expectation"
   ],
   "separatePriorFailure": "Documentation-only e9057b7 run39719816877 public WebKit warm38->46ms failed original timing policy; retain as failed checkpoint. New application CI must pass independently.",
-  "deployment": "Not verified; main/dev unchanged"
+  "deployment": "Not verified; main/dev unchanged",
+  "normalCI39721871449": {
+    "validate": "success",
+    "screenshotsPublic": "two configuration hover differences: Chromium single320px300 pixels, WebKit repeated390px8598 pixels",
+    "screenshotsPreview": "same two differences and counts; other checks passed",
+    "repair": "Move pointer to noninteractive gutter for practice Configure captures, preserving original references, thresholds, browser controls and retry policy. Taller source catalog cards must not determine destination hover state. Final pinned comparison required."
+  }
 }
