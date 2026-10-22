@@ -33,17 +33,17 @@ const server=createServer((req,res)=>{try{
 }catch(e){res.writeHead(500).end(String(e));}});
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const name=arg('browser')||'webkit';const browser=await({chromium,webkit}[name]).launch(name==='chromium'&&process.env.PERFORMANCE_EXECUTABLE_PATH?{executablePath:process.env.PERFORMANCE_EXECUTABLE_PATH}:{});
-const cases=[['old','old'],['new','old'],['old','new'],['new','new'],['old','none'],['new','none']];const result={kind:'Advisory crossed HTML/module experiment; injected timestamps and added timing headers, not acceptance',browser:name,version:browser.version(),samples:{}};
+const cases=[['old','old'],['new','old'],['old','new'],['new','new'],['old','none'],['new','none']];const result={kind:'Advisory crossed HTML/module experiment; injected timestamps and added timing headers, not acceptance',browser:name,version:browser.version(),samples:{},failures:[]};
 try{for(let run=0;run<3;run++)for(let offset=0;offset<cases.length;offset++){
  const [html,js]=cases[(offset+run)%cases.length],key=html+'Html-'+js+'Js';const context=await browser.newContext({serviceWorkers:'block',viewport:rendering.viewport,locale:rendering.locale,timezoneId:rendering.timezoneId,reducedMotion:'reduce'});
  try{
   await context.addInitScript(installSyntheticMedia);await context.addInitScript({content:`window.__performanceUsableScreen=(${usableInitialScreen.toString()});`});await context.addInitScript(observeReadiness);
-  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  const page=await context.newPage();page.setDefaultTimeout(5000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(`http://127.0.0.1:${server.address().port}/?html=${html}&js=${js}`);if(js!=='none'){await page.waitForFunction(()=>Number.isFinite(window.__performanceReview.ready));await page.locator('#settingsShortcut').click();await page.locator('#settingsView:not(.hidden)').waitFor();await page.waitForLoadState('networkidle');}
   await page.reload();if(js!=='none')await page.waitForFunction(()=>Number.isFinite(window.__performanceReview.ready));
   const sample=await page.evaluate(()=>{const n=performance.getEntriesByType('navigation')[0];return{responseEnd:n.responseEnd,domInteractive:n.domInteractive,domContentLoaded:n.domContentLoadedEventEnd,moduleStart:window.__startupProbeStart??null,moduleEnd:window.__startupProbeEnd??null,ready:window.__performanceReview.ready,gzip:n.serverTiming?.find(t=>t.name==='gzip')?.duration??null,elements:document.querySelectorAll('*').length,resources:performance.getEntriesByType('resource').map(r=>({name:new URL(r.name).pathname,responseEnd:r.responseEnd,duration:r.duration}))};});
   (result.samples[key]||=[]).push({...sample,errors});
- }finally{await context.close();}
+ }catch(error){result.failures.push({html,js,run,message:error.message});}finally{await context.close();}
 }}finally{await browser.close();await new Promise(r=>server.close(r));}
 const median=a=>a.sort((a,b)=>a-b)[Math.floor(a.length/2)];result.medians=Object.fromEntries(Object.entries(result.samples).map(([k,a])=>[k,Object.fromEntries(['responseEnd','domInteractive','domContentLoaded','moduleStart','moduleEnd','ready','gzip','elements'].map(p=>[p,a.every(v=>v[p]!==null)?median(a.map(v=>v[p])):null]))]));
 mkdirSync('performance-results',{recursive:true});writeFileSync('performance-results/startup-diagnostic.json',JSON.stringify(result,null,2)+'\n');console.log('::notice title=Advisory startup experiment::'+JSON.stringify(result.medians));
