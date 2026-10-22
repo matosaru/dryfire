@@ -289,9 +289,10 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     fillConfig(record.config); changed(); onNavigate('practice');
   }
   function renderCatalog() {
-    if(onCatalogLock?.(locked()))return;
+    const disabled=locked() || getContext().available===false;
+    if(onCatalogLock?.(disabled))return;
     const host=$('practiceCatalog');materializeStaticCatalog(host);
- for (const button of host.querySelectorAll('[data-practice-mode]')) button.disabled = locked();
+ for (const button of host.querySelectorAll('[data-practice-mode]')) button.disabled = disabled;
   }
   // The cards are compiled from the typed component. Bind once to their stable
   // container; refreshing disabled state must never replace nodes/listeners.

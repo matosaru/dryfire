@@ -145,7 +145,7 @@ jobs:
       - name: Advisory crossed HTML/module startup diagnostic
         if: matrix.edition == 'public'
         continue-on-error: true
-        run: node tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
+        run: node --experimental-vm-modules tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
       - name: Compare actual critical payload, cold/warm startup, input and cleanup
         run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist
       - name: Publish performance evidence and failure annotations

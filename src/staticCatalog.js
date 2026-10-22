@@ -1,6 +1,10 @@
-/** Move only the trusted build-produced inert catalog nodes into their host.
- * Delegated handlers survive; no user/stored HTML is parsed at runtime. */
+/** Expand only repository-owned build output on entry to its hidden page.
+ * This is never stored/user HTML; typed renderers escape all interpolated text. */
 export function materializeStaticCatalog(host) {
   const source=host.firstElementChild;
-  if(source?.tagName==='TEMPLATE') source.replaceWith(source.content);
+  if(source?.tagName==='SCRIPT' && source.type==='text/plain') {
+    const template=host.ownerDocument.createElement('template');
+    template.innerHTML=source.textContent;
+    source.replaceWith(template.content);
+  }
 }

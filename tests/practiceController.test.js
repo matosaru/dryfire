@@ -226,4 +226,10 @@ test('a mounted catalog renderer owns lock updates without competing native butt
  const button=document.querySelector('#practiceCatalog button');button.disabled=true;controller.renderCatalog();expect(onCatalogLock).toHaveBeenCalledWith(false);expect(button.disabled).toBe(true);onCatalogLock.mockReturnValue(false);controller.renderCatalog();expect(button.disabled).toBe(false);expect(capture).not.toHaveBeenCalled();
 });
 
+
+test('first-entry catalog applies the current capture availability before actions become visible',()=>{
+ context.available=false;controller.renderCatalog();expect([...document.querySelectorAll('[data-practice-mode]')].every(button=>button.disabled)).toBe(true);
+ context.available=true;controller.renderCatalog();expect([...document.querySelectorAll('[data-practice-mode]')].every(button=>!button.disabled)).toBe(true);
+});
+
 });

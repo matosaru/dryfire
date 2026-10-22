@@ -24,5 +24,35 @@
     "screenshotsPublic": "two configuration hover differences: Chromium single320px300 pixels, WebKit repeated390px8598 pixels",
     "screenshotsPreview": "same two differences and counts; other checks passed",
     "repair": "Move pointer to noninteractive gutter for practice Configure captures, preserving original references, thresholds, browser controls and retry policy. Taller source catalog cards must not determine destination hover state. Final pinned comparison required."
+  },
+  "startupCorrection": {
+    "reason": "39721871449 public WebKit warm42->49ms confirmed32/40 slower pairs; DOMInteractive17->24ms. Preview actual comparison passes; full run is not accepted.",
+    "implementation": "Non-executable trusted typed catalog text expands only on entry to Drills/Learn. Exact final DOM, host/delegated callbacks and availability locks preserved; remove two unused loop-index arguments. Cache v70.",
+    "tests": {
+      "unit": 963,
+      "suites": 140,
+      "coverageRatchet": "pass",
+      "focused": 50,
+      "publicBrowser": 14,
+      "previewBrowser": 12,
+      "smoke": 16
+    },
+    "payload": {
+      "publicJSRaw": 166550,
+      "publicJSGzip": 50673,
+      "previewJSRaw": 168126,
+      "previewJSGzip": 51134,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "advisory": "Missing --experimental-vm-modules in advisory workflow caused its import failure; flag repaired. Six crossed/control cases now complete locally in Chromium. This is diagnostic, not pinned WebKit acceptance.",
+    "pinnedComparison": "pending"
+  },
+  "targetedPinnedConfigurationReview": {
+    "run": 39723613633,
+    "comparisonStep": "success: six public Chromium/WebKit Single390/320px and Repeated390px comparisons against unchanged original references",
+    "wholeDiagnosticWorkflow": "failure: no failure images existed, so the publication step had nothing to commit. This is not a failed visual comparison or full-suite acceptance. Temporary workflow removed.",
+    "interpretation": "Neutral-pointer capture plus deferred catalog parsing passes targeted references. The earlier hover hypothesis alone was insufficient: ce3ad20 still differed at Single390px and Repeated390px. Full pinned suite remains mandatory.",
+    "localPairedTiming": "Four original-baseline Chromium pairs pass unchanged runtime and payload checks; diagnostic only."
   }
 }

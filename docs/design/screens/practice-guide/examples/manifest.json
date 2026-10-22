@@ -113,13 +113,13 @@
     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
-    "src/main.js": "9c699e68151106357ea60819869b2f928d715e5ddba94cbce8c662b4e6ddaeee",
+    "src/main.js": "972f4596a55765aa86f7e09b63f1d2bade279c67abd76638104a6cf8fe1a5e8d",
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
     "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f",
     "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
     "tools/minify-html.mjs": "cae3fc9ff539493a20f352e59735917dd9896ab4f2564f0b2e02dec90e5631e3",
-    "src/staticCatalog.js": "244c43ad660c2e5eed5dfc0910fd4dcc811ea12a233a508b7c1367f9071e8513",
-    "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+    "src/staticCatalog.js": "37967c070793d90cde0507b1000247af4408c3ad0797da31605adebe2ee854a6",
+    "tools/static-catalog.mjs": "1694697828d686452c215c7a8e269b618e6802514f9bce5ad443af949f969b86",
     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293"
   },
   "exports": [
@@ -296,5 +296,9 @@
   "chg052Review": {
     "date": "2026-10-22",
     "scope": "Catalog-only changes; same shared run/guide components, 1333 semantic frame contracts and existing guide/layout browser workflows pass. Legacy one-trigger example now enters through a restored saved session and Repeat, preserving actual supported navigation. Compiled CSS unchanged; retain existing reviewed GIF bytes. Final pinned whole-suite comparison remains required."
+  },
+  "chg052StartupReview": {
+    "date": "2026-10-22",
+    "scope": "Practice catalog expands synchronously before first Drills display, calibration before first Learn rendering; only trusted compiler-escaped static output is parsed. Shared guide/run components and all 1333 semantic frames remain unchanged; local guide, page-layout and session-owner parity workflows pass. Encoded GIF bytes unchanged."
   }
 }

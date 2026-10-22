@@ -382,8 +382,8 @@ function renderCustomCatalog() {
   const host = $('#customDrillCatalog');
   host.replaceChildren();
   if (!customDrills.length) { const empty = document.createElement('p'); empty.className = 'empty-state'; empty.textContent = 'No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.'; host.append(empty); }
-  for (const [index, drill] of customDrills.entries()) {
-    const card = drillCard({drill, index, titleFor, onChoose: () => chooseDrill(drill.id)});
+  for (const drill of customDrills) {
+    const card = drillCard({drill, titleFor, onChoose: () => chooseDrill(drill.id)});
     const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'button secondary'; edit.textContent = 'Edit sequence'; edit.addEventListener('click', () => customEditor.open(drill)); card.append(edit); host.append(card);
   }
 }
@@ -534,9 +534,9 @@ function renderDrillCatalog() {
   if(drillsPage){drillsPage.update({builtIns:drillCards().builtIns});return;}
   const host = $('#drillCatalog');
   host.replaceChildren();
-  for (const [index, item] of SEQUENCE_DRILLS.entries()) {
+  for (const item of SEQUENCE_DRILLS) {
     host.append(drillCard({
-      drill: item, index, titleFor,
+      drill: item, titleFor,
       onChoose: () => chooseDrill(item.id)
     }));
   }
@@ -588,6 +588,7 @@ function displayView(name) {
     }
   }
   if(name==='drills'){
+    practiceController.renderCatalog();
     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
@@ -1001,7 +1002,6 @@ async function init() {
   practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
     onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
     vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
-  practiceController.renderCatalog();
   sessionController = createSessionController({
     getContext: practiceContext,
     titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,

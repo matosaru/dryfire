@@ -11,6 +11,8 @@ test('practice and sequence cards share presentation without duplicate trigger c
   await page.locator('#restoreGunBackupBtn').click();
   await page.locator('#importFile').setInputFiles({ name: 'library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
   await expect(page.locator('#homeView')).toBeVisible();
+  await expect(page.locator('#practiceCatalog > script[type="text/plain"]')).toHaveCount(1);
+  await expect(page.locator('#practiceCatalog button')).toHaveCount(0);
   for (let visit = 0; visit < 2; visit++) {
     await page.locator('.tab[data-view="drills"]').click();
     await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(3);
