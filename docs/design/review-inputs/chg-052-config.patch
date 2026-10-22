@@ -1,0 +1,327 @@
+diff --git a/.github/workflows/check.yml b/.github/workflows/check.yml
+index f460d27..d328d35 100644
+--- a/.github/workflows/check.yml
++++ b/.github/workflows/check.yml
+@@ -145,7 +145,7 @@ jobs:
+       - name: Advisory crossed HTML/module startup diagnostic
+         if: matrix.edition == 'public'
+         continue-on-error: true
+-        run: node tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
++        run: node --experimental-vm-modules tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
+       - name: Compare actual critical payload, cold/warm startup, input and cleanup
+         run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist
+       - name: Publish performance evidence and failure annotations
+diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
+index dc3f2d9..7632bb2 100644
+--- a/docs/architecture/application-structure.md
++++ b/docs/architecture/application-structure.md
+@@ -91,7 +91,7 @@ This table is a readable summary of the authoritative component registry. Contro
+ 
+ ## Runtime ownership and retained boundaries
+ 
+-Most `app/*Page.tsx` adapters create a root with `createRoot` and synchronously commit typed page props. Practice/Sequence parents and their Run/Review children use shared retained-subtree/contents adapters. [RetainedNode](../../packages/ui/src/RetainedNode/RetainedNode.tsx) preserves exact platform-owned subtrees; [retainedPage.tsx](../../apps/web/src/app/retainedPage.tsx) handles parent transfer and recovery. [modulePreparation.js](../../src/modulePreparation.js) caches imports without mounting a page. Loading is not permission to replace active forms or capture state. Two static catalogs use build-produced, inert HTML template fragments from their same typed source. src/staticCatalog.js materializes Practice choices during its normal startup handler and calibration choices before the first Learn render. The helper moves already-parsed template nodes, preserving the host/delegated handlers and exact card DOM without runtime HTML-string parsing or connecting hidden calibration controls during initial startup. No stored/user HTML enters that path; the build helper permits only these catalog roots and rejects nested scripts.
++Most `app/*Page.tsx` adapters create a root with `createRoot` and synchronously commit typed page props. Practice/Sequence parents and their Run/Review children use shared retained-subtree/contents adapters. [RetainedNode](../../packages/ui/src/RetainedNode/RetainedNode.tsx) preserves exact platform-owned subtrees; [retainedPage.tsx](../../apps/web/src/app/retainedPage.tsx) handles parent transfer and recovery. [modulePreparation.js](../../src/modulePreparation.js) caches imports without mounting a page. Loading is not permission to replace active forms or capture state. Two static catalogs retain build-produced escaped HTML as non-executable text until their page opens. src/staticCatalog.js parses only that trusted typed output into a temporary template before first Drills/Learn display, preserving the host, delegated handlers and exact card DOM. Hidden catalog controls are not parsed during initial startup. No stored/user HTML enters that path; the build helper permits only the two known catalog roots and rejects nested scripts.
+ 
+ Startup adapters are deliberate: they serve immediate data, controls and failed/offline loads before React takes ownership. Guarded updates select one current owner. Mount failure restores prior nodes/listeners/focus. Keep native invalid-number drafts, file input, meter and preview controls intact. Practice/Sequence engine differences and save-retry semantics remain separate even when their presentation is shared. Full History graphs load only when needed, and cannot block saved text or repaint a different gun/route.
+ 
+diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
+index 4da66b3..4e40558 100644
+--- a/docs/architecture/component-map.json
++++ b/docs/architecture/component-map.json
+@@ -634,6 +634,6 @@
+       "visual-tests/learning-runtime.spec.js",
+       "visual-tests/drills-runtime.spec.js"
+     ],
+-    "contract": "Only two known typed catalog roots serialize to inert template nodes. Practice moves its parsed fragment during startup, calibration before first Learn render. Exact host, typed DOM and delegated handlers survive; no user/stored HTML strings or runtime HTML parsing."
++    "contract": "Only two known typed catalog roots serialize to non-executable text. Practice expands before first Drills display, calibration before first Learn rendering. Only trusted build-produced escaped HTML is parsed, once, into a temporary template. Exact host, typed DOM, delegated handlers and current availability locks survive; no stored/user HTML enters this path."
+   }
+ }
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index e30c2af..640ec67 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -796,11 +796,11 @@
+   ],
+   "reviewedSources": {
+     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
+-    "src/main.js": "9c699e68151106357ea60819869b2f928d715e5ddba94cbce8c662b4e6ddaeee",
++    "src/main.js": "972f4596a55765aa86f7e09b63f1d2bade279c67abd76638104a6cf8fe1a5e8d",
+     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
+     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
+     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
+-    "src/practiceController.js": "8fd0f28ff70830b1c89747586dfdf766a7ec60c0145e8f37178bad64a75a60a9",
++    "src/practiceController.js": "fc5d92b133f0fa03c2d5d96b78cb6edf156bad56761752ee33fe24f58409230a",
+     "src/sessionController.js": "f6308bb01179468d03ed31198185a62e8f279a6cc61834158771150af9b3024a",
+     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
+     "src/inputLimits.js": "ddb90d63a692d8fdd1d4fb3ba98a46e5ddd17175d132e0c1f43b3168924442e2",
+@@ -991,8 +991,8 @@
+     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
+     "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f",
+     "tools/minify-html.mjs": "cae3fc9ff539493a20f352e59735917dd9896ab4f2564f0b2e02dec90e5631e3",
+-    "src/staticCatalog.js": "244c43ad660c2e5eed5dfc0910fd4dcc811ea12a233a508b7c1367f9071e8513",
+-    "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247"
++    "src/staticCatalog.js": "37967c070793d90cde0507b1000247af4408c3ad0797da31605adebe2ee854a6",
++    "tools/static-catalog.mjs": "1694697828d686452c215c7a8e269b618e6802514f9bce5ad443af949f969b86"
+   },
+   "implementationChanges": [
+     "CHG-017",
+diff --git a/docs/design/baselines/chg-052-card-review.json b/docs/design/baselines/chg-052-card-review.json
+index 42f5bc3..0c2b2c8 100644
+--- a/docs/design/baselines/chg-052-card-review.json
++++ b/docs/design/baselines/chg-052-card-review.json
+@@ -24,5 +24,28 @@
+     "screenshotsPublic": "two configuration hover differences: Chromium single320px300 pixels, WebKit repeated390px8598 pixels",
+     "screenshotsPreview": "same two differences and counts; other checks passed",
+     "repair": "Move pointer to noninteractive gutter for practice Configure captures, preserving original references, thresholds, browser controls and retry policy. Taller source catalog cards must not determine destination hover state. Final pinned comparison required."
++  },
++  "startupCorrection": {
++    "reason": "39721871449 public WebKit warm42->49ms confirmed32/40 slower pairs; DOMInteractive17->24ms. Preview actual comparison passes; full run is not accepted.",
++    "implementation": "Non-executable trusted typed catalog text expands only on entry to Drills/Learn. Exact final DOM, host/delegated callbacks and availability locks preserved; remove two unused loop-index arguments. Cache v70.",
++    "tests": {
++      "unit": 963,
++      "suites": 140,
++      "coverageRatchet": "pass",
++      "focused": 50,
++      "publicBrowser": 14,
++      "previewBrowser": 12,
++      "smoke": 16
++    },
++    "payload": {
++      "publicJSRaw": 166550,
++      "publicJSGzip": 50673,
++      "previewJSRaw": 168126,
++      "previewJSGzip": 51134,
++      "cssRaw": 61451,
++      "cssGzip": 13011
++    },
++    "advisory": "Missing --experimental-vm-modules in advisory workflow caused its import failure; flag repaired. Six crossed/control cases now complete locally in Chromium. This is diagnostic, not pinned WebKit acceptance.",
++    "pinnedComparison": "pending"
+   }
+ }
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index 0c834db..d8c0e18 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -113,13 +113,13 @@
+     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
+     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+-    "src/main.js": "9c699e68151106357ea60819869b2f928d715e5ddba94cbce8c662b4e6ddaeee",
++    "src/main.js": "972f4596a55765aa86f7e09b63f1d2bade279c67abd76638104a6cf8fe1a5e8d",
+     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
+     "src/afterPaint.js": "d2b5c23dad53e285d01a27981df8805c35ca1447c509db171e0020ea22fa611f",
+     "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
+     "tools/minify-html.mjs": "cae3fc9ff539493a20f352e59735917dd9896ab4f2564f0b2e02dec90e5631e3",
+-    "src/staticCatalog.js": "244c43ad660c2e5eed5dfc0910fd4dcc811ea12a233a508b7c1367f9071e8513",
+-    "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
++    "src/staticCatalog.js": "37967c070793d90cde0507b1000247af4408c3ad0797da31605adebe2ee854a6",
++    "tools/static-catalog.mjs": "1694697828d686452c215c7a8e269b618e6802514f9bce5ad443af949f969b86",
+     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293"
+   },
+   "exports": [
+@@ -296,5 +296,9 @@
+   "chg052Review": {
+     "date": "2026-10-22",
+     "scope": "Catalog-only changes; same shared run/guide components, 1333 semantic frame contracts and existing guide/layout browser workflows pass. Legacy one-trigger example now enters through a restored saved session and Repeat, preserving actual supported navigation. Compiled CSS unchanged; retain existing reviewed GIF bytes. Final pinned whole-suite comparison remains required."
++  },
++  "chg052StartupReview": {
++    "date": "2026-10-22",
++    "scope": "Practice catalog expands synchronously before first Drills display, calibration before first Learn rendering; only trusted compiler-escaped static output is parsed. Shared guide/run components and all 1333 semantic frames remain unchanged; local guide, page-layout and session-owner parity workflows pass. Encoded GIF bytes unchanged."
+   }
+ }
+diff --git a/docs/project/implementation-history.md b/docs/project/implementation-history.md
+index db3033d..1061fbe 100644
+--- a/docs/project/implementation-history.md
++++ b/docs/project/implementation-history.md
+@@ -712,3 +712,6 @@ Next authorized task: [Live Listen readiness](live-listen-readiness-plan.md), in
+ 
+ 
+ CHG-052 first normal CI39721871449 validates successfully but each edition reports the same two Configure screenshot differences (Chromium Single320px300 pixels; WebKit Repeated390px8598 pixels). Configuration presentation/CSS is unchanged; the taller source cards alter the pointer's post-navigation position. Stabilize Configure captures with the pointer in the noninteractive gutter, preserving original configuration references and exact comparison policy. Final pinned rerun required; retain the failed run. No Live Listen implementation included.
++
++
++CHG-052 startup correction: run39721871449 confirms public WebKit warm42→49ms (32/40 slower pairs, DOMInteractive17→24ms); preview actual performance comparison passes, but the whole run is not accepted. Catalogs now retain only trusted compiler-escaped text until first Drills/Learn entry, when their exact DOM is created synchronously. Current capture availability locks apply before first practice actions appear. Remove two unused loop-index arguments; cache v70.963 tests/140 suites and unchanged coverage ratchet,50 focused cases,14 public and12 preview local browser workflows,16 smoke cases, type/lints/architecture and both original payload budgets pass. Public JS166550/50673 raw/gzip; preview168126/51134; CSS61451/13011 unchanged. Advisory diagnostic import flag repaired and six local crossed/control cases complete. All original image/GIF baselines and timing/readiness policy preserved. New pinned CI remains required; Live Listen is still a separately queued task with regression tests prepared locally.
+diff --git a/docs/project/live-listen-readiness-plan.md b/docs/project/live-listen-readiness-plan.md
+index 87d817f..622e533 100644
+--- a/docs/project/live-listen-readiness-plan.md
++++ b/docs/project/live-listen-readiness-plan.md
+@@ -9,8 +9,8 @@ Home currently checks busy state plus a named gun and at least three trigger exa
+ ## Implementation steps
+ 
+ - [ ] Characterize missing/incomplete gun, 0–2/3+ trigger samples, gun switching/loading, recording, connecting, active capture and timed/unsaved-session states before changing logic.
+-- [ ] Use one readiness decision for Home, Drills free-listening, bottom-menu entry and listening actions, retaining an active listener's Stop control and existing safety/permission flow.
+-- [ ] Show a concise reason beside disabled entries; explain the selected-gun minimum/count, loading or active operation as appropriate. Training remains trigger-only; optional sounds must not block free listening.
++- [ ] Separate navigation availability from capture readiness consistently. Home, Drills and bottom-menu entries open the same Live Listen page for a valid loaded gun, even before training; disable navigation during existing busy/profile-load guards. Capture requires three trigger samples and no pending/busy/timed/unsaved operation; retain an active listener's Stop control and existing safety/permission flow.
++- [ ] Show setup guidance and a concise visible reason beside disabled capture controls on Live Listen; explain the selected-gun minimum/count, loading or active operation as appropriate. Training remains trigger-only; optional sounds must not block free listening.
+ - [ ] Test recovery after training/reset/switch/stop, native and React owners, keyboard/navigation, both editions and narrow/light/dark screens.
+ - [ ] Update affected requirements, shared/page designs, screen mappings and reviewed images. Run local tests/build/payload checks and pinned CI; publish only observed results.
+ 
+diff --git a/docs/project/react-refactor/context.md b/docs/project/react-refactor/context.md
+index c04562b..62b4e02 100644
+--- a/docs/project/react-refactor/context.md
++++ b/docs/project/react-refactor/context.md
+@@ -10,10 +10,10 @@ Original payload budgets pass: public JS166414raw/50609gzip, preview167988/51082
+ 
+ [Plan](plan.md) · [Spec](spec.md) · [Architecture/entry guide](../../architecture/application-structure.md) · [Evidence](final-acceptance-evidence.json) · [History](../implementation-history.md) · [Execution archive](execution-history.md) · [Component map](../../architecture/component-map.json)
+ 
+-## Current product work — CHG-052 and queued Live Listen
++## Active product task — CHG-052
+ 
+-CHG-052 implementation complete locally: three displayed multi-action sequences, six matching icon/title/description/Start Drill practice cards, unchanged Configure/capture/legacy history semantics, cache v69.960/140 tests, static/type/lints/architecture/docs/smoke,13 public layout/help browser workflows, both-edition catalog workflow and4 preview runtime cases pass. Payload: public166465/50631raw/gzip; preview168041/51104; CSS61451/13011 unchanged.16 pinned image candidates from successful39721556553 reviewed/promoted; four design captures updated. Failed collector39721234330 title grep and39721357879 obsolete count assertion retained in review. Temporary collector/patch/candidate code removed. Existing GIF bytes retained after frame/guide equivalence; sources reviewed. Two preexisting generic audit native-select ownership metadata findings remain outside this change; no comprehensive compliance claim.
++Card update1870e14 pushed b; test-only hover stabilizationce3ad20 pushed. Three displayed multi-action sequences, six matching icon/title/description/Start Drill practice cards; legacy trigger sessions/history/repeat preserved.16 reviewed pinned Drills baselines/four current captures updated through successful collector39721556553; temporary collector removed. First normal CI39721871449 validates but has identical Configure hover differences in both editions (Single320px300 pixels; Repeated390px8598 pixels); ce3ad20 places pointer in noninteractive gutter only for Configure captures, retaining original references/thresholds. ce3ad20 run39722815764 is active; observe its screenshot result to confirm this diagnosis.
+ 
+-Documentation-only e9057b7 CI39719816877 independently fails original WebKit warm38→46ms despite unchanged application source. Preserve this checkpoint; final new-source canonical CI still required. Earlier implementation8a8906e acceptance remains true for its exact run only. Finish publishing CHG-052 on b and observe actual normal CI, then execute the next user task below. Main/dev frozen, no release/manual deployment.
++39721871449 also confirms public WebKit warm42→49ms (32/40 slower, DOMInteractive17→24); preview actual comparison passes. Do not claim whole-run acceptance. Unpublished correction: trusted escaped catalog text parsed synchronously only on first Drills/Learn entry (not startup), exact typed DOM/host/delegated callbacks preserved; initial practice buttons use current availability; unused index arguments removed; cache v70.963/140 full coverage +ratchet,50 focused cases,14 public/12 preview local browser workflows, static/type/lints/architecture and16 smoke pass. Public JS166550/50673raw/gzip; preview168126/51134; CSS61451/13011 unchanged. Guide/GIF semantics/bytes unchanged, fingerprints reviewed. Advisory helper previously failed importing vm.SourceTextModule without the flag; workflow repaired to node --experimental-vm-modules and six crossed/control local Chromium cases now finish. Local original-baseline4-pair timing session46689 is running; diagnostic only, not canonical acceptance. Publish correction after final docs checks; original gates remain unchanged. Main/dev frozen.
+ 
+-Next user task: [Live Listen readiness plan](../live-listen-readiness-plan.md). Home checks busy+trigger readiness, bottom nav only gun/loading; actual listening applies pending/timed guards, and two rendering paths overlap. Synchronize Home/Drills/nav/capture controls, visibly explain unavailable reason/count and preserve active Stop/safety/selected-gun state. Directly requested, no new confirmation needed.
++Next: user requests Live Listen availability consistency and visible reasons. [Plan](../live-listen-readiness-plan.md); untracked visual-tests/live-listen-readiness.spec.js is future regression work (two failing cases reproduce Home-disabled/nav-enabled at0/2 samples; ready3-sample case passes). Do not include that red future test in CHG-052 publication. Decision: navigation entries should consistently open setup guidance for a valid loaded gun, while capture remains disabled until3 trigger samples and no pending/busy/timed operation; keep active Stop usable. Use existing trainingSummary for clear count/reason; no need to redesign nav or add Home hint props. Implement after card checks finish. No new confirmation required.
+diff --git a/src/main.js b/src/main.js
+index f56c004..31941da 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -382,8 +382,8 @@ function renderCustomCatalog() {
+   const host = $('#customDrillCatalog');
+   host.replaceChildren();
+   if (!customDrills.length) { const empty = document.createElement('p'); empty.className = 'empty-state'; empty.textContent = 'No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.'; host.append(empty); }
+-  for (const [index, drill] of customDrills.entries()) {
+-    const card = drillCard({drill, index, titleFor, onChoose: () => chooseDrill(drill.id)});
++  for (const drill of customDrills) {
++    const card = drillCard({drill, titleFor, onChoose: () => chooseDrill(drill.id)});
+     const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'button secondary'; edit.textContent = 'Edit sequence'; edit.addEventListener('click', () => customEditor.open(drill)); card.append(edit); host.append(card);
+   }
+ }
+@@ -534,9 +534,9 @@ function renderDrillCatalog() {
+   if(drillsPage){drillsPage.update({builtIns:drillCards().builtIns});return;}
+   const host = $('#drillCatalog');
+   host.replaceChildren();
+-  for (const [index, item] of SEQUENCE_DRILLS.entries()) {
++  for (const item of SEQUENCE_DRILLS) {
+     host.append(drillCard({
+-      drill: item, index, titleFor,
++      drill: item, titleFor,
+       onChoose: () => chooseDrill(item.id)
+     }));
+   }
+@@ -588,6 +588,7 @@ function displayView(name) {
+     }
+   }
+   if(name==='drills'){
++    practiceController.renderCatalog();
+     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
+     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
+       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
+@@ -1001,7 +1002,6 @@ async function init() {
+   practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
+     onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
+     vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
+-  practiceController.renderCatalog();
+   sessionController = createSessionController({
+     getContext: practiceContext,
+     titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
+diff --git a/src/practiceController.js b/src/practiceController.js
+index 8738a61..26b1c23 100644
+--- a/src/practiceController.js
++++ b/src/practiceController.js
+@@ -289,9 +289,10 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
+     fillConfig(record.config); changed(); onNavigate('practice');
+   }
+   function renderCatalog() {
+-    if(onCatalogLock?.(locked()))return;
++    const disabled=locked() || getContext().available===false;
++    if(onCatalogLock?.(disabled))return;
+     const host=$('practiceCatalog');materializeStaticCatalog(host);
+- for (const button of host.querySelectorAll('[data-practice-mode]')) button.disabled = locked();
++ for (const button of host.querySelectorAll('[data-practice-mode]')) button.disabled = disabled;
+   }
+   // The cards are compiled from the typed component. Bind once to their stable
+   // container; refreshing disabled state must never replace nodes/listeners.
+diff --git a/src/staticCatalog.js b/src/staticCatalog.js
+index 6140e09..bc53acb 100644
+--- a/src/staticCatalog.js
++++ b/src/staticCatalog.js
+@@ -1,6 +1,10 @@
+-/** Move only the trusted build-produced inert catalog nodes into their host.
+- * Delegated handlers survive; no user/stored HTML is parsed at runtime. */
++/** Expand only repository-owned build output on entry to its hidden page.
++ * This is never stored/user HTML; typed renderers escape all interpolated text. */
+ export function materializeStaticCatalog(host) {
+   const source=host.firstElementChild;
+-  if(source?.tagName==='TEMPLATE') source.replaceWith(source.content);
++  if(source?.tagName==='SCRIPT' && source.type==='text/plain') {
++    const template=host.ownerDocument.createElement('template');
++    template.innerHTML=source.textContent;
++    source.replaceWith(template.content);
++  }
+ }
+diff --git a/tests/practiceController.test.js b/tests/practiceController.test.js
+index 9aeb962..3747514 100644
+--- a/tests/practiceController.test.js
++++ b/tests/practiceController.test.js
+@@ -226,4 +226,10 @@ test('a mounted catalog renderer owns lock updates without competing native butt
+  const button=document.querySelector('#practiceCatalog button');button.disabled=true;controller.renderCatalog();expect(onCatalogLock).toHaveBeenCalledWith(false);expect(button.disabled).toBe(true);onCatalogLock.mockReturnValue(false);controller.renderCatalog();expect(button.disabled).toBe(false);expect(capture).not.toHaveBeenCalled();
+ });
+ 
++
++test('first-entry catalog applies the current capture availability before actions become visible',()=>{
++ context.available=false;controller.renderCatalog();expect([...document.querySelectorAll('[data-practice-mode]')].every(button=>button.disabled)).toBe(true);
++ context.available=true;controller.renderCatalog();expect([...document.querySelectorAll('[data-practice-mode]')].every(button=>!button.disabled)).toBe(true);
++});
++
+ });
+diff --git a/tests/staticCatalog.test.js b/tests/staticCatalog.test.js
+index 62af473..25bb0a9 100644
+--- a/tests/staticCatalog.test.js
++++ b/tests/staticCatalog.test.js
+@@ -10,7 +10,7 @@ import {renderCalibrationCatalog} from '../apps/web/src/app/renderCalibrationCat
+ import {PRACTICE_MODES} from '../src/practiceSession.js';
+ test.each([['practiceCatalog',()=>renderPracticeCatalog(PRACTICE_MODES)],['calibrationCards',renderCalibrationCatalog]])('%s expands to the exact typed DOM once without replacing its host or delegated handlers',(_id,render)=>{
+  const html=render();document.body.innerHTML=deferStaticCatalog(html);const host=document.body.firstElementChild;const click=jest.fn();host.addEventListener('click',click);
+- expect(host.querySelectorAll('button')).toHaveLength(0);materializeStaticCatalog(host);expect(document.body.firstElementChild).toBe(host);
++ expect(host.querySelectorAll('button')).toHaveLength(0);expect(host.firstElementChild.type).toBe('text/plain');materializeStaticCatalog(host);expect(document.body.firstElementChild).toBe(host);
+  const original=document.createElement('div');original.innerHTML=html;expect(host.outerHTML).toBe(original.firstElementChild.outerHTML);
+  const button=host.querySelector('button');button.disabled=false;button.click();expect(click).toHaveBeenCalledTimes(1);materializeStaticCatalog(host);expect(host.querySelector('button')).toBe(button);expect(host.querySelector('script,template')).toBeNull();
+ });
+@@ -18,3 +18,8 @@ test('the build refuses arbitrary roots or nested scripts and keeps escaped text
+  expect(()=>deferStaticCatalog('<div id="unknown"></div>')).toThrow('Unknown');expect(()=>deferStaticCatalog('<div id="practiceCatalog"><script>bad()</script></div>')).toThrow('scripts');
+  const modes=[{...PRACTICE_MODES[0],title:'<img src=x onerror=alert(1)>'}];document.body.innerHTML=deferStaticCatalog(renderPracticeCatalog(modes));materializeStaticCatalog(document.body.firstElementChild);expect(document.querySelector('img')).toBeNull();expect(document.querySelector('h3').textContent).toBe(modes[0].title);
+ });
++
++test('unrelated script types are not interpreted as trusted catalog markup',()=>{
++ document.body.innerHTML='<div id="practiceCatalog"><script type="application/json">{}</script></div>';
++ const host=document.body.firstElementChild,source=host.firstElementChild;materializeStaticCatalog(host);expect(host.firstElementChild).toBe(source);
++});
+diff --git a/tools/static-catalog.mjs b/tools/static-catalog.mjs
+index 4015c98..57ed996 100644
+--- a/tools/static-catalog.mjs
++++ b/tools/static-catalog.mjs
+@@ -3,5 +3,5 @@ export function deferStaticCatalog(html) {
+   if (!/^<div id="(?:practiceCatalog|calibrationCards)"/.test(html) || !html.endsWith('</div>')) throw new Error('Unknown static catalog root.');
+   const start=html.indexOf('>')+1, end=html.lastIndexOf('</div>'), content=html.slice(start,end);
+   if (/<\/?script\b/i.test(content)) throw new Error('Static catalogs cannot contain scripts.');
+-  return html.slice(0,start)+'<template>'+content+'</template>'+html.slice(end);
++  return html.slice(0,start)+'<script type="text/plain">'+content+'</script>'+html.slice(end);
+ }
+diff --git a/visual-tests/drill-catalog.spec.js b/visual-tests/drill-catalog.spec.js
+index 75792a6..5d24f29 100644
+--- a/visual-tests/drill-catalog.spec.js
++++ b/visual-tests/drill-catalog.spec.js
+@@ -11,6 +11,8 @@ test('practice and sequence cards share presentation without duplicate trigger c
+   await page.locator('#restoreGunBackupBtn').click();
+   await page.locator('#importFile').setInputFiles({ name: 'library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
+   await expect(page.locator('#homeView')).toBeVisible();
++  await expect(page.locator('#practiceCatalog > script[type="text/plain"]')).toHaveCount(1);
++  await expect(page.locator('#practiceCatalog button')).toHaveCount(0);
+   for (let visit = 0; visit < 2; visit++) {
+     await page.locator('.tab[data-view="drills"]').click();
+     await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(3);
+diff --git a/workers/sw.js b/workers/sw.js
+index e24fc32..1e6772f 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -1,6 +1,6 @@
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v69`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v70`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {
