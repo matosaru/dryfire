@@ -619,7 +619,8 @@ function displayView(name) {
   if(name==='home')renderHome().catch(showError);
   if(name==='guns')renderGunLibrary().catch(showError);
   if(name==='settings'){
-    const settingsModule=preparePageModule('settings',()=>afterPaint(()=>import('../apps/web/src/app/settingsPage.tsx')));
+    // Restore/help already work natively before onboarding; prepare React after a valid gun exists.
+    const settingsModule=activeGun && !activeGun.needsDetails && preparePageModule('settings',()=>afterPaint(()=>import('../apps/web/src/app/settingsPage.tsx')));
     if(!settingsPage && settingsModule && !profileLocked() && !$('#safetyModal').open){
       try{settingsPage=settingsModule.mountSettingsPage($('#settingsView'),{onBack:()=>goBack(),onAction:id=>settingsHandlers.get(id)?.(),onPreference:id=>settingsHandlers.get(id)?.()});}
       catch(error){showError(error);}

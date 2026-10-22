@@ -39,7 +39,7 @@ try{for(let run=0;run<3;run++)for(let offset=0;offset<cases.length;offset++){
  try{
   await context.addInitScript(installSyntheticMedia);await context.addInitScript({content:`window.__performanceUsableScreen=(${usableInitialScreen.toString()});`});await context.addInitScript(observeReadiness);
   const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(`http://127.0.0.1:${server.address().port}/?html=${html}&js=${js}`);if(js!=='none')await page.waitForFunction(()=>Number.isFinite(window.__performanceReview.ready));
+  await page.goto(`http://127.0.0.1:${server.address().port}/?html=${html}&js=${js}`);if(js!=='none'){await page.waitForFunction(()=>Number.isFinite(window.__performanceReview.ready));await page.locator('#settingsShortcut').click();await page.locator('#settingsView:not(.hidden)').waitFor();await page.waitForLoadState('networkidle');}
   await page.reload();if(js!=='none')await page.waitForFunction(()=>Number.isFinite(window.__performanceReview.ready));
   const sample=await page.evaluate(()=>{const n=performance.getEntriesByType('navigation')[0];return{responseEnd:n.responseEnd,domInteractive:n.domInteractive,domContentLoaded:n.domContentLoadedEventEnd,moduleStart:window.__startupProbeStart??null,moduleEnd:window.__startupProbeEnd??null,ready:window.__performanceReview.ready,gzip:n.serverTiming?.find(t=>t.name==='gzip')?.duration??null,elements:document.querySelectorAll('*').length,resources:performance.getEntriesByType('resource').map(r=>({name:new URL(r.name).pathname,responseEnd:r.responseEnd,duration:r.duration}))};});
   (result.samples[key]||=[]).push({...sample,errors});

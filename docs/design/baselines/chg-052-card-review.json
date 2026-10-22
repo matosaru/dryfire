@@ -118,6 +118,54 @@
     "advisory": "Pinned 3-sample crossed-source diagnostic only; old HTML/old JS ready 54 ms, new HTML/new JS 48 ms. Not canonical acceptance.",
     "localCoverage": "963 tests/140 suites and coverage ratchet passed",
     "previewWorkflows": 14,
-    "canonicalCI": "pending publication"
+    "canonicalCI": 39812900361
+  },
+  "normalCI39812900361": {
+    "application": "854d0a0",
+    "validate": "success",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "performancePreviewPrimary": "pass",
+    "performancePublicPrimary": "FAIL: WebKit warm baseline median/p95 36/40 ms, candidate43/54;35/40 slower, paired median interval4 to10 ms. DOMInteractive15 to22 ms.",
+    "controls": "Both identical-build controls and public deliberate-slowdown rejection steps passed; top-level completion status was stale at review time.",
+    "acceptance": "not accepted; do not weaken policy"
+  },
+  "settingsWarmDiagnostic": {
+    "initialProbe": 39816066825,
+    "initialOutcome": "success; HTML-only variants did not reproduce canonical slowdown",
+    "matchedProbe": 39816601358,
+    "matchedOutcome": "success, 12 samples/variant after actual cold Settings visit and network idle",
+    "mediansMs": {
+      "baselineReady": 42,
+      "currentReady": 57,
+      "templateReady": 46,
+      "directReady": 50,
+      "compactTemplateReady": 49,
+      "oldHtmlNewJsReady": 56,
+      "newHtmlOldJsReady": 42
+    },
+    "interpretation": "Current JS remains slower with original HTML; current HTML plus original JS matches baseline. Advisory modified-response evidence only, not acceptance.",
+    "v75Correction": "Do not prepare optional React Settings before a valid gun exists; retain all native onboarding controls and normal post-profile ownership. Existing canonical advisory now follows the same cold Settings visit; acceptance policy unchanged.",
+    "publicLocalWorkflows": 15,
+    "canonicalCI": "pending publication",
+    "localVerification": {
+      "coverage": "963 tests/140 suites, unchanged coverage ratchet passed",
+      "browserWorkflows": "15 public +15 preview passed",
+      "staticChecks": "type/lints/architecture/docs and16 smoke passed",
+      "criticalJsRawGzip": {
+        "public": [
+          166529,
+          50613
+        ],
+        "preview": [
+          168108,
+          51110
+        ]
+      },
+      "cssRawGzip": [
+        61451,
+        13011
+      ]
+    }
   }
 }

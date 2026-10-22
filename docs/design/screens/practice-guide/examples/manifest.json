@@ -113,7 +113,7 @@
     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
-    "src/main.js": "32f7450de2facb623cce01fa1cba544ebb58117791aef23620518d45dba69fbd",
+    "src/main.js": "d30a5438fd60716cc8dce4d8df2ecebc4a8e8b017ea53bfcd1c7bf2c5e089ac9",
     "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
@@ -309,5 +309,9 @@
   "chg052HostPayloadReview": {
     "date": "2026-10-22",
     "scope": "Trusted catalogs use metadata on their existing hosts rather than additional parser nodes. Quoted attributes retained, safe boolean compaction only. Exact parsed DOM and 14 preview guide/layout workflows pass; shared guide/run/frame logic and encoded GIF bytes unchanged."
+  },
+  "chg052SettingsPreparationReview": {
+    "date": "2026-10-22",
+    "scope": "Skip optional Settings framework preparation before gun setup. Native onboarding controls and post-profile React handoff pass browser workflows. No guide/run/template/CSS/frame change; retain reviewed GIF bytes."
   }
 }
