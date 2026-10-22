@@ -1,0 +1,55 @@
+name: Inspect configuration screenshots in full suite
+on:
+  push:
+    branches: [b]
+    paths: ['.github/workflows/inspect-full-config.yml', 'docs/design/review-inputs/chg-052-full-config.patch']
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      options: --ipc=host
+    env:
+      VISUAL_IMAGE: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      APP_EDITION: public
+      VISUAL_EDITION: public
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: b
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: git apply docs/design/review-inputs/chg-052-full-config.patch
+      - name: Attach diagnostic images without changing comparisons
+        run: |
+          node --input-type=module - <<'JS'
+          import {readFileSync,writeFileSync} from 'node:fs';
+          const p='visual-tests/screens.spec.js';let s=readFileSync(p,'utf8');s=s.replace("    await expect(page).toHaveScreenshot(baselineName(item).split('/'));", "    if (item.screen === 'practice' && /^configure-(single|repeated)\\./.test(item.state)) await testInfo.attach('configuration-review', {body:await page.screenshot({animations:'disabled',caret:'hide',scale:'css'}),contentType:'image/png'});\n    await expect(page).toHaveScreenshot(baselineName(item).split('/'));");writeFileSync(p,s);
+          JS
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - name: Run normal full public browser suite
+        id: compare
+        continue-on-error: true
+        run: npx playwright test
+      - name: Publish actual configuration and failure images for review
+        if: always()
+        run: |
+          node --input-type=module - <<'JS'
+          import {readdirSync,mkdirSync,copyFileSync,existsSync} from 'node:fs';import {join,dirname} from 'node:path';
+          function copy(dir){if(!existsSync(dir))return;for(const x of readdirSync(dir,{withFileTypes:true})){const p=join(dir,x.name);if(x.isDirectory())copy(p);else if(/configuration-review.*\.png$|-(actual|diff|expected)\.png$|error-context\.md$/.test(p)){const out=join('docs/design/review-candidates/chg-052-full-config',p);mkdirSync(dirname(out),{recursive:true});copyFileSync(p,out);}}}copy('test-results');
+          JS
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/design/review-candidates/chg-052-full-config
+          git commit -m 'test: publish configuration images from full pinned suite'
+          git push origin HEAD:b
+      - name: Preserve comparison outcome
+        if: steps.compare.outcome == 'failure'
+        run: exit 1
