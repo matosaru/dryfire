@@ -88,3 +88,8 @@ Acceptance: expected-failing early-capture, gain-change, quiet-click and room-no
 ## Current design mapping
 
 See [Practice screen and all six mode configurations](../design/screens/practice/README.md), [Learn](../design/screens/learn/README.md), [Drills](../design/screens/drills/README.md) and [History](../design/screens/history/README.md). Current captures reflect CHG-017; older CHG-015/016 images are archived evidence, not the latest run state.
+
+
+## Catalog presentation — CHG-052
+
+PRACTICE-20: All six Dry-fire practice choices use the existing sequence-card layout: decorative target icon beside the title, description below the title, and a full-width orange “▶ Start Drill” button. Reuse shared card classes/theme rules. The button opens the existing selected-mode Configure screen; microphone capture still requires the subsequent configured start and safety flow. Preserve keyboard navigation, disabled/capture guards, both themes and narrow layouts.

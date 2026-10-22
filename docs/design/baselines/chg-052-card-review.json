@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-22",
+  "approval": "CHG-052",
+  "collectorRun": 39721556553,
+  "collectorConclusion": "success",
+  "candidateCommit": "e743bbe",
+  "reviewed": "Chromium/WebKit public and preview Drills catalog/custom/editor states, including 320px catalog; 16 affected baselines and four current design captures updated. Same target/header/description/action styling; three displayed built-ins. No unrelated baselines or comparison thresholds changed.",
+  "localTests": {
+    "unit": 960,
+    "suites": 140,
+    "publicLayoutAndGuides": 13,
+    "publicCatalog": 1,
+    "previewCatalog": 1,
+    "previewRuntime": 4
+  },
+  "collectionFailuresRetained": [
+    "39721234330: anchored grep matched no tests",
+    "39721357879: obsolete four-card assertion; changed to approved three-card expectation"
+  ],
+  "separatePriorFailure": "Documentation-only e9057b7 run39719816877 public WebKit warm38->46ms failed original timing policy; retain as failed checkpoint. New application CI must pass independently.",
+  "deployment": "Not verified; main/dev unchanged"
+}

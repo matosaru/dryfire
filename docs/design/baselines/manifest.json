@@ -176,44 +176,44 @@
       "height": 1385
     },
     "chromium/public/drills/catalog.dark.390.png": {
-      "sha256": "fd0a02eae422cb67c70c4c4e31c0ea77d6f37dd90ab99bd5fe10ef673c9e5f3f",
+      "sha256": "d07c937f41f20052fe0d5c7dc9bbd1e5416c8025e825146365c5a18514d600fd",
       "width": 390,
-      "height": 2638
+      "height": 2441
     },
     "chromium/public/drills/catalog.dark.320.png": {
-      "sha256": "2f645394934102f341a7bf42829f5d6e4c837e72493a10d793edce0fdf827c88",
+      "sha256": "71b8d60c4ea83557fd3772d28ad163d01c7945f642b3c2da9004368e07fbfe18",
       "width": 320,
-      "height": 2766
+      "height": 2545
     },
     "chromium/preview/drills/catalog.dark.390.png": {
-      "sha256": "09569892b7e0ce5a762b431f4a6b9a8452d6e062e32cd8e4e2fd809aacc36716",
+      "sha256": "006c8d11d81aec8aa8746b3368ed768eb805f136f50100ae48a83d7e375222b2",
       "width": 390,
-      "height": 2677
+      "height": 2479
     },
     "chromium/preview/drills/catalog.dark.320.png": {
-      "sha256": "5b0d58da497c49f6b972f162023b36da0cc481709a5e15e0668769fd09705679",
+      "sha256": "69cc82fe47cf04e0f45136ac925ebb6b1b44428d25800984de4848a3ed0a68b8",
       "width": 320,
-      "height": 2805
+      "height": 2584
     },
     "chromium/public/drills/custom.dark.390.png": {
-      "sha256": "4a2d7c049242591c8d807a8f1448d1a9c5e61d746e4e37474ec3da6f625b991f",
+      "sha256": "c3d6af640bb666712d2e9931f689b961a3cab2bed6838d8dd59dfd004af7be55",
       "width": 390,
-      "height": 2164
+      "height": 2138
     },
     "chromium/preview/drills/custom.dark.390.png": {
-      "sha256": "a6423878eb3f6308413d1dba80e4288b312ed5c2a0ebe14047eea30a8d916acf",
+      "sha256": "f153fe067af5fd752dca1ec65d3700a80b076749ca92b36dd694fa98e44692ce",
       "width": 390,
-      "height": 2263
+      "height": 2237
     },
     "chromium/preview/drills/custom-editor.dark.390.png": {
-      "sha256": "def3fe7e98888978b578741df80dcdf484fb4cf7134212bc9174484bfc92c47d",
+      "sha256": "9871cbda947d2cfa90886abe0ea08e11a3d5d9c471396d4544604629b4f2c905",
       "width": 390,
-      "height": 2871
+      "height": 2845
     },
     "chromium/public/drills/edit-custom.dark.390.png": {
-      "sha256": "a16f81ec47d26dca2a0874bee7272a830af71e645fb01ed060a3fda770d0f9ea",
+      "sha256": "2b37323d66bd15b3354e3985864046b27a13b1f74ac7e7e1d90b6a4f33b53b0b",
       "width": 390,
-      "height": 2834
+      "height": 2808
     },
     "chromium/public/practice/configure-single.dark.390.png": {
       "sha256": "0acce6b0d279e4f94d33a188d8e59f6ca6143b231fdf8fb399104aa80246e179",
@@ -1151,44 +1151,44 @@
       "height": 1374
     },
     "webkit/public/drills/catalog.dark.390.png": {
-      "sha256": "5343a8a54127f4c63ea728858df5d469b53209c39811271fb6eeb434a128ac02",
+      "sha256": "1a419df8458498b1e0a679d2358f274468b9f6bae39b978b3529971ca270f1d5",
       "width": 390,
-      "height": 2624
+      "height": 2430
     },
     "webkit/public/drills/catalog.dark.320.png": {
-      "sha256": "e34a54e993d2db8963ab4f617c284bdfe0f286a5876b459f310bc267e92896e2",
+      "sha256": "df774952816fba0487636c5c32713e2d9213838a5b807549e90a0e97e3db7a53",
       "width": 320,
-      "height": 2747
+      "height": 2533
     },
     "webkit/preview/drills/catalog.dark.390.png": {
-      "sha256": "e13cda01e67d4c58b76b30b0a57491cdcba91c87ef001fc6f65e5327e0dd7f16",
+      "sha256": "6cf3bf4d6ddc7e0ce200fcf1366efc7964f03f43d0587bad133a58d98f7ff305",
       "width": 390,
-      "height": 2661
+      "height": 2468
     },
     "webkit/preview/drills/catalog.dark.320.png": {
-      "sha256": "63b1699a09723c91bd4932958c657fe9b8e2adee526c659b167ee3a495e2e3fb",
+      "sha256": "e8328234263334e5c23bb40e64efbfc8c9afbc1a0f6ae854a3dd67b0d28bca28",
       "width": 320,
-      "height": 2784
+      "height": 2571
     },
     "webkit/public/drills/custom.dark.390.png": {
-      "sha256": "b850d230b2e2aa006fbb97ac3c50cd673bf741b4032bbb56724c11f0a7ffa25a",
+      "sha256": "c5b5ecf54510a8160471583e857b83015f067164a5d02bc1db5fe849eff9e606",
       "width": 390,
-      "height": 2151
+      "height": 2129
     },
     "webkit/preview/drills/custom.dark.390.png": {
-      "sha256": "a2574fda942e7efa5003d2c4fc3b3e74a956bf45ee04b5651701d9b31d54e4eb",
+      "sha256": "4f3f7fa12a3cff855a55c140ad0003c3c62eee51f066953becd76c11caa6ba11",
       "width": 390,
-      "height": 2248
+      "height": 2227
     },
     "webkit/preview/drills/custom-editor.dark.390.png": {
-      "sha256": "29dbd2e30820658d143bc98f74c21c5b6ce85e495672b32d439fe87bc82015ae",
+      "sha256": "a6f8173d8ae78e1510adae7ffacb8ab71970ca045da1b4ae12ad5ef1a151e19c",
       "width": 390,
-      "height": 2864
+      "height": 2843
     },
     "webkit/public/drills/edit-custom.dark.390.png": {
-      "sha256": "d1cfed47aa2037e3ce703541c00cbbcf58b6ff3bd6c0236fbb03b6a66545568a",
+      "sha256": "a64467ba22f087bff51bca4dc8e190a14d62dc48644c7fd4a842b74000a0e66b",
       "width": 390,
-      "height": 2829
+      "height": 2807
     },
     "webkit/public/practice/configure-single.dark.390.png": {
       "sha256": "f8ff86596a913873bee34da9b80f1baec72cf5e6af305e74671d54596ab28f92",

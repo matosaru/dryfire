@@ -620,3 +620,8 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 - Chosen implementation: retain progressive startup adapters and guarded lazy React ownership. Preserve the original performance budgets, visuals, behavior, data, edition and test invariants. This resolves the unconditional-retirement objective; active adapters are intentional boundaries, while obsolete consumers/duplicate formatting/styles must still be cleaned up.
 - Exact rationale and consequences: [architecture decision001](../architecture/decisions/001-progressive-react-startup.md). No claim of React-only runtime rendering, zero duplication, zero memory overhead or hardware/deployment acceptance.
 - Work remains b only; main/dev unchanged. Complete automated acceptance and the final component/entry-point handoff. No further product scope is authorized.
+
+
+## CHG-052 — Consistent practice cards and distinct sequence catalog
+
+2026-10-22. Direct user instruction: “remove Trigger pull from sequnce drills … match sequence drills styles, add icon, first goes label, then sublabel, and same styleand naming buttons as in sequence drills”. Approved scope: hide the built-in one-action Trigger pull from the displayed sequence catalog; retain its stable definition and saved-data compatibility. All six practice cards reuse sequence-card header/icon/description/button styling and the exact “▶ Start Drill” action label. Actions still open their existing configuration screens before capture. No timing, safety, custom presets, recordings or history changes. Main/dev remain unchanged; publish b only.

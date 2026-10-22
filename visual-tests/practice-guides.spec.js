@@ -115,7 +115,7 @@ test('actual Reload endpoints and external/silent setup descriptions are retaine
 
 test('built-in and existing custom sequence guides keep their actual steps and edited values', async ({ page }) => {
   await openLibrary(page); await page.locator('.tab[data-view="drills"]').click();
-  await page.locator('#drillCatalog .preset-card').nth(1).getByRole('button', { name: 'Start Drill' }).click();
+  await page.locator('#drillCatalog .preset-card').filter({ has: page.getByRole('heading', { name: 'Rack slide → Trigger pull', exact: true }) }).getByRole('button', { name: 'Start Drill' }).click();
   await expect(page.locator('#sessionConfigure')).toBeVisible(); await page.locator('#sessionRepetitions').fill('29');
   await page.locator('#sessionGuideLink').click(); await expect(page.locator('#practiceGuideKind')).toHaveText('ORDERED SEQUENCE GUIDE');
   await expect(page.locator('#practiceGuideSequence .preset-chip')).toHaveText(['Rack slide', 'Trigger pull']);

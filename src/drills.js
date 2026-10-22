@@ -25,6 +25,9 @@ export const DRILLS = Object.freeze([
   }),
 ]);
 
+// Display only multi-action built-ins; retain every definition for saved sessions.
+export const SEQUENCE_DRILLS = Object.freeze(DRILLS.filter(drill => drill.steps.length > 1));
+
 const SOUND_LABELS = Object.freeze(['draw', 'rack', 'trigger', 'reload']);
 
 /** Validate user/imported presets and return an independent recognition definition. */

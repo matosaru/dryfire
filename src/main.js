@@ -9,7 +9,7 @@ import { PAGE_IDS } from './pageDefinitions.js';
 import { createPracticeGuideBridge } from './practiceGuideBridge.js';
 import { recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
-import { DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
+import { DRILLS, SEQUENCE_DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
 import { calibrationProgress } from '@dryfire/ui/calibration-copy';
 import { soundCard, drillCard } from './uiComponents.js';
 import { readNumberInput } from './inputLimits.js';
@@ -362,7 +362,7 @@ function selectDrillCollection(custom){
  $('#customDrillForm').classList.add('hidden');
 }
 function drillCards(){return{
- builtIns:DRILLS.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id)})),
+ builtIns:SEQUENCE_DRILLS.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id)})),
  customs:customDrills.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id),onEdit:()=>customEditor.open(drill)})),emptyCustom:!customDrills.length,
 };}
 async function chooseDrill(id) {
@@ -534,7 +534,7 @@ function renderDrillCatalog() {
   if(drillsPage){drillsPage.update({builtIns:drillCards().builtIns});return;}
   const host = $('#drillCatalog');
   host.replaceChildren();
-  for (const [index, item] of DRILLS.entries()) {
+  for (const [index, item] of SEQUENCE_DRILLS.entries()) {
     host.append(drillCard({
       drill: item, index, titleFor,
       onChoose: () => chooseDrill(item.id)

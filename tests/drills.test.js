@@ -3,6 +3,10 @@ import * as drillLogic from '../src/drills.js';
 const { DRILLS, advanceDrill, createDrillState, getDrill } = drillLogic;
 
 describe('built-in sound-sequence drills', () => {
+  test('catalog shows only multi-action sequences while legacy trigger sessions still resolve', () => {
+    expect(drillLogic.SEQUENCE_DRILLS.map(drill => drill.id)).toEqual(['rack-trigger', 'mag-trigger', 'draw-mag-trigger']);
+    expect(getDrill('trigger-only').steps).toEqual(['trigger']);
+  });
   test('contains exactly the four requested sequences in order', () => {
     expect(DRILLS.map(({ id, steps }) => [id, [...steps]])).toEqual([
       ['trigger-only', ['trigger']],

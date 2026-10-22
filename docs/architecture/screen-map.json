@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-10-21",
+  "reviewedOn": "2026-10-22",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://dryfire.matosaru.workers.dev",
   "publicPaths": [
@@ -796,7 +796,7 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "36e130040e98fd0c62f16a2ba0b7102473c7ee849ddfa23a7e483574ab4f8932",
+    "src/main.js": "9c699e68151106357ea60819869b2f928d715e5ddba94cbce8c662b4e6ddaeee",
     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "df41218aab8199ea67df68d32c5ea6371e79dc6f7da185fbd90b75c237fdbd65",
@@ -839,7 +839,7 @@
     "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "b041999974ca3986bbf24f40f8bfe40a124c66b396ea47cf5aa3d2a554bbe40d",
     "apps/web/src/app/routeContext.ts": "8edb4b9d133e4914784d4938581a3bfd63fcbbde42d201ff4057d94f2db19391",
     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
-    "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "54e08b3086e792da9e69ddaacd976f07c1c2067df094cdf53648949202509ba0",
+    "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "01f10e7f6052511db9b4104c6af88f6c6eb67ac98d29d079a842cfb5a6c9b1a4",
     "apps/web/src/app/chromeBridge.ts": "e3276d510da2db886b0ad226bf5a884a351252b79ba78f6696a847031b08e2f1",
     "apps/web/src/app/chromePages.tsx": "2bb3be816e7293d68837974cb9d05800eb87b89429ef1667d771dda29ff69bd5",
     "apps/web/src/app/renderAppShell.tsx": "360b5abfd9d9cc3d757f2aad7f1f052531f900a37237102473b1b5a3045c9c5d",
@@ -864,7 +864,7 @@
     "packages/ui/src/NumberInput/NumberInput.css": "6b25ec1e508798cc1e6fe16c90c80100f60d71556f9cf1e6b5cf98dce058d806",
     "packages/ui/src/NumberInput/NumberInput.tsx": "e5d0d03263deaa564876aa35dbed4a3c497088478d18dfd3c190fc0e11ba8338",
     "packages/ui/src/NumberInput/index.ts": "89d4d8e9821933fa9453dcd0e9f4f804d608f8d505829ccb59f04543f8edafb7",
-    "packages/ui/src/PracticeCatalog/PracticeCatalog.css": "2ee549be7b5826e78b8cff5e3e89fab6feef9ec6251a3692158d17c11a4b4f1d",
+    "packages/ui/src/PracticeCatalog/PracticeCatalog.css": "b097707563704055647d7adf87c865b0e59856ab528446108cf425ef9337eaf5",
     "packages/ui/src/PracticeCatalog/index.ts": "7ffc8cee1bd51dffcadcffc491f8ca2938d24627dd7dbb669ef2b287b6a350b3",
     "apps/web/src/styles/legacy-cards.css": "1859a192b56f8d040b6380ab4b85ae8317245d353ba93ab3f4715b799ef1cc54",
     "apps/web/src/styles/legacy-info-visibility.css": "20364cba9bf4a2abdb5e25bf69477773b3f021a34c6c19b13fbc7895ee2ccf99",

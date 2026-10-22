@@ -5,3 +5,5 @@ This is a navigation entry for the maintained [design catalog](docs/design/READM
 The approved refactor preserves the existing identity, wording, responsive layout, accessibility, theme colors, navigation, screenshots and guide media. Runtime tokens and the ordered cascade remain owned by [src/styles.css](src/styles.css) and its imported component/style files; do not copy or redefine tokens independently.
 
 Use the existing shared shell, typed page packages and guarded feature controllers. Keep data, safety, capture and Free/Full policy with their established owners. Visual changes require the documented requirements/design process; structural migration is not permission to redesign.
+
+CHG-052 explicitly updates the Drills catalog: practice cards reuse sequence-card target icon/header/description/action classes and “▶ Start Drill” label; built-in sequence choices display multi-action presets only. Existing Configure flows, stored legacy trigger sequences and custom presets remain intact.

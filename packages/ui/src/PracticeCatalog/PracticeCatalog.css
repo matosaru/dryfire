@@ -1,3 +1,2 @@
-/* This component uses the existing shared drill-catalog/preset-card, muted,
- * small, button and wide-action classes. Their ordered theme rules remain in
- * legacy-theme-and-layout.css during coexistence. No competing overrides. */
+/* Reuses the shared preset-card, preset-header, drill-target,
+ * drill-description and button theme rules used by sequence cards. */

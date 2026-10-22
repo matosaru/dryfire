@@ -65,3 +65,8 @@ The [consolidated practice plan](practice-modes.md) adds six modes and makes non
 5. Completed repetition information is saved against the same gun and session and can be read after a refresh.
 6. The full action sequence is not duplicated in the page title and strip.
 7. Both beep-on and silent modes retain the visual start signal; the generated beep must not be recorded as a learned action.
+
+
+## Distinct sequence catalog — CHG-052
+
+DRILL-10: Display the three multi-action built-in sequences (Rack → Trigger, Magazine → Trigger, Draw → Magazine → Trigger). Do not display the duplicate standalone Trigger pull card; Single trigger press remains in Dry-fire practice. Preserve the legacy `trigger-only` identifier, saved sessions, history/repeat and imported data. Existing custom one-action presets remain accessible. This is a catalog change, not a storage migration.

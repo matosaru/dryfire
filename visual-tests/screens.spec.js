@@ -1,3 +1,4 @@
+import { addLegacySequence, openLegacySequence } from './legacy-sequence.js';
 import {freezeMotionArtwork} from './motion-fixture.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
@@ -9,7 +10,7 @@ const environment = JSON.parse(readFileSync(new URL('./environment.json', import
 const visible = async (page, id) => expect(page.locator(`#${id}`)).toBeVisible();
 const tab = async (page, name) => { await page.locator(`.tab[data-view="${name}"]`).click(); await visible(page, `${name}View`); };
 const practice = async (page, mode = 'single') => { await tab(page, 'drills'); await page.locator(`[data-practice-mode="${mode}"]`).click(); await visible(page, 'practiceConfigure'); };
-const session = async page => { await tab(page, 'drills'); await page.locator('#drillCatalog .preset-card').first().getByRole('button', { name: 'Start Drill' }).click(); await visible(page, 'sessionConfigure'); };
+const session = openLegacySequence;
 
 async function confirmSafety(page) {
   await visible(page, 'safetyModal');
@@ -51,6 +52,7 @@ async function prepare(page, item) {
   await visible(page, 'gunSetupView');
   if (item.state !== 'first-gun.dark') {
     const backup = structuredClone(library);
+    if (item.screen === 'session' || item.state.startsWith('sequence-trigger-only')) addLegacySequence(backup);
     backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
     if (item.state.startsWith('add-second-gun')) {
       backup.guns = backup.guns.filter(gun => gun.id === backup.activeGunId);
@@ -94,7 +96,7 @@ async function prepare(page, item) {
     case 'drills':
       await tab(page, 'drills');
       await expect(page.locator('[data-practice-mode]')).toHaveCount(6);
-      await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(4);
+      await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(3);
       if (item.state.startsWith('custom')) await page.locator('#customDrillsTab').click();
       if (item.state.startsWith('custom-editor')) {
         await page.locator('#newCustomDrillBtn').click(); await page.locator('#customDrillName').fill('Draw and press');
@@ -149,8 +151,10 @@ async function prepare(page, item) {
         if (state === 'sequence-custom') {
           await page.locator('#customDrillsTab').click();
           await page.locator('#customDrillCatalog').getByRole('button', { name: 'Start Drill' }).first().click();
+        } else if (state === 'sequence-trigger-only') {
+          await openLegacySequence(page);
         } else {
-          const ids = ['trigger-only', 'rack-trigger', 'mag-trigger', 'draw-mag-trigger'];
+          const ids = ['rack-trigger', 'mag-trigger', 'draw-mag-trigger'];
           await page.locator('#drillCatalog .preset-card').nth(ids.indexOf(state.replace('sequence-', ''))).getByRole('button', { name: 'Start Drill' }).click();
         }
         await page.locator('#sessionGuideLink').click();

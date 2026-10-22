@@ -10,6 +10,9 @@ const modes = [{id:'single',title:'Single trigger press',description:'One click 
 test('ordered native choices delegate the selected identifier and remain controlled', async () => {
   const onSelect = jest.fn(), user = userEvent.setup();
   const { rerender } = render(<PracticeCatalog modes={modes} onSelect={onSelect} />);
+  expect(screen.getAllByRole('button', { name: '▶ Start Drill' })).toHaveLength(2);
+  expect(document.querySelectorAll('.preset-header .drill-target[aria-hidden="true"]')).toHaveLength(2);
+  expect(document.querySelectorAll('.drill-description')).toHaveLength(2);
   expect(screen.getAllByRole('heading').map(node=>node.textContent)).toEqual(modes.map(mode=>mode.title));
   await user.tab(); await user.keyboard('{Enter}');
   await user.click(screen.getAllByRole('button')[1]);

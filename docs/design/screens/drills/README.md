@@ -1,12 +1,14 @@
 # Drills design
 
-CHG-049 structural refactor: the six unchanged practice choices are now prerendered by [PracticeCatalog](../../../../packages/ui/src/PracticeCatalog/PracticeCatalog.tsx); the existing controller owns one delegated native action listener and capture/configuration guards. Card copy, order, DOM, styles and behavior are preserved. The [input-equivalence review](../../baselines/static-practice-catalog-review.json) records this performance correction; full Drills/editor migration is still pending.
+CHG-052: both groups share the existing target icon, title-first header, aligned description and full-width orange **▶ Start Drill** button. Dry-fire practice still opens mode configuration. Sequence catalog shows only the three multi-action built-ins; legacy Trigger pull sessions remain restorable/repeatable and custom one-action presets are preserved. No new tokens or timing behavior.
+
+CHG-049 structural refactor: the six unchanged practice choices are now prerendered by [PracticeCatalog](../../../../packages/ui/src/PracticeCatalog/PracticeCatalog.tsx); the existing controller owns one delegated native action listener and capture/configuration guards. Card copy, order, DOM, styles and behavior are preserved. The [input-equivalence review](../../baselines/static-practice-catalog-review.json) records this performance correction; Drills/editor migration is complete under the retained progressive startup architecture.
 
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
 
 CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
 
-CHG-032 public availability: preserve all six modes/built-ins and existing custom presets, including their Start/Edit actions. Hide new custom creation; the saved-custom tab appears only when owned presets exist. Full preview retains creation. [Edition specification](../../../requirements/build-editions.md).
+CHG-032 public availability: preserve all six modes, the CHG-052 displayed built-ins and existing custom presets, including their Start/Edit actions. Hide new custom creation; the saved-custom tab appears only when owned presets exist. Full preview retains creation. [Edition specification](../../../requirements/build-editions.md).
 
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
 
@@ -20,7 +22,7 @@ Entry: Drills tab, Home card or review completion. App anchor: `drillsView`. Thi
 
 ## Layout and interaction
 
-Six practice cards precede the preserved sequence catalog. Built-in / Custom tabs select sequence presets. The inline custom editor has a title, ordered action list, add/remove/reorder controls, Save and Cancel. A preset is owned by the active gun and uses the existing four event identifiers. The editor is a screen state, not another public route.
+Six practice cards precede the three multi-action built-in sequence cards. Built-in / Custom tabs select sequence presets. The inline custom editor has a title, ordered action list, add/remove/reorder controls, Save and Cancel. A preset is owned by the active gun and uses the existing four event identifiers. The editor is a screen state, not another public route.
 
 Functional specifications: [drill-sessions](../../../requirements/drill-sessions.md) · [practice-modes](../../../requirements/practice-modes.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 
@@ -39,3 +41,5 @@ Captured from the current local production build in Chromium at a 390 px mobile 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
 
 Public existing-preset editing: [`edit-custom.dark.png`](edit-custom.dark.png), anchor `customDrillForm`. New-preset editor is preview-only; both retain the same sequence controls.
+
+CHG-052 [pinned card review](../../baselines/chg-052-card-review.json) records both-edition/browser candidates, changed captures and validation status.
