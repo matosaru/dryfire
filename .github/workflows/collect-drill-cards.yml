@@ -31,9 +31,9 @@ jobs:
       - name: Capture candidates, never accept baselines
         run: |
           APP_EDITION=public npm run build
-          APP_EDITION=public VISUAL_EDITION=public npx playwright test screens.spec.js --grep '^drills/'
+          APP_EDITION=public VISUAL_EDITION=public npx playwright test screens.spec.js --grep 'drills/'
           APP_EDITION=preview npm run build
-          APP_EDITION=preview VISUAL_EDITION=preview npx playwright test screens.spec.js --grep '^drills/'
+          APP_EDITION=preview VISUAL_EDITION=preview npx playwright test screens.spec.js --grep 'drills/'
       - name: Publish candidates for separate review
         run: |
           git config user.name 'github-actions[bot]'
