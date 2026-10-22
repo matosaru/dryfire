@@ -2,7 +2,7 @@ name: Collect CHG-052 drill card candidates
 on:
   push:
     branches: [b]
-    paths: ['.github/workflows/collect-drill-cards.yml']
+    paths: ['.github/workflows/collect-drill-cards.yml', 'docs/design/review-inputs/chg-052.patch']
   workflow_dispatch:
 permissions:
   contents: write
