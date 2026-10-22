@@ -1,0 +1,35 @@
+name: Diagnose parser representations
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  parser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      options: --ipc=host
+    env:
+      APP_EDITION: public
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 6c38bff81662d30279d94d41ca5c949bdbbe1c6e
+          path: .performance-baseline
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
+        working-directory: .performance-baseline
+      - run: npm run build
+        working-directory: .performance-baseline
+      - run: npm run build
+      - run: node --experimental-vm-modules tools/performance/diagnose-parser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: parser-diagnostic
+          path: performance-results/
