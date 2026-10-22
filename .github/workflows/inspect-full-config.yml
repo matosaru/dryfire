@@ -39,7 +39,7 @@ jobs:
         continue-on-error: true
         run: npx playwright test screens.spec.js --grep 'practice/configure-(single|repeated)'
       - name: 'Actual comparison outcome: ${{ steps.compare.outcome }}'
-        run: echo 'Actual comparison outcome: ${{ steps.compare.outcome }}'
+        run: echo '${{ steps.compare.outcome }}'
       - name: Publish actual configuration and failure images for review
         if: always()
         run: |
