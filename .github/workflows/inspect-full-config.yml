@@ -44,12 +44,13 @@ jobs:
         if: always()
         run: |
           node --input-type=module - <<'JS'
-          import {readdirSync,mkdirSync,copyFileSync,existsSync} from 'node:fs';import {join,dirname} from 'node:path';
+          import {readdirSync,mkdirSync,copyFileSync,existsSync,rmSync} from 'node:fs';import {join,dirname} from 'node:path';
+          rmSync('docs/design/review-candidates/chg-052-full-config',{recursive:true,force:true});
           function copy(dir){if(!existsSync(dir))return;for(const x of readdirSync(dir,{withFileTypes:true})){const p=join(dir,x.name);if(x.isDirectory())copy(p);else if(p.endsWith('.png') && (p.includes('configuration-review') || ['-actual.png','-diff.png','-expected.png'].some(s=>p.endsWith(s)))){const out=join('docs/design/review-candidates/chg-052-full-config',p.slice('test-results/'.length));mkdirSync(dirname(out),{recursive:true});copyFileSync(p,out);}}}copy('test-results');
           JS
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/design/review-candidates/chg-052-full-config
+          git add -A docs/design/review-candidates/chg-052-full-config
           git commit -m 'test: publish configuration images from full pinned suite'
           git push origin HEAD:b
       - name: Preserve comparison outcome
