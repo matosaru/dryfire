@@ -23,7 +23,7 @@ jobs:
       - run: npm run verify:architecture
       - run: npm run docs:check
       - run: npm run test:smoke
-      - run: npm run test:coverage
+      - run: npm run test:coverage -- --reporters=default --reporters=./tools/ci-test-reporter.cjs
         timeout-minutes: 3
       - run: npm run coverage:check
       - uses: actions/upload-artifact@v4
