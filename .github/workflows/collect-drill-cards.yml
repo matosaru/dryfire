@@ -1,8 +1,8 @@
-name: Collect CHG-054 drill card candidates
+name: Collect CHG-055 drill card candidates
 on:
   push:
     branches: [b]
-    paths: ['.github/workflows/collect-drill-cards.yml', 'docs/design/review-inputs/chg-054.patch']
+    paths: ['.github/workflows/collect-drill-cards.yml', 'docs/design/review-inputs/chg-055.patch']
   workflow_dispatch:
 permissions:
   contents: write
@@ -15,7 +15,7 @@ jobs:
       options: --ipc=host
     env:
       VISUAL_IMAGE: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
-      COLLECT_DRILL_CARD_CANDIDATES: '1'
+      COLLECT_PRACTICE_CANDIDATES: '1'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,18 +26,18 @@ jobs:
           node-version: '22'
           cache: npm
       - name: Apply review-only implementation patch
-        run: git apply docs/design/review-inputs/chg-054.patch
+        run: git apply docs/design/review-inputs/chg-055.patch
       - run: npm ci --no-audit --no-fund
       - name: Capture candidates, never accept baselines
         run: |
           APP_EDITION=public npm run build
-          APP_EDITION=public VISUAL_EDITION=public npx playwright test screens.spec.js --grep 'drills/'
+          APP_EDITION=public VISUAL_EDITION=public npx playwright test screens.spec.js --grep 'drills/|practice/(configure-repeated|configure-par)|practice-guide/(repeated|par)'
           APP_EDITION=preview npm run build
-          APP_EDITION=preview VISUAL_EDITION=preview npx playwright test screens.spec.js --grep 'drills/'
+          APP_EDITION=preview VISUAL_EDITION=preview npx playwright test screens.spec.js --grep 'drills/|practice/(configure-repeated|configure-par)|practice-guide/(repeated|par)'
       - name: Publish candidates for separate review
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/design/review-candidates/chg-054
-          git commit -m 'test: collect pinned CHG-054 drill card review candidates'
+          git add docs/design/review-candidates/chg-055
+          git commit -m 'test: collect pinned CHG-055 drill card review candidates'
           git push origin HEAD:b

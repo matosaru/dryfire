@@ -1,0 +1,1770 @@
+diff --git a/apps/web/src/features/history/progressPresentation.test.ts b/apps/web/src/features/history/progressPresentation.test.ts
+index 982f652..d494aae 100644
+--- a/apps/web/src/features/history/progressPresentation.test.ts
++++ b/apps/web/src/features/history/progressPresentation.test.ts
+@@ -1,6 +1,6 @@
+ import {progressPresentation,progressTiming,progressFormat,type ProgressSummary} from './progressPresentation';
+ const config={soundAtStart:true,delayMode:'random',fixedDelaySeconds:3,randomMinSeconds:2,randomMaxSeconds:5,parSeconds:1};
+-const data:ProgressSummary={sessions:4,hitRate:50,hits:2,misses:2,rate:20,shots:8,metrics:{median:500,mean:550,spread:50},trend:null,metric:'Median detected time',unit:'ms',points:[{date:0,value:500,count:2,hits:2,misses:0}]};
+-test('empty/no-sample states and one-point coordinates retain native calculation',()=>{expect(progressPresentation(undefined,undefined,null).empty).toMatch(/Complete practice/);const result=progressPresentation({mode:'single',config},data,null);expect(result.chart?.dots[0].x).toBe(324);expect(result.chart?.dates.map(d=>d.x)).toEqual([324,324]);expect(progressPresentation({mode:'single',config},{...data,points:[]},null).empty).toMatch(/No completed/);expect(progressFormat(null)).toBe('—');expect(progressTiming({mode:'par',config:{...config,startSource:'external',delayMode:'fixed'}})).toBe('External beep · 3s fixed · 1s par');expect(progressTiming({mode:'free',config:{...config,soundAtStart:false}})).toBe('Silent start · 2–5s random');});
+-test.each([['control','lower','Steadier intervals'],['control','higher','More variable intervals'],['par','higher','Higher hit rate'],['par','lower','Lower hit rate'],['free','higher','Higher click rate'],['free','lower','Lower click rate'],['single','lower','Faster detected timing'],['single','higher','Slower detected timing'],['single','unchanged','Unchanged']])('%s %s trend preserves domain meaning',(mode,direction,text)=>{const unit=mode==='par'?'%':mode==='free'?'clicks/min':'ms';const result=progressPresentation({mode,config},{...data,unit,trend:{direction,change:2.5,compared:2}},22);expect(result.trend).toBe(`${text} · 2.5 ${unit==='%'?'percentage points':'%'} · recent 2 vs earlier 2 sessions.`);expect(result.chart?.grid).toHaveLength(3);});
+-test('zero-baseline trends omit unavailable change and chart endpoints retain date ordering',()=>{const result=progressPresentation({mode:'single',config},{...data,points:[...data.points,{date:86400000,value:0,count:1,hits:1,misses:0}],trend:{direction:'higher',change:null,compared:2}},null);expect(result.trend).toBe('Slower detected timing · recent 2 vs earlier 2 sessions.');expect(result.chart?.dots.map(d=>d.x)).toEqual([72,576]);expect(result.chart?.grid[0].label).toBe('0.00');});
++const data:ProgressSummary={sessions:4,hitRate:50,hits:2,misses:2,shots:8,metrics:{median:500,mean:550,spread:50},trend:null,metric:'Median detected time',unit:'ms',points:[{date:0,value:500,count:2,hits:2,misses:0}]};
++test('empty/no-sample states and one-point coordinates retain native calculation',()=>{expect(progressPresentation(undefined,undefined).empty).toMatch(/Complete practice/);const result=progressPresentation({mode:'single',config},data);expect(result.chart?.dots[0].x).toBe(324);expect(result.chart?.dates.map(d=>d.x)).toEqual([324,324]);expect(progressPresentation({mode:'single',config},{...data,points:[]}).empty).toMatch(/No completed/);expect(progressFormat(null)).toBe('—');expect(progressTiming({mode:'par',config:{...config,startSource:'external',delayMode:'fixed'}})).toBe('External beep · 3s fixed · 1s par');expect(progressTiming({mode:'single',config:{...config,soundAtStart:false}})).toBe('Silent start · 2–5s random');});
++test.each([['control','lower','Steadier intervals'],['control','higher','More variable intervals'],['par','higher','Higher hit rate'],['par','lower','Lower hit rate'],['single','lower','Faster detected timing'],['single','higher','Slower detected timing'],['single','unchanged','Unchanged']])('%s %s trend preserves domain meaning',(mode,direction,text)=>{const unit=mode==='par'?'%':'ms';const result=progressPresentation({mode,config},{...data,unit,trend:{direction,change:2.5,compared:2}});expect(result.trend).toBe(`${text} · 2.5 ${unit==='%'?'percentage points':'%'} · recent 2 vs earlier 2 sessions.`);expect(result.chart?.grid).toHaveLength(3);});
++test('zero-baseline trends omit unavailable change and chart endpoints retain date ordering',()=>{const result=progressPresentation({mode:'single',config},{...data,points:[...data.points,{date:86400000,value:0,count:1,hits:1,misses:0}],trend:{direction:'higher',change:null,compared:2}});expect(result.trend).toBe('Slower detected timing · recent 2 vs earlier 2 sessions.');expect(result.chart?.dots.map(d=>d.x)).toEqual([72,576]);expect(result.chart?.grid[0].label).toBe('0.00');});
+diff --git a/apps/web/src/features/history/progressPresentation.ts b/apps/web/src/features/history/progressPresentation.ts
+index b26e04b..17915d6 100644
+--- a/apps/web/src/features/history/progressPresentation.ts
++++ b/apps/web/src/features/history/progressPresentation.ts
+@@ -1,21 +1,20 @@
+ import type {ProgressModel} from '@dryfire/ui/ProgressContent';
+ export type ProgressGroup={mode:string;config:{startSource?:string;soundAtStart:boolean;delayMode:string;fixedDelaySeconds:number;randomMinSeconds:number;randomMaxSeconds:number;parSeconds:number}};
+ export type ProgressPoint={date:number;value:number;count:number;hits:number;misses:number};
+-export type ProgressSummary={sessions:number;hitRate:number|null;hits:number;misses:number;rate:number|null;shots:number;metrics:{median:number|null;mean:number|null;spread:number|null};trend:{direction:string;change:number|null;compared:number}|null;metric:string;unit:string;points:ProgressPoint[]};
++export type ProgressSummary={sessions:number;hitRate:number|null;hits:number;misses:number;shots:number;metrics:{median:number|null;mean:number|null;spread:number|null};trend:{direction:string;change:number|null;compared:number}|null;metric:string;unit:string;points:ProgressPoint[]};
+ 
+ export const progressFormat=(value:number|null,unit='ms')=>value===null?'—':unit==='ms'?`${(value/1000).toFixed(2)} s`:`${value.toFixed(1)} ${unit}`;
+ export function progressTiming(group:ProgressGroup){const c=group.config;return `${c.startSource==='external'?'External beep':c.soundAtStart?'App beep':'Silent start'} · ${c.delayMode==='fixed'?`${c.fixedDelaySeconds}s fixed`:`${c.randomMinSeconds}–${c.randomMaxSeconds}s random`}${group.mode==='par'?` · ${c.parSeconds}s par`:''}`;}
+ /** Presentation only; comparable grouping, samples and statistics remain in the existing domain module. */
+-export function progressPresentation(group:ProgressGroup|undefined,data:ProgressSummary|undefined,meanRate:number|null):ProgressModel{
++export function progressPresentation(group:ProgressGroup|undefined,data:ProgressSummary|undefined):ProgressModel{
+  if(!group||!data)return{empty:'Complete practice sessions to see your timing and progress here.'};
+  const cards=[{label:'Sessions',value:String(data.sessions)}];
+  const card=(label:string,value:string)=>cards.push({label,value});
+  if(group.mode==='par'){card('Hit rate',progressFormat(data.hitRate,'%'));card('Hits / misses',`${data.hits} / ${data.misses}`);card('Median hit time',progressFormat(data.metrics.median));}
+- else if(group.mode==='free'){card('Median rate',progressFormat(data.rate,'clicks/min'));card('Mean rate',progressFormat(meanRate,'clicks/min'));card('Recognized clicks',String(data.shots));}
+  else{card('Median timing',progressFormat(data.metrics.median));card('Mean timing',progressFormat(data.metrics.mean));card('Timing variation',progressFormat(data.metrics.spread));}
+  const trend=data.trend;
+  let description=`More sessions needed for comparison · ${data.points.length} of 4 comparable sessions available.`;
+- if(trend){const direction=trend.direction==='unchanged'?'Unchanged':group.mode==='control'?trend.direction==='lower'?'Steadier intervals':'More variable intervals':group.mode==='par'?trend.direction==='higher'?'Higher hit rate':'Lower hit rate':group.mode==='free'?trend.direction==='higher'?'Higher click rate':'Lower click rate':trend.direction==='lower'?'Faster detected timing':'Slower detected timing';description=`${direction}${trend.change===null?'':` · ${Math.abs(trend.change).toFixed(1)} ${data.unit==='%'?'percentage points':'%'}`} · recent ${trend.compared} vs earlier ${trend.compared} sessions.`;}
++ if(trend){const direction=trend.direction==='unchanged'?'Unchanged':group.mode==='control'?trend.direction==='lower'?'Steadier intervals':'More variable intervals':group.mode==='par'?trend.direction==='higher'?'Higher hit rate':'Lower hit rate':trend.direction==='lower'?'Faster detected timing':'Slower detected timing';description=`${direction}${trend.change===null?'':` · ${Math.abs(trend.change).toFixed(1)} ${data.unit==='%'?'percentage points':'%'}`} · recent ${trend.compared} vs earlier ${trend.compared} sessions.`;}
+  const model:ProgressModel={timing:progressTiming(group),cards,trend:description,metric:data.metric};
+  if(!data.points.length)return{...model,empty:'No completed timing samples in this range. Choose a wider range or finish another session.'};
+  const values=data.points.map(point=>point.value),low=data.unit==='%'?0:Math.max(0,Math.min(...values)*.9),high=data.unit==='%'?100:Math.max(low+1,Math.max(...values)*1.1);
+diff --git a/apps/web/src/features/sessions/phasePresentation.test.ts b/apps/web/src/features/sessions/phasePresentation.test.ts
+index b797e55..969e699 100644
+--- a/apps/web/src/features/sessions/phasePresentation.test.ts
++++ b/apps/web/src/features/sessions/phasePresentation.test.ts
+@@ -5,11 +5,11 @@ import {renderPracticeRun,renderSequenceRun,renderPracticeReview,renderSequenceR
+ import {continuousPractice,practiceElapsed,practiceStatistics} from '../../../../../src/practiceSession.js';
+ import {sessionViewDriver} from '../../../../../tests/helpers/sessionViewDriver';
+ import {practiceRunPresentation,sequenceRunPresentation,practiceReviewPresentation,sequenceReviewPresentation} from './phasePresentation';
+-const config={repetitions:3,durationSeconds:10,startSource:'app',soundAtStart:true,parSeconds:1.5};
++const config={repetitions:3,startSource:'app',soundAtStart:true,parSeconds:1.5};
+ const hit={ordinal:1,status:'hit',elapsedMs:500,intervalMs:500,goAt:0,stepTimings:[],detections:[]};
+ const sequenceHit={...hit,status:'completed',unknown:1,incorrect:2};
+ const state={phase:'active',completed:1,shots:1,remaining:2,revision:4,config,repetitions:[hit,{...hit,ordinal:2,status:'partial'}],countdownEndsAtMs:5000,segmentStartMs:null,elapsedMs:1234,activeBaseMs:0,practiceMode:'single'};
+-const runCases:[string,string,boolean,boolean][]=[['connecting','single',true,false],['idle','single',false,false],['countdown','single',false,true],['active','single',false,true],['await-cue','single',false,true],['result','single',false,true],['early-result','single',false,true],['result','repeated',false,true],['paused','control',false,true],['closing','par',false,true],['active','reload',false,true],['active','free',false,true],['countdown','free',false,true],['paused','single',true,true]];
++const runCases:[string,string,boolean,boolean][]=[['connecting','single',true,false],['idle','single',false,false],['countdown','single',false,true],['active','single',false,true],['await-cue','single',false,true],['result','single',false,true],['early-result','single',false,true],['result','repeated',false,true],['paused','control',false,true],['closing','par',false,true],['paused','single',true,true]];
+ test.each(runCases)('Practice %s/%s phase controls/text retain the native contract',(phase,mode,pending,hasState)=>{
+  const current=hasState?{...state,phase:phase==='early-result'?'result':phase,practiceMode:mode,repetitions:phase==='early-result'?[{...hit,status:'miss',reason:'early'}]:state.repetitions}:null;
+  const native=sessionViewDriver(),actual=sessionViewDriver();const clock=jest.fn(()=>1234),readConfig=jest.fn(()=>config),renderInput=jest.fn();
+diff --git a/apps/web/src/features/sessions/phasePresentation.ts b/apps/web/src/features/sessions/phasePresentation.ts
+index 636f4a1..00a82bb 100644
+--- a/apps/web/src/features/sessions/phasePresentation.ts
++++ b/apps/web/src/features/sessions/phasePresentation.ts
+@@ -1,20 +1,20 @@
+ import {sessionSeconds as seconds,type PracticeRepetition,type SequenceRepetition} from './resultPresentation';
+ export type ClassToggle={id:string;token:string;enabled:boolean};
+-type Config={repetitions:number;durationSeconds?:number};
++type Config={repetitions:number};
+ type State<Row>={phase:string;completed:number;remaining:number|null;revision:number;config:Config;repetitions:Row[];countdownEndsAtMs:number|null};
+ type PracticeState=State<PracticeRepetition>&{shots:number};
+ type SequenceState=State<SequenceRepetition>&{drillSteps:string[];current:{stepIndex:number}|null};
+ /** Pure view calculations. Clocks/config/domain statistics are supplied by the controller boundary. */
+ export function practiceRunPresentation({state,mode,pending,clock,microphone,readConfig,elapsed,continuous,interruption,closing,saving,inputFeedback}:{state:PracticeState|null;mode:string;pending:boolean;clock:()=>number;microphone:boolean;readConfig:()=>Config;elapsed:number;continuous:boolean;interruption:boolean;closing:boolean;saving:boolean;inputFeedback:string}){
+- const free=mode==='free',phase=pending?'connecting':state?.phase;
++ const phase=pending?'connecting':state?.phase;
+  const showInput=['countdown','active','await-cue'].includes(phase??''),showStop=showInput||phase==='countdown';
+- const remaining=free?Math.ceil(Math.max(0,(state?.config.durationSeconds??60)-elapsed/1000)):state?.remaining??readConfig().repetitions;
++ const remaining=state?.remaining??readConfig().repetitions;
+  const signal=phase==='countdown'?String(Math.max(0,Math.ceil((state!.countdownEndsAtMs!-clock())/1000))):({connecting:'…','await-cue':'WAIT',result:'NEXT',paused:'PAUSED',closing:'TIME'} as Record<string,string>)[phase??'']||'—';
+  const countdownText=phase==='countdown'?`Next signal in ${Math.max(0,(state!.countdownEndsAtMs!-clock())/1000).toFixed(1)} s. Get ready.`:'';
+- const announcements:Record<string,string>={connecting:'Preparing microphone. Waiting for audio input before countdown…',countdown:countdownText,active:mode==='reload'?'Practice started. Follow the selected events in order.':'Practice started. Listening for trigger clicks.','await-cue':'Listening for your calibrated external beep.',result:mode==='single'?(state?.repetitions.at(-1)?.reason==='early'?'Early trigger saved as a miss. Preparing the next signal automatically.':'Click saved. Preparing the next signal automatically.'):'Reset when ready, then choose Next repetition.',paused:'Microphone released. Resume starts with a fresh signal.',closing:'Time limit reached. Finishing audio captured before the deadline.'};
++ const announcements:Record<string,string>={connecting:'Preparing microphone. Waiting for audio input before countdown…',countdown:countdownText,active:'Practice started. Listening for trigger clicks.','await-cue':'Listening for your calibrated external beep.',result:mode==='single'?(state?.repetitions.at(-1)?.reason==='early'?'Early trigger saved as a miss. Preparing the next signal automatically.':'Click saved. Preparing the next signal automatically.'):'Reset when ready, then choose Next repetition.',paused:'Microphone released. Resume starts with a fresh signal.',closing:'Time limit reached. Finishing audio captured before the deadline.'};
+  const classes:ClassToggle[]=[{id:'practiceStopBtn',token:'hidden',enabled:!showStop},{id:'practiceLevelPanel',token:'hidden',enabled:!showInput},{id:'practiceSignal',token:'hidden',enabled:phase==='active'||phase==='await-cue'},{id:'practiceSignal',token:'is-paused',enabled:phase==='paused'},{id:'practicePauseBtn',token:'hidden',enabled:phase==='paused'},{id:'practiceResumeBtn',token:'hidden',enabled:phase!=='paused'},{id:'practiceNextBtn',token:'hidden',enabled:phase!=='result'||mode==='single'},{id:'practiceEndBtn',token:'hidden',enabled:showStop}];
+  const blocked=pending||saving||interruption;
+- return{phase:phase||'idle',classes,texts:{practiceCompletedLabel:continuous?'Clicks':'Attempts',practiceCompleted:String(state?.completed??0),practiceShots:String(state?.shots??0),practiceRemainingLabel:free?'Seconds left':'Left',practiceRemaining:String(remaining),practiceElapsed:seconds(elapsed),practiceSignal:signal,practiceAnnouncement:announcements[phase??'']||'',practiceMicrophone:microphone?'● Microphone connected':'Microphone inactive',practiceInputFeedback:inputFeedback},disabled:{practiceStopBtn:interruption||closing,practicePauseBtn:blocked,practiceResumeBtn:blocked,practiceNextBtn:blocked,practiceEndBtn:interruption||closing},latest:state?.repetitions.filter(row=>row.status!=='partial').at(-1)};
++ return{phase:phase||'idle',classes,texts:{practiceCompletedLabel:continuous?'Clicks':'Attempts',practiceCompleted:String(state?.completed??0),practiceShots:String(state?.shots??0),practiceRemainingLabel:'Left',practiceRemaining:String(remaining),practiceElapsed:seconds(elapsed),practiceSignal:signal,practiceAnnouncement:announcements[phase??'']||'',practiceMicrophone:microphone?'● Microphone connected':'Microphone inactive',practiceInputFeedback:inputFeedback},disabled:{practiceStopBtn:interruption||closing,practicePauseBtn:blocked,practiceResumeBtn:blocked,practiceNextBtn:blocked,practiceEndBtn:interruption||closing},latest:state?.repetitions.filter(row=>row.status!=='partial').at(-1)};
+ }
+ export function sequenceRunPresentation({state,pending,clock,microphone,readConfig,savedRevision,titleFor}:{state:SequenceState|null;pending:boolean;clock:()=>number;microphone:boolean;readConfig:()=>Config;savedRevision:number|null;titleFor:(label:string)=>string}){
+  const config=state?.config||readConfig();
+diff --git a/apps/web/src/pages/DrillsPage/DrillsPage.tsx b/apps/web/src/pages/DrillsPage/DrillsPage.tsx
+index 2553aef..3fdba7c 100644
+--- a/apps/web/src/pages/DrillsPage/DrillsPage.tsx
++++ b/apps/web/src/pages/DrillsPage/DrillsPage.tsx
+@@ -5,7 +5,7 @@ export type DrillsPageProps={practice?:ReactNode;editor?:ReactNode;builtIns?:Dri
+ export function DrillsPage({practice,editor,builtIns=[],customs=[],sequenceDescription,emptyCustom=false,gunName,contextHidden=false,collectionHidden=false,customTabHidden=false,customSelected=false,createHidden=true,onBack,onCollection,onCreate,onFree}:DrillsPageProps){return <>
+ <PageHeading id="drills-title" title="Drills" eyebrow="02 / PRACTICE PRESETS" reactBack={false} onBack={onBack}/>
+       <p className={contextHidden?"gun-context hidden":"gun-context"}>Saved presets for <strong className="gun-context-name">{gunName}</strong>.</p>
+-      <h3>Dry-fire practice</h3><p className="muted">Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.</p>
++      <h3>Trigger Press Group</h3><p className="muted">Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.</p>
+       {practice}
+       <h3 className="practice-section-title">Sequence drills</h3><p id="sequenceDescription" className="muted small">{sequenceDescription??'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.'}</p>
+       <div className={collectionHidden?"segmented-control hidden":"segmented-control"} role="group" aria-label="Drill collection"><button id="builtInDrillsTab" onClick={()=>onCollection?.(false)} type="button" aria-pressed={!customSelected} aria-controls="drillCatalog">Built-in Drills</button><button id="customDrillsTab" className={customTabHidden?"hidden":undefined} onClick={()=>onCollection?.(true)} type="button" aria-pressed={customSelected} aria-controls="customDrillCatalog">Custom</button></div>
+diff --git a/apps/web/src/pages/PracticePage/PracticePage.tsx b/apps/web/src/pages/PracticePage/PracticePage.tsx
+index e9a649f..cdb89ec 100644
+--- a/apps/web/src/pages/PracticePage/PracticePage.tsx
++++ b/apps/web/src/pages/PracticePage/PracticePage.tsx
+@@ -13,9 +13,7 @@ export function PracticePage({title,gunName,contextHidden=false,guideHidden=fals
+       <div id="practiceConfigure">
+         <form id="practiceConfigForm" className="session-config-form"><fieldset id="practiceConfigFields" className="session-config-fields"><legend>Practice setup</legend>
+           <label id="practiceCountRow" className="session-field" htmlFor="practiceRepetitions"><span id="practiceCountLabel">Repetitions</span>{'{{practiceRepetitionsInput}}'}</label>
+-          <label id="practiceDurationRow" className="session-field hidden" htmlFor="practiceDuration"><span>Active seconds</span>{'{{practiceDurationInput}}'}</label>
+           <label id="practiceParRow" className="session-field hidden" htmlFor="practicePar"><span>Par time (seconds)</span>{'{{practiceParInput}}'}</label>
+-          <div id="practiceReloadFields" className="session-delay-card hidden"><label className="session-field" htmlFor="practiceReloadStart"><span>First event</span><select id="practiceReloadStart"><option value="rack">Rack slide</option><option value="reload">Change magazine</option><option value="draw">Draw from holster</option><option value="trigger">Trigger pull</option></select></label><label className="session-field" htmlFor="practiceReloadEnd"><span>Second event</span><select id="practiceReloadEnd"><option value="reload">Change magazine</option><option value="rack">Rack slide</option><option value="draw">Draw from holster</option><option value="trigger">Trigger pull</option></select></label></div>
+           <label className="session-field" htmlFor="practiceStartSource"><span>Start signal</span><select id="practiceStartSource"><option value="app">App signal</option><option value="external">Calibrated external beep</option></select></label>
+           <div id="practiceAppTiming" className="session-delay-card"><label className="session-field" htmlFor="practiceDelayMode"><span>Ready delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label>
+             <label id="practiceFixedRow" className="session-field hidden" htmlFor="practiceFixedDelay"><span>Delay seconds</span>{'{{practiceFixedDelayInput}}'}</label>
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index e14518e..87b81c8 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -20,7 +20,7 @@
+         "docs/requirements/build-editions.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
++      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+       "states": [
+         {
+           "key": "first-gun.dark",
+@@ -131,7 +131,7 @@
+         "docs/requirements/practice-improvements.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
++      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+       "states": [
+         {
+           "key": "overview.dark",
+@@ -218,7 +218,7 @@
+         "docs/requirements/practice-start.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
++      "notes": "Configure exposes only mode-relevant count/duration/par/endpoints, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par/Reload offer Next between resolved attempts; repeated/control/free remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+       "states": [
+         {
+           "key": "configure-single.dark",
+@@ -244,18 +244,6 @@
+           "label": "Configure control",
+           "image": "docs/design/screens/practice/configure-control.dark.png"
+         },
+-        {
+-          "key": "configure-reload.dark",
+-          "anchor": "practiceConfigure",
+-          "label": "Configure reload",
+-          "image": "docs/design/screens/practice/configure-reload.dark.png"
+-        },
+-        {
+-          "key": "configure-free.dark",
+-          "anchor": "practiceConfigure",
+-          "label": "Configure free",
+-          "image": "docs/design/screens/practice/configure-free.dark.png"
+-        },
+         {
+           "key": "countdown.dark",
+           "anchor": "practiceRun",
+@@ -297,9 +285,7 @@
+         "single",
+         "repeated",
+         "par",
+-        "control",
+-        "reload",
+-        "free"
++        "control"
+       ],
+       "additionalStates": [
+         "Connecting; cancel/end remains available",
+@@ -415,30 +401,6 @@
+           "label": "control guide, light",
+           "image": "docs/design/screens/practice-guide/control.light.png"
+         },
+-        {
+-          "key": "reload.dark",
+-          "anchor": "practiceGuideExample",
+-          "label": "reload guide, dark",
+-          "image": "docs/design/screens/practice-guide/reload.dark.png"
+-        },
+-        {
+-          "key": "reload.light",
+-          "anchor": "practiceGuideExample",
+-          "label": "reload guide, light",
+-          "image": "docs/design/screens/practice-guide/reload.light.png"
+-        },
+-        {
+-          "key": "free.dark",
+-          "anchor": "practiceGuideExample",
+-          "label": "free guide, dark",
+-          "image": "docs/design/screens/practice-guide/free.dark.png"
+-        },
+-        {
+-          "key": "free.light",
+-          "anchor": "practiceGuideExample",
+-          "label": "free guide, light",
+-          "image": "docs/design/screens/practice-guide/free.light.png"
+-        },
+         {
+           "key": "sequence-trigger-only.dark",
+           "anchor": "practiceGuideExample",
+@@ -511,12 +473,6 @@
+           "label": "single early guide, light",
+           "image": "docs/design/screens/practice-guide/single-early.light.png"
+         },
+-        {
+-          "key": "reload-selected-endpoints.dark",
+-          "anchor": "practiceGuideExample",
+-          "label": "reload selected endpoints context",
+-          "image": "docs/design/screens/practice-guide/reload-selected-endpoints.dark.png"
+-        },
+         {
+           "key": "external-start.dark",
+           "anchor": "practiceGuideExample",
+@@ -576,7 +532,7 @@
+         "docs/requirements/build-editions.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
++      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun\u2019s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
+       "states": [
+         {
+           "key": "overview.dark",
+@@ -713,7 +669,7 @@
+       "domId": "aboutView",
+       "title": "About",
+       "parent": "home",
+-      "entry": "Shared app footer → About, including before gun setup",
++      "entry": "Shared app footer \u2192 About, including before gun setup",
+       "requirements": [
+         "docs/requirements/about.md",
+         "docs/requirements/core.md",
+@@ -745,7 +701,7 @@
+       "domId": "contactView",
+       "title": "Contact",
+       "parent": "home",
+-      "entry": "Shared app footer → Contact, including before gun setup",
++      "entry": "Shared app footer \u2192 Contact, including before gun setup",
+       "requirements": [
+         "docs/requirements/contact.md",
+         "docs/requirements/about.md",
+@@ -812,7 +768,7 @@
+     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
+     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
+     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
+-    "tools/page-templates.mjs": "37d1ed296f8c4875661b6fbf9bf77712f94a6cfaf5e86f334d0d44dce5ff51b7",
++    "tools/page-templates.mjs": "b586b4907bd423d6a7f5282022ed672f3815a29e7133c7cfeb3779c2083f4f43",
+     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
+     "src/practiceGuides.js": "73926bcc5bed99307ab477c582c42f0ad9b603929425b3a55bc9ae84e0e9deb3",
+     "src/practiceGuideController.js": "3424acff9a54c769315a13a378763cb58215ca8f52abd3b6d94051b08cd8d508",
+@@ -868,7 +824,7 @@
+     "packages/ui/src/PracticeCatalog/index.ts": "7ffc8cee1bd51dffcadcffc491f8ca2938d24627dd7dbb669ef2b287b6a350b3",
+     "apps/web/src/styles/legacy-cards.css": "1859a192b56f8d040b6380ab4b85ae8317245d353ba93ab3f4715b799ef1cc54",
+     "apps/web/src/styles/legacy-info-visibility.css": "20364cba9bf4a2abdb5e25bf69477773b3f021a34c6c19b13fbc7895ee2ccf99",
+-    "src/practiceModes.js": "951d9789e040f8dc39255bfbabcf2c7c6d6f57bc57b166f8bf8ecfc2f348666e",
++    "src/practiceModes.js": "7fb36431a961c8660037f96f9180b40e2479cc2ef335a6ab6fbe663b73b94cc6",
+     "packages/ui/src/GunSwitcher/GunSwitcher.tsx": "da6310e96bce26f52eb6964c9d93359d9af795113000a74a56529c73f8d0c1b9",
+     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx": "ec94aca2ed7ca812312358f8a1c7b455f34847320bc991681cd73093ea091437",
+     "packages/ui/src/SafetyDialog/SafetyDialog.tsx": "d4e5e673dc6018c907e9e990b9d183d2d127165d9dbd62cd6512d1b5f0489d14",
+@@ -913,7 +869,7 @@
+     "apps/web/src/styles/legacy-before-live-listen.css": "1351bd3f07949fe353ce8743c61a280badaa2b16eb007801a9d52357f490d497",
+     "apps/web/src/app/drillsPage.tsx": "705b56741fe31c90b4720833a6da8faabb7feb94f0859c6072b1cc67a3669d4c",
+     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
+-    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "815d5b577b696869cc2935df1a247ce3aafe84bda61c7374395e00d8a8861b36",
++    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "c3e7d4892c917f86e58101f96a5902b29dea7ba39c76da612904be66ee3faa0a",
+     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+     "packages/ui/src/DrillCard/DrillCard.tsx": "78a831b8e793591c208428a822db7d397d38f680ae0512665def5309636faf93",
+     "packages/ui/src/DrillCard/DrillCard.css": "2ce2d7f7a9202ef9974c7dd0531e6afa98f6f9ca339a2653d4ba8e3ebc7f9e20",
+diff --git a/packages/ui/src/ProgressContent/ProgressContent.test.tsx b/packages/ui/src/ProgressContent/ProgressContent.test.tsx
+index 28446a9..108eb5a 100644
+--- a/packages/ui/src/ProgressContent/ProgressContent.test.tsx
++++ b/packages/ui/src/ProgressContent/ProgressContent.test.tsx
+@@ -8,15 +8,15 @@ import {readFileSync} from 'node:fs';
+ // @ts-expect-error Frozen untyped renderer is the independent pre-migration oracle.
+ import {createProgressView} from '../../../../tests/fixtures/legacy-progress-view.js';
+ // @ts-expect-error Existing statistics remain the unchanged JavaScript domain boundary.
+-import {progressGroups,progressSummary,summarize} from '../../../../src/practiceProgress.js';
++import {progressGroups,progressSummary} from '../../../../src/practiceProgress.js';
+ import {progressPresentation} from '../../../../apps/web/src/features/history/progressPresentation';
+ import {ProgressContent} from './ProgressContent';
+ afterEach(()=>{cleanup();document.body.replaceChildren();});
+ const library=JSON.parse(readFileSync(new URL('../../../../visual-tests/fixtures/library.json',import.meta.url),'utf8'));
+-test.each(['single','repeated','control','reload','par','free','sequence'])('%s chart DOM, values, SVG geometry and accessible table match the native renderer',mode=>{
++test.each(['single','repeated','control','par','sequence'])('%s chart DOM, values, SVG geometry and accessible table match the native renderer',mode=>{
+  const records=library.sessions.filter((record:{gunId:string;practiceMode:string})=>record.gunId==='qa-gun-a'&&record.practiceMode==='single').map((record:Record<string,unknown>,i:number)=>({...record,kind:mode==='sequence'?'sequence':'practice',practiceMode:mode,shots:3,elapsedMs:3000+i*200,repetitions:[0,1,2].map(j=>({status:'completed',elapsedMs:500+i*50+j*20,intervalMs:400+i*10+j*30,stepTimings:[{splitMs:800+i*20+j*10}]}))}));
+  const native=document.createElement('div');native.innerHTML='<select id="progressGroup"></select><select id="progressRange"><option value="0">All</option></select><div id="progressContent"></div>';document.body.append(native);
+- createProgressView(document).render(records,'qa-gun-a');const group=progressGroups(records,'qa-gun-a')[0],data=progressSummary(group);const model=progressPresentation(group,data,summarize(data.points.map((p:{value:number})=>p.value)).mean);
++ createProgressView(document).render(records,'qa-gun-a');const group=progressGroups(records,'qa-gun-a')[0],data=progressSummary(group);const model=progressPresentation(group,data);
+  const actual=render(<ProgressContent model={model}/>);const expected=native.querySelector('#progressContent')!;
+  expect(actual.container.childNodes.length).toBe(expected.childNodes.length);expect([...actual.container.childNodes].every((node,index)=>node.isEqualNode(expected.childNodes[index]))).toBe(true);
+  native.remove();expect(actual.getByRole('img')).toHaveAccessibleName(model.chart!.label);expect(actual.getByText('View values and sample counts')).toBeInTheDocument();native.remove();
+diff --git a/src/inputLimits.js b/src/inputLimits.js
+index d5902b5..52c2323 100644
+--- a/src/inputLimits.js
++++ b/src/inputLimits.js
+@@ -1,7 +1,6 @@
+ export const NUMBER_INPUTS = Object.freeze({
+   practiceRepetitions: { min: 1, max: 100, step: 1, label: 'Repetitions or clicks' },
+   sessionRepetitions: { min: 1, max: 100, step: 1, label: 'Repetitions' },
+-  practiceDuration: { min: 1, max: 3600, step: 1, label: 'Active seconds' },
+   practicePar: { min: .1, max: 30, step: .1, label: 'Par seconds' },
+   practiceFixedDelay: { min: 0, max: 30, step: .1, label: 'Delay seconds' },
+   sessionFixedDelay: { min: 0, max: 30, step: .1, label: 'Delay seconds' },
+diff --git a/src/optional/progressView.js b/src/optional/progressView.js
+index 634bcfb..a811c04 100644
+--- a/src/optional/progressView.js
++++ b/src/optional/progressView.js
+@@ -1,6 +1,6 @@
+ import { textElement } from '../textElement.js';
+ import {progressPresentation} from '../../apps/web/src/features/history/progressPresentation.ts';
+-import { progressGroups, progressSummary, summarize } from '../practiceProgress.js';
++import { progressGroups, progressSummary } from '../practiceProgress.js';
+ const element = (doc, tag, text, className = '') => textElement(tag, text, className, doc);
+ const format = (value, unit = 'ms') => value === null ? '—' : unit === 'ms' ? `${(value / 1000).toFixed(2)} s` : `${value.toFixed(1)} ${unit}`;
+ const timing = group => {
+@@ -10,7 +10,7 @@ const timing = group => {
+ export function createProgressView(doc, { enabled = () => true, onError = () => {} } = {}) {
+   const $ = id => doc.getElementById(id), select = $('progressGroup'), range = $('progressRange'), host = $('progressContent');
+   let groups = [], owner = null, view, module, pending;
+-  function model(){if(!enabled())return{};const group=groups.find(row=>row.key===select.value);const data=group?progressSummary(group,{days:Number(range.value)}):undefined;return progressPresentation(group,data,data?summarize(data.points.map(point=>point.value)).mean:null);}
++  function model(){if(!enabled())return{};const group=groups.find(row=>row.key===select.value);const data=group?progressSummary(group,{days:Number(range.value)}):undefined;return progressPresentation(group,data);}
+   function renderSelected() {
+     if(view){view.update(model());return;}
+     host.replaceChildren();
+@@ -23,7 +23,6 @@ export function createProgressView(doc, { enabled = () => true, onError = () =>
+     const card = (label, value) => { const node = element(doc, 'div'); node.append(element(doc, 'span', label), element(doc, 'strong', value)); stats.append(node); };
+     card('Sessions', String(data.sessions));
+     if (group.mode === 'par') { card('Hit rate', format(data.hitRate, '%')); card('Hits / misses', `${data.hits} / ${data.misses}`); card('Median hit time', format(data.metrics.median)); }
+-    else if (group.mode === 'free') { card('Median rate', format(data.rate, 'clicks/min')); card('Mean rate', format(summarize(data.points.map(point => point.value)).mean, 'clicks/min')); card('Recognized clicks', String(data.shots)); }
+     else { card('Median timing', format(data.metrics.median)); card('Mean timing', format(data.metrics.mean)); card('Timing variation', format(data.metrics.spread)); }
+     host.append(stats);
+     const trend = data.trend;
+@@ -32,7 +31,6 @@ export function createProgressView(doc, { enabled = () => true, onError = () =>
+       const direction = trend.direction === 'unchanged' ? 'Unchanged'
+         : group.mode === 'control' ? trend.direction === 'lower' ? 'Steadier intervals' : 'More variable intervals'
+           : group.mode === 'par' ? trend.direction === 'higher' ? 'Higher hit rate' : 'Lower hit rate'
+-            : group.mode === 'free' ? trend.direction === 'higher' ? 'Higher click rate' : 'Lower click rate'
+               : trend.direction === 'lower' ? 'Faster detected timing' : 'Slower detected timing';
+       description = `${direction}${trend.change === null ? '' : ` · ${Math.abs(trend.change).toFixed(1)} ${data.unit === '%' ? 'percentage points' : '%'}`} · recent ${trend.compared} vs earlier ${trend.compared} sessions.`;
+     }
+diff --git a/src/practiceController.js b/src/practiceController.js
+index 9aa4a93..6b8209a 100644
+--- a/src/practiceController.js
++++ b/src/practiceController.js
+@@ -69,28 +69,25 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
+       return readNumberInput($(id));
+     };
+     return normalizePracticeConfig({
+-      repetitions: number('practiceRepetitions', 'repetitions', mode !== 'free'),
+-      durationSeconds: number('practiceDuration', 'durationSeconds', mode === 'free'),
++      repetitions: number('practiceRepetitions', 'repetitions'),
+       parSeconds: number('practicePar', 'parSeconds', mode === 'par'),
+       delayMode, fixedDelaySeconds: number('practiceFixedDelay', 'fixedDelaySeconds', app && delayMode === 'fixed'),
+       randomMinSeconds: number('practiceMinDelay', 'randomMinSeconds', app && delayMode === 'random'),
+       randomMaxSeconds: number('practiceMaxDelay', 'randomMaxSeconds', app && delayMode === 'random'),
+       startSource: $('practiceStartSource').value, soundAtStart: $('practiceStartSound').checked,
+-      reloadStart: mode === 'reload' ? $('practiceReloadStart').value : defaults.reloadStart,
+-      reloadEnd: mode === 'reload' ? $('practiceReloadEnd').value : defaults.reloadEnd,
+     });
+   }
+   function fillConfig(config) {
+     const value = normalizePracticeConfig(config);
+-    for (const [id, key] of [['practiceRepetitions','repetitions'],['practiceDuration','durationSeconds'],['practicePar','parSeconds'],
++    for (const [id, key] of [['practiceRepetitions','repetitions'],['practicePar','parSeconds'],
+       ['practiceDelayMode','delayMode'],['practiceFixedDelay','fixedDelaySeconds'],['practiceMinDelay','randomMinSeconds'],['practiceMaxDelay','randomMaxSeconds'],
+-      ['practiceStartSource','startSource'],['practiceReloadStart','reloadStart'],['practiceReloadEnd','reloadEnd']]) $(id).value = value[key];
++      ['practiceStartSource','startSource']]) $(id).value = value[key];
+     $('practiceStartSound').checked = value.soundAtStart;
+   }
+   function configure() {
+     const external = $('practiceStartSource').value === 'external';
+-    const visibility = { practiceCountRow: mode !== 'free', practiceDurationRow: mode === 'free', practiceParRow: mode === 'par',
+-      practiceReloadFields: mode === 'reload', practiceAppTiming: !external,
++    const visibility = { practiceCountRow: true, practiceParRow: mode === 'par',
++      practiceAppTiming: !external,
+       practiceFixedRow: !external && $('practiceDelayMode').value === 'fixed', practiceRandomFields: !external && $('practiceDelayMode').value === 'random' };
+     for (const [id, visible] of Object.entries(visibility)) {
+       $(id).classList.toggle('hidden', !visible);
+@@ -100,7 +97,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
+     const context = getContext();
+     let message = '', config;
+     try { config = readConfig(); } catch (error) { message = error.message; }
+-    const required = practiceLabels(mode, config || normalizePracticeConfig());
++    const required = practiceLabels();
+     const counts = trainingCounts(context.examples);
+     const missing = required.filter(label => counts[label] < MIN_EXAMPLES_PER_CLASS);
+     const missingCue = external && compatibleCalibration(context.calibration || []).filter(row => row.kind === 'cue').length < MIN_EXAMPLES_PER_CLASS;
+@@ -224,7 +221,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
+     const context = structuredClone(getContext()), config = resuming ? state.config : readConfig();
+     if (context.available === false) return;
+     const counts = trainingCounts(context.examples);
+-    if (!context.gun || practiceLabels(mode, config).some(label => counts[label] < 3) ||
++    if (!context.gun || practiceLabels().some(label => counts[label] < 3) ||
+         (config.startSource === 'external' && context.calibration.filter(row => row.kind === 'cue').length < 3)) { configure(); return; }
+     const token = ++operation; pending = true; resetInput(); inputFeedback = ''; changed();
+     cue = createStartCuePlayer();
+@@ -328,8 +325,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
+   function guideContext() {
+     if (!routeKey || locked() || state || review) return null;
+     return { type: 'practice', gunId: getContext().gun?.id, routeKey, mode,
+-      config: { reloadStart: $('practiceReloadStart').value, reloadEnd: $('practiceReloadEnd').value,
+-        startSource: $('practiceStartSource').value, soundAtStart: $('practiceStartSound').checked } };
++      config: { startSource: $('practiceStartSource').value, soundAtStart: $('practiceStartSound').checked } };
+   }
+   function connectView(mount) {
+     if(view||locked())return false;
+diff --git a/src/practiceGuideController.js b/src/practiceGuideController.js
+index d64acaa..8e236be 100644
+--- a/src/practiceGuideController.js
++++ b/src/practiceGuideController.js
+@@ -38,7 +38,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
+   }
+   function selectExample(isEarly) {
+     pause(); early = isEarly;
+-    scenario = createScenario(guide.exampleSequence ? { ...guide, sequence: guide.exampleSequence } : guide, { early });
++    scenario = createScenario(guide, { early });
+     position = 0; lastPainted = -1; paint(scenario.posterIndex);
+     $('practiceGuideExample').setAttribute('aria-label', early
+       ? 'Example: listening before the beep, early trigger fails with zero shots, then an automatic countdown and a successful trigger.'
+@@ -48,7 +48,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
+   }
+   function open(context) {
+     pause(); guide = getPracticeGuide(context);
+-    const showSteps=guide.kind==='sequence'||guide.id==='reload';
++    const showSteps=guide.kind==='sequence';
+     const manual={texts:{practiceGuideKind:guide.kind==='practice'?'PRACTICE GUIDE':'ORDERED SEQUENCE GUIDE',practiceGuideName:guide.title,practiceGuidePurpose:guide.purpose,practiceGuideCurrentSetup:guide.currentSetup,practiceGuideMeasures:guide.measures,practiceGuideExpect:guide.expect,practiceGuideRequires:guide.requires,practiceGuideExampleNote:`${guide.exampleConfig}. Safety already confirmed; microphone preparation time varies.`},steps:guide.steps,sequenceHidden:!showSteps,examplesHidden:guide.id!=='single',sequence:(showSteps?guide.sequence:[]).map(label=>({label,text:guideSoundTitle(label)}))};
+     if(page)page.update(manual);else{
+       for(const[id,value]of Object.entries(manual.texts))text(id,value);
+diff --git a/src/practiceGuideExamples.js b/src/practiceGuideExamples.js
+index 09ea528..77e1bc2 100644
+--- a/src/practiceGuideExamples.js
++++ b/src/practiceGuideExamples.js
+@@ -1,13 +1,13 @@
+ // Design fixtures use the actual pure session engines with synthetic accepted
+ // detections. Hardware, classification and storage latency are not simulated.
+-import { createPractice, tickPractice, detectPractice, nextPractice, practiceElapsed } from './practiceSession.js';
++import { createPractice, tickPractice, detectPractice, nextPractice } from './practiceSession.js';
+ import { createSession, tickSession, recordSessionDetection } from './drillSession.js';
+ 
+ export const FRAME_MS = 100;
+ const READY_AT_MS = 1000; // Example preparation time; actual readiness varies.
+ const gun = { id: 'guide-example', name: 'Example gun', type: 'Handguns' };
+ const clock = monoNow => ({ monoNow, epochNow: 1800000000000 + monoNow, randomValue: monoNow <= READY_AT_MS ? .13 : .4 });
+-const shotOffsets = { repeated: [500, 1300, 2100], control: [500, 1300, 2100], free: [500, 2000, 4800] };
++const shotOffsets = { repeated: [500, 1300, 2100], control: [500, 1300, 2100] };
+ const names = { draw: 'Draw', rack: 'Rack', reload: 'Magazine', trigger: 'Trigger' };
+ const seconds = ms => `${(ms / 1000).toFixed(2)} s`;
+ const assert = (condition, message) => { if (!condition) throw new Error(message); };
+@@ -19,7 +19,6 @@ export function createScenario(manual, { early = false } = {}) {
+     repetitions: sequence && manual.sequence.length > 3 ? 1 : ['repeated', 'control'].includes(id) ? 3 : 2,
+     delayMode: 'random', randomMinSeconds: 2, randomMaxSeconds: 5,
+     soundAtStart: true, startSource: 'app', parSeconds: 1.5,
+-    durationSeconds: 6, reloadStart: manual.id === 'reload' ? manual.sequence[0] : 'rack', reloadEnd: manual.id === 'reload' ? manual.sequence[1] : 'reload',
+   };
+   const frames = [], events = [], fired = new Set();
+   let state = null, terminalAt = null, resultAt = null, latest = null;
+@@ -54,14 +53,13 @@ export function createScenario(manual, { early = false } = {}) {
+         record(t, 'recognized-trigger-before-signal', { offsetMs: -500 }); lastEventAt = t;
+         apply(detectPractice(state, { label: 'trigger', score: 95, detectedAtMs: t }, clock(t)), t);
+       }
+-      if (!sequence && ['par', 'reload'].includes(id) && state.phase === 'result' && t === resultAt + 1200) {
++      if (!sequence && id === 'par' && state.phase === 'result' && t === resultAt + 1200) {
+         lastNextAt = t; record(t, 'user-selects-next'); apply(nextPractice(state, clock(t)), t);
+       }
+       if (state.phase === 'active') {
+         const offset = t - state.goAtMs;
+         let scheduled = [];
+         if (sequence) scheduled = manual.sequence.map((label, i) => ({ label, at: 500 + i * 800 }));
+-        else if (id === 'reload') scheduled = [{ label: state.drillSteps[0], at: 400 }, { label: state.drillSteps[1], at: 1600 }];
+         else if (shotOffsets[id]) scheduled = shotOffsets[id].map(at => ({ label: 'trigger', at }));
+         else if (id === 'par') scheduled = state.completed === 0 ? [{ label: 'trigger', at: 600 }] : []; // Then demonstrate a miss.
+         else scheduled = [{ label: 'trigger', at: state.completed === 0 ? 500 : 600 }];
+@@ -80,53 +78,45 @@ export function createScenario(manual, { early = false } = {}) {
+     const phase = state?.phase ?? 'connecting';
+     let mic = 'Preparing microphone', micTone = 'amber', title = 'Preparing microphone', value = '—';
+     let detail = sequence ? 'Connect microphone before countdown' : 'Waiting for incoming audio before countdown';
+-    let elapsedMs = 0;
+     if (state) {
+       mic = phase === 'review' ? 'Microphone stopped' : phase === 'closing' ? 'Finishing earlier audio' : sequence && phase === 'countdown' ? 'Mic connected · detection starts at GO' : phase === 'result' ? 'Mic on · recognition paused' : phase === 'countdown' ? 'Listening before the signal' : 'Microphone listening';
+       micTone = phase === 'review' ? 'muted' : ['result', 'closing'].includes(phase) || (sequence && phase === 'countdown') ? 'amber' : 'green';
+-      elapsedMs = sequence ? (state.goAtMs === null ? 0 : t - state.goAtMs) : practiceElapsed(state, t);
+       if (phase === 'countdown') {
+         title = state.completed ? 'Next countdown · automatic' : 'Get ready';
+-        if (['par', 'reload'].includes(id) && state.completed) title = 'Next countdown · after Next';
++        if (id === 'par' && state.completed) title = 'Next countdown · after Next';
+         value = `${((state.countdownEndsAtMs - t) / 1000).toFixed(1)} s`;
+         detail = t - lastNextAt < 500 ? 'You selected Next repetition' : 'Wait for the start signal';
+       } else if (phase === 'active') {
+-        title = t - beepAt < 300 ? 'BEEP · timer starts' : sequence ? 'Follow the selected order' : id === 'reload' ? 'Listening for the two events' : 'Listening for trigger clicks';
++        title = t - beepAt < 300 ? 'BEEP · timer starts' : sequence ? 'Follow the selected order' : 'Listening for trigger clicks';
+         value = seconds(t - state.goAtMs);
+         if (sequence) detail = `Step ${Math.min(state.current.stepIndex + 1, manual.sequence.length)} / ${manual.sequence.length}: ${names[manual.sequence[state.current.stepIndex]]}`;
+-        else if (id === 'reload') detail = state.current.stepTimings.length ? `${names[state.drillSteps[0]]} recognized → waiting for ${names[state.drillSteps[1]]}` : `${names[state.drillSteps[0]]} → ${names[state.drillSteps[1]]}`;
+         else if (id === 'par') detail = `Par limit ${seconds(config.parSeconds * 1000)}`;
+-        else if (id === 'free') detail = `Example duration ${config.durationSeconds} s · continuous listening`;
+         else if (['repeated', 'control'].includes(id)) detail = 'One start beep · separate recognized clicks';
+         else detail = 'First recognized trigger ends this attempt';
+       } else if (phase === 'result') {
+         title = latest?.reason === 'early' ? 'EARLY TRIGGER · failed' : sequence ? 'Sequence completed' : 'Result · select Next repetition';
+         value = latest?.reason === 'early' ? 'No shot' : seconds(latest?.elapsedMs ?? 0);
+-        if (id === 'reload') { title = 'Event interval · select Next'; value = seconds(latest.stepTimings[1].splitMs); }
+         detail = sequence ? 'Next countdown follows the result' : latest?.reason === 'early' ? 'The next countdown starts automatically' : 'Reset when ready, then select Next';
+       } else if (phase === 'closing') {
+-        title = 'Time limit reached'; value = seconds(id === 'free' ? config.durationSeconds * 1000 : config.parSeconds * 1000);
++        title = 'Time limit reached'; value = seconds(config.parSeconds * 1000);
+         detail = 'Finishing audio captured before the deadline';
+       } else if (phase === 'review') {
+-        title = 'Practice complete'; value = id === 'free' ? `${state.shots} clicks` : `${state.completed} / ${config.repetitions}`;
+-        detail = id === 'free' ? `${seconds(state.elapsedMs)} active · review results` : 'Target reached · review the recorded outcomes';
++        title = 'Practice complete'; value = `${state.completed} / ${config.repetitions}`;
++        detail = 'Target reached · review the recorded outcomes';
+       }
+     }
+-    const last = id === 'free' && phase === 'review' ? `${state.shots} accepted clicks in ${seconds(state.elapsedMs)} active`
+-      : latest?.reason === 'early' ? 'Last attempt: failed before the beep · 0 shots'
++    const last = latest?.reason === 'early' ? 'Last attempt: failed before the beep · 0 shots'
+       : latest?.status === 'miss' ? 'Last attempt: miss · no click within the par time'
+-      : latest ? (id === 'reload' ? `Last event interval: ${seconds(latest.stepTimings[1].splitMs)}`
+-        : ['repeated', 'control'].includes(id) && latest.intervalMs != null ? `Last click interval: ${seconds(latest.intervalMs)}`
++      : latest ? (['repeated', 'control'].includes(id) && latest.intervalMs != null ? `Last click interval: ${seconds(latest.intervalMs)}`
+         : `Last result: ${seconds(latest.elapsedMs)}`) : 'No result yet';
+-    const counter = !state ? 'Example · preparing' : id === 'free' ? `${state.shots} clicks · ${seconds(elapsedMs)} active`
+-      : ['repeated', 'control'].includes(id) ? `Clicks ${state.completed} / ${config.repetitions}`
++    const counter = !state ? 'Example · preparing' : ['repeated', 'control'].includes(id) ? `Clicks ${state.completed} / ${config.repetitions}`
+       : `Attempts ${state.completed} / ${config.repetitions}${sequence ? '' : ` · Shots ${state.shots}`}`;
+     frames.push({ state, config, atMs: t, phase, mic, micTone, title, value, detail, last, counter,
+       pulse: t - lastEventAt < 300, failed: latest?.reason === 'early', beep: t - beepAt < 300,
+-      example: id === 'free' ? 'EXAMPLE · 6 S SESSION · 1× TIMING' : ['repeated', 'control'].includes(id) ? 'EXAMPLE · 3 CLICKS · 1× TIMING' : `EXAMPLE · ${config.repetitions} ATTEMPTS · 1× TIMING` });
++      example: ['repeated', 'control'].includes(id) ? 'EXAMPLE · 3 CLICKS · 1× TIMING' : `EXAMPLE · ${config.repetitions} ATTEMPTS · 1× TIMING` });
+     if (posterIndex === null && ((early && latest?.reason === 'early')
+       || (id === 'single' && state?.completed === 1 && phase === 'countdown')
+-      || (['par', 'reload'].includes(id) && state?.completed === 1 && phase === 'result')
++      || (id === 'par' && state?.completed === 1 && phase === 'result')
+       || (['repeated', 'control'].includes(id) && state?.completed === 2)
+       || (sequence && state?.completed === 1 && phase === 'result'))) posterIndex = frames.length - 1;
+     if (terminalAt !== null && t >= terminalAt + 1200) break;
+@@ -137,12 +127,12 @@ export function createScenario(manual, { early = false } = {}) {
+   const outcomes = events.filter(e => e.kind === 'outcome');
+   const countdowns = events.filter(e => e.kind === 'countdown');
+   const automatic = sequence || ['single', 'single-early'].includes(id);
+-  assert(beeps.length === (early ? 1 : automatic || ['par', 'reload'].includes(id) ? config.repetitions : 1), `${id}: unexpected beep count`);
+-  assert(events.filter(e => e.kind === 'user-selects-next').length === (['par', 'reload'].includes(id) ? 1 : 0), `${id}: wrong Next behavior`);
++  assert(beeps.length === (early ? 1 : automatic || id === 'par' ? config.repetitions : 1), `${id}: unexpected beep count`);
++  assert(events.filter(e => e.kind === 'user-selects-next').length === (id === 'par' ? 1 : 0), `${id}: wrong Next behavior`);
+   assert(beeps.every(e => e.atMs >= READY_AT_MS + 2400), `${id}: signal before microphone/delay`);
+   assert(countdowns.every((e, i) => e.endsAtMs - e.atMs === (i === 0 ? 2400 : 3200)), `${id}: countdown does not match the example delays`);
+   assert(frames.filter(f => f.atMs < READY_AT_MS).every(f => f.phase === 'connecting' && f.value === '—'), `${id}: countdown started before microphone setup`);
+-  assert(id === 'free' ? state.elapsedMs === 6000 && state.shots === 3 : state.completed === config.repetitions, `${id}: wrong completion`);
++  assert(state.completed === config.repetitions, `${id}: wrong completion`);
+   if (early) {
+     assert(outcomes[0].reason === 'early' && outcomes[0].shots === 0 && outcomes[0].elapsedMs === null, 'Early trigger must fail with no successful timing/shot');
+     assert(state.shots === 1 && beeps[0].atMs > outcomes[0].atMs, 'Early trigger advances automatically without an initial beep');
+@@ -150,6 +140,5 @@ export function createScenario(manual, { early = false } = {}) {
+   if (id === 'par') assert(outcomes.map(e => e.status).join(',') === 'hit,miss', 'Par example must show hit and miss');
+   if (id === 'single') assert(outcomes[0].elapsedMs === 500 && outcomes[0].shots === 1, 'Single must accept the first 0.50 s trigger');
+   if (['repeated', 'control'].includes(id)) assert(outcomes.slice(1).every(e => e.intervalMs === 800), 'Consecutive click intervals must match 0.80 s');
+-  if (id === 'reload') assert(state.shots === (manual.sequence.includes('trigger') ? config.repetitions : 0) && state.repetitions.every(r => r.stepTimings[1].splitMs === 1200), 'Reload measures 1.20 s without counting handling as shots');
+   return { id, config: state.config, durationMs: frames.length * FRAME_MS, readyAtMs: READY_AT_MS, frames, events, posterIndex };
+ }
+diff --git a/src/practiceGuideManuals.js b/src/practiceGuideManuals.js
+index 54d90cf..adef1eb 100644
+--- a/src/practiceGuideManuals.js
++++ b/src/practiceGuideManuals.js
+@@ -14,19 +14,19 @@ export const GUIDE_MANUALS = [
+     "requires": "Learn Trigger pull for the selected gun. Other sound types are optional.",
+     "stages": [
+       "Microphone ready",
+-      "2.4 s countdown → beep",
++      "2.4 s countdown \u2192 beep",
+       "Click at 0.50 s",
+-      "Automatic 3.2 s countdown → second beep → 0.60 s click"
++      "Automatic 3.2 s countdown \u2192 second beep \u2192 0.60 s click"
+     ],
+     "sequence": [
+       "trigger"
+     ],
+-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
++    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
+   },
+   {
+     "id": "repeated",
+     "kind": "practice",
+-    "title": "Repeated trigger presses",
++    "title": "Repeated trigger press",
+     "purpose": "Count separate recognized trigger clicks and see the time between them.",
+     "measures": "Accepted click count and the intervals between consecutive clicks.",
+     "steps": [
+@@ -38,7 +38,7 @@ export const GUIDE_MANUALS = [
+     "requires": "Learn Trigger pull. Optional reset/noise examples can help reject other clicks.",
+     "stages": [
+       "Microphone ready",
+-      "2.4 s countdown → one beep",
++      "2.4 s countdown \u2192 one beep",
+       "Three clicks: 0.50 / 1.30 / 2.10 s",
+       "Two intervals: 0.80 / 0.80 s"
+     ],
+@@ -47,12 +47,12 @@ export const GUIDE_MANUALS = [
+       "trigger",
+       "trigger"
+     ],
+-    "exampleConfig": "3 clicks · random 2–5 s delay · app beep on"
++    "exampleConfig": "3 clicks \u00b7 random 2\u20135 s delay \u00b7 app beep on"
+   },
+   {
+     "id": "par",
+     "kind": "practice",
+-    "title": "Par-time practice",
++    "title": "Par time practice",
+     "purpose": "Check whether a recognized trigger click arrives within your chosen time limit.",
+     "measures": "Time from the start signal to a click, with an in-time or missed outcome.",
+     "steps": [
+@@ -64,14 +64,14 @@ export const GUIDE_MANUALS = [
+     "requires": "Learn Trigger pull. Example: a 0.64 s click is in time for a 1.50 s limit.",
+     "stages": [
+       "Microphone ready",
+-      "Countdown → beep → 0.60 s hit within 1.50 s",
++      "Countdown \u2192 beep \u2192 0.60 s hit within 1.50 s",
+       "User selects Next repetition",
+-      "Fresh countdown → beep → no click → miss"
++      "Fresh countdown \u2192 beep \u2192 no click \u2192 miss"
+     ],
+     "sequence": [
+       "trigger"
+     ],
+-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
++    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
+   },
+   {
+     "id": "control",
+@@ -88,67 +88,16 @@ export const GUIDE_MANUALS = [
+     "requires": "Learn Trigger pull. Optional reset/noise calibration can improve discrimination.",
+     "stages": [
+       "Microphone ready",
+-      "2.4 s countdown → one beep",
++      "2.4 s countdown \u2192 one beep",
+       "Three distinct clicks",
+-      "0.80 s intervals → review"
++      "0.80 s intervals \u2192 review"
+     ],
+     "sequence": [
+       "trigger",
+       "trigger",
+       "trigger"
+     ],
+-    "exampleConfig": "3 clicks · random 2–5 s delay · app beep on"
+-  },
+-  {
+-    "id": "reload",
+-    "kind": "practice",
+-    "title": "Reload practice",
+-    "purpose": "Measure the time between two mechanical sounds you choose.",
+-    "measures": "Elapsed time between the first and second recognized event, in that order.",
+-    "steps": [
+-      "Choose two different sound endpoints, such as Rack slide and Change magazine.",
+-      "After the signal, perform the selected actions in the displayed order.",
+-      "Read the interval, then select Next repetition when ready to continue."
+-    ],
+-    "expect": "Handling events are not shots. Only an explicitly selected Trigger endpoint can add an accepted shot.",
+-    "requires": "Learn both selected endpoint sounds. Trigger is needed only when it is a selected endpoint.",
+-    "stages": [
+-      "Microphone ready",
+-      "Countdown → beep",
+-      "Rack at 0.40 s → Magazine at 1.60 s",
+-      "1.20 s interval → user selects Next → repeat"
+-    ],
+-    "sequence": [
+-      "rack",
+-      "reload"
+-    ],
+-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
+-  },
+-  {
+-    "id": "free",
+-    "kind": "practice",
+-    "title": "Free practice",
+-    "purpose": "Practice for a chosen duration without a fixed click target.",
+-    "measures": "Total recognized trigger clicks and active practice time.",
+-    "steps": [
+-      "Choose the session duration and ready delay.",
+-      "After one start signal, practice at your own pace while the app counts clicks.",
+-      "The session ends at the duration limit. You can also use STOP to save and finish early."
+-    ],
+-    "expect": "Pause stops microphone capture and pauses active time. There is no new beep for each click.",
+-    "requires": "Learn Trigger pull. No extra mechanical sound categories are required.",
+-    "stages": [
+-      "Microphone ready",
+-      "Countdown → one beep",
+-      "Three clicks during a 6 s example session",
+-      "Deadline → finish captured audio → 3 clicks in 6 s"
+-    ],
+-    "sequence": [
+-      "trigger",
+-      "trigger",
+-      "trigger"
+-    ],
+-    "exampleConfig": "6 s duration · random 2–5 s delay · app beep on"
++    "exampleConfig": "3 clicks \u00b7 random 2\u20135 s delay \u00b7 app beep on"
+   },
+   {
+     "id": "sequence-trigger-only",
+@@ -166,19 +115,19 @@ export const GUIDE_MANUALS = [
+     "requires": "Learn Trigger pull. Sounds in the initial 0.30 s after the app beep are excluded to reject the cue.",
+     "stages": [
+       "Microphone connected",
+-      "2.4 s countdown → beep",
++      "2.4 s countdown \u2192 beep",
+       "trigger",
+-      "Result → automatic 3.2 s countdown → repeat"
++      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
+     ],
+     "sequence": [
+       "trigger"
+     ],
+-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
++    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
+   },
+   {
+     "id": "sequence-rack-trigger",
+     "kind": "sequence",
+-    "title": "Rack slide → Trigger pull",
++    "title": "Rack slide \u2192 Trigger pull",
+     "purpose": "Complete the learned Rack slide and Trigger pull sounds in the displayed order.",
+     "measures": "Time from the start signal to sequence completion, plus the time at each matched step.",
+     "steps": [
+@@ -190,20 +139,20 @@ export const GUIDE_MANUALS = [
+     "requires": "Learn Rack slide and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep.",
+     "stages": [
+       "Microphone connected",
+-      "2.4 s countdown → beep",
+-      "rack → trigger",
+-      "Result → automatic 3.2 s countdown → repeat"
++      "2.4 s countdown \u2192 beep",
++      "rack \u2192 trigger",
++      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
+     ],
+     "sequence": [
+       "rack",
+       "trigger"
+     ],
+-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
++    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
+   },
+   {
+     "id": "sequence-mag-trigger",
+     "kind": "sequence",
+-    "title": "Magazine change → Trigger pull",
++    "title": "Magazine change \u2192 Trigger pull",
+     "purpose": "Complete the learned magazine-change and trigger sounds in the displayed order.",
+     "measures": "Signal-to-completion time and the detected timing of each sequence step.",
+     "steps": [
+@@ -215,21 +164,21 @@ export const GUIDE_MANUALS = [
+     "requires": "Learn Change magazine and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep.",
+     "stages": [
+       "Microphone connected",
+-      "2.4 s countdown → beep",
+-      "reload → trigger",
+-      "Result → automatic 3.2 s countdown → repeat"
++      "2.4 s countdown \u2192 beep",
++      "reload \u2192 trigger",
++      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
+     ],
+     "sequence": [
+       "reload",
+       "trigger"
+     ],
+-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
++    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
+   },
+   {
+     "id": "sequence-draw-mag-trigger",
+     "kind": "sequence",
+-    "title": "Draw → Magazine → Trigger",
+-    "setupTitle": "Draw from holster → Magazine change → Trigger pull",
++    "title": "Draw \u2192 Magazine \u2192 Trigger",
++    "setupTitle": "Draw from holster \u2192 Magazine change \u2192 Trigger pull",
+     "purpose": "Match the three learned sounds in one ordered sequence.",
+     "measures": "Time from the signal to the final recognized trigger, plus detected step timings.",
+     "steps": [
+@@ -241,16 +190,16 @@ export const GUIDE_MANUALS = [
+     "requires": "Learn Draw, Change magazine and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep.",
+     "stages": [
+       "Microphone connected",
+-      "2.4 s countdown → beep",
+-      "draw → reload → trigger",
+-      "Result → automatic 3.2 s countdown → repeat"
++      "2.4 s countdown \u2192 beep",
++      "draw \u2192 reload \u2192 trigger",
++      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
+     ],
+     "sequence": [
+       "draw",
+       "reload",
+       "trigger"
+     ],
+-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
++    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
+   },
+   {
+     "id": "sequence-custom",
+@@ -264,19 +213,19 @@ export const GUIDE_MANUALS = [
+       "Choose repetitions and delay, then follow that displayed order after the signal.",
+       "A matching sequence completes a repetition; the next countdown starts automatically."
+     ],
+-    "expect": "This example uses Rack → Trigger → Trigger. The real guide must reflect the selected saved preset, not a generic fixed sequence.",
++    "expect": "This example uses Rack \u2192 Trigger \u2192 Trigger. The real guide must reflect the selected saved preset, not a generic fixed sequence.",
+     "requires": "Learn only the sounds referenced by this preset. Creating a new custom preset remains a Full-only feature.",
+     "stages": [
+       "Microphone connected",
+-      "2.4 s countdown → beep",
+-      "rack → trigger → trigger",
+-      "Result → automatic 3.2 s countdown → repeat"
++      "2.4 s countdown \u2192 beep",
++      "rack \u2192 trigger \u2192 trigger",
++      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
+     ],
+     "sequence": [
+       "rack",
+       "trigger",
+       "trigger"
+     ],
+-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
++    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
+   }
+ ];
+diff --git a/src/practiceGuides.js b/src/practiceGuides.js
+index 8f00726..3c83d7a 100644
+--- a/src/practiceGuides.js
++++ b/src/practiceGuides.js
+@@ -26,19 +26,6 @@ export function getPracticeGuide(context) {
+     guide.requires = 'Learn each distinct sound shown in this preset. A sound can appear more than once.';
+     guide.exampleConfig = `${drill.steps.length > 3 ? 1 : 2} example attempts · random 2–5 s delay · app beep on`;
+   }
+-  if (id === 'reload') {
+-    const sequence = [config.reloadStart ?? 'rack', config.reloadEnd ?? 'reload'];
+-    if (sequence.some(s => !labels[s])) throw new TypeError('Choose known endpoints.');
+-    guide.sequence = sequence;
+-    guide.stages = ['Microphone ready', 'Countdown and app signal', sequence.map(s => labels[s]).join(' → '), 'Event interval and Next repetition'];
+-    guide.steps[0] = `Your selected endpoints are ${labels[sequence[0]]} and ${labels[sequence[1]]}. Learn both sounds.`;
+-    guide.steps[1] = `After the signal, complete ${labels[sequence[0]]}, then ${labels[sequence[1]]}.`;
+-    guide.requires = `Learn ${sequence.map(s => labels[s]).join(' and ')}. Only a selected Trigger endpoint can add a shot.`;
+-    if (sequence[0] === sequence[1]) {
+-      guide.exampleSequence = ['rack', 'reload'];
+-      guide.requires = 'Choose two different endpoints before starting. The illustration uses Rack slide → Change magazine.';
+-    }
+-  }
+   if (context.type === 'practice' && config.startSource === 'external') {
+     guide.currentSetup = 'Your setup uses a calibrated external beep: no app countdown or app beep. The illustration below demonstrates the app-signal option.';
+     guide.steps = guide.steps.map(s => s.replace(/ready delay/g, 'start signal').replace(/countdown/g, 'external-cue wait'));
+diff --git a/src/practiceModes.js b/src/practiceModes.js
+index 68f5663..edbff5d 100644
+--- a/src/practiceModes.js
++++ b/src/practiceModes.js
+@@ -7,35 +7,26 @@ const definitions = Object.freeze([
+   },
+   {
+     "id": "repeated",
+-    "title": "Repeated trigger presses"
++    "title": "Repeated trigger press"
+   },
+   {
+     "id": "par",
+-    "title": "Par-time practice"
++    "title": "Par time practice"
+   },
+   {
+     "id": "control",
+     "title": "Trigger control"
+-  },
+-  {
+-    "id": "reload",
+-    "title": "Reload practice"
+-  },
+-  {
+-    "id": "free",
+-    "title": "Free practice"
+   }
+ ]);
+ const descriptions = {
+   "single": "Reaction time for one click after each start signal.",
+   "repeated": "Count distinct clicks and the intervals between them.",
+   "par": "Recognize a click within your chosen time limit.",
+-  "control": "Compare the consistency of your detected click intervals.",
+-  "reload": "Time two calibrated events in your chosen order.",
+-  "free": "Count clicks during a timed practice session."
++  "control": "Compare the consistency of your detected click intervals."
+ };
+ export const PRACTICE_MODES = /* @__PURE__ */ Object.freeze(
+   /* @__PURE__ */ definitions.map(mode => ({ ...mode, description: descriptions[mode.id] }))
+ );
+ export const practiceMode = id => PRACTICE_MODES.find(mode => mode.id === id);
+ export const practiceDefinition = id => definitions.find(mode => mode.id === id);
++
+diff --git a/src/practiceProgress.js b/src/practiceProgress.js
+index 3d536d8..348190c 100644
+--- a/src/practiceProgress.js
++++ b/src/practiceProgress.js
+@@ -27,20 +27,17 @@ export function progressSummary(group, { days = 0, now = Date.now() } = {}) {
+   for (const record of records) {
+     const rows = record.repetitions.filter(row => ['hit', 'miss', 'completed'].includes(row.status));
+     const hitRows = rows.filter(row => row.status !== 'miss');
+-    const samples = hitRows.map(row => ['repeated', 'control'].includes(group.mode) ? row.intervalMs
+-      : group.mode === 'reload' ? row.stepTimings.at(-1)?.splitMs : row.elapsedMs).filter(valid);
++    const samples = hitRows.map(row => ['repeated', 'control'].includes(group.mode) ? row.intervalMs : row.elapsedMs).filter(valid);
+     const stats = summarize(samples), hitCount = hitRows.length, missCount = rows.length - hitCount;
+     hits += hitCount; misses += missCount; shots += record.shots || 0; allSamples.push(...samples);
+     const value = group.mode === 'par' ? (rows.length ? hitCount / rows.length * 100 : null)
+-      : group.mode === 'free' ? (record.elapsedMs > 0 ? record.shots / record.elapsedMs * 60000 : null)
+         : group.mode === 'control' ? (samples.length >= 2 ? stats.spread : null) : stats.median;
+-    if (valid(value)) points.push({ id: record.id, date: record.startedAt, value, count: group.mode === 'free' ? record.shots : samples.length,
++    if (valid(value)) points.push({ id: record.id, date: record.startedAt, value, count: samples.length,
+       hits: hitCount, misses: missCount, ...stats });
+   }
+-  const metrics = summarize(allSamples), unit = group.mode === 'par' ? '%' : group.mode === 'free' ? 'clicks/min' : 'ms';
+-  const metric = group.mode === 'par' ? 'Hit rate' : group.mode === 'free' ? 'Clicks per active minute'
+-    : group.mode === 'control' ? 'Interval variation' : group.mode === 'repeated' ? 'Median click interval'
+-      : group.mode === 'reload' ? 'Median endpoint time' : 'Median detected time';
++  const metrics = summarize(allSamples), unit = group.mode === 'par' ? '%' : 'ms';
++  const metric = group.mode === 'par' ? 'Hit rate'
++    : group.mode === 'control' ? 'Interval variation' : group.mode === 'repeated' ? 'Median click interval' : 'Median detected time';
+   let trend = null;
+   if (points.length >= 4) {
+     const half = Math.floor(points.length / 2);
+@@ -50,6 +47,5 @@ export function progressSummary(group, { days = 0, now = Date.now() } = {}) {
+     trend = { before, after, change, compared: half, direction: after === before ? 'unchanged' : after < before ? 'lower' : 'higher' };
+   }
+   return { points, metrics, unit, metric, trend, sessions: records.length, hits, misses, shots,
+-    hitRate: hits + misses ? hits / (hits + misses) * 100 : null,
+-    rate: group.mode === 'free' ? summarize(points.map(row => row.value)).median : null };
++    hitRate: hits + misses ? hits / (hits + misses) * 100 : null };
+ }
+diff --git a/src/practiceSession.js b/src/practiceSession.js
+index f664d31..e6f44ee 100644
+--- a/src/practiceSession.js
++++ b/src/practiceSession.js
+@@ -6,12 +6,11 @@ const TYPES = ['Handguns', 'Rifles and Carbines', 'Shotguns'];
+ export const PRACTICE_CUE_GUARD_MS = 80;
+ // Let segmentation finish an event captured before a deadline; score by onset.
+ export const DETECTION_SETTLE_MS = 2000;
+-export const continuousPractice = mode => ['repeated', 'control', 'free'].includes(mode);
++export const continuousPractice = mode => ['repeated', 'control'].includes(mode);
+ const terminal = state => ['completed', 'ended', 'interrupted'].includes(state.status);
+ const finite = n => typeof n === 'number' && Number.isFinite(n) && n >= 0;
+ const defaults = { repetitions: 10, delayMode: 'random', fixedDelaySeconds: 3, randomMinSeconds: 2,
+-  randomMaxSeconds: 5, soundAtStart: true, startSource: 'app', durationSeconds: 60, parSeconds: 1.5,
+-  reloadStart: 'rack', reloadEnd: 'reload' };
++  randomMaxSeconds: 5, soundAtStart: true, startSource: 'app', parSeconds: 1.5 };
+ 
+ export function normalizePracticeConfig(value = {}) {
+   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError('Invalid practice configuration.');
+@@ -23,11 +22,9 @@ export function normalizePracticeConfig(value = {}) {
+     if (!finite(n) || n > 30 || Math.abs(n * 10 - Math.round(n * 10)) > 1e-8 || (key === 'parSeconds' && n < .1)) throw new TypeError('Choose valid timing in tenths of a second, up to 30 seconds.');
+   }
+   if (config.randomMinSeconds > config.randomMaxSeconds) throw new TypeError('Random minimum must not exceed maximum.');
+-  if (!Number.isInteger(config.durationSeconds) || config.durationSeconds < 1 || config.durationSeconds > 3600) throw new TypeError('Choose 1–3600 active seconds.');
+-  if (!LABELS.includes(config.reloadStart) || !LABELS.includes(config.reloadEnd) || config.reloadStart === config.reloadEnd) throw new TypeError('Choose two different reload timing events.');
+   return config;
+ }
+-export const practiceLabels = (mode, config) => mode === 'reload' ? [config.reloadStart, config.reloadEnd] : ['trigger'];
++export const practiceLabels = () => ['trigger'];
+ function clockValue(clock) {
+   if (!finite(clock?.monoNow) || !finite(clock?.epochNow)) throw new TypeError('Valid practice clocks are required.');
+   return clock;
+@@ -61,22 +58,21 @@ export function createPractice({ id, gun, mode = 'single', config, ...clock } =
+   if (typeof id !== 'string' || !id || id.length > 80 || !practiceDefinition(mode) || !gun?.id || !gun.name?.trim() || !TYPES.includes(gun.type)) throw new TypeError('A valid gun and practice mode are required.');
+   const normalized = normalizePracticeConfig(config);
+   return ready({ kind: 'practice', practiceMode: mode, id, gunId: gun.id, gunName: gun.name, gunType: gun.type,
+-    drillId: `practice-${mode}`, drillTitle: practiceDefinition(mode).title, drillSteps: practiceLabels(mode, normalized),
++    drillId: `practice-${mode}`, drillTitle: practiceDefinition(mode).title, drillSteps: practiceLabels(),
+     config: normalized, revision: 0, startedAt: clock.epochNow, updatedAt: clock.epochNow, endedAt: null,
+-    endReason: null, status: 'running', phase: 'countdown', completed: 0, remaining: mode === 'free' ? null : normalized.repetitions,
++    endReason: null, status: 'running', phase: 'countdown', completed: 0, remaining: normalized.repetitions,
+     shots: 0, elapsedMs: 0, repetitions: [], current: null, activeBaseMs: 0, lastShotOffsetMs: null }, clock);
+ }
+ export function practiceElapsed(state, monoNow) {
+-  const elapsed = state.segmentStartMs === null ? state.elapsedMs : state.activeBaseMs + Math.max(0, monoNow - state.segmentStartMs);
+-  return state.practiceMode === 'free' ? Math.min(state.config.durationSeconds * 1000, elapsed) : elapsed;
++  return state.segmentStartMs === null ? state.elapsedMs : state.activeBaseMs + Math.max(0, monoNow - state.segmentStartMs);
+ }
+ function finishAttempt(state, clock, status, reason, current = state.current) {
+   const elapsedMs = state.goAtMs === null ? null : Math.max(0, clock.monoNow - state.goAtMs);
+   const row = { ...current, status, reason, elapsedMs: reason === 'early' ? null : current.elapsedMs ?? elapsedMs, endedAt: clock.epochNow };
+   const completed = state.completed + (status === 'partial' ? 0 : 1);
+-  const done = state.practiceMode !== 'free' && completed === state.config.repetitions;
++  const done = completed === state.config.repetitions;
+   return change(state, clock, { current: null, repetitions: [...state.repetitions, row], completed,
+-    remaining: state.practiceMode === 'free' ? null : state.config.repetitions - completed,
++    remaining: state.config.repetitions - completed,
+     phase: done ? 'review' : 'result', status: done ? 'completed' : 'running',
+     endedAt: done ? clock.epochNow : null, endReason: done ? 'target' : null,
+     elapsedMs: practiceElapsed(state, clock.monoNow), segmentStartMs: null });
+@@ -94,11 +90,7 @@ export function tickPractice(state, clock) {
+     if (clock.monoNow > end + DETECTION_SETTLE_MS) return finishAttempt(state, clock, 'miss', state.current.detections.some(x => x.outcome === 'late') ? 'late' : 'no-click');
+     if (clock.monoNow > end && state.phase !== 'closing') return change(state, clock, { phase: 'closing' });
+   }
+-  if (state.practiceMode === 'free') {
+-    const end = state.segmentStartMs + state.config.durationSeconds * 1000 - state.activeBaseMs;
+-    if (clock.monoNow > end + DETECTION_SETTLE_MS) return endPractice(state, { ...clock, reason: 'duration', completed: true });
+-    if (clock.monoNow > end && state.phase !== 'closing') return change(state, clock, { phase: 'closing' });
+-  }
++
+   return state;
+ }
+ export function detectPractice(state, { label, score = 0, detectedAtMs } = {}, clock) {
+@@ -121,14 +113,12 @@ export function detectPractice(state, { label, score = 0, detectedAtMs } = {}, c
+   if (label === 'unknown') return state;
+   const continuous = continuousPractice(state.practiceMode);
+   const offsetMs = continuous ? state.activeBaseMs + detectedAtMs - state.segmentStartMs : detectedAtMs - state.goAtMs;
+-  const late = (state.practiceMode === 'par' && offsetMs > state.config.parSeconds * 1000) || (state.practiceMode === 'free' && offsetMs > state.config.durationSeconds * 1000);
++  const late = state.practiceMode === 'par' && offsetMs > state.config.parSeconds * 1000;
+   const steps = state.current.stepTimings;
+   const expected = state.drillSteps[steps.length];
+-  let accepted = !late && label === expected;
+-  let nextSteps = accepted ? [...steps, { label, offsetMs, splitMs: offsetMs - (steps.at(-1)?.offsetMs ?? 0) }] : steps;
+-  if (!late && state.practiceMode === 'reload' && label === state.drillSteps[0]) {
+-    accepted = true; nextSteps = [{ label, offsetMs, splitMs: offsetMs }];
+-  }
++  const accepted = !late && label === expected;
++  const nextSteps = accepted ? [...steps, { label, offsetMs, splitMs: offsetMs - (steps.at(-1)?.offsetMs ?? 0) }] : steps;
++
+   const outcome = late ? 'late' : accepted ? (label === 'trigger' ? 'shot' : 'handling') : 'ignored';
+   const current = { ...state.current, detections: [...state.current.detections, { label, score, offsetMs, outcome }], stepTimings: nextSteps };
+   let next = change(state, clock, { current, lastDetectionAtMs: detectedAtMs, shots: state.shots + (outcome === 'shot' ? 1 : 0), elapsedMs: practiceElapsed(state, clock.monoNow) });
+@@ -192,7 +182,7 @@ export function validatePracticeRecord(value, owner) {
+       !Number.isInteger(value.revision) || value.revision < 0 || !finite(value.startedAt) || !finite(value.updatedAt) || value.updatedAt < value.startedAt ||
+       !['running', 'paused', 'completed', 'ended', 'interrupted'].includes(value.status) || !finite(value.elapsedMs) || !Array.isArray(value.repetitions)) fail();
+   const config = normalizePracticeConfig(value.config);
+-  if (Object.keys(value.config).length !== Object.keys(config).length || Object.keys(config).some(key => config[key] !== value.config[key]) || JSON.stringify(value.drillSteps) !== JSON.stringify(practiceLabels(value.practiceMode, config))) fail();
++  if (Object.keys(value.config).length !== Object.keys(config).length || Object.keys(config).some(key => config[key] !== value.config[key]) || JSON.stringify(value.drillSteps) !== JSON.stringify(practiceLabels())) fail();
+   const isTerminal = terminal(value);
+   if ((isTerminal ? !finite(value.endedAt) || value.endedAt < value.startedAt || value.endedAt > value.updatedAt : value.endedAt !== null) ||
+       (isTerminal && (typeof value.endReason !== 'string' || !value.endReason)) || (!isTerminal && value.endReason !== null) ||
+@@ -236,8 +226,8 @@ export function validatePracticeRecord(value, owner) {
+     if (['hit', 'miss'].includes(row.status)) completed++;
+   }
+   if (value.completed !== completed || value.shots !== shots ||
+-      (value.practiceMode === 'free' ? value.remaining !== null : completed > config.repetitions || value.remaining !== config.repetitions - completed) ||
+-      (value.status === 'completed' && value.practiceMode !== 'free' && value.remaining !== 0)) fail();
++      (completed > config.repetitions || value.remaining !== config.repetitions - completed) ||
++      (value.status === 'completed' && value.remaining !== 0)) fail();
+   return structuredClone(value);
+ }
+ export function practiceStatistics(record) {
+diff --git a/src/storage.js b/src/storage.js
+index 35aa914..6e6636f 100644
+--- a/src/storage.js
++++ b/src/storage.js
+@@ -8,7 +8,7 @@ import { normalizePracticeConfig, practiceDefinition, validatePracticeRecord, re
+ import { normalizeCalibration, compatibleCalibration, normalizeEnabledLabels, CALIBRATION_KINDS } from './calibration.js';
+ 
+ const DB_NAME = 'dryfire-sound-trainer';
+-const DB_VERSION = 3;
++const DB_VERSION = 4;
+ const EXAMPLES = 'examples';
+ const EVENTS = 'events';
+ const SETTINGS = 'settings';
+@@ -68,6 +68,40 @@ function migrateLegacy(tx) {
+   }
+ }
+ 
++// Project prior practice data onto the supported catalog during upgrade/import.
++// Historical IDs occur only at this retirement boundary, never in the engine/UI.
++const retiredPractice = mode => ['reload', 'free'].includes(mode);
++const supportedSession = row => row?.kind !== 'practice' || !retiredPractice(row.practiceMode);
++function currentPracticeConfig(config) {
++  if (!config || typeof config !== 'object' || Array.isArray(config)) return config;
++  return Object.fromEntries(Object.entries(config).filter(([key]) => !['durationSeconds', 'reloadStart', 'reloadEnd'].includes(key)));
++}
++function currentPracticeRecord(row) {
++  if (row.kind !== 'practice') return row;
++  const previousTitles = { repeated: 'Repeated trigger presses', par: 'Par-time practice' };
++  return { ...row, config: currentPracticeConfig(row.config),
++    drillTitle: row.drillTitle === previousTitles[row.practiceMode] ? practiceDefinition(row.practiceMode).title : row.drillTitle };
++}
++function migratePracticeCatalog(tx) {
++  const sessions = tx.objectStore(SESSIONS).openCursor();
++  sessions.onsuccess = () => {
++    const cursor = sessions.result;
++    if (!cursor) return;
++    if (!supportedSession(cursor.value)) cursor.delete();
++    else if (cursor.value.kind === 'practice') cursor.update(currentPracticeRecord(cursor.value));
++    cursor.continue();
++  };
++  const settings = tx.objectStore(GUN_SETTINGS).openCursor();
++  settings.onsuccess = () => {
++    const cursor = settings.result;
++    if (!cursor) return;
++    if (cursor.value.key === 'practiceConfig') cursor.update({ ...cursor.value,
++      value: Object.fromEntries(Object.entries(cursor.value.value).filter(([mode]) => !retiredPractice(mode))
++        .map(([mode, config]) => [mode, normalizePracticeConfig(config)])) });
++    cursor.continue();
++  };
++}
++
+ function openDb() {
+   if (!globalThis.indexedDB) return Promise.reject(new Error('IndexedDB is unavailable on this device.'));
+   return new Promise((resolve, reject) => {
+@@ -98,6 +132,7 @@ function openDb() {
+         if (!store.indexNames.contains('gunId')) store.createIndex('gunId', 'gunId', { unique: false });
+       }
+       if (event.oldVersion > 0 && event.oldVersion < 2) migrateLegacy(tx);
++      if (event.oldVersion > 0 && event.oldVersion < 4) migratePracticeCatalog(tx);
+     };
+     request.onsuccess = () => {
+       request.result.onversionchange = () => request.result.close();
+@@ -764,6 +799,10 @@ function validateBackup(backup) {
+     let value = structuredClone(row.value);
+     if (row.key === 'customDrills') value = validateCustomDrills(value);
+     if (row.key === 'maxResults') value = normalizeMaxResults(value);
++    if (row.key === 'practiceConfig' && value && typeof value === 'object' && !Array.isArray(value)) {
++      value = Object.fromEntries(Object.entries(value).filter(([mode]) => !retiredPractice(mode))
++        .map(([mode, config]) => [mode, currentPracticeConfig(config)]));
++    }
+     value = validatePracticeSetting(row.key, value);
+     return { gunId: row.gunId, key: row.key, value };
+   });
+@@ -833,10 +872,13 @@ function validateBackup(backup) {
+   }
+   const sessionRows = backup.version >= 3 ? backup.sessions ?? [] : [];
+   if (!Array.isArray(sessionRows)) throw new Error('Backup contains invalid saved sessions.');
++  for (const row of sessionRows) {
++    if (!row || !gunIds.has(row.gunId)) throw new Error('Backup contains a saved session with an unknown gun owner.');
++  }
+   const sessionIds = new Set();
+-  const sessions = Array.from(sessionRows, row => {
++  const sessions = Array.from(sessionRows.filter(supportedSession), row => {
+     if (!row || !gunIds.has(row.gunId)) throw new Error('Backup contains a saved session with an unknown gun owner.');
+-    const record = validateSession(row, row.gunId);
++    const record = validateSession(currentPracticeRecord(row), row.gunId);
+     if (sessionIds.has(record.id)) throw new Error('Backup contains duplicated saved session IDs.');
+     sessionIds.add(record.id);
+     return record;
+diff --git a/tests/fixtures/legacy-drills-page.html b/tests/fixtures/legacy-drills-page.html
+index dade444..9c8aff3 100644
+--- a/tests/fixtures/legacy-drills-page.html
++++ b/tests/fixtures/legacy-drills-page.html
+@@ -1,6 +1,6 @@
+ <div class="section-head"><button type="button" class="back-button" data-back aria-label="Back to previous screen">‹</button><div><p class="eyebrow">02 / PRACTICE PRESETS</p><h2 id="drills-title">Drills</h2></div></div>
+       <p class="gun-context">Saved presets for <strong class="gun-context-name"></strong>.</p>
+-      <h3>Dry-fire practice</h3><p class="muted">Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.</p>
++      <h3>Trigger Press Group</h3><p class="muted">Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.</p>
+       {{practiceCatalog}}
+       <h3 class="practice-section-title">Sequence drills</h3><p id="sequenceDescription" class="muted small">Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.</p>
+       <div class="segmented-control" role="group" aria-label="Drill collection"><button id="builtInDrillsTab" type="button" aria-pressed="true" aria-controls="drillCatalog">Built-in Drills</button><button id="customDrillsTab" type="button" aria-pressed="false" aria-controls="customDrillCatalog">Custom</button></div>
+diff --git a/tests/fixtures/legacy-number-inputs.json b/tests/fixtures/legacy-number-inputs.json
+index 2a7ee6f..06b00e5 100644
+--- a/tests/fixtures/legacy-number-inputs.json
++++ b/tests/fixtures/legacy-number-inputs.json
+@@ -8,15 +8,6 @@
+     "value": "10",
+     "inputmode": "numeric"
+   },
+-  {
+-    "id": "practiceDuration",
+-    "type": "number",
+-    "min": "1",
+-    "max": "3600",
+-    "step": "1",
+-    "value": "60",
+-    "inputmode": "numeric"
+-  },
+   {
+     "id": "practicePar",
+     "type": "number",
+diff --git a/tests/fixtures/practice-catalog.html b/tests/fixtures/practice-catalog.html
+index 1056c67..cfe7f56 100644
+--- a/tests/fixtures/practice-catalog.html
++++ b/tests/fixtures/practice-catalog.html
+@@ -1 +1 @@
+-<div id="practiceCatalog" class="drill-catalog"><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Single trigger press</h3></div><p class="drill-description">Reaction time for one click after each start signal.</p><button class="button primary" type="button" data-practice-mode="single">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Repeated trigger presses</h3></div><p class="drill-description">Count distinct clicks and the intervals between them.</p><button class="button primary" type="button" data-practice-mode="repeated">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Par-time practice</h3></div><p class="drill-description">Recognize a click within your chosen time limit.</p><button class="button primary" type="button" data-practice-mode="par">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Trigger control</h3></div><p class="drill-description">Compare the consistency of your detected click intervals.</p><button class="button primary" type="button" data-practice-mode="control">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Reload practice</h3></div><p class="drill-description">Time two calibrated events in your chosen order.</p><button class="button primary" type="button" data-practice-mode="reload">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Free practice</h3></div><p class="drill-description">Count clicks during a timed practice session.</p><button class="button primary" type="button" data-practice-mode="free">▶ Start Drill</button></article></div>
++<div id="practiceCatalog" class="drill-catalog"><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Single trigger press</h3></div><p class="drill-description">Reaction time for one click after each start signal.</p><button class="button primary" type="button" data-practice-mode="single">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Repeated trigger press</h3></div><p class="drill-description">Count distinct clicks and the intervals between them.</p><button class="button primary" type="button" data-practice-mode="repeated">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Par time practice</h3></div><p class="drill-description">Recognize a click within your chosen time limit.</p><button class="button primary" type="button" data-practice-mode="par">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Trigger control</h3></div><p class="drill-description">Compare the consistency of your detected click intervals.</p><button class="button primary" type="button" data-practice-mode="control">▶ Start Drill</button></article></div>
+diff --git a/tests/fixtures/practice-modes.json b/tests/fixtures/practice-modes.json
+index 1aa26d4..8a556d8 100644
+--- a/tests/fixtures/practice-modes.json
++++ b/tests/fixtures/practice-modes.json
+@@ -6,27 +6,17 @@
+   },
+   {
+     "id": "repeated",
+-    "title": "Repeated trigger presses",
++    "title": "Repeated trigger press",
+     "description": "Count distinct clicks and the intervals between them."
+   },
+   {
+     "id": "par",
+-    "title": "Par-time practice",
++    "title": "Par time practice",
+     "description": "Recognize a click within your chosen time limit."
+   },
+   {
+     "id": "control",
+     "title": "Trigger control",
+     "description": "Compare the consistency of your detected click intervals."
+-  },
+-  {
+-    "id": "reload",
+-    "title": "Reload practice",
+-    "description": "Time two calibrated events in your chosen order."
+-  },
+-  {
+-    "id": "free",
+-    "title": "Free practice",
+-    "description": "Count clicks during a timed practice session."
+   }
+ ]
+diff --git a/tests/fixtures/session-fragments/guide-signatures.json b/tests/fixtures/session-fragments/guide-signatures.json
+index ee122bc..088c91f 100644
+--- a/tests/fixtures/session-fragments/guide-signatures.json
++++ b/tests/fixtures/session-fragments/guide-signatures.json
+@@ -22,14 +22,6 @@
+       "frames": 68,
+       "sha256": "df650f7007016d29fd04bc7b6ac34d19e0e79010ca61e123c8a7ff7dcd2d7172"
+     },
+-    "reload": {
+-      "frames": 123,
+-      "sha256": "dfe791a9cd0b942c43fdec3bae84937c55b4c03fcba3d2cefb941dd744578aab"
+-    },
+-    "free": {
+-      "frames": 128,
+-      "sha256": "f62cb6cac3122a91e27deda8bece0bad976e954e8b353c4738cb43a648f9f790"
+-    },
+     "sequence-trigger-only": {
+       "frames": 109,
+       "sha256": "d1428b519e6bd53146bea21bed374cc10f72755c4021ddf06baf5b94df9c377c"
+diff --git a/tests/fixtures/session-pages/practice.html b/tests/fixtures/session-pages/practice.html
+index 0417651..bba8d86 100644
+--- a/tests/fixtures/session-pages/practice.html
++++ b/tests/fixtures/session-pages/practice.html
+@@ -6,9 +6,7 @@
+       <div id="practiceConfigure">
+         <form id="practiceConfigForm" class="session-config-form"><fieldset id="practiceConfigFields" class="session-config-fields"><legend>Practice setup</legend>
+           <label id="practiceCountRow" class="session-field" for="practiceRepetitions"><span id="practiceCountLabel">Repetitions</span><input required="" inputmode="numeric" id="practiceRepetitions" type="number" min="1" max="100" step="1" aria-describedby="practiceRepetitionsLimit" value="10"><small id="practiceRepetitionsLimit" class="numeric-hint">1–100 · whole numbers</small></label>
+-          <label id="practiceDurationRow" class="session-field hidden" for="practiceDuration"><span>Active seconds</span><input required="" inputmode="numeric" id="practiceDuration" type="number" min="1" max="3600" step="1" aria-describedby="practiceDurationLimit" value="60"><small id="practiceDurationLimit" class="numeric-hint">1–3600 · whole numbers</small></label>
+           <label id="practiceParRow" class="session-field hidden" for="practicePar"><span>Par time (seconds)</span><input required="" inputmode="decimal" id="practicePar" type="number" min="0.1" max="30" step="0.1" aria-describedby="practiceParLimit" value="1.5"><small id="practiceParLimit" class="numeric-hint">0.1–30 · 0.1 increments</small></label>
+-          <div id="practiceReloadFields" class="session-delay-card hidden"><label class="session-field" for="practiceReloadStart"><span>First event</span><select id="practiceReloadStart"><option value="rack">Rack slide</option><option value="reload">Change magazine</option><option value="draw">Draw from holster</option><option value="trigger">Trigger pull</option></select></label><label class="session-field" for="practiceReloadEnd"><span>Second event</span><select id="practiceReloadEnd"><option value="reload">Change magazine</option><option value="rack">Rack slide</option><option value="draw">Draw from holster</option><option value="trigger">Trigger pull</option></select></label></div>
+           <label class="session-field" for="practiceStartSource"><span>Start signal</span><select id="practiceStartSource"><option value="app">App signal</option><option value="external">Calibrated external beep</option></select></label>
+           <div id="practiceAppTiming" class="session-delay-card"><label class="session-field" for="practiceDelayMode"><span>Ready delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label>
+             <label id="practiceFixedRow" class="session-field hidden" for="practiceFixedDelay"><span>Delay seconds</span><input required="" inputmode="decimal" id="practiceFixedDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceFixedDelayLimit" value="3"><small id="practiceFixedDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label>
+diff --git a/tests/guideParentMount.test.tsx b/tests/guideParentMount.test.tsx
+index 8824216..ca786b9 100644
+--- a/tests/guideParentMount.test.tsx
++++ b/tests/guideParentMount.test.tsx
+@@ -22,7 +22,6 @@ test('actual guide controller retains nested React examples while moving through
+   const context={type:'practice',mode:'single',gunId:'one',routeKey:'setup',config:{}};controller.open(context);
+   act(()=>{controller.connectView((...args:Parameters<typeof mountGuideContents>)=>(child=mountGuideContents(...args)));expect(controller.connectPage((...args:Parameters<typeof mountGuidePage>)=>(parent=mountGuidePage(...args)))).toBe(true);});expect(controller.connectPage(jest.fn())).toBe(false);
+   const figure=host.querySelector('.guide-media'),meter=host.querySelector('#example-practiceLevelPanel');fireEvent.click(host.querySelector('#practiceGuideEarlyBtn')!);expect(host.querySelector('#practiceGuideEarlyBtn')).toHaveAttribute('aria-pressed','true');fireEvent.click(host.querySelector('#practiceGuideNormalBtn')!);expect(host.querySelector('#practiceGuideEarlyBtn')).toHaveAttribute('aria-pressed','false');
+-  act(()=>controller.open({...context,mode:'reload',config:{reloadStart:'trigger',reloadEnd:'draw'}}));expect(host.querySelector('#practiceGuideSequence')).toHaveTextContent('Trigger pull → Draw from holster');expect(host.querySelector('#practiceGuideExamples')).toHaveClass('hidden');
+   act(()=>controller.open({type:'sequence',gunId:'one',routeKey:'sequence',drill:{id:'custom-one',title:'Custom example',steps:['rack','reload','trigger']},config:{}}));expect(host.querySelector('#practiceGuideName')).toHaveTextContent('Custom example');expect(host.querySelector('#practiceGuideSequence [data-sound="reload"]')).toBeInTheDocument();expect(host.querySelector('.guide-media')).toBe(figure);expect(host.querySelector('#example-practiceLevelPanel')).toBe(meter);expect(host.querySelector('#example-sessionRun')).toHaveAttribute('data-react-session','');fireEvent.click(host.querySelector('#practiceGuideReturnBtn')!);expect(back).toHaveBeenCalledWith('session');
+  }finally{act(()=>child?.dispose());act(()=>parent?.dispose());globalThis.structuredClone=oldClone;}
+ });
+diff --git a/tests/helpers/guidePresentation.js b/tests/helpers/guidePresentation.js
+index b2d6bb7..2990e32 100644
+--- a/tests/helpers/guidePresentation.js
++++ b/tests/helpers/guidePresentation.js
+@@ -3,7 +3,7 @@ import {readFileSync} from 'node:fs';
+ import {getPracticeGuide} from '../../src/practiceGuides.js';
+ import {createScenario} from '../../src/practiceGuideExamples.js';
+ import {createGuideExampleRenderer} from '../../src/practiceGuideRendering.js';
+-export const guideCases=['single','single-early','repeated','par','control','reload','free','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
++export const guideCases=['single','single-early','repeated','par','control','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
+ export function guideScenario(name){const sequence=name.startsWith('sequence-');const context={type:sequence?'sequence':'practice',gunId:'qa-gun-a',routeKey:'parity',config:{}};if(sequence)context.drill=name==='sequence-custom'?{id:'custom-qa-a',title:'Custom sequence',steps:['draw','reload','trigger']}:{id:name.slice(9)};else context.mode=name==='single-early'?'single':name;const guide=getPracticeGuide(context);return{guide,scenario:createScenario(guide,{early:name==='single-early'})};}
+ export function nativeExampleMarkup(){return '<div id="practiceGuideExample">'+['practice-run','practice-review','session-run','session-review'].map(name=>readFileSync(new URL('../fixtures/session-fragments/'+name+'.html',import.meta.url),'utf8').replace(/\bid="([^"]+)"/g,(_match,id)=>`id="example-${id}"`).replace(/\b(aria-labelledby|aria-describedby|for)="([^"]+)"/g,(_match,attr,ids)=>`${attr}="${ids.split(' ').map(id=>'example-'+id).join(' ')}"`)).join('')+'</div>';}
+ export function semanticTree(node){if(node.nodeType===3)return node.textContent.replace(/\s+/g,' ').trim()||null;if(node.nodeType!==1)return null;return[node.tagName,[...node.attributes].map(a=>[a.name,a.value]).sort(),[...node.childNodes].map(semanticTree).filter(Boolean)];}
+diff --git a/tests/practiceCatalogParity.test.tsx b/tests/practiceCatalogParity.test.tsx
+index 404a339..d5b8684 100644
+--- a/tests/practiceCatalogParity.test.tsx
++++ b/tests/practiceCatalogParity.test.tsx
+@@ -3,10 +3,10 @@
+  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
+  */
+ import { readFileSync } from 'node:fs';
+-import { PRACTICE_MODES } from '../src/practiceSession.js';
++import { PRACTICE_MODES } from '../src/practiceModes.js';
+ import { renderPracticeCatalog } from '../apps/web/src/app/renderPracticeCatalog.tsx';
+ 
+-test('prerendering exactly preserves the six approved CHG-052 cards and their native button semantics', () => {
++test('prerendering exactly preserves the four approved CHG-054 cards and their native button semantics', () => {
+   const old = readFileSync(new URL('./fixtures/practice-catalog.html',import.meta.url),'utf8');
+   const tree = (html: string) => {
+     const container = document.createElement('div'); container.innerHTML = html;
+@@ -16,3 +16,7 @@ test('prerendering exactly preserves the six approved CHG-052 cards and their na
+   };
+   expect(tree(renderPracticeCatalog(PRACTICE_MODES))).toEqual(tree(old));
+ });
++
++test('discovery and the supported engine catalog have exactly four trigger modes', () => {
++  expect(PRACTICE_MODES.map(mode => mode.id)).toEqual(['single', 'repeated', 'par', 'control']);
++});
+diff --git a/tests/practiceController.test.js b/tests/practiceController.test.js
+index aedf9e8..a9b94d2 100644
+--- a/tests/practiceController.test.js
++++ b/tests/practiceController.test.js
+@@ -6,7 +6,7 @@ import { jest } from '@jest/globals';
+ import { readFileSync } from 'node:fs';
+ import { serialize, deserialize } from 'node:v8';
+ import { controllerPage, deferred, clickPcm } from './helpers/controllerDom.js';
+-import { PRACTICE_MODES } from '../src/practiceSession.js';
++import { PRACTICE_MODES } from '../src/practiceModes.js';
+ import {mountPracticePage} from '../apps/web/src/app/practicePage.tsx';
+ import {mountPracticeContents} from '../apps/web/src/app/practiceContents.tsx';
+ 
+@@ -104,7 +104,7 @@ test('parent ownership is guarded and context updates use its exclusive port',as
+  await controller.open('single',config);submit();await captureCalled.promise;expect(controller.connectPage(mount)).toBe(false);await controller.interrupt('cancel');input.resolve(0);await controller.flush();expect(controller.connectPage(mount)).toBe(true);
+ });
+ 
+-test('the six catalog choices preserve copy/order and configure exactly once without microphone access', async () => {
++test('the four catalog choices preserve copy/order and configure exactly once without microphone access', async () => {
+   controller.renderCatalog(); controller.renderCatalog();
+   const buttons = [...document.querySelectorAll('#practiceCatalog button')];
+   expect(buttons.map(button => button.dataset.practiceMode)).toEqual(PRACTICE_MODES.map(mode => mode.id));
+@@ -142,13 +142,12 @@ test('delegated catalog actions ignore headings and disabled controls', async ()
+   expect(capture).not.toHaveBeenCalled();
+ });
+ 
+-test.each(['single','repeated','par','control','reload','free'])('%s configuration keeps a focused, editable setup without requesting audio', async mode => {
++test.each(['single','repeated','par','control'])('%s configuration keeps a focused, editable setup without requesting audio', async mode => {
+   await controller.open(mode, config);
+   expect(document.activeElement).toBe($('practice-title'));
+   expect($('practiceConfigure').classList.contains('hidden')).toBe(false);
+   expect($('practiceStartBtn').disabled).toBe(false);
+   expect(capture).not.toHaveBeenCalled();
+-  expect($('practiceDuration').disabled).toBe(mode !== 'free');
+   expect($('practicePar').disabled).toBe(mode !== 'par');
+ });
+ 
+diff --git a/tests/practiceGuides.test.js b/tests/practiceGuides.test.js
+index 52f0ca3..8a236e5 100644
+--- a/tests/practiceGuides.test.js
++++ b/tests/practiceGuides.test.js
+@@ -2,7 +2,7 @@ import { getPracticeGuide, isGuideContextCurrent } from '../src/practiceGuides.j
+ import { createScenario } from '../src/practiceGuideExamples.js';
+ const context = (mode, config = {}) => ({ type: 'practice', mode, gunId: 'gun-a', routeKey: 'setup-a', config });
+ 
+-test.each(['single', 'repeated', 'par', 'control', 'reload', 'free'])('%s has its own short manual and an engine-checked example', mode => {
++test.each(['single', 'repeated', 'par', 'control'])('%s has its own short manual and an engine-checked example', mode => {
+   const guide = getPracticeGuide(context(mode));
+   expect(guide.steps).toHaveLength(3);
+   expect(guide.measures.length).toBeGreaterThan(20);
+@@ -18,15 +18,6 @@ test('early Single fails without a shot or reaction time, then automatically com
+   const example = createScenario(getPracticeGuide(context('single')), { early: true });
+   expect(example.events.filter(e => e.kind === 'outcome').map(e => [e.status, e.elapsedMs, e.shots])).toEqual([['miss', null, 0], ['hit', 600, 1]]);
+ });
+-test('Reload guide and example follow the selected endpoints, including a Trigger endpoint', () => {
+-  const guide = getPracticeGuide(context('reload', { reloadStart: 'trigger', reloadEnd: 'draw' }));
+-  expect(guide.sequence).toEqual(['trigger', 'draw']);
+-  expect(guide.steps.join(' ')).toContain('Trigger pull');
+-  expect(guide.steps.join(' ')).toContain('Draw from holster');
+-  const example = createScenario(guide);
+-  expect(example.events.filter(e => e.kind === 'recognized-event').map(e => e.label)).toEqual(['trigger', 'draw', 'trigger', 'draw']);
+-  expect(example.events.filter(e => e.kind === 'outcome').at(-1).shots).toBe(2);
+-});
+ test('external-cue instructions do not promise a countdown, app beep or early-trigger failure', () => {
+   const guide = getPracticeGuide(context('single', { startSource: 'external' }));
+   expect(guide.currentSetup).toMatch(/external/i);
+@@ -37,13 +28,6 @@ test('external-cue instructions do not promise a countdown, app beep or early-tr
+ test('silent setup explanation distinguishes the visual start from the illustrated beep', () => {
+   expect(getPracticeGuide(context('single', { soundAtStart: false })).currentSetup).toMatch(/visual|silent/i);
+ });
+-test('an invalid equal-endpoint draft can still read help, with a disclosed valid example', () => {
+-  const guide = getPracticeGuide(context('reload', { reloadStart: 'trigger', reloadEnd: 'trigger' }));
+-  expect(guide.sequence).toEqual(['trigger', 'trigger']);
+-  expect(guide.requires).toMatch(/two different endpoints/);
+-  expect(guide.exampleSequence).toEqual(['rack', 'reload']);
+-  expect(createScenario({ ...guide, sequence: guide.exampleSequence }).frames.at(-1).phase).toBe('review');
+-});
+ test('custom guide retains actual title and ordered steps without implying new custom creation', () => {
+   const guide = getPracticeGuide({ type: 'sequence', gunId: 'gun-a', routeKey: 'setup-a', drill: { id: 'mine', title: '<img src=x onerror=alert(1)>', steps: ['reload', 'rack', 'trigger'] } });
+   expect(guide.title).toBe('<img src=x onerror=alert(1)>');
+@@ -66,6 +50,5 @@ test('guide context becomes stale for another gun, setup or missing context', ()
+ });
+ test('unknown modes, invalid endpoints and missing ownership do not create guide contexts', () => {
+   expect(() => getPracticeGuide(context('missing'))).toThrow();
+-  expect(() => getPracticeGuide(context('reload', { reloadStart: 'unknown' }))).toThrow();
+   expect(() => getPracticeGuide({ ...context('single'), gunId: null })).toThrow();
+ });
+diff --git a/tests/practiceProgress.test.js b/tests/practiceProgress.test.js
+index 06531e9..d6245c9 100644
+--- a/tests/practiceProgress.test.js
++++ b/tests/practiceProgress.test.js
+@@ -23,13 +23,10 @@ test('par misses remain in hit rate even when only successful timings improve',
+   const stats = progressSummary(progressGroups([r], 'a')[0]);
+   expect(stats.hitRate).toBeCloseTo(100 / 3); expect(stats.metrics.median).toBe(300); expect(stats.misses).toBe(2); expect(stats.trend).toBeNull();
+ });
+-test('repeated/control use intervals, reload uses endpoint split, free uses active rate', () => {
++test('repeated/control use completed click intervals', () => {
+   const repeated = record('1', [], { practiceMode: 'repeated', repetitions: [row(100), row(500, 'hit', { intervalMs: 400 }), row(1100, 'hit', { intervalMs: 600 })] });
+   expect(progressSummary(progressGroups([repeated], 'a')[0]).metrics.median).toBe(500);
+   expect(progressSummary(progressGroups([{ ...repeated, practiceMode: 'control' }], 'a')[0]).points[0].value).toBe(100);
+-  const reload = record('1', [], { practiceMode: 'reload', repetitions: [row(1200, 'hit', { stepTimings: [{ splitMs: 500 }, { splitMs: 700 }] })] });
+-  expect(progressSummary(progressGroups([reload], 'a')[0]).metrics.median).toBe(700);
+-  expect(progressSummary(progressGroups([record('1', [], { practiceMode: 'free', shots: 12, elapsedMs: 120000 })], 'a')[0]).rate).toBe(6);
+ });
+ test('range filtering, zero-rate and insufficient-data states are truthful', () => {
+   const group = progressGroups([record('1', [1000]), record('20', [500])], 'a')[0];
+diff --git a/tests/practiceSession.test.js b/tests/practiceSession.test.js
+index 88b73b6..2e8f421 100644
+--- a/tests/practiceSession.test.js
++++ b/tests/practiceSession.test.js
+@@ -6,10 +6,9 @@ function start(mode = 'single', config = {}) {
+ }
+ const event = (s, label, n, score = 90) => detectPractice(s, { label, score, detectedAtMs: n }, clock(n + 100));
+ describe('one practice engine supports all modes', () => {
+-  test('six modes and validated shared defaults', () => {
+-    expect(PRACTICE_MODES.map(x => x.id)).toEqual(['single', 'repeated', 'par', 'control', 'reload', 'free']);
+-    expect(normalizePracticeConfig()).toMatchObject({ repetitions: 10, delayMode: 'random', soundAtStart: true, parSeconds: 1.5, durationSeconds: 60 });
+-    expect(() => normalizePracticeConfig({ reloadStart: 'rack', reloadEnd: 'rack' })).toThrow();
++  test('four modes and validated shared defaults', () => {
++    expect(PRACTICE_MODES.map(x => x.id)).toEqual(['single', 'repeated', 'par', 'control']);
++    expect(normalizePracticeConfig()).toMatchObject({ repetitions: 10, delayMode: 'random', soundAtStart: true, parSeconds: 1.5 });
+     expect(() => normalizePracticeConfig({ repetitions: 0 })).toThrow();
+     expect(() => normalizePracticeConfig({ parSeconds: .05 })).toThrow();
+   });
+@@ -52,20 +51,6 @@ describe('one practice engine supports all modes', () => {
+     expect(s).toMatchObject({ phase: 'result', completed: 1, shots: 0 });
+     expect(s.repetitions[0].status).toBe('miss');
+   });
+-  test('reload requires defined order and handling completion is not a shot', () => {
+-    let s = start('reload');
+-    s = event(s, 'reload', 100);
+-    expect(s.completed).toBe(0);
+-    s = event(s, 'rack', 300);
+-    s = event(s, 'reload', 700);
+-    expect(s).toMatchObject({ completed: 1, shots: 0, phase: 'result' });
+-    expect(s.repetitions[0].stepTimings[1].splitMs).toBe(400);
+-  });
+-  test('free practice finishes at its active duration and retains all accepted clicks', () => {
+-    let s = event(start('free', { durationSeconds: 1 }), 'trigger', 300);
+-    s = tickPractice(s, clock(3200));
+-    expect(s).toMatchObject({ status: 'completed', shots: 1, remaining: null, elapsedMs: 1000 });
+-  });
+   test('pause releases logical attempt, resume uses fresh clocks and no interval spans pause', () => {
+     let s = event(start('repeated'), 'trigger', 200);
+     s = pausePractice(s, clock(500));
+@@ -90,7 +75,7 @@ describe('one practice engine supports all modes', () => {
+     expect(event(s, 'trigger', 100).shots).toBe(1);
+   });
+   test('interrupt/recovery preserves a partial and does not auto-resume capture', () => {
+-    let s = event(start('reload'), 'rack', 200);
++    let s = event(start('single'), 'rack', 200);
+     const saved = validatePracticeRecord(toPracticeRecord(s), gun.id);
+     const recovered = recoverPracticeRecord(saved, 14000);
+     expect(recovered).toMatchObject({ status: 'interrupted', currentAttempt: null, completed: 0 });
+@@ -99,7 +84,7 @@ describe('one practice engine supports all modes', () => {
+     s = endPractice(s, { ...clock(500), reason: 'background', interrupted: true });
+     expect(validatePracticeRecord(toPracticeRecord(s), gun.id).status).toBe('interrupted');
+   });
+-  test.each(['single', 'repeated', 'par', 'control', 'reload', 'free'])('%s portable records validate and reject corrupt counts', mode => {
++  test.each(['single', 'repeated', 'par', 'control'])('%s portable records validate and reject corrupt counts', mode => {
+     const record = toPracticeRecord(start(mode));
+     expect(validatePracticeRecord(record, gun.id)).toEqual(record);
+     expect(() => validatePracticeRecord({ ...record, shots: 55 }, gun.id)).toThrow();
+@@ -195,9 +180,8 @@ test('portable results reject contradictory shot outcomes and future result time
+ 
+ test.each([
+   null, [], {delayMode:'unknown'}, {startSource:'unknown'}, {soundAtStart:'yes'},
+-  {randomMinSeconds:4,randomMaxSeconds:2}, {durationSeconds:0}, {durationSeconds:3601},
++  {randomMinSeconds:4,randomMaxSeconds:2},
+   {fixedDelaySeconds:31}, {fixedDelaySeconds:NaN}, {fixedDelaySeconds:0.15},
+-  {reloadStart:'unknown'}, {reloadEnd:'unknown'},
+ ])('invalid configuration is rejected before a session can start: %p', config => {
+   expect(()=>normalizePracticeConfig(config)).toThrow(TypeError);
+ });
+diff --git a/tests/practiceStorage.test.js b/tests/practiceStorage.test.js
+index 179ea76..6dbac1c 100644
+--- a/tests/practiceStorage.test.js
++++ b/tests/practiceStorage.test.js
+@@ -80,7 +80,7 @@ test('older over-cap profiles and calibration restore and export intact while ne
+ });
+ test('running practice recovers as interrupted without erasing its partial', async () => {
+   const gun = await createGun({ name: 'A', type: 'Handguns' });
+-  let state = createPractice({ id: 'in-progress', gun, mode: 'reload', config, monoNow: 0, epochNow: 1000 });
++  let state = createPractice({ id: 'in-progress', gun, mode: 'single', config, monoNow: 0, epochNow: 1000 });
+   state = tickPractice(state, { monoNow: 0, epochNow: 1000 });
+   state = detectPractice(state, { label: 'rack', score: 80, detectedAtMs: 100 }, { monoNow: 200, epochNow: 1200 });
+   await saveSession(toPracticeRecord(state), gun.id);
+diff --git a/tests/sessionComponentStates.test.tsx b/tests/sessionComponentStates.test.tsx
+index 789a08b..96ea76f 100644
+--- a/tests/sessionComponentStates.test.tsx
++++ b/tests/sessionComponentStates.test.tsx
+@@ -21,7 +21,7 @@ import {practiceElapsed,continuousPractice,practiceStatistics} from '../src/prac
+ // @ts-expect-error Shared normalization compares meaningful DOM without formatting whitespace.
+ import {semanticTree} from './helpers/guidePresentation.js';
+ afterEach(cleanup);
+-const config={repetitions:2,durationSeconds:10,startSource:'app',soundAtStart:true,parSeconds:1.5};
++const config={repetitions:2,startSource:'app',soundAtStart:true,parSeconds:1.5};
+ const hit={ordinal:1,status:'hit',elapsedMs:500,intervalMs:null,goAt:0,stepTimings:[{label:'trigger',offsetMs:500,splitMs:500}],detections:[]};
+ const sequenceHit={...hit,status:'completed',unknown:0,incorrect:1};
+ const base={completed:1,remaining:1,revision:2,shots:1,config,repetitions:[hit],countdownEndsAtMs:5000,segmentStartMs:null,elapsedMs:1234,practiceMode:'single'};
+diff --git a/tests/sessionPresentationPort.test.js b/tests/sessionPresentationPort.test.js
+index b960394..f583476 100644
+--- a/tests/sessionPresentationPort.test.js
++++ b/tests/sessionPresentationPort.test.js
+@@ -3,7 +3,7 @@ import {jest} from '@jest/globals';
+ import {readFileSync} from 'node:fs';
+ import * as presentation from '../src/sessionPresentation.js';
+ import {semanticTree} from './helpers/guidePresentation.js';
+-const config={repetitions:2,durationSeconds:10,startSource:'app',soundAtStart:true,parSeconds:1.5};
++const config={repetitions:2,startSource:'app',soundAtStart:true,parSeconds:1.5};
+ const state={phase:'active',completed:0,remaining:2,revision:0,shots:0,config,repetitions:[],countdownEndsAtMs:null,segmentStartMs:0,elapsedMs:0,practiceMode:'single',drillSteps:['trigger'],current:{stepIndex:0}};
+ const record={status:'completed',shots:0,completed:0,remaining:2,gunId:'one',gunName:'One',elapsedMs:0,startedAt:0,practiceMode:'single',config,repetitions:[]};
+ function setup(name){document.body.innerHTML=readFileSync(new URL('./fixtures/session-fragments/'+name+'.html',import.meta.url),'utf8');const get=id=>document.getElementById(id),query=selector=>document.querySelector(selector),node=(tag,text,className='')=>{const el=document.createElement(tag);el.textContent=text;el.className=className;return el;};return{get,query,node};}
+diff --git a/tools/export-guide-examples.mjs b/tools/export-guide-examples.mjs
+index 89215c2..6f045c8 100644
+--- a/tools/export-guide-examples.mjs
++++ b/tools/export-guide-examples.mjs
+@@ -34,14 +34,14 @@ try {
+   await page.locator('#importFile').setInputFiles({ name:'example-library.json', mimeType:'application/json', buffer:Buffer.from(JSON.stringify(library)) });
+   await page.locator('#homeView').waitFor({ state:'visible' });
+   const now = new Date('2026-10-11T11:00:00Z'); await page.clock.install({ time: now }); await page.clock.pauseAt(now);
+-  const cases = ['single','single-early','repeated','par','control','reload','free','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
++  const cases = ['single','single-early','repeated','par','control','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
+   const exports = [];
+   for (const name of cases.filter(name => !process.argv.includes('--only') || name === process.argv[process.argv.indexOf('--only') + 1])) {
+     await page.locator('.tab[data-view="drills"]').click();
+     if (name.startsWith('sequence-')) {
+       if (name==='sequence-custom') { await page.locator('#customDrillsTab').click(); await page.locator('#customDrillCatalog').getByRole('button', { name:'Start Drill' }).first().click(); }
+       else if (name==='sequence-trigger-only') await openLegacySequence(page);
+-      else await page.locator('#drillCatalog .preset-card').nth(cases.slice(8).indexOf(name)).getByRole('button', { name:'Start Drill' }).click();
++      else await page.locator('#drillCatalog .preset-card').nth(cases.slice(6).indexOf(name)).getByRole('button', { name:'Start Drill' }).click();
+       await page.locator('#sessionGuideLink').click();
+     } else { await page.locator(`[data-practice-mode="${name==='single-early'?'single':name}"]`).click(); await page.locator('#practiceGuideLink').click(); }
+     if (name==='single-early') await page.locator('#practiceGuideEarlyBtn').click();
+diff --git a/tools/page-templates.mjs b/tools/page-templates.mjs
+index 07d8b64..c4fe82d 100644
+--- a/tools/page-templates.mjs
++++ b/tools/page-templates.mjs
+@@ -14,7 +14,7 @@ import { renderCalibrationCatalog } from '../apps/web/src/app/renderCalibrationC
+ import { renderAppShell } from '../apps/web/src/app/renderAppShell.tsx';
+ import { renderNumberInput } from '../apps/web/src/app/renderNumberInput.tsx';
+ import { renderPracticeCatalog } from '../apps/web/src/app/renderPracticeCatalog.tsx';
+-import { PRACTICE_MODES } from '../src/practiceSession.js';
++import { PRACTICE_MODES } from '../src/practiceModes.js';
+ import { PAGE_DEFINITIONS } from '../src/pageDefinitions.js';
+ 
+ const read = name => readFileSync(new URL(`../src/templates/${name}.html`, import.meta.url), 'utf8');
+@@ -25,7 +25,6 @@ const fill = (template, slots) => template.replace(/\{\{([a-zA-Z]+)\}\}/g, (_, n
+ 
+ const numberInputs = Object.fromEntries([
+   ['practiceRepetitions', '10'],
+-  ['practiceDuration', '60'],
+   ['practicePar', '1.5'],
+   ['practiceFixedDelay', '3'],
+   ['practiceMinDelay', '2'],
+diff --git a/tools/verify-docs.mjs b/tools/verify-docs.mjs
+index af1fa87..961f16a 100644
+--- a/tools/verify-docs.mjs
++++ b/tools/verify-docs.mjs
+@@ -34,7 +34,7 @@ if (existsSync(resolve(root, exampleManifest))) {
+   const manifest = JSON.parse(read(exampleManifest));
+   for (const path of styleSources()) check(Object.hasOwn(manifest.sources, path), `${path}: current guide GIF manifest omits a CSS dependency.`);
+   for (const [path, hash] of Object.entries(manifest.sources)) check(local(path) && digest(path) === hash, `${path}: guide GIF exports are stale; regenerate exports after reviewing the design.`);
+-  check(manifest.exports.length === 12, 'Guide GIF coverage must include six modes, early Single and five ordered examples.');
++  check(manifest.exports.length === 10, 'Guide GIF coverage must include four modes, early Single and five ordered examples.');
+   for (const item of manifest.exports) check(local(`${exampleRoot}/${item.file}`) && digest(`${exampleRoot}/${item.file}`) === item.sha256, `${item.file}: missing or unreviewed guide GIF.`);
+ } else check(false, 'Missing current guide GIF export manifest.');
+ 
+diff --git a/visual-tests/drill-catalog.spec.js b/visual-tests/drill-catalog.spec.js
+index 75792a6..cb44904 100644
+--- a/visual-tests/drill-catalog.spec.js
++++ b/visual-tests/drill-catalog.spec.js
+@@ -13,11 +13,14 @@ test('practice and sequence cards share presentation without duplicate trigger c
+   await expect(page.locator('#homeView')).toBeVisible();
+   for (let visit = 0; visit < 2; visit++) {
+     await page.locator('.tab[data-view="drills"]').click();
++    await expect(page.getByRole('heading', { name: 'Trigger Press Group', exact: true })).toBeVisible();
++    await expect(page.locator('#practiceCatalog h3')).toHaveText(['Single trigger press', 'Repeated trigger press', 'Par time practice', 'Trigger control']);
++    await expect(page.locator('[data-practice-mode="reload"], [data-practice-mode="free"]')).toHaveCount(0);
+     await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(3);
+     await expect(page.locator('#drillCatalog h3')).toHaveText(['Rack slide → Trigger pull', 'Magazine change → Trigger pull', 'Draw from holster → Magazine change → Trigger pull']);
+-    await expect(page.locator('#practiceCatalog .preset-header .drill-target')).toHaveCount(6);
+-    await expect(page.locator('#practiceCatalog .drill-description')).toHaveCount(6);
+-    await expect(page.locator('#practiceCatalog button')).toHaveText(Array(6).fill('▶ Start Drill'));
++    await expect(page.locator('#practiceCatalog .preset-header .drill-target')).toHaveCount(4);
++    await expect(page.locator('#practiceCatalog .drill-description')).toHaveCount(4);
++    await expect(page.locator('#practiceCatalog button')).toHaveText(Array(4).fill('▶ Start Drill'));
+     await page.locator('[data-practice-mode="single"]').click();
+     await expect(page.locator('#practiceConfigure')).toBeVisible();
+     await expect(page.locator('#practiceStartBtn')).toBeVisible();
+diff --git a/visual-tests/guide-loading.spec.js b/visual-tests/guide-loading.spec.js
+index c0dde29..05e2193 100644
+--- a/visual-tests/guide-loading.spec.js
++++ b/visual-tests/guide-loading.spec.js
+@@ -1,14 +1,14 @@
+ import {test,expect} from '@playwright/test';
+ import {readFileSync} from 'node:fs';
+-const library=readFileSync(new URL('./fixtures/library.json',import.meta.url));
++const backup=JSON.parse(readFileSync(new URL('./fixtures/library.json',import.meta.url)));
++const library=Buffer.from(JSON.stringify(backup));
++const practice=async(page,mode='par')=>{await page.locator('.tab[data-view="drills"]').click();await page.locator(`[data-practice-mode="${mode}"]`).click();await expect(page.locator('#practiceConfigure')).toBeVisible();};
+ const guideChunk=/\/assets\/practiceGuideController-[^/]+\.js/;
+ async function restore(page){
+  await page.addInitScript(()=>{window.__guideMicRequests=0;Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getSupportedConstraints:()=>({}),getUserMedia:()=>{window.__guideMicRequests++;return Promise.reject(new Error('No guide microphone'));}}});});
+  page.on('dialog',dialog=>dialog.accept());await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();await page.locator('#restoreGunBackupBtn').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});await expect(page.locator('#homeView')).toBeVisible();
+ }
+-async function practice(page,mode='reload'){
+- await page.locator('.tab[data-view="drills"]').click();await page.locator(`[data-practice-mode="${mode}"]`).click();await expect(page.locator('#practiceConfigure')).toBeVisible();
+-}
++
+ test('guide code stays outside startup and delayed loading preserves drafts, navigation and fresh endpoints',async({page})=>{
+  let release;const blocked=new Promise(resolve=>{release=resolve;});const requests=[];page.on('request',request=>{if(guideChunk.test(request.url()))requests.push(request.url());});
+  await page.route('**/assets/practiceGuideController-*.js',async route=>{await blocked;await route.continue();});
+@@ -16,11 +16,11 @@ test('guide code stays outside startup and delayed loading preserves drafts, nav
+   await restore(page);expect(requests).toHaveLength(0);await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();expect(requests).toHaveLength(0);
+   await practice(page);await expect.poll(()=>requests.length).toBe(1);await page.locator('#practiceRepetitions').fill('17');await page.locator('#practiceMinDelay').fill('');
+   const field=await page.locator('#practiceMinDelay').elementHandle();await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceConfigure')).toBeVisible();
+-  await page.locator('#practiceReloadStart').selectOption('rack');await page.locator('#practiceReloadEnd').selectOption('trigger');await page.locator('#aboutBtn').click();await expect(page.locator('#aboutView')).toBeVisible();
++  await page.locator('#practicePar').fill('2.5');await page.locator('#aboutBtn').click();await expect(page.locator('#aboutView')).toBeVisible();
+   const loaded=page.waitForResponse(response=>guideChunk.test(response.url()));release();await loaded;await expect(page.locator('#aboutView')).toBeVisible();await expect(page.locator('#practiceGuideView')).not.toBeVisible();
+   await page.goBack();await expect(page.locator('#practiceConfigure')).toBeVisible();await expect(page.locator('#practiceRepetitions')).toHaveValue('17');await expect(page.locator('#practiceMinDelay')).toHaveValue('');expect(await field.evaluate(node=>node===document.getElementById('practiceMinDelay'))).toBe(true);
+-  await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceGuideView')).toBeVisible();await expect(page.locator('#practiceGuideSequence .preset-chip')).toHaveText(['Rack slide','Trigger pull']);
+-  await page.locator('#practiceGuideReturnBtn').click();await expect(page.locator('#practiceReloadEnd')).toHaveValue('trigger');expect(await page.evaluate(()=>window.__guideMicRequests)).toBe(0);
++  await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceGuideView')).toBeVisible();await expect(page.locator('#practiceGuideName')).toHaveText('Par time practice');
++  await page.locator('#practiceGuideReturnBtn').click();await expect(page.locator('#practicePar')).toHaveValue('2.5');expect(await page.evaluate(()=>window.__guideMicRequests)).toBe(0);
+  }finally{release();}
+ });
+ test('failed guide download leaves setup usable and reports only an explicit open; reload can recover',async({page})=>{
+diff --git a/visual-tests/practice-guides.spec.js b/visual-tests/practice-guides.spec.js
+index c616d26..1c3c637 100644
+--- a/visual-tests/practice-guides.spec.js
++++ b/visual-tests/practice-guides.spec.js
+@@ -3,6 +3,12 @@ import { readFileSync } from 'node:fs';
+ import { installSyntheticMedia } from './media.js';
+ const library = JSON.parse(readFileSync(new URL('./fixtures/library.json', import.meta.url)));
+ 
++const practice = async (page, mode = 'single') => {
++  await page.locator('.tab[data-view="drills"]').click();
++  await page.locator(`[data-practice-mode="${mode}"]`).click();
++  await expect(page.locator('#practiceConfigure')).toBeVisible();
++};
++
+ async function openLibrary(page, theme = 'dark', synthetic = false) {
+   if (synthetic) await page.addInitScript(installSyntheticMedia);
+   else await page.addInitScript(() => {
+@@ -19,17 +25,12 @@ async function openLibrary(page, theme = 'dark', synthetic = false) {
+   await page.locator('#importFile').setInputFiles({ name: 'guide-library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
+   await expect(page.locator('#homeView')).toBeVisible();
+ }
+-async function practice(page, mode = 'single') {
+-  await page.locator('.tab[data-view="drills"]').click();
+-  await page.locator(`[data-practice-mode="${mode}"]`).click();
+-  await expect(page.locator('#practiceConfigure')).toBeVisible();
+-}
+ 
+-test('all six guides preserve invalid and unsaved setup values, without microphone or safety prompts', async ({ page }) => {
++test('all four guides preserve invalid and unsaved setup values, without microphone or safety prompts', async ({ page }) => {
+   await openLibrary(page);
+-  for (const mode of ['single', 'repeated', 'par', 'control', 'reload', 'free']) {
++  for (const mode of ['single', 'repeated', 'par', 'control']) {
+     await practice(page, mode);
+-    const count = mode === 'free' ? '#practiceDuration' : '#practiceRepetitions';
++    const count = '#practiceRepetitions';
+     await page.locator(count).fill('17'); await page.locator('#practiceMinDelay').fill('');
+     await page.locator('#practiceGuideLink').click();
+     await expect(page.locator('#practiceGuideView')).toBeVisible();
+@@ -86,12 +87,9 @@ test('animation is initially static, pauses, resumes, stops at review and offers
+   expect(await page.evaluate(() => window.__guideMicRequests)).toBe(0);
+ });
+ 
+-test('actual Reload endpoints and external/silent setup descriptions are retained', async ({ page }) => {
+-  await openLibrary(page, 'light'); await practice(page, 'reload');
+-  await page.locator('#practiceReloadStart').selectOption('trigger'); await page.locator('#practiceReloadEnd').selectOption('draw');
++test('external/silent setup descriptions and light-mode contrast are retained', async ({ page }) => {
++  await openLibrary(page, 'light'); await practice(page, 'par');
+   await page.locator('#practiceStartSource').selectOption('external'); await page.locator('#practiceGuideLink').click();
+-  await expect(page.locator('#practiceGuideSequence')).toContainText('Trigger pull');
+-  await expect(page.locator('#practiceGuideSequence')).toContainText('Draw from holster');
+   await expect(page.locator('#practiceGuideCurrentSetup')).toContainText('no app countdown');
+   const contrasts = await page.locator('.guide-media figcaption').evaluate(caption => {
+     const rgb = value => value.match(/[\d.]+/g).slice(0, 3).map(Number);
+@@ -105,12 +103,8 @@ test('actual Reload endpoints and external/silent setup descriptions are retaine
+     });
+   });
+   for (const contrast of contrasts) expect(contrast).toBeGreaterThanOrEqual(4.5);
+-  await page.locator('#practiceGuideReturnBtn').click(); await expect(page.locator('#practiceReloadStart')).toHaveValue('trigger');
+-  await expect(page.locator('#practiceReloadEnd')).toHaveValue('draw');
+   await page.locator('#practiceStartSource').selectOption('app'); await page.locator('#practiceStartSound').uncheck();
+   await page.locator('#practiceGuideLink').click(); await expect(page.locator('#practiceGuideCurrentSetup')).toContainText('silent visual start');
+-  await page.locator('#practiceGuideReturnBtn').click(); await page.locator('#practiceReloadEnd').selectOption('trigger');
+-  await page.locator('#practiceGuideLink').click(); await expect(page.locator('#practiceGuideRequires')).toContainText('two different endpoints');
+ });
+ 
+ test('built-in and existing custom sequence guides keep their actual steps and edited values', async ({ page }) => {
+diff --git a/visual-tests/screens.spec.js b/visual-tests/screens.spec.js
+index ef24e3a..094e794 100644
+--- a/visual-tests/screens.spec.js
++++ b/visual-tests/screens.spec.js
+@@ -1,7 +1,7 @@
+ import { addLegacySequence, openLegacySequence } from './legacy-sequence.js';
+ import {freezeMotionArtwork} from './motion-fixture.js';
+ import { test, expect } from '@playwright/test';
+-import { readFileSync } from 'node:fs';
++import { readFileSync, mkdirSync } from 'node:fs';
+ import { cases, baselineName } from './catalog.js';
+ import { installSyntheticMedia } from './media.js';
+ 
+@@ -52,6 +52,7 @@ async function prepare(page, item) {
+   await visible(page, 'gunSetupView');
+   if (item.state !== 'first-gun.dark') {
+     const backup = structuredClone(library);
++    if (['practice', 'practiceGuide'].includes(item.screen) && /reload|free/.test(item.state))
+     if (item.screen === 'session' || item.state.startsWith('sequence-trigger-only')) addLegacySequence(backup);
+     backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
+     if (item.state.startsWith('add-second-gun')) {
+@@ -95,7 +96,7 @@ async function prepare(page, item) {
+       break;
+     case 'drills':
+       await tab(page, 'drills');
+-      await expect(page.locator('[data-practice-mode]')).toHaveCount(6);
++      await expect(page.locator('[data-practice-mode]')).toHaveCount(4);
+       await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(3);
+       if (item.state.startsWith('custom')) await page.locator('#customDrillsTab').click();
+       if (item.state.startsWith('custom-editor')) {
+@@ -159,9 +160,8 @@ async function prepare(page, item) {
+         }
+         await page.locator('#sessionGuideLink').click();
+       } else {
+-        const mode = ['single-early', 'external-start', 'silent-start'].includes(state) ? 'single' : state.startsWith('reload-') ? 'reload' : state;
++        const mode = ['single-early', 'external-start', 'silent-start'].includes(state) ? 'single' : state;
+         await practice(page, mode);
+-        if (state === 'reload-selected-endpoints') { await page.locator('#practiceReloadStart').selectOption('trigger'); await page.locator('#practiceReloadEnd').selectOption('draw'); }
+         if (state === 'external-start') await page.locator('#practiceStartSource').selectOption('external');
+         if (state === 'silent-start') await page.locator('#practiceStartSound').uncheck();
+         await page.locator('#practiceGuideLink').click();
+@@ -250,6 +250,11 @@ for (const item of cases) {
+     expect(errors, 'Unexpected browser errors').toEqual([]);
+     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });
+     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });
+-    await expect(page).toHaveScreenshot(baselineName(item).split('/'));
++    if (process.env.COLLECT_PRACTICE_CANDIDATES === '1') {
++      if (!['drills','practice','practiceGuide'].includes(item.screen)) throw new Error('Unapproved candidate screen.');
++      const path = `docs/design/review-candidates/chg-055/${testInfo.project.name}/${baselineName(item)}`;
++      mkdirSync(path.slice(0, path.lastIndexOf('/')), { recursive: true });
++      await page.screenshot({ path, fullPage: false, animations: 'disabled', caret: 'hide', scale: 'css' });
++    } else await expect(page).toHaveScreenshot(baselineName(item).split('/'));
+   });
+ }
+diff --git a/visual-tests/session-fragment-parity.spec.js b/visual-tests/session-fragment-parity.spec.js
+index 320e210..2a1f8f7 100644
+--- a/visual-tests/session-fragment-parity.spec.js
++++ b/visual-tests/session-fragment-parity.spec.js
+@@ -10,7 +10,7 @@ for(const theme of ['dark','light'])test(`shared session fragments retain native
+  const images=new Map();
+  for(const variant of ['native','typed']){
+   native=variant==='native';await page.goto('/');await expect(page.locator('body')).toHaveAttribute('data-view',/^(home|gunSetup)$/);if(await page.locator('#gunSetupView').isVisible())await page.locator('#restoreGunBackupBtn').click();else await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});await expect(page.locator('#homeView')).toBeVisible();await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#appearance').selectOption(theme);
+-  for(const name of ['single','single-early','reload','sequence-custom']){
++  for(const name of ['single','single-early','par','sequence-custom']){
+    await page.locator('.tab[data-view="drills"]').click();if(name==='sequence-custom'){await page.locator('#customDrillsTab').click();await page.locator('#customDrillCatalog').getByRole('button',{name:'Start Drill'}).first().click();await page.locator('#sessionGuideLink').click();}else{await page.locator(`[data-practice-mode="${name==='single-early'?'single':name}"]`).click();await page.locator('#practiceGuideLink').click();}if(name==='single-early')await page.locator('#practiceGuideEarlyBtn').click();
+    for(const phase of ['poster','review']){
+     if(phase==='review'){await page.locator('#practiceGuidePlayBtn').click();await page.clock.runFor(20000);await expect(page.locator('#practiceGuidePlayBtn')).toHaveText('Replay example');}
+diff --git a/workers/sw.js b/workers/sw.js
+index 5e6b8a0..1267bcb 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -1,6 +1,6 @@
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v76`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v77`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {
