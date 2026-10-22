@@ -83,9 +83,7 @@ function currentPracticeSettings(value) {
 }
 function currentPracticeRecord(row) {
   if (row.kind !== 'practice') return row;
-  const previousTitles = { repeated: 'Repeated trigger presses', par: 'Par-time practice' };
-  return { ...row, config: currentPracticeConfig(row.config),
-    drillTitle: row.drillTitle === previousTitles[row.practiceMode] ? practiceDefinition(row.practiceMode).title : row.drillTitle };
+  return { ...row, config: currentPracticeConfig(row.config) };
 }
 function migratePracticeCatalog(tx) {
   const sessions = tx.objectStore(SESSIONS).openCursor();

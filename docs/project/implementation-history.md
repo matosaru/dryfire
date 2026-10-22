@@ -763,3 +763,12 @@ CI39826249598 validate passes but public browser suite fails23 (263pass/10skip),
 Owner: “fix them”. Guide failure recovery now retries only the same build’s validated same-origin asset, lazily after an import rejection. Local Chromium recovery2/2 and focused unit checks pass; source/CSS/animation content remains unchanged. Full candidate acceptance is still pending; public WebKit warm timing remains a blocker. Updated review-only candidate patch/context; no application merge or main/dev/deployment change.
 
 CHG-056 test infrastructure follow-up: full candidate39831994801 confirms WebKit guide recovery passes; public browser suite285 passed/10 skipped with one separate clock.pauseAt race. Shared clock helper fixes the install-at-pause-target race while retaining the exact reviewed timestamp;18 local targeted integration checks pass. Performance matrix now isolates Chromium/WebKit into separate pinned jobs, keeping original sources, sample counts, metrics, controls, payload limits and aggregate requirement intact. Superseding candidate39833332194 cancelled before acceptance; cancellation is not success. Next full candidate replaces it. No application merge or main/dev/deployment change.
+
+### 2026-10-22 — queued card alignment follow-up
+
+Owner requests, after current CHG-056 acceptance: align every drill card title with its sublabel, unify practice/sequence card styling, remove preset-steps chips from catalog cards and update all affected unit/visual references. This is explicitly queued after fixing current tests; no card visual changes yet. Work remains b only, main/dev frozen.
+
+
+### 2026-10-22 — CHG-056 full acceptance
+
+[CI39833498121](https://github.com/matosaru/dryfire/actions/runs/39833498121) succeeds in all eight jobs: validation, public/preview screenshot suites, four edition/browser performance comparisons and aggregate acceptance. Exact review patch7b531997 verified against worktree before application. Original baselines, thresholds, samples, controls and unchanged visual references retained. Local980 tests/142suites+coverage,16smoke and targeted both-edition integration pass. Apply/push accepted corrections on b only; main/dev and deployment unchanged. Card alignment is the next separately approved visual change.

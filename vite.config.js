@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
   const sourceDigest = createHash('sha256');
   for (const path of trackedSources) sourceDigest.update(path).update(readFileSync(path));
   return {
-  define: { __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
+  define: { __BUILD_SOURCE_DIGEST__: JSON.stringify(sourceDigest.copy().digest('hex')), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
   server: { host: '127.0.0.1' },
   // The optimized preview serves same-origin assets, like the production Worker.
   // Avoid development CORS Vary headers invalidating preloaded offline assets.

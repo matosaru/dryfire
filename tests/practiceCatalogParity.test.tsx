@@ -3,7 +3,7 @@
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
 import { readFileSync } from 'node:fs';
-import { PRACTICE_MODES } from '../src/practiceModes.js';
+import { PRACTICE_MODES, matchesPracticeTitle } from '../src/practiceModes.js';
 import { renderPracticeCatalog } from '../apps/web/src/app/renderPracticeCatalog.tsx';
 
 test('prerendering exactly preserves the four approved CHG-054 cards and their native button semantics', () => {
@@ -19,4 +19,13 @@ test('prerendering exactly preserves the four approved CHG-054 cards and their n
 
 test('discovery and the supported engine catalog have exactly four trigger modes', () => {
   expect(PRACTICE_MODES.map(mode => mode.id)).toEqual(['single', 'repeated', 'par', 'control']);
+});
+
+test('saved titles accept only canonical or explicitly supported historical copy', () => {
+  expect(matchesPracticeTitle('par', 'Par time practice')).toBe(true);
+  expect(matchesPracticeTitle('par', 'Par-time practice')).toBe(true);
+  expect(matchesPracticeTitle('repeated', 'Repeated trigger presses')).toBe(true);
+  for (const [mode, title] of [['single', 'Par-time practice'], ['unknown', 'Par time practice'], ['par', 'invented'], ['par', undefined], ['par', {}]]) {
+    expect(matchesPracticeTitle(mode, title)).toBe(false);
+  }
 });

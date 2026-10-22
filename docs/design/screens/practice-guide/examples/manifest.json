@@ -14,7 +14,7 @@
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
     "src/practiceGuides.js": "58f31bcb12c220f8f15688a6b2c1173a406945660c7386c52aa0c0a1e6e8dc2e",
     "src/practiceGuideManuals.js": "da39dc4e262d951d39b854c10364507730509acb3f01f33f94eb37edb189238e",
-    "src/practiceSession.js": "be725b4a893221d0aad3edfd80644a1de308897d26e6601ccd55296b061cb07d",
+    "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "tools/page-templates.mjs": "bb899733efa8a4347c5cd6b19774931b9907ebf3e050aea083ea87601b4f1a4a",
     "tools/export-guide-examples.mjs": "5cf9a642dff74dcc1a39ada83255322c9becec5a073947c3f6bf5f078235a758",
@@ -27,7 +27,7 @@
     "apps/web/src/styles/legacy-info-visibility.css": "20364cba9bf4a2abdb5e25bf69477773b3f021a34c6c19b13fbc7895ee2ccf99",
     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css": "540275a1d8e8edd8aff06cf4834bfbbf91ce9685ae770dbe4c01cb6046b21262",
     "packages/ui/src/NumberInput/NumberInput.css": "6b25ec1e508798cc1e6fe16c90c80100f60d71556f9cf1e6b5cf98dce058d806",
-    "src/practiceModes.js": "c1a5d624bbaa18c0c7257b27b4c076d048027cf4c79e958dc97488a270278242",
+    "src/practiceModes.js": "52eefe470cf0dd67582596a38662f9b7690865f8976a32a3122f07de87195fe7",
     "apps/web/src/styles/legacy-card-foundation.css": "b8dc5ad4dc139ff9ae3f4d0ee31b46c2d3100f1d0f0e93f2681d21926337ebce",
     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
     "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
@@ -114,9 +114,9 @@
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
     "src/main.js": "aaf5ef37fb1d38e9c689262eb099d9566bfde6fb1c97760988434287577ddccc",
-    "src/practiceGuideBridge.js": "9691506d7f860ccac5ae81754175d39cc31f1fdd21a3b6138434731952598413",
+    "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
-    "vite.config.js": "d811a9b684e05c978a022eb80820d7883e5925a20bff04d47fc881e4569b7038",
+    "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
     "tools/minify-html.mjs": "987c8e851e7b9efba787bd4e45608b4512c7c20cc65ce3a05c908303584187f8",
     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
@@ -300,5 +300,5 @@
     "date": "2026-10-22",
     "scope": "Same shared Practice/Sequence presentation loads before configuration/review, outside initial startup. Inert catalogs move compiler-owned template nodes; no runtime stored/user HTML parsing. Full987/140 suite and20 public guide/layout/session/offline workflows pass. Frame models, compiled CSS and encoded GIF bytes unchanged; no media rebaseline."
   },
-  "reviewNote": "CHG-055 removes two obsolete examples; ten retained example media hashes are unchanged. All retained native/typed full-frame characterizations pass (40 focused regression checks incl. migration/statistics). Four-mode configuration/header labels updated in separately collected pinned screenshots. Removed duration/endpoints and engine branches do not change retained example frames or timing."
+  "reviewNote": "CHG-056 preserves retained historical session title snapshots while validating only known spellings; no guide/frame/pixel change. Existing full-frame characterization and current pinned images remain the visual contract; no baselines accepted by this correction."
 }

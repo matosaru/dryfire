@@ -1,3 +1,4 @@
+import { installPausedClock } from './clock.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { installSyntheticMedia } from './media.js';
@@ -137,7 +138,7 @@ test('a forced guide click cannot leave a pending microphone start', async ({ pa
 
 test('an old guide history entry cannot reopen a setup guide after practice has started', async ({ page }) => {
   await openLibrary(page, 'dark', true);
-  const now = new Date('2026-10-11T11:00:00Z'); await page.clock.install({ time: now }); await page.clock.pauseAt(now);
+  await installPausedClock(page);
   await practice(page);
   await page.locator('#practiceDelayMode').selectOption('fixed'); await page.locator('#practiceFixedDelay').fill('0');
   await page.locator('#practiceStartSound').uncheck();

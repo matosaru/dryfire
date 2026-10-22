@@ -1,3 +1,4 @@
+import { installPausedClock } from './clock.js';
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
@@ -6,7 +7,7 @@ for(const theme of ['dark','light'])test(`guide ${theme} delayed handoff keeps p
  const errors=[];page.on('pageerror',error=>errors.push(error.message));page.on('dialog',dialog=>dialog.accept());let release;const blocked=new Promise(resolve=>{release=resolve;});await page.route('**/assets/guideContents-*.js',async route=>{await blocked;await route.continue();});
  await page.addInitScript(()=>{window.__guideMicRequests=0;Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getSupportedConstraints:()=>({}),getUserMedia:()=>{window.__guideMicRequests++;return Promise.reject(new Error('No guide microphone'));}}});});
  const data=structuredClone(library);data.settings.appearance=theme;await page.goto('/');await page.locator('#restoreGunBackupBtn').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(data))});await expect(page.locator('#homeView')).toBeVisible();
- await page.clock.install({time:new Date('2026-10-11T11:00:00Z')});await page.clock.pauseAt(new Date('2026-10-11T11:00:00Z'));
+ await installPausedClock(page);
  await page.locator('.tab[data-view="drills"]').click();await page.locator('[data-practice-mode="single"]').click();await page.locator('#practiceRepetitions').fill('17');await page.locator('#practiceMinDelay').fill('');await page.locator('#practiceGuideLink').click();await page.locator('#practiceGuide-title').click();
  const meter=await page.locator('#example-practiceLevelPanel').elementHandle();const before=await page.locator('#practiceGuideView').screenshot({animations:'disabled'});
  const loaded=page.waitForResponse(response=>/\/assets\/guideContents-/.test(response.url()));release();await loaded;await expect(page.locator('#example-practiceRun')).not.toHaveAttribute('data-react-session');

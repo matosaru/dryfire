@@ -1,3 +1,4 @@
+import { installPausedClock } from './clock.js';
 import { edition } from './catalog.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
@@ -8,8 +9,7 @@ const library = readFileSync(new URL('./fixtures/library.json', import.meta.url)
 test('narrow History retains readable choices and working native filters', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 844 });
   await page.addInitScript(installSyntheticMedia);
-  await page.clock.install({ time: new Date('2026-10-11T11:00:00Z') });
-  await page.clock.pauseAt(new Date('2026-10-11T11:00:00Z'));
+  await installPausedClock(page);
   page.on('dialog', dialog => dialog.accept());
   await page.goto('/');
   await page.locator('#restoreGunBackupBtn').click();

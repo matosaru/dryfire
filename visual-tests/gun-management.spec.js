@@ -76,7 +76,9 @@ test('React Settings retains backup picker, disclosure, theme and action ownersh
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
   page.on('dialog',dialog=>dialog.accept());
   const loaded=page.waitForResponse(response=>/\/assets\/settingsPage-/.test(response.url()));
-  await restore(page);await loaded;
+  await restore(page);
+  await page.locator('#settingsShortcut').click();await loaded;
+  await page.locator('.tab[data-view="home"]').click();
   await page.locator('#settingsShortcut').click();
   await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
   if(await page.locator('#previewTestMode').count()){await page.locator('#previewTestMode').selectOption('free');await expect(page.locator('#previewModeBadge')).toContainText('Free mode');await page.locator('#previewTestMode').selectOption('full');await expect(page.locator('#previewModeBadge')).toContainText('Full mode');}

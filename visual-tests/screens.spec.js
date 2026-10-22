@@ -1,3 +1,4 @@
+import { installPausedClock } from './clock.js';
 import { addLegacySequence, openLegacySequence } from './legacy-sequence.js';
 import {freezeMotionArtwork} from './motion-fixture.js';
 import { test, expect } from '@playwright/test';
@@ -44,15 +45,13 @@ async function prepare(page, item) {
   // External SVG documents can retain their own CSS/SMIL animation clock.
   // Freeze the existing artwork at its initial frame without changing its shapes.
   await freezeMotionArtwork(page);
-  await page.clock.install({ time: new Date(environment.clock) });
-  await page.clock.pauseAt(new Date(environment.clock));
+  await installPausedClock(page, environment.clock);
   if (item.edition === 'preview' && item.state.startsWith('preview-free')) await page.addInitScript(() => localStorage.setItem('dryfire-private-preview-mode', 'free'));
   await page.goto('/');
   expect(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true);
   await visible(page, 'gunSetupView');
   if (item.state !== 'first-gun.dark') {
     const backup = structuredClone(library);
-    if (['practice', 'practiceGuide'].includes(item.screen) && /reload|free/.test(item.state))
     if (item.screen === 'session' || item.state.startsWith('sequence-trigger-only')) addLegacySequence(backup);
     backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
     if (item.state.startsWith('add-second-gun')) {

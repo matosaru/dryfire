@@ -11,7 +11,7 @@ async function restore(page){
 
 test('guide code stays outside startup and delayed loading preserves drafts, navigation and fresh endpoints',async({page})=>{
  let release;const blocked=new Promise(resolve=>{release=resolve;});const requests=[];page.on('request',request=>{if(guideChunk.test(request.url()))requests.push(request.url());});
- await page.route('**/assets/practiceGuideController-*.js',async route=>{await blocked;await route.continue();});
+ await page.route('**/assets/practiceGuideController-*.js*',async route=>{await blocked;await route.continue();});
  try{
   await restore(page);expect(requests).toHaveLength(0);await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();expect(requests).toHaveLength(0);
   await practice(page);await expect.poll(()=>requests.length).toBe(1);await page.locator('#practiceRepetitions').fill('17');await page.locator('#practiceMinDelay').fill('');
@@ -24,8 +24,9 @@ test('guide code stays outside startup and delayed loading preserves drafts, nav
  }finally{release();}
 });
 test('failed guide download leaves setup usable and reports only an explicit open; reload can recover',async({page})=>{
- await page.route('**/assets/practiceGuideController-*.js',route=>route.abort());await restore(page);
- const failed=page.waitForEvent('requestfailed',request=>guideChunk.test(request.url()));await practice(page,'single');await failed;
+ let rejected;const failed=new Promise(resolve=>{rejected=resolve;});
+ await page.route('**/assets/practiceGuideController-*.js*',async route=>{await route.abort();rejected();});await restore(page);
+ await practice(page,'single');await failed;
  await page.locator('#practiceRepetitions').fill('23');await page.locator('#practiceGuideLink').click();await expect(page.locator('#appMessage')).toContainText('Your setup is unchanged');await expect(page.locator('#practiceConfigure')).toBeVisible();await expect(page.locator('#practiceRepetitions')).toHaveValue('23');
- await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.unroute('**/assets/practiceGuideController-*.js');await page.reload();await expect(page.locator('#homeView')).toBeVisible();await practice(page,'single');await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceGuideView')).toBeVisible();expect(await page.evaluate(()=>window.__guideMicRequests)).toBe(0);
+ await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.unroute('**/assets/practiceGuideController-*.js*');await page.reload();await expect(page.locator('#homeView')).toBeVisible();await practice(page,'single');await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceGuideView')).toBeVisible();expect(await page.evaluate(()=>window.__guideMicRequests)).toBe(0);
 });

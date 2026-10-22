@@ -1,4 +1,4 @@
-import { practiceDefinition } from './practiceModes.js';
+import { practiceDefinition, matchesPracticeTitle } from './practiceModes.js';
 export { PRACTICE_MODES, practiceMode, practiceDefinition } from './practiceModes.js';
 
 const LABELS = ['draw', 'rack', 'trigger', 'reload'];
@@ -178,7 +178,7 @@ export function validatePracticeRecord(value, owner) {
   const fail = () => { throw new TypeError('Invalid saved practice session.'); };
   if (!value || value.kind !== 'practice' || value.gunId !== owner || typeof value.id !== 'string' || !value.id || value.id.length > 80 ||
       typeof value.gunName !== 'string' || !value.gunName.trim() || value.gunName.length > 80 || !TYPES.includes(value.gunType) ||
-      !practiceDefinition(value.practiceMode) || value.drillId !== `practice-${value.practiceMode}` || value.drillTitle !== practiceDefinition(value.practiceMode).title ||
+      !practiceDefinition(value.practiceMode) || value.drillId !== `practice-${value.practiceMode}` || !matchesPracticeTitle(value.practiceMode, value.drillTitle) ||
       !Number.isInteger(value.revision) || value.revision < 0 || !finite(value.startedAt) || !finite(value.updatedAt) || value.updatedAt < value.startedAt ||
       !['running', 'paused', 'completed', 'ended', 'interrupted'].includes(value.status) || !finite(value.elapsedMs) || !Array.isArray(value.repetitions)) fail();
   const config = normalizePracticeConfig(value.config);

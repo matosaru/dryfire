@@ -1,3 +1,4 @@
+import { installPausedClock } from './clock.js';
 import {test,expect} from '@playwright/test';
 import {JSDOM} from 'jsdom';
 import {readFileSync} from 'node:fs';
@@ -6,7 +7,7 @@ const html=readFileSync(new URL('../dist/index.html',import.meta.url),'utf8'),li
 function markup(native){const dom=new JSDOM(html),doc=dom.window.document;if(native)for(const name of ['practice-run','practice-review','session-run','session-review']){const text=readFileSync(new URL('./../tests/fixtures/session-fragments/'+name+'.html',import.meta.url),'utf8');const host=doc.createElement('div');host.innerHTML=text;const live=host.firstElementChild,id=live.id;doc.getElementById(id).replaceWith(live);host.innerHTML=text.replace(/\bid="([^"]+)"/g,(_match,id)=>`id="example-${id}"`).replace(/\b(aria-labelledby|aria-describedby|for)="([^"]+)"/g,(_match,attr,ids)=>`${attr}="${ids.split(' ').map(id=>'example-'+id).join(' ')}"`);doc.getElementById('example-'+id).replaceWith(host.firstElementChild);}return dom.serialize();}
 const oldHTML=markup(true),newHTML=markup(false);
 for(const theme of ['dark','light'])test(`shared session fragments retain native ${theme} pixels in posters and completed guides`,async({page},testInfo)=>{
- test.setTimeout(120000);let native=true;await page.route('**/',route=>route.fulfill({status:200,contentType:'text/html',body:native?oldHTML:newHTML}));page.on('dialog',dialog=>dialog.accept());const errors=[];page.on('pageerror',error=>errors.push(error.message));await page.clock.install({time:new Date('2026-10-11T11:00:00Z')});await page.clock.pauseAt(new Date('2026-10-11T11:00:00Z'));
+ test.setTimeout(120000);let native=true;await page.route('**/',route=>route.fulfill({status:200,contentType:'text/html',body:native?oldHTML:newHTML}));page.on('dialog',dialog=>dialog.accept());const errors=[];page.on('pageerror',error=>errors.push(error.message));await installPausedClock(page);
  const images=new Map();
  for(const variant of ['native','typed']){
   native=variant==='native';await page.goto('/');await expect(page.locator('body')).toHaveAttribute('data-view',/^(home|gunSetup)$/);if(await page.locator('#gunSetupView').isVisible())await page.locator('#restoreGunBackupBtn').click();else await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});await expect(page.locator('#homeView')).toBeVisible();await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#appearance').selectOption(theme);

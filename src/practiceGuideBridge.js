@@ -1,7 +1,17 @@
+// Keep recovery code outside startup and the successful guide-loading path.
+function defaultGuideLoader() {
+  let failed = false;
+  return () => failed
+    ? import('../apps/web/src/features/practice-guide/retryGuideModule.ts').then(module => module.retryGuideModule({
+      expectedDigest: typeof __BUILD_SOURCE_DIGEST__ === 'undefined' ? '' : __BUILD_SOURCE_DIGEST__,
+    }))
+    : import('./practiceGuideController.js').catch(error => { failed = true; throw error; });
+}
+
 /** Prepare read-only guides outside startup. Import completion never changes DOM;
  * only an explicit, still-owned Open creates the controller and navigates. */
 export function createPracticeGuideBridge({ onBack, onNavigate, onError,
-  load = () => import('./practiceGuideController.js') }) {
+  load = defaultGuideLoader() }) {
   let module, pending, controller, generation = 0;
   function prepare() {
     if (module) return Promise.resolve(module);

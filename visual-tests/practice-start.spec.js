@@ -1,3 +1,4 @@
+import { installPausedClock } from './clock.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { installSyntheticMedia } from './media.js';
@@ -6,8 +7,7 @@ const library = readFileSync(new URL('./fixtures/library.json', import.meta.url)
 async function configure(page, autoReady = true, delay = '1', handoff = false) {
   await page.addInitScript(installSyntheticMedia);
   if (!autoReady) await page.addInitScript(() => { window.__visualAudioAutoReady = false; });
-  await page.clock.install({ time: new Date('2026-10-11T11:00:00Z') });
-  await page.clock.pauseAt(new Date('2026-10-11T11:00:00Z'));
+  await installPausedClock(page);
   page.on('dialog', dialog => dialog.accept());
   await page.goto('/');
   await page.locator('#restoreGunBackupBtn').click();

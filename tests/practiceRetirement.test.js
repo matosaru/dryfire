@@ -80,7 +80,7 @@ test('all retained modes restore their older configuration snapshots and preserv
   for(const row of restored){
     expect(row.repetitions).toEqual([]);
     expect(row.config).toEqual(normalizePracticeConfig());
-    expect(row.drillTitle).not.toBeUndefined();
+    expect(row.drillTitle).toBe(records.find(original=>original.id===row.id).drillTitle);
     expect(Object.keys(row.config)).not.toContain('durationSeconds');
   }
   await restoreBackup(await exportBackup());expect(await getSessions(a.id)).toEqual(restored);

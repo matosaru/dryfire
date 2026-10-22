@@ -29,3 +29,8 @@ export const PRACTICE_MODES = /* @__PURE__ */ Object.freeze(
 );
 export const practiceMode = id => PRACTICE_MODES.find(mode => mode.id === id);
 export const practiceDefinition = id => definitions.find(mode => mode.id === id);
+
+// Preserve immutable titles in supported sessions saved before the catalog copy update.
+const previousTitles = { repeated: 'Repeated trigger presses', par: 'Par-time practice' };
+export const matchesPracticeTitle = (mode, title) => typeof title === 'string' &&
+  (title === practiceDefinition(mode)?.title || title === previousTitles[mode]);
