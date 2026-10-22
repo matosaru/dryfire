@@ -190,7 +190,15 @@
       13011
     ],
     "preview": "20 workflows pass; critical JS158445raw/48147gzip",
-    "canonicalCI": "pending publication",
-    "staticChecks": "type/lints/architecture/docs and16 smoke pass"
+    "canonicalCI": 39820533629,
+    "staticChecks": "type/lints/architecture/docs and16 smoke pass",
+    "ciUnitCorrection": {
+      "reporterRun": 39821140123,
+      "observedFailure": "Two native/React variants of six-catalog-choice test read guideContext before lazy configuration completed after a hardcoded20 microtasks. No application error shown in these unit failures.",
+      "fix": "Await actual onNavigate callback using a deferred promise; retain exact mode/order/callback-count/no-microphone assertions.",
+      "node22": "v22.23.4 full987 tests/140 suites + coverage ratchet passed after correction",
+      "applicationSource": "07f5f34 unchanged by reporter/fixture correction",
+      "performance": "Canonical source07f5f34 measurement still running; not accepted yet"
+    }
   }
 }

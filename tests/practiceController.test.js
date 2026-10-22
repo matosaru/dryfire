@@ -111,8 +111,10 @@ test('the six catalog choices preserve copy/order and configure exactly once wit
   expect([...document.querySelectorAll('#practiceCatalog h3')].map(node => node.textContent)).toEqual(PRACTICE_MODES.map(mode => mode.title));
   expect([...document.querySelectorAll('#practiceCatalog p')].map(node => node.textContent)).toEqual(PRACTICE_MODES.map(mode => mode.description));
   for (const [index, button] of buttons.entries()) {
+    const configured = deferred();
+    callbacks.onNavigate.mockImplementationOnce(() => configured.resolve());
     button.click();
-    for (let i=0;i<20;i++) await Promise.resolve();
+    await configured.promise;
     expect(controller.guideContext().mode).toBe(PRACTICE_MODES[index].id);
     expect(callbacks.onNavigate).toHaveBeenCalledTimes(index+1);
   }
