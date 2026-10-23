@@ -1,0 +1,46 @@
+name: Collect CHG-059 guide layout review images
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  collect:
+    if: github.ref == 'refs/heads/b'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      options: --ipc=host
+    env:
+      VISUAL_IMAGE: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: b
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Apply review-only candidate
+        run: git apply docs/design/review-inputs/chg-059-guide.patch
+      - run: npm ci --no-audit --no-fund
+      - name: Collect separate pinned images without accepting references
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('visual-tests/screens.spec.js');s=p.read_text().replace("import { readFileSync } from 'node:fs';", "import { readFileSync, mkdirSync } from 'node:fs';")
+          s=s.replace("await expect(page).toHaveScreenshot(baselineName(item).split('/'));", "const path = `docs/design/review-candidates/chg-059/${testInfo.project.name}/${baselineName(item)}`; mkdirSync(path.slice(0,path.lastIndexOf('/')), {recursive:true}); await page.screenshot({path,fullPage:true,animations:'disabled',caret:'hide',scale:'css'});")
+          p.write_text(s)
+          PY
+          APP_EDITION=public npm run build
+          APP_EDITION=public VISUAL_EDITION=public npx playwright test screens.spec.js --grep '(drills/|practice/|session/|practice-guide/|shared/)'
+          APP_EDITION=preview npm run build
+          APP_EDITION=preview VISUAL_EDITION=preview npx playwright test screens.spec.js --grep '(drills/|practice/|session/|practice-guide/|shared/)'
+      - name: Publish review images only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/design/review-candidates/chg-059
+          git commit -m 'test: collect pinned CHG-059 review images [skip ci]'
+          git push origin HEAD:b

@@ -1,0 +1,778 @@
+diff --git a/DESIGN.md b/DESIGN.md
+index 39f5db8..8c2a78f 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -11,3 +11,5 @@ CHG-052 explicitly updates the Drills catalog: practice cards reuse sequence-car
+ CHG-057 aligns catalog card title and sublabel to one text column beside a fixed target-icon column. Trigger, built-in sequence and saved-custom cards share that geometry and the existing full-width Start action. Catalog chips are omitted; sequence details remain in Configure/manuals. Runtime ownership stays DrillCard.css and its existing theme overrides, shared with PracticeCatalog.
+ 
+ CHG-058 makes Sequence configuration the shared template for all four trigger modes: compact repetition/Par cards, grouped signal/delay controls, separate start-sound card and left-aligned ordered sound list. DrillSetup owns this geometry and canonical setup CSS; retain page-specific labels/options and native forms, shell, timing/safety/data behavior.
++
++CHG-059 adopts the outlined information-link proposal below context/sounds and before setup through DrillSetup's shared guide control. Guide sound orders use DrillSetupSteps and semantic list items in native and React views. Catalog target colors are group-scoped: Trigger #46baff, Sequence/custom #b574f6, in both themes; no position-dependent color. Preserve existing shell, guide examples and navigation/data contracts.
+diff --git a/apps/web/src/app/guidePage.tsx b/apps/web/src/app/guidePage.tsx
+index 7078be9..d2f283f 100644
+--- a/apps/web/src/app/guidePage.tsx
++++ b/apps/web/src/app/guidePage.tsx
+@@ -1,4 +1,3 @@
+-import {Fragment} from 'react';
+ import {PracticeGuidePage,type PracticeGuidePageProps} from '../pages/PracticeGuidePage';
+ import {RetainedNode} from '@dryfire/ui/RetainedNode';
+ import {mountRetainedPage} from './retainedPage';
+@@ -9,6 +8,6 @@ export function mountGuidePage(host:HTMLElement,callbacks:Pick<PracticeGuidePage
+  const figure=host.querySelector<HTMLElement>('.guide-media')!;
+  let texts=Object.fromEntries(textIds.map(id=>[id,get(id).textContent!]));
+  const initial:Model={texts,sequence:[...get('practiceGuideSequence').querySelectorAll<HTMLElement>('[data-sound]')].map(node=>({label:node.dataset.sound!,text:node.textContent!})),steps:[...get('practiceGuideSteps').children].map(node=>node.textContent!),early:get('practiceGuideEarlyBtn').getAttribute('aria-pressed')==='true',sequenceHidden:get('practiceGuideSequence').classList.contains('hidden'),examplesHidden:get('practiceGuideExamples').classList.contains('hidden')};
+- const view=mountRetainedPage(host,initial,state=><PracticeGuidePage {...callbacks} {...state} sequence={state.sequence.map((step,index)=><Fragment key={index}>{index?' → ':null}<span className="preset-chip" data-sound={step.label}>{step.text}</span></Fragment>)} steps={state.steps.map((step,index)=><li key={index}>{step}</li>)} example={<RetainedNode node={figure}/>}/>,'data-react-guide');
++ const view=mountRetainedPage(host,initial,state=><PracticeGuidePage {...callbacks} {...state} sequence={state.sequence.map((step,index)=><li key={index} className="drill-step" data-sound={step.label}>{step.text}</li>)} steps={state.steps.map((step,index)=><li key={index}>{step}</li>)} example={<RetainedNode node={figure}/>}/>,'data-react-guide');
+  return{update(next:Partial<Model>){if(next.texts){texts={...texts,...next.texts};next={...next,texts};}view.update(next);},dispose:view.dispose};
+ }
+diff --git a/apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css b/apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css
+index 137816d..9c79f84 100644
+--- a/apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css
++++ b/apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css
+@@ -1,13 +1,10 @@
+ /* Shared contextual practice manuals. Their examples never use real audio. */
+-.practice-guide-link { display:inline-flex; align-items:center; gap:9px; min-height:44px; margin:0 0 12px; color:inherit; font-size:.88rem; text-decoration:underline; text-underline-offset:4px; }
+-.practice-guide-link span { font-size:1.2rem; }
+-.practice-guide-link:focus-visible,.guide-play:focus-visible,.guide-example-options button:focus-visible { outline:3px solid #ffad62; outline-offset:3px; border-radius:5px; }
++.guide-play:focus-visible,.guide-example-options button:focus-visible { outline:3px solid #ffad62; outline-offset:3px; border-radius:5px; }
+ body[data-view="practiceGuide"] :is(.safety-disclosure,.gun-switcher) { display:none; }
+ .guide-title { font-size:1.55rem; line-height:1.25; margin:0 0 10px; overflow-wrap:anywhere; letter-spacing:-.025em; }
+ .guide-kicker { font-size:.68rem; letter-spacing:.13em; color:var(--session-muted); font-weight:750; margin:5px 0 10px; }
+ .guide-intro { font-size:1rem; line-height:1.6; margin:6px 0 18px; }
+ .guide-current-setup,.guide-example-note { font-size:.72rem; line-height:1.55; color:var(--session-muted); margin:0 0 18px; }
+-.guide-sequence { margin-bottom:14px; }
+ .guide-media { border:1px solid var(--session-border); border-radius:14px; overflow:hidden; background:#101a22; margin:0 0 10px; }
+ 
+ .guide-media figcaption { display:flex; align-items:center; justify-content:space-between; gap:8px; border-top:1px solid #33434f; padding:8px 11px; font-size:.67rem; color:#c0d1de; }
+diff --git a/apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx b/apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx
+index 51fbb5e..3f9723e 100644
+--- a/apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx
++++ b/apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx
+@@ -1,3 +1,4 @@
++import {DrillSetupSteps} from '@dryfire/ui/DrillSetup';
+ import type {ReactNode} from 'react';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import {PracticeRun} from '@dryfire/ui/PracticeRun';
+@@ -11,7 +12,7 @@ export function PracticeGuidePage({title,texts,sequence,steps,example,early=fals
+ <p id="practiceGuideKind" className="guide-kicker">{texts?.practiceGuideKind??'PRACTICE GUIDE'}</p>
+ <h3 id="practiceGuideName" className="guide-title">{texts?.practiceGuideName}</h3>
+ <p id="practiceGuidePurpose" className="guide-intro">{texts?.practiceGuidePurpose}</p>
+-<div id="practiceGuideSequence" className={sequenceHidden?'preset-steps guide-sequence hidden':'preset-steps guide-sequence'} aria-label="Selected sound order">{sequence}</div>
++<DrillSetupSteps id="practiceGuideSequence" label="Selected sound order" hidden={sequenceHidden}>{sequence}</DrillSetupSteps>
+ <p id="practiceGuideCurrentSetup" className="guide-current-setup">{texts?.practiceGuideCurrentSetup}</p>
+ <div id="practiceGuideExamples" className={examplesHidden?'guide-example-options hidden':'guide-example-options'} role="group" aria-label="Single practice example"><button onClick={()=>onAction?.('practiceGuideNormalBtn')} id="practiceGuideNormalBtn" type="button" aria-pressed={!early}>Normal repetitions</button><button onClick={()=>onAction?.('practiceGuideEarlyBtn')} id="practiceGuideEarlyBtn" type="button" aria-pressed={early}>Early trigger</button></div>
+ {example??<>
+diff --git a/apps/web/src/pages/PracticePage/PracticePage.tsx b/apps/web/src/pages/PracticePage/PracticePage.tsx
+index 8a55ccb..d3df075 100644
+--- a/apps/web/src/pages/PracticePage/PracticePage.tsx
++++ b/apps/web/src/pages/PracticePage/PracticePage.tsx
+@@ -1,4 +1,4 @@
+-import {DrillSetup,DrillSetupCount,DrillSetupSteps} from '@dryfire/ui/DrillSetup';
++import {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
+ import type {ReactNode} from 'react';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import {PracticeRun} from '@dryfire/ui/PracticeRun';
+@@ -7,9 +7,10 @@ export type PracticePageProps={title?:string;gunName?:string;contextHidden?:bool
+ /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
+ export function PracticePage({title,gunName,contextHidden=false,guideHidden=false,configure,run,review,steps,onBack,onGuide,onAction}:PracticePageProps){return <>
+ <PageHeading id="practice-title" title={title??'Practice'} backId="practiceBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
+-<a onClick={onGuide} id="practiceGuideLink" className={guideHidden?'practice-guide-link hidden':'practice-guide-link'} href="#practice-guide">About this practice <span aria-hidden="true">›</span></a>
++
+       <p className={contextHidden?'gun-context hidden':'gun-context'}>Practice for <strong className="gun-context-name">{gunName}</strong>.</p>
+       <DrillSetupSteps id="practiceSteps" label="Required sounds">{steps}</DrillSetupSteps>
++      <DrillGuideLink id="practiceGuideLink" hidden={guideHidden} onClick={onGuide}/>
+       {configure??<>
+       <div id="practiceConfigure">
+         <DrillSetup prefix="practice" legend="Practice setup" footer={<><p id="practiceCueNote" className="muted small"></p><p id="practiceReadiness" className="session-readiness" role="status"></p><button onClick={()=>onAction?.('practiceLearnBtn')} id="practiceLearnBtn" className="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" className="button primary wide-action" type="submit">Start Practice</button></>}>
+diff --git a/apps/web/src/pages/SequencePage/SequencePage.tsx b/apps/web/src/pages/SequencePage/SequencePage.tsx
+index 446e43a..2cded09 100644
+--- a/apps/web/src/pages/SequencePage/SequencePage.tsx
++++ b/apps/web/src/pages/SequencePage/SequencePage.tsx
+@@ -1,4 +1,4 @@
+-import {DrillSetup,DrillSetupCount,DrillSetupSteps} from '@dryfire/ui/DrillSetup';
++import {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
+ import type {ReactNode} from 'react';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import {SequenceRun} from '@dryfire/ui/SequenceRun';
+@@ -7,10 +7,11 @@ export type SequencePageProps={title?:string;gunName?:string;contextHidden?:bool
+ /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
+ export function SequencePage({title,gunName,contextHidden=false,guideHidden=false,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){return <>
+ <PageHeading id="session-title" title={title??'Drill Session'} backId="sessionBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
+-<a onClick={onGuide} id="sessionGuideLink" className={guideHidden?'practice-guide-link hidden':'practice-guide-link'} href="#practice-guide">About this practice <span aria-hidden="true">›</span></a>
++
+       <p className={contextHidden?'gun-context hidden':'gun-context'}>Session for <strong className="gun-context-name">{gunName}</strong>.</p>
+       <p id="sessionPresetName" className="session-preset-name">{presetName}</p>
+       <DrillSetupSteps id="sessionSteps" label="Ordered sound sequence">{steps}</DrillSetupSteps>
++      <DrillGuideLink id="sessionGuideLink" hidden={guideHidden} onClick={onGuide}/>
+ 
+       {configure??<>
+       <div id="sessionConfigure">
+diff --git a/apps/web/src/styles/legacy-after-drill-cards.css b/apps/web/src/styles/legacy-after-drill-cards.css
+index c033d11..102bc2f 100644
+--- a/apps/web/src/styles/legacy-after-drill-cards.css
++++ b/apps/web/src/styles/legacy-after-drill-cards.css
+@@ -25,7 +25,6 @@ body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
+ .section-head{position:relative;justify-content:center;min-height:36px;margin-bottom:18px}.section-head h2{font-size:1.12rem;text-align:center}.section-head .eyebrow{display:none}.back-button{position:absolute;left:0;top:-5px;background:none;border:0;color:#fff;font-size:35px;padding:0 12px;cursor:pointer}
+ .view>.muted{font-size:.78rem;line-height:1.5}.class-grid{grid-template-columns:1fr;gap:12px;margin-top:12px}.class-card{padding:10px;gap:0}.class-card-top{gap:13px;align-items:stretch}.class-preview{width:34%;min-width:95px;max-width:128px;aspect-ratio:4/5;background:#081820}.class-preview img{object-fit:contain}.class-info{display:flex;flex-direction:column;justify-content:center;flex:1}.class-info h3{font-size:.95rem}.class-info>p{font-size:.73rem;line-height:1.35;margin-bottom:7px}.class-info .progress-label{font-size:.65rem!important;color:#a5b6c6!important;margin:3px 0}.progress-track{height:5px;margin:3px 0 10px}.class-actions{gap:7px}.class-actions .button{min-height:34px;padding:6px 9px;border-radius:9px;font-size:.76rem}.button.primary{background:linear-gradient(135deg,#ff983d,#ff751c);color:#16100b;border:1px solid #ffad62}.button.secondary{background:linear-gradient(#29343e,#1c2730);border-color:#35424e}.class-actions .reset-class{font-weight:600}
+ .segmented-control{display:flex;padding:3px;border:1px solid #2b3842;border-radius:12px;background:#1b252e;font-size:.72rem}.segmented-control span{flex:1;text-align:center;padding:8px}.segmented-control .selected{border-radius:9px;background:linear-gradient(135deg,#ff9638,#ff751c);color:#15100a;font-weight:750}.segmented-control span:last-child{color:#a4afbc}
+-.preset-steps{gap:6px;margin-left:46px}.preset-chip{font-size:.65rem;padding:4px 7px;border:1px solid #49c6ff;background:#0b1a24;color:#5aceff}.preset-chip[data-sound="trigger"]{border-color:#ff9231;color:#ff9c42}.preset-chip[data-sound="reload"]{border-color:#c77bff;color:#d19bff}
+ .settings-group{padding:0;margin-top:25px;background:#151e26}.settings-group h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:#b3c0cc;padding:0 12px;margin:-19px 0 10px}.settings-group>.muted{padding:0 14px;margin:12px 0;font-size:.73rem}.settings-group>.button{margin:0;width:100%;text-align:left;padding:17px;min-height:65px;border-radius:14px;border:0;background:none;color:var(--primary-text,#f0f5f7);font-size:.87rem}.settings-actions{gap:0;flex-direction:column}.settings-actions .button{flex:auto;text-align:left;border:0;border-radius:0;background:none;min-height:58px;border-bottom:1px solid #2b3640;padding:14px 18px}.install-details{margin:15px 0 27px;border:1px solid #2b3742;border-radius:12px;background:#17212a}.install-details>summary{padding:15px;cursor:pointer;font-size:.85rem}.install-details summary span{float:right}.install-card{border:0;background:none;margin:0;padding:15px}.install-card h3{font-size:1rem}.install-card p,.install-card ol{font-size:.78rem}
+ footer{font-size:.68rem;line-height:1.55;margin-top:20px;color:#8594a4}.tip,.info-note{font-size:.76rem}.settings-row{font-size:.8rem}.button:focus-visible,.dashboard-card:focus-visible,.back-button:focus-visible,summary:focus-visible{outline:2px solid #ffad62;outline-offset:3px}
+ @media(min-width:700px){.app-shell{padding-top:30px}.welcome-card{margin-top:8px}}
+diff --git a/apps/web/src/styles/legacy-after-saved-sessions.css b/apps/web/src/styles/legacy-after-saved-sessions.css
+index ab7ad08..83335fc 100644
+--- a/apps/web/src/styles/legacy-after-saved-sessions.css
++++ b/apps/web/src/styles/legacy-after-saved-sessions.css
+@@ -70,11 +70,6 @@ html[data-theme="light"] .dashboard-icon.orange { background:#ffe9d8; color:#b54
+ html[data-theme="light"] .dashboard-icon.blue { background:#d9eefb; color:#15668d; }
+ html[data-theme="light"] .dashboard-icon.green { background:#def2e7; color:#16633f; }
+ html[data-theme="light"] .dashboard-icon.purple { background:#eee4fa; color:#75429c; }
+-html[data-theme="light"] .drill-target { color:#15668d; }
+-html[data-theme="light"] .preset-card:nth-child(3) .drill-target { color:#75429c; }
+-html[data-theme="light"] .preset-chip { background:#e6f5fc; border-color:#3080a4; color:#165d7b; }
+-html[data-theme="light"] .preset-chip[data-sound="trigger"] { background:#fff0e5; border-color:#b96a2c; color:#9a4005; }
+-html[data-theme="light"] .preset-chip[data-sound="reload"] { background:#f2e9fc; border-color:#9664b7; color:#75429c; }
+ html[data-theme="light"] :is(.step-number,.custom-step-number) { background:#d4e5f1; color:#264f6e; }
+ html[data-theme="light"] .drill-step.current { background:#fff0e5; border-color:#b96a2c; color:#713706; }
+ html[data-theme="light"] .drill-step.current .step-number { background:#f5a364; color:#34200b; }
+diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
+index 48b39ed..20de154 100644
+--- a/docs/architecture/component-map.json
++++ b/docs/architecture/component-map.json
+@@ -567,7 +567,7 @@
+       "source": "packages/ui/src/DrillSetup/DrillSetup.tsx",
+       "css": "packages/ui/src/DrillSetup/DrillSetup.css",
+       "tests": "packages/ui/src/DrillSetup/DrillSetup.test.tsx",
+-      "runtimeOwner": "Shared Sequence/Practice configuration markup; native controller owns retained form, validation and capture. Shared ordered steps update through existing parent ports."
++      "runtimeOwner": "Shared Sequence/Practice configuration markup; native controller owns retained form, validation and capture. Shared ordered steps serve setup and guides through existing parent ports; shared outlined guide navigation follows context/sounds before setup."
+     }
+   ],
+   "retainedSubtreeBoundary": {
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index 6e0ff99..7f8ffaa 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -171,7 +171,8 @@
+         "docs/requirements/drill-sessions.md",
+         "docs/requirements/practice-modes.md",
+         "docs/requirements/build-editions.md",
+-        "docs/requirements/page-layout.md"
++        "docs/requirements/page-layout.md",
++        "docs/requirements/guide-layout.md"
+       ],
+       "notes": "Six practice cards precede the preserved sequence catalog. Built-in / Custom tabs select sequence presets. The inline custom editor has a title, ordered action list, add/remove/reorder controls, Save and Cancel. A preset is owned by the active gun and uses the existing four event identifiers. The editor is a screen state, not another public route.",
+       "states": [
+@@ -223,7 +224,8 @@
+         "docs/requirements/persistence.md",
+         "docs/requirements/practice-start.md",
+         "docs/requirements/page-layout.md",
+-        "docs/requirements/drill-setup-template.md"
++        "docs/requirements/drill-setup-template.md",
++        "docs/requirements/guide-layout.md"
+       ],
+       "notes": "Configure exposes only mode-relevant count/par, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par offer Next between resolved attempts; repeated/control remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+       "states": [
+@@ -326,7 +328,8 @@
+         "docs/requirements/drill-sessions.md",
+         "docs/requirements/practice-improvements.md",
+         "docs/requirements/persistence.md",
+-        "docs/requirements/page-layout.md"
++        "docs/requirements/page-layout.md",
++        "docs/requirements/guide-layout.md"
+       ],
+       "notes": "Keep the ordered sequence visible once. Configure exposes repetitions (default ten), fixed/random delay (default fixed three seconds), Sound at start (default Off), readiness and Start Session. Require only referenced sound types. Run shows completed/left, countdown/GO, latest repetition and Pause/Resume/End. Legacy GO is a status; the Practice STOP correction does not replace this runner. Each ordered completion is saved and followed by a fresh countdown. Review shows totals and repetition/split details, Repeat Session and Back to Drills.",
+       "states": [
+@@ -368,7 +371,8 @@
+         "docs/requirements/practice-guides.md",
+         "docs/requirements/page-layout.md",
+         "docs/requirements/practice-modes.md",
+-        "docs/requirements/drill-sessions.md"
++        "docs/requirements/drill-sessions.md",
++        "docs/requirements/guide-layout.md"
+       ],
+       "notes": "One reusable read-only guide for six modes and four built-in/custom sequences. Preserves unsaved/invalid setup and history; no capture or safety prompt. Current endpoints/preset steps and start-source explanation; controlled examples using shared live run/review templates, normal/early Single, Play/Pause/Replay and stopped Review. Shared BETA shell/footer/fixed Drills navigation.",
+       "states": [
+@@ -810,7 +814,7 @@
+     "tools/page-templates.mjs": "bb899733efa8a4347c5cd6b19774931b9907ebf3e050aea083ea87601b4f1a4a",
+     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
+     "src/practiceGuides.js": "58f31bcb12c220f8f15688a6b2c1173a406945660c7386c52aa0c0a1e6e8dc2e",
+-    "src/practiceGuideController.js": "575c8769883a797c8c1ebe73498175548b4618fd50264ad3f9bbce5ec32d7b2f",
++    "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
+     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
+     "src/practiceGuideManuals.js": "da39dc4e262d951d39b854c10364507730509acb3f01f33f94eb37edb189238e",
+     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
+@@ -911,10 +915,10 @@
+     "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "7fb89db4b9df0f6df18241a83be9307444f704a6ae2ccbab92816052ef2517a2",
+     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+     "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
+-    "packages/ui/src/DrillCard/DrillCard.css": "11312ad4e2573980ea41fff44f877bc9ba921d1c6289269845be2c243ea5fdb1",
++    "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
+     "packages/ui/src/RetainedNode/RetainedNode.tsx": "351036d9dee16e01c2e9a29df9ab9704e2c96f5f9626be56d1f7ca70f6208170",
+     "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
+-    "apps/web/src/styles/legacy-after-drill-cards.css": "75ce8375f9e7f1e1f9279cbbe560c197da1bc91c02960fa42ff2ff71be28b1fa",
++    "apps/web/src/styles/legacy-after-drill-cards.css": "397fa9588e1ba26df0e636c7329f113dcdb2e5cb22e92fd53499a55091bcbfc9",
+     "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
+@@ -930,7 +934,7 @@
+     "apps/web/src/styles/legacy-before-history-list.css": "000531fa0d4af1f326e5998ed8a3f31fb280b86b45fca1e53c2e10addc264d7a",
+     "apps/web/src/styles/legacy-before-evaluation.css": "bc3c7495e2cb342a0b60182bc654eb334dc204ee55f91be3421eded18d6fffee",
+     "apps/web/src/styles/legacy-after-evaluation.css": "14626bc045626136df9cdfa1bb947a74647f37139727ade34fc85ed59b37e14e",
+-    "apps/web/src/styles/legacy-after-saved-sessions.css": "f0949bd914a43db5b644f1aabe77cd036592e8a63dc5379fbf38b0b8bdd89d2e",
++    "apps/web/src/styles/legacy-after-saved-sessions.css": "5e3721e852ce4be55ec6d2ccd686f2a1d74f2287fab18234ab86c4cc98452303",
+     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
+     "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
+     "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
+@@ -965,11 +969,11 @@
+     "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
+     "apps/web/src/app/guideContents.tsx": "52da80bafebfe6213fb93dd34f75792998ed70d1bccadbc9331b3190eabb9209",
+     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
+-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "0fc47554da1982ce3a502adf1c4c8754863078d473d7d977038f6229e350b1d2",
+-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "18836819b07a07f4998ad05ece3abae2dbb93da72fd8ef4dd9ec3774aaa53862",
+-    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "5ec336334f797a629f64606b9fb64081bbf7e710fd6d6616c5ccef6e07f4ae1f",
++    "apps/web/src/pages/PracticePage/PracticePage.tsx": "cc44de6c45b28910f9f3d26b899ee8f895622bd2eb0961c350ecbc102d514779",
++    "apps/web/src/pages/SequencePage/SequencePage.tsx": "034f882058ea539134acf6179cdd5568887b3e67c13b51017d0030547b4b3c23",
++    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "39e68450b650292de4523e345ba76388cfe50a5cb418a9704fac9ae7d2f570b8",
+     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
+-    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "8009730b34473677566e6bec07a950d75446ba39ab08bde6f4557cfc8cb95e82",
++    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "23ea6107bb58f6fa46fb2fa82421ad63ddac3e49fe9e97540382e384d5b37fba",
+     "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
+     "apps/web/src/styles/legacy-before-sequence-page.css": "687daa485d1e63a71364d3c8b9c64ab66d7038f687607a88ff9ef76c92a6d3f5",
+     "apps/web/src/pages/SequencePage/SequencePage.css": "3395c37a1d09c0a6f3001ce2308d75ad58789892847dba6e317bc50c3500acf4",
+@@ -978,7 +982,7 @@
+     "apps/web/src/pages/PracticePage/PracticePage.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
+     "apps/web/src/app/practicePage.tsx": "e3bc96c6c95ac47ec7570a83357828c7c8dc790e79dd3080acd424ac762ae3ec",
+     "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
+-    "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
++    "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
+     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+     "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93",
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+@@ -987,8 +991,8 @@
+     "tools/minify-html.mjs": "7798a5e447e687c935e325e8ca2a4d05541bb24a7c3cbef90fd0b19503540cfb",
+     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+-    "packages/ui/src/DrillSetup/DrillSetup.tsx": "5a2406f23e99d97c4d064d49e48d141c83b1216e72faca3e018f2437306604ee",
+-    "packages/ui/src/DrillSetup/DrillSetup.css": "d26b7a0950929db04e8b9e958224d0a82d8a8ee68b7a9ae3188f55f24e7976db",
++    "packages/ui/src/DrillSetup/DrillSetup.tsx": "d8d803a87a3050830ba22a8977799cce0b016145c2192c809dd22fbfca6ac33c",
++    "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
+     "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b"
+   },
+   "implementationChanges": [
+@@ -1017,6 +1021,7 @@
+     "CHG-049 static practice catalog prerender (unchanged final UI)",
+     "CHG-049 P2 shared chrome and static controls (unchanged final UI)",
+     "CHG-057",
+-    "CHG-053"
++    "CHG-053",
++    "CHG-059 shared guide control/layout and group accents"
+   ]
+ }
+diff --git a/docs/architecture/site-tree.md b/docs/architecture/site-tree.md
+index e3dd093..a3688eb 100644
+--- a/docs/architecture/site-tree.md
++++ b/docs/architecture/site-tree.md
+@@ -1,6 +1,6 @@
+ # Site and screen tree
+ 
+-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-23; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
++Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-23; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 / CHG-059 shared guide control/layout and group accents documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+ 
+ ## Public site
+ 
+@@ -40,10 +40,10 @@ The tree describes primary destinations, not a restriction on Back/Forward. Abou
+ | Home | `homeView` | After gun selection/setup and returning visits | `overview.dark` | [Design](../design/screens/home/README.md) | [core](../requirements/core.md), [branding](../requirements/branding.md), [gun-profiles](../requirements/gun-profiles.md), [about](../requirements/about.md), [page-layout](../requirements/page-layout.md) |
+ | My Guns | `gunsView` | Active-gun switcher | `library.dark`, `library.light`, `deleted.dark` | [Design](../design/screens/guns/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+ | Learn Sounds | `learnView` | Learn tab, Home card or missing-sound link | `overview.dark`, `optional-sounds.dark`, `calibration.dark`, `recording-limit.dark` | [Design](../design/screens/learn/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [page-layout](../requirements/page-layout.md) |
+-| Drills | `drillsView` | Drills tab, Home card or review completion | `catalog.dark`, `catalog.light`, `custom.dark`, `custom-editor.dark` (preview), `edit-custom.dark` (public) | [Design](../design/screens/drills/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-modes](../requirements/practice-modes.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+-| Practice | `practiceView` | Six mode cards or saved practice review in History | `configure-single.dark`, `configure-repeated.dark`, `configure-par.dark`, `configure-control.dark`, `countdown.dark`, `active.dark`, `active.light`, `paused.dark`, `review.dark`, `early-review.dark`, `configure-single.light`, `configure-par.light` | [Design](../design/screens/practice/README.md) | [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [practice-start](../requirements/practice-start.md), [page-layout](../requirements/page-layout.md), [drill-setup-template](../requirements/drill-setup-template.md) |
+-| Drill Session | `sessionView` | Start Drill on a built-in/custom sequence, or History review | `configure.dark`, `active.dark`, `paused.dark`, `review.dark` | [Design](../design/screens/session/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md) |
+-| About this practice | `practiceGuideView` | About this practice link on stopped Practice or Sequence configuration | `single.dark`, `single.light`, `repeated.dark`, `repeated.light`, `par.dark`, `par.light`, `control.dark`, `control.light`, `sequence-trigger-only.dark`, `sequence-trigger-only.light`, `sequence-rack-trigger.dark`, `sequence-rack-trigger.light`, `sequence-mag-trigger.dark`, `sequence-mag-trigger.light`, `sequence-draw-mag-trigger.dark`, `sequence-draw-mag-trigger.light`, `sequence-custom.dark`, `sequence-custom.light`, `single-early.dark`, `single-early.light`, `external-start.dark`, `silent-start.dark` | [Design](../design/screens/practice-guide/README.md) | [practice-guides](../requirements/practice-guides.md), [page-layout](../requirements/page-layout.md), [practice-modes](../requirements/practice-modes.md), [drill-sessions](../requirements/drill-sessions.md) |
++| Drills | `drillsView` | Drills tab, Home card or review completion | `catalog.dark`, `catalog.light`, `custom.dark`, `custom-editor.dark` (preview), `edit-custom.dark` (public) | [Design](../design/screens/drills/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-modes](../requirements/practice-modes.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md), [guide-layout](../requirements/guide-layout.md) |
++| Practice | `practiceView` | Six mode cards or saved practice review in History | `configure-single.dark`, `configure-repeated.dark`, `configure-par.dark`, `configure-control.dark`, `countdown.dark`, `active.dark`, `active.light`, `paused.dark`, `review.dark`, `early-review.dark`, `configure-single.light`, `configure-par.light` | [Design](../design/screens/practice/README.md) | [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [practice-start](../requirements/practice-start.md), [page-layout](../requirements/page-layout.md), [drill-setup-template](../requirements/drill-setup-template.md), [guide-layout](../requirements/guide-layout.md) |
++| Drill Session | `sessionView` | Start Drill on a built-in/custom sequence, or History review | `configure.dark`, `active.dark`, `paused.dark`, `review.dark` | [Design](../design/screens/session/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md), [guide-layout](../requirements/guide-layout.md) |
++| About this practice | `practiceGuideView` | About this practice link on stopped Practice or Sequence configuration | `single.dark`, `single.light`, `repeated.dark`, `repeated.light`, `par.dark`, `par.light`, `control.dark`, `control.light`, `sequence-trigger-only.dark`, `sequence-trigger-only.light`, `sequence-rack-trigger.dark`, `sequence-rack-trigger.light`, `sequence-mag-trigger.dark`, `sequence-mag-trigger.light`, `sequence-draw-mag-trigger.dark`, `sequence-draw-mag-trigger.light`, `sequence-custom.dark`, `sequence-custom.light`, `single-early.dark`, `single-early.light`, `external-start.dark`, `silent-start.dark` | [Design](../design/screens/practice-guide/README.md) | [practice-guides](../requirements/practice-guides.md), [page-layout](../requirements/page-layout.md), [practice-modes](../requirements/practice-modes.md), [drill-sessions](../requirements/drill-sessions.md), [guide-layout](../requirements/guide-layout.md) |
+ | Live Listen | `recognizeView` | Live Listen tab, Home card or Start free listening | `ready.dark`, `listening.dark`, `needs-training.dark`, `needs-training.light`, `connecting.dark`, `connecting.light` | [Design](../design/screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [page-layout](../requirements/page-layout.md) |
+ | History | `historyView` | History tab or Home card | `overview.dark` (public), `overview.light` (public), `progress.dark` (preview), `data-table.dark` (preview), `progress.light` (preview), `recognition-cleared.dark`, `sessions-cleared.dark` | [Design](../design/screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+ | Settings | `settingsView` | Settings gear in the shared branded header; backup/restore links | `overview.dark` (public), `overview.light` (public), `sounds-reset.dark`, `preview-free.dark` (preview), `preview-free.light` (preview), `preview-full.dark` (preview), `preview-full.light` (preview), `installation-help.dark`, `installation-help.light` | [Design](../design/screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [about](../requirements/about.md), [page-layout](../requirements/page-layout.md) |
+diff --git a/docs/architecture/ui-contract-map.md b/docs/architecture/ui-contract-map.md
+index c084098..f0e3d52 100644
+--- a/docs/architecture/ui-contract-map.md
++++ b/docs/architecture/ui-contract-map.md
+@@ -40,3 +40,5 @@ CHG-053: one pure `features/live-listen/readiness.ts` policy distinguishes valid
+ CHG-058 configuration: DrillSetup owns Sequence/Practice form+fieldset, repetition/Par card rows and ordered sound-step container. Its CSS is the existing Sequence setup cascade moved unchanged to packages/ui/src/DrillSetup/DrillSetup.css. Native forms and platform selects remain controller-owned and retained during React enhancement; no capture/storage in UI. App/external start source keeps established visibility and validation. Practice uses the Sequence geometry; only its previous step-spacing override is retired.
+ 
+ CHG-058 performance correction: native helpers resolve IDs afresh after ownership changes and skip only equal text/disabled/image URL writes. Practice's changed callback already renders its owner; global lock/context updates skip recursive Practice refresh for that callback. External and Sequence events still refresh Practice. DOM mutation and renderer-ownership tests protect this distinction.
++
++CHG-059: DrillSetup owns the outlined DrillGuideLink and ordered DrillSetupSteps used by both setup pages and PracticeGuidePage. Native guide startup and React guide ports both render li.drill-step with stable data-sound metadata; no catalog-chip CSS remains in production. Guide shell, examples, playback and return/draft ownership stay unchanged. Catalog target colors use explicit practice/built-in/custom container identity.
+diff --git a/docs/design/README.md b/docs/design/README.md
+index bb148af..12fd4bb 100644
+--- a/docs/design/README.md
++++ b/docs/design/README.md
+@@ -39,10 +39,10 @@ Current references below are actual production-build captures. CHG-029 separates
+ | Home | [1 state/theme references](screens/home/README.md) | [core](../requirements/core.md), [branding](../requirements/branding.md), [gun-profiles](../requirements/gun-profiles.md), [about](../requirements/about.md), [page-layout](../requirements/page-layout.md) |
+ | My Guns | [3 state/theme references](screens/guns/README.md) | [gun-profiles](../requirements/gun-profiles.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+ | Learn Sounds | [4 state/theme references](screens/learn/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [page-layout](../requirements/page-layout.md) |
+-| Drills | [5 state/theme references](screens/drills/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-modes](../requirements/practice-modes.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+-| Practice | [12 state/theme references](screens/practice/README.md) | [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [practice-start](../requirements/practice-start.md), [page-layout](../requirements/page-layout.md), [drill-setup-template](../requirements/drill-setup-template.md) |
+-| Drill Session | [4 state/theme references](screens/session/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md) |
+-| About this practice | [22 state/theme references](screens/practice-guide/README.md) | [practice-guides](../requirements/practice-guides.md), [page-layout](../requirements/page-layout.md), [practice-modes](../requirements/practice-modes.md), [drill-sessions](../requirements/drill-sessions.md) |
++| Drills | [5 state/theme references](screens/drills/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-modes](../requirements/practice-modes.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md), [guide-layout](../requirements/guide-layout.md) |
++| Practice | [12 state/theme references](screens/practice/README.md) | [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [practice-start](../requirements/practice-start.md), [page-layout](../requirements/page-layout.md), [drill-setup-template](../requirements/drill-setup-template.md), [guide-layout](../requirements/guide-layout.md) |
++| Drill Session | [4 state/theme references](screens/session/README.md) | [drill-sessions](../requirements/drill-sessions.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md), [guide-layout](../requirements/guide-layout.md) |
++| About this practice | [22 state/theme references](screens/practice-guide/README.md) | [practice-guides](../requirements/practice-guides.md), [page-layout](../requirements/page-layout.md), [practice-modes](../requirements/practice-modes.md), [drill-sessions](../requirements/drill-sessions.md), [guide-layout](../requirements/guide-layout.md) |
+ | Live Listen | [6 state/theme references](screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [page-layout](../requirements/page-layout.md) |
+ | History | [7 state/theme references](screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+ | Settings | [9 state/theme references](screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [about](../requirements/about.md), [page-layout](../requirements/page-layout.md) |
+diff --git a/docs/design/baselines/chg-059-guide-review.json b/docs/design/baselines/chg-059-guide-review.json
+new file mode 100644
+index 0000000..ca9f779
+--- /dev/null
++++ b/docs/design/baselines/chg-059-guide-review.json
+@@ -0,0 +1,5 @@
++{
++  "change": "CHG-059",
++  "status": "Implementation under review; screenshots and full acceptance pending",
++  "expandedCSSSha256": "a1dafd6e9a465a67c7f0b0159855f9d6fd2cb12f1cebf9113a6b59b5dfdc642e"
++}
+diff --git a/docs/design/proposals/guide-control/README.md b/docs/design/proposals/guide-control/README.md
+index 17a8be7..8c77df8 100644
+--- a/docs/design/proposals/guide-control/README.md
++++ b/docs/design/proposals/guide-control/README.md
+@@ -1,6 +1,6 @@
+ # About this practice — control proposal
+ 
+-Requested on 2026-10-23. **Proposal, not implemented in the application.** The owner asked for a suggestion for replacing the underlined arrow link; the shared Sequence-style setup implementation is tracked separately under CHG-058.
++Requested on 2026-10-23. **Approved for implementation by direct owner instruction, CHG-059.** The original proposal replaces the underlined arrow link; the shared Sequence-style setup implementation is tracked separately under CHG-058.
+ 
+ Use the same compact secondary navigation control in both groups:
+ 
+@@ -15,3 +15,5 @@ The images are local Chromium production-build captures with temporary proposal
+ | Trigger group | Sequence group |
+ | --- | --- |
+ | [Single trigger press](trigger.dark.png) | [Rack slide → Trigger pull](sequence.dark.png) |
++
++The owner approved implementation on 2026-10-23. These images remain proposal provenance; current accepted product captures live under screens/ and acceptance/publication is tracked in implementation history.
+diff --git a/docs/design/screens/drills/README.md b/docs/design/screens/drills/README.md
+index 67a8e3f..bc4ddad 100644
+--- a/docs/design/screens/drills/README.md
++++ b/docs/design/screens/drills/README.md
+@@ -52,3 +52,7 @@ CHG-054/055 [current catalog and retirement review](../../baselines/chg-055-reti
+ ## CHG-057 aligned card revision
+ 
+ Every catalog card uses one fixed icon column and a shared text column for title and sublabel, followed by full-width Start (and saved-custom Edit) actions. The catalog chip strip is removed; detailed ordered actions remain in Configure and the practice guide. Keep existing colors, target icon, type scale, border, radius and button appearance. Both themes, narrow/mobile/wide layouts and progressive native/React ownership must match. Pinned Chromium/WebKit public/preview images were reviewed in collector39897542328; the current references below include this revision. Complete functional/performance acceptance remains tracked separately in implementation history.
++
++CHG-059: all Trigger Press Group targets are #46baff and all built-in/custom Sequence targets are #b574f6 in both themes; grouping replaces positional color rules.
++
++[Guide layout and catalog accent requirements](../../../requirements/guide-layout.md).
+diff --git a/docs/design/screens/practice-guide/README.md b/docs/design/screens/practice-guide/README.md
+index cebdcf7..df0e380 100644
+--- a/docs/design/screens/practice-guide/README.md
++++ b/docs/design/screens/practice-guide/README.md
+@@ -2,7 +2,7 @@
+ 
+ CHG-044 · 2026-10-15 · Implementation/capture/CI status is recorded in the [delivery tracker](../../../project/implementation-history.md).
+ 
+-One shared `practiceGuideView` page opens from **About this practice ›**, below the title of stopped Practice or Sequence configuration. It keeps the shared BETA header, Settings, informational footer and fixed five-tab navigation with Drills active. The informational page omits the setup safety/gun-switch controls; reading never acquires audio, asks for safety permission or starts practice.
++One shared `practiceGuideView` page opens from **ⓘ About this practice**, after context/sounds and before setup of stopped Practice or Sequence configuration. It keeps the shared BETA header, Settings, informational footer and fixed five-tab navigation with Drills active. The informational page omits the setup safety/gun-switch controls; reading never acquires audio, asks for safety permission or starts practice.
+ 
+ The page includes a mode/preset title and purpose, actual selected sequence/endpoints where relevant, current start-source explanation, static synthetic example, What it measures, three How it works steps, Good to know, Before you start and Back to setup. User titles/steps are inserted as text. Back/Forward and both Back controls preserve the same gun/source context and invalid/unsaved form values; stale contexts fall back safely. An active/pending/unsaved session cannot enter the guide.
+ 
+@@ -48,3 +48,5 @@ Current animated exports are generated from this working component using `node t
+ ## Component and theme ownership
+ 
+ Existing runtime tokens in `src/styles.css` remain canonical. The guide reuses the shared app shell and the actual Practice/Sequence run and review fragments; `sessionPresentation.js` owns their read-only display, while `practiceGuideController.js` owns example playback only. The guide caption and Play control use the existing `--session-muted` / `--session-text` roles in Light; Dark retains its reviewed values. The browser regression requires at least 4.5:1 rendered text contrast on the caption surface. Requirements own behavior; current captures/GIF manifests own visual evidence. There is no separate help theme or second session drawing.
++
++CHG-059 adopts the shared outlined information link and ordered sound list from DrillSetup. See [guide layout requirements](../../../requirements/guide-layout.md); preserve shared shell, fixed navigation and read-only simulated examples. Screenshot acceptance is recorded in project history.
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index 4e612c0..0296437 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -9,7 +9,7 @@
+     "apps/web/src/pages/ContactPage/ContactPage.css": "48411add5890d908e191a4340ec2a2154fa4a328c578e4daf4b1240ed3775d71",
+     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
+     "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
+-    "src/practiceGuideController.js": "575c8769883a797c8c1ebe73498175548b4618fd50264ad3f9bbce5ec32d7b2f",
++    "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
+     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
+     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
+     "src/practiceGuides.js": "58f31bcb12c220f8f15688a6b2c1173a406945660c7386c52aa0c0a1e6e8dc2e",
+@@ -45,9 +45,9 @@
+     "apps/web/src/styles/legacy-before-live-listen.css": "1351bd3f07949fe353ce8743c61a280badaa2b16eb007801a9d52357f490d497",
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
+     "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
+-    "apps/web/src/styles/legacy-after-drill-cards.css": "75ce8375f9e7f1e1f9279cbbe560c197da1bc91c02960fa42ff2ff71be28b1fa",
++    "apps/web/src/styles/legacy-after-drill-cards.css": "397fa9588e1ba26df0e636c7329f113dcdb2e5cb22e92fd53499a55091bcbfc9",
+     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+-    "packages/ui/src/DrillCard/DrillCard.css": "11312ad4e2573980ea41fff44f877bc9ba921d1c6289269845be2c243ea5fdb1",
++    "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
+     "apps/web/src/styles/legacy-before-custom-editor.css": "ad9a9b3fc449f79cedbc0c657aad43dd635c20b80f45d6d1891ab5b0b101b546",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
+     "apps/web/src/styles/legacy-before-history-list.css": "000531fa0d4af1f326e5998ed8a3f31fb280b86b45fca1e53c2e10addc264d7a",
+@@ -58,7 +58,7 @@
+     "apps/web/src/styles/legacy-after-evaluation.css": "14626bc045626136df9cdfa1bb947a74647f37139727ade34fc85ed59b37e14e",
+     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
+     "packages/ui/src/SavedSessionList/SavedSessionList.css": "f9a0c565ff87a62a2488e41cff9a05a0ef23a953cf1f153163d2cc6740ae67b1",
+-    "apps/web/src/styles/legacy-after-saved-sessions.css": "f0949bd914a43db5b644f1aabe77cd036592e8a63dc5379fbf38b0b8bdd89d2e",
++    "apps/web/src/styles/legacy-after-saved-sessions.css": "5e3721e852ce4be55ec6d2ccd686f2a1d74f2287fab18234ab86c4cc98452303",
+     "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
+     "packages/ui/src/ProgressContent/ProgressContent.css": "51d807fae23db615339543ed09d3659468b282bdcfa42e0a24d73a1b4807afbd",
+     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
+@@ -92,24 +92,24 @@
+     "packages/ui/src/RepetitionResult/RepetitionResult.tsx": "0ab5ca95f294b59879cf33f0e4864a3d051d6fa37b92c1ba3d6787ac89447149",
+     "packages/ui/src/RepetitionResult/index.ts": "3ce259aabc5f6c35a147c068e686bfa5cf4719b7a382b4ce24fd51065dd43f5d",
+     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
+-    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "8009730b34473677566e6bec07a950d75446ba39ab08bde6f4557cfc8cb95e82",
++    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "23ea6107bb58f6fa46fb2fa82421ad63ddac3e49fe9e97540382e384d5b37fba",
+     "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
+     "apps/web/src/styles/legacy-before-sequence-page.css": "687daa485d1e63a71364d3c8b9c64ab66d7038f687607a88ff9ef76c92a6d3f5",
+     "apps/web/src/pages/SequencePage/SequencePage.css": "3395c37a1d09c0a6f3001ce2308d75ad58789892847dba6e317bc50c3500acf4",
+     "apps/web/src/styles/legacy-after-sequence-page.css": "c90ccd88154cfa632538ba68db076cd939bc8333b511348ea9e2b25057f64d09",
+     "apps/web/src/pages/PracticePage/PracticePage.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
+-    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "5ec336334f797a629f64606b9fb64081bbf7e710fd6d6616c5ccef6e07f4ae1f",
++    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "39e68450b650292de4523e345ba76388cfe50a5cb418a9704fac9ae7d2f570b8",
+     "apps/web/src/pages/PracticeGuidePage/index.ts": "cbaa34b0c350d037b794d8112a741d5e4d191d0f19cf941e3a0a457d74665f52",
+     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
+     "packages/ui/src/PageHeading/PageHeading.tsx": "49f5e8c76db7f93c4bc5300116b068c1635519fc68c354188eb7a2027d53da58",
+     "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
+-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "0fc47554da1982ce3a502adf1c4c8754863078d473d7d977038f6229e350b1d2",
++    "apps/web/src/pages/PracticePage/PracticePage.tsx": "cc44de6c45b28910f9f3d26b899ee8f895622bd2eb0961c350ecbc102d514779",
+     "apps/web/src/pages/PracticePage/index.ts": "5b5b81bf639048fdae1497102f8195e6f3e88390603e112e39e0ec56f5ae5876",
+-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "18836819b07a07f4998ad05ece3abae2dbb93da72fd8ef4dd9ec3774aaa53862",
++    "apps/web/src/pages/SequencePage/SequencePage.tsx": "034f882058ea539134acf6179cdd5568887b3e67c13b51017d0030547b4b3c23",
+     "apps/web/src/pages/SequencePage/index.ts": "35d27d3e9d6ca4e0b66385e97fb718a7aebe519045baa635d7d0cb77dc0465ec",
+     "apps/web/src/app/practicePage.tsx": "e3bc96c6c95ac47ec7570a83357828c7c8dc790e79dd3080acd424ac762ae3ec",
+     "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
+-    "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
++    "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
+     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+     "src/main.js": "fa659d4703f9c8860d256df3e0492551e34c7c4c44f3518e449886c5b29b2e51",
+@@ -121,7 +121,7 @@
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
+     "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c",
+-    "packages/ui/src/DrillSetup/DrillSetup.css": "d26b7a0950929db04e8b9e958224d0a82d8a8ee68b7a9ae3188f55f24e7976db",
++    "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
+     "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b"
+   },
+   "exports": [
+@@ -301,6 +301,6 @@
+     "date": "2026-10-22",
+     "scope": "Same shared Practice/Sequence presentation loads before configuration/review, outside initial startup. Inert catalogs move compiler-owned template nodes; no runtime stored/user HTML parsing. Full987/140 suite and20 public guide/layout/session/offline workflows pass. Frame models, compiled CSS and encoded GIF bytes unchanged; no media rebaseline."
+   },
+-  "reviewNote": "CHG-056 preserves retained historical session title snapshots while validating only known spellings; no guide/frame/pixel change. Existing full-frame characterization and current pinned images remain the visual contract; no baselines accepted by this correction.",
++  "reviewNote": "CHG-059 changes only guide navigation, surrounding selected-sound list and catalog accents; shared guide-media run/review content, engine frames and encoded GIF bytes are unchanged. Browser workflows and frozen example parity remain required.",
+   "chg058Review": "Sequence setup styles relocated byte-for-byte; only #practiceSteps-specific legacy margin removed. Setup-only template changes; shared run/review/help fragments and ten encoded GIF files unchanged. Full guide-frame/visual acceptance required."
+ }
+diff --git a/docs/design/screens/practice/README.md b/docs/design/screens/practice/README.md
+index d2adc5c..88dd688 100644
+--- a/docs/design/screens/practice/README.md
++++ b/docs/design/screens/practice/README.md
+@@ -2,7 +2,7 @@ CHG-058: all four trigger modes reuse the Sequence configuration template throug
+ 
+ # Practice design
+ 
+-CHG-044: stopped configuration now includes **About this practice ›** immediately below its title. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
++CHG-044: stopped configuration now includes **ⓘ About this practice** after context/sounds, immediately before setup. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
+ 
+ CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
+ 
+@@ -50,3 +50,5 @@ Captured from the current local production build in Chromium at a 390 px mobile
+ For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
+ 
+ Light configuration references: [Single](configure-single.light.png), [Par time](configure-par.light.png).
++
++CHG-059 adopts the shared outlined information link and ordered sound list from DrillSetup. See [guide layout requirements](../../../requirements/guide-layout.md); preserve shared shell, fixed navigation and read-only simulated examples. Screenshot acceptance is recorded in project history.
+diff --git a/docs/design/screens/session/README.md b/docs/design/screens/session/README.md
+index a780d67..0dce84d 100644
+--- a/docs/design/screens/session/README.md
++++ b/docs/design/screens/session/README.md
+@@ -1,6 +1,6 @@
+ # Drill Session design
+ 
+-CHG-044: stopped configuration now includes **About this practice ›** immediately below its title. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
++CHG-044: stopped configuration now includes **ⓘ About this practice** after context/sounds, immediately before setup. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
+ 
+ CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
+ 
+@@ -36,3 +36,5 @@ Functional specifications: [drill-sessions](../../../requirements/drill-sessions
+ Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
+ 
+ For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
++
++CHG-059 adopts the shared outlined information link and ordered sound list from DrillSetup. See [guide layout requirements](../../../requirements/guide-layout.md); preserve shared shell, fixed navigation and read-only simulated examples. Screenshot acceptance is recorded in project history.
+diff --git a/docs/project/approval-log.md b/docs/project/approval-log.md
+index 3eb9192..a0bffc3 100644
+--- a/docs/project/approval-log.md
++++ b/docs/project/approval-log.md
+@@ -650,3 +650,7 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure
+ ## CHG-058 — Shared sequence-style trigger configuration
+ 
+ 2026-10-23 direct owner instruction: “sequence drill configuration page looks better … Use sequence drills template in single trigger pull drills configuration pages. Try reusing template”. Authorizes the shared configuration presentation for the four retained trigger modes, preserving mode-specific options, timing/capture/data/safety/edition behavior. [Requirements](../requirements/drill-setup-template.md). Work b only with complete pre-publication gate; main/dev/deployment frozen.
++
++## CHG-059 — Shared guide control, guide sound lists and catalog group colors
++
++2026-10-23: direct owner request: “update link design with your suggestion”, “about this practice pages … common layouts … practiceGuideSequence … old style”, and trigger target #46baff / sequence catalog target #b574f6; update tests and deploy on b. This approves [guide-layout.md](../requirements/guide-layout.md) and the previously proposed outlined information link. No main/dev changes. Cloudflare remains owner-managed; verify publication separately from deployment.
+diff --git a/docs/requirements/README.md b/docs/requirements/README.md
+index 696a474..925f7f1 100644
+--- a/docs/requirements/README.md
++++ b/docs/requirements/README.md
+@@ -1,6 +1,6 @@
+ # Functional requirements
+ 
+-Revision 1.25 · CHG-058 shared drill configuration / CHG-044 contextual practice guides / CHG-041 shared Beta disclosure / CHG-037 shared page architecture / CHG-036 b/main Free and dev Full branch profiles / CHG-035 private-preview simulation / CHG-034 two-gun public edition / CHG-033 informational-page bottom navigation · 2026-10-23
++Revision 1.26 · CHG-059 shared guide layout/catalog accents / CHG-058 shared drill configuration / CHG-044 contextual practice guides / CHG-041 shared Beta disclosure / CHG-037 shared page architecture / CHG-036 b/main Free and dev Full branch profiles / CHG-035 private-preview simulation / CHG-034 two-gun public edition / CHG-033 informational-page bottom navigation · 2026-10-23
+ 
+ CHG-027 starts [About](about.md) with email support; CHG-029 separates [Contact](contact.md) and refines the centered shared footer links in independent app screens. Suggested copy remains reviewable; broader CHG-026 implementations stay paused.
+ 
+@@ -11,6 +11,7 @@ This is the single current functional index. Markdown requirements define behavi
+ | [Page layout](page-layout.md) | Shared header/main/footer/fixed navigation across all screens, safe-area/scroll/readiness guards | Implemented with reusable templates; current capture acceptance and CI/publication in the delivery tracker |
+ | [Live Listen availability](live-listen-readiness.md) | Consistent navigation, capture readiness and visible reasons | Implemented CHG-053; all eight post-push CI jobs passed on b |
+ | [Shared drill setup](drill-setup-template.md) | Sequence-style form, numeric cards and sound list reused by four trigger modes | Implemented CHG-058; all eight pre-publication CI jobs passed, deployment separate |
++| [Guide layout and accents](guide-layout.md) | Shared guide navigation, ordered sound lists, explicit catalog group colors | Approved CHG-059; implementation and full acceptance in progress |
+ | [Core](core.md) | Learning, recognition, safety, resets and navigation invariants | Implemented |
+ | [Branding](branding.md) | Dry Fire With Ease display name, DF / WITH EASE lockup, BETA status and shared copyright | Implemented |
+ | [Gun profiles](gun-profiles.md) | Names/types, up to five guns and independent owned data | Implemented, including CHG-019 Edit/type images and CHG-020 single-gun/all-owned-data deletion |
+diff --git a/docs/requirements/guide-layout.md b/docs/requirements/guide-layout.md
+new file mode 100644
+index 0000000..de3a45a
+--- /dev/null
++++ b/docs/requirements/guide-layout.md
+@@ -0,0 +1,10 @@
++# Shared practice guidance and catalog accents — CHG-059
++
++Approved by the owner's direct instruction on 2026-10-23: implement the proposed About-this-practice control, use common layouts on practice guide pages, replace the old practiceGuideSequence styling, and use explicit group target colors. Publish accepted code on b only; main/dev remain frozen.
++
++- Both trigger and sequence setup pages use one shared outlined secondary navigation control, `ⓘ About this practice`, after gun context and ordered sounds and before Setup. Keep a real link, minimum 44px target, no underline/arrow, visible keyboard focus, hover/pressed feedback and the existing hidden state during runs/reviews.
++- Keep all four trigger guides and built-in/custom sequence guides within the common app shell/PageHeading and existing shared run/review example components. The selected guide sequence uses the shared DrillSetup ordered-list markup and styles, not catalog preset chips or arrow text. Preserve the actual selected sound order and data-sound selectors in both startup and React ownership.
++- Trigger Press Group targets use #46baff; built-in and saved custom Sequence drill targets use #b574f6. Group identity, never child position, controls color. Apply the requested colors in both themes. Text and labels remain the accessible group identifiers.
++- Preserve guide content, example playback/early-trigger controls, paused initial motion, source/gun context, Back navigation and invalid/unsaved configuration drafts. Reading guidance never starts microphone capture or changes saved data.
++- Review current screenshot references, help pages and animation exports together. Regenerate only media whose visible content changes; record unchanged media hashes when only surrounding page controls change.
++- Require complete existing acceptance before publication: unit/coverage, integration, both-edition minified builds, pinned Chromium/WebKit screenshots and unchanged performance gates. Publication and live Cloudflare deployment are separate evidence.
+diff --git a/packages/ui/src/DrillCard/DrillCard.css b/packages/ui/src/DrillCard/DrillCard.css
+index 414dfc4..1b17d30 100644
+--- a/packages/ui/src/DrillCard/DrillCard.css
++++ b/packages/ui/src/DrillCard/DrillCard.css
+@@ -3,9 +3,7 @@
+ .preset-copy{min-width:0;overflow-wrap:anywhere}
+ .preset-header h3{font-size:.91rem;line-height:1.35;margin:0}
+ .drill-target{flex:0 0 37px;font-size:37px;color:#46baff;line-height:1}
+-.preset-card:nth-child(3) .drill-target{color:#b574f6}
++#drillCatalog .drill-target,#customDrillCatalog .drill-target{color:#b574f6}
+ .drill-description{font-size:.73rem;color:#b3c0cc;margin:4px 0 0}
+ .preset-card .button{width:100%;min-height:35px;padding:6px;border-radius:8px;font-size:.78rem}
+ .wide-action{width:100%}
+-.preset-steps{display:flex;gap:7px;flex-wrap:wrap;align-items:center;font-size:.8rem}
+-.preset-chip{border:1px solid #43515a;border-radius:99px;padding:7px 10px;background:#1b2830}
+diff --git a/packages/ui/src/DrillSetup/DrillSetup.css b/packages/ui/src/DrillSetup/DrillSetup.css
+index 23575df..ed5c47c 100644
+--- a/packages/ui/src/DrillSetup/DrillSetup.css
++++ b/packages/ui/src/DrillSetup/DrillSetup.css
+@@ -11,3 +11,8 @@
+ .session-delay-card>.session-field { display:flex; align-items:center; justify-content:space-between; font-weight:700; }
+ .session-delay-card>.session-field select { width:55%; }
+ .session-delay-card>.muted { margin:0; font-size:.72rem; }
++
++.practice-guide-link { display:inline-flex; align-items:center; gap:8px; min-height:44px; margin:0 0 16px; padding:10px 14px; border:1px solid var(--session-border); border-radius:10px; background:var(--session-surface-raised); color:var(--session-text); font:inherit; font-size:.85rem; font-weight:650; text-decoration:none; box-sizing:border-box; cursor:pointer; }
++.practice-guide-link:hover { border-color:var(--session-muted); }
++.practice-guide-link:active { background:var(--session-surface); }
++.practice-guide-link:focus-visible { outline:3px solid var(--accent-orange); outline-offset:3px; }
+diff --git a/packages/ui/src/DrillSetup/DrillSetup.test.tsx b/packages/ui/src/DrillSetup/DrillSetup.test.tsx
+index be5d540..a37ecf2 100644
+--- a/packages/ui/src/DrillSetup/DrillSetup.test.tsx
++++ b/packages/ui/src/DrillSetup/DrillSetup.test.tsx
+@@ -4,7 +4,7 @@
+  */
+ import '@dryfire/testing/setup';
+ import {render,cleanup} from '@testing-library/react';
+-import {DrillSetup,DrillSetupCount,DrillSetupSteps} from './DrillSetup';
++import {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from './DrillSetup';
+ import {NumberInput} from '../NumberInput';
+ afterEach(cleanup);
+ test.each(['practice','session'] as const)('%s uses one semantic configuration template with native bounds and disabled fieldset behavior',prefix=>{
+@@ -17,3 +17,10 @@ test('steps are an ordered, escaped list; hidden mode fields keep their IDs and
+  const v=render(<><DrillSetupSteps id="steps" label="Required sounds"><li>&lt;trigger&gt;</li></DrillSetupSteps><DrillSetupCount id="parRow" inputId="par" label={<span>Par time</span>} hidden><input id="par"/></DrillSetupCount></>);
+  expect(v.getByRole('list')).toHaveAttribute('aria-label','Required sounds');expect(v.getByRole('listitem')).toHaveTextContent('<trigger>');expect(v.container.querySelector('trigger')).toBeNull();expect(v.container.querySelector('#parRow')).toHaveClass('hidden');expect(v.getByLabelText('Par time')).toHaveAttribute('id','par');
+ });
++
++test('guide navigation uses a shared outlined link with a decorative information icon',()=>{
++ const v=render(<DrillGuideLink id="guide"/>);
++ const link=v.getByRole('link',{name:'About this practice'});
++ expect(link).toHaveAttribute('href','#practice-guide');expect(link).toHaveClass('practice-guide-link');expect(link.querySelector('[aria-hidden="true"]')).toHaveTextContent('ⓘ');expect(link).not.toHaveTextContent('›');
++ v.rerender(<DrillGuideLink id="guide" hidden/>);expect(link).toHaveClass('hidden');
++});
+diff --git a/packages/ui/src/DrillSetup/DrillSetup.tsx b/packages/ui/src/DrillSetup/DrillSetup.tsx
+index d854e4d..d121239 100644
+--- a/packages/ui/src/DrillSetup/DrillSetup.tsx
++++ b/packages/ui/src/DrillSetup/DrillSetup.tsx
+@@ -1,6 +1,9 @@
+-import type {ReactNode} from 'react';
++import type {MouseEventHandler,ReactNode} from 'react';
+ export type DrillSetupProps={prefix:'practice'|'session';legend:string;children:ReactNode;footer:ReactNode};
+ /** Shared configuration geometry; controllers retain native form ownership. */
+ export function DrillSetup({prefix,legend,children,footer}:DrillSetupProps){return <form id={`${prefix}ConfigForm`} className="session-config-form"><fieldset id={`${prefix}ConfigFields`} className="session-config-fields"><legend>{legend}</legend>{children}</fieldset>{footer}</form>;}
+ export function DrillSetupCount({id,inputId,label,hidden=false,children}:{id?:string;inputId:string;label:ReactNode;hidden?:boolean;children:ReactNode}){return <label id={id} className={`session-field session-repetition-field${hidden?' hidden':''}`} htmlFor={inputId}>{label}{children}</label>;}
+-export function DrillSetupSteps({id,label,children}:{id:string;label:string;children?:ReactNode}){return <ol id={id} className="drill-steps session-sequence" aria-label={label}>{children}</ol>;}
++export function DrillSetupSteps({id,label,children,hidden=false}:{id:string;label:string;children?:ReactNode;hidden?:boolean}){return <ol id={id} className={`drill-steps session-sequence${hidden?' hidden':''}`} aria-label={label}>{children}</ol>;}
++
++/** A navigation affordance, never an action that starts capture. */
++export function DrillGuideLink({id,hidden=false,onClick}:{id:string;hidden?:boolean;onClick?:MouseEventHandler<HTMLAnchorElement>}){return <a id={id} className={`practice-guide-link${hidden?' hidden':''}`} href="#practice-guide" onClick={onClick}><span aria-hidden="true">ⓘ</span>About this practice</a>;}
+diff --git a/packages/ui/src/DrillSetup/index.ts b/packages/ui/src/DrillSetup/index.ts
+index 7dc8003..677efcc 100644
+--- a/packages/ui/src/DrillSetup/index.ts
++++ b/packages/ui/src/DrillSetup/index.ts
+@@ -1,2 +1,2 @@
+-export {DrillSetup,DrillSetupCount,DrillSetupSteps} from './DrillSetup';
++export {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from './DrillSetup';
+ export type {DrillSetupProps} from './DrillSetup';
+diff --git a/src/practiceGuideController.js b/src/practiceGuideController.js
+index 8e236be..07896d1 100644
+--- a/src/practiceGuideController.js
++++ b/src/practiceGuideController.js
+@@ -54,7 +54,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
+       for(const[id,value]of Object.entries(manual.texts))text(id,value);
+       $('practiceGuideSteps').replaceChildren(...manual.steps.map(step=>{const li=doc.createElement('li');li.textContent=step;return li;}));
+       $('practiceGuideSequence').classList.toggle('hidden',manual.sequenceHidden);
+-      $('practiceGuideSequence').replaceChildren(...manual.sequence.flatMap((step,index)=>{const chip=doc.createElement('span');chip.className='preset-chip';chip.dataset.sound=step.label;chip.textContent=step.text;return index?[doc.createTextNode(' → '),chip]:[chip];}));
++      $('practiceGuideSequence').replaceChildren(...manual.sequence.map(step=>{const item=doc.createElement('li');item.className='drill-step';item.dataset.sound=step.label;item.textContent=step.text;return item;}));
+       $('practiceGuideExamples').classList.toggle('hidden',manual.examplesHidden);
+     }
+     selectExample(false); return guide;
+diff --git a/tests/contextTemplateParity.test.tsx b/tests/contextTemplateParity.test.tsx
+index 8767ef6..bdbeda2 100644
+--- a/tests/contextTemplateParity.test.tsx
++++ b/tests/contextTemplateParity.test.tsx
+@@ -36,7 +36,7 @@ test('the compiled shell includes the same context/dialog without extra wrappers
+ });
+ 
+ 
+-test('ordered CSS matches the reviewed CHG-058 shared setup update with the existing shell intact',()=>{
+- const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-058-setup-review.json',import.meta.url),'utf8'));
++test('ordered CSS matches the reviewed CHG-059 shared setup update with the existing shell intact',()=>{
++ const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-059-guide-review.json',import.meta.url),'utf8'));
+  expect(createHash('sha256').update(composedStyles().css).digest('hex')).toBe(proof.expandedCSSSha256);
+ });
+diff --git a/tests/fixtures/session-pages/practice.guide-v3.html b/tests/fixtures/session-pages/practice.guide-v3.html
+new file mode 100644
+index 0000000..f06e81f
+--- /dev/null
++++ b/tests/fixtures/session-pages/practice.guide-v3.html
+@@ -0,0 +1,3 @@
++
++<div class="section-head"><button id="practiceBackBtn" type="button" class="back-button" aria-label="Back to previous screen">‹</button><h2 id="practice-title">Practice</h2></div><p class="gun-context">Practice for <strong class="gun-context-name"></strong>.</p><ol id="practiceSteps" class="drill-steps session-sequence" aria-label="Required sounds"></ol><a id="practiceGuideLink" class="practice-guide-link" href="#practice-guide"><span aria-hidden="true">ⓘ</span>About this practice</a><div id="practiceConfigure"><form id="practiceConfigForm" class="session-config-form"><fieldset id="practiceConfigFields" class="session-config-fields"><legend>Practice setup</legend><label id="practiceCountRow" class="session-field session-repetition-field" for="practiceRepetitions"><span id="practiceCountLabel">Repetitions</span><input required="" inputmode="numeric" id="practiceRepetitions" type="number" min="1" max="100" step="1" aria-describedby="practiceRepetitionsLimit" value="10"><small id="practiceRepetitionsLimit" class="numeric-hint">1–100 · whole numbers</small></label><label id="practiceParRow" class="session-field session-repetition-field hidden" for="practicePar"><span>Par time (seconds)</span><input required="" inputmode="decimal" id="practicePar" type="number" min="0.1" max="30" step="0.1" aria-describedby="practiceParLimit" value="1.5"><small id="practiceParLimit" class="numeric-hint">0.1–30 · 0.1 increments</small></label><div class="session-delay-card"><label class="session-field" for="practiceStartSource"><span>Start signal</span><select id="practiceStartSource"><option value="app">App signal</option><option value="external">Calibrated external beep</option></select></label></div><div id="practiceAppTiming" class="session-config-fields"><div class="session-delay-card"><label class="session-field" for="practiceDelayMode"><span>Start delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label><label id="practiceFixedRow" class="session-field hidden" for="practiceFixedDelay"><span>Delay in seconds</span><input required="" inputmode="decimal" id="practiceFixedDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceFixedDelayLimit" value="3"><small id="practiceFixedDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label><div id="practiceRandomFields" class="session-delay-range"><label class="session-field" for="practiceMinDelay"><span>Minimum seconds</span><input required="" inputmode="decimal" id="practiceMinDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceMinDelayLimit" value="2"><small id="practiceMinDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label><label class="session-field" for="practiceMaxDelay"><span>Maximum seconds</span><input required="" inputmode="decimal" id="practiceMaxDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceMaxDelayLimit" value="5"><small id="practiceMaxDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label></div></div><label class="preference-toggle session-sound-toggle" for="practiceStartSound"><span><strong>Sound at start</strong><small>Play a beep at each repetition start.</small></span><input id="practiceStartSound" type="checkbox" role="switch" checked=""></label></div></fieldset><p id="practiceCueNote" class="muted small"></p><p id="practiceReadiness" class="session-readiness" role="status"></p><button id="practiceLearnBtn" class="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" class="button primary wide-action" type="submit">Start Practice</button></form></div><div id="practiceRun" class="hidden"><div class="practice-counters"><div><span id="practiceCompletedLabel">Attempts</span><strong id="practiceCompleted">0</strong></div><div><span>Shots</span><strong id="practiceShots">0</strong></div><div><span id="practiceRemainingLabel">Left</span><strong id="practiceRemaining">10</strong></div></div><div class="session-countdown-panel"><div id="practiceSignal" class="session-countdown" role="timer" aria-live="off">—</div><button id="practiceStopBtn" class="button primary practice-stop hidden" type="button" aria-label="Stop practice and save results">STOP</button><div id="practiceLevelPanel" class="practice-level-panel hidden"><p class="practice-level-label"><svg class="practice-mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="2" width="8" height="13" rx="4"></rect><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"></path></svg><span>MICROPHONE INPUT</span></p><div id="practiceLevelMeter" class="practice-level-track" role="meter" aria-label="Microphone input level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="practiceLevelFill" class="practice-level-fill"></div></div><p class="practice-level-value"><strong id="practiceLevelValue">0</strong><span>relative level</span></p><p id="practiceInputState" class="muted small">Waiting for audio input…</p></div><p id="practiceAnnouncement" class="session-announcement" role="status"></p><p id="practiceInputFeedback" class="practice-input-feedback" role="status"></p><p id="practiceMicrophone" class="listening-indicator" role="status"></p><p class="muted small">Active time <strong id="practiceElapsed">0.00 s</strong></p></div><div id="practiceLatest" class="session-result-card"></div><div class="session-run-actions"><button id="practicePauseBtn" class="button secondary" type="button">Pause</button><button id="practiceResumeBtn" class="button primary hidden" type="button">Resume</button><button id="practiceNextBtn" class="button primary hidden" type="button">Next repetition</button><button id="practiceEndBtn" class="button secondary" type="button">End Practice</button></div></div><div id="practiceReview" class="hidden"><section class="session-review-card"><h3 id="practiceReviewStatus">Practice review</h3><div id="practiceSummary"></div><p id="practiceSaved" class="session-saved-note"></p><button id="practiceRetryBtn" type="button" class="button secondary wide-action hidden">Retry saving results</button></section><div id="practiceResults" class="session-result-list"></div><button id="practiceRepeatBtn" type="button" class="button primary wide-action">Repeat Practice</button><button id="practiceDoneBtn" type="button" class="button secondary wide-action">Back to Drills</button></div><p class="muted small session-timing-note">Timings describe detected audio. The app cannot verify physical actions, aim, movement or unloaded status.</p>
++
+diff --git a/tests/fixtures/session-pages/practiceGuide.guide-v3.html b/tests/fixtures/session-pages/practiceGuide.guide-v3.html
+new file mode 100644
+index 0000000..6dfb042
+--- /dev/null
++++ b/tests/fixtures/session-pages/practiceGuide.guide-v3.html
+@@ -0,0 +1,3 @@
++
++<div class="section-head"><button id="practiceGuideBackBtn" type="button" class="back-button" aria-label="Back to setup">‹</button><h2 id="practiceGuide-title">About this practice</h2></div><p id="practiceGuideKind" class="guide-kicker">PRACTICE GUIDE</p><h3 id="practiceGuideName" class="guide-title"></h3><p id="practiceGuidePurpose" class="guide-intro"></p><ol id="practiceGuideSequence" class="drill-steps session-sequence" aria-label="Selected sound order"></ol><p id="practiceGuideCurrentSetup" class="guide-current-setup"></p><div id="practiceGuideExamples" class="guide-example-options" role="group" aria-label="Single practice example"><button id="practiceGuideNormalBtn" type="button" aria-pressed="true">Normal repetitions</button><button id="practiceGuideEarlyBtn" type="button" aria-pressed="false">Early trigger</button></div><figure class="guide-media"><p id="practiceGuideExampleLabel" class="guide-example-label">SIMULATED EXAMPLE · NO LIVE MICROPHONE · NOTHING IS SAVED</p><div id="practiceGuideExample" class="guide-live-example" aria-label="Silent simulated practice example"><div id="example-practiceRun" class="hidden"><div class="practice-counters"><div><span id="example-practiceCompletedLabel">Attempts</span><strong id="example-practiceCompleted">0</strong></div><div><span>Shots</span><strong id="example-practiceShots">0</strong></div><div><span id="example-practiceRemainingLabel">Left</span><strong id="example-practiceRemaining">10</strong></div></div><div class="session-countdown-panel"><div id="example-practiceSignal" class="session-countdown" role="timer" aria-live="off">—</div><button id="example-practiceStopBtn" class="button primary practice-stop hidden" type="button" aria-label="Stop practice and save results">STOP</button><div id="example-practiceLevelPanel" class="practice-level-panel hidden"><p class="practice-level-label"><svg class="practice-mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="2" width="8" height="13" rx="4"></rect><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"></path></svg><span>MICROPHONE INPUT</span></p><div id="example-practiceLevelMeter" class="practice-level-track" role="meter" aria-label="Microphone input level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="example-practiceLevelFill" class="practice-level-fill"></div></div><p class="practice-level-value"><strong id="example-practiceLevelValue">0</strong><span>relative level</span></p><p id="example-practiceInputState" class="muted small">Waiting for audio input…</p></div><p id="example-practiceAnnouncement" class="session-announcement" role="status"></p><p id="example-practiceInputFeedback" class="practice-input-feedback" role="status"></p><p id="example-practiceMicrophone" class="listening-indicator" role="status"></p><p class="muted small">Active time <strong id="example-practiceElapsed">0.00 s</strong></p></div><div id="example-practiceLatest" class="session-result-card"></div><div class="session-run-actions"><button id="example-practicePauseBtn" class="button secondary" type="button">Pause</button><button id="example-practiceResumeBtn" class="button primary hidden" type="button">Resume</button><button id="example-practiceNextBtn" class="button primary hidden" type="button">Next repetition</button><button id="example-practiceEndBtn" class="button secondary" type="button">End Practice</button></div></div><div id="example-practiceReview" class="hidden"><section class="session-review-card"><h3 id="example-practiceReviewStatus">Practice review</h3><div id="example-practiceSummary"></div><p id="example-practiceSaved" class="session-saved-note"></p><button id="example-practiceRetryBtn" type="button" class="button secondary wide-action hidden">Retry saving results</button></section><div id="example-practiceResults" class="session-result-list"></div><button id="example-practiceRepeatBtn" type="button" class="button primary wide-action">Repeat Practice</button><button id="example-practiceDoneBtn" type="button" class="button secondary wide-action">Back to Drills</button></div><div id="example-sessionRun" class="hidden"><div class="session-progress" aria-label="Session progress"><div><span>Completed</span><strong id="example-sessionCompletedCount">0</strong></div><progress id="example-sessionProgressMeter" max="10" value="0" aria-label="Completed repetitions"></progress><div><span>Left</span><strong id="example-sessionLeftCount">10</strong></div></div><div class="session-countdown-panel"><p class="eyebrow">Current repetition</p><div id="example-sessionCountdown" class="session-countdown" role="timer" aria-live="off">—</div><p id="example-sessionAnnouncement" class="session-announcement" role="status" aria-live="polite">Get ready…</p><p id="example-sessionMicrophoneStatus" class="listening-indicator" role="status">Microphone inactive</p></div><section class="session-latest" aria-labelledby="example-sessionLatestTitle"><h3 id="example-sessionLatestTitle">Latest repetition</h3><div id="example-sessionLatestResult" class="session-result-card"><p class="muted small">Your completed repetition will appear here.</p></div></section><div class="session-run-actions"><button id="example-pauseSessionBtn" type="button" class="button secondary">Pause</button><button id="example-resumeSessionBtn" type="button" class="button primary hidden">Resume</button><button id="example-endSessionBtn" type="button" class="button secondary">End Session</button></div><p class="muted small session-timing-note">Pause releases the microphone and restarts the unfinished repetition with a fresh countdown on Resume.</p></div><div id="example-sessionReview" class="hidden"><section class="session-review-card" aria-labelledby="example-sessionReviewStatus"><h3 id="example-sessionReviewStatus">Session review</h3><div id="example-sessionReviewSummary"></div><p class="session-saved-note">Saved on this device</p></section><section class="session-records" aria-labelledby="example-sessionRecordsTitle"><h3 id="example-sessionRecordsTitle">Repetition results</h3><div id="example-sessionResultList" class="session-result-list"></div></section><div class="session-review-actions"><button id="example-repeatSessionBtn" type="button" class="button primary wide-action">Repeat Session</button><button id="example-backToDrillsBtn" type="button" class="button secondary wide-action">Back to Drills</button></div><p class="muted small session-timing-note">Times reflect sound detection. The app cannot verify physical actions or whether a firearm is unloaded.</p></div></div><figcaption><span>Silent example · 1× timing</span><button id="practiceGuidePlayBtn" class="guide-play" type="button" aria-pressed="false">Play example</button></figcaption></figure><p id="practiceGuideExampleNote" class="guide-example-note"></p><section class="guide-card"><h3>What it measures</h3><p id="practiceGuideMeasures"></p></section><section class="guide-how"><h3>How it works</h3><ol id="practiceGuideSteps"></ol></section><section class="guide-note"><h3>Good to know</h3><p id="practiceGuideExpect"></p></section><p class="guide-ready"><strong>Before you start</strong><span id="practiceGuideRequires"></span> Verify unloaded, remove live ammunition and use a safe direction and backstop.</p><button id="practiceGuideReturnBtn" type="button" class="button primary wide-action">Back to setup</button><p class="guide-disclosure">The app measures detected sounds. It cannot verify unloaded status, aim or safe handling.</p>
++
+diff --git a/tests/fixtures/session-pages/session.guide-v3.html b/tests/fixtures/session-pages/session.guide-v3.html
+new file mode 100644
+index 0000000..a022be6
+--- /dev/null
++++ b/tests/fixtures/session-pages/session.guide-v3.html
+@@ -0,0 +1,3 @@
++
++<div class="section-head"><button id="sessionBackBtn" type="button" class="back-button" aria-label="Back to previous screen">‹</button><h2 id="session-title">Drill Session</h2></div><p class="gun-context">Session for <strong class="gun-context-name"></strong>.</p><p id="sessionPresetName" class="session-preset-name"></p><ol id="sessionSteps" class="drill-steps session-sequence" aria-label="Ordered sound sequence"></ol><a id="sessionGuideLink" class="practice-guide-link" href="#practice-guide"><span aria-hidden="true">ⓘ</span>About this practice</a><div id="sessionConfigure"><form id="sessionConfigForm" class="session-config-form"><fieldset id="sessionConfigFields" class="session-config-fields"><legend>Session setup</legend><label class="session-field session-repetition-field" for="sessionRepetitions"><span>Repetitions</span><input required="" inputmode="numeric" id="sessionRepetitions" type="number" min="1" max="100" step="1" aria-describedby="sessionRepetitionsLimit" name="repetitions" value="10"><small id="sessionRepetitionsLimit" class="numeric-hint">1–100 · whole numbers</small></label><div class="session-delay-card"><label class="session-field" for="sessionDelayMode"><span>Start delay</span><select id="sessionDelayMode" name="delayMode"><option value="fixed">Fixed</option><option value="random">Random</option></select></label><div id="fixedDelayFields"><label class="session-field" for="sessionFixedDelay"><span>Delay in seconds</span><input required="" inputmode="decimal" id="sessionFixedDelay" type="number" min="0" max="30" step="0.1" aria-describedby="sessionFixedDelayLimit" name="fixedDelay" value="3"><small id="sessionFixedDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label></div><div id="randomDelayFields" class="session-delay-range hidden"><label class="session-field" for="sessionMinDelay"><span>Minimum seconds</span><input required="" inputmode="decimal" id="sessionMinDelay" type="number" min="0" max="30" step="0.1" aria-describedby="sessionMinDelayLimit" name="minDelay" value="2"><small id="sessionMinDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label><label class="session-field" for="sessionMaxDelay"><span>Maximum seconds</span><input required="" inputmode="decimal" id="sessionMaxDelay" type="number" min="0" max="30" step="0.1" aria-describedby="sessionMaxDelayLimit" name="maxDelay" value="5"><small id="sessionMaxDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label></div><p class="muted small">A fresh delay before every repetition.</p></div><label class="preference-toggle session-sound-toggle" for="sessionStartSound"><span><strong>Sound at start</strong><small>Play a beep when GO appears.</small></span><input id="sessionStartSound" type="checkbox" role="switch" aria-describedby="sessionCueGuardNote" name="startSound"></label><p id="sessionCueGuardNote" class="muted small hidden">With the beep on, detection waits 0.3 seconds after GO to exclude the cue. Very fast sounds in that window may be missed.</p></fieldset><p id="sessionReadiness" class="session-readiness" role="status">Checking training and safety readiness…</p><button id="sessionLearnBtn" type="button" class="button secondary wide-action hidden">Learn missing sounds</button><button id="sessionStartBtn" type="submit" class="button primary wide-action">Start Session</button></form><p class="muted small session-timing-note">Timings describe detected sounds, not verified physical actions.</p></div><div id="sessionRun" class="hidden"><div class="session-progress" aria-label="Session progress"><div><span>Completed</span><strong id="sessionCompletedCount">0</strong></div><progress id="sessionProgressMeter" max="10" value="0" aria-label="Completed repetitions"></progress><div><span>Left</span><strong id="sessionLeftCount">10</strong></div></div><div class="session-countdown-panel"><p class="eyebrow">Current repetition</p><div id="sessionCountdown" class="session-countdown" role="timer" aria-live="off">—</div><p id="sessionAnnouncement" class="session-announcement" role="status" aria-live="polite">Get ready…</p><p id="sessionMicrophoneStatus" class="listening-indicator" role="status">Microphone inactive</p></div><section class="session-latest" aria-labelledby="sessionLatestTitle"><h3 id="sessionLatestTitle">Latest repetition</h3><div id="sessionLatestResult" class="session-result-card"><p class="muted small">Your completed repetition will appear here.</p></div></section><div class="session-run-actions"><button id="pauseSessionBtn" type="button" class="button secondary">Pause</button><button id="resumeSessionBtn" type="button" class="button primary hidden">Resume</button><button id="endSessionBtn" type="button" class="button secondary">End Session</button></div><p class="muted small session-timing-note">Pause releases the microphone and restarts the unfinished repetition with a fresh countdown on Resume.</p></div><div id="sessionReview" class="hidden"><section class="session-review-card" aria-labelledby="sessionReviewStatus"><h3 id="sessionReviewStatus">Session review</h3><div id="sessionReviewSummary"></div><p class="session-saved-note">Saved on this device</p></section><section class="session-records" aria-labelledby="sessionRecordsTitle"><h3 id="sessionRecordsTitle">Repetition results</h3><div id="sessionResultList" class="session-result-list"></div></section><div class="session-review-actions"><button id="repeatSessionBtn" type="button" class="button primary wide-action">Repeat Session</button><button id="backToDrillsBtn" type="button" class="button secondary wide-action">Back to Drills</button></div><p class="muted small session-timing-note">Times reflect sound detection. The app cannot verify physical actions or whether a firearm is unloaded.</p></div>
++
+diff --git a/tests/guideParentMount.test.tsx b/tests/guideParentMount.test.tsx
+index ca786b9..6b55e4c 100644
+--- a/tests/guideParentMount.test.tsx
++++ b/tests/guideParentMount.test.tsx
+@@ -13,7 +13,7 @@ import {mountGuideContents} from '../apps/web/src/app/guideContents';
+ import {createPracticeGuideController} from '../src/practiceGuideController.js';
+ function fixture(){document.body.innerHTML='<input id="outside"><div id="practiceGuideView">'+readFileSync(new URL('./fixtures/session-pages/practiceGuide.html',import.meta.url),'utf8')+'</div>';return document.getElementById('practiceGuideView')!;}
+ test('guide parent keeps its exact figure/child hosts and routes manual/options/Back state without taking outside focus',()=>{
+- const host=fixture(),figure=host.querySelector('.guide-media'),child=host.querySelector('#example-practiceRun'),back=jest.fn(),action=jest.fn();host.querySelector('#practiceGuideSequence')!.innerHTML='<span class="preset-chip" data-sound="rack">Rack slide</span>';document.getElementById('outside')!.focus();let view!:ReturnType<typeof mountGuidePage>;act(()=>{view=mountGuidePage(host,{onBack:back,onAction:action});});expect(host.querySelector('.guide-media')).toBe(figure);expect(host.querySelector('#example-practiceRun')).toBe(child);act(()=>view.update({texts:{practiceGuideName:'<script>',practiceGuidePurpose:'Purpose'},sequence:[{label:'rack',text:'Rack slide'},{label:'trigger',text:'Trigger pull'}],steps:['Wait','Listen'],early:true,sequenceHidden:false,examplesHidden:true}));act(()=>view.update({texts:{practiceGuideMeasures:'Timing'}}));expect(host.querySelector('#practiceGuideName')).toHaveTextContent('<script>');expect(host.querySelector('#practiceGuidePurpose')).toHaveTextContent('Purpose');expect(host.querySelector('#practiceGuideSequence')).toHaveTextContent('Rack slide → Trigger pull');expect(host.querySelectorAll('#practiceGuideSteps li')).toHaveLength(2);expect(host.querySelector('#practiceGuideEarlyBtn')).toHaveAttribute('aria-pressed','true');expect(host.querySelector('#practiceGuideExamples')).toHaveClass('hidden');expect(document.activeElement?.id).toBe('outside');fireEvent.click(host.querySelector('#practiceGuideBackBtn')!);fireEvent.click(host.querySelector('#practiceGuideReturnBtn')!);expect(back).toHaveBeenCalledTimes(1);expect(action).toHaveBeenCalledWith('practiceGuideReturnBtn');act(()=>view.dispose());
++ const host=fixture(),figure=host.querySelector('.guide-media'),child=host.querySelector('#example-practiceRun'),back=jest.fn(),action=jest.fn();host.querySelector('#practiceGuideSequence')!.innerHTML='<li class="drill-step" data-sound="rack">Rack slide</li>';document.getElementById('outside')!.focus();let view!:ReturnType<typeof mountGuidePage>;act(()=>{view=mountGuidePage(host,{onBack:back,onAction:action});});expect(host.querySelector('.guide-media')).toBe(figure);expect(host.querySelector('#example-practiceRun')).toBe(child);act(()=>view.update({texts:{practiceGuideName:'<script>',practiceGuidePurpose:'Purpose'},sequence:[{label:'rack',text:'Rack slide'},{label:'trigger',text:'Trigger pull'}],steps:['Wait','Listen'],early:true,sequenceHidden:false,examplesHidden:true}));act(()=>view.update({texts:{practiceGuideMeasures:'Timing'}}));expect(host.querySelector('#practiceGuideName')).toHaveTextContent('<script>');expect(host.querySelector('#practiceGuidePurpose')).toHaveTextContent('Purpose');expect(host.querySelector('#practiceGuideSequence')).toHaveTextContent('Rack slideTrigger pull');expect(host.querySelectorAll('#practiceGuideSteps li')).toHaveLength(2);expect(host.querySelector('#practiceGuideEarlyBtn')).toHaveAttribute('aria-pressed','true');expect(host.querySelector('#practiceGuideExamples')).toHaveClass('hidden');expect(document.activeElement?.id).toBe('outside');fireEvent.click(host.querySelector('#practiceGuideBackBtn')!);fireEvent.click(host.querySelector('#practiceGuideReturnBtn')!);expect(back).toHaveBeenCalledTimes(1);expect(action).toHaveBeenCalledWith('practiceGuideReturnBtn');act(()=>view.dispose());
+ });
+ test('actual guide controller retains nested React examples while moving through Single, early and ordered manuals',()=>{
+  const host=fixture(),oldClone=globalThis.structuredClone;globalThis.structuredClone=value=>deserialize(serialize(value));const back=jest.fn();let child!:ReturnType<typeof mountGuideContents>,parent!:ReturnType<typeof mountGuidePage>;
+diff --git a/tests/sessionParentBaseline.test.js b/tests/sessionParentBaseline.test.js
+index 99578c3..14c7092 100644
+--- a/tests/sessionParentBaseline.test.js
++++ b/tests/sessionParentBaseline.test.js
+@@ -6,7 +6,7 @@ import {readFileSync} from 'node:fs';
+ import {renderPageTemplates} from '../tools/page-templates.mjs';
+ import {semanticTree} from './helpers/guidePresentation.js';
+ test.each(['practice','session','practiceGuide'])('%s complete parent structure matches its reviewed reference',id=>{
+- const doc=document.implementation.createHTMLDocument('');doc.body.innerHTML=renderPageTemplates('{{app}}');const original=document.createElement('section');original.innerHTML=readFileSync(new URL('./fixtures/session-pages/'+(id==='practice'?'practice.setup-v2':id)+'.html',import.meta.url),'utf8');const actual=document.createElement('section');actual.append(...doc.getElementById(id+'View').childNodes);expect(semanticTree(actual)).toEqual(semanticTree(original));
++ const doc=document.implementation.createHTMLDocument('');doc.body.innerHTML=renderPageTemplates('{{app}}');const original=document.createElement('section');original.innerHTML=readFileSync(new URL('./fixtures/session-pages/'+(id+'.guide-v3')+'.html',import.meta.url),'utf8');const actual=document.createElement('section');actual.append(...doc.getElementById(id+'View').childNodes);expect(semanticTree(actual)).toEqual(semanticTree(original));
+ });
+ 
+ test('CHG-058 preserves all native input/select constraints and run/review markup from released Practice',()=>{
+@@ -14,3 +14,9 @@ test('CHG-058 preserves all native input/select constraints and run/review marku
+  const controls=host=>[...host.querySelectorAll('input,select')].map(node=>[node.id,[...node.attributes].map(a=>[a.name,a.value]).sort(),node.tagName==='SELECT'?[...node.options].map(o=>[o.value,o.textContent]):null]);expect(controls(current)).toEqual(controls(old));
+  for(const id of ['practiceRun','practiceReview'])expect(semanticTree(current.querySelector('#'+id))).toEqual(semanticTree(old.querySelector('#'+id)));
+ });
++
++test.each(['practice','session'])('CHG-059 %s guide control follows sounds and preserves native controls and run/review',id=>{
++ const current=document.createElement('section'),old=document.createElement('section');current.innerHTML=readFileSync(new URL(`./fixtures/session-pages/${id}.guide-v3.html`,import.meta.url),'utf8');old.innerHTML=readFileSync(new URL(`./fixtures/session-pages/${id==='practice'?'practice.setup-v2':id}.html`,import.meta.url),'utf8');
++ expect(current.querySelector('#'+id+'Steps').nextElementSibling.id).toBe(id+'GuideLink');
++ for(const selector of ['input','select',`#${id}Run`,`#${id}Review`])expect([...current.querySelectorAll(selector)].map(semanticTree)).toEqual([...old.querySelectorAll(selector)].map(semanticTree));
++});
+diff --git a/visual-tests/guide-layout.spec.js b/visual-tests/guide-layout.spec.js
+new file mode 100644
+index 0000000..031dbfd
+--- /dev/null
++++ b/visual-tests/guide-layout.spec.js
+@@ -0,0 +1,22 @@
++import {test,expect} from '@playwright/test';
++import {readFileSync} from 'node:fs';
++import {installSyntheticMedia} from './media.js';
++const library=JSON.parse(readFileSync(new URL('./fixtures/library.json',import.meta.url)));
++test('shared guide controls, group accents and ordered manual work in both themes and narrow layouts',async({page})=>{
++ await page.setViewportSize({width:320,height:900});await page.addInitScript(installSyntheticMedia);page.on('dialog',d=>d.accept());await page.goto('/');await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(library))});await expect(page.locator('#homeView')).toBeVisible();
++ for(const theme of ['dark','light']){
++  await page.locator('#settingsShortcut').click();await page.locator('#appearance').selectOption(theme);
++  await page.locator('.tab[data-view="drills"]').click();
++  for(const target of await page.locator('#practiceCatalog .drill-target').all())await expect(target).toHaveCSS('color','rgb(70, 186, 255)');
++  for(const target of await page.locator('#drillCatalog .drill-target').all())await expect(target).toHaveCSS('color','rgb(181, 116, 246)');
++  for(const kind of ['practice','session']){
++   if(kind==='practice')await page.locator('[data-practice-mode="single"]').click();else await page.locator('#drillCatalog .preset-card').first().getByRole('button',{name:'Start Drill'}).click();
++   const link=page.locator('#'+kind+'GuideLink');await expect(link).toHaveAccessibleName('About this practice');await expect(link).toHaveCSS('text-decoration-line','none');expect((await link.boundingBox()).height).toBeGreaterThanOrEqual(44);
++   expect(await link.evaluate(node=>node.previousElementSibling.id)).toBe(kind+'Steps');await link.focus();await page.keyboard.press('Enter');await expect(page.locator('#practiceGuideView')).toBeVisible();
++   await expect(page.locator('#practiceGuideView .preset-chip')).toHaveCount(0);
++   if(kind==='session'){await expect(page.locator('#practiceGuideSequence')).toHaveClass('drill-steps session-sequence');await expect(page.locator('#practiceGuideSequence > li.drill-step')).toHaveCount(2);}
++   await expect(page.locator('.tab[data-view="drills"]')).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(0);
++   await page.locator('#practiceGuideReturnBtn').click();await expect(link).toBeVisible();await page.locator('.tab[data-view="drills"]').click();
++  }
++ }
++});
+diff --git a/visual-tests/practice-guides.spec.js b/visual-tests/practice-guides.spec.js
+index 51b9654..9bfd133 100644
+--- a/visual-tests/practice-guides.spec.js
++++ b/visual-tests/practice-guides.spec.js
+@@ -115,13 +115,13 @@ test('built-in and existing custom sequence guides keep their actual steps and e
+   await page.locator('#drillCatalog .preset-card').filter({ has: page.getByRole('heading', { name: 'Rack slide → Trigger pull', exact: true }) }).getByRole('button', { name: 'Start Drill' }).click();
+   await expect(page.locator('#sessionConfigure')).toBeVisible(); await page.locator('#sessionRepetitions').fill('29');
+   await page.locator('#sessionGuideLink').click(); await expect(page.locator('#practiceGuideKind')).toHaveText('ORDERED SEQUENCE GUIDE');
+-  await expect(page.locator('#practiceGuideSequence .preset-chip')).toHaveText(['Rack slide', 'Trigger pull']);
++  await expect(page.locator('#practiceGuideSequence > li.drill-step')).toHaveText(['Rack slide', 'Trigger pull']);
+   await page.locator('#practiceGuideReturnBtn').click(); await expect(page.locator('#sessionRepetitions')).toHaveValue('29');
+   await page.locator('.tab[data-view="drills"]').click(); await page.locator('#customDrillsTab').click();
+   await page.locator('#customDrillCatalog').getByRole('button', { name: 'Start Drill' }).first().click();
+   await page.locator('#sessionGuideLink').click(); await expect(page.locator('#practiceGuideName')).toHaveText('QA saved sequence');
+   const preset = library.gunSettings.find(row => row.gunId === library.activeGunId && row.key === 'customDrills').value[0];
+-  await expect(page.locator('#practiceGuideSequence .preset-chip')).toHaveText(preset.steps.map(s => ({ draw: 'Draw from holster', rack: 'Rack slide', trigger: 'Trigger pull', reload: 'Change magazine' })[s]));
++  await expect(page.locator('#practiceGuideSequence > li.drill-step')).toHaveText(preset.steps.map(s => ({ draw: 'Draw from holster', rack: 'Rack slide', trigger: 'Trigger pull', reload: 'Change magazine' })[s]));
+   expect(await page.evaluate(() => window.__guideMicRequests)).toBe(0);
+ });
+ 
+diff --git a/workers/sw.js b/workers/sw.js
+index 5b02e70..0d62cbe 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -1,6 +1,6 @@
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v81`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v82`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {
