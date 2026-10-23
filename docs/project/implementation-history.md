@@ -800,3 +800,10 @@ Full compaction39899498282 public WebKit warm still fails (38→46ms) despite is
 ### 2026-10-23 — CHG-057 complete pre-merge acceptance
 
 CI39900134721 succeeds in all eight jobs: validation/coverage, public+preview screenshot suites, four original browser/edition performance comparisons and aggregate acceptance. Exact9ed3245 candidate verified before application. Standard module order retained; safe HTML compression and benchmark isolation accepted without changing original limits, controls or baselines.983/142+coverage,16smoke and14public+14preview local workflows pass.20 intended Drills references reviewed;366goldens/77current captures. Temporary review input patches, duplicate candidate images and collector workflow removed; immutable Git review evidence retained. Commit/push to b and normal post-push CI are next; main/dev/deployment unchanged.
+
+
+### 2026-10-23 — CHG-053 readiness / startup candidate
+
+CHG-057 published1623012 after complete pre-merge39900134721 success. Normal post-push39901256344 passes validation, both screenshot suites and three performance jobs, but public WebKit warm fails37→43ms again. Do not claim timing debt resolved.
+
+The approved Live Listen regression was reproduced before changes (zero-sample Home entry disabled). One pure model now separates navigation from three-trigger capture eligibility; shared native/React presenters show reason/count guidance and preserve active Stop. Five new local functional checks pass (0/2/3 samples, gun switch/reset, pending permission/Stop). Timing owners now construct once when a gun profile exists, retaining immediate empty onboarding and safe reset/restore/background behavior.21 focused unit checks,1000 total tests/144suites+coverage and13 lifecycle/browser checks pass at the checkpoint; source cachev80/new capture states are undergoing final collection/acceptance. No further application commit until full gate. Main/dev/deployment unchanged.

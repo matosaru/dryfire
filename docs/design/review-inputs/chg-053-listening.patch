@@ -1,0 +1,827 @@
+diff --git a/apps/web/src/app/drillsPage.tsx b/apps/web/src/app/drillsPage.tsx
+index c947813..2e6063d 100644
+--- a/apps/web/src/app/drillsPage.tsx
++++ b/apps/web/src/app/drillsPage.tsx
+@@ -10,7 +10,7 @@ export function mountDrillsPage(host:Element,initial:DrillsRuntimeProps,onPracti
+  const get=<T extends HTMLElement>(id:string)=>host.querySelector<T>('#'+id)!;
+  const editor=get('customDrillForm');
+  const modes=[...host.querySelectorAll('#practiceCatalog .preset-card')].map(card=>({id:card.querySelector<HTMLButtonElement>('[data-practice-mode]')!.dataset.practiceMode!,title:card.querySelector('h3')!.textContent!,description:card.querySelector('p')!.textContent!}));
+- let state:DrillsRuntimeProps={sequenceDescription:get('sequenceDescription').textContent!,gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),collectionHidden:get('builtInDrillsTab').parentElement!.classList.contains('hidden'),customTabHidden:get('customDrillsTab').classList.contains('hidden'),customSelected:get('customDrillsTab').getAttribute('aria-pressed')==='true',createHidden:get('newCustomDrillBtn').classList.contains('hidden'),practiceDisabled:host.querySelector<HTMLButtonElement>('[data-practice-mode]')!.disabled,...initial};
++ let state:DrillsRuntimeProps={sequenceDescription:get('sequenceDescription').textContent!,gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),collectionHidden:get('builtInDrillsTab').parentElement!.classList.contains('hidden'),customTabHidden:get('customDrillsTab').classList.contains('hidden'),customSelected:get('customDrillsTab').getAttribute('aria-pressed')==='true',createHidden:get('newCustomDrillBtn').classList.contains('hidden'),practiceDisabled:host.querySelector<HTMLButtonElement>('[data-practice-mode]')!.disabled,freeListenDisabled:get<HTMLButtonElement>('freeListenBtn').disabled,...initial};
+  const backup=[...host.childNodes],active=host.ownerDocument.activeElement as HTMLElement|null,focusId=host.contains(active)?active?.id:undefined;
+  const selection=active instanceof HTMLInputElement&&active.type==='text'?{start:active.selectionStart,end:active.selectionEnd}:null;
+  let disposed=false,failure:unknown;
+diff --git a/apps/web/src/pages/DrillsPage/DrillsPage.test.tsx b/apps/web/src/pages/DrillsPage/DrillsPage.test.tsx
+index cf46e73..f5e2ad4 100644
+--- a/apps/web/src/pages/DrillsPage/DrillsPage.test.tsx
++++ b/apps/web/src/pages/DrillsPage/DrillsPage.test.tsx
+@@ -12,3 +12,7 @@ afterEach(cleanup);
+ function tree(node:Node):unknown{if(node.nodeType===Node.TEXT_NODE)return node.textContent?.replace(/\s+/g,' ').trim()||null;if(!(node instanceof Element))return null;return[node.tagName,[...node.attributes].map(a=>[a.name,a.value]).sort(),[...node.childNodes].map(tree).filter(Boolean)];}
+ test('complete typed page and retained editor template preserve the released structure',()=>{const native=document.createElement('div'),actual=document.createElement('div');native.innerHTML=readFileSync(new URL('../../../../../tests/fixtures/legacy-drills-page.html',import.meta.url),'utf8').replace('{{practiceCatalog}}','<div id="practiceCatalog"></div>');actual.innerHTML=renderDrillsPage('<div id="practiceCatalog"></div>');expect(tree(actual)).toEqual(tree(native));});
+ test('collections and separate navigation/actions remain feature-owned while empty and hidden states render',()=>{const onBack=jest.fn(),onCollection=jest.fn(),onCreate=jest.fn(),onFree=jest.fn();const card={drill:{id:'saved',title:'Saved preset',steps:['trigger']},titleFor:(label:string)=>label};const result=render(<DrillsPage builtIns={[card]} customs={[card]} customSelected createHidden={false} gunName="Owned gun" onBack={onBack} onCollection={onCollection} onCreate={onCreate} onFree={onFree}/>);for(const name of ['Back to previous screen','Built-in Drills','Custom','+ Create Custom Drill','Start free listening →'])fireEvent.click(result.getByRole('button',{name}));expect(onBack).toHaveBeenCalledTimes(1);expect(onCollection.mock.calls).toEqual([[false],[true]]);expect(onCreate).toHaveBeenCalledTimes(1);expect(onFree).toHaveBeenCalledTimes(1);expect(result.container.querySelector('#drillCatalog')).toHaveClass('hidden');expect(result.container.querySelector('#customDrillCatalog')).not.toHaveClass('hidden');result.rerender(<DrillsPage emptyCustom collectionHidden customTabHidden contextHidden/>);expect(result.getByText(/No custom drills for this gun yet/)).toBeInTheDocument();expect(result.container.querySelector('.segmented-control')).toHaveClass('hidden');expect(result.container.querySelector('#customDrillsTab')).toHaveClass('hidden');expect(result.container.querySelector('.gun-context')).toHaveClass('hidden');});
++
++test('free-listening navigation follows the shared disabled state without invoking a blocked action',()=>{
++ const onFree=jest.fn();const page=render(<DrillsPage freeListenDisabled onFree={onFree}/>);const button=page.getByRole('button',{name:'Start free listening →'});expect(button).toBeDisabled();fireEvent.click(button);expect(onFree).not.toHaveBeenCalled();page.rerender(<DrillsPage freeListenDisabled={false} onFree={onFree}/>);fireEvent.click(button);expect(onFree).toHaveBeenCalledTimes(1);
++});
+diff --git a/apps/web/src/pages/DrillsPage/DrillsPage.tsx b/apps/web/src/pages/DrillsPage/DrillsPage.tsx
+index 3fdba7c..b5560ec 100644
+--- a/apps/web/src/pages/DrillsPage/DrillsPage.tsx
++++ b/apps/web/src/pages/DrillsPage/DrillsPage.tsx
+@@ -1,8 +1,8 @@
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import type {ReactNode} from 'react';
+ import {DrillCard,type DrillCardProps} from '@dryfire/ui/DrillCard';
+-export type DrillsPageProps={practice?:ReactNode;editor?:ReactNode;builtIns?:DrillCardProps[];customs?:DrillCardProps[];sequenceDescription?:string;emptyCustom?:boolean;gunName?:string;contextHidden?:boolean;collectionHidden?:boolean;customTabHidden?:boolean;customSelected?:boolean;createHidden?:boolean;onBack?:()=>void;onCollection?:(custom:boolean)=>void;onCreate?:()=>void;onFree?:()=>void};
+-export function DrillsPage({practice,editor,builtIns=[],customs=[],sequenceDescription,emptyCustom=false,gunName,contextHidden=false,collectionHidden=false,customTabHidden=false,customSelected=false,createHidden=true,onBack,onCollection,onCreate,onFree}:DrillsPageProps){return <>
++export type DrillsPageProps={practice?:ReactNode;editor?:ReactNode;builtIns?:DrillCardProps[];customs?:DrillCardProps[];sequenceDescription?:string;emptyCustom?:boolean;gunName?:string;contextHidden?:boolean;collectionHidden?:boolean;customTabHidden?:boolean;customSelected?:boolean;createHidden?:boolean;freeListenDisabled?:boolean;onBack?:()=>void;onCollection?:(custom:boolean)=>void;onCreate?:()=>void;onFree?:()=>void};
++export function DrillsPage({practice,editor,builtIns=[],customs=[],sequenceDescription,emptyCustom=false,gunName,contextHidden=false,collectionHidden=false,customTabHidden=false,customSelected=false,createHidden=true,freeListenDisabled=false,onBack,onCollection,onCreate,onFree}:DrillsPageProps){return <>
+ <PageHeading id="drills-title" title="Drills" eyebrow="02 / PRACTICE PRESETS" reactBack={false} onBack={onBack}/>
+       <p className={contextHidden?"gun-context hidden":"gun-context"}>Saved presets for <strong className="gun-context-name">{gunName}</strong>.</p>
+       <h3>Trigger Press Group</h3><p className="muted">Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.</p>
+@@ -13,5 +13,5 @@ export function DrillsPage({practice,editor,builtIns=[],customs=[],sequenceDescr
+       <button id="newCustomDrillBtn" onClick={onCreate} type="button" className={createHidden?"button secondary wide-action hidden":"button secondary wide-action"}>+ Create Custom Drill</button>
+       <div id="customDrillCatalog" className={customSelected?"drill-catalog":"drill-catalog hidden"}>{customs.map(card=><DrillCard key={card.drill.id} {...card}/>)}{emptyCustom?<p className="empty-state">No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.</p>:null}</div>
+       {editor}
+-      <button id="freeListenBtn" onClick={onFree} type="button" className="button secondary wide-action">Start free listening →</button>
++      <button id="freeListenBtn" disabled={freeListenDisabled} onClick={onFree} type="button" className="button secondary wide-action">Start free listening →</button>
+ </>;}
+diff --git a/apps/web/src/pages/LiveListenPage/LiveListenPage.tsx b/apps/web/src/pages/LiveListenPage/LiveListenPage.tsx
+index 1000943..7278dc0 100644
+--- a/apps/web/src/pages/LiveListenPage/LiveListenPage.tsx
++++ b/apps/web/src/pages/LiveListenPage/LiveListenPage.tsx
+@@ -33,10 +33,18 @@ export function LiveListenPage({state,onBack,onAction,onChange}:LiveListenPagePr
+       </section>
+       <div className="listen-panel">
+         <div className="listen-visual" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+-        <p id="trainingSummary" className="muted">{state?.texts?.['trainingSummary']??'Checking sound profiles…'}</p>
++        <p id="trainingSummary" className="muted" role="status" aria-live="polite"
++          data-reason-gun="Choose a gun before listening."
++          data-reason-loading="Loading this gun's sound profiles. Please wait."
++          data-reason-busy="Finish recording or testing the current sound before listening."
++          data-reason-saving="Saving preferences. Please wait."
++          data-reason-connecting="Connecting microphone… Allow permission or leave this screen to cancel."
++          data-reason-unsaved="Save the pending drill results before listening. Use Retry on the results page."
++          data-reason-session="Finish or leave the active drill before listening."
++          data-reason-training="Learn at least {minimum} trigger examples ({count}/{minimum}) for this gun. Open Learn to record them. Other sound types are optional.">{state?.texts?.['trainingSummary']??'Checking sound profiles…'}</p>
+         <div className="listener-control">
+-          <button id="listenBtn" disabled={state?.disabled?.listenBtn} onClick={()=>onAction?.('listenBtn')} className={'button primary'+(state?.listening?' listening':'')} type="button">{state?.texts?.['listenBtn']??'Start continuous listening'}</button>
+-          <button id="singleShotBtn" disabled={state?.disabled?.singleShotBtn} onClick={()=>onAction?.('singleShotBtn')} className="button secondary" type="button">Single sound test</button>
++          <button id="listenBtn" aria-describedby="trainingSummary" disabled={state?.disabled?.listenBtn} onClick={()=>onAction?.('listenBtn')} className={'button primary'+(state?.listening?' listening':'')} type="button">{state?.texts?.['listenBtn']??'Start continuous listening'}</button>
++          <button id="singleShotBtn" aria-describedby="trainingSummary" disabled={state?.disabled?.singleShotBtn} onClick={()=>onAction?.('singleShotBtn')} className="button secondary" type="button">Single sound test</button>
+         </div>
+         <label className="sensitivity-control" htmlFor="sensitivity">Detection sensitivity
+           <select id="sensitivity" disabled={state?.disabled?.sensitivity} defaultValue={state?.selects?.sensitivity} onChange={()=>onChange?.('sensitivity')}><option value="normal">Normal</option><option value="high">High (quieter events)</option><option value="low">Low (noisier rooms)</option></select>
+diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
+index 5aa14c3..62f444c 100644
+--- a/docs/architecture/application-structure.md
++++ b/docs/architecture/application-structure.md
+@@ -116,3 +116,6 @@ Before a valid gun profile exists, Settings keeps its immediately usable native
+ ### Drills discovery — CHG-054
+ 
+ `tools/page-templates.mjs` renders the four-entry `PRACTICE_MODES` discovery list from `src/practiceModes.js` through `PracticeCatalog`; shared `DrillsPage` titles the section Trigger Press Group. The React handoff reuses the prerendered mode descriptors. Sequence drills are unchanged. CHG-055 removes the two retired engines and uses schema 4 to selectively remove only their sessions/configuration; supported practice/sequence records are preserved. The four-mode list now drives discovery and the engine directly.
++
++
++CHG-053: `features/live-listen/readiness.ts` is the pure navigation/capture-reason owner. `renderListeningReadiness` supplies native and React Home/Drills/Live Listen ports and shared chrome; the page owns reason-copy metadata. Timing controllers initialize once after a gun profile exists, before its capture/configure flows become available. Empty onboarding retains immediate native controls; restore/reset/background paths safely handle absent timing owners. This preserves first-entry adapters and capture APIs while avoiding unused startup construction.
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index a40b743..2bac5f6 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -520,6 +520,26 @@
+           "anchor": "listeningIndicator",
+           "label": "Continuous listening",
+           "image": "docs/design/screens/live-listen/listening.dark.png"
++        },
++        {
++          "key": "needs-training.dark",
++          "anchor": "trainingSummary",
++          "image": "docs/design/screens/live-listen/needs-training.dark.png"
++        },
++        {
++          "key": "needs-training.light",
++          "anchor": "trainingSummary",
++          "image": "docs/design/screens/live-listen/needs-training.light.png"
++        },
++        {
++          "key": "connecting.dark",
++          "anchor": "trainingSummary",
++          "image": "docs/design/screens/live-listen/connecting.dark.png"
++        },
++        {
++          "key": "connecting.light",
++          "anchor": "trainingSummary",
++          "image": "docs/design/screens/live-listen/connecting.light.png"
+         }
+       ],
+       "design": "docs/design/screens/live-listen/README.md"
+@@ -758,7 +778,7 @@
+   ],
+   "reviewedSources": {
+     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
+-    "src/main.js": "aaf5ef37fb1d38e9c689262eb099d9566bfde6fb1c97760988434287577ddccc",
++    "src/main.js": "c0ca18444fed9fb5dca25639e9e0b1074891cae37ac3db87a7a467a91d1269ce",
+     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
+     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
+     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
+@@ -869,13 +889,13 @@
+     "apps/web/src/app/learnPage.tsx": "81c0401a017f3d210327bc622fa43662a4bbcc29df4064f546a15990cc7bb81b",
+     "apps/web/src/app/liveListenPage.tsx": "c538704e32add37632cf3885ccb4778d536ac9a32dc010d9a67336e06ae4ac28",
+     "apps/web/src/app/renderLiveListenPage.tsx": "b94a079090eee2558540829a3d9508155a58bbb2f94b03073e00a74cf759b579",
+-    "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "b68c166105674792427939d60e563bac2f8d94403c7b5012c23cc2cc5530f562",
++    "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "24cf7641d17206fc6229db91b9f644d04b57b0a586361f639fca8fa2d83472e7",
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
+     "apps/web/src/features/live-listen/presentation.ts": "88218eeaefbac140403beb0d7ece18340942b015399726f5c32618770b8263b8",
+     "apps/web/src/styles/legacy-before-live-listen.css": "1351bd3f07949fe353ce8743c61a280badaa2b16eb007801a9d52357f490d497",
+-    "apps/web/src/app/drillsPage.tsx": "705b56741fe31c90b4720833a6da8faabb7feb94f0859c6072b1cc67a3669d4c",
++    "apps/web/src/app/drillsPage.tsx": "4461ac757c62c6ef5820636ec6636b3f87a83b2b5f968bd793a0d3cfc65d0a9f",
+     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
+-    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "c3e7d4892c917f86e58101f96a5902b29dea7ba39c76da612904be66ee3faa0a",
++    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "7fb89db4b9df0f6df18241a83be9307444f704a6ae2ccbab92816052ef2517a2",
+     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+     "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
+     "packages/ui/src/DrillCard/DrillCard.css": "11312ad4e2573980ea41fff44f877bc9ba921d1c6289269845be2c243ea5fdb1",
+@@ -981,6 +1001,7 @@
+     "CHG-049 P1 route ownership extraction (no visual change)",
+     "CHG-049 static practice catalog prerender (unchanged final UI)",
+     "CHG-049 P2 shared chrome and static controls (unchanged final UI)",
+-    "CHG-057"
++    "CHG-057",
++    "CHG-053"
+   ]
+ }
+diff --git a/docs/architecture/ui-contract-map.md b/docs/architecture/ui-contract-map.md
+index 516e168..7dbb81c 100644
+--- a/docs/architecture/ui-contract-map.md
++++ b/docs/architecture/ui-contract-map.md
+@@ -32,3 +32,6 @@ P4 Live Listen: LiveListenPage owns the interior after guarded later-entry hando
+ P5 Drills: DrillsPage owns collection/preset/mode presentation after guarded later-entry transfer. CHG-057 DrillCard shares its icon/text-column/action structure with PracticeCatalog; catalog chip strips are removed while Configure/help retain sequence details. The custom editor remains an independent native subtree until its P5 UI migration, retaining invalid drafts, selection and handlers. Shared RetainedNode also owns Settings file/preview lifetimes; explicit non-layout structural classes preserve existing CSS sibling contracts. PageHeading now supplies the unchanged numbered-title structure for Settings/Learn/Live Listen/Drills, while its default About/Contact contract remains intact. Free saved-preset use/edit and Full-only creation/simulation are verified through the actual mounted page.
+ 
+ P5 custom editor: CustomDrillEditor shares complete prerender and live fields; the existing feature owns private steps/permissions/save and the stable form submit/visibility host. A typed field renderer owns caption/step/action presentation after transfer; native child mutation remains only in startup fallback. The original native behavior was characterized before extraction, then the same scenarios run against native and React renderers: Free saved edits, Full creation, repeats/reorder/limits, rejected saves, cancel/reset and stale permissions/profiles. Draft, dropdown, validation, focus and retry behavior remain intact. History boundary analysis is offloaded to [ownership notes](../project/react-refactor/history-ownership-notes.md).
++
++
++CHG-053: one pure `features/live-listen/readiness.ts` policy distinguishes valid-gun navigation from trained capture. `renderListeningReadiness` updates Home, Drills, Live Listen and shared chrome through existing native/React ports. LiveListenPage owns reason-copy metadata and described-by/status semantics; current gun counts and operation locks remain main/controller-owned. Timing controllers construct once only after a gun exists; native onboarding/restore/reset/background paths work without them. No capture API, matching threshold, data schema or renderer ownership change.
+diff --git a/docs/design/screens/live-listen/README.md b/docs/design/screens/live-listen/README.md
+index f97828d..78243e1 100644
+--- a/docs/design/screens/live-listen/README.md
++++ b/docs/design/screens/live-listen/README.md
+@@ -32,3 +32,17 @@ Functional specifications: [core](../../../requirements/core.md) · [practice-mo
+ Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
+ 
+ For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
++
++
++## CHG-053 readiness guidance
++
++Home, Drills free listening and the bottom tab share one navigation rule: a valid loaded gun can open this page before training. The existing summary immediately above the capture buttons explains why capture is unavailable. Missing training shows the selected gun’s current count out of three and tells the user to open Learn; optional sounds do not block it. Connecting/saving/current-operation/unsaved-result states have clear recovery text. Active listening keeps Stop usable. No new layout, colors or microphone permission on navigation. Native and React owners use the same policy and copy.
++
++| State | Current reference |
++| --- | --- |
++| Needs trigger training · Dark | [needs-training.dark.png](needs-training.dark.png) |
++| Needs trigger training · Light | [needs-training.light.png](needs-training.light.png) |
++| Connecting microphone · Dark | [connecting.dark.png](connecting.dark.png) |
++| Connecting microphone · Light | [connecting.light.png](connecting.light.png) |
++
++These revised states are awaiting pinned collection/review; implementation and acceptance are tracked separately in the project history. Ready/listening images retain their existing approved appearance.
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index c2d27c7..19d5d41 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -113,7 +113,7 @@
+     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
+     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+-    "src/main.js": "aaf5ef37fb1d38e9c689262eb099d9566bfde6fb1c97760988434287577ddccc",
++    "src/main.js": "c0ca18444fed9fb5dca25639e9e0b1074891cae37ac3db87a7a467a91d1269ce",
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+     "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
+diff --git a/docs/requirements/live-listen-readiness.md b/docs/requirements/live-listen-readiness.md
+index 8012e7d..42f7923 100644
+--- a/docs/requirements/live-listen-readiness.md
++++ b/docs/requirements/live-listen-readiness.md
+@@ -1,6 +1,6 @@
+ # Live Listen availability — CHG-053
+ 
+-Approved by direct user instruction on 2026-10-22: review intermittent availability, synchronize all entry points and visibly explain unavailable controls. Implementation is queued after CHG-052 acceptance. This preserves the existing three-trigger-example requirement; it does not add a new numeric restriction.
++Approved by direct user instruction on 2026-10-22: review intermittent availability, synchronize all entry points and visibly explain unavailable controls. Implementation proceeds after CHG-057 full pre-merge acceptance and publication; its post-push verification is tracked separately. This preserves the existing three-trigger-example requirement; it does not add a new numeric restriction.
+ 
+ | ID | Requirement |
+ | --- | --- |
+@@ -15,3 +15,5 @@ Approved by direct user instruction on 2026-10-22: review intermittent availabil
+ Use a pure reason-code/navigation model shared by all presenters. Keep user-facing copy with the shared Live Listen page; its prerendered metadata supplies the native adapter as well. Never parse user text as HTML to show a reason.
+ 
+ Acceptance: unit state/priority cases; actual 0/2/3-example navigation/capture flows; optional-sound independence; reset/switch/stop recovery; native/React handoffs; both editions/themes and narrow layouts. Review current [Live Listen designs](../design/screens/live-listen/README.md), update affected screenshots/state registry, and retain original performance/visual gates. Publication, CI and deployment are separate statuses.
++
++Navigation also respects saving preferences and unsaved-result locks, matching the existing screenNavigation.canLeave contract. Connecting/active timed capture can be left through the established cancellation/interruption path; these do not independently disable navigation. Capture remains blocked until ready, and an active continuous Stop action remains enabled.
+diff --git a/src/main.js b/src/main.js
+index 68e4e21..2177d7c 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -1,3 +1,4 @@
++import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
+ import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
+ import { createModulePreparation } from './modulePreparation.js';
+ import {distancePresentation,liveDrillPresentation} from '../apps/web/src/features/live-listen/presentation.ts';
+@@ -149,9 +150,31 @@ function ownerId() {
+ }
+ function profileLocked() { return busy || profileLoading || preferencePending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked(); }
+ function currentDrill(id) { return getDrill(id, customDrills); }
++/** One navigation/capture policy for native startup and owned React pages. */
++function renderListeningReadiness(counts = getCounts()) {
++  const gunAvailable = !!activeGun && !activeGun.needsDetails;
++  const view = listeningReadiness({gunAvailable,count:counts.trigger,minimum:MIN_EXAMPLES_PER_CLASS,
++    loading:profileLoading,busy,saving:preferencePending,connecting:livePendingStart,
++    unsaved:!!sessionController?.hasUnsavedResults() || !!practiceController?.hasUnsavedResults(),
++    timed:!!sessionController?.locked() || !!practiceController?.locked()});
++  const summary = $('#trainingSummary');
++  const text = view.reason
++    ? summary.getAttribute('data-reason-' + view.reason).replaceAll('{minimum}',MIN_EXAMPLES_PER_CLASS).replaceAll('{count}',counts.trigger)
++    : `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
++  const disabled = {listenBtn:!liveSession && !!view.reason,singleShotBtn:!!liveSession || !!view.reason};
++  if(livePage)livePage.update({texts:{trainingSummary:text},disabled});
++  else { if(summary.textContent!==text)summary.textContent=text; for(const[id,value]of Object.entries(disabled))$('#'+id).disabled=value; }
++  informationPages.setNavigationDisabled(view.entryDisabled);
++  const context = {gunName:activeGun?.name || 'No gun selected',contextHidden:!gunAvailable};
++  const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
++  if(homePage)homePage.update({...context,training,listenDisabled:view.entryDisabled});
++  else {$('#homeExamples').textContent=training;$('#homeListenBtn').disabled=view.entryDisabled;}
++  if(drillsPage)drillsPage.update({...context,freeListenDisabled:view.entryDisabled});
++  else $('#freeListenBtn').disabled=view.entryDisabled;
++}
++
+ function renderGunControls() {
+-  informationPages.setNavigationDisabled(!activeGun || activeGun.needsDetails || profileLoading);
+-  homePage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
++  renderListeningReadiness();
+   $('#gunSwitcherBtn').disabled = profileLocked();
+   $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
+   $('#gunSwitcherBtn').title = profileLocked() ? 'Finish recording or stop listening before switching guns.' : 'Choose another gun';
+@@ -177,13 +200,28 @@ function renderGunControls() {
+   learnPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+   livePage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+   historyPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+-  drillsPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+   if (!activeGun || activeGun.needsDetails) {settingsDisabled('resetModelBtn',true);liveDisabled('verifyLatestBtn',true);historyDisabled('clearHistoryBtn',true);}
+   settingsDisabled('exportBtn',profileLocked());
+   settingsDisabled('importBtn',profileLocked());
+   liveDisabled("verifyLatestBtn",!latestEventId || profileLocked());
+ }
+ 
++/** Hidden timing forms acquire their controllers only after a gun exists.
++ * Keep immediate onboarding/restore controls and create each owner once. */
++function initializeTimedControllers() {
++  practiceController ||=  createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
++    onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
++    vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
++  sessionController ||=  createSessionController({
++    getContext: practiceContext,
++    titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
++    onChange: () => { renderLiveButton(); renderClassCards(); },
++    onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
++    onVibration: reportVibration,
++    onPracticeRecord: record => practiceController.showRecord(record),
++  });
++}
++
+ async function loadActiveGun() {
+   historyRenderToken += 1;
+   homeRenderToken += 1;
+@@ -193,6 +231,7 @@ async function loadActiveGun() {
+   // Independent reads share the wait; profile content renders only after loading.
+   [activeGun, guns] = await Promise.all([getActiveGun(), getGuns(), loadDevicePreferences()]);
+   const id = activeGun?.id;
++  if (id) initializeTimedControllers();
+   examples = id ? await getExamples(id) : [];
+   customDrills = id ? await getCustomDrills(id) : [];
+   const legacy = id ? await getOutdatedExampleCount(id) : 0;
+@@ -281,9 +320,9 @@ async function renderGunLibrary() {
+ 
+ async function flushLibraryWork() {
+   await eventQueue;
+-  await sessionController.flush();
+-  await practiceController.flush();
+-  if (sessionController.hasUnsavedResults() || practiceController.hasUnsavedResults()) {
++  await sessionController?.flush();
++  await practiceController?.flush();
++  if (sessionController?.hasUnsavedResults() || practiceController?.hasUnsavedResults()) {
+     throw new Error('Session results are not saved. Retry saving before deleting data.');
+   }
+ }
+@@ -316,8 +355,8 @@ async function selectGunProfile(id) {
+   renderLiveButton();
+   try {
+     await eventQueue;
+-    await sessionController.flush();
+-    await practiceController.flush();
++    await sessionController?.flush();
++    await practiceController?.flush();
+     await setActiveGun(id);
+     await loadActiveGun();
+     $('#safetyAck').checked = false;
+@@ -405,7 +444,6 @@ function ensureSafe(action) { return safetyGate.ensure(action); }
+ function setBusy(next) {
+   busy = next;
+   settingsDisabled('resetModelBtn',next);
+-  liveDisabled('singleShotBtn',next);
+   historyDisabled('clearHistoryBtn',next);
+   renderLearningLocks();
+   renderGunControls();
+@@ -456,15 +494,7 @@ function renderClassCards() {
+     }
+     renderCalibrationCards();
+   }
+-  const ready = !!activeGun && !activeGun.needsDetails && triggerReady();
+-  liveText("trainingSummary",ready
+-    ? `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`
+-    : `Learn at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before trigger practice. Other sound types are optional.`);
+-  liveDisabled("listenBtn",busy || livePendingStart || !!sessionController?.locked() || !!practiceController?.locked() || (!ready && !liveSession));
+-  liveDisabled("singleShotBtn",profileLocked() || !ready);
+-  const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
+-  if(homePage)homePage.update({training,listenDisabled:busy || !ready});
+-  else { $('#homeExamples').textContent = training; $('#homeListenBtn').disabled = busy || !ready; }
++  renderListeningReadiness(counts);
+ }
+ 
+ async function toggleOptionalSound(label, enabled) {
+@@ -591,7 +621,7 @@ function displayView(name) {
+     if($('#practiceCatalog').firstElementChild?.tagName==='TEMPLATE')practiceController.renderCatalog();
+     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
+     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
+-      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
++      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>switchView('recognize')},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
+     }
+     if(drillsPage && !profileLocked() && !$('#safetyModal').open){try{customEditor.connectView(drillsModule.mountCustomDrillFields);}catch(error){showError(error);}}
+   }
+@@ -737,7 +767,7 @@ async function savePrediction(features, token = null, gunId = ownerId(), predict
+ async function recognize() {
+   if (!triggerReady()) {
+     switchView('learn');
+-    setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before trying recognition. Other sound types are optional.`);
++    setMessage($('#trainingSummary').textContent);
+     return;
+   }
+   const gunId = ownerId();
+@@ -757,9 +787,6 @@ function renderLiveButton() {
+   liveDisabled("sensitivity",listening || livePendingStart || profileLoading || timed);
+   liveDisabled("drillSelect",listening || livePendingStart || profileLoading || timed);
+   liveDisabled("resetDrillBtn",listening || livePendingStart);
+-  const ready = triggerReady();
+-  liveDisabled("listenBtn",busy || profileLoading || livePendingStart || timed || (!ready && !listening));
+-  liveDisabled("singleShotBtn",listening || busy || profileLoading || livePendingStart || timed || !ready);
+   settingsDisabled('resetModelBtn',busy || profileLoading || listening || livePendingStart || timed);
+   historyDisabled('clearHistoryBtn',busy || profileLoading || listening || livePendingStart || timed);
+   renderLearningLocks();
+@@ -1000,17 +1027,6 @@ async function init() {
+   safetyGate = createSafetyGate({ dialog: $('#safetyModal'), checkbox: $('#safetyModalAck'), confirmButton: $('#safetyConfirmBtn'), cancelButton: $('#safetyCancelBtn'),
+     isConfirmed: () => $('#safetyAck').checked, confirmState: () => { $('#safetyAck').checked = true; $('#safetyAck').dispatchEvent(new Event('change')); },
+     identity: () => `${activeGun?.id}|${activeView}`, onError: showError });
+-  practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
+-    onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
+-    vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
+-  sessionController = createSessionController({
+-    getContext: practiceContext,
+-    titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
+-    onChange: () => { renderLiveButton(); renderClassCards(); },
+-    onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
+-    onVibration: reportVibration,
+-    onPracticeRecord: record => practiceController.showRecord(record),
+-  });
+   practiceGuideController = createPracticeGuideBridge({ onBack: parent => goBack(parent), onNavigate: () => switchView('practiceGuide'), onError: showError });
+   for (const [id, parent] of [['practiceGuideLink', 'practice'], ['sessionGuideLink', 'session']]) {
+     const handler=event => {
+@@ -1065,7 +1081,7 @@ async function init() {
+   $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));
+   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
+   bindLive('changeDrillBtn','click', () => switchView('drills'));
+-  $('#freeListenBtn').addEventListener('click', () => { if (!profileLocked()) switchView('recognize'); });
++  $('#freeListenBtn').addEventListener('click', () => switchView('recognize'));
+   renderDrillCatalog();
+   bindLive('listenBtn','click', toggleLive);
+   bindLive('drillSelect','change', () => { if (profileLocked()) return; resetDrill(); setGunSetting('selectedDrill', $('#drillSelect').value, ownerId()).catch(showError); });
+@@ -1075,8 +1091,8 @@ async function init() {
+   bindSettings('importBtn','click', () => $('#importFile').click());
+   bindSettings('exportBtn','click', async () => {
+     try {
+-      await sessionController.flush();
+-      await practiceController.flush();
++      await sessionController?.flush();
++      await practiceController?.flush();
+       const data = JSON.stringify(await exportBackup(), null, 2);
+       const url = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
+       const anchor = document.createElement('a');
+@@ -1099,8 +1115,8 @@ async function init() {
+     setBusy(true);
+     try {
+       await eventQueue;
+-      await sessionController.flush();
+-      await practiceController.flush();
++      await sessionController?.flush();
++      await practiceController?.flush();
+       const result = await restoreBackup(JSON.parse(await file.text()));
+       await loadActiveGun();
+       await renderHistory();
+@@ -1125,19 +1141,19 @@ async function init() {
+   });
+   document.addEventListener('visibilitychange', () => {
+     if (document.hidden && (liveSession || livePendingStart)) void stopLive();
+-    if (document.hidden && sessionController.locked()) sessionController.interrupt('background').catch(showError);
+-    if (document.hidden && practiceController.locked()) practiceController.interrupt('background').catch(showError);
++    if (document.hidden && sessionController?.locked()) sessionController.interrupt('background').catch(showError);
++    if (document.hidden && practiceController?.locked()) practiceController.interrupt('background').catch(showError);
+   });
+   window.addEventListener('pagehide', () => {
+     if (liveSession || livePendingStart) void stopLive();
+-    if (sessionController.locked()) sessionController.interrupt('pagehide').catch(() => {});
+-    if (practiceController.locked()) practiceController.interrupt('pagehide').catch(() => {});
++    if (sessionController?.locked()) sessionController.interrupt('pagehide').catch(() => {});
++    if (practiceController?.locked()) practiceController.interrupt('pagehide').catch(() => {});
+   });
+   $('#safetyAck').addEventListener('change', () => {
+     $('#safetySummaryState').textContent = $('#safetyAck').checked ? 'Confirmed for this session' : 'Required before recording';
+     if (!$('#safetyAck').checked && (liveSession || livePendingStart)) void stopLive();
+-    if (!$('#safetyAck').checked && sessionController.locked()) sessionController.interrupt('safety-check').catch(showError);
+-    if (!$('#safetyAck').checked && practiceController.locked()) practiceController.interrupt('safety-check').catch(showError);
++    if (!$('#safetyAck').checked && sessionController?.locked()) sessionController.interrupt('safety-check').catch(showError);
++    if (!$('#safetyAck').checked && practiceController?.locked()) practiceController.interrupt('safety-check').catch(showError);
+   });
+   bindSettings('resetModelBtn','click', async () => {
+     if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Reset all learned sounds and reset/noise/beep calibration for ${activeGun.name}? Gun profiles, presets, saved sessions, recognition history and other guns will be kept.`)) return;
+@@ -1161,8 +1177,8 @@ async function init() {
+     setBusy(true);
+     try {
+       await eventQueue;
+-      await sessionController.flush();
+-      await practiceController.flush();
++      await sessionController?.flush();
++      await practiceController?.flush();
+       await resetLibrary();
+       window.location.reload();
+     } catch (error) { showError(error); setBusy(false); }
+@@ -1200,8 +1216,8 @@ async function init() {
+     try {
+       await flushLibraryWork();
+       await clearSessions(gunId);
+-      sessionController.reset();
+-      practiceController.reset();
++      sessionController?.reset();
++      practiceController?.reset();
+       await renderHistory();
+       setStatus('Saved sessions cleared');
+       historyText('sessionsClearOutcome',`Saved sessions and progress statistics for ${activeGun.name} were cleared. Learned sounds and recognition history were kept.`);
+@@ -1230,7 +1246,7 @@ async function init() {
+     else await sessionController.showRecord(recoveredForGun);
+   }
+   setStatus('Ready');
+-  afterPaint(practiceController.renderCatalog).catch(showError);
++  if (practiceController) afterPaint(practiceController.renderCatalog).catch(showError);
+ }
+ 
+ const informationPages = createInformationBridge({ onBack: () => goBack(), onError: showError, onNavigate: name => { if (screenNavigation) switchView(name); },
+diff --git a/tests/fixtures/legacy-live-listen-page.html b/tests/fixtures/legacy-live-listen-page.html
+index e23aa42..6c7ba7d 100644
+--- a/tests/fixtures/legacy-live-listen-page.html
++++ b/tests/fixtures/legacy-live-listen-page.html
+@@ -30,10 +30,18 @@
+       </section>
+       <div class="listen-panel">
+         <div class="listen-visual" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+-        <p id="trainingSummary" class="muted">Checking sound profiles…</p>
++        <p id="trainingSummary" class="muted" role="status" aria-live="polite"
++          data-reason-gun="Choose a gun before listening."
++          data-reason-loading="Loading this gun's sound profiles. Please wait."
++          data-reason-busy="Finish recording or testing the current sound before listening."
++          data-reason-saving="Saving preferences. Please wait."
++          data-reason-connecting="Connecting microphone… Allow permission or leave this screen to cancel."
++          data-reason-unsaved="Save the pending drill results before listening. Use Retry on the results page."
++          data-reason-session="Finish or leave the active drill before listening."
++          data-reason-training="Learn at least {minimum} trigger examples ({count}/{minimum}) for this gun. Open Learn to record them. Other sound types are optional.">Checking sound profiles…</p>
+         <div class="listener-control">
+-          <button id="listenBtn" class="button primary" type="button">Start continuous listening</button>
+-          <button id="singleShotBtn" class="button secondary" type="button">Single sound test</button>
++          <button id="listenBtn" aria-describedby="trainingSummary" class="button primary" type="button">Start continuous listening</button>
++          <button id="singleShotBtn" aria-describedby="trainingSummary" class="button secondary" type="button">Single sound test</button>
+         </div>
+         <label class="sensitivity-control" for="sensitivity">Detection sensitivity
+           <select id="sensitivity"><option value="normal">Normal</option><option value="high">High (quieter events)</option><option value="low">Low (noisier rooms)</option></select>
+diff --git a/tests/learningPresentation.test.js b/tests/learningPresentation.test.js
+index b4298d4..a464cf6 100644
+--- a/tests/learningPresentation.test.js
++++ b/tests/learningPresentation.test.js
+@@ -7,6 +7,7 @@ import {jest} from '@jest/globals';
+ import {readFileSync} from 'node:fs';
+ import vm from 'node:vm';
+ import {renderPageTemplates} from '../tools/page-templates.mjs';
++import {listeningReadiness} from '../apps/web/src/features/live-listen/readiness.ts';
+ import {soundCard} from '../src/uiComponents.js';
+ const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
+ const start=source.indexOf('const labelMeta ='), metadata=source.slice(start,source.indexOf('};',start)+2);
+@@ -15,13 +16,13 @@ function setup() {
+   document.body.innerHTML=renderPageTemplates('{{app}}');
+   const counts={trigger:3,draw:1,rack:0,reload:0};
+   const record=jest.fn(),reset=jest.fn(),calibration=jest.fn();
+-  const context={learnPage:null,livePage:null,homePage:undefined,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
++  const context={learnPage:null,livePage:null,homePage:undefined,drillsPage:null,informationPages:{setNavigationDisabled:jest.fn()},listeningReadiness,preferencePending:false,profileLoading:false,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
+     titleFor:label=>label,labels:['draw','rack','trigger','reload'],getCounts:()=>counts,triggerReady:()=>counts.trigger>=3,
+     MAX_EXAMPLES_PER_CLASS:10,MIN_EXAMPLES_PER_CLASS:3,RECOMMENDED_EXAMPLES_PER_CLASS:8,
+     profileLocked:()=>context.busy,busy:false,livePendingStart:false,liveSession:null,sessionController:null,practiceController:null,
+     calibration:[],recordCalibration:jest.fn(),resetCalibration:jest.fn(),enabledSoundLabels:['trigger','draw'],recordExample:record,resetSoundProfile:reset,toggleOptionalSound:jest.fn(),renderCalibrationCards:calibration,
+   };
+-  const {renderClassCards,renderLearningLocks}=vm.runInNewContext(metadata+'\n'+source.slice(source.indexOf('function liveText('),source.indexOf('function bindSettings('))+'\n'+rendering+'\n;({renderClassCards,renderLearningLocks});',context);
++  const {renderClassCards,renderLearningLocks}=vm.runInNewContext(metadata+'\n'+source.slice(source.indexOf('function liveText('),source.indexOf('function bindSettings('))+'\n'+source.slice(source.indexOf('function renderListeningReadiness('),source.indexOf('function renderGunControls('))+'\n'+rendering+'\n;({renderClassCards,renderLearningLocks});',context);
+   return{context,counts,record,reset,calibration,render:renderClassCards,locks:renderLearningLocks};
+ }
+ 
+@@ -42,7 +43,7 @@ test('profile locks and changed gun counts refresh visible learning and Home rea
+   for(const button of document.querySelectorAll('.class-card button'))expect(button).toBeDisabled();
+   s.context.busy=false;s.context.activeGun={id:'two',name:'Two',needsDetails:false};s.counts.trigger=0;s.counts.draw=0;s.render();
+   expect(document.querySelector('#trainingSummary')).toHaveTextContent('Learn at least 3 trigger examples');
+-  expect(document.querySelector('#homeListenBtn')).toBeDisabled();
++  expect(document.querySelector('#homeListenBtn')).toBeEnabled();
+   expect(document.querySelector('[data-sound-label="trigger"] .reset-class')).toBeDisabled();
+   expect(s.record).not.toHaveBeenCalled();expect(s.reset).not.toHaveBeenCalled();
+ });
+@@ -54,7 +55,7 @@ test('practice updates retain hidden Learning nodes while readiness stays curren
+   s.context.activeView='practice';s.counts.trigger=0;s.render();
+   expect(document.querySelector('[data-sound-label="trigger"]')).toBe(original);
+   expect(document.querySelector('#homeExamples')).toHaveTextContent('0 / 8 trigger');
+-  expect(document.querySelector('#homeListenBtn')).toBeDisabled();
++  expect(document.querySelector('#homeListenBtn')).toBeEnabled();
+   expect(s.calibration).toHaveBeenCalledTimes(1);
+   s.context.activeView='learn';s.render();
+   expect(document.querySelector('[data-sound-label="trigger"]')).not.toBe(original);
+@@ -64,7 +65,7 @@ test('practice updates retain hidden Learning nodes while readiness stays curren
+ 
+ test('after Home ownership transfer, readiness is sent to its renderer without native Home mutations',()=>{
+  const s=setup(),update=jest.fn();s.context.homePage={update};document.querySelector('#homeExamples').textContent='Owned';s.render();
+- expect(update).toHaveBeenCalledWith({training:'3 / 8 trigger',listenDisabled:false});expect(document.querySelector('#homeExamples')).toHaveTextContent('Owned');
++ expect(update).toHaveBeenCalledWith({gunName:'One',contextHidden:false,training:'3 / 8 trigger',listenDisabled:false});expect(document.querySelector('#homeExamples')).toHaveTextContent('Owned');
+ });
+ 
+ test('mounted Learn receives the owned model and callbacks without native card writes',()=>{
+diff --git a/tests/profileLoading.test.js b/tests/profileLoading.test.js
+index 8e7ac3e..abd4139 100644
+--- a/tests/profileLoading.test.js
++++ b/tests/profileLoading.test.js
+@@ -14,7 +14,7 @@ const extract=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end
+ const deferred=()=>{let resolve;const promise=new Promise(yes=>{resolve=yes;});return{promise,resolve};};
+ function setup(gun={id:'a',name:'Test',type:'Handguns'}){
+  document.body.innerHTML=renderPageTemplates('{{app}}');
+- const context={historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
++ const context={initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
+   activeGun:null,guns:[],examples:[],customDrills:[],audioPreferences:{},calibration:[],enabledSoundLabels:[],
+   processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',vibrationFeedback:false,vibrationRejected:true,
+   getActiveGun:jest.fn(async()=>gun),getGuns:jest.fn(async()=>gun?[gun]:[]),
+@@ -31,7 +31,7 @@ function setup(gun={id:'a',name:'Test',type:'Handguns'}){
+ }
+ test('profile loading preserves owned values, preference normalization and final reset/render state',async()=>{
+  const {context:c,load}=setup();await load();
+- expect(c.activeGun.id).toBe('a');expect(c.guns).toEqual([c.activeGun]);
++ expect(c.initializeTimedControllers).toHaveBeenCalledTimes(1);expect(c.activeGun.id).toBe('a');expect(c.guns).toEqual([c.activeGun]);
+  for(const getter of ['getExamples','getCustomDrills','getOutdatedExampleCount','getCalibrationExamples'])expect(c[getter]).toHaveBeenCalledWith('a');
+  expect(document.querySelector('#maxResults').value).toBe('75');expect(document.querySelector('#sensitivity').value).toBe('high');
+  expect(c.getGunSetting).toHaveBeenCalledWith('selectedDrill','','a');expect(c.currentDrill).toHaveBeenCalledWith('valid');expect(c.audioPreferences.noiseFilter).toBe(false);expect(c.enabledSoundLabels).toEqual(['rack','trigger']);
+@@ -43,7 +43,7 @@ test('profile loading preserves owned values, preference normalization and final
+ test('empty libraries retain defaults without requesting another gun’s records',async()=>{
+  const {context:c,load}=setup(null);await load();
+  for(const getter of ['getExamples','getCustomDrills','getOutdatedExampleCount','getGunSetting','getCalibrationExamples'])expect(c[getter]).not.toHaveBeenCalled();
+- expect(c.examples).toEqual([]);expect(c.calibration).toEqual([]);expect(c.customDrills).toEqual([]);
++ expect(c.initializeTimedControllers).not.toHaveBeenCalled();expect(c.examples).toEqual([]);expect(c.calibration).toEqual([]);expect(c.customDrills).toEqual([]);
+  expect(document.querySelector('#maxResults').value).toBe('50');expect(document.querySelector('#sensitivity').value).toBe('normal');
+  expect(c.enabledSoundLabels).toEqual(['trigger']);expect(c.renderHome).toHaveBeenCalledTimes(1);
+ });
+diff --git a/visual-tests/catalog.js b/visual-tests/catalog.js
+index 5916f71..a6b0c13 100644
+--- a/visual-tests/catalog.js
++++ b/visual-tests/catalog.js
+@@ -6,7 +6,7 @@ export const catalog = [...registry.screens, ...registry.shared].flatMap(screen
+   editions: state.edition ? [state.edition] : ['public', 'preview'],
+ })));
+ // Additional narrow-width captures supplement every registered state at 390 px.
+-const narrow = new Set(['practiceGuide/single.dark', 'practiceGuide/single.light', 'practiceGuide/single-early.dark', 'practiceGuide/single-early.light', 'gunSetup/first-gun.dark', 'guns/library.dark', 'guns/library.light', 'learn/overview.dark',
++const narrow = new Set(['recognize/needs-training.dark','recognize/needs-training.light','practiceGuide/single.dark', 'practiceGuide/single.light', 'practiceGuide/single-early.dark', 'practiceGuide/single-early.light', 'gunSetup/first-gun.dark', 'guns/library.dark', 'guns/library.light', 'learn/overview.dark',
+   'drills/catalog.dark', 'practice/configure-single.dark', 'practice/active.dark', 'history/progress.dark',
+   'history/overview.dark', 'settings/installation-help.dark', 'settings/installation-help.light', 'settings/overview.dark', 'settings/overview.light', 'settings/preview-free.dark', 'settings/preview-free.light', 'settings/preview-full.dark', 'settings/preview-full.light', 'about/overview.dark', 'about/overview.light', 'contact/overview.dark', 'contact/overview.light', 'safety/safety-modal.dark']);
+ export const allCases = catalog.flatMap(item => item.editions.flatMap(edition => [390, ...(narrow.has(`${item.screen}/${item.state}`) ? [320] : [])].map(width => ({ ...item, width, edition }))));
+diff --git a/visual-tests/screens.spec.js b/visual-tests/screens.spec.js
+index 8f685ae..e884444 100644
+--- a/visual-tests/screens.spec.js
++++ b/visual-tests/screens.spec.js
+@@ -2,7 +2,7 @@ import { installPausedClock } from './clock.js';
+ import { addLegacySequence, openLegacySequence } from './legacy-sequence.js';
+ import {freezeMotionArtwork} from './motion-fixture.js';
+ import { test, expect } from '@playwright/test';
+-import { readFileSync } from 'node:fs';
++import { readFileSync, mkdirSync } from 'node:fs';
+ import { cases, baselineName } from './catalog.js';
+ import { installSyntheticMedia } from './media.js';
+ 
+@@ -54,6 +54,7 @@ async function prepare(page, item) {
+     const backup = structuredClone(library);
+     if (item.screen === 'session' || item.state.startsWith('sequence-trigger-only')) addLegacySequence(backup);
+     backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
++    if(item.screen==='recognize' && item.state.startsWith('needs-training'))backup.examples=backup.examples.filter(row=>row.gunId!==backup.activeGunId || row.label!=='trigger');
+     if (item.state.startsWith('add-second-gun')) {
+       backup.guns = backup.guns.filter(gun => gun.id === backup.activeGunId);
+       for (const key of ['examples', 'events', 'sessions', 'gunSettings']) backup[key] = backup[key].filter(row => row.gunId === backup.activeGunId);
+@@ -173,6 +174,8 @@ async function prepare(page, item) {
+     }
+     case 'recognize':
+       await tab(page, 'recognize');
++      if(item.state.startsWith('needs-training')){await expect(page.locator('#trainingSummary')).toContainText('0/3');await expect(page.locator('#listenBtn')).toBeDisabled();}
++      if(item.state.startsWith('connecting')){await page.evaluate(()=>{navigator.mediaDevices.getUserMedia=()=>new Promise(()=>{});});await page.locator('#listenBtn').click();await confirmSafety(page);await expect(page.locator('#trainingSummary')).toContainText('Connecting');await expect(page.locator('#listenBtn')).toBeDisabled();}
+       if (item.state.startsWith('listening')) { await page.locator('#listenBtn').click(); await confirmSafety(page); await expect(page.locator('#listeningIndicator')).toContainText('Microphone active'); await emit(page); await expect(page.locator('#sessionTimeline li')).toHaveCount(1); }
+       break;
+     case 'history':
+@@ -249,6 +252,9 @@ for (const item of cases) {
+     expect(errors, 'Unexpected browser errors').toEqual([]);
+     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });
+     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });
+-    await expect(page).toHaveScreenshot(baselineName(item).split('/'));
++    if(process.env.COLLECT_LISTENING_CANDIDATES==='1'){
++      if(item.screen!=='recognize'||!['needs-training','connecting'].some(state=>item.state.startsWith(state)))throw new Error('Unapproved candidate screen');
++      const path=`docs/design/review-candidates/chg-053/${testInfo.project.name}/${baselineName(item)}`;mkdirSync(path.slice(0,path.lastIndexOf('/')),{recursive:true});await page.screenshot({path,fullPage:false,animations:'disabled',caret:'hide',scale:'css'});
++    }else await expect(page).toHaveScreenshot(baselineName(item).split('/'));
+   });
+ }
+diff --git a/visual-tests/startup-settings.spec.js b/visual-tests/startup-settings.spec.js
+index 6ac654e..6e36ae5 100644
+--- a/visual-tests/startup-settings.spec.js
++++ b/visual-tests/startup-settings.spec.js
+@@ -22,3 +22,13 @@ test('onboarding Settings stays usable without downloading its React enhancement
+  await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
+  await expect(page.locator('#importBtn')).toBeEnabled();
+ });
++
++test('empty-library background/reset/restore keeps onboarding usable before timing owners are needed',async({page})=>{
++ const errors=[];page.on('pageerror',error=>errors.push(error.message));page.on('dialog',dialog=>dialog.accept());
++ await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();
++ await page.evaluate(()=>window.dispatchEvent(new Event('pagehide')));
++ await page.locator('#settingsShortcut').click();await page.locator('#resetLibraryBtn').click();await expect(page.locator('#gunSetupView')).toBeVisible();
++ await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:readFileSync(new URL('./fixtures/library.json',import.meta.url))});await expect(page.locator('#homeView')).toBeVisible();
++ await page.locator('.tab[data-view="drills"]').click();await page.locator('[data-practice-mode="single"]').click();await expect(page.locator('#practiceConfigure')).toBeVisible();await expect(page.locator('#practiceStartBtn')).toBeEnabled();
++ await page.locator('.tab[data-view="drills"]').click();await page.locator('#drillCatalog .preset-card').first().getByRole('button',{name:'Start Drill'}).click();await expect(page.locator('#sessionConfigure')).toBeVisible();await expect(page.locator('#sessionStartBtn')).toBeEnabled();expect(errors).toEqual([]);
++});
+diff --git a/workers/sw.js b/workers/sw.js
+index 4db236d..73b2944 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -1,6 +1,6 @@
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v79`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v80`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {
+diff --git a/apps/web/src/features/live-listen/readiness.test.ts b/apps/web/src/features/live-listen/readiness.test.ts
+new file mode 100644
+index 0000000..b7b6d62
+--- /dev/null
++++ b/apps/web/src/features/live-listen/readiness.test.ts
+@@ -0,0 +1,28 @@
++import { listeningReadiness, type ListeningReadinessInput, type ListeningReason } from './readiness';
++const ready = { gunAvailable: true, count: 3, minimum: 3 };
++
++test.each<[string,Partial<ListeningReadinessInput>,ListeningReason,boolean]>([
++  ['no gun', { gunAvailable: false }, 'gun', true],
++  ['loading an otherwise trained gun', { loading: true }, 'loading', true],
++  ['recording', { busy: true }, 'busy', true],
++  ['saving preferences', { saving: true }, 'saving', true],
++  ['microphone permission pending', { connecting: true }, 'connecting', false],
++  ['unsaved results', { unsaved: true }, 'unsaved', true],
++  ['active timed practice', { timed: true }, 'session', false],
++  ['no trigger examples', { count: 0 }, 'training', false],
++  ['two trigger examples', { count: 2 }, 'training', false],
++  ['exact training minimum', {}, '', false],
++  ['additional examples', { count: 10 }, '', false],
++  ['caller-owned minimum', { minimum: 4 }, 'training', false],
++])('%s reports the capture reason separately from navigation availability', (_name, change, reason, entryDisabled) => {
++  expect(listeningReadiness({ ...ready, ...change })).toEqual({ reason, entryDisabled });
++});
++
++test('in-flight work takes priority over stale profile counts, and failed saves give recovery guidance', () => {
++  expect(listeningReadiness({ ...ready, loading: true, count: 0 }).reason).toBe('loading');
++  expect(listeningReadiness({ ...ready, timed: true, unsaved: true }).reason).toBe('unsaved');
++});
++
++test('invalid or insufficient sample counts fail closed',()=>{
++ for(const count of [NaN,Infinity,-1])expect(listeningReadiness({...ready,count}).reason).toBe('training');
++});
+diff --git a/apps/web/src/features/live-listen/readiness.ts b/apps/web/src/features/live-listen/readiness.ts
+new file mode 100644
+index 0000000..2bca16e
+--- /dev/null
++++ b/apps/web/src/features/live-listen/readiness.ts
+@@ -0,0 +1,10 @@
++export type ListeningReadinessInput={gunAvailable:boolean;count:number;minimum:number;loading?:boolean;busy?:boolean;saving?:boolean;connecting?:boolean;unsaved?:boolean;timed?:boolean};
++export type ListeningReason=''|'gun'|'loading'|'busy'|'saving'|'connecting'|'unsaved'|'session'|'training';
++/** Navigation can show setup guidance before training. Permission/capture stays
++ * separately gated; connecting/timed work uses the existing safe leave path. */
++export function listeningReadiness({gunAvailable,count,minimum,loading=false,busy=false,saving=false,connecting=false,unsaved=false,timed=false}:ListeningReadinessInput):{reason:ListeningReason;entryDisabled:boolean}{
++ const entryDisabled=!gunAvailable||loading||busy||saving||unsaved;
++ const trained=Number.isFinite(count)&&Number.isFinite(minimum)&&minimum>0&&count>=minimum;
++ const reason:ListeningReason=!gunAvailable?'gun':loading?'loading':busy?'busy':connecting?'connecting':saving?'saving':unsaved?'unsaved':timed?'session':trained?'':'training';
++ return{reason,entryDisabled};
++}
+diff --git a/tests/timedControllerInitialization.test.js b/tests/timedControllerInitialization.test.js
+new file mode 100644
+index 0000000..407864e
+--- /dev/null
++++ b/tests/timedControllerInitialization.test.js
+@@ -0,0 +1,16 @@
++import {jest} from '@jest/globals';
++import {readFileSync} from 'node:fs';
++import vm from 'node:vm';
++const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
++function setup(){
++ const practice={showRecord:jest.fn()},session={};
++ const context={practiceController:null,sessionController:null,createPracticeController:jest.fn(()=>practice),createSessionController:jest.fn(()=>session),
++  practiceContext:jest.fn(),titleFor:jest.fn(),ensureSafe:jest.fn(),switchView:jest.fn(),goBack:jest.fn(),showError:jest.fn(),setStatus:jest.fn(),renderLiveButton:jest.fn(),renderClassCards:jest.fn(),reportAudioProcessing:jest.fn(),reportVibration:jest.fn(),vibrationFeedback:true,vibrationRejected:false,drillsPage:null};
++ const initialize=vm.runInNewContext(source.slice(source.indexOf('function initializeTimedControllers()'),source.indexOf('async function loadActiveGun()'))+'\ninitializeTimedControllers;',context);return{context,practice,session,initialize};
++}
++test('timing owners are not constructed until requested and are created only once',()=>{
++ const s=setup();expect(s.context.createPracticeController).not.toHaveBeenCalled();s.initialize();s.initialize();expect(s.context.createPracticeController).toHaveBeenCalledTimes(1);expect(s.context.createSessionController).toHaveBeenCalledTimes(1);expect(s.context.practiceController).toBe(s.practice);expect(s.context.sessionController).toBe(s.session);
++});
++test('deferred owners retain context, action, feedback, catalog locks and saved-record ports',()=>{
++ const {context:c,practice,initialize}=setup();initialize();const p=c.createPracticeController.mock.calls[0][0],s=c.createSessionController.mock.calls[0][0];expect(p.getContext).toBe(c.practiceContext);expect(s.getContext).toBe(c.practiceContext);p.onBack();expect(c.goBack).toHaveBeenCalledWith('drills');p.onChange();expect(c.renderLiveButton).toHaveBeenCalledTimes(1);expect(c.renderClassCards).toHaveBeenCalledTimes(1);expect(p.onCatalogLock(true)).toBe(false);c.drillsPage={update:jest.fn()};expect(p.onCatalogLock(true)).toBe(true);expect(c.drillsPage.update).toHaveBeenCalledWith({practiceDisabled:true});expect(p.vibrationEnabled()).toBe(true);c.vibrationRejected=true;expect(s.vibrationEnabled()).toBe(false);const record={id:'saved'};s.onPracticeRecord(record);expect(practice.showRecord).toHaveBeenCalledWith(record);expect(p.onProcessing).toBe(c.reportAudioProcessing);expect(s.onVibration).toBe(c.reportVibration);
++});
+diff --git a/visual-tests/live-listen-readiness.spec.js b/visual-tests/live-listen-readiness.spec.js
+new file mode 100644
+index 0000000..5856a79
+--- /dev/null
++++ b/visual-tests/live-listen-readiness.spec.js
+@@ -0,0 +1,75 @@
++import { test, expect } from '@playwright/test';
++import { readFileSync } from 'node:fs';
++import { installSyntheticMedia } from './media.js';
++const library = JSON.parse(readFileSync(new URL('./fixtures/library.json', import.meta.url)));
++
++async function openLibrary(page, triggerSamples) {
++  await page.addInitScript(installSyntheticMedia);
++  page.on('dialog', dialog => dialog.accept());
++  const backup = structuredClone(library);
++  let seen = 0;
++  backup.examples = backup.examples.filter(row => row.gunId !== backup.activeGunId || (row.label === 'trigger' && seen++ < triggerSamples));
++  await page.goto('/');
++  await page.locator('#restoreGunBackupBtn').click();
++  await page.locator('#importFile').setInputFiles({ name: 'readiness-library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
++  await expect(page.locator('#homeView')).toBeVisible();
++}
++
++for (const count of [0, 2]) test(`all Live Listen entries open the same setup guidance with ${count} trigger samples`, async ({ page }) => {
++  await openLibrary(page, count);
++  for (let visit = 0; visit < 2; visit++) {
++    // Second pass also exercises the shared React chrome/page owners.
++    await page.locator('#aboutBtn').click(); await page.locator('#contactBtn').click();
++    await page.locator('.tab[data-view="home"]').click();
++    await expect(page.locator('#homeListenBtn')).toBeEnabled();
++    await page.locator('#homeListenBtn').click();
++    await expect(page.locator('#recognizeView')).toBeVisible();
++    await expect(page.locator('#listenBtn')).toBeDisabled();
++    await expect(page.locator('#singleShotBtn')).toBeDisabled();
++    await expect(page.locator('#trainingSummary')).toContainText(`${count}/3`);
++    await expect(page.locator('#trainingSummary')).toContainText('Learn');
++    await expect(page.locator('#safetyModal')).not.toBeVisible();
++    await page.locator('.tab[data-view="drills"]').click();
++    await expect(page.locator('#freeListenBtn')).toBeEnabled();
++    await page.locator('#freeListenBtn').click(); await expect(page.locator('#recognizeView')).toBeVisible();
++    await page.locator('.tab[data-view="home"]').click();
++    await expect(page.locator('.tab[data-view="recognize"]')).toBeEnabled();
++    await page.locator('.tab[data-view="recognize"]').click(); await expect(page.locator('#recognizeView')).toBeVisible();
++  }
++});
++
++test('three trigger samples enable capture without requiring optional sounds', async ({ page }) => {
++  await openLibrary(page, 3);
++  await expect(page.locator('#homeListenBtn')).toBeEnabled();
++  await page.locator('#homeListenBtn').click();
++  await expect(page.locator('#listenBtn')).toBeEnabled();
++  await expect(page.locator('#singleShotBtn')).toBeEnabled();
++  await expect(page.locator('#trainingSummary')).toContainText('Ready');
++});
++
++test('readiness follows the selected gun and recovers after its trigger recordings are reset', async ({page}) => {
++  await openLibrary(page,3);
++  await page.locator('#gunSwitcherBtn').click(); await page.locator('[data-gun-id="qa-gun-c"]').click();
++  await expect(page.locator('#activeGunName')).toHaveText('QA Shotgun');
++  await page.locator('.tab[data-view="home"]').click();await expect(page.locator('#homeListenBtn')).toBeEnabled();await page.locator('#homeListenBtn').click();
++  await expect(page.locator('#trainingSummary')).toContainText('0/3');await expect(page.locator('#listenBtn')).toBeDisabled();
++  await page.locator('#gunSwitcherBtn').click();await page.locator('[data-gun-id="qa-gun-b"]').click();
++  await page.locator('.tab[data-view="recognize"]').click();await expect(page.locator('#listenBtn')).toBeEnabled();
++  await page.locator('.tab[data-view="learn"]').click();await page.locator('[data-sound-label="trigger"] .reset-class').click();
++  await expect(page.locator('[data-sound-label="trigger"] .progress-label')).toContainText('0 / 10');
++  await page.locator('.tab[data-view="recognize"]').click();await expect(page.locator('#trainingSummary')).toContainText('0/3');await expect(page.locator('#listenBtn')).toBeDisabled();
++  await page.locator('.tab[data-view="home"]').click();await expect(page.locator('#homeListenBtn')).toBeEnabled();
++});
++
++test('connection guidance disables capture and an active listener always retains Stop',async({page})=>{
++  await openLibrary(page,3);
++  await page.evaluate(()=>{const original=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);navigator.mediaDevices.getUserMedia=(...args)=>new Promise((resolve,reject)=>{window.__releaseMicrophone=()=>original(...args).then(resolve,reject);});});
++  await page.locator('#homeListenBtn').click();await page.locator('#listenBtn').click();
++  await expect(page.locator('#safetyModal')).toBeVisible();await page.locator('#safetyModalAck').check();await page.locator('#safetyConfirmBtn').click();
++  await expect(page.locator('#trainingSummary')).toContainText('Connecting');await expect(page.locator('#listenBtn')).toBeDisabled();await expect(page.locator('#singleShotBtn')).toBeDisabled();
++  await page.evaluate(()=>window.__releaseMicrophone());
++  await expect(page.locator('#listenBtn')).toHaveText('Stop listening');await expect(page.locator('#listenBtn')).toBeEnabled();await expect(page.locator('#singleShotBtn')).toBeDisabled();
++  await expect.poll(()=>page.evaluate(()=>window.__visualAudio.inputActive())).toBe(true);
++  await page.locator('#listenBtn').click();await expect.poll(()=>page.evaluate(()=>window.__visualAudio.inputActive())).toBe(false);
++  await expect(page.locator('#listenBtn')).toBeEnabled();await expect(page.locator('#singleShotBtn')).toBeEnabled();await expect(page.locator('#trainingSummary')).toContainText('Ready');
++});
