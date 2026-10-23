@@ -814,3 +814,10 @@ The approved Live Listen regression was reproduced before changes (zero-sample H
 CI39903463815 succeeds in all eight required jobs: validate, both-edition Chromium/WebKit screenshot suites, four browser/edition performance comparisons with original controls and aggregate acceptance. Exact candidate SHA2566c4260d5…560df4b (Git review inpute8fa706) reverse-check verified.1000tests/144suites+coverage,16smoke,13public+13preview local lifecycle/readiness workflows, type/lint/architecture/docs/build/distribution/payload checks pass.390goldens/81current captures;24 new pinned guidance states reviewed from39903205415/4ae6c44. Existing ready/listening references and ten GIF bytes/frames unchanged.
 
 Earlier isolated39903205450 failed public WebKit warm37→41ms; keep that result visible despite the subsequent complete pass. No benchmark baseline, limits, samples or controls changed. Publish only b; normal post-push verification remains separate. Temporary collection workflow/input patches/duplicate images removed; immutable Git evidence and permanent references retained. Main/dev/deployment unchanged.
+
+
+### 2026-10-23 — CHG-053 published and post-push verification complete
+
+Application **da08937** is pushed to b. Normal CI [39904517004](https://github.com/matosaru/dryfire/actions/runs/39904517004) completes successfully in all eight required jobs: validate, public+preview screenshots (Chromium/WebKit), four browser/edition original performance gates with controls, aggregate acceptance. This follows the complete pre-merge pass39903463815; no repeated failing run was relabeled or threshold changed. Earlier isolated timing failure remains in review evidence.
+
+Live Listen entries now agree, three-trigger capture eligibility and blocking reasons are visible, and active Stop remains usable.24 new screenshot references and four current design captures are accepted;1000unit tests/144suites+coverage and targeted local workflows pass. Temporary review collection/input duplicates cleaned. Card alignmentCHG057 and Live ListenCHG053 requests are complete on b. Main6c38bff/dev741f46e unchanged; no deployment performed.

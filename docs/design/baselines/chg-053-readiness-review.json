@@ -2,7 +2,7 @@
   "change": "CHG-053",
   "collectorRun": 39903205415,
   "collectorCommit": "4ae6c44",
-  "status": "Full pre-merge CI39903463815: all eight jobs pass; exact candidate reverse-check verified before publication. Post-push verification separate.",
+  "status": "Complete: all eight required jobs pass in pre-merge39903463815 and normal post-push39904517004 on applicationda08937.",
   "scope": "24 new missing-training/connecting states only; existing ready/listening images unchanged.",
   "review": "Reviewed all24 contact-sheet images and full-size WebKit Light connecting / Chromium Dark training: shared shell, count guidance and disabled capture visible; no overflow at320px.",
   "images": {
@@ -34,5 +34,7 @@
   "acceptanceRun": 39903463815,
   "acceptancePatchCommit": "e8fa706",
   "acceptancePatchSHA256": "6c4260d50d81eea739c57e21a49a21cb7bd1c0dc1d3c7855a619e782e560df4b",
-  "performanceCaveat": "Earlier isolated39903205450 failed public WebKit warm37\u219241ms. Subsequent complete39903463815 passed all four comparisons plus original controls; retain earlier failure and observe post-push verification. No threshold/baseline/sample changes."
+  "performanceCaveat": "Earlier isolated39903205450 failed public WebKit warm37\u219241ms. Subsequent complete39903463815 passed all four comparisons plus original controls; retain earlier failure and observe post-push verification. No threshold/baseline/sample changes.",
+  "postPushRun": 39904517004,
+  "applicationCommit": "da08937f84a31676157bb7501858c7f21a43ba1c"
 }
