@@ -22,7 +22,7 @@ index 16d0a49..c033d11 100644
  footer{font-size:.68rem;line-height:1.55;margin-top:20px;color:#8594a4}.tip,.info-note{font-size:.76rem}.settings-row{font-size:.8rem}.button:focus-visible,.dashboard-card:focus-visible,.back-button:focus-visible,summary:focus-visible{outline:2px solid #ffad62;outline-offset:3px}
  @media(min-width:700px){.app-shell{padding-top:30px}.welcome-card{margin-top:8px}}
 diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
-index c780996..f69775f 100644
+index c780996..5aa14c3 100644
 --- a/docs/architecture/application-structure.md
 +++ b/docs/architecture/application-structure.md
 @@ -101,7 +101,7 @@ The build-renderer files never become client entry points merely because they re
@@ -30,12 +30,12 @@ index c780996..f69775f 100644
  ## Styles, editions and persistent data
  
 -[src/styles.css](../../src/styles.css) imports leaf component/page CSS and documented legacy foundation/theme rules in one preserved order. Vite bundles/minifies that cascade. The build-only tools/minify-html.mjs removes optional body attribute quotes through an HTML parser, while preserving parsed DOM, text, SVG case, class strings and the asset-bearing head. It adds no browser JavaScript; HTML equivalence tests protect native control values. Shared foundation selectors are still active cross-component styles, not unused files; do not remove them by filename alone. CSS and the 390 image references/83 captures/12 guide GIFs remain governed by exact comparisons. JavaScript, worklet and service worker stay minified, with source maps and raw src modules excluded from deployment.
-+[src/styles.css](../../src/styles.css) imports leaf component/page CSS and documented legacy foundation/theme rules in one preserved order. Vite bundles/minifies that cascade. The build-only tools/minify-html.mjs compacts safe boolean attributes through an HTML parser, preserving quoted values, parsed DOM, text and SVG case. tools/place-entry.mjs places only the generated app module after complete body markup while retaining CSS in the head; this loading-order optimization has no runtime dependency. It adds no browser JavaScript; HTML equivalence tests protect native control values. Shared foundation selectors are still active cross-component styles, not unused files; do not remove them by filename alone. CSS and the 390 image references/83 captures/12 guide GIFs remain governed by exact comparisons. JavaScript, worklet and service worker stay minified, with source maps and raw src modules excluded from deployment.
++[src/styles.css](../../src/styles.css) imports leaf component/page CSS and documented legacy foundation/theme rules in one preserved order. Vite bundles/minifies that cascade. The build-only tools/minify-html.mjs compacts optional quotes/end tags, boolean attributes and normal-layout whitespace through an HTML parser, preserving parsed structure, native values, inline word boundaries, preformatted/raw text and SVG case. Compression adds no browser dependency; the standard Vite module loading order is retained. It adds no browser JavaScript; HTML equivalence tests protect native control values. Shared foundation selectors are still active cross-component styles, not unused files; do not remove them by filename alone. CSS and the 390 image references/83 captures/12 guide GIFs remain governed by exact comparisons. JavaScript, worklet and service worker stay minified, with source maps and raw src modules excluded from deployment.
  
  [build-profile.json](../../build-profile.json), [build-profile.mjs](../../tools/build-profile.mjs) and Vite select public versus private Full preview. Public builds retain existing saved data but exclude private creation/graph/test controls. Private hosted assets require the signed Access gate; a build or Git push does not establish a deployed Access policy. Native mobile deployment, accounts/cloud storage and billing remain outside this refactor.
  
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index 92c00a6..04df5f4 100644
+index 92c00a6..a40b743 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -1,6 +1,6 @@
@@ -59,15 +59,6 @@ index 92c00a6..04df5f4 100644
          {
            "key": "custom.dark",
            "anchor": "customDrillCatalog",
-@@ -764,7 +770,7 @@
-     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
-     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
-     "src/storage.js": "f65e774744f633fa630b8437495ba80ecefbd318bf4ed16b3f63d1f60bcded79",
--    "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
-+    "vite.config.js": "245d51cab9a14cb60c679ae1aedd8a694033ac958f241e31f960261f84cd3f2e",
-     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
-     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
-     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
 @@ -795,7 +801,7 @@
      "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "b041999974ca3986bbf24f40f8bfe40a124c66b396ea47cf5aa3d2a554bbe40d",
      "apps/web/src/app/routeContext.ts": "8edb4b9d133e4914784d4938581a3bfd63fcbbde42d201ff4057d94f2db19391",
@@ -92,6 +83,15 @@ index 92c00a6..04df5f4 100644
      "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
      "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
      "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
+@@ -946,7 +952,7 @@
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+-    "tools/minify-html.mjs": "987c8e851e7b9efba787bd4e45608b4512c7c20cc65ce3a05c908303584187f8",
++    "tools/minify-html.mjs": "7798a5e447e687c935e325e8ca2a4d05541bb24a7c3cbef90fd0b19503540cfb",
+     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247"
+   },
 @@ -974,6 +980,7 @@
      "CHG-047",
      "CHG-049 P1 route ownership extraction (no visual change)",
@@ -221916,7 +221916,7 @@ z?(lz{LjP}=ng86f|7S|)7><B|0Ee%x<KcoIQ2!~4kPxUv5p<@Dt9-y;5ENupWQwH>
 G1O5vO^5C)n
 
 diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
-index 5338f79..58d9791 100644
+index 5338f79..c2d27c7 100644
 --- a/docs/design/screens/practice-guide/examples/manifest.json
 +++ b/docs/design/screens/practice-guide/examples/manifest.json
 @@ -45,9 +45,9 @@
@@ -221931,15 +221931,15 @@ index 5338f79..58d9791 100644
      "apps/web/src/styles/legacy-before-custom-editor.css": "ad9a9b3fc449f79cedbc0c657aad43dd635c20b80f45d6d1891ab5b0b101b546",
      "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
      "apps/web/src/styles/legacy-before-history-list.css": "000531fa0d4af1f326e5998ed8a3f31fb280b86b45fca1e53c2e10addc264d7a",
-@@ -116,7 +116,7 @@
-     "src/main.js": "aaf5ef37fb1d38e9c689262eb099d9566bfde6fb1c97760988434287577ddccc",
+@@ -117,7 +117,7 @@
      "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
      "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
--    "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
-+    "vite.config.js": "245d51cab9a14cb60c679ae1aedd8a694033ac958f241e31f960261f84cd3f2e",
-     "tools/minify-html.mjs": "987c8e851e7b9efba787bd4e45608b4512c7c20cc65ce3a05c908303584187f8",
+     "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
+-    "tools/minify-html.mjs": "987c8e851e7b9efba787bd4e45608b4512c7c20cc65ce3a05c908303584187f8",
++    "tools/minify-html.mjs": "7798a5e447e687c935e325e8ca2a4d05541bb24a7c3cbef90fd0b19503540cfb",
      "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
      "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
 diff --git a/docs/requirements/drill-sessions.md b/docs/requirements/drill-sessions.md
 index 9d89212..b6f5439 100644
 --- a/docs/requirements/drill-sessions.md
@@ -222079,6 +222079,35 @@ index cfe7f56..9e0d9bb 100644
 @@ -1 +1 @@
 -<div id="practiceCatalog" class="drill-catalog"><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Single trigger press</h3></div><p class="drill-description">Reaction time for one click after each start signal.</p><button class="button primary" type="button" data-practice-mode="single">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Repeated trigger press</h3></div><p class="drill-description">Count distinct clicks and the intervals between them.</p><button class="button primary" type="button" data-practice-mode="repeated">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Par time practice</h3></div><p class="drill-description">Recognize a click within your chosen time limit.</p><button class="button primary" type="button" data-practice-mode="par">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Trigger control</h3></div><p class="drill-description">Compare the consistency of your detected click intervals.</p><button class="button primary" type="button" data-practice-mode="control">▶ Start Drill</button></article></div>
 +<div id="practiceCatalog" class="drill-catalog"><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><div class="preset-copy"><h3>Single trigger press</h3><p class="drill-description">Reaction time for one click after each start signal.</p></div></div><button class="button primary" type="button" data-practice-mode="single">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><div class="preset-copy"><h3>Repeated trigger press</h3><p class="drill-description">Count distinct clicks and the intervals between them.</p></div></div><button class="button primary" type="button" data-practice-mode="repeated">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><div class="preset-copy"><h3>Par time practice</h3><p class="drill-description">Recognize a click within your chosen time limit.</p></div></div><button class="button primary" type="button" data-practice-mode="par">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><div class="preset-copy"><h3>Trigger control</h3><p class="drill-description">Compare the consistency of your detected click intervals.</p></div></div><button class="button primary" type="button" data-practice-mode="control">▶ Start Drill</button></article></div>
+diff --git a/tests/htmlMinification.test.js b/tests/htmlMinification.test.js
+index 9ec6c0c..1ae81a1 100644
+--- a/tests/htmlMinification.test.js
++++ b/tests/htmlMinification.test.js
+@@ -3,8 +3,12 @@ import {readFileSync} from 'node:fs';
+ import {minifyProductionHtml} from '../tools/minify-html.mjs';
+ import {renderPageTemplates} from '../tools/page-templates.mjs';
+ const dom=new JSDOM('');const document=dom.window.document;afterAll(()=>dom.window.close());
+-const normalized=html=>{const host=document.createElement('template');host.innerHTML=html;return host.innerHTML;};
+-test('safe boolean-attribute compaction preserves quoted native values, whitespace, SVG and raw script/style text',async()=>{
++const normalized=html=>{
++ const host=document.createElement('template');host.innerHTML=html;
++ const visit=node=>{for(const child of node.childNodes){if(child.nodeType===3&&!/^(PRE|TEXTAREA|SCRIPT|STYLE)$/.test(child.parentNode?.nodeName))child.textContent=child.textContent.replace(/\s+/g,' ');else if(child.nodeType===1&&!/^(PRE|TEXTAREA|SCRIPT|STYLE)$/.test(child.nodeName))visit(child);}};
++ visit(host.content);return host.innerHTML;
++};
++test('HTML compression preserves native values, inline spacing, SVG and raw script/style text',async()=>{
+  const html=`<section id="example" class="one two" aria-label="A > B"><input type="number" value="10" min="1" disabled=""/><svg viewBox="0 0 20 20"><path fill="none" d="M 1 2 L 3 4"/></svg> Text <span>after</span>\n  end<script type="application/json">{"sample":"<div id=\\"raw\\">"}</script><style>.x::after { content: '<tag id="x">'; }</style></section>`;
+  const result=await minifyProductionHtml(html);expect(result.length).toBeLessThan(html.length);expect(normalized(result)).toBe(normalized(html));
+ });
+@@ -16,3 +20,9 @@ test('quoted edge characters and empty values remain unchanged',async()=>{
+  const html='<div data-empty="" data-equals="a=b" data-tick="`" title="quote &quot; and &amp;" data-slash="a/b" data-line="a\nb"><input value="a/b"/></div>';
+  expect(normalized(await minifyProductionHtml(html))).toBe(normalized(html));
+ });
++
++test('normal layout whitespace compacts while inline word boundaries and preformatted content remain exact',async()=>{
++ const html='<body>\n  <main><p>First <span>inline</span> word.</p>\n   <p><span>Second</span> <span>word</span></p><pre>  a\n    b</pre><textarea>  keep\n    draft</textarea></main>\n</body>';
++ const result=await minifyProductionHtml(html);expect(result.length).toBeLessThan(html.length);expect(normalized(result)).toBe(normalized(html));
++ const host=document.createElement('template');host.innerHTML=result;expect(host.content.querySelector('pre').textContent).toBe('  a\n    b');expect(host.content.querySelector('textarea').textContent).toBe('  keep\n    draft');expect(host.content.querySelectorAll('p')[1].textContent).toBe('Second word');
++});
 diff --git a/tests/practiceCatalogParity.test.tsx b/tests/practiceCatalogParity.test.tsx
 index 672daf1..1ab5ee0 100644
 --- a/tests/practiceCatalogParity.test.tsx
@@ -222140,6 +222169,26 @@ index a47ae49..ebd80c6 100644
 + const onToggle=jest.fn();const card=soundCard({label:'rack',meta:{title:'Rack',description:'Rack',tone:'green'},count:3,maxExamples:10,minExamples:3,recommendedExamples:10,locked:false,optional:true,enabled:false,onRecord:()=>{},onReset:()=>{},onToggle},fakeDocument());
 + const input=flatten(card).find(node=>node.tag==='input');expect(input.checked).toBe(false);input.checked=true;input.handlers.change();expect(onToggle).toHaveBeenCalledWith(true);
 +});
+diff --git a/tools/minify-html.mjs b/tools/minify-html.mjs
+index 46240e2..d15b3c2 100644
+--- a/tools/minify-html.mjs
++++ b/tools/minify-html.mjs
+@@ -1,11 +1,11 @@
+ import { minify } from 'html-minifier-terser';
+ 
+-/** Build-only syntax compression. Keep the asset-bearing head intact; body
+- * text, SVG case, structure and raw script/style content retain their values. */
++/** Build-only syntax compression. Keep the asset-bearing head intact; normal layout
++ * whitespace compacts while native values, SVG and preformatted/raw text stay intact. */
+ export async function minifyProductionHtml(html) {
+   const body = html.match(/(<body\b[^>]*>)([\s\S]*)(<\/body\s*>)/i);
+-  const options = { removeAttributeQuotes: false, collapseBooleanAttributes: true, caseSensitive: true,
+-    keepClosingSlash: true, collapseWhitespace: false, removeComments: false,
++  const options = { removeAttributeQuotes: true, removeOptionalTags: true, collapseBooleanAttributes: true, caseSensitive: true,
++    keepClosingSlash: true, collapseWhitespace: true, conservativeCollapse: true, removeComments: false,
+     ignoreCustomFragments: [/\bclass="[^"]*"/, /\bid="previewTestMode"/] };
+   if (!body) return minify(html, options);
+   const start = body.index + body[1].length;
 diff --git a/visual-tests/drill-catalog.spec.js b/visual-tests/drill-catalog.spec.js
 index cb44904..5e371ce 100644
 --- a/visual-tests/drill-catalog.spec.js
@@ -222174,35 +222223,6 @@ index cb44904..5e371ce 100644
 +  await page.locator('.tab[data-view="home"]').click();
 + }
 +});
-diff --git a/vite.config.js b/vite.config.js
-index ba87e70..6c43be2 100644
---- a/vite.config.js
-+++ b/vite.config.js
-@@ -6,13 +6,14 @@ import { defineConfig } from 'vite';
- import { readBuildProfile, resolveBuildEdition } from './tools/build-profile.mjs';
- import { renderPageTemplates } from './tools/page-templates.mjs';
- import { minifyProductionHtml } from './tools/minify-html.mjs';
-+import { placeEntryAfterMarkup } from './tools/place-entry.mjs';
- 
- // Ship minified production code without exposing the readable src/ modules.
- // Worker entries also pass through Oxc, unlike files copied from public/.
- export default defineConfig(({ mode }) => {
-   const edition = resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.env.APP_EDITION, mode });
-   const sourceFiles = dir => readdirSync(dir, { withFileTypes: true }).flatMap(item => item.isDirectory() ? sourceFiles(`${dir}/${item.name}`) : /\.(js|html|ts|tsx|css)$/.test(item.name) ? [`${dir}/${item.name}`] : []);
--  const trackedSources = ['index.html', 'src/styles.css', 'vite.config.js', 'build-profile.json', 'tools/build-profile.mjs', 'tools/page-templates.mjs', 'tools/minify-html.mjs', 'tools/static-catalog.mjs', ...sourceFiles('src'), ...sourceFiles('workers'), ...sourceFiles('apps'), ...sourceFiles('packages')].sort();
-+  const trackedSources = ['index.html', 'src/styles.css', 'vite.config.js', 'build-profile.json', 'tools/build-profile.mjs', 'tools/page-templates.mjs', 'tools/minify-html.mjs', 'tools/place-entry.mjs', 'tools/static-catalog.mjs', ...sourceFiles('src'), ...sourceFiles('workers'), ...sourceFiles('apps'), ...sourceFiles('packages')].sort();
-   const sourceDigest = createHash('sha256');
-   for (const path of trackedSources) sourceDigest.update(path).update(readFileSync(path));
-   return {
-@@ -37,7 +38,7 @@ export default defineConfig(({ mode }) => {
-       assets: Object.keys(bundle).filter(path => /\.(js|css)$/.test(path)).sort().map(path => `/${path}`) }, null, 2) + '\n' });
-   } }, { name: 'compact-production-html', generateBundle: { order: 'post', async handler(_options, bundle) {
-     const html = bundle['index.html'];
--    if (html?.type === 'asset') html.source = await minifyProductionHtml(String(html.source));
-+    if (html?.type === 'asset') html.source = placeEntryAfterMarkup(await minifyProductionHtml(String(html.source)));
-   } } }],
-   base: '/',
-   build: {
 diff --git a/workers/sw.js b/workers/sw.js
 index ed13a6b..4db236d 100644
 --- a/workers/sw.js
@@ -222217,7 +222237,7 @@ index ed13a6b..4db236d 100644
  if (EDITION === 'preview') {
 diff --git a/docs/design/baselines/chg-057-card-review.json b/docs/design/baselines/chg-057-card-review.json
 new file mode 100644
-index 0000000..e45ca64
+index 0000000..8218373
 --- /dev/null
 +++ b/docs/design/baselines/chg-057-card-review.json
 @@ -0,0 +1,42 @@
@@ -222261,7 +222281,7 @@ index 0000000..e45ca64
 +    "chromium/public/drills/edit-custom.dark.390.png": "6fca4feb6e82f9b2b045b8588ce336553bce2bac3787c3ca2bec021d0ac6ab83",
 +    "chromium/public/drills/catalog.dark.390.png": "817fbc5eeadc475ea4867ec0cf5a2b662b7ad587f82ca49a2d07cab38f3a04f6"
 +  },
-+  "performanceInvestigation": "Post-push39835341026 WebKit warm still failed. Advisory39897468026 body entry improved startup40\u219236ms (original34); build-only module ordering candidate requires unchanged full gate."
++  "performanceInvestigation": "Post-push39835341026 and candidate39897915233 public WebKit warm failed. The body-entry experiment also regressed Chromium returning startup and was removed. Current candidate compacts safe HTML syntax/layout whitespace with DOM/value/raw-text tests; complete unchanged acceptance pending."
 +}
 diff --git a/docs/design/baselines/chromium/preview/drills/catalog.light.390.png b/docs/design/baselines/chromium/preview/drills/catalog.light.390.png
 new file mode 100644
@@ -243284,40 +243304,3 @@ bInh8yL_PU^Co}!QD-bOWJ@vAiHlhCl3w}mv
 literal 0
 HcmV?d00001
 
-diff --git a/tests/entryPlacement.test.js b/tests/entryPlacement.test.js
-new file mode 100644
-index 0000000..2237dea
---- /dev/null
-+++ b/tests/entryPlacement.test.js
-@@ -0,0 +1,15 @@
-+import { placeEntryAfterMarkup } from '../tools/place-entry.mjs';
-+const entry='<script type="module" crossorigin src="/assets/index-abc_123.js"></script>';
-+test('the app module follows complete markup while CSS stays in the head',()=>{
-+ const html=`<html><head>${entry}<link rel="stylesheet" href="/assets/theme.css"></head><body><main>Ready</main></body></html>`;
-+ expect(placeEntryAfterMarkup(html)).toBe(`<html><head><link rel="stylesheet" href="/assets/theme.css"></head><body><main>Ready</main>${entry}</body></html>`);
-+ expect(placeEntryAfterMarkup(placeEntryAfterMarkup(html))).toBe(placeEntryAfterMarkup(html));
-+});
-+test('non-entry scripts, attributes and an existing body entry remain unchanged',()=>{
-+ const html=`<html><head><script type="application/json">{"message":"<tag>"}</script></head><body>${entry}</body></html>`;
-+ expect(placeEntryAfterMarkup(html)).toBe(html);
-+ expect(placeEntryAfterMarkup('<body>No bundled entry</body>')).toBe('<body>No bundled entry</body>');
-+});
-+test('ambiguous generated entries fail closed instead of silently reordering unrelated scripts',()=>{
-+ expect(()=>placeEntryAfterMarkup(`<head>${entry}${entry}</head><body></body>`)).toThrow('one');
-+});
-diff --git a/tools/place-entry.mjs b/tools/place-entry.mjs
-new file mode 100644
-index 0000000..b4315fe
---- /dev/null
-+++ b/tools/place-entry.mjs
-@@ -0,0 +1,10 @@
-+/** Build-only ordering: discover the app after its markup; preserve CSS in head. */
-+export function placeEntryAfterMarkup(html) {
-+  const head = html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i);
-+  if (!head || !/<\/body\s*>/i.test(html)) return html;
-+  const entries = head[1].match(/<script\b(?=[^>]*\btype="module")(?=[^>]*\bsrc="\/assets\/index-[A-Za-z0-9_-]+\.js")[^>]*><\/script>/g) || [];
-+  if (!entries.length) return html;
-+  if (entries.length !== 1) throw new Error('Expected one bundled application entry.');
-+  const nextHead = head[0].replace(entries[0], '');
-+  return html.replace(head[0], () => nextHead).replace(/<\/body\s*>/i, close => entries[0] + close);
-+}

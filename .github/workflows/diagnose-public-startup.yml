@@ -6,12 +6,16 @@ on:
         type: string
         required: false
         default: ""
+      measure_webkit_gate:
+        type: boolean
+        required: false
+        default: false
 permissions:
   contents: read
 jobs:
   diagnose:
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 15
     container:
       image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
       options: --ipc=host
@@ -44,7 +48,18 @@ jobs:
         working-directory: .performance-baseline
       - run: npm run build
       - name: Crossed WebKit HTML/module diagnostic, never acceptance
+        if: ${{ !inputs.measure_webkit_gate }}
         run: node --experimental-vm-modules tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
+      - name: Measure the original public WebKit gate in isolation
+        if: inputs.measure_webkit_gate
+        run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist --browser=webkit
+      - name: Publish actual performance evidence
+        if: always() && inputs.measure_webkit_gate
+        id: gate
+        run: node tools/performance/report.mjs
+      - name: "Timing result: ${{ steps.gate.outputs.outcome || 'not measured' }}"
+        if: always() && inputs.measure_webkit_gate
+        run: ':'
       - name: Expose diagnostic results
         id: results
         if: always()
@@ -60,4 +75,4 @@ jobs:
         if: always()
         with:
           name: advisory-startup-diagnosis
-          path: performance-results/startup-diagnostic.json
+          path: performance-results/

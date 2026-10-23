@@ -784,3 +784,9 @@ CHG-057 approved visual change now uses DrillCard for practice/built-in/custom c
 CHG-057 review: pinned collector39897542328 passes20 image cases across both editions/browsers; reviewed images promoted locally to Drills references only, with new Light catalog coverage (366goldens/77current captures). Full CSS reconstruction proves changes are confined to two approved card style sources.982unit tests/142suites, original coverage,16smoke and narrow/wide/theme alignment checks pass.
 
 Performance investigation39897468026 shows body-entry startup36ms vs head40ms (original34ms), advisory only. Candidate adds build-only generated-entry ordering with3unit tests and cachev79; original JS/CSS minification and budgets pass. Complete candidate acceptance remains pending before app commit. No main/dev/deployment changes.
+
+
+CHG-057 frozen local acceptance:985 tests/143 suites plus original coverage ratchet pass;16smoke,14public+14preview Chromium workflows, static/docs/minified verification and both payload budgets pass. Complete review candidate4df32e5ba36c226634df0a185b83fd820e2a8bbd3dd38f4ca088f4409f577b96 is under CI39897915233 on metadata3a09394; application remains unmerged until full acceptance.
+
+
+Candidate39897915233: validation and both screenshot suites pass; public WebKit warm and Chromium returning startup fail. Body-entry experiment removed based on the full evidence. Current compaction candidate preserves DOM/attributes/inline spacing/preformatted text with4unit checks,983total tests/142suites+coverage and14public workflows passing. Isolate original WebKit comparison before another complete gate; never substitute this targeted run for full acceptance. No application merge.
