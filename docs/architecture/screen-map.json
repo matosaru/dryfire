@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-10-22",
+  "reviewedOn": "2026-10-23",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://dryfire.matosaru.workers.dev",
   "publicPaths": [
@@ -180,6 +180,12 @@
           "anchor": "practiceCatalog",
           "label": "Practice modes and built-in sequences",
           "image": "docs/design/screens/drills/catalog.dark.png"
+        },
+        {
+          "key": "catalog.light",
+          "anchor": "practiceCatalog",
+          "label": "Practice modes and built-in sequences",
+          "image": "docs/design/screens/drills/catalog.light.png"
         },
         {
           "key": "custom.dark",
@@ -795,7 +801,7 @@
     "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "b041999974ca3986bbf24f40f8bfe40a124c66b396ea47cf5aa3d2a554bbe40d",
     "apps/web/src/app/routeContext.ts": "8edb4b9d133e4914784d4938581a3bfd63fcbbde42d201ff4057d94f2db19391",
     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
-    "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "01f10e7f6052511db9b4104c6af88f6c6eb67ac98d29d079a842cfb5a6c9b1a4",
+    "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "d58bb053f365017ef15cec7f4b6da2e7918770d001b15122438db5a33071df70",
     "apps/web/src/app/chromeBridge.ts": "e3276d510da2db886b0ad226bf5a884a351252b79ba78f6696a847031b08e2f1",
     "apps/web/src/app/chromePages.tsx": "2bb3be816e7293d68837974cb9d05800eb87b89429ef1667d771dda29ff69bd5",
     "apps/web/src/app/renderAppShell.tsx": "360b5abfd9d9cc3d757f2aad7f1f052531f900a37237102473b1b5a3045c9c5d",
@@ -871,11 +877,11 @@
     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
     "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "c3e7d4892c917f86e58101f96a5902b29dea7ba39c76da612904be66ee3faa0a",
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
-    "packages/ui/src/DrillCard/DrillCard.tsx": "78a831b8e793591c208428a822db7d397d38f680ae0512665def5309636faf93",
-    "packages/ui/src/DrillCard/DrillCard.css": "2ce2d7f7a9202ef9974c7dd0531e6afa98f6f9ca339a2653d4ba8e3ebc7f9e20",
+    "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
+    "packages/ui/src/DrillCard/DrillCard.css": "11312ad4e2573980ea41fff44f877bc9ba921d1c6289269845be2c243ea5fdb1",
     "packages/ui/src/RetainedNode/RetainedNode.tsx": "351036d9dee16e01c2e9a29df9ab9704e2c96f5f9626be56d1f7ca70f6208170",
     "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
-    "apps/web/src/styles/legacy-after-drill-cards.css": "ae1940919209156d5062cbe05a767490ca2c86c9410fecdf8f2baf8b58c523e4",
+    "apps/web/src/styles/legacy-after-drill-cards.css": "75ce8375f9e7f1e1f9279cbbe560c197da1bc91c02960fa42ff2ff71be28b1fa",
     "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
@@ -946,7 +952,7 @@
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
-    "tools/minify-html.mjs": "987c8e851e7b9efba787bd4e45608b4512c7c20cc65ce3a05c908303584187f8",
+    "tools/minify-html.mjs": "7798a5e447e687c935e325e8ca2a4d05541bb24a7c3cbef90fd0b19503540cfb",
     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247"
   },
@@ -974,6 +980,7 @@
     "CHG-047",
     "CHG-049 P1 route ownership extraction (no visual change)",
     "CHG-049 static practice catalog prerender (unchanged final UI)",
-    "CHG-049 P2 shared chrome and static controls (unchanged final UI)"
+    "CHG-049 P2 shared chrome and static controls (unchanged final UI)",
+    "CHG-057"
   ]
 }

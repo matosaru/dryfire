@@ -70,3 +70,7 @@ The [consolidated practice plan](practice-modes.md) adds six modes and makes non
 ## Distinct sequence catalog — CHG-052
 
 DRILL-10: Display the three multi-action built-in sequences (Rack → Trigger, Magazine → Trigger, Draw → Magazine → Trigger). Do not display the duplicate standalone Trigger pull card; Single trigger press remains in Dry-fire practice. Preserve the legacy `trigger-only` identifier, saved sessions, history/repeat and imported data. Existing custom one-action presets remain accessible. This is a catalog change, not a storage migration.
+
+## CHG-057 catalog card alignment
+
+All trigger-practice, built-in sequence and saved-custom cards use the same shared presentation: decorative target icon, title, sublabel and full-width **▶ Start Drill** action; saved-custom Edit stays separate. Title and sublabel start at exactly the same horizontal text edge, including wrapped/long titles and narrow screens, in both themes and before/after React handoff. Remove the `preset-steps` chip strip from cards only. Underlying sequence order, Configure's single sequence display, help examples, recognition and saved history remain unchanged. No button starts recording directly. Acceptance includes native/React parity, callbacks, no chips, measured text alignment, wrapping/no overflow, and refreshed pinned Chromium/WebKit references for affected catalog/editor states.

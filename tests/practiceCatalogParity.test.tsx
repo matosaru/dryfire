@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 import { PRACTICE_MODES, matchesPracticeTitle } from '../src/practiceModes.js';
 import { renderPracticeCatalog } from '../apps/web/src/app/renderPracticeCatalog.tsx';
 
-test('prerendering exactly preserves the four approved CHG-054 cards and their native button semantics', () => {
+test('prerendering exactly preserves the four approved CHG-057 aligned cards and their native button semantics', () => {
   const old = readFileSync(new URL('./fixtures/practice-catalog.html',import.meta.url),'utf8');
   const tree = (html: string) => {
     const container = document.createElement('div'); container.innerHTML = html;

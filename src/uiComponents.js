@@ -85,26 +85,17 @@ export function soundCard({
   card.append(top);
   return card;
 }
-export function drillCard({ drill, titleFor, onChoose }, doc = document) {
+export function drillCard({ drill, onChoose }, doc = document) {
   const card = doc.createElement('article');
   card.className = 'preset-card';
   const heading = textNode(doc, 'h3', '', drill.title);
-  const steps = doc.createElement('div');
-  steps.className = 'preset-steps';
-  drill.steps.forEach((label, position) => {
-    if (position) {
-      const arrow = textNode(doc, 'span', '', '→');
-      arrow.setAttribute('aria-hidden', 'true');
-      steps.append(arrow);
-    }
-    const chip = textNode(doc, 'span', 'preset-chip', titleFor(label));
-    chip.setAttribute('data-sound', label);
-    steps.append(chip);
-  });
   const icon = textNode(doc, 'span', 'drill-target', '◎');
+  icon.setAttribute('aria-hidden', 'true');
   const header = doc.createElement('div');
   header.className = 'preset-header';
-  header.append(icon, heading);
-  card.append(header, textNode(doc, 'p', 'drill-description', drill.steps.length === 1 ? 'Practice single-sound recognition.' : `${drill.steps.length}-action sound sequence.`), steps, actionButton({label:'▶ Start Drill',onClick:onChoose},doc));
+  const copy=doc.createElement('div');copy.className='preset-copy';
+  copy.append(heading,textNode(doc, 'p', 'drill-description', drill.steps.length === 1 ? 'Practice single-sound recognition.' : `${drill.steps.length}-action sound sequence.`));
+  header.append(icon,copy);
+  card.append(header, actionButton({label:'▶ Start Drill',onClick:onChoose},doc));
   return card;
 }

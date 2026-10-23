@@ -34,7 +34,8 @@ Functional specifications: [drill-sessions](../../../requirements/drill-sessions
 
 | Screen/state | Capture | App anchor |
 | --- | --- | --- |
-| Practice modes and built-in sequences | [`catalog.dark.png`](catalog.dark.png) | `practiceCatalog` |
+| Practice modes and built-in sequences · Dark | [`catalog.dark.png`](catalog.dark.png) | `practiceCatalog` |
+| Practice modes and built-in sequences · Light | [`catalog.light.png`](catalog.light.png) | `practiceCatalog` |
 | Saved custom sequences | [`custom.dark.png`](custom.dark.png) | `customDrillCatalog` |
 | Create or edit a sequence | [`custom-editor.dark.png`](custom-editor.dark.png) | `customDrillForm` |
 
@@ -47,3 +48,7 @@ Public existing-preset editing: [`edit-custom.dark.png`](edit-custom.dark.png), 
 CHG-052 [pinned card review](../../baselines/chg-052-card-review.json) records both-edition/browser candidates, changed captures and validation status.
 
 CHG-054/055 [current catalog and retirement review](../../baselines/chg-055-retirement-review.json) records pinned both-edition/browser screenshots, selective session cleanup and retained-mode invariants. Earlier six-mode descriptions are historical; the current catalog has four trigger choices.
+
+## CHG-057 aligned card revision
+
+Every catalog card uses one fixed icon column and a shared text column for title and sublabel, followed by full-width Start (and saved-custom Edit) actions. The catalog chip strip is removed; detailed ordered actions remain in Configure and the practice guide. Keep existing colors, target icon, type scale, border, radius and button appearance. Both themes, narrow/mobile/wide layouts and progressive native/React ownership must match. Pinned Chromium/WebKit public/preview images were reviewed in collector39897542328; the current references below include this revision. Complete functional/performance acceptance remains tracked separately in implementation history.

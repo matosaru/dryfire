@@ -7,3 +7,5 @@ The approved refactor preserves the existing identity, wording, responsive layou
 Use the existing shared shell, typed page packages and guarded feature controllers. Keep data, safety, capture and Free/Full policy with their established owners. Visual changes require the documented requirements/design process; structural migration is not permission to redesign.
 
 CHG-052 explicitly updates the Drills catalog: practice cards reuse sequence-card target icon/header/description/action classes and “▶ Start Drill” label; built-in sequence choices display multi-action presets only. Existing Configure flows, stored legacy trigger sequences and custom presets remain intact.
+
+CHG-057 aligns catalog card title and sublabel to one text column beside a fixed target-icon column. Trigger, built-in sequence and saved-custom cards share that geometry and the existing full-width Start action. Catalog chips are omitted; sequence details remain in Configure/manuals. Runtime ownership stays DrillCard.css and its existing theme overrides, shared with PracticeCatalog.

@@ -36,7 +36,7 @@ test('the compiled shell includes the same context/dialog without extra wrappers
 });
 
 
-test('component CSS extraction preserves the entire released ordered cascade byte for byte',()=>{
- const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/shared-shell-refactor-review.json',import.meta.url),'utf8'));
+test('ordered CSS matches the reviewed CHG-057 card update with the existing shell intact',()=>{
+ const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-057-card-review.json',import.meta.url),'utf8'));
  expect(createHash('sha256').update(composedStyles().css).digest('hex')).toBe(proof.expandedCSSSha256);
 });
