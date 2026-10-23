@@ -772,3 +772,10 @@ Owner requests, after current CHG-056 acceptance: align every drill card title w
 ### 2026-10-22 — CHG-056 full acceptance
 
 [CI39833498121](https://github.com/matosaru/dryfire/actions/runs/39833498121) succeeds in all eight jobs: validation, public/preview screenshot suites, four edition/browser performance comparisons and aggregate acceptance. Exact review patch7b531997 verified against worktree before application. Original baselines, thresholds, samples, controls and unchanged visual references retained. Local980 tests/142suites+coverage,16smoke and targeted both-edition integration pass. Apply/push accepted corrections on b only; main/dev and deployment unchanged. Card alignment is the next separately approved visual change.
+
+
+### 2026-10-23 — CHG-057 card alignment candidate
+
+CHG-056 accepted fixes pushed to b as cf82cab after full pre-merge CI39833498121 success. Post-push CI39835341026 passes validation and both screenshot suites but public WebKit warm timing fails again (37→43ms); do not claim this debt resolved.
+
+CHG-057 approved visual change now uses DrillCard for practice/built-in/custom cards, grouped aligned title/sublabel, full-width actions, no catalog chips; Configure/help chips remain intact. Added measured narrow/wide/theme/native/React alignment and long-title/no-overflow checks (4/4 local pass). Raw/gzip JS/CSS remain within original budgets. Updated independent markup fixture and a separate exact CSS review record, retaining historic refactor evidence. Light catalog reference added to registry for pinned collection/review; current images are not yet updated. Full unit/coverage rerun and pinned complete acceptance pending before application commit. Temporary review collector publishes candidate images only, not implementation or accepted golden references. Main/dev unchanged.

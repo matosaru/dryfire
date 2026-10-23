@@ -641,3 +641,7 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 ## CHG-056 — Complete acceptance before merging
 
 2026-10-22 direct instruction: “can you check all tests before merging to a branch each time ?”. Require complete candidate unit/coverage, integration, public/preview minified builds, pinned Chromium/WebKit screenshots and unchanged performance acceptance before application merges/promotions. No pending, failed or cancelled check is a pass. When local pinned browsers are unavailable, validate a repository review patch through workflow_dispatch before applying application changes. This does not authorize main/dev merges or deployment, nor relax existing gates. The screenshot failure correction is authorized by the owner's bug report.
+
+## CHG-057 — Aligned uniform drill catalog cards
+
+2026-10-22 direct owner request: “after you finish current work … fix alignments of a drill card … Align title with sublabel … Use same style for every card, remove preset-steps section from the drill cards, update all unit and visual tests”. CHG-056 is now fully green before this implementation starts. Apply one icon/title/description/action layout to trigger, built-in and saved-custom cards; remove catalog step chips only. Preserve underlying ordered steps, Configure/session/manual detail, Start/Edit actions, data and edition availability. Update functional/design specifications and pinned reviewed screenshots; require complete acceptance before applying on b. Main/dev remain frozen.

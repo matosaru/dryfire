@@ -1,0 +1,407 @@
+diff --git a/DESIGN.md b/DESIGN.md
+index b10dba0..2066893 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -7,3 +7,5 @@ The approved refactor preserves the existing identity, wording, responsive layou
+ Use the existing shared shell, typed page packages and guarded feature controllers. Keep data, safety, capture and Free/Full policy with their established owners. Visual changes require the documented requirements/design process; structural migration is not permission to redesign.
+ 
+ CHG-052 explicitly updates the Drills catalog: practice cards reuse sequence-card target icon/header/description/action classes and “▶ Start Drill” label; built-in sequence choices display multi-action presets only. Existing Configure flows, stored legacy trigger sequences and custom presets remain intact.
++
++CHG-057 aligns catalog card title and sublabel to one text column beside a fixed target-icon column. Trigger, built-in sequence and saved-custom cards share that geometry and the existing full-width Start action. Catalog chips are omitted; sequence details remain in Configure/manuals. Runtime ownership stays DrillCard.css and its existing theme overrides, shared with PracticeCatalog.
+diff --git a/apps/web/src/styles/legacy-after-drill-cards.css b/apps/web/src/styles/legacy-after-drill-cards.css
+index 16d0a49..c033d11 100644
+--- a/apps/web/src/styles/legacy-after-drill-cards.css
++++ b/apps/web/src/styles/legacy-after-drill-cards.css
+@@ -25,7 +25,7 @@ body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
+ .section-head{position:relative;justify-content:center;min-height:36px;margin-bottom:18px}.section-head h2{font-size:1.12rem;text-align:center}.section-head .eyebrow{display:none}.back-button{position:absolute;left:0;top:-5px;background:none;border:0;color:#fff;font-size:35px;padding:0 12px;cursor:pointer}
+ .view>.muted{font-size:.78rem;line-height:1.5}.class-grid{grid-template-columns:1fr;gap:12px;margin-top:12px}.class-card{padding:10px;gap:0}.class-card-top{gap:13px;align-items:stretch}.class-preview{width:34%;min-width:95px;max-width:128px;aspect-ratio:4/5;background:#081820}.class-preview img{object-fit:contain}.class-info{display:flex;flex-direction:column;justify-content:center;flex:1}.class-info h3{font-size:.95rem}.class-info>p{font-size:.73rem;line-height:1.35;margin-bottom:7px}.class-info .progress-label{font-size:.65rem!important;color:#a5b6c6!important;margin:3px 0}.progress-track{height:5px;margin:3px 0 10px}.class-actions{gap:7px}.class-actions .button{min-height:34px;padding:6px 9px;border-radius:9px;font-size:.76rem}.button.primary{background:linear-gradient(135deg,#ff983d,#ff751c);color:#16100b;border:1px solid #ffad62}.button.secondary{background:linear-gradient(#29343e,#1c2730);border-color:#35424e}.class-actions .reset-class{font-weight:600}
+ .segmented-control{display:flex;padding:3px;border:1px solid #2b3842;border-radius:12px;background:#1b252e;font-size:.72rem}.segmented-control span{flex:1;text-align:center;padding:8px}.segmented-control .selected{border-radius:9px;background:linear-gradient(135deg,#ff9638,#ff751c);color:#15100a;font-weight:750}.segmented-control span:last-child{color:#a4afbc}
+-.preset-card{padding:12px;gap:9px}.preset-header{display:flex;align-items:center;gap:13px}.preset-header h3{font-size:.91rem;line-height:1.35}.drill-target{font-size:37px;color:#46baff;line-height:1}.preset-card:nth-child(3) .drill-target{color:#b574f6}.drill-description{font-size:.73rem;color:#b3c0cc;margin:-5px 0 0 50px}.preset-steps{gap:6px;margin-left:46px}.preset-chip{font-size:.65rem;padding:4px 7px;border:1px solid #49c6ff;background:#0b1a24;color:#5aceff}.preset-chip[data-sound="trigger"]{border-color:#ff9231;color:#ff9c42}.preset-chip[data-sound="reload"]{border-color:#c77bff;color:#d19bff}.preset-card .button{min-height:35px;padding:6px;border-radius:8px;font-size:.78rem}
++.preset-steps{gap:6px;margin-left:46px}.preset-chip{font-size:.65rem;padding:4px 7px;border:1px solid #49c6ff;background:#0b1a24;color:#5aceff}.preset-chip[data-sound="trigger"]{border-color:#ff9231;color:#ff9c42}.preset-chip[data-sound="reload"]{border-color:#c77bff;color:#d19bff}
+ .settings-group{padding:0;margin-top:25px;background:#151e26}.settings-group h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:#b3c0cc;padding:0 12px;margin:-19px 0 10px}.settings-group>.muted{padding:0 14px;margin:12px 0;font-size:.73rem}.settings-group>.button{margin:0;width:100%;text-align:left;padding:17px;min-height:65px;border-radius:14px;border:0;background:none;color:var(--primary-text,#f0f5f7);font-size:.87rem}.settings-actions{gap:0;flex-direction:column}.settings-actions .button{flex:auto;text-align:left;border:0;border-radius:0;background:none;min-height:58px;border-bottom:1px solid #2b3640;padding:14px 18px}.install-details{margin:15px 0 27px;border:1px solid #2b3742;border-radius:12px;background:#17212a}.install-details>summary{padding:15px;cursor:pointer;font-size:.85rem}.install-details summary span{float:right}.install-card{border:0;background:none;margin:0;padding:15px}.install-card h3{font-size:1rem}.install-card p,.install-card ol{font-size:.78rem}
+ footer{font-size:.68rem;line-height:1.55;margin-top:20px;color:#8594a4}.tip,.info-note{font-size:.76rem}.settings-row{font-size:.8rem}.button:focus-visible,.dashboard-card:focus-visible,.back-button:focus-visible,summary:focus-visible{outline:2px solid #ffad62;outline-offset:3px}
+ @media(min-width:700px){.app-shell{padding-top:30px}.welcome-card{margin-top:8px}}
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index 92c00a6..abd01a9 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -1,6 +1,6 @@
+ {
+   "version": 1,
+-  "reviewedOn": "2026-10-22",
++  "reviewedOn": "2026-10-23",
+   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+   "publicOrigin": "https://dryfire.matosaru.workers.dev",
+   "publicPaths": [
+@@ -181,6 +181,12 @@
+           "label": "Practice modes and built-in sequences",
+           "image": "docs/design/screens/drills/catalog.dark.png"
+         },
++        {
++          "key": "catalog.light",
++          "anchor": "practiceCatalog",
++          "label": "Practice modes and built-in sequences",
++          "image": "docs/design/screens/drills/catalog.light.png"
++        },
+         {
+           "key": "custom.dark",
+           "anchor": "customDrillCatalog",
+@@ -795,7 +801,7 @@
+     "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "b041999974ca3986bbf24f40f8bfe40a124c66b396ea47cf5aa3d2a554bbe40d",
+     "apps/web/src/app/routeContext.ts": "8edb4b9d133e4914784d4938581a3bfd63fcbbde42d201ff4057d94f2db19391",
+     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
+-    "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "01f10e7f6052511db9b4104c6af88f6c6eb67ac98d29d079a842cfb5a6c9b1a4",
++    "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "d58bb053f365017ef15cec7f4b6da2e7918770d001b15122438db5a33071df70",
+     "apps/web/src/app/chromeBridge.ts": "e3276d510da2db886b0ad226bf5a884a351252b79ba78f6696a847031b08e2f1",
+     "apps/web/src/app/chromePages.tsx": "2bb3be816e7293d68837974cb9d05800eb87b89429ef1667d771dda29ff69bd5",
+     "apps/web/src/app/renderAppShell.tsx": "360b5abfd9d9cc3d757f2aad7f1f052531f900a37237102473b1b5a3045c9c5d",
+@@ -871,11 +877,11 @@
+     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
+     "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "c3e7d4892c917f86e58101f96a5902b29dea7ba39c76da612904be66ee3faa0a",
+     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+-    "packages/ui/src/DrillCard/DrillCard.tsx": "78a831b8e793591c208428a822db7d397d38f680ae0512665def5309636faf93",
+-    "packages/ui/src/DrillCard/DrillCard.css": "2ce2d7f7a9202ef9974c7dd0531e6afa98f6f9ca339a2653d4ba8e3ebc7f9e20",
++    "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
++    "packages/ui/src/DrillCard/DrillCard.css": "11312ad4e2573980ea41fff44f877bc9ba921d1c6289269845be2c243ea5fdb1",
+     "packages/ui/src/RetainedNode/RetainedNode.tsx": "351036d9dee16e01c2e9a29df9ab9704e2c96f5f9626be56d1f7ca70f6208170",
+     "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
+-    "apps/web/src/styles/legacy-after-drill-cards.css": "ae1940919209156d5062cbe05a767490ca2c86c9410fecdf8f2baf8b58c523e4",
++    "apps/web/src/styles/legacy-after-drill-cards.css": "75ce8375f9e7f1e1f9279cbbe560c197da1bc91c02960fa42ff2ff71be28b1fa",
+     "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
+@@ -974,6 +980,7 @@
+     "CHG-047",
+     "CHG-049 P1 route ownership extraction (no visual change)",
+     "CHG-049 static practice catalog prerender (unchanged final UI)",
+-    "CHG-049 P2 shared chrome and static controls (unchanged final UI)"
++    "CHG-049 P2 shared chrome and static controls (unchanged final UI)",
++    "CHG-057"
+   ]
+ }
+diff --git a/docs/architecture/site-tree.md b/docs/architecture/site-tree.md
+index e7f9a8d..bc4c6fb 100644
+--- a/docs/architecture/site-tree.md
++++ b/docs/architecture/site-tree.md
+@@ -1,6 +1,6 @@
+ # Site and screen tree
+ 
+-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-22; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
++Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-23; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+ 
+ ## Public site
+ 
+diff --git a/docs/architecture/ui-contract-map.md b/docs/architecture/ui-contract-map.md
+index e784376..516e168 100644
+--- a/docs/architecture/ui-contract-map.md
++++ b/docs/architecture/ui-contract-map.md
+@@ -29,6 +29,6 @@ P4 Learn: SoundCard/LearnPage/CalibrationCatalog own live learning presentation
+ 
+ P4 Live Listen: LiveListenPage owns the interior after guarded later-entry handoff; one typed update port owns labels, locks, selects, sequence feedback, distance rows and the bounded newest-first timeline. A separate meter port preserves the original sample-frequency path. Pure models are compared with frozen native renderers; microphone readiness, queue ordering, stale tokens, unknown filtering, saved ownership and cleanup remain in existing controllers/audio/storage. The browser workflow proves synthetic successive detections, verification and Stop/navigation/background cleanup on the mounted page. Physical microphone accuracy remains owner/device testing.
+ 
+-P5 Drills: DrillsPage owns collection/preset/mode presentation after guarded later-entry transfer. DrillCard retains native row/chip/action structure. The custom editor remains an independent native subtree until its P5 UI migration, retaining invalid drafts, selection and handlers. Shared RetainedNode also owns Settings file/preview lifetimes; explicit non-layout structural classes preserve existing CSS sibling contracts. PageHeading now supplies the unchanged numbered-title structure for Settings/Learn/Live Listen/Drills, while its default About/Contact contract remains intact. Free saved-preset use/edit and Full-only creation/simulation are verified through the actual mounted page.
++P5 Drills: DrillsPage owns collection/preset/mode presentation after guarded later-entry transfer. CHG-057 DrillCard shares its icon/text-column/action structure with PracticeCatalog; catalog chip strips are removed while Configure/help retain sequence details. The custom editor remains an independent native subtree until its P5 UI migration, retaining invalid drafts, selection and handlers. Shared RetainedNode also owns Settings file/preview lifetimes; explicit non-layout structural classes preserve existing CSS sibling contracts. PageHeading now supplies the unchanged numbered-title structure for Settings/Learn/Live Listen/Drills, while its default About/Contact contract remains intact. Free saved-preset use/edit and Full-only creation/simulation are verified through the actual mounted page.
+ 
+ P5 custom editor: CustomDrillEditor shares complete prerender and live fields; the existing feature owns private steps/permissions/save and the stable form submit/visibility host. A typed field renderer owns caption/step/action presentation after transfer; native child mutation remains only in startup fallback. The original native behavior was characterized before extraction, then the same scenarios run against native and React renderers: Free saved edits, Full creation, repeats/reorder/limits, rejected saves, cancel/reset and stale permissions/profiles. Draft, dropdown, validation, focus and retry behavior remain intact. History boundary analysis is offloaded to [ownership notes](../project/react-refactor/history-ownership-notes.md).
+diff --git a/docs/design/screens/drills/README.md b/docs/design/screens/drills/README.md
+index 8b1228d..47b4e78 100644
+--- a/docs/design/screens/drills/README.md
++++ b/docs/design/screens/drills/README.md
+@@ -47,3 +47,7 @@ Public existing-preset editing: [`edit-custom.dark.png`](edit-custom.dark.png),
+ CHG-052 [pinned card review](../../baselines/chg-052-card-review.json) records both-edition/browser candidates, changed captures and validation status.
+ 
+ CHG-054/055 [current catalog and retirement review](../../baselines/chg-055-retirement-review.json) records pinned both-edition/browser screenshots, selective session cleanup and retained-mode invariants. Earlier six-mode descriptions are historical; the current catalog has four trigger choices.
++
++## CHG-057 aligned card revision
++
++Every catalog card uses one fixed icon column and a shared text column for title and sublabel, followed by full-width Start (and saved-custom Edit) actions. The catalog chip strip is removed; detailed ordered actions remain in Configure and the practice guide. Keep existing colors, target icon, type scale, border, radius and button appearance. Both themes, narrow/mobile/wide layouts and progressive native/React ownership must match. Screenshot collection/review and acceptance are tracked in implementation history; existing images remain previous revision until reviewed replacement.
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index 5338f79..f44863c 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -45,9 +45,9 @@
+     "apps/web/src/styles/legacy-before-live-listen.css": "1351bd3f07949fe353ce8743c61a280badaa2b16eb007801a9d52357f490d497",
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
+     "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
+-    "apps/web/src/styles/legacy-after-drill-cards.css": "ae1940919209156d5062cbe05a767490ca2c86c9410fecdf8f2baf8b58c523e4",
++    "apps/web/src/styles/legacy-after-drill-cards.css": "75ce8375f9e7f1e1f9279cbbe560c197da1bc91c02960fa42ff2ff71be28b1fa",
+     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+-    "packages/ui/src/DrillCard/DrillCard.css": "2ce2d7f7a9202ef9974c7dd0531e6afa98f6f9ca339a2653d4ba8e3ebc7f9e20",
++    "packages/ui/src/DrillCard/DrillCard.css": "11312ad4e2573980ea41fff44f877bc9ba921d1c6289269845be2c243ea5fdb1",
+     "apps/web/src/styles/legacy-before-custom-editor.css": "ad9a9b3fc449f79cedbc0c657aad43dd635c20b80f45d6d1891ab5b0b101b546",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
+     "apps/web/src/styles/legacy-before-history-list.css": "000531fa0d4af1f326e5998ed8a3f31fb280b86b45fca1e53c2e10addc264d7a",
+diff --git a/docs/requirements/drill-sessions.md b/docs/requirements/drill-sessions.md
+index 9d89212..b6f5439 100644
+--- a/docs/requirements/drill-sessions.md
++++ b/docs/requirements/drill-sessions.md
+@@ -70,3 +70,7 @@ The [consolidated practice plan](practice-modes.md) adds six modes and makes non
+ ## Distinct sequence catalog — CHG-052
+ 
+ DRILL-10: Display the three multi-action built-in sequences (Rack → Trigger, Magazine → Trigger, Draw → Magazine → Trigger). Do not display the duplicate standalone Trigger pull card; Single trigger press remains in Dry-fire practice. Preserve the legacy `trigger-only` identifier, saved sessions, history/repeat and imported data. Existing custom one-action presets remain accessible. This is a catalog change, not a storage migration.
++
++## CHG-057 catalog card alignment
++
++All trigger-practice, built-in sequence and saved-custom cards use the same shared presentation: decorative target icon, title, sublabel and full-width **▶ Start Drill** action; saved-custom Edit stays separate. Title and sublabel start at exactly the same horizontal text edge, including wrapped/long titles and narrow screens, in both themes and before/after React handoff. Remove the `preset-steps` chip strip from cards only. Underlying sequence order, Configure's single sequence display, help examples, recognition and saved history remain unchanged. No button starts recording directly. Acceptance includes native/React parity, callbacks, no chips, measured text alignment, wrapping/no overflow, and refreshed pinned Chromium/WebKit references for affected catalog/editor states.
+diff --git a/packages/ui/src/DrillCard/DrillCard.css b/packages/ui/src/DrillCard/DrillCard.css
+index 0b99753..414dfc4 100644
+--- a/packages/ui/src/DrillCard/DrillCard.css
++++ b/packages/ui/src/DrillCard/DrillCard.css
+@@ -1,5 +1,11 @@
+-.preset-card{border:1px solid #304048;background:#111a20;border-radius:17px;padding:15px;display:grid;gap:13px}
+-.preset-card h3{font-size:1rem;margin:0}
++.preset-card{border:1px solid #304048;background:#111a20;border-radius:17px;padding:12px;display:grid;gap:9px}
++.preset-header{display:flex;align-items:flex-start;gap:13px}
++.preset-copy{min-width:0;overflow-wrap:anywhere}
++.preset-header h3{font-size:.91rem;line-height:1.35;margin:0}
++.drill-target{flex:0 0 37px;font-size:37px;color:#46baff;line-height:1}
++.preset-card:nth-child(3) .drill-target{color:#b574f6}
++.drill-description{font-size:.73rem;color:#b3c0cc;margin:4px 0 0}
++.preset-card .button{width:100%;min-height:35px;padding:6px;border-radius:8px;font-size:.78rem}
++.wide-action{width:100%}
+ .preset-steps{display:flex;gap:7px;flex-wrap:wrap;align-items:center;font-size:.8rem}
+ .preset-chip{border:1px solid #43515a;border-radius:99px;padding:7px 10px;background:#1b2830}
+-.preset-card .button,.wide-action{width:100%}
+diff --git a/packages/ui/src/DrillCard/DrillCard.test.tsx b/packages/ui/src/DrillCard/DrillCard.test.tsx
+index 40b1aef..3979c3d 100644
+--- a/packages/ui/src/DrillCard/DrillCard.test.tsx
++++ b/packages/ui/src/DrillCard/DrillCard.test.tsx
+@@ -8,4 +8,12 @@ import {DrillCard} from './DrillCard.tsx';
+ afterEach(cleanup);
+ function tree(node:Node):unknown{if(node.nodeType===Node.TEXT_NODE)return node.textContent?.replace(/\s+/g,' ').trim()||null;if(!(node instanceof Element))return null;return[node.tagName,[...node.attributes].map(a=>[a.name,a.value]).sort(),[...node.childNodes].map(tree).filter(Boolean)];}
+ test('single and repeated-action sequences preserve native card order, labels and attributes',()=>{for(const steps of [['trigger'],['draw','reload','trigger'],['trigger','trigger']]){const props={drill:{id:'preset',title:'Saved preset',steps},index:0,titleFor:(label:string)=>label,onChoose:jest.fn()};const legacy=drillCard(props,document),result=render(<DrillCard {...props}/>);expect(tree(result.container.firstElementChild!)).toEqual(tree(legacy));result.unmount();}});
+-test('choose and saved-preset edit callbacks remain distinct',()=>{const onChoose=jest.fn(),onEdit=jest.fn();const result=render(<DrillCard drill={{id:'saved',title:'Saved preset',steps:['trigger']}} titleFor={label=>label} onChoose={onChoose} onEdit={onEdit}/>);fireEvent.click(result.getByRole('button',{name:'▶ Start Drill'}));fireEvent.click(result.getByRole('button',{name:'Edit sequence'}));expect(onChoose).toHaveBeenCalledTimes(1);expect(onEdit).toHaveBeenCalledTimes(1);});
++test('choose and saved-preset edit callbacks remain distinct',()=>{const onChoose=jest.fn(),onEdit=jest.fn();const result=render(<DrillCard drill={{id:'saved',title:'Saved preset',steps:['trigger']}} onChoose={onChoose} onEdit={onEdit}/>);fireEvent.click(result.getByRole('button',{name:'▶ Start Drill'}));fireEvent.click(result.getByRole('button',{name:'Edit sequence'}));expect(onChoose).toHaveBeenCalledTimes(1);expect(onEdit).toHaveBeenCalledTimes(1);});
++
++test('catalog cards expose one title/description and no repeated action strip',()=>{
++ const result=render(<DrillCard drill={{id:'sequence',title:'Rack then trigger',steps:['rack','trigger']}}/>);
++ expect(result.getByRole('heading',{name:'Rack then trigger'})).toBeVisible();
++ expect(result.getByText('2-action sound sequence.')).toBeVisible();
++ expect(result.container.querySelector('.preset-steps,.preset-chip')).toBeNull();
++ expect(result.container.querySelector('.drill-target')).toHaveAttribute('aria-hidden','true');
++});
+diff --git a/packages/ui/src/DrillCard/DrillCard.tsx b/packages/ui/src/DrillCard/DrillCard.tsx
+index 116adb9..7e1bd99 100644
+--- a/packages/ui/src/DrillCard/DrillCard.tsx
++++ b/packages/ui/src/DrillCard/DrillCard.tsx
+@@ -1,4 +1,3 @@
+-import {Fragment} from 'react';
+-export type DrillCardProps={drill:{id:string;title:string;steps:string[]};titleFor:(label:string)=>string;onChoose?:()=>void;onEdit?:()=>void};
++export type DrillCardProps={drill:{id:string;title:string;steps:string[]};onChoose?:()=>void;onEdit?:()=>void;description?:string;practiceMode?:string;disabled?:boolean};
+ /** Preset presentation only; choosing/editing stays with guarded feature actions. */
+-export function DrillCard({drill,titleFor,onChoose,onEdit}:DrillCardProps){return <article className="preset-card"><div className="preset-header"><span className="drill-target">◎</span><h3>{drill.title}</h3></div><p className="drill-description">{drill.steps.length===1?'Practice single-sound recognition.':`${drill.steps.length}-action sound sequence.`}</p><div className="preset-steps">{drill.steps.map((label,index)=><Fragment key={index}>{index?<span aria-hidden="true">→</span>:null}<span className="preset-chip" data-sound={label}>{titleFor(label)}</span></Fragment>)}</div><button className="button primary" type="button" onClick={onChoose}>▶ Start Drill</button>{onEdit?<button type="button" className="button secondary" onClick={onEdit}>Edit sequence</button>:null}</article>;}
++export function DrillCard({drill,onChoose,onEdit,description,practiceMode,disabled=false}:DrillCardProps){return <article className="preset-card"><div className="preset-header"><span className="drill-target" aria-hidden="true">◎</span><div className="preset-copy"><h3>{drill.title}</h3><p className="drill-description">{description??(drill.steps.length===1?'Practice single-sound recognition.':`${drill.steps.length}-action sound sequence.`)}</p></div></div><button className="button primary" type="button" data-practice-mode={practiceMode} disabled={disabled} onClick={onChoose}>▶ Start Drill</button>{onEdit?<button type="button" className="button secondary" onClick={onEdit}>Edit sequence</button>:null}</article>;}
+diff --git a/packages/ui/src/PracticeCatalog/PracticeCatalog.tsx b/packages/ui/src/PracticeCatalog/PracticeCatalog.tsx
+index 5bb6097..d9bf0d1 100644
+--- a/packages/ui/src/PracticeCatalog/PracticeCatalog.tsx
++++ b/packages/ui/src/PracticeCatalog/PracticeCatalog.tsx
+@@ -1,3 +1,4 @@
++import {DrillCard} from '../DrillCard/index.ts';
+ export type PracticeOption = { id: string; title: string; description: string };
+ export type PracticeCatalogProps = { modes: readonly PracticeOption[]; disabled?: boolean; onSelect?: (id: string) => void };
+ 
+@@ -5,10 +6,6 @@ export type PracticeCatalogProps = { modes: readonly PracticeOption[]; disabled?
+  * behind the application's existing controller; this component acquires none. */
+ export function PracticeCatalog({ modes, disabled = false, onSelect }: PracticeCatalogProps) {
+   return <div id="practiceCatalog" className="drill-catalog">
+-    {modes.map(mode => <article className="preset-card" key={mode.id}>
+-      <div className="preset-header"><span className="drill-target" aria-hidden="true">◎</span><h3>{mode.title}</h3></div>
+-      <p className="drill-description">{mode.description}</p>
+-      <button className="button primary" type="button" data-practice-mode={mode.id} disabled={disabled} onClick={() => onSelect?.(mode.id)}>▶ Start Drill</button>
+-    </article>)}
++    {modes.map(mode => <DrillCard key={mode.id} drill={{id:mode.id,title:mode.title,steps:[]}} description={mode.description} practiceMode={mode.id} disabled={disabled} onChoose={()=>onSelect?.(mode.id)}/>)}
+   </div>;
+ }
+diff --git a/src/uiComponents.js b/src/uiComponents.js
+index 28a6f50..127927d 100644
+--- a/src/uiComponents.js
++++ b/src/uiComponents.js
+@@ -85,26 +85,17 @@ export function soundCard({
+   card.append(top);
+   return card;
+ }
+-export function drillCard({ drill, titleFor, onChoose }, doc = document) {
++export function drillCard({ drill, onChoose }, doc = document) {
+   const card = doc.createElement('article');
+   card.className = 'preset-card';
+   const heading = textNode(doc, 'h3', '', drill.title);
+-  const steps = doc.createElement('div');
+-  steps.className = 'preset-steps';
+-  drill.steps.forEach((label, position) => {
+-    if (position) {
+-      const arrow = textNode(doc, 'span', '', '→');
+-      arrow.setAttribute('aria-hidden', 'true');
+-      steps.append(arrow);
+-    }
+-    const chip = textNode(doc, 'span', 'preset-chip', titleFor(label));
+-    chip.setAttribute('data-sound', label);
+-    steps.append(chip);
+-  });
+   const icon = textNode(doc, 'span', 'drill-target', '◎');
++  icon.setAttribute('aria-hidden', 'true');
+   const header = doc.createElement('div');
+   header.className = 'preset-header';
+-  header.append(icon, heading);
+-  card.append(header, textNode(doc, 'p', 'drill-description', drill.steps.length === 1 ? 'Practice single-sound recognition.' : `${drill.steps.length}-action sound sequence.`), steps, actionButton({label:'▶ Start Drill',onClick:onChoose},doc));
++  const copy=doc.createElement('div');copy.className='preset-copy';
++  copy.append(heading,textNode(doc, 'p', 'drill-description', drill.steps.length === 1 ? 'Practice single-sound recognition.' : `${drill.steps.length}-action sound sequence.`));
++  header.append(icon,copy);
++  card.append(header, actionButton({label:'▶ Start Drill',onClick:onChoose},doc));
+   return card;
+ }
+diff --git a/tests/contextTemplateParity.test.tsx b/tests/contextTemplateParity.test.tsx
+index 07d1f06..e6a7770 100644
+--- a/tests/contextTemplateParity.test.tsx
++++ b/tests/contextTemplateParity.test.tsx
+@@ -36,7 +36,7 @@ test('the compiled shell includes the same context/dialog without extra wrappers
+ });
+ 
+ 
+-test('component CSS extraction preserves the entire released ordered cascade byte for byte',()=>{
+- const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/shared-shell-refactor-review.json',import.meta.url),'utf8'));
++test('ordered CSS matches the reviewed CHG-057 card update with the existing shell intact',()=>{
++ const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-057-card-review.json',import.meta.url),'utf8'));
+  expect(createHash('sha256').update(composedStyles().css).digest('hex')).toBe(proof.expandedCSSSha256);
+ });
+diff --git a/tests/fixtures/practice-catalog.html b/tests/fixtures/practice-catalog.html
+index cfe7f56..9e0d9bb 100644
+--- a/tests/fixtures/practice-catalog.html
++++ b/tests/fixtures/practice-catalog.html
+@@ -1 +1 @@
+-<div id="practiceCatalog" class="drill-catalog"><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Single trigger press</h3></div><p class="drill-description">Reaction time for one click after each start signal.</p><button class="button primary" type="button" data-practice-mode="single">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Repeated trigger press</h3></div><p class="drill-description">Count distinct clicks and the intervals between them.</p><button class="button primary" type="button" data-practice-mode="repeated">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Par time practice</h3></div><p class="drill-description">Recognize a click within your chosen time limit.</p><button class="button primary" type="button" data-practice-mode="par">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><h3>Trigger control</h3></div><p class="drill-description">Compare the consistency of your detected click intervals.</p><button class="button primary" type="button" data-practice-mode="control">▶ Start Drill</button></article></div>
++<div id="practiceCatalog" class="drill-catalog"><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><div class="preset-copy"><h3>Single trigger press</h3><p class="drill-description">Reaction time for one click after each start signal.</p></div></div><button class="button primary" type="button" data-practice-mode="single">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><div class="preset-copy"><h3>Repeated trigger press</h3><p class="drill-description">Count distinct clicks and the intervals between them.</p></div></div><button class="button primary" type="button" data-practice-mode="repeated">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><div class="preset-copy"><h3>Par time practice</h3><p class="drill-description">Recognize a click within your chosen time limit.</p></div></div><button class="button primary" type="button" data-practice-mode="par">▶ Start Drill</button></article><article class="preset-card"><div class="preset-header"><span class="drill-target" aria-hidden="true">◎</span><div class="preset-copy"><h3>Trigger control</h3><p class="drill-description">Compare the consistency of your detected click intervals.</p></div></div><button class="button primary" type="button" data-practice-mode="control">▶ Start Drill</button></article></div>
+diff --git a/tests/practiceCatalogParity.test.tsx b/tests/practiceCatalogParity.test.tsx
+index 672daf1..1ab5ee0 100644
+--- a/tests/practiceCatalogParity.test.tsx
++++ b/tests/practiceCatalogParity.test.tsx
+@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
+ import { PRACTICE_MODES, matchesPracticeTitle } from '../src/practiceModes.js';
+ import { renderPracticeCatalog } from '../apps/web/src/app/renderPracticeCatalog.tsx';
+ 
+-test('prerendering exactly preserves the four approved CHG-054 cards and their native button semantics', () => {
++test('prerendering exactly preserves the four approved CHG-057 aligned cards and their native button semantics', () => {
+   const old = readFileSync(new URL('./fixtures/practice-catalog.html',import.meta.url),'utf8');
+   const tree = (html: string) => {
+     const container = document.createElement('div'); container.innerHTML = html;
+diff --git a/tests/uiComponents.test.js b/tests/uiComponents.test.js
+index a47ae49..ebd80c6 100644
+--- a/tests/uiComponents.test.js
++++ b/tests/uiComponents.test.js
+@@ -44,7 +44,7 @@ describe('reusable UI factories', () => {
+     },fakeDocument());
+     expect(flatten(card).filter(node => node.tag === 'button').every(button => button.disabled)).toBe(true);
+   });
+-  test('drill card preserves sequence and choose callback', () => {
++  test('drill card keeps description and choose callback without catalog step chips', () => {
+     const choose=jest.fn();
+     const card=drillCard({
+       drill:{id:'mag-trigger',title:'Mag then trigger',steps:['reload','trigger']},
+@@ -52,7 +52,8 @@ describe('reusable UI factories', () => {
+       onChoose:choose
+     },fakeDocument());
+     const nodes=flatten(card);
+-    expect(nodes.filter(node=>node.className==='preset-chip').map(node=>node.textContent)).toEqual(['Change magazine','Trigger pull']);
++    expect(nodes.some(node=>node.className==='preset-steps'||node.className==='preset-chip')).toBe(false);
++    expect(nodes.find(node=>node.className==='drill-description').textContent).toBe('2-action sound sequence.');
+     nodes.find(node=>node.tag==='button').handlers.click();
+     expect(choose).toHaveBeenCalledTimes(1);
+   });
+@@ -66,13 +67,13 @@ describe('reusable UI factories', () => {
+   });
+ });
+ 
+-test('reference design cards retain real actions and label-colored sequences', () => {
++test('reference design cards retain real actions without repeating sequence chips', () => {
+   const doc = fakeDocument();
+   const sound = soundCard({label:'draw',meta:{title:'Draw',description:'Draw',tone:'blue'},count:4,maxExamples:50,minExamples:3,recommendedExamples:10,locked:false,onRecord:()=>{},onReset:()=>{}},doc);
+   expect(flatten(sound).find(n=>n.tag==='button').textContent).toBe('▶ Train');
+   const drill = drillCard({drill:{title:'Draw then trigger',steps:['draw','trigger']},index:0,titleFor:l=>l,onChoose:()=>{}},doc);
+   expect(flatten(drill).find(n=>n.tag==='button').textContent).toBe('▶ Start Drill');
+-  expect(flatten(drill).filter(n=>n.className==='preset-chip').map(n=>n.attributes['data-sound'])).toEqual(['draw','trigger']);
++  expect(flatten(drill).filter(n=>n.className==='preset-chip')).toHaveLength(0);
+ });
+ 
+ test('learning GIFs have a reduced-motion SVG fallback', () => {
+@@ -82,3 +83,8 @@ test('learning GIFs have a reduced-motion SVG fallback', () => {
+   expect(nodes.find(n=>n.tag==='source').media).toBe('(prefers-reduced-motion: no-preference)');
+   expect(nodes.find(n=>n.tag==='img').src).toBe('/motions/rack.svg');
+ });
++
++test('optional sound recognition control reports its current checked state',()=>{
++ const onToggle=jest.fn();const card=soundCard({label:'rack',meta:{title:'Rack',description:'Rack',tone:'green'},count:3,maxExamples:10,minExamples:3,recommendedExamples:10,locked:false,optional:true,enabled:false,onRecord:()=>{},onReset:()=>{},onToggle},fakeDocument());
++ const input=flatten(card).find(node=>node.tag==='input');expect(input.checked).toBe(false);input.checked=true;input.handlers.change();expect(onToggle).toHaveBeenCalledWith(true);
++});
+diff --git a/visual-tests/drill-catalog.spec.js b/visual-tests/drill-catalog.spec.js
+index cb44904..5b38bc6 100644
+--- a/visual-tests/drill-catalog.spec.js
++++ b/visual-tests/drill-catalog.spec.js
+@@ -30,3 +30,30 @@ test('practice and sequence cards share presentation without duplicate trigger c
+   await openLegacySequence(page);
+   await expect(page.locator('#sessionSteps li')).toHaveText(['Trigger pull']);
+ });
++
++for (const [width,theme] of [[320,'dark'],[390,'light'],[768,'dark']]) test(`all catalog card text aligns at ${width}px in ${theme} before and after handoff`,async({page})=>{
++ const backup=JSON.parse(readFileSync(new URL('./fixtures/library.json',import.meta.url)));
++ backup.settings.appearance=theme;
++ backup.gunSettings.find(item=>item.key==='customDrills').value[0].title='LongCustomSequenceTitleWithoutSpacesToVerifyWrappingAtNarrowWidths';
++ page.on('dialog',dialog=>dialog.accept());await page.setViewportSize({width,height:900});await page.goto('/');await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});await expect(page.locator('#homeView')).toBeVisible();
++ for(let visit=0;visit<2;visit++){
++  await page.locator('.tab[data-view="drills"]').click();
++  for(const custom of [false,true]){
++   await page.locator(custom?'#customDrillsTab':'#builtInDrillsTab').click();
++   const cards=page.locator('#drillsView .preset-card:visible');await expect(cards).toHaveCount(custom?5:7);
++   for(const card of await cards.all()){
++    await expect(card.locator('.preset-steps,.preset-chip')).toHaveCount(0);
++    const box=await card.boundingBox(),catalog=await card.locator('..').boundingBox();
++    expect(Math.abs(box.x-catalog.x)).toBeLessThanOrEqual(.5);
++    expect(Math.abs(box.width-catalog.width)).toBeLessThanOrEqual(.5);
++    const title=await card.locator('h3').boundingBox(),description=await card.locator('.drill-description').boundingBox();
++    expect(Math.abs(title.x-description.x)).toBeLessThanOrEqual(.5);
++    expect(description.y).toBeGreaterThanOrEqual(title.y+title.height);
++    await expect(card.getByRole('button',{name:'Start Drill'})).toBeEnabled();
++   }
++  }
++  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
++  await page.screenshot({path:`/tmp/chg057-${width}-${theme}-${visit}.png`,fullPage:true});
++  await page.locator('.tab[data-view="home"]').click();
++ }
++});
+diff --git a/visual-tests/screens.spec.js b/visual-tests/screens.spec.js
+index 8f685ae..e052ca8 100644
+--- a/visual-tests/screens.spec.js
++++ b/visual-tests/screens.spec.js
+@@ -2,7 +2,7 @@ import { installPausedClock } from './clock.js';
+ import { addLegacySequence, openLegacySequence } from './legacy-sequence.js';
+ import {freezeMotionArtwork} from './motion-fixture.js';
+ import { test, expect } from '@playwright/test';
+-import { readFileSync } from 'node:fs';
++import { readFileSync, mkdirSync } from 'node:fs';
+ import { cases, baselineName } from './catalog.js';
+ import { installSyntheticMedia } from './media.js';
+ 
+@@ -249,6 +249,11 @@ for (const item of cases) {
+     expect(errors, 'Unexpected browser errors').toEqual([]);
+     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });
+     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });
+-    await expect(page).toHaveScreenshot(baselineName(item).split('/'));
++    if (process.env.COLLECT_DRILL_CARD_CANDIDATES === '1') {
++      if (item.screen !== 'drills') throw new Error('Unapproved candidate screen.');
++      const path=`docs/design/review-candidates/chg-057/${testInfo.project.name}/${baselineName(item)}`;
++      mkdirSync(path.slice(0,path.lastIndexOf('/')),{recursive:true});
++      await page.screenshot({path,fullPage:false,animations:'disabled',caret:'hide',scale:'css'});
++    } else await expect(page).toHaveScreenshot(baselineName(item).split('/'));
+   });
+ }
+diff --git a/docs/design/baselines/chg-057-card-review.json b/docs/design/baselines/chg-057-card-review.json
+new file mode 100644
+index 0000000..f239ae4
+--- /dev/null
++++ b/docs/design/baselines/chg-057-card-review.json
+@@ -0,0 +1,7 @@
++{
++  "change": "CHG-057",
++  "expandedCSSSha256": "6fe76dd2962b1b7d71d3876de9b4374f1def2d21d3f3b7b2cb4f96c903196e67",
++  "previousCSSReview": "shared-shell-refactor-review.json",
++  "scope": "Shared DrillCard/PracticeCatalog copy column and removal of catalog chips only; configure/help chip styles retained.",
++  "status": "Local narrow/wide/theme review and tests in progress; pinned image review and complete acceptance pending."
++}
