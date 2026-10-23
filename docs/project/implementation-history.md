@@ -843,3 +843,8 @@ The owner reaffirmed the shared Sequence sound-list UI for the trigger group; CH
 ### 2026-10-23 — CHG-058 final startup bottleneck
 
 Optimized candidate39955534502 passes validation, both complete screenshot suites and preview WebKit feedback, but public WebKit warm39→44ms remains above the original gate. Keep the failure. Startup reopened IndexedDB separately for recovery library, selected ID, guns and two device settings. Added one read-only getLibraryOverview snapshot, reused after recovery; selected profile ordering/null behavior and preference fallbacks match existing public getters. No schema, migration or write-policy change. Tests cover one database open, unchanged backup contents, missing selection and first-read legacy migration; profile/capture browser regressions remain required. No application publication before complete acceptance.
+
+
+### 2026-10-23 — CHG-058 complete checks, infrastructure timeout
+
+Candidate39957863599 passes validation, all four original performance jobs/controls, public screenshots and all348 preview browser tests. Preview job exceeded the12-minute infrastructure limit at final cleanup (annotation120428109711), so it is cancelled and aggregate acceptance fails; do not count it as successful. Raise only screenshot-job allowance to15minutes to fit fixed coverage/probe/artifact/container cleanup. All test timeouts, retries, image thresholds and application timing/payload baselines remain unchanged. Rerun complete acceptance before applying source.
