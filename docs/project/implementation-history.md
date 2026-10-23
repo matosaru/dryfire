@@ -838,3 +838,8 @@ Investigation found a duplicate Practice render: controller changed() renders th
 ### 2026-10-23 — Consistent sound list and guide-control suggestion
 
 The owner reaffirmed the shared Sequence sound-list UI for the trigger group; CHG-058 already implements it via DrillSetupSteps. Requested a better About-this-practice link suggestion. Prepared [an outlined information-control proposal](../design/proposals/guide-control/README.md), positioned after gun context/sounds and before setup, without underline/arrow. Local Trigger/Sequence examples preserve real guide navigation and keyboard activation. This is a proposal only; no guide-control application change or approval is inferred.
+
+
+### 2026-10-23 — CHG-058 final startup bottleneck
+
+Optimized candidate39955534502 passes validation, both complete screenshot suites and preview WebKit feedback, but public WebKit warm39→44ms remains above the original gate. Keep the failure. Startup reopened IndexedDB separately for recovery library, selected ID, guns and two device settings. Added one read-only getLibraryOverview snapshot, reused after recovery; selected profile ordering/null behavior and preference fallbacks match existing public getters. No schema, migration or write-policy change. Tests cover one database open, unchanged backup contents, missing selection and first-read legacy migration; profile/capture browser regressions remain required. No application publication before complete acceptance.
