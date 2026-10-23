@@ -168,18 +168,6 @@ jobs:
         working-directory: .performance-baseline
       - run: npm run build
       - run: npm run verify:dist -- --edition=${{ matrix.edition }}
-      - name: Advisory crossed HTML/module startup diagnostic
-        if: matrix.edition == 'public' && matrix.browser == 'webkit'
-        continue-on-error: true
-        run: node --experimental-vm-modules tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
-      - name: Expose advisory startup phases for diagnosis
-        id: startup_diagnostic
-        if: always() && matrix.edition == 'public' && matrix.browser == 'webkit'
-        run: |
-          node --input-type=module -e "import {existsSync,readFileSync,appendFileSync} from 'node:fs'; const path='performance-results/startup-diagnostic.json'; if(existsSync(path)) appendFileSync(process.env.GITHUB_OUTPUT,'medians='+JSON.stringify(JSON.parse(readFileSync(path)).medians)+'\n');"
-      - name: "Advisory startup phases: ${{ steps.startup_diagnostic.outputs.medians || 'not measured' }}"
-        if: always() && matrix.edition == 'public' && matrix.browser == 'webkit'
-        run: ':'
       - name: Compare actual critical payload, cold/warm startup, input and cleanup
         run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist --browser=${{ matrix.browser }}
       - name: Publish performance evidence and failure annotations

@@ -790,3 +790,8 @@ CHG-057 frozen local acceptance:985 tests/143 suites plus original coverage ratc
 
 
 Candidate39897915233: validation and both screenshot suites pass; public WebKit warm and Chromium returning startup fail. Body-entry experiment removed based on the full evidence. Current compaction candidate preserves DOM/attributes/inline spacing/preformatted text with4unit checks,983total tests/142suites+coverage and14public workflows passing. Isolate original WebKit comparison before another complete gate; never substitute this targeted run for full acceptance. No application merge.
+
+
+HTML compaction targeted evidence: original public WebKit comparison39899169804 succeeds on the9ed3245 candidate. This targeted run does not replace complete acceptance; full workflow now dispatched with unchanged controls/baselines/sample counts. Local983/142+coverage,16smoke and14public+14preview workflows pass. Application still unmerged.
+
+Full compaction39899498282 public WebKit warm still fails (38→46ms) despite isolated identical-candidate39899169804 success. The required public WebKit job additionally ran mixed old/new/no-script diagnostics before measurement; other browser jobs and isolated mode do not. Remove advisory experiments from required measurement runners; standalone diagnostic workflow remains available. Original immutable sources, metrics, sample counts, confidence thresholds, payload limits and calibration/deliberate controls remain unchanged. This isolates benchmarks from prior diagnostic workloads; it is not evidence that application timing is solved until full acceptance and post-push checks succeed.
