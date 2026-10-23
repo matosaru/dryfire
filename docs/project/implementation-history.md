@@ -857,3 +857,12 @@ All eight jobs in [39959685865](https://github.com/matosaru/dryfire/actions/runs
 Published scope: shared Sequence/Practice setup primitives and CSS; four trigger modes use compact count/Par cards, grouped signal/delay, separate sound switch and Sequence sound list. Existing form/input/safety/audio/timing/data/edition contracts preserved. Duplicate Practice render and unchanged native writes removed; read-only startup library/preferences snapshot avoids repeated database opens without schema/write changes. Earlier failed/cancelled runs remain recorded. Only screenshot CI execution allowance increases12→15minutes; all test timeouts, image tolerances and original performance thresholds/baselines/samples stay intact.
 
 Temporary collection workflow, patch inputs and duplicate candidate images removed. The outlined About-this-practice control remains a [proposal](../design/proposals/guide-control/README.md), not an application change. Push b then inspect normal post-push CI; main/dev and deployment unchanged.
+
+
+### 2026-10-23 — CHG-058 published and verified
+
+Application [72b41c7](https://github.com/matosaru/dryfire/commit/72b41c7) is pushed to b. Normal post-push [39961346126](https://github.com/matosaru/dryfire/actions/runs/39961346126) succeeds in all eight required jobs, following complete pre-publication39959685865.1013 unit tests/147 suites+coverage, both-edition Chromium/WebKit screenshots/workflows and four original performance comparisons/controls are green.398 goldens/83 current captures; all original application gates preserved. Temporary collection workflows, patches and duplicate candidate images are cleaned.
+
+Trigger setup now reuses the Sequence form/card/ordered-list template. Native fields, drafts, supported modes, timing/capture/safety/data and Free/Full boundaries remain intact. Source/CSS/tests/ownership and functional/design documentation are updated. Read-only startup snapshot and skipped duplicate native rendering resolve measured timing failures; failed/cancelled attempts remain recorded. Screenshot CI allowance15minutes permits complete evidence/cleanup; test timeouts and image/application limits are unchanged.
+
+The outlined information-control design is a [proposal with both examples](../design/proposals/guide-control/README.md); the app's About-this-practice link has not been restyled without a further implementation instruction. Main6c38bff/dev741f46e unchanged. Cloudflare deployment and physical-device acceptance are not verified by this work.

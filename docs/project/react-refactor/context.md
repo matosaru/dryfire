@@ -1,25 +1,31 @@
-# Refactor working context
+# Working context
 
-Updated 2026-10-23 UTC. Refactor implementation and automated acceptance are complete on **b only**; main/dev remain frozen. Do not merge or deploy without new release instructions.
+Updated 2026-10-23. Keep this file concise; detailed evidence belongs in the linked history/specifications.
 
-Accepted application: **8a8906e42c3d9342c9343f2e096ee5f5469d5f68**, [CI 39598533411](https://github.com/matosaru/dryfire/actions/runs/39598533411), all six jobs successful: validate, public/preview screenshots, public/preview performance and aggregate acceptance. Local full coverage959 tests/140 suites; original coverage/image/performance gates preserved. Earlier failures remain in evidence/history.
+## Authorization and branch rules
 
-CHG-051 delegates architecture judgement: retain tested native startup adapters plus exclusive guarded lazy React owners. No eager React-only startup. All13 pages and25 UI components have source/CSS/tests/exports; browser entry is src/main.js, typed static markup is composed by tools/page-templates.mjs. Stable native input/file/meter/service/rollback islands intentionally remain. Cleanup removed12 templates,25 CSS wrappers and unused/test-only helpers, sharing preparation/text/history models. Catalogs move inert template nodes; no runtime HTML-string parser. Cache v68. No visual/data/schema/edition behavior change.
+Work on **b only**. Main/dev are frozen; no release PR, merge or deployment without a new instruction. Main6c38bff/dev741f46e were verified unchanged. Cloudflare is owner-managed. Continue authorized tasks autonomously, with concise progress updates and no routine repeated confirmations.
 
-Original payload budgets pass: public JS166414raw/50609gzip, preview167988/51082; CSS61451/13011. Memory checks show stable warmed DOM/listener counts with disclosed React heap overhead/growth; no zero-leak/flat-heap claim. Physical iPhone acceptance, deployment and owner release remain separate. No more implementation is required by this refactor plan.
+Before publishing application changes require complete unit/coverage, integration, both-edition minified build/verification, pinned Chromium/WebKit screenshots and the original performance gate. Never call pending/cancelled/diagnostic checks passes. When pinned browsers are unavailable locally, use review-only CI candidates; preserve original baselines, samples, controls and tolerances. Update context after each completed task and keep requirements/designs/help/media synchronized.
 
-[Plan](plan.md) · [Spec](spec.md) · [Architecture/entry guide](../../architecture/application-structure.md) · [Evidence](final-acceptance-evidence.json) · [History](../implementation-history.md) · [Execution archive](execution-history.md) · [Component map](../../architecture/component-map.json)
+## Completed and published
 
-## Current work — CHG-058 accepted; publication verification next
+Application **72b41c7** on b implements CHG-058: all four trigger setup modes reuse Sequence's form, compact count/Par cards, grouped signal/delay, separate sound switch and ordered sound list through packages/ui/src/DrillSetup. Sequence frozen markup, native retained fields/drafts, existing run/review fragments, safety/audio/timing/data and edition behavior stay intact. Obsolete practice step-margin rule is removed; canonical Sequence CSS relocated without unrelated cascade changes. Cachev81.
 
-**b only. Main/dev frozen. No deployment.** Full required acceptance precedes application publication; pending/cancelled/diagnostic runs are not passes.
+Performance corrections remove duplicate Practice refresh after its own render, avoid equal native text/disabled/image writes with fresh DOM lookups, and batch startup library/selection/device-preference reads into one read-only IndexedDB snapshot. Existing schema4, migrations, write policies and stored data remain intact.
 
-CHG058 shared Sequence/Practice configuration is accepted in all8 jobs of **39959685865**.1013tests/147suites+coverage, both-edition minified builds/payloads, pinned Chromium/WebKit workflows/screenshots and all four original performance gates/controls pass. Exact source patchd91ef6ba727d54a69363650ec50e1b980ab27a71588a09ad93dd157a2354d937 retained in Git966f2e6; reverse-check verified before applying.398goldens/83current captures;64 derived Practice/safety references reviewed. Sequence/guide references and ten GIF files unchanged. Modal interior pixel identity proved. Shared native form/draft/safety/data/edition ownership preserved; source entry remains src/main.js.
+**All8 jobs pass** in pre-publication39959685865 and normal post-push39961346126:1013tests/147suites+coverage, both-edition Chromium/WebKit workflows/screenshots, four original performance gates/controls and aggregate acceptance.398goldens/83current captures;64 derived Practice/safety references reviewed, modal interior pixels identical. Sequence/guide references and ten GIF files unchanged. Exact accepted patch SHA256d91ef6ba727d54a69363650ec50e1b980ab27a71588a09ad93dd157a2354d937 retained in Git966f2e6, verified before applying. Temporary collector/patches/duplicate images cleaned.
 
-DrillSetup owns shared form/count/ordered-step geometry. Practice adopts Sequence setup; run/review fragments unchanged. Rendering optimization skips duplicate Practice refresh and equal native writes with fresh IDs. Startup getLibraryOverview uses one read-only snapshot, existing schema/migration/write rules, then existing recovery/profile flow. Earlier timing failures in39953233357/39955534502 remain recorded.39957863599 actual tests passed but preview cleanup timed out; screenshot CI allowance15minutes fixes infrastructure only. No test/image/application gate weakened.
+Earlier failures39953233357/39955534502 and cleanup cancellation39957863599 remain in [history](../implementation-history.md) and [review evidence](../../design/baselines/chg-058-setup-review.json). Screenshot CI allowance12→15minutes fixes evidence/cleanup timeout only; no test/image/application gate weakened. Generic strict UI audit retains2 preexisting documented native-select ownership findings; no broad compliance claim.
 
-Next: push accepted source to b, then observe normal post-pushCI before final all-green claim. Temporary review patches/collector/duplicate images removed; evidence remains in Git and chg-058-setup-review.json.
+CHG-057 cards and CHG-053 Live Listen were already accepted/published in da08937, all8 post-push39904517004 jobs green. Refactor P0–P8 remains complete; retain tested startup adapters/lazy React owners under ADR001. Browser entry is src/main.js; build-time typed templates tools/page-templates.mjs.13 page packages/26 shared UI packages have source/CSS/tests/exports; do not restart migration or eagerly hydrate the app.
 
-Latest user guide-control request is suggestion only: proposal4036c0a at docs/design/proposals/guide-control/README.md, screenshots for both groups. Outlined info control after context/sounds before setup, no underline/arrow. Application guide link unchanged; do not infer implementation approval.
+## Latest guide-control request — proposal only
 
-Generic UI audit retains2 preexisting documented native-select findings. Main/dev/Cloudflare unchanged. Refactor remains complete; retain ADR001 startup adapters and project-owned original performance limits.
+Owner asks to suggest improved About-this-practice UX. [Proposal](../../design/proposals/guide-control/README.md), published4036c0a: outlined “ⓘ About this practice” after context/sounds before setup, no underline/arrow. Includes Trigger/Sequence screenshots and keyboard navigation check. **Application guide link unchanged.** Do not infer implementation approval from a suggestion request.
+
+## Next
+
+Completed shared setup is ready for owner testing on b. Await guide-proposal feedback/new scope; record explicit instruction before implementing that redesign. Do not promote main/dev or claim Cloudflare/physical iPhone acceptance. Final handoff is documentation-only after tested application72b41c7.
+
+[Plan](plan.md) · [Spec](spec.md) · [Architecture/entry point](../../architecture/application-structure.md) · [Component map](../../architecture/component-map.json) · [Requirements](../../requirements/drill-setup-template.md) · [ADR001](../../architecture/decisions/001-progressive-react-startup.md)

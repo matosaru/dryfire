@@ -1,6 +1,6 @@
 {
   "change": "CHG-058",
-  "status": "All eight complete pre-publication jobs pass in39959685865; exact source candidate reverse-check verified. Normal post-push verification separate.",
+  "status": "Complete: all eight jobs succeed in pre-publication39959685865 and normal post-push39961346126.",
   "expandedCSSSha256": "f139dbef1ea78e84f42863cf0f945b1fc553094eb0056cdc079f5f163d37c28c",
   "previousCSSReview": "chg-057-card-review.json",
   "unrelatedCSSProof": "Expanded cascade equals previous complete CSS with only the retired #practiceSteps margin/wrap override removed. Canonical Sequence setup rules relocated byte-for-byte.",
@@ -176,5 +176,7 @@
   "infrastructureRetry": {
     "run": 39957863599,
     "result": "All actual tests/controls passed; preview job cancelled at12-minute cleanup limit. Final accepted run uses15-minute job allowance, unchanged test/application gates."
-  }
+  },
+  "applicationCommit": "72b41c729a4a738b4746bcdbf829090c40f7bcbe",
+  "postPushRun": 39961346126
 }
