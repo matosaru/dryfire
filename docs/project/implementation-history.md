@@ -821,3 +821,8 @@ Earlier isolated39903205450 failed public WebKit warm37→41ms; keep that result
 Application **da08937** is pushed to b. Normal CI [39904517004](https://github.com/matosaru/dryfire/actions/runs/39904517004) completes successfully in all eight required jobs: validate, public+preview screenshots (Chromium/WebKit), four browser/edition original performance gates with controls, aggregate acceptance. This follows the complete pre-merge pass39903463815; no repeated failing run was relabeled or threshold changed. Earlier isolated timing failure remains in review evidence.
 
 Live Listen entries now agree, three-trigger capture eligibility and blocking reasons are visible, and active Stop remains usable.24 new screenshot references and four current design captures are accepted;1000unit tests/144suites+coverage and targeted local workflows pass. Temporary review collection/input duplicates cleaned. Card alignmentCHG057 and Live ListenCHG053 requests are complete on b. Main6c38bff/dev741f46e unchanged; no deployment performed.
+
+
+### 2026-10-23 — CHG-058 sequence-style trigger setup requested
+
+Owner approves reusing Sequence configuration template for trigger-mode setup. Investigating shared typed fieldset/step-list/field ownership; existing mode choices, input bounds and native retained forms stay intact. Requirements recorded; baseline checks underway before source changes. Screenshots/full acceptance/publication pending. b only; main/dev/deployment unchanged.

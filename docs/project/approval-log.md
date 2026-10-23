@@ -645,3 +645,8 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 ## CHG-057 — Aligned uniform drill catalog cards
 
 2026-10-22 direct owner request: “after you finish current work … fix alignments of a drill card … Align title with sublabel … Use same style for every card, remove preset-steps section from the drill cards, update all unit and visual tests”. CHG-056 is now fully green before this implementation starts. Apply one icon/title/description/action layout to trigger, built-in and saved-custom cards; remove catalog step chips only. Preserve underlying ordered steps, Configure/session/manual detail, Start/Edit actions, data and edition availability. Update functional/design specifications and pinned reviewed screenshots; require complete acceptance before applying on b. Main/dev remain frozen.
+
+
+## CHG-058 — Shared sequence-style trigger configuration
+
+2026-10-23 direct owner instruction: “sequence drill configuration page looks better … Use sequence drills template in single trigger pull drills configuration pages. Try reusing template”. Authorizes the shared configuration presentation for the four retained trigger modes, preserving mode-specific options, timing/capture/data/safety/edition behavior. [Requirements](../requirements/drill-setup-template.md). Work b only with complete pre-publication gate; main/dev/deployment frozen.
