@@ -826,3 +826,10 @@ Live Listen entries now agree, three-trigger capture eligibility and blocking re
 ### 2026-10-23 — CHG-058 sequence-style trigger setup requested
 
 Owner approves reusing Sequence configuration template for trigger-mode setup. Investigating shared typed fieldset/step-list/field ownership; existing mode choices, input bounds and native retained forms stay intact. Requirements recorded; baseline checks underway before source changes. Screenshots/full acceptance/publication pending. b only; main/dev/deployment unchanged.
+
+
+### 2026-10-23 — CHG-058 acceptance corrections
+
+First complete candidate 39953233357: validation passes; both screenshot suites pass all non-safety cases but flag the safety overlay because the newly approved Practice setup is visible behind it. Capture/review those eight derived references while preserving modal content/geometry. Public WebKit warm startup fails42→47ms; preview WebKit click feedback fails81→84ms. Preserve these results and original gates.
+
+Investigation found a duplicate Practice render: controller changed() renders then global onChange called refresh() again. Remove that recursive refresh, retain external/Sequence refresh, avoid redundant native text/disabled/image URL mutations and use fresh ID lookups. New DOM mutation/owner-replacement and refresh-ownership tests cover the optimization; no caches of React-replaced nodes, data changes or measurement changes. Application remains uncommitted until full acceptance.

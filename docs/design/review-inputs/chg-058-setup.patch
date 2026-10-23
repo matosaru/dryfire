@@ -1,13 +1,3 @@
-diff --git a/DESIGN.md b/DESIGN.md
-index 2066893..39f5db8 100644
---- a/DESIGN.md
-+++ b/DESIGN.md
-@@ -9,3 +9,5 @@ Use the existing shared shell, typed page packages and guarded feature controlle
- CHG-052 explicitly updates the Drills catalog: practice cards reuse sequence-card target icon/header/description/action classes and “▶ Start Drill” label; built-in sequence choices display multi-action presets only. Existing Configure flows, stored legacy trigger sequences and custom presets remain intact.
- 
- CHG-057 aligns catalog card title and sublabel to one text column beside a fixed target-icon column. Trigger, built-in sequence and saved-custom cards share that geometry and the existing full-width Start action. Catalog chips are omitted; sequence details remain in Configure/manuals. Runtime ownership stays DrillCard.css and its existing theme overrides, shared with PracticeCatalog.
-+
-+CHG-058 makes Sequence configuration the shared template for all four trigger modes: compact repetition/Par cards, grouped signal/delay controls, separate start-sound card and left-aligned ordered sound list. DrillSetup owns this geometry and canonical setup CSS; retain page-specific labels/options and native forms, shell, timing/safety/data behavior.
 diff --git a/apps/web/src/app/practicePage.tsx b/apps/web/src/app/practicePage.tsx
 index 2ed46d8..59af43d 100644
 --- a/apps/web/src/app/practicePage.tsx
@@ -138,34 +128,6 @@ index 5a4d0d1..0000000
 +++ /dev/null
 @@ -1 +0,0 @@
 -#practiceSteps { margin-bottom: 20px; flex-wrap: wrap; }
-diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
-index 62f444c..9928769 100644
---- a/docs/architecture/application-structure.md
-+++ b/docs/architecture/application-structure.md
-@@ -119,3 +119,6 @@ Before a valid gun profile exists, Settings keeps its immediately usable native
- 
- 
- CHG-053: `features/live-listen/readiness.ts` is the pure navigation/capture-reason owner. `renderListeningReadiness` supplies native and React Home/Drills/Live Listen ports and shared chrome; the page owns reason-copy metadata. Timing controllers initialize once after a gun profile exists, before its capture/configure flows become available. Empty onboarding retains immediate native controls; restore/reset/background paths safely handle absent timing owners. This preserves first-entry adapters and capture APIs while avoiding unused startup construction.
-+
-+
-+CHG-058 shared setup: packages/ui/src/DrillSetup exports the configuration shell, numeric card row and ordered steps for both SequencePage and PracticePage. Controller-specific fields are children, not duplicated form shells. Native inputs/listeners and their retained-node handoff stay with the existing page controllers; src/main.js remains the application entry.
-diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
-index 11125cb..48b39ed 100644
---- a/docs/architecture/component-map.json
-+++ b/docs/architecture/component-map.json
-@@ -562,6 +562,12 @@
-     {
-       "source": "packages/ui/src/SafetyDialog/SafetyDialog.tsx",
-       "runtimeOwner": "src/safetyGate.js native modal/focus/pending intent"
-+    },
-+    {
-+      "source": "packages/ui/src/DrillSetup/DrillSetup.tsx",
-+      "css": "packages/ui/src/DrillSetup/DrillSetup.css",
-+      "tests": "packages/ui/src/DrillSetup/DrillSetup.test.tsx",
-+      "runtimeOwner": "Shared Sequence/Practice configuration markup; native controller owns retained form, validation and capture. Shared ordered steps update through existing parent ports."
-     }
-   ],
-   "retainedSubtreeBoundary": {
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
 index 2bac5f6..e529744 100644
 --- a/docs/architecture/screen-map.json
@@ -254,95 +216,141 @@ index 2bac5f6..e529744 100644
    },
    "implementationChanges": [
      "CHG-017",
-diff --git a/docs/architecture/ui-contract-map.md b/docs/architecture/ui-contract-map.md
-index 7dbb81c..002c2b3 100644
---- a/docs/architecture/ui-contract-map.md
-+++ b/docs/architecture/ui-contract-map.md
-@@ -35,3 +35,6 @@ P5 custom editor: CustomDrillEditor shares complete prerender and live fields; t
- 
- 
- CHG-053: one pure `features/live-listen/readiness.ts` policy distinguishes valid-gun navigation from trained capture. `renderListeningReadiness` updates Home, Drills, Live Listen and shared chrome through existing native/React ports. LiveListenPage owns reason-copy metadata and described-by/status semantics; current gun counts and operation locks remain main/controller-owned. Timing controllers construct once only after a gun exists; native onboarding/restore/reset/background paths work without them. No capture API, matching threshold, data schema or renderer ownership change.
-+
-+
-+CHG-058 configuration: DrillSetup owns Sequence/Practice form+fieldset, repetition/Par card rows and ordered sound-step container. Its CSS is the existing Sequence setup cascade moved unchanged to packages/ui/src/DrillSetup/DrillSetup.css. Native forms and platform selects remain controller-owned and retained during React enhancement; no capture/storage in UI. App/external start source keeps established visibility and validation. Practice uses the Sequence geometry; only its previous step-spacing override is retired.
-diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
-index 19d5d41..857fc6d 100644
---- a/docs/design/screens/practice-guide/examples/manifest.json
-+++ b/docs/design/screens/practice-guide/examples/manifest.json
-@@ -2,7 +2,7 @@
-   "sourceCommit": "1c5e027ef546d51bb877b67aaad14f00e57802cf",
-   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
-   "sources": {
--    "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
-+    "src/styles.css": "da2b105c40b06bf659a3b4fb26b094fb4e401f21de041eeaba5533a78fcd689b",
-     "packages/ui/src/PageHeading/PageHeading.css": "17a188929d245b237da7e8832a3779beb7f3a3208acc7131d1433f3617225b5d",
-     "apps/web/src/pages/AboutPage/AboutPage.css": "f461cfe293e1fec12d7a8bbbca835abd9a7495db77e1a5effa56241150b900b5",
-     "packages/ui/src/InformationCard/InformationCard.css": "5c866ea8582066954f298ce2e43ee6f474d85b11539e516cc615b7da27b97f0d",
-@@ -66,7 +66,6 @@
-     "packages/ui/src/SequenceReview/SequenceReview.css": "3f8a7949dda9e2d07ba7102db172279cf0e4bf7850cfc794d71065f7b20a475a",
-     "apps/web/src/styles/legacy-practice-heading.css": "be0553eaac4a005079fed1c9685cfe8aa6a33fac9c7bc62e0ab804c1b6a57c8f",
-     "packages/ui/src/PracticeRun/PracticeRun.css": "1733f93c5580166ed12c7672c41ca462b70ffe47a26ce301a658b69ceeb34d3a",
--    "apps/web/src/styles/legacy-practice-step-spacing.css": "7f5aabd98e9eca51fcab3c5abfddbade30e32bd0f350ef759e99703d855ce170",
-     "packages/ui/src/PracticeReview/PracticeReview.css": "371db58124b0e00f9be8f17c289ea3c13fd581caf7cf01ffcf5b948c11778357",
-     "packages/ui/src/PracticeRun/PracticeRun.meter.css": "a73b0d8d204019b3bfdda61a773c6a0cb06e0c7f86117bfb576f69d61b2bb08a",
-     "packages/ui/src/PracticeRun/PracticeRun.tsx": "b089ff892895183559846cc95c0b996291f710f6965886b2c57560797551e8f6",
-@@ -97,18 +96,18 @@
-     "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
-     "apps/web/src/styles/legacy-before-sequence-page.css": "687daa485d1e63a71364d3c8b9c64ab66d7038f687607a88ff9ef76c92a6d3f5",
-     "apps/web/src/pages/SequencePage/SequencePage.css": "3395c37a1d09c0a6f3001ce2308d75ad58789892847dba6e317bc50c3500acf4",
--    "apps/web/src/styles/legacy-after-sequence-page.css": "33c4fdf9e1d68e7f7c2310f9acb9cb1ad25040472f900d38fc419a185f461c5f",
-+    "apps/web/src/styles/legacy-after-sequence-page.css": "c90ccd88154cfa632538ba68db076cd939bc8333b511348ea9e2b25057f64d09",
-     "apps/web/src/pages/PracticePage/PracticePage.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
-     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "5ec336334f797a629f64606b9fb64081bbf7e710fd6d6616c5ccef6e07f4ae1f",
-     "apps/web/src/pages/PracticeGuidePage/index.ts": "cbaa34b0c350d037b794d8112a741d5e4d191d0f19cf941e3a0a457d74665f52",
-     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
-     "packages/ui/src/PageHeading/PageHeading.tsx": "49f5e8c76db7f93c4bc5300116b068c1635519fc68c354188eb7a2027d53da58",
-     "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
--    "apps/web/src/pages/PracticePage/PracticePage.tsx": "0e79a5db2fc2f9513584c1d7c1dc06e5cfac01fc80540e95c49544ed681fde50",
-+    "apps/web/src/pages/PracticePage/PracticePage.tsx": "0fc47554da1982ce3a502adf1c4c8754863078d473d7d977038f6229e350b1d2",
-     "apps/web/src/pages/PracticePage/index.ts": "5b5b81bf639048fdae1497102f8195e6f3e88390603e112e39e0ec56f5ae5876",
--    "apps/web/src/pages/SequencePage/SequencePage.tsx": "17190c473bfde32373c78145da097dc1a826f056f33889887a8b3de67494d71f",
-+    "apps/web/src/pages/SequencePage/SequencePage.tsx": "18836819b07a07f4998ad05ece3abae2dbb93da72fd8ef4dd9ec3774aaa53862",
-     "apps/web/src/pages/SequencePage/index.ts": "35d27d3e9d6ca4e0b66385e97fb718a7aebe519045baa635d7d0cb77dc0465ec",
--    "apps/web/src/app/practicePage.tsx": "22ec666b9bc219ebbc22a3052089a7e7f7dd3a96a7f494bd8d5fa382add7063a",
-+    "apps/web/src/app/practicePage.tsx": "e3bc96c6c95ac47ec7570a83357828c7c8dc790e79dd3080acd424ac762ae3ec",
-     "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
-     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
-     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
-@@ -121,7 +120,8 @@
-     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
-     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
-     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
--    "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c"
-+    "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c",
-+    "packages/ui/src/DrillSetup/DrillSetup.css": "d26b7a0950929db04e8b9e958224d0a82d8a8ee68b7a9ae3188f55f24e7976db"
-   },
-   "exports": [
-     {
-@@ -300,5 +300,6 @@
-     "date": "2026-10-22",
-     "scope": "Same shared Practice/Sequence presentation loads before configuration/review, outside initial startup. Inert catalogs move compiler-owned template nodes; no runtime stored/user HTML parsing. Full987/140 suite and20 public guide/layout/session/offline workflows pass. Frame models, compiled CSS and encoded GIF bytes unchanged; no media rebaseline."
-   },
--  "reviewNote": "CHG-056 preserves retained historical session title snapshots while validating only known spellings; no guide/frame/pixel change. Existing full-frame characterization and current pinned images remain the visual contract; no baselines accepted by this correction."
-+  "reviewNote": "CHG-056 preserves retained historical session title snapshots while validating only known spellings; no guide/frame/pixel change. Existing full-frame characterization and current pinned images remain the visual contract; no baselines accepted by this correction.",
-+  "chg058Review": "Sequence setup styles relocated byte-for-byte; only #practiceSteps-specific legacy margin removed. Setup-only template changes; shared run/review/help fragments and ten encoded GIF files unchanged. Full guide-frame/visual acceptance required."
+diff --git a/src/main.js b/src/main.js
+index 2177d7c..7c131c6 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -1,3 +1,4 @@
++import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
+ import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
+ import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
+ import { createModulePreparation } from './modulePreparation.js';
+@@ -41,7 +42,7 @@ const labelMeta = {
+   trigger: { title: 'Trigger pull', description: 'Dry trigger click', tone: 'orange' },
+   reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple' },
+ };
+-const $ = selector => document.querySelector(selector);
++const $ = selectNode;
+ const gunTypeImages = { Handguns: 'handgun', 'Rifles and Carbines': 'rifle', Shotguns: 'shotgun' };
+ function gunImagePath(type) { return `/gun-types/${gunTypeImages[type] || 'unknown'}.svg`; }
+ let examples = [];
+@@ -86,13 +87,13 @@ let historyPage, historyOwner, historyRows=[], historySessions=[];
+ const preparePageModule=createModulePreparation(showError);
+ const guideHandlers=new Map();
+ const historyHandlers=new Map();
+-function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
+-function historyText(id,text){if(historyPage)historyPage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
++function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else setNodeDisabled($('#'+id),disabled);}
++function historyText(id,text){if(historyPage)historyPage.update({texts:{[id]:text}});else setNodeText($('#'+id),text);}
+ function bindHistory(id,handler){historyHandlers.set(id,handler);$('#'+id).addEventListener('click',handler);}
+ const liveHandlers=new Map();
+ const settingsHandlers = new Map();
+-function liveText(id,text){if(livePage)livePage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
+-function liveDisabled(id,disabled){if(livePage)livePage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
++function liveText(id,text){if(livePage)livePage.update({texts:{[id]:text}});else setNodeText($('#'+id),text);}
++function liveDisabled(id,disabled){if(livePage)livePage.update({disabled:{[id]:disabled}});else setNodeDisabled($('#'+id),disabled);}
+ function liveValue(id,value){if(livePage)livePage.update({selects:{[id]:value}});else $('#'+id).value=value;}
+ function liveHidden(id,hidden){if(livePage)livePage.update({hidden:{[id]:hidden}});else $('#'+id).classList.toggle('hidden',hidden);}
+ function liveClass(id,name,enabled){if(livePage)livePage.update({listening:enabled});else $('#'+id).classList.toggle(name,enabled);}
+@@ -105,8 +106,8 @@ function renderLiveOptions(selected=''){
  }
-diff --git a/docs/design/screens/practice/README.md b/docs/design/screens/practice/README.md
-index ce534fa..0dcc34e 100644
---- a/docs/design/screens/practice/README.md
-+++ b/docs/design/screens/practice/README.md
-@@ -1,3 +1,5 @@
-+CHG-058: all four trigger modes reuse the Sequence configuration template through DrillSetup. Count/Par use the compact repetition card; Start signal and Start delay use grouped cards; Sound at start uses the separate Sequence switch card. Required sound labels use the same left-aligned ordered-list geometry. External source hides the complete app timing/sound region. Existing controls, bounds, defaults, gun/safety/draft/capture behavior stay intact. [Requirements](../../../requirements/drill-setup-template.md). Pinned visual acceptance is pending.
-+
- # Practice design
+ function bindLive(id,type,handler){liveHandlers.set(id,handler);$('#'+id).addEventListener(type,handler);}
+ function bindSettings(id,type,handler){settingsHandlers.set(id,handler);$('#'+id).addEventListener(type,handler);}
+-function settingsText(id,text){if(settingsPage)settingsPage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
+-function settingsDisabled(id,disabled){if(settingsPage)settingsPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
++function settingsText(id,text){if(settingsPage)settingsPage.update({texts:{[id]:text}});else setNodeText($('#'+id),text);}
++function settingsDisabled(id,disabled){if(settingsPage)settingsPage.update({disabled:{[id]:disabled}});else setNodeDisabled($('#'+id),disabled);}
+ let gunLibraryPage;
+ let gunLibraryToken = 0;
+ let calibration = [];
+@@ -135,11 +136,11 @@ function renderPreferences() {
+     vibrationFeedback,vibrationSupported:getVibrationCapability(),vibrationRejected});
+   if(settingsPage){settingsPage.update({preferences:view});return;}
+   for(const item of view.audio){
+-    const input=$('#'+item.inputId);input.checked=item.checked;input.disabled=item.disabled;$('#'+item.statusId).textContent=item.status;
++    const input=$('#'+item.inputId);input.checked=item.checked;input.disabled=item.disabled;setNodeText($('#'+item.statusId),item.status);
+   }
+   $('#appearance').value=view.appearance.value;$('#appearance').disabled=view.appearance.disabled;
+   $('#vibrationFeedback').checked=view.vibration.checked;$('#vibrationFeedback').disabled=view.vibration.disabled;
+-  $('#vibrationStatus').textContent=view.vibration.status;
++  setNodeText($('#vibrationStatus'),view.vibration.status);
+ }
+ function reportAudioProcessing(report) { processingReport = report; renderPreferences(); }
+ function reportVibration(result) { if (!result.supported || !result.accepted) { vibrationRejected = true; renderPreferences(); } }
+@@ -163,14 +164,14 @@ function renderListeningReadiness(counts = getCounts()) {
+     : `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
+   const disabled = {listenBtn:!liveSession && !!view.reason,singleShotBtn:!!liveSession || !!view.reason};
+   if(livePage)livePage.update({texts:{trainingSummary:text},disabled});
+-  else { if(summary.textContent!==text)summary.textContent=text; for(const[id,value]of Object.entries(disabled))$('#'+id).disabled=value; }
++  else { setNodeText(summary,text); for(const[id,value]of Object.entries(disabled))setNodeDisabled($('#'+id),value); }
+   informationPages.setNavigationDisabled(view.entryDisabled);
+   const context = {gunName:activeGun?.name || 'No gun selected',contextHidden:!gunAvailable};
+   const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
+   if(homePage)homePage.update({...context,training,listenDisabled:view.entryDisabled});
+-  else {$('#homeExamples').textContent=training;$('#homeListenBtn').disabled=view.entryDisabled;}
++  else {setNodeText($('#homeExamples'),training);setNodeDisabled($('#homeListenBtn'),view.entryDisabled);}
+   if(drillsPage)drillsPage.update({...context,freeListenDisabled:view.entryDisabled});
+-  else $('#freeListenBtn').disabled=view.entryDisabled;
++  else setNodeDisabled($('#freeListenBtn'),view.entryDisabled);
+ }
  
- CHG-044: stopped configuration now includes **About this practice ›** immediately below its title. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
-@@ -46,3 +48,5 @@ CHG-022 implemented revision: Connecting waits for actual incoming audio before
- Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
+ function renderGunControls() {
+@@ -179,9 +180,10 @@ function renderGunControls() {
+   $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
+   $('#gunSwitcherBtn').title = profileLocked() ? 'Finish recording or stop listening before switching guns.' : 'Choose another gun';
+   $('#gunSwitcherBtn').setAttribute('aria-label', activeGun?.name ? `Switch gun. Selected: ${activeGun.name}, ${activeGun.type || 'type not set'}` : 'Choose a gun');
+-  $('#activeGunName').textContent = activeGun?.name || 'Your gun';
+-  $('#activeGunType').textContent = activeGun?.type || 'Add profile details';
+-  $('#activeGunImage').src = gunImagePath(activeGun?.type);
++  setNodeText($('#activeGunName'),activeGun?.name || 'Your gun');
++  setNodeText($('#activeGunType'),activeGun?.type || 'Add profile details');
++  const gunImage = $('#activeGunImage'), imagePath = gunImagePath(activeGun?.type);
++  if (gunImage.getAttribute('src') !== imagePath) gunImage.src = imagePath;
+   settingsText('soundResetSummary',activeGun && !activeGun.needsDetails
+     ? `${examples.length} learned samples · ${calibration.length} calibration samples for ${activeGun.name}`
+     : 'Choose a gun before resetting its learned sounds.');
+@@ -192,7 +194,7 @@ function renderGunControls() {
+     $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
+   }
+   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) historyDisabled(id,profileLocked() || !activeGun || activeGun.needsDetails);
+-  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
++  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context-name').forEach(span => { setNodeText(span,activeGun?.name || 'No gun selected'); });
+   document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
+   sessionController?.updateContext({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+   practiceController?.updateContext({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+@@ -210,12 +212,12 @@ function renderGunControls() {
+  * Keep immediate onboarding/restore controls and create each owner once. */
+ function initializeTimedControllers() {
+   practiceController ||=  createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
+-    onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
++    onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => renderLiveButton(false), onProcessing: reportAudioProcessing,
+     vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
+   sessionController ||=  createSessionController({
+     getContext: practiceContext,
+     titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
+-    onChange: () => { renderLiveButton(); renderClassCards(); },
++    onChange: () => renderLiveButton(),
+     onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
+     onVibration: reportVibration,
+     onPracticeRecord: record => practiceController.showRecord(record),
+@@ -777,7 +779,7 @@ async function recognize() {
+   });
+ }
  
- For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
-+
-+Light configuration references: [Single](configure-single.light.png), [Par time](configure-par.light.png).
+-function renderLiveButton() {
++function renderLiveButton(refreshPractice = true) {
+   const listening = !!liveSession;
+   const timed = !!sessionController?.locked() || !!practiceController?.locked();
+   liveText("listenBtn",listening ? 'Stop listening' : 'Start continuous listening');
+@@ -792,7 +794,7 @@ function renderLiveButton() {
+   renderLearningLocks();
+   renderGunControls();
+   renderPreferences();
+-  practiceController?.refresh();
++  if (refreshPractice) practiceController?.refresh();
+   if(drillsPage)drillsPage.update({practiceDisabled:profileLocked()});else document.querySelectorAll('#practiceCatalog button').forEach(button => { button.disabled = profileLocked(); });
+ }
+ 
 diff --git a/src/practiceController.js b/src/practiceController.js
 index 6b8209a..4cfb184 100644
 --- a/src/practiceController.js
@@ -376,41 +384,8 @@ index a04deb3..9fda6c9 100644
  @import "../packages/ui/src/PracticeReview/PracticeReview.css";
  @import "../apps/web/src/pages/PracticePage/PracticePage.css";
  @import "../packages/ui/src/PracticeRun/PracticeRun.meter.css";
-diff --git a/tests/contextTemplateParity.test.tsx b/tests/contextTemplateParity.test.tsx
-index e6a7770..8767ef6 100644
---- a/tests/contextTemplateParity.test.tsx
-+++ b/tests/contextTemplateParity.test.tsx
-@@ -36,7 +36,7 @@ test('the compiled shell includes the same context/dialog without extra wrappers
- });
- 
- 
--test('ordered CSS matches the reviewed CHG-057 card update with the existing shell intact',()=>{
-- const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-057-card-review.json',import.meta.url),'utf8'));
-+test('ordered CSS matches the reviewed CHG-058 shared setup update with the existing shell intact',()=>{
-+ const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-058-setup-review.json',import.meta.url),'utf8'));
-  expect(createHash('sha256').update(composedStyles().css).digest('hex')).toBe(proof.expandedCSSSha256);
- });
-diff --git a/tests/sessionParentBaseline.test.js b/tests/sessionParentBaseline.test.js
-index fa58c4f..99578c3 100644
---- a/tests/sessionParentBaseline.test.js
-+++ b/tests/sessionParentBaseline.test.js
-@@ -5,6 +5,12 @@
- import {readFileSync} from 'node:fs';
- import {renderPageTemplates} from '../tools/page-templates.mjs';
- import {semanticTree} from './helpers/guidePresentation.js';
--test.each(['practice','session','practiceGuide'])('%s complete parent structure matches the released pre-extraction source',id=>{
-- const doc=document.implementation.createHTMLDocument('');doc.body.innerHTML=renderPageTemplates('{{app}}');const original=document.createElement('section');original.innerHTML=readFileSync(new URL('./fixtures/session-pages/'+id+'.html',import.meta.url),'utf8');const actual=document.createElement('section');actual.append(...doc.getElementById(id+'View').childNodes);expect(semanticTree(actual)).toEqual(semanticTree(original));
-+test.each(['practice','session','practiceGuide'])('%s complete parent structure matches its reviewed reference',id=>{
-+ const doc=document.implementation.createHTMLDocument('');doc.body.innerHTML=renderPageTemplates('{{app}}');const original=document.createElement('section');original.innerHTML=readFileSync(new URL('./fixtures/session-pages/'+(id==='practice'?'practice.setup-v2':id)+'.html',import.meta.url),'utf8');const actual=document.createElement('section');actual.append(...doc.getElementById(id+'View').childNodes);expect(semanticTree(actual)).toEqual(semanticTree(original));
-+});
-+
-+test('CHG-058 preserves all native input/select constraints and run/review markup from released Practice',()=>{
-+ const current=document.createElement('section'),old=document.createElement('section');current.innerHTML=readFileSync(new URL('./fixtures/session-pages/practice.setup-v2.html',import.meta.url),'utf8');old.innerHTML=readFileSync(new URL('./fixtures/session-pages/practice.html',import.meta.url),'utf8');
-+ const controls=host=>[...host.querySelectorAll('input,select')].map(node=>[node.id,[...node.attributes].map(a=>[a.name,a.value]).sort(),node.tagName==='SELECT'?[...node.options].map(o=>[o.value,o.textContent]):null]);expect(controls(current)).toEqual(controls(old));
-+ for(const id of ['practiceRun','practiceReview'])expect(semanticTree(current.querySelector('#'+id))).toEqual(semanticTree(old.querySelector('#'+id)));
- });
 diff --git a/visual-tests/screens.spec.js b/visual-tests/screens.spec.js
-index c808e4a..95fff5e 100644
+index c808e4a..169526c 100644
 --- a/visual-tests/screens.spec.js
 +++ b/visual-tests/screens.spec.js
 @@ -2,7 +2,7 @@ import { installPausedClock } from './clock.js';
@@ -428,54 +403,11 @@ index c808e4a..95fff5e 100644
      if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });
 -    await expect(page).toHaveScreenshot(baselineName(item).split('/'));
 +    if(process.env.COLLECT_SETUP_CANDIDATES==='1'){
-+      if(item.screen!=='practice')throw new Error('Unapproved candidate screen');
-+      const path=`docs/design/review-candidates/chg-058/${testInfo.project.name}/${baselineName(item)}`;mkdirSync(path.slice(0,path.lastIndexOf('/')),{recursive:true});await page.screenshot({path,fullPage:false,animations:'disabled',caret:'hide',scale:'css'});
++      if(item.screen!=='safety')throw new Error('Unapproved candidate screen');
++      const path=`docs/design/review-candidates/chg-058-safety/${testInfo.project.name}/${baselineName(item)}`;mkdirSync(path.slice(0,path.lastIndexOf('/')),{recursive:true});await page.screenshot({path,fullPage:false,animations:'disabled',caret:'hide',scale:'css'});
 +    }else await expect(page).toHaveScreenshot(baselineName(item).split('/'));
    });
  }
-diff --git a/workers/sw.js b/workers/sw.js
-index 73b2944..5b02e70 100644
---- a/workers/sw.js
-+++ b/workers/sw.js
-@@ -1,6 +1,6 @@
- // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
- const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
--const CACHE = `dryfire-sound-trainer-${EDITION}-v80`;
-+const CACHE = `dryfire-sound-trainer-${EDITION}-v81`;
- const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
- 
- if (EDITION === 'preview') {
-diff --git a/docs/design/baselines/chg-058-setup-review.json b/docs/design/baselines/chg-058-setup-review.json
-new file mode 100644
-index 0000000..51ca493
---- /dev/null
-+++ b/docs/design/baselines/chg-058-setup-review.json
-@@ -0,0 +1,9 @@
-+{
-+  "change": "CHG-058",
-+  "status": "Local source review complete; pinned screenshots/full acceptance pending",
-+  "expandedCSSSha256": "f139dbef1ea78e84f42863cf0f945b1fc553094eb0056cdc079f5f163d37c28c",
-+  "previousCSSReview": "chg-057-card-review.json",
-+  "unrelatedCSSProof": "Expanded cascade equals previous complete CSS with only the retired #practiceSteps margin/wrap override removed. Canonical Sequence setup rules relocated byte-for-byte.",
-+  "fixture": "tests/fixtures/session-pages/practice.setup-v2.html",
-+  "fixtureSHA256": "e930048fe74d1b9df4d05e0e979a9b5445b3be2c74ff9648ceecf747d60373b1"
-+}
-diff --git a/docs/requirements/drill-setup-template.md b/docs/requirements/drill-setup-template.md
-new file mode 100644
-index 0000000..3287a09
---- /dev/null
-+++ b/docs/requirements/drill-setup-template.md
-@@ -0,0 +1,10 @@
-+# Shared drill configuration template — CHG-058
-+
-+Approved by direct owner instruction on2026-10-23: use the sequence drill configuration template for single-trigger drill configuration pages and reuse the template. The existing common trigger configuration owner serves Single, Repeated, Par time and Trigger control; all four use the shared layout.
-+
-+- Reuse the Sequence setup fieldset, compact repetition card, delay card, start-sound card and left-aligned sound-step list through shared typed components/styles. Sequence configuration remains the canonical visual reference.
-+- Keep each practice title and About link, active-gun context, readiness, input limits, defaults, App/external start signal and mode-specific Par field. Start behavior, automatic repetitions, recognition, timing, safety, storage and saved data remain unchanged.
-+- Preserve native form/input nodes during React enhancement and preserve invalid/unsaved drafts, focus and event ownership. UI components never acquire microphone or storage APIs.
-+- Keep existing Sequence configuration appearance unchanged. Trigger practice labels, supported options and functionality remain; their arrangement adopts the Sequence cards. Run/review/help examples retain their current shared presentation.
-+- Update functional/design documents, component ownership and affected screenshots in both editions/themes and320px narrow layout. Update guide/media source fingerprints only after confirming those exports remain visually unchanged; regenerate media if presentation changes.
-+- Full unit/coverage, integration, minified builds, original performance and pinned Chromium/WebKit visual acceptance precede application publication on b. Main/dev and deployments remain unchanged.
 diff --git a/packages/ui/src/DrillSetup/DrillSetup.css b/packages/ui/src/DrillSetup/DrillSetup.css
 new file mode 100644
 index 0000000..23575df
@@ -540,15 +472,25 @@ index 0000000..7dc8003
 @@ -0,0 +1,2 @@
 +export {DrillSetup,DrillSetupCount,DrillSetupSteps} from './DrillSetup';
 +export type {DrillSetupProps} from './DrillSetup';
-diff --git a/tests/fixtures/session-pages/practice.setup-v2.html b/tests/fixtures/session-pages/practice.setup-v2.html
+diff --git a/src/domUpdates.js b/src/domUpdates.js
 new file mode 100644
-index 0000000..2242c52
+index 0000000..d744d3f
 --- /dev/null
-+++ b/tests/fixtures/session-pages/practice.setup-v2.html
-@@ -0,0 +1,3 @@
-+
-+<div class="section-head"><button id="practiceBackBtn" type="button" class="back-button" aria-label="Back to previous screen">‹</button><h2 id="practice-title">Practice</h2></div><a id="practiceGuideLink" class="practice-guide-link" href="#practice-guide">About this practice <span aria-hidden="true">›</span></a><p class="gun-context">Practice for <strong class="gun-context-name"></strong>.</p><ol id="practiceSteps" class="drill-steps session-sequence" aria-label="Required sounds"></ol><div id="practiceConfigure"><form id="practiceConfigForm" class="session-config-form"><fieldset id="practiceConfigFields" class="session-config-fields"><legend>Practice setup</legend><label id="practiceCountRow" class="session-field session-repetition-field" for="practiceRepetitions"><span id="practiceCountLabel">Repetitions</span><input required="" inputmode="numeric" id="practiceRepetitions" type="number" min="1" max="100" step="1" aria-describedby="practiceRepetitionsLimit" value="10"><small id="practiceRepetitionsLimit" class="numeric-hint">1–100 · whole numbers</small></label><label id="practiceParRow" class="session-field session-repetition-field hidden" for="practicePar"><span>Par time (seconds)</span><input required="" inputmode="decimal" id="practicePar" type="number" min="0.1" max="30" step="0.1" aria-describedby="practiceParLimit" value="1.5"><small id="practiceParLimit" class="numeric-hint">0.1–30 · 0.1 increments</small></label><div class="session-delay-card"><label class="session-field" for="practiceStartSource"><span>Start signal</span><select id="practiceStartSource"><option value="app">App signal</option><option value="external">Calibrated external beep</option></select></label></div><div id="practiceAppTiming" class="session-config-fields"><div class="session-delay-card"><label class="session-field" for="practiceDelayMode"><span>Start delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label><label id="practiceFixedRow" class="session-field hidden" for="practiceFixedDelay"><span>Delay in seconds</span><input required="" inputmode="decimal" id="practiceFixedDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceFixedDelayLimit" value="3"><small id="practiceFixedDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label><div id="practiceRandomFields" class="session-delay-range"><label class="session-field" for="practiceMinDelay"><span>Minimum seconds</span><input required="" inputmode="decimal" id="practiceMinDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceMinDelayLimit" value="2"><small id="practiceMinDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label><label class="session-field" for="practiceMaxDelay"><span>Maximum seconds</span><input required="" inputmode="decimal" id="practiceMaxDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceMaxDelayLimit" value="5"><small id="practiceMaxDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label></div></div><label class="preference-toggle session-sound-toggle" for="practiceStartSound"><span><strong>Sound at start</strong><small>Play a beep at each repetition start.</small></span><input id="practiceStartSound" type="checkbox" role="switch" checked=""></label></div></fieldset><p id="practiceCueNote" class="muted small"></p><p id="practiceReadiness" class="session-readiness" role="status"></p><button id="practiceLearnBtn" class="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" class="button primary wide-action" type="submit">Start Practice</button></form></div><div id="practiceRun" class="hidden"><div class="practice-counters"><div><span id="practiceCompletedLabel">Attempts</span><strong id="practiceCompleted">0</strong></div><div><span>Shots</span><strong id="practiceShots">0</strong></div><div><span id="practiceRemainingLabel">Left</span><strong id="practiceRemaining">10</strong></div></div><div class="session-countdown-panel"><div id="practiceSignal" class="session-countdown" role="timer" aria-live="off">—</div><button id="practiceStopBtn" class="button primary practice-stop hidden" type="button" aria-label="Stop practice and save results">STOP</button><div id="practiceLevelPanel" class="practice-level-panel hidden"><p class="practice-level-label"><svg class="practice-mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="2" width="8" height="13" rx="4"></rect><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"></path></svg><span>MICROPHONE INPUT</span></p><div id="practiceLevelMeter" class="practice-level-track" role="meter" aria-label="Microphone input level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="practiceLevelFill" class="practice-level-fill"></div></div><p class="practice-level-value"><strong id="practiceLevelValue">0</strong><span>relative level</span></p><p id="practiceInputState" class="muted small">Waiting for audio input…</p></div><p id="practiceAnnouncement" class="session-announcement" role="status"></p><p id="practiceInputFeedback" class="practice-input-feedback" role="status"></p><p id="practiceMicrophone" class="listening-indicator" role="status"></p><p class="muted small">Active time <strong id="practiceElapsed">0.00 s</strong></p></div><div id="practiceLatest" class="session-result-card"></div><div class="session-run-actions"><button id="practicePauseBtn" class="button secondary" type="button">Pause</button><button id="practiceResumeBtn" class="button primary hidden" type="button">Resume</button><button id="practiceNextBtn" class="button primary hidden" type="button">Next repetition</button><button id="practiceEndBtn" class="button secondary" type="button">End Practice</button></div></div><div id="practiceReview" class="hidden"><section class="session-review-card"><h3 id="practiceReviewStatus">Practice review</h3><div id="practiceSummary"></div><p id="practiceSaved" class="session-saved-note"></p><button id="practiceRetryBtn" type="button" class="button secondary wide-action hidden">Retry saving results</button></section><div id="practiceResults" class="session-result-list"></div><button id="practiceRepeatBtn" type="button" class="button primary wide-action">Repeat Practice</button><button id="practiceDoneBtn" type="button" class="button secondary wide-action">Back to Drills</button></div><p class="muted small session-timing-note">Timings describe detected audio. The app cannot verify physical actions, aim, movement or unloaded status.</p>
-+
++++ b/src/domUpdates.js
+@@ -0,0 +1,13 @@
++/** Resolve each time: React ownership may replace nodes after startup. */
++export function selectNode(selector, doc = document) {
++  return /^#[A-Za-z][\w-]*$/.test(selector) ? doc.getElementById(selector.slice(1)) : doc.querySelector(selector);
++}
++/** Avoid redundant native mutations without caching ownership or user drafts. */
++export function setNodeText(node, value) {
++  const text = value == null ? '' : String(value);
++  if (node.textContent !== text) node.textContent = text;
++}
++export function setNodeDisabled(node, value) {
++  const disabled = !!value;
++  if (node.disabled !== disabled) node.disabled = disabled;
++}
 diff --git a/visual-tests/drill-setup-template.spec.js b/visual-tests/drill-setup-template.spec.js
 new file mode 100644
 index 0000000..f8b6698
