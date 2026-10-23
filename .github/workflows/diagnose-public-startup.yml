@@ -1,6 +1,11 @@
 name: Advisory startup diagnosis
 on:
   workflow_dispatch:
+    inputs:
+      candidate_patch:
+        type: string
+        required: false
+        default: ""
 permissions:
   contents: read
 jobs:
@@ -23,7 +28,11 @@ jobs:
       - run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory "$GITHUB_WORKSPACE/.performance-baseline"
-          git apply docs/design/review-inputs/chg-056-ci-fixes.patch
+      - name: Apply optional review candidate
+        if: inputs.candidate_patch != ''
+        env:
+          CANDIDATE_PATCH: ${{ inputs.candidate_patch }}
+        run: git apply -- "$CANDIDATE_PATCH"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

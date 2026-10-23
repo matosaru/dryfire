@@ -13,16 +13,18 @@ const arg=n=>process.argv.find(s=>s.startsWith('--'+n+'='))?.slice(n.length+3);
 const rendering=JSON.parse(readFileSync('visual-tests/environment.json'));
 if(process.env.CI&&process.env.VISUAL_IMAGE!==rendering.image)throw new Error('Diagnostic requires pinned rendering image.');
 const roots={old:resolve(arg('baseline')),new:resolve(arg('candidate')||'dist')};
+roots.body=roots.new;
 const reports=Object.fromEntries(Object.entries(roots).map(([k,p])=>[k,measureArtifact(p)]));
 const main=Object.fromEntries(Object.entries(reports).map(([k,r])=>[k,r.critical.js.files[0]]));
 const files=Object.fromEntries(Object.entries(main).map(([k,p])=>[p,k]));
-const cases=[['old','old'],['new','old'],['old','new'],['new','new'],['old','none'],['new','none']];
+const cases=[['old','old'],['new','old'],['old','new'],['new','new'],['body','new'],['old','none'],['new','none']];
 const servers=await Promise.all(cases.map(async ([html,js])=>{const server=createServer((req,res)=>{try{
  const u=new URL(req.url,'http://localhost');let body,mime;
  if(u.pathname==='/'){
   body=readFileSync(resolve(roots[html],'index.html'),'utf8');
   const script=/<script\b[^>]*type="module"[^>]*><\/script>/;
   body=body.replace(script,tag=>js==='none'?'':tag.replace(/src="[^"]+"/,'src="'+main[js]+'"'));mime='text/html';
+  if(html==='body'){const entry=body.match(script)?.[0];if(entry)body=body.replace(entry,'').replace('</body>',entry+'</body>');}
  }else{
   const root=files[u.pathname]?roots[files[u.pathname]]:existsSync(resolve(roots.new,'.'+u.pathname))?roots.new:roots.old;
   const file=resolve(root,'.'+u.pathname);if(relative(root,file).startsWith('..')){res.writeHead(403).end();return;}
