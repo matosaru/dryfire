@@ -1,5 +1,8 @@
 name: Collect CHG-059 guide layout review images
 on:
+  push:
+    branches: [b]
+    paths: ['.github/workflows/collect-guide-layout.yml']
   workflow_dispatch:
 permissions:
   contents: write
