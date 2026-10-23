@@ -193,8 +193,24 @@ async function getRow(storeName, key) {
   } finally { db.close(); }
 }
 
-export async function getGuns() {
-  return (await getAll(GUNS)).sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id));
+function orderGuns(rows) { return rows.sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id)); }
+
+export async function getGuns() { return orderGuns(await getAll(GUNS)); }
+
+/** One read-only snapshot avoids reopening IndexedDB for each startup field. */
+export async function getLibraryOverview() {
+  const rows = await withTransaction([GUNS, SETTINGS], 'readonly', (tx, context) => {
+    const result = {}; context.result = result;
+    const guns = tx.objectStore(GUNS).getAll();
+    guns.onsuccess = () => { result.guns = guns.result; };
+    for (const key of [ACTIVE_GUN, 'appearance', 'vibrationFeedback']) {
+      const request = tx.objectStore(SETTINGS).get(key);
+      request.onsuccess = () => { result[key] = request.result?.value; };
+    }
+  });
+  const guns = orderGuns(rows.guns);
+  return { guns, activeGun: rows[ACTIVE_GUN] ? guns.find(gun => gun.id === rows[ACTIVE_GUN]) ?? null : null,
+    devicePreferences: { appearance: rows.appearance ?? 'dark', vibrationFeedback: rows.vibrationFeedback ?? false } };
 }
 
 export async function getActiveGun() {

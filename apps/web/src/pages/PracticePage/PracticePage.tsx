@@ -1,3 +1,4 @@
+import {DrillSetup,DrillSetupCount,DrillSetupSteps} from '@dryfire/ui/DrillSetup';
 import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {PracticeRun} from '@dryfire/ui/PracticeRun';
@@ -8,19 +9,20 @@ export function PracticePage({title,gunName,contextHidden=false,guideHidden=fals
 <PageHeading id="practice-title" title={title??'Practice'} backId="practiceBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
 <a onClick={onGuide} id="practiceGuideLink" className={guideHidden?'practice-guide-link hidden':'practice-guide-link'} href="#practice-guide">About this practice <span aria-hidden="true">›</span></a>
       <p className={contextHidden?'gun-context hidden':'gun-context'}>Practice for <strong className="gun-context-name">{gunName}</strong>.</p>
-      <div id="practiceSteps" className="preset-steps" aria-label="Required sounds">{steps}</div>
+      <DrillSetupSteps id="practiceSteps" label="Required sounds">{steps}</DrillSetupSteps>
       {configure??<>
       <div id="practiceConfigure">
-        <form id="practiceConfigForm" className="session-config-form"><fieldset id="practiceConfigFields" className="session-config-fields"><legend>Practice setup</legend>
-          <label id="practiceCountRow" className="session-field" htmlFor="practiceRepetitions"><span id="practiceCountLabel">Repetitions</span>{'{{practiceRepetitionsInput}}'}</label>
-          <label id="practiceParRow" className="session-field hidden" htmlFor="practicePar"><span>Par time (seconds)</span>{'{{practiceParInput}}'}</label>
-          <label className="session-field" htmlFor="practiceStartSource"><span>Start signal</span><select id="practiceStartSource"><option value="app">App signal</option><option value="external">Calibrated external beep</option></select></label>
-          <div id="practiceAppTiming" className="session-delay-card"><label className="session-field" htmlFor="practiceDelayMode"><span>Ready delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label>
-            <label id="practiceFixedRow" className="session-field hidden" htmlFor="practiceFixedDelay"><span>Delay seconds</span>{'{{practiceFixedDelayInput}}'}</label>
+        <DrillSetup prefix="practice" legend="Practice setup" footer={<><p id="practiceCueNote" className="muted small"></p><p id="practiceReadiness" className="session-readiness" role="status"></p><button onClick={()=>onAction?.('practiceLearnBtn')} id="practiceLearnBtn" className="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" className="button primary wide-action" type="submit">Start Practice</button></>}>
+          <DrillSetupCount id="practiceCountRow" inputId="practiceRepetitions" label={<span id="practiceCountLabel">Repetitions</span>}>{'{{practiceRepetitionsInput}}'}</DrillSetupCount>
+          <DrillSetupCount id="practiceParRow" inputId="practicePar" label={<span>Par time (seconds)</span>} hidden>{'{{practiceParInput}}'}</DrillSetupCount>
+          <div className="session-delay-card"><label className="session-field" htmlFor="practiceStartSource"><span>Start signal</span><select id="practiceStartSource"><option value="app">App signal</option><option value="external">Calibrated external beep</option></select></label></div>
+          <div id="practiceAppTiming" className="session-config-fields"><div className="session-delay-card"><label className="session-field" htmlFor="practiceDelayMode"><span>Start delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label>
+            <label id="practiceFixedRow" className="session-field hidden" htmlFor="practiceFixedDelay"><span>Delay in seconds</span>{'{{practiceFixedDelayInput}}'}</label>
             <div id="practiceRandomFields" className="session-delay-range"><label className="session-field" htmlFor="practiceMinDelay"><span>Minimum seconds</span>{'{{practiceMinDelayInput}}'}</label><label className="session-field" htmlFor="practiceMaxDelay"><span>Maximum seconds</span>{'{{practiceMaxDelayInput}}'}</label></div>
-            <label className="preference-toggle" htmlFor="practiceStartSound"><span><strong>Sound at start</strong><small>Play a beep at each repetition start.</small></span><input id="practiceStartSound" type="checkbox" role="switch" defaultChecked /></label>
           </div>
-        </fieldset><p id="practiceCueNote" className="muted small"></p><p id="practiceReadiness" className="session-readiness" role="status"></p><button onClick={()=>onAction?.('practiceLearnBtn')} id="practiceLearnBtn" className="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" className="button primary wide-action" type="submit">Start Practice</button></form>
+            <label className="preference-toggle session-sound-toggle" htmlFor="practiceStartSound"><span><strong>Sound at start</strong><small>Play a beep at each repetition start.</small></span><input id="practiceStartSound" type="checkbox" role="switch" defaultChecked /></label>
+          </div>
+        </DrillSetup>
       </div>
 </>}
 {run??<PracticeRun/>}

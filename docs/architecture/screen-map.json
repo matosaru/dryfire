@@ -222,7 +222,8 @@
         "docs/requirements/practice-improvements.md",
         "docs/requirements/persistence.md",
         "docs/requirements/practice-start.md",
-        "docs/requirements/page-layout.md"
+        "docs/requirements/page-layout.md",
+        "docs/requirements/drill-setup-template.md"
       ],
       "notes": "Configure exposes only mode-relevant count/par, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par offer Next between resolved attempts; repeated/control remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
@@ -285,6 +286,18 @@
           "label": "Saved Single early-trigger miss",
           "image": "docs/design/screens/practice/early-review.dark.png",
           "key": "early-review.dark"
+        },
+        {
+          "key": "configure-single.light",
+          "anchor": "practiceConfigure",
+          "label": "Configure single",
+          "image": "docs/design/screens/practice/configure-single.light.png"
+        },
+        {
+          "key": "configure-par.light",
+          "anchor": "practiceConfigure",
+          "label": "Configure par",
+          "image": "docs/design/screens/practice/configure-par.light.png"
         }
       ],
       "modes": [
@@ -778,18 +791,18 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "c0ca18444fed9fb5dca25639e9e0b1074891cae37ac3db87a7a467a91d1269ce",
-    "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
+    "src/main.js": "fa659d4703f9c8860d256df3e0492551e34c7c4c44f3518e449886c5b29b2e51",
+    "src/styles.css": "da2b105c40b06bf659a3b4fb26b094fb4e401f21de041eeaba5533a78fcd689b",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
-    "src/practiceController.js": "1bd762d0da108eafb1e24d851727c2b948300ad69e14733d6a11706312f6f5bd",
+    "src/practiceController.js": "66fe1cfd70b9541205ad0e81b6bfca1661061d0cc63c5835957a66ff801869cf",
     "src/sessionController.js": "79ff9a03fa2855fa9e356077e3941fccd24eb44730f8dc995349b54a9028b342",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "1aeeb5369f15b50b0510b6463537b92beb6a5d0d1763a140a0915f9b9126fbc6",
     "src/optional/progressView.js": "7cd6d75e07c89eeb7a9cf7f2b62874f71f789b6839408c87a5c3ad0d2f20e9de",
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
-    "src/storage.js": "f65e774744f633fa630b8437495ba80ecefbd318bf4ed16b3f63d1f60bcded79",
+    "src/storage.js": "c16080ebe834e7aff8d31ca4d8277df735827041cab6ddf3dcc43ae2d90de03f",
     "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
@@ -932,7 +945,6 @@
     "packages/ui/src/SequenceRun/SequenceRun.tsx": "20423e2f4c7a57e48961b9cc56fdda30c5d0716911db70bee8237080327c80df",
     "packages/ui/src/SequenceReview/SequenceReview.tsx": "b6723e2fe002859120cb4f0bbf2bf3e1f8282fbac4bb4b83e3aae2812a0dc874",
     "apps/web/src/styles/legacy-practice-heading.css": "be0553eaac4a005079fed1c9685cfe8aa6a33fac9c7bc62e0ab804c1b6a57c8f",
-    "apps/web/src/styles/legacy-practice-step-spacing.css": "7f5aabd98e9eca51fcab3c5abfddbade30e32bd0f350ef759e99703d855ce170",
     "packages/ui/src/PracticeRun/PracticeRun.meter.css": "a73b0d8d204019b3bfdda61a773c6a0cb06e0c7f86117bfb576f69d61b2bb08a",
     "packages/ui/src/PracticeRun/PracticeRun.css": "1733f93c5580166ed12c7672c41ca462b70ffe47a26ce301a658b69ceeb34d3a",
     "packages/ui/src/PracticeReview/PracticeReview.css": "371db58124b0e00f9be8f17c289ea3c13fd581caf7cf01ffcf5b948c11778357",
@@ -953,18 +965,18 @@
     "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
     "apps/web/src/app/guideContents.tsx": "52da80bafebfe6213fb93dd34f75792998ed70d1bccadbc9331b3190eabb9209",
     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "0e79a5db2fc2f9513584c1d7c1dc06e5cfac01fc80540e95c49544ed681fde50",
-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "17190c473bfde32373c78145da097dc1a826f056f33889887a8b3de67494d71f",
+    "apps/web/src/pages/PracticePage/PracticePage.tsx": "0fc47554da1982ce3a502adf1c4c8754863078d473d7d977038f6229e350b1d2",
+    "apps/web/src/pages/SequencePage/SequencePage.tsx": "18836819b07a07f4998ad05ece3abae2dbb93da72fd8ef4dd9ec3774aaa53862",
     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "5ec336334f797a629f64606b9fb64081bbf7e710fd6d6616c5ccef6e07f4ae1f",
     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "8009730b34473677566e6bec07a950d75446ba39ab08bde6f4557cfc8cb95e82",
     "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
     "apps/web/src/styles/legacy-before-sequence-page.css": "687daa485d1e63a71364d3c8b9c64ab66d7038f687607a88ff9ef76c92a6d3f5",
     "apps/web/src/pages/SequencePage/SequencePage.css": "3395c37a1d09c0a6f3001ce2308d75ad58789892847dba6e317bc50c3500acf4",
-    "apps/web/src/styles/legacy-after-sequence-page.css": "33c4fdf9e1d68e7f7c2310f9acb9cb1ad25040472f900d38fc419a185f461c5f",
+    "apps/web/src/styles/legacy-after-sequence-page.css": "c90ccd88154cfa632538ba68db076cd939bc8333b511348ea9e2b25057f64d09",
     "packages/ui/src/SavedSessionList/SavedSessionList.css": "f9a0c565ff87a62a2488e41cff9a05a0ef23a953cf1f153163d2cc6740ae67b1",
     "apps/web/src/pages/PracticePage/PracticePage.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
-    "apps/web/src/app/practicePage.tsx": "22ec666b9bc219ebbc22a3052089a7e7f7dd3a96a7f494bd8d5fa382add7063a",
+    "apps/web/src/app/practicePage.tsx": "e3bc96c6c95ac47ec7570a83357828c7c8dc790e79dd3080acd424ac762ae3ec",
     "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
     "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
@@ -974,7 +986,10 @@
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "tools/minify-html.mjs": "7798a5e447e687c935e325e8ca2a4d05541bb24a7c3cbef90fd0b19503540cfb",
     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
-    "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247"
+    "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+    "packages/ui/src/DrillSetup/DrillSetup.tsx": "5a2406f23e99d97c4d064d49e48d141c83b1216e72faca3e018f2437306604ee",
+    "packages/ui/src/DrillSetup/DrillSetup.css": "d26b7a0950929db04e8b9e958224d0a82d8a8ee68b7a9ae3188f55f24e7976db",
+    "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b"
   },
   "implementationChanges": [
     "CHG-017",

@@ -3,6 +3,7 @@
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
 import '@dryfire/testing/setup';
+import {setNodeText} from '../src/domUpdates.js';
 import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
@@ -12,7 +13,7 @@ const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const body=source.slice(source.indexOf('function renderPreferences()'),source.indexOf('function reportAudioProcessing('));
 function setup(){
  document.body.innerHTML=renderPageTemplates('{{app}}');
- const context={settingsPage:null,preferencePresentation,$:selector=>document.querySelector(selector),previewTesting:{render:jest.fn()},getAudioCapabilities:()=>({noiseFilter:true,autoGain:true}),
+ const context={setNodeText,settingsPage:null,preferencePresentation,$:selector=>document.querySelector(selector),previewTesting:{render:jest.fn()},getAudioCapabilities:()=>({noiseFilter:true,autoGain:true}),
   activeGun:{id:'a'},profileLocked:()=>false,audioPreferences:{noiseFilter:true,autoGain:false},processingReport:null,appearance:'light',busy:false,profileLoading:false,preferencePending:false,vibrationFeedback:true,vibrationRejected:false,getVibrationCapability:()=>true};
  const render=vm.runInNewContext(body+'\nrenderPreferences;',context);return{context,render};
 }

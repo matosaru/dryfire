@@ -111,7 +111,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       : $('practiceStartSound').checked ? `Microphone ready before countdown. ${mode === 'single' ? 'A trigger before the beep fails the attempt. ' : ''}Set your device volume for the start beep. The first 0.08 s after GO is excluded to reject the cue.` : 'Microphone ready before countdown. Silent start uses the on-screen signal; Single triggers before it fail the attempt.';
     renderSteps(required);
   }
-  function renderSteps(labels){const steps=labels.map(label=>({text:titleFor(label),className:'preset-chip'}));if(page)page.update({steps});else $('practiceSteps').replaceChildren(...steps.map(step=>node('span',step.text,step.className)));}
+  function renderSteps(labels){const steps=labels.map(label=>({text:titleFor(label),className:'drill-step'}));if(page)page.update({steps});else $('practiceSteps').replaceChildren(...steps.map(step=>node('li',step.text,step.className)));}
   const details = row => presentation.practiceResultDetails(row, { node, titleFor });
   const renderReview = record => presentation.renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details, present:presentReview });
   function render() {

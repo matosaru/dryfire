@@ -119,3 +119,8 @@ Before a valid gun profile exists, Settings keeps its immediately usable native 
 
 
 CHG-053: `features/live-listen/readiness.ts` is the pure navigation/capture-reason owner. `renderListeningReadiness` supplies native and React Home/Drills/Live Listen ports and shared chrome; the page owns reason-copy metadata. Timing controllers initialize once after a gun profile exists, before its capture/configure flows become available. Empty onboarding retains immediate native controls; restore/reset/background paths safely handle absent timing owners. This preserves first-entry adapters and capture APIs while avoiding unused startup construction.
+
+
+CHG-058 shared setup: packages/ui/src/DrillSetup exports the configuration shell, numeric card row and ordered steps for both SequencePage and PracticePage. Controller-specific fields are children, not duplicated form shells. Native inputs/listeners and their retained-node handoff stay with the existing page controllers; src/main.js remains the application entry.
+
+Startup reads its gun list, active selection and device preferences from storage.getLibraryOverview: one read-only transaction and one database open, reused after interrupted-session recovery. The existing schema/migration/write owners remain unchanged. Later profile changes request a fresh snapshot; standalone preference reload retains its public API.

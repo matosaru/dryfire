@@ -1,3 +1,5 @@
+CHG-058: all four trigger modes reuse the Sequence configuration template through DrillSetup. Count/Par use the compact repetition card; Start signal and Start delay use grouped cards; Sound at start uses the separate Sequence switch card. Required sound labels use the same left-aligned ordered-list geometry. External source hides the complete app timing/sound region. Existing controls, bounds, defaults, gun/safety/draft/capture behavior stay intact. [Requirements](../../../requirements/drill-setup-template.md). Pinned references were reviewed from collector 39952757111 / image-only commit 276eacb. Full acceptance is tracked in project history.
+
 # Practice design
 
 CHG-044: stopped configuration now includes **About this practice ›** immediately below its title. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
@@ -46,3 +48,5 @@ CHG-022 implemented revision: Connecting waits for actual incoming audio before 
 Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
+
+Light configuration references: [Single](configure-single.light.png), [Par time](configure-par.light.png).

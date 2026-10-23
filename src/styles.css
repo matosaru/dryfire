@@ -40,6 +40,7 @@
 @import "../packages/ui/src/CustomDrillEditor/CustomDrillEditor.css";
 @import "../apps/web/src/styles/legacy-before-sequence-page.css";
 @import "../apps/web/src/pages/SequencePage/SequencePage.css";
+@import "../packages/ui/src/DrillSetup/DrillSetup.css";
 @import "../apps/web/src/styles/legacy-after-sequence-page.css";
 @import "../packages/ui/src/SequenceRun/SequenceRun.css";
 @import "../apps/web/src/styles/legacy-session-section-headings.css";
@@ -55,7 +56,6 @@
 @import "../packages/ui/src/CalibrationCatalog/CalibrationCatalog.css";
 @import "../apps/web/src/styles/legacy-practice-heading.css";
 @import "../packages/ui/src/PracticeRun/PracticeRun.css";
-@import "../apps/web/src/styles/legacy-practice-step-spacing.css";
 @import "../packages/ui/src/PracticeReview/PracticeReview.css";
 @import "../apps/web/src/pages/PracticePage/PracticePage.css";
 @import "../packages/ui/src/PracticeRun/PracticeRun.meter.css";

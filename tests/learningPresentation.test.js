@@ -2,6 +2,8 @@
  * @jest-environment jsdom
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
+import {setNodeText,setNodeDisabled} from '../src/domUpdates.js';
+
 import '@dryfire/testing/setup';
 import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
@@ -16,7 +18,7 @@ function setup() {
   document.body.innerHTML=renderPageTemplates('{{app}}');
   const counts={trigger:3,draw:1,rack:0,reload:0};
   const record=jest.fn(),reset=jest.fn(),calibration=jest.fn();
-  const context={learnPage:null,livePage:null,homePage:undefined,drillsPage:null,informationPages:{setNavigationDisabled:jest.fn()},listeningReadiness,preferencePending:false,profileLoading:false,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
+  const context={setNodeText,setNodeDisabled,learnPage:null,livePage:null,homePage:undefined,drillsPage:null,informationPages:{setNavigationDisabled:jest.fn()},listeningReadiness,preferencePending:false,profileLoading:false,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
     titleFor:label=>label,labels:['draw','rack','trigger','reload'],getCounts:()=>counts,triggerReady:()=>counts.trigger>=3,
     MAX_EXAMPLES_PER_CLASS:10,MIN_EXAMPLES_PER_CLASS:3,RECOMMENDED_EXAMPLES_PER_CLASS:8,
     profileLocked:()=>context.busy,busy:false,livePendingStart:false,liveSession:null,sessionController:null,practiceController:null,

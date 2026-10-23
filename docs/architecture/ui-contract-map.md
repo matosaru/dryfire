@@ -35,3 +35,8 @@ P5 custom editor: CustomDrillEditor shares complete prerender and live fields; t
 
 
 CHG-053: one pure `features/live-listen/readiness.ts` policy distinguishes valid-gun navigation from trained capture. `renderListeningReadiness` updates Home, Drills, Live Listen and shared chrome through existing native/React ports. LiveListenPage owns reason-copy metadata and described-by/status semantics; current gun counts and operation locks remain main/controller-owned. Timing controllers construct once only after a gun exists; native onboarding/restore/reset/background paths work without them. No capture API, matching threshold, data schema or renderer ownership change.
+
+
+CHG-058 configuration: DrillSetup owns Sequence/Practice form+fieldset, repetition/Par card rows and ordered sound-step container. Its CSS is the existing Sequence setup cascade moved unchanged to packages/ui/src/DrillSetup/DrillSetup.css. Native forms and platform selects remain controller-owned and retained during React enhancement; no capture/storage in UI. App/external start source keeps established visibility and validation. Practice uses the Sequence geometry; only its previous step-spacing override is retired.
+
+CHG-058 performance correction: native helpers resolve IDs afresh after ownership changes and skip only equal text/disabled/image URL writes. Practice's changed callback already renders its owner; global lock/context updates skip recursive Practice refresh for that callback. External and Sequence events still refresh Practice. DOM mutation and renderer-ownership tests protect this distinction.

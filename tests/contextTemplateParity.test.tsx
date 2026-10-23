@@ -36,7 +36,7 @@ test('the compiled shell includes the same context/dialog without extra wrappers
 });
 
 
-test('ordered CSS matches the reviewed CHG-057 card update with the existing shell intact',()=>{
- const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-057-card-review.json',import.meta.url),'utf8'));
+test('ordered CSS matches the reviewed CHG-058 shared setup update with the existing shell intact',()=>{
+ const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-058-setup-review.json',import.meta.url),'utf8'));
  expect(createHash('sha256').update(composedStyles().css).digest('hex')).toBe(proof.expandedCSSSha256);
 });

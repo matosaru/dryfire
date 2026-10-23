@@ -1,3 +1,4 @@
+import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
 import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
 import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
 import { createModulePreparation } from './modulePreparation.js';
@@ -27,7 +28,7 @@ import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLAS
 import {
   addExample, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
   addEvent, getEvents, verifyEvent, clearEvents, trimEvents, normalizeMaxResults, MAX_EXAMPLES_PER_CLASS, exportBackup, restoreBackup,
-  getGuns, createGun, updateGun, deleteGun, getActiveGun, setActiveGun, resetLibrary, clearSessions,
+  getGuns, createGun, updateGun, deleteGun, getLibraryOverview, setActiveGun, resetLibrary, clearSessions,
   getGunSetting, setGunSetting, getCustomDrills, saveCustomDrill,
   getSetting, setSetting, recoverInterruptedSessions,
   getCalibrationExamples, addCalibrationExample, clearCalibrationExamples,
@@ -41,7 +42,7 @@ const labelMeta = {
   trigger: { title: 'Trigger pull', description: 'Dry trigger click', tone: 'orange' },
   reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple' },
 };
-const $ = selector => document.querySelector(selector);
+const $ = selectNode;
 const gunTypeImages = { Handguns: 'handgun', 'Rifles and Carbines': 'rifle', Shotguns: 'shotgun' };
 function gunImagePath(type) { return `/gun-types/${gunTypeImages[type] || 'unknown'}.svg`; }
 let examples = [];
@@ -86,13 +87,13 @@ let historyPage, historyOwner, historyRows=[], historySessions=[];
 const preparePageModule=createModulePreparation(showError);
 const guideHandlers=new Map();
 const historyHandlers=new Map();
-function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
-function historyText(id,text){if(historyPage)historyPage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
+function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else setNodeDisabled($('#'+id),disabled);}
+function historyText(id,text){if(historyPage)historyPage.update({texts:{[id]:text}});else setNodeText($('#'+id),text);}
 function bindHistory(id,handler){historyHandlers.set(id,handler);$('#'+id).addEventListener('click',handler);}
 const liveHandlers=new Map();
 const settingsHandlers = new Map();
-function liveText(id,text){if(livePage)livePage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
-function liveDisabled(id,disabled){if(livePage)livePage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
+function liveText(id,text){if(livePage)livePage.update({texts:{[id]:text}});else setNodeText($('#'+id),text);}
+function liveDisabled(id,disabled){if(livePage)livePage.update({disabled:{[id]:disabled}});else setNodeDisabled($('#'+id),disabled);}
 function liveValue(id,value){if(livePage)livePage.update({selects:{[id]:value}});else $('#'+id).value=value;}
 function liveHidden(id,hidden){if(livePage)livePage.update({hidden:{[id]:hidden}});else $('#'+id).classList.toggle('hidden',hidden);}
 function liveClass(id,name,enabled){if(livePage)livePage.update({listening:enabled});else $('#'+id).classList.toggle(name,enabled);}
@@ -105,8 +106,8 @@ function renderLiveOptions(selected=''){
 }
 function bindLive(id,type,handler){liveHandlers.set(id,handler);$('#'+id).addEventListener(type,handler);}
 function bindSettings(id,type,handler){settingsHandlers.set(id,handler);$('#'+id).addEventListener(type,handler);}
-function settingsText(id,text){if(settingsPage)settingsPage.update({texts:{[id]:text}});else $('#'+id).textContent=text;}
-function settingsDisabled(id,disabled){if(settingsPage)settingsPage.update({disabled:{[id]:disabled}});else $('#'+id).disabled=disabled;}
+function settingsText(id,text){if(settingsPage)settingsPage.update({texts:{[id]:text}});else setNodeText($('#'+id),text);}
+function settingsDisabled(id,disabled){if(settingsPage)settingsPage.update({disabled:{[id]:disabled}});else setNodeDisabled($('#'+id),disabled);}
 let gunLibraryPage;
 let gunLibraryToken = 0;
 let calibration = [];
@@ -123,6 +124,9 @@ function applyAppearance() {
 }
 async function loadDevicePreferences() {
   const [saved, vibration] = await Promise.all([getSetting('appearance', 'dark'), getSetting('vibrationFeedback', false)]);
+  applyDevicePreferences({appearance:saved,vibrationFeedback:vibration});
+}
+function applyDevicePreferences({appearance:saved,vibrationFeedback:vibration}) {
   appearance = ['dark', 'light', 'system'].includes(saved) ? saved : 'dark';
   vibrationFeedback = vibration === true;
   vibrationRejected = false;
@@ -135,11 +139,11 @@ function renderPreferences() {
     vibrationFeedback,vibrationSupported:getVibrationCapability(),vibrationRejected});
   if(settingsPage){settingsPage.update({preferences:view});return;}
   for(const item of view.audio){
-    const input=$('#'+item.inputId);input.checked=item.checked;input.disabled=item.disabled;$('#'+item.statusId).textContent=item.status;
+    const input=$('#'+item.inputId);input.checked=item.checked;input.disabled=item.disabled;setNodeText($('#'+item.statusId),item.status);
   }
   $('#appearance').value=view.appearance.value;$('#appearance').disabled=view.appearance.disabled;
   $('#vibrationFeedback').checked=view.vibration.checked;$('#vibrationFeedback').disabled=view.vibration.disabled;
-  $('#vibrationStatus').textContent=view.vibration.status;
+  setNodeText($('#vibrationStatus'),view.vibration.status);
 }
 function reportAudioProcessing(report) { processingReport = report; renderPreferences(); }
 function reportVibration(result) { if (!result.supported || !result.accepted) { vibrationRejected = true; renderPreferences(); } }
@@ -163,14 +167,14 @@ function renderListeningReadiness(counts = getCounts()) {
     : `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
   const disabled = {listenBtn:!liveSession && !!view.reason,singleShotBtn:!!liveSession || !!view.reason};
   if(livePage)livePage.update({texts:{trainingSummary:text},disabled});
-  else { if(summary.textContent!==text)summary.textContent=text; for(const[id,value]of Object.entries(disabled))$('#'+id).disabled=value; }
+  else { setNodeText(summary,text); for(const[id,value]of Object.entries(disabled))setNodeDisabled($('#'+id),value); }
   informationPages.setNavigationDisabled(view.entryDisabled);
   const context = {gunName:activeGun?.name || 'No gun selected',contextHidden:!gunAvailable};
   const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
   if(homePage)homePage.update({...context,training,listenDisabled:view.entryDisabled});
-  else {$('#homeExamples').textContent=training;$('#homeListenBtn').disabled=view.entryDisabled;}
+  else {setNodeText($('#homeExamples'),training);setNodeDisabled($('#homeListenBtn'),view.entryDisabled);}
   if(drillsPage)drillsPage.update({...context,freeListenDisabled:view.entryDisabled});
-  else $('#freeListenBtn').disabled=view.entryDisabled;
+  else setNodeDisabled($('#freeListenBtn'),view.entryDisabled);
 }
 
 function renderGunControls() {
@@ -179,9 +183,10 @@ function renderGunControls() {
   $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
   $('#gunSwitcherBtn').title = profileLocked() ? 'Finish recording or stop listening before switching guns.' : 'Choose another gun';
   $('#gunSwitcherBtn').setAttribute('aria-label', activeGun?.name ? `Switch gun. Selected: ${activeGun.name}, ${activeGun.type || 'type not set'}` : 'Choose a gun');
-  $('#activeGunName').textContent = activeGun?.name || 'Your gun';
-  $('#activeGunType').textContent = activeGun?.type || 'Add profile details';
-  $('#activeGunImage').src = gunImagePath(activeGun?.type);
+  setNodeText($('#activeGunName'),activeGun?.name || 'Your gun');
+  setNodeText($('#activeGunType'),activeGun?.type || 'Add profile details');
+  const gunImage = $('#activeGunImage'), imagePath = gunImagePath(activeGun?.type);
+  if (gunImage.getAttribute('src') !== imagePath) gunImage.src = imagePath;
   settingsText('soundResetSummary',activeGun && !activeGun.needsDetails
     ? `${examples.length} learned samples · ${calibration.length} calibration samples for ${activeGun.name}`
     : 'Choose a gun before resetting its learned sounds.');
@@ -192,7 +197,7 @@ function renderGunControls() {
     $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   }
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) historyDisabled(id,profileLocked() || !activeGun || activeGun.needsDetails);
-  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context-name').forEach(span => { span.textContent = activeGun?.name || 'No gun selected'; });
+  document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context-name').forEach(span => { setNodeText(span,activeGun?.name || 'No gun selected'); });
   document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
   sessionController?.updateContext({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   practiceController?.updateContext({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
@@ -210,26 +215,28 @@ function renderGunControls() {
  * Keep immediate onboarding/restore controls and create each owner once. */
 function initializeTimedControllers() {
   practiceController ||=  createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
-    onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
+    onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => renderLiveButton(false), onProcessing: reportAudioProcessing,
     vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
   sessionController ||=  createSessionController({
     getContext: practiceContext,
     titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
-    onChange: () => { renderLiveButton(); renderClassCards(); },
+    onChange: () => renderLiveButton(),
     onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
     onVibration: reportVibration,
     onPracticeRecord: record => practiceController.showRecord(record),
   });
 }
 
-async function loadActiveGun() {
+async function loadActiveGun(overview) {
   historyRenderToken += 1;
   homeRenderToken += 1;
   gunLibraryToken += 1;
   sessionController?.reset();
   practiceController?.reset();
-  // Independent reads share the wait; profile content renders only after loading.
-  [activeGun, guns] = await Promise.all([getActiveGun(), getGuns(), loadDevicePreferences()]);
+  // The selected gun, library and device preferences come from one read-only transaction.
+  const library = overview ?? await getLibraryOverview();
+  activeGun = library.activeGun; guns = library.guns;
+  applyDevicePreferences(library.devicePreferences);
   const id = activeGun?.id;
   if (id) initializeTimedControllers();
   examples = id ? await getExamples(id) : [];
@@ -777,7 +784,7 @@ async function recognize() {
   });
 }
 
-function renderLiveButton() {
+function renderLiveButton(refreshPractice = true) {
   const listening = !!liveSession;
   const timed = !!sessionController?.locked() || !!practiceController?.locked();
   liveText("listenBtn",listening ? 'Stop listening' : 'Start continuous listening');
@@ -792,7 +799,7 @@ function renderLiveButton() {
   renderLearningLocks();
   renderGunControls();
   renderPreferences();
-  practiceController?.refresh();
+  if (refreshPractice) practiceController?.refresh();
   if(drillsPage)drillsPage.update({practiceDisabled:profileLocked()});else document.querySelectorAll('#practiceCatalog button').forEach(button => { button.disabled = profileLocked(); });
 }
 
@@ -1235,8 +1242,9 @@ async function init() {
     : 'Not yet installed. Follow these steps to put it on your Home Screen.';
   $('#deviceCheck').textContent = `${window.isSecureContext ? 'Secure connection' : 'Insecure connection — microphone may be blocked'} · ${navigator.mediaDevices?.getUserMedia ? 'Microphone API available' : 'Microphone API unavailable'} · Local storage only`;
   const recovered = [];
-  for (const gun of await getGuns()) recovered.push(...await recoverInterruptedSessions(gun.id));
-  await loadActiveGun();
+  const library = await getLibraryOverview();
+  for (const gun of library.guns) recovered.push(...await recoverInterruptedSessions(gun.id));
+  await loadActiveGun(library);
   renderLiveButton();
   if (!activeGun || activeGun.needsDetails) openGunSetup(activeGun);
   else switchView('home');

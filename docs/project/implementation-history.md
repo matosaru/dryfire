@@ -848,3 +848,12 @@ Optimized candidate39955534502 passes validation, both complete screenshot suite
 ### 2026-10-23 — CHG-058 complete checks, infrastructure timeout
 
 Candidate39957863599 passes validation, all four original performance jobs/controls, public screenshots and all348 preview browser tests. Preview job exceeded the12-minute infrastructure limit at final cleanup (annotation120428109711), so it is cancelled and aggregate acceptance fails; do not count it as successful. Raise only screenshot-job allowance to15minutes to fit fixed coverage/probe/artifact/container cleanup. All test timeouts, retries, image thresholds and application timing/payload baselines remain unchanged. Rerun complete acceptance before applying source.
+
+
+### 2026-10-23 — CHG-058 complete acceptance and publication
+
+All eight jobs in [39959685865](https://github.com/matosaru/dryfire/actions/runs/39959685865) pass:1013 tests/147 suites+coverage and required validation, public/preview Chromium+WebKit workflows/screenshots, four original performance gates with controls and aggregate acceptance. Exact candidate d91ef6ba…54d937 is retained in Git966f2e6; reverse-check verified before applying.398 reviewed goldens/83 current captures; Sequence and guide references and ten GIF files unchanged. Safety modal interior pixels match before/after in all eight derived captures.
+
+Published scope: shared Sequence/Practice setup primitives and CSS; four trigger modes use compact count/Par cards, grouped signal/delay, separate sound switch and Sequence sound list. Existing form/input/safety/audio/timing/data/edition contracts preserved. Duplicate Practice render and unchanged native writes removed; read-only startup library/preferences snapshot avoids repeated database opens without schema/write changes. Earlier failed/cancelled runs remain recorded. Only screenshot CI execution allowance increases12→15minutes; all test timeouts, image tolerances and original performance thresholds/baselines/samples stay intact.
+
+Temporary collection workflow, patch inputs and duplicate candidate images removed. The outlined About-this-practice control remains a [proposal](../design/proposals/guide-control/README.md), not an application change. Push b then inspect normal post-push CI; main/dev and deployment unchanged.

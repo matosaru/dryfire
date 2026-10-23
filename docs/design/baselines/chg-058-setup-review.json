@@ -1,0 +1,180 @@
+{
+  "change": "CHG-058",
+  "status": "All eight complete pre-publication jobs pass in39959685865; exact source candidate reverse-check verified. Normal post-push verification separate.",
+  "expandedCSSSha256": "f139dbef1ea78e84f42863cf0f945b1fc553094eb0056cdc079f5f163d37c28c",
+  "previousCSSReview": "chg-057-card-review.json",
+  "unrelatedCSSProof": "Expanded cascade equals previous complete CSS with only the retired #practiceSteps margin/wrap override removed. Canonical Sequence setup rules relocated byte-for-byte.",
+  "fixture": "tests/fixtures/session-pages/practice.setup-v2.html",
+  "fixtureSHA256": "e930048fe74d1b9df4d05e0e979a9b5445b3be2c74ff9648ceecf747d60373b1",
+  "collectorRun": 39952757111,
+  "collectorCommit": "276eacb",
+  "renderer": "Pinned Playwright 1.58.2 Noble Chromium/WebKit; public/preview",
+  "imageReview": "Reviewed 28 configuration references (all four modes, Dark/Light, 320px Single) and 28 active/countdown/paused/review references. Shared ordered sound header updates consistently; run/review fragments remain unchanged. Sequence and guide references are not rebased.",
+  "images": {
+    "chromium/preview/practice/active.dark.320.png": "f3651312eeb668e2527bf702515a961aa0daee8a452a1d41767e8ca9b85a7b77",
+    "chromium/preview/practice/active.dark.390.png": "28e1269aa953bf0a3f47be287f6807a2fab96bde42df22c918229df43c137d42",
+    "chromium/preview/practice/active.light.390.png": "44fe5060de2e6cfcc45183ed965d366a64c950fb05b2ff0f782febed65b037f6",
+    "chromium/preview/practice/configure-control.dark.390.png": "33b8407fce692efc891b5d101b9e4727e7dedfbb9a45eb404aafd437f50e4314",
+    "chromium/preview/practice/configure-par.dark.390.png": "ee3a3a3784190bc601abf247e7147b1dccb43c9df63f246c6ff5103cc3806039",
+    "chromium/preview/practice/configure-par.light.390.png": "99c33b1ec8711afc330c7bbc78a196129cb2e6ff122723d990140fac54138951",
+    "chromium/preview/practice/configure-repeated.dark.390.png": "0ceebd9c48c6a5ed4ddbf60be84b3582e4a23239432063511d596a23d48cfcda",
+    "chromium/preview/practice/configure-single.dark.320.png": "a56d160790e11695ccd68a4d0dc6915904b038c8e2ed0292c1011fe6b68562e6",
+    "chromium/preview/practice/configure-single.dark.390.png": "64fb59446aa89179e957baf40f2305eb86fe19926246c0342ce16e7242aac303",
+    "chromium/preview/practice/configure-single.light.390.png": "65ba23554e9ffb0c92322dd01591b12ff9dc4e21282bfa5759cebfe8f49969b7",
+    "chromium/preview/practice/countdown.dark.390.png": "c416b1601bfd7b356c6a769c0dcec0127686578705cb63184ba5c83f7efd4f66",
+    "chromium/preview/practice/early-review.dark.390.png": "2e68f08938eca2c5f09227be3c05877b4fedd2207f8ace1bfbb7ef369a679f70",
+    "chromium/preview/practice/paused.dark.390.png": "d043edab5c807db611e046296cbb30392c6f12b69f1e030e929345b3aa8d2018",
+    "chromium/preview/practice/review.dark.390.png": "27400265a476c6a2e00949620fcd4c62ec5f229b5940f944265b952ed02b4a7e",
+    "chromium/public/practice/active.dark.320.png": "980aca17e47b39f8c5e063f606abbf751bea94a84093373b48f5df7687b8cbca",
+    "chromium/public/practice/active.dark.390.png": "00387d17fcd80d86eb4eac6bc5e41f0e0b7e396b0b88ea885a232683a3736a39",
+    "chromium/public/practice/active.light.390.png": "56278262ba1894897e945c6304d19f497f35b465735fc1a8135eb5c178572c03",
+    "chromium/public/practice/configure-control.dark.390.png": "9f1571cfe38455e4ac521489f703c08a27e5ead8399c31f821290c668e087d2b",
+    "chromium/public/practice/configure-par.dark.390.png": "7c151e99f3db1fe182780d292731283123aa6fc6d79d98d70441d76d1914bc18",
+    "chromium/public/practice/configure-par.light.390.png": "9d5de7a2ce45a2e13b8b353c7288e28e597c26c69dc9d23df1b3b68c81307564",
+    "chromium/public/practice/configure-repeated.dark.390.png": "26092d78839c21759a15de4f489f6bb995412fd07ee7311d64f1aa58bb656d33",
+    "chromium/public/practice/configure-single.dark.320.png": "f43bc57773595be84e83b4147d41aa1f645e178dff5e61bee765fb49c4db2281",
+    "chromium/public/practice/configure-single.dark.390.png": "1d74242d933d99789f2dd2c1dbd18f4f8e24695140e330aa13723f07578fb59a",
+    "chromium/public/practice/configure-single.light.390.png": "cb57fc1eca4b0070a33f63c6a7a6046d41267ef7d789c507a0ec8813588c84ca",
+    "chromium/public/practice/countdown.dark.390.png": "1a1e8067e8e2a5eb822512d845fa027555cb89adb87098242b8f41eee9cd8aa9",
+    "chromium/public/practice/early-review.dark.390.png": "0fa288999297af5b6a039f56d7ac52be7bc4a92b5ac83e4f30eddb23723ae703",
+    "chromium/public/practice/paused.dark.390.png": "1aaf974032e7bc6d2ac13be67fa39482ea437dcd2e341b4c89944545568adbc6",
+    "chromium/public/practice/review.dark.390.png": "5afac01b48ce9c5431c2ae60df955e41e4826e59bfa9bebdfb4520f038bd1990",
+    "webkit/preview/practice/active.dark.320.png": "f4b3afd6ee27eb7b27b69a1f1be03e85b82d863d06fa56315cb3d151fae2c762",
+    "webkit/preview/practice/active.dark.390.png": "1cfcad31630c6e4e886a2c97c16ce6aea9d5c9270b375446bf08e08c64ecdbd2",
+    "webkit/preview/practice/active.light.390.png": "8bd00643d123dc3ccdf571d38a7b5ef3e6a20c5646593c5091661bcc40882842",
+    "webkit/preview/practice/configure-control.dark.390.png": "538c3bb96afc2ce050ce1462bb919a0ab637f695a5ce292b91fe1b2c9be3cc7e",
+    "webkit/preview/practice/configure-par.dark.390.png": "a3674caa2219ed4b410d18e8e74bc3fdb9d0f12c8802ab59df309530b2315ce6",
+    "webkit/preview/practice/configure-par.light.390.png": "15e728864252c3e0e92cb0ea0994fcde24483646cd6b87d5da403b5030be4097",
+    "webkit/preview/practice/configure-repeated.dark.390.png": "335369b4bca7ab14a845ab3259e7b87dac40de75a53c027e337266db00b96cfc",
+    "webkit/preview/practice/configure-single.dark.320.png": "91a8b6212780a3d17a35377568eec4cbab8612d5e1767d719eb0a2a479f6ee6b",
+    "webkit/preview/practice/configure-single.dark.390.png": "03076d296e61d0a4dec64ac1de7f78bf6b8619dc90592d889601cfc69d877895",
+    "webkit/preview/practice/configure-single.light.390.png": "8c47a55a2b4f46c1333c895c0b07e91e35fd94563622fd89946d29c7f0d52417",
+    "webkit/preview/practice/countdown.dark.390.png": "4cd8e60aa547283b772eed88750ac0600cb8671154cad63288c63936044202e5",
+    "webkit/preview/practice/early-review.dark.390.png": "75698f2af12e000fd12c59a147b118a2e0bafb48933c5a9d7f7387f05b05339c",
+    "webkit/preview/practice/paused.dark.390.png": "fa65823d938985dd9a629fdad9542768c9c46d564af81b76c5d7ef6058b04bf7",
+    "webkit/preview/practice/review.dark.390.png": "589b9b79e68029f0938b3344b10368efba22a9ef93d43a3e1a91e065e32383e1",
+    "webkit/public/practice/active.dark.320.png": "489c17edc5403d72837811243994cd45a36ee83c3d58289bb6e3ec3848a9d6f4",
+    "webkit/public/practice/active.dark.390.png": "290cf60900025627046d371598d5880fdd8c87ad96c2cfa9d75d738d188464da",
+    "webkit/public/practice/active.light.390.png": "08ae85c6b1396b26670cb0b82f890fb017f918137531198a2f9860c71970189d",
+    "webkit/public/practice/configure-control.dark.390.png": "eb7e88a8b3d419b236549d3e2164c92c2c525d84a40c6f9aeb381040a83f916a",
+    "webkit/public/practice/configure-par.dark.390.png": "3d09e7e3ff1a93f68d51efba73f5db385500d39ba95da6792f3b265d2442cc09",
+    "webkit/public/practice/configure-par.light.390.png": "d86467f251e68a1af8f28b33d68d2b49425dc54e9ddc20504fc4be40bb5843c0",
+    "webkit/public/practice/configure-repeated.dark.390.png": "11490179ce89deccc7dbcb3c6903041d9afc43356b3117e10972bae75ae05c9e",
+    "webkit/public/practice/configure-single.dark.320.png": "5cfca3a4c607afe435061c9cf0004e85c51df8563c6e387685fc5b2c178e5e32",
+    "webkit/public/practice/configure-single.dark.390.png": "2be506164a7a2b11f65648c8828e9c59ab541be6d968e5a89d318ab2c22736aa",
+    "webkit/public/practice/configure-single.light.390.png": "b5569bef626a1cf777eae4866aaeae3c2c4763cbdc1bdb70be3a26bfc9c66f30",
+    "webkit/public/practice/countdown.dark.390.png": "1882775b2fa8ad7a3ba11cc534269af4400972e59d7b52d04e436e3eabca015a",
+    "webkit/public/practice/early-review.dark.390.png": "8163cda7e87e346f1ab8e70bfa1d5e1c9f48975c48684ccca3245c5e35ac194c",
+    "webkit/public/practice/paused.dark.390.png": "cb089a558da2db720eea3fd62ce4ac916ad3cc01a5373663490c9633e4fa4740",
+    "webkit/public/practice/review.dark.390.png": "3ed5224be5af360e47143eeaa56052dfa90436ebecc70d00c7587fea6f77efc2",
+    "webkit/preview/shared/safety-modal.dark.390.png": "515379ae20ad10f5a0476ed473aa23d38ac872e1f6e941b387dd91c34a7fe1d2",
+    "webkit/preview/shared/safety-modal.dark.320.png": "615bc6c84b0da33993f12e91dc7b42423f182d068d83d803caac3ba822a68167",
+    "webkit/public/shared/safety-modal.dark.390.png": "0b3c6581ec75114de1e6975069cea0a1409a55f021e5887365feb9f0e560a2b0",
+    "webkit/public/shared/safety-modal.dark.320.png": "79f60323403b3384a8dbcaa90ca8f77d289b7415c15820062b3640bf5952402b",
+    "chromium/preview/shared/safety-modal.dark.390.png": "8ae664fa663c5035c04fc28c1d9b2d35b111170f89021bb64699a70669af2dbc",
+    "chromium/preview/shared/safety-modal.dark.320.png": "4e4efc4032b3c3ebbc69fb6f5e3b0ca179aee332aba7be16bfbe87bc9ffe9fe8",
+    "chromium/public/shared/safety-modal.dark.390.png": "872e8120508ec75ffac424757d20032144d5b0af43764990bd306d838c329757",
+    "chromium/public/shared/safety-modal.dark.320.png": "bb2606ee2b1adcf056680e9fcfce8b14f8696f71efdb02afdc5af35f50fed999"
+  },
+  "safetyOverlayReview": {
+    "collectorRun": 39954634595,
+    "collectorCommit": "9030aaa",
+    "scope": "New approved setup remains visible through unchanged safety backdrop. Modal interior pixels identical across all eight browser/edition/width references; only background/corner shadow sampling changes.",
+    "interiorProof": {
+      "webkit/preview/shared/safety-modal.dark.390.png": {
+        "interior": [
+          45,
+          227,
+          345,
+          617
+        ],
+        "beforeAfterPixelSHA256": "503475fc2e20d0f3ee86a5b3317c1ae94a34316f911db0a2cc1e0e7fa916f506",
+        "identical": true
+      },
+      "webkit/preview/shared/safety-modal.dark.320.png": {
+        "interior": [
+          45,
+          205,
+          275,
+          639
+        ],
+        "beforeAfterPixelSHA256": "2a3e9e36f5fc9a35bc8a43454f8e4e1203f347d99d062d33b75c72800c0edf1c",
+        "identical": true
+      },
+      "webkit/public/shared/safety-modal.dark.390.png": {
+        "interior": [
+          45,
+          227,
+          345,
+          617
+        ],
+        "beforeAfterPixelSHA256": "503475fc2e20d0f3ee86a5b3317c1ae94a34316f911db0a2cc1e0e7fa916f506",
+        "identical": true
+      },
+      "webkit/public/shared/safety-modal.dark.320.png": {
+        "interior": [
+          45,
+          205,
+          275,
+          639
+        ],
+        "beforeAfterPixelSHA256": "2a3e9e36f5fc9a35bc8a43454f8e4e1203f347d99d062d33b75c72800c0edf1c",
+        "identical": true
+      },
+      "chromium/preview/shared/safety-modal.dark.390.png": {
+        "interior": [
+          45,
+          226,
+          345,
+          618
+        ],
+        "beforeAfterPixelSHA256": "e0a34e61150be423c001484ac53668e21a9476de89999d66a789999dc57c1414",
+        "identical": true
+      },
+      "chromium/preview/shared/safety-modal.dark.320.png": {
+        "interior": [
+          45,
+          204,
+          275,
+          640
+        ],
+        "beforeAfterPixelSHA256": "ccefc758c90ab2807d9441c1f0db25dbce81d7f1cebe6b0248e208e4921210b4",
+        "identical": true
+      },
+      "chromium/public/shared/safety-modal.dark.390.png": {
+        "interior": [
+          45,
+          226,
+          345,
+          618
+        ],
+        "beforeAfterPixelSHA256": "e0a34e61150be423c001484ac53668e21a9476de89999d66a789999dc57c1414",
+        "identical": true
+      },
+      "chromium/public/shared/safety-modal.dark.320.png": {
+        "interior": [
+          45,
+          204,
+          275,
+          640
+        ],
+        "beforeAfterPixelSHA256": "ccefc758c90ab2807d9441c1f0db25dbce81d7f1cebe6b0248e208e4921210b4",
+        "identical": true
+      }
+    }
+  },
+  "failedAcceptanceRun": 39953233357,
+  "renderOptimization": "Skip duplicate Practice refresh after its own rendered callback, redundant equal native writes and identical gun image URL assignments; fresh ID lookup never caches React-replaced nodes.",
+  "isolatedOptimizedWebKitRun": 39954634266,
+  "secondFailedAcceptanceRun": 39955534502,
+  "startupSnapshot": "Gun library, active selection and device preferences read from one read-only IndexedDB snapshot reused after interrupted-session recovery. Existing schema/migration/write policies unchanged; tests cover legacy ownership, backup preservation, missing selected gun and one database open.",
+  "isolatedSnapshotWebKitRun": 39957131576,
+  "acceptanceRun": 39959685865,
+  "reviewPatchCommit": "966f2e6",
+  "workflowHead": "c944355",
+  "reviewPatchSHA256": "d91ef6ba727d54a69363650ec50e1b980ab27a71588a09ad93dd157a2354d937",
+  "infrastructureRetry": {
+    "run": 39957863599,
+    "result": "All actual tests/controls passed; preview job cancelled at12-minute cleanup limit. Final accepted run uses15-minute job allowance, unchanged test/application gates."
+  }
+}
