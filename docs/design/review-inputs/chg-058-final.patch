@@ -139,16 +139,18 @@ index 5a4d0d1..0000000
 @@ -1 +0,0 @@
 -#practiceSteps { margin-bottom: 20px; flex-wrap: wrap; }
 diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
-index 62f444c..9928769 100644
+index 62f444c..d9ce62e 100644
 --- a/docs/architecture/application-structure.md
 +++ b/docs/architecture/application-structure.md
-@@ -119,3 +119,6 @@ Before a valid gun profile exists, Settings keeps its immediately usable native
+@@ -119,3 +119,8 @@ Before a valid gun profile exists, Settings keeps its immediately usable native
  
  
  CHG-053: `features/live-listen/readiness.ts` is the pure navigation/capture-reason owner. `renderListeningReadiness` supplies native and React Home/Drills/Live Listen ports and shared chrome; the page owns reason-copy metadata. Timing controllers initialize once after a gun profile exists, before its capture/configure flows become available. Empty onboarding retains immediate native controls; restore/reset/background paths safely handle absent timing owners. This preserves first-entry adapters and capture APIs while avoiding unused startup construction.
 +
 +
 +CHG-058 shared setup: packages/ui/src/DrillSetup exports the configuration shell, numeric card row and ordered steps for both SequencePage and PracticePage. Controller-specific fields are children, not duplicated form shells. Native inputs/listeners and their retained-node handoff stay with the existing page controllers; src/main.js remains the application entry.
++
++Startup reads its gun list, active selection and device preferences from storage.getLibraryOverview: one read-only transaction and one database open, reused after interrupted-session recovery. The existing schema/migration/write owners remain unchanged. Later profile changes request a fresh snapshot; standalone preference reload retains its public API.
 diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
 index 11125cb..48b39ed 100644
 --- a/docs/architecture/component-map.json
@@ -167,7 +169,7 @@ index 11125cb..48b39ed 100644
    ],
    "retainedSubtreeBoundary": {
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index 2bac5f6..5545b50 100644
+index 2bac5f6..6e0ff99 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -222,7 +222,8 @@
@@ -199,13 +201,13 @@ index 2bac5f6..5545b50 100644
          }
        ],
        "modes": [
-@@ -778,11 +791,11 @@
+@@ -778,18 +791,18 @@
    ],
    "reviewedSources": {
      "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
 -    "src/main.js": "c0ca18444fed9fb5dca25639e9e0b1074891cae37ac3db87a7a467a91d1269ce",
 -    "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
-+    "src/main.js": "abe8ae1256c750acc54a25a6c9b8d7d7d87b93e16f7678969483a1cef9054f71",
++    "src/main.js": "fa659d4703f9c8860d256df3e0492551e34c7c4c44f3518e449886c5b29b2e51",
 +    "src/styles.css": "da2b105c40b06bf659a3b4fb26b094fb4e401f21de041eeaba5533a78fcd689b",
      "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
      "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
@@ -214,6 +216,14 @@ index 2bac5f6..5545b50 100644
      "src/sessionController.js": "79ff9a03fa2855fa9e356077e3941fccd24eb44730f8dc995349b54a9028b342",
      "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
      "src/inputLimits.js": "1aeeb5369f15b50b0510b6463537b92beb6a5d0d1763a140a0915f9b9126fbc6",
+     "src/optional/progressView.js": "7cd6d75e07c89eeb7a9cf7f2b62874f71f789b6839408c87a5c3ad0d2f20e9de",
+     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
+     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
+-    "src/storage.js": "f65e774744f633fa630b8437495ba80ecefbd318bf4ed16b3f63d1f60bcded79",
++    "src/storage.js": "c16080ebe834e7aff8d31ca4d8277df735827041cab6ddf3dcc43ae2d90de03f",
+     "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
+     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
+     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
 @@ -932,7 +945,6 @@
      "packages/ui/src/SequenceRun/SequenceRun.tsx": "20423e2f4c7a57e48961b9cc56fdda30c5d0716911db70bee8237080327c80df",
      "packages/ui/src/SequenceReview/SequenceReview.tsx": "b6723e2fe002859120cb4f0bbf2bf3e1f8282fbac4bb4b83e3aae2812a0dc874",
@@ -328960,7 +328970,7 @@ zW~FO%fj^7s^0R}!Z%f)^U~6F8@7hO7hk-9&ex~alVrEG7T3<}%i_fC)bs>@33wjDh
 s5}kYxmuY&g$SU>l@|Aj^_R%d)Tv5%J?-j-xAmF8<sQI{D!7T8<0Q=<prvLx|
 
 diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
-index 19d5d41..71ea975 100644
+index 19d5d41..4e612c0 100644
 --- a/docs/design/screens/practice-guide/examples/manifest.json
 +++ b/docs/design/screens/practice-guide/examples/manifest.json
 @@ -2,7 +2,7 @@
@@ -329005,7 +329015,7 @@ index 19d5d41..71ea975 100644
      "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
      "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
 -    "src/main.js": "c0ca18444fed9fb5dca25639e9e0b1074891cae37ac3db87a7a467a91d1269ce",
-+    "src/main.js": "abe8ae1256c750acc54a25a6c9b8d7d7d87b93e16f7678969483a1cef9054f71",
++    "src/main.js": "fa659d4703f9c8860d256df3e0492551e34c7c4c44f3518e449886c5b29b2e51",
      "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
      "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
      "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
@@ -412636,7 +412646,7 @@ index da31302..4efd03a 100644
  Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with dev/production verification.
  
 diff --git a/src/main.js b/src/main.js
-index 2177d7c..7c131c6 100644
+index 2177d7c..8c4489b 100644
 --- a/src/main.js
 +++ b/src/main.js
 @@ -1,3 +1,4 @@
@@ -412644,6 +412654,15 @@ index 2177d7c..7c131c6 100644
  import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
  import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
  import { createModulePreparation } from './modulePreparation.js';
+@@ -27,7 +28,7 @@ import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLAS
+ import {
+   addExample, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
+   addEvent, getEvents, verifyEvent, clearEvents, trimEvents, normalizeMaxResults, MAX_EXAMPLES_PER_CLASS, exportBackup, restoreBackup,
+-  getGuns, createGun, updateGun, deleteGun, getActiveGun, setActiveGun, resetLibrary, clearSessions,
++  getGuns, createGun, updateGun, deleteGun, getLibraryOverview, setActiveGun, resetLibrary, clearSessions,
+   getGunSetting, setGunSetting, getCustomDrills, saveCustomDrill,
+   getSetting, setSetting, recoverInterruptedSessions,
+   getCalibrationExamples, addCalibrationExample, clearCalibrationExamples,
 @@ -41,7 +42,7 @@ const labelMeta = {
    trigger: { title: 'Trigger pull', description: 'Dry trigger click', tone: 'orange' },
    reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple' },
@@ -412682,7 +412701,17 @@ index 2177d7c..7c131c6 100644
  let gunLibraryPage;
  let gunLibraryToken = 0;
  let calibration = [];
-@@ -135,11 +136,11 @@ function renderPreferences() {
+@@ -123,6 +124,9 @@ function applyAppearance() {
+ }
+ async function loadDevicePreferences() {
+   const [saved, vibration] = await Promise.all([getSetting('appearance', 'dark'), getSetting('vibrationFeedback', false)]);
++  applyDevicePreferences({appearance:saved,vibrationFeedback:vibration});
++}
++function applyDevicePreferences({appearance:saved,vibrationFeedback:vibration}) {
+   appearance = ['dark', 'light', 'system'].includes(saved) ? saved : 'dark';
+   vibrationFeedback = vibration === true;
+   vibrationRejected = false;
+@@ -135,11 +139,11 @@ function renderPreferences() {
      vibrationFeedback,vibrationSupported:getVibrationCapability(),vibrationRejected});
    if(settingsPage){settingsPage.update({preferences:view});return;}
    for(const item of view.audio){
@@ -412696,7 +412725,7 @@ index 2177d7c..7c131c6 100644
  }
  function reportAudioProcessing(report) { processingReport = report; renderPreferences(); }
  function reportVibration(result) { if (!result.supported || !result.accepted) { vibrationRejected = true; renderPreferences(); } }
-@@ -163,14 +164,14 @@ function renderListeningReadiness(counts = getCounts()) {
+@@ -163,14 +167,14 @@ function renderListeningReadiness(counts = getCounts()) {
      : `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
    const disabled = {listenBtn:!liveSession && !!view.reason,singleShotBtn:!!liveSession || !!view.reason};
    if(livePage)livePage.update({texts:{trainingSummary:text},disabled});
@@ -412714,7 +412743,7 @@ index 2177d7c..7c131c6 100644
  }
  
  function renderGunControls() {
-@@ -179,9 +180,10 @@ function renderGunControls() {
+@@ -179,9 +183,10 @@ function renderGunControls() {
    $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
    $('#gunSwitcherBtn').title = profileLocked() ? 'Finish recording or stop listening before switching guns.' : 'Choose another gun';
    $('#gunSwitcherBtn').setAttribute('aria-label', activeGun?.name ? `Switch gun. Selected: ${activeGun.name}, ${activeGun.type || 'type not set'}` : 'Choose a gun');
@@ -412728,7 +412757,7 @@ index 2177d7c..7c131c6 100644
    settingsText('soundResetSummary',activeGun && !activeGun.needsDetails
      ? `${examples.length} learned samples · ${calibration.length} calibration samples for ${activeGun.name}`
      : 'Choose a gun before resetting its learned sounds.');
-@@ -192,7 +194,7 @@ function renderGunControls() {
+@@ -192,7 +197,7 @@ function renderGunControls() {
      $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
    }
    for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) historyDisabled(id,profileLocked() || !activeGun || activeGun.needsDetails);
@@ -412737,7 +412766,7 @@ index 2177d7c..7c131c6 100644
    document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
    sessionController?.updateContext({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
    practiceController?.updateContext({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
-@@ -210,12 +212,12 @@ function renderGunControls() {
+@@ -210,26 +215,28 @@ function renderGunControls() {
   * Keep immediate onboarding/restore controls and create each owner once. */
  function initializeTimedControllers() {
    practiceController ||=  createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
@@ -412752,7 +412781,26 @@ index 2177d7c..7c131c6 100644
      onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
      onVibration: reportVibration,
      onPracticeRecord: record => practiceController.showRecord(record),
-@@ -777,7 +779,7 @@ async function recognize() {
+   });
+ }
+ 
+-async function loadActiveGun() {
++async function loadActiveGun(overview) {
+   historyRenderToken += 1;
+   homeRenderToken += 1;
+   gunLibraryToken += 1;
+   sessionController?.reset();
+   practiceController?.reset();
+-  // Independent reads share the wait; profile content renders only after loading.
+-  [activeGun, guns] = await Promise.all([getActiveGun(), getGuns(), loadDevicePreferences()]);
++  // The selected gun, library and device preferences come from one read-only transaction.
++  const library = overview ?? await getLibraryOverview();
++  activeGun = library.activeGun; guns = library.guns;
++  applyDevicePreferences(library.devicePreferences);
+   const id = activeGun?.id;
+   if (id) initializeTimedControllers();
+   examples = id ? await getExamples(id) : [];
+@@ -777,7 +784,7 @@ async function recognize() {
    });
  }
  
@@ -412761,7 +412809,7 @@ index 2177d7c..7c131c6 100644
    const listening = !!liveSession;
    const timed = !!sessionController?.locked() || !!practiceController?.locked();
    liveText("listenBtn",listening ? 'Stop listening' : 'Start continuous listening');
-@@ -792,7 +794,7 @@ function renderLiveButton() {
+@@ -792,7 +799,7 @@ function renderLiveButton() {
    renderLearningLocks();
    renderGunControls();
    renderPreferences();
@@ -412770,6 +412818,18 @@ index 2177d7c..7c131c6 100644
    if(drillsPage)drillsPage.update({practiceDisabled:profileLocked()});else document.querySelectorAll('#practiceCatalog button').forEach(button => { button.disabled = profileLocked(); });
  }
  
+@@ -1235,8 +1242,9 @@ async function init() {
+     : 'Not yet installed. Follow these steps to put it on your Home Screen.';
+   $('#deviceCheck').textContent = `${window.isSecureContext ? 'Secure connection' : 'Insecure connection — microphone may be blocked'} · ${navigator.mediaDevices?.getUserMedia ? 'Microphone API available' : 'Microphone API unavailable'} · Local storage only`;
+   const recovered = [];
+-  for (const gun of await getGuns()) recovered.push(...await recoverInterruptedSessions(gun.id));
+-  await loadActiveGun();
++  const library = await getLibraryOverview();
++  for (const gun of library.guns) recovered.push(...await recoverInterruptedSessions(gun.id));
++  await loadActiveGun(library);
+   renderLiveButton();
+   if (!activeGun || activeGun.needsDetails) openGunSetup(activeGun);
+   else switchView('home');
 diff --git a/src/practiceController.js b/src/practiceController.js
 index 6b8209a..4cfb184 100644
 --- a/src/practiceController.js
@@ -412783,6 +412843,37 @@ index 6b8209a..4cfb184 100644
    const details = row => presentation.practiceResultDetails(row, { node, titleFor });
    const renderReview = record => presentation.renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details, present:presentReview });
    function render() {
+diff --git a/src/storage.js b/src/storage.js
+index 9b6fa10..57677da 100644
+--- a/src/storage.js
++++ b/src/storage.js
+@@ -193,8 +193,24 @@ async function getRow(storeName, key) {
+   } finally { db.close(); }
+ }
+ 
+-export async function getGuns() {
+-  return (await getAll(GUNS)).sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id));
++function orderGuns(rows) { return rows.sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id)); }
++
++export async function getGuns() { return orderGuns(await getAll(GUNS)); }
++
++/** One read-only snapshot avoids reopening IndexedDB for each startup field. */
++export async function getLibraryOverview() {
++  const rows = await withTransaction([GUNS, SETTINGS], 'readonly', (tx, context) => {
++    const result = {}; context.result = result;
++    const guns = tx.objectStore(GUNS).getAll();
++    guns.onsuccess = () => { result.guns = guns.result; };
++    for (const key of [ACTIVE_GUN, 'appearance', 'vibrationFeedback']) {
++      const request = tx.objectStore(SETTINGS).get(key);
++      request.onsuccess = () => { result[key] = request.result?.value; };
++    }
++  });
++  const guns = orderGuns(rows.guns);
++  return { guns, activeGun: rows[ACTIVE_GUN] ? guns.find(gun => gun.id === rows[ACTIVE_GUN]) ?? null : null,
++    devicePreferences: { appearance: rows.appearance ?? 'dark', vibrationFeedback: rows.vibrationFeedback ?? false } };
+ }
+ 
+ export async function getActiveGun() {
 diff --git a/src/styles.css b/src/styles.css
 index a04deb3..9fda6c9 100644
 --- a/src/styles.css
@@ -412840,7 +412931,7 @@ index a464cf6..5d40735 100644
      MAX_EXAMPLES_PER_CLASS:10,MIN_EXAMPLES_PER_CLASS:3,RECOMMENDED_EXAMPLES_PER_CLASS:8,
      profileLocked:()=>context.busy,busy:false,livePendingStart:false,liveSession:null,sessionController:null,practiceController:null,
 diff --git a/tests/profileLoading.test.js b/tests/profileLoading.test.js
-index abd4139..62a5f59 100644
+index abd4139..f3c1705 100644
 --- a/tests/profileLoading.test.js
 +++ b/tests/profileLoading.test.js
 @@ -2,6 +2,8 @@
@@ -412857,10 +412948,59 @@ index abd4139..62a5f59 100644
  function setup(gun={id:'a',name:'Test',type:'Handguns'}){
   document.body.innerHTML=renderPageTemplates('{{app}}');
 - const context={initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
-+ const context={setNodeText,setNodeDisabled,initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
++ const context={getLibraryOverview:jest.fn(async()=>({activeGun:gun,guns:gun?[gun]:[],devicePreferences:{appearance:'light',vibrationFeedback:true}})),setNodeText,setNodeDisabled,initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
    activeGun:null,guns:[],examples:[],customDrills:[],audioPreferences:{},calibration:[],enabledSoundLabels:[],
    processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',vibrationFeedback:false,vibrationRejected:true,
    getActiveGun:jest.fn(async()=>gun),getGuns:jest.fn(async()=>gun?[gun]:[]),
+@@ -26,8 +28,8 @@ function setup(gun={id:'a',name:'Test',type:'Handguns'}){
+   applyAppearance:jest.fn(),selectDrillCollection:jest.fn(),renderGunControls:jest.fn(),renderClassCards:jest.fn(),renderDrillCatalog:jest.fn(),
+   renderCustomCatalog:jest.fn(),resetDrill:jest.fn(),renderPreferences:jest.fn(),renderHome:jest.fn(async()=>{}),
+  };
+- const load=vm.runInNewContext(extract('function historyDisabled(', 'const liveHandlers')+'\n'+extract('function liveText(', 'function bindSettings(')+'\n'+extract('async function loadDevicePreferences()','function renderPreferences()')+'\n'+extract('function renderModelNotice(', 'function learningProps(')+'\n'+extract('async function loadActiveGun()','function openGunSetup(')+'\nloadActiveGun;',context);
+- return{context,load};
++ const load=vm.runInNewContext(extract('function historyDisabled(', 'const liveHandlers')+'\n'+extract('function liveText(', 'function bindSettings(')+'\n'+extract('async function loadDevicePreferences()','function renderPreferences()')+'\n'+extract('function renderModelNotice(', 'function learningProps(')+'\n'+extract('async function loadActiveGun(','function openGunSetup(')+'\n({load:loadActiveGun,loadPreferences:loadDevicePreferences});',context);
++ return{context,...load};
+ }
+ test('profile loading preserves owned values, preference normalization and final reset/render state',async()=>{
+  const {context:c,load}=setup();await load();
+@@ -51,25 +53,21 @@ test('profile reads failing before presentation do not render a partially loaded
+  const {context:c,load}=setup();c.getExamples.mockRejectedValue(new Error('read failed'));
+  await expect(load()).rejects.toThrow('read failed');expect(c.renderHome).not.toHaveBeenCalled();expect(c.renderGunControls).not.toHaveBeenCalled();
+ });
+-test('gun library and selection reads start independently, with rendering held until both finish',async()=>{
+- const {context:c,load}=setup(),selection=deferred();c.getActiveGun.mockReturnValue(selection.promise);
+- const pending=load();
+- try{expect(c.getGuns).toHaveBeenCalledTimes(1);expect(c.renderGunControls).not.toHaveBeenCalled();}
+- finally{selection.resolve({id:'a',name:'Test',type:'Handguns'});await pending;}
++test('atomic library snapshot holds profile and preferences until the complete read resolves',async()=>{
++ const {context:c,load}=setup(),snapshot=deferred();c.getLibraryOverview.mockReturnValue(snapshot.promise);
++ const pending=load();expect(c.getLibraryOverview).toHaveBeenCalledTimes(1);expect(c.applyAppearance).not.toHaveBeenCalled();expect(c.renderGunControls).not.toHaveBeenCalled();
++ snapshot.resolve({activeGun:{id:'a',name:'Test'},guns:[{id:'a'}],devicePreferences:{appearance:'light',vibrationFeedback:true}});await pending;expect(c.applyAppearance).toHaveBeenCalledTimes(1);
+ });
+-test('independent device preference reads start together and apply only after both resolve',async()=>{
+- const {context:c,load}=setup(),appearance=deferred(),requested=deferred();
++test('standalone preference reload still waits for both device settings',async()=>{
++ const {context:c,loadPreferences}=setup(),appearance=deferred(),requested=deferred();
+  c.getSetting.mockImplementation(key=>{if(key==='appearance'){requested.resolve();return appearance.promise;}return Promise.resolve(true);});
+- const pending=load();await requested.promise;
+- try{expect(c.getSetting).toHaveBeenCalledWith('vibrationFeedback',false);expect(c.applyAppearance).not.toHaveBeenCalled();}
+- finally{appearance.resolve('light');await pending;}
++ const pending=loadPreferences();await requested.promise;expect(c.getSetting).toHaveBeenCalledWith('vibrationFeedback',false);expect(c.applyAppearance).not.toHaveBeenCalled();appearance.resolve('light');await pending;expect(c.appearance).toBe('light');
+ });
+-
+-test('device preferences can load while gun selection is pending without presenting a profile',async()=>{
+- const {context:c,load}=setup(),selection=deferred();c.getActiveGun.mockReturnValue(selection.promise);
+- const pending=load();
+- try{expect(c.getSetting).toHaveBeenCalledWith('appearance','dark');expect(c.renderGunControls).not.toHaveBeenCalled();}
+- finally{selection.resolve({id:'a',name:'Test',type:'Handguns'});await pending;}
++test('startup can reuse its complete snapshot without reopening the library',async()=>{
++ const {context:c,load}=setup(null);await load({activeGun:null,guns:[],devicePreferences:{appearance:'invalid',vibrationFeedback:'true'}});expect(c.getLibraryOverview).not.toHaveBeenCalled();expect(c.appearance).toBe('dark');expect(c.vibrationFeedback).toBe(false);expect(c.getSetting).not.toHaveBeenCalled();
++});
++test('snapshot read failure preserves the current profile and prevents partial presentation',async()=>{
++ const {context:c,load}=setup();c.getLibraryOverview.mockRejectedValue(new Error('read blocked'));await expect(load()).rejects.toThrow('read blocked');expect(c.activeGun).toBeNull();expect(c.applyAppearance).not.toHaveBeenCalled();expect(c.renderGunControls).not.toHaveBeenCalled();
+ });
+ 
+ test('saved-preset validation still fails before later settings and profile presentation',async()=>{
 diff --git a/tests/sessionParentBaseline.test.js b/tests/sessionParentBaseline.test.js
 index fa58c4f..99578c3 100644
 --- a/tests/sessionParentBaseline.test.js
@@ -412902,10 +413042,17 @@ index 8757308..1091a61 100644
   const render=vm.runInNewContext(body+'\nrenderPreferences;',context);return{context,render};
  }
 diff --git a/tests/timedControllerInitialization.test.js b/tests/timedControllerInitialization.test.js
-index 407864e..929be26 100644
+index 407864e..e6c0c75 100644
 --- a/tests/timedControllerInitialization.test.js
 +++ b/tests/timedControllerInitialization.test.js
-@@ -12,5 +12,11 @@ test('timing owners are not constructed until requested and are created only onc
+@@ -6,11 +6,17 @@ function setup(){
+  const practice={showRecord:jest.fn()},session={};
+  const context={practiceController:null,sessionController:null,createPracticeController:jest.fn(()=>practice),createSessionController:jest.fn(()=>session),
+   practiceContext:jest.fn(),titleFor:jest.fn(),ensureSafe:jest.fn(),switchView:jest.fn(),goBack:jest.fn(),showError:jest.fn(),setStatus:jest.fn(),renderLiveButton:jest.fn(),renderClassCards:jest.fn(),reportAudioProcessing:jest.fn(),reportVibration:jest.fn(),vibrationFeedback:true,vibrationRejected:false,drillsPage:null};
+- const initialize=vm.runInNewContext(source.slice(source.indexOf('function initializeTimedControllers()'),source.indexOf('async function loadActiveGun()'))+'\ninitializeTimedControllers;',context);return{context,practice,session,initialize};
++ const initialize=vm.runInNewContext(source.slice(source.indexOf('function initializeTimedControllers()'),source.indexOf('async function loadActiveGun('))+'\ninitializeTimedControllers;',context);return{context,practice,session,initialize};
+ }
+ test('timing owners are not constructed until requested and are created only once',()=>{
   const s=setup();expect(s.context.createPracticeController).not.toHaveBeenCalled();s.initialize();s.initialize();expect(s.context.createPracticeController).toHaveBeenCalledTimes(1);expect(s.context.createSessionController).toHaveBeenCalledTimes(1);expect(s.context.practiceController).toBe(s.practice);expect(s.context.sessionController).toBe(s.session);
  });
  test('deferred owners retain context, action, feedback, catalog locks and saved-record ports',()=>{
@@ -412932,10 +413079,10 @@ index 73b2944..5b02e70 100644
  if (EDITION === 'preview') {
 diff --git a/docs/design/baselines/chg-058-setup-review.json b/docs/design/baselines/chg-058-setup-review.json
 new file mode 100644
-index 0000000..3286b5a
+index 0000000..cc7e8d1
 --- /dev/null
 +++ b/docs/design/baselines/chg-058-setup-review.json
-@@ -0,0 +1,169 @@
+@@ -0,0 +1,172 @@
 +{
 +  "change": "CHG-058",
 +  "status": "Local source review complete; pinned screenshots/full acceptance pending",
@@ -413103,7 +413250,10 @@ index 0000000..3286b5a
 +  },
 +  "failedAcceptanceRun": 39953233357,
 +  "renderOptimization": "Skip duplicate Practice refresh after its own rendered callback, redundant equal native writes and identical gun image URL assignments; fresh ID lookup never caches React-replaced nodes.",
-+  "isolatedOptimizedWebKitRun": 39954634266
++  "isolatedOptimizedWebKitRun": 39954634266,
++  "secondFailedAcceptanceRun": 39955534502,
++  "startupSnapshot": "Gun library, active selection and device preferences read from one read-only IndexedDB snapshot reused after interrupted-session recovery. Existing schema/migration/write policies unchanged; tests cover legacy ownership, backup preservation, missing selected gun and one database open.",
++  "isolatedSnapshotWebKitRun": 39957131576
 +}
 diff --git a/docs/design/baselines/chromium/preview/practice/configure-par.light.390.png b/docs/design/baselines/chromium/preview/practice/configure-par.light.390.png
 new file mode 100644
@@ -445235,6 +445385,31 @@ index 0000000..2242c52
 +
 +<div class="section-head"><button id="practiceBackBtn" type="button" class="back-button" aria-label="Back to previous screen">‹</button><h2 id="practice-title">Practice</h2></div><a id="practiceGuideLink" class="practice-guide-link" href="#practice-guide">About this practice <span aria-hidden="true">›</span></a><p class="gun-context">Practice for <strong class="gun-context-name"></strong>.</p><ol id="practiceSteps" class="drill-steps session-sequence" aria-label="Required sounds"></ol><div id="practiceConfigure"><form id="practiceConfigForm" class="session-config-form"><fieldset id="practiceConfigFields" class="session-config-fields"><legend>Practice setup</legend><label id="practiceCountRow" class="session-field session-repetition-field" for="practiceRepetitions"><span id="practiceCountLabel">Repetitions</span><input required="" inputmode="numeric" id="practiceRepetitions" type="number" min="1" max="100" step="1" aria-describedby="practiceRepetitionsLimit" value="10"><small id="practiceRepetitionsLimit" class="numeric-hint">1–100 · whole numbers</small></label><label id="practiceParRow" class="session-field session-repetition-field hidden" for="practicePar"><span>Par time (seconds)</span><input required="" inputmode="decimal" id="practicePar" type="number" min="0.1" max="30" step="0.1" aria-describedby="practiceParLimit" value="1.5"><small id="practiceParLimit" class="numeric-hint">0.1–30 · 0.1 increments</small></label><div class="session-delay-card"><label class="session-field" for="practiceStartSource"><span>Start signal</span><select id="practiceStartSource"><option value="app">App signal</option><option value="external">Calibrated external beep</option></select></label></div><div id="practiceAppTiming" class="session-config-fields"><div class="session-delay-card"><label class="session-field" for="practiceDelayMode"><span>Start delay</span><select id="practiceDelayMode"><option value="random">Random</option><option value="fixed">Fixed</option></select></label><label id="practiceFixedRow" class="session-field hidden" for="practiceFixedDelay"><span>Delay in seconds</span><input required="" inputmode="decimal" id="practiceFixedDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceFixedDelayLimit" value="3"><small id="practiceFixedDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label><div id="practiceRandomFields" class="session-delay-range"><label class="session-field" for="practiceMinDelay"><span>Minimum seconds</span><input required="" inputmode="decimal" id="practiceMinDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceMinDelayLimit" value="2"><small id="practiceMinDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label><label class="session-field" for="practiceMaxDelay"><span>Maximum seconds</span><input required="" inputmode="decimal" id="practiceMaxDelay" type="number" min="0" max="30" step="0.1" aria-describedby="practiceMaxDelayLimit" value="5"><small id="practiceMaxDelayLimit" class="numeric-hint">0–30 · 0.1 increments</small></label></div></div><label class="preference-toggle session-sound-toggle" for="practiceStartSound"><span><strong>Sound at start</strong><small>Play a beep at each repetition start.</small></span><input id="practiceStartSound" type="checkbox" role="switch" checked=""></label></div></fieldset><p id="practiceCueNote" class="muted small"></p><p id="practiceReadiness" class="session-readiness" role="status"></p><button id="practiceLearnBtn" class="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" class="button primary wide-action" type="submit">Start Practice</button></form></div><div id="practiceRun" class="hidden"><div class="practice-counters"><div><span id="practiceCompletedLabel">Attempts</span><strong id="practiceCompleted">0</strong></div><div><span>Shots</span><strong id="practiceShots">0</strong></div><div><span id="practiceRemainingLabel">Left</span><strong id="practiceRemaining">10</strong></div></div><div class="session-countdown-panel"><div id="practiceSignal" class="session-countdown" role="timer" aria-live="off">—</div><button id="practiceStopBtn" class="button primary practice-stop hidden" type="button" aria-label="Stop practice and save results">STOP</button><div id="practiceLevelPanel" class="practice-level-panel hidden"><p class="practice-level-label"><svg class="practice-mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="2" width="8" height="13" rx="4"></rect><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"></path></svg><span>MICROPHONE INPUT</span></p><div id="practiceLevelMeter" class="practice-level-track" role="meter" aria-label="Microphone input level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="practiceLevelFill" class="practice-level-fill"></div></div><p class="practice-level-value"><strong id="practiceLevelValue">0</strong><span>relative level</span></p><p id="practiceInputState" class="muted small">Waiting for audio input…</p></div><p id="practiceAnnouncement" class="session-announcement" role="status"></p><p id="practiceInputFeedback" class="practice-input-feedback" role="status"></p><p id="practiceMicrophone" class="listening-indicator" role="status"></p><p class="muted small">Active time <strong id="practiceElapsed">0.00 s</strong></p></div><div id="practiceLatest" class="session-result-card"></div><div class="session-run-actions"><button id="practicePauseBtn" class="button secondary" type="button">Pause</button><button id="practiceResumeBtn" class="button primary hidden" type="button">Resume</button><button id="practiceNextBtn" class="button primary hidden" type="button">Next repetition</button><button id="practiceEndBtn" class="button secondary" type="button">End Practice</button></div></div><div id="practiceReview" class="hidden"><section class="session-review-card"><h3 id="practiceReviewStatus">Practice review</h3><div id="practiceSummary"></div><p id="practiceSaved" class="session-saved-note"></p><button id="practiceRetryBtn" type="button" class="button secondary wide-action hidden">Retry saving results</button></section><div id="practiceResults" class="session-result-list"></div><button id="practiceRepeatBtn" type="button" class="button primary wide-action">Repeat Practice</button><button id="practiceDoneBtn" type="button" class="button secondary wide-action">Back to Drills</button></div><p class="muted small session-timing-note">Timings describe detected audio. The app cannot verify physical actions, aim, movement or unloaded status.</p>
 +
+diff --git a/tests/libraryOverview.test.js b/tests/libraryOverview.test.js
+new file mode 100644
+index 0000000..13308a0
+--- /dev/null
++++ b/tests/libraryOverview.test.js
+@@ -0,0 +1,19 @@
++import {jest} from '@jest/globals';
++import {getLibraryOverview,createGun,getActiveGun,getGuns,setSetting,getSetting,getOutdatedExampleCount,exportBackup} from '../src/storage.js';
++const clear=()=>new Promise((resolve,reject)=>{const request=indexedDB.deleteDatabase('dryfire-sound-trainer');request.onsuccess=resolve;request.onerror=()=>reject(request.error);});
++beforeEach(clear);afterEach(()=>jest.restoreAllMocks());
++test('empty startup obtains library, active profile and preference defaults through one database open',async()=>{
++ const opened=jest.spyOn(indexedDB,'open');expect(await getLibraryOverview()).toEqual({guns:[],activeGun:null,devicePreferences:{appearance:'dark',vibrationFeedback:false}});expect(opened).toHaveBeenCalledTimes(1);
++});
++test('snapshot matches existing public reads and preserves all stored data',async()=>{
++ await createGun({name:'One',type:'Handguns'});await createGun({name:'Two',type:'Shotguns'});await setSetting('appearance','light');await setSetting('vibrationFeedback',true);const {exportedAt:beforeTime,...before}=await exportBackup();
++ const overview=await getLibraryOverview();expect(overview.guns).toEqual(await getGuns());expect(overview.activeGun).toEqual(await getActiveGun());expect(overview.devicePreferences).toEqual({appearance:'light',vibrationFeedback:true});const {exportedAt:afterTime,...after}=await exportBackup();expect(typeof beforeTime).toBe('string');expect(typeof afterTime).toBe('string');expect(after).toEqual(before);
++});
++test('missing active profile is not silently repaired or replaced with another gun',async()=>{
++ await createGun({name:'One',type:'Handguns'});await new Promise((resolve,reject)=>{const opened=indexedDB.open('dryfire-sound-trainer',4);opened.onsuccess=()=>{const db=opened.result,tx=db.transaction('settings','readwrite');tx.objectStore('settings').put({key:'activeGunId',value:'deleted'});tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>reject(tx.error);};opened.onerror=()=>reject(opened.error);});await setSetting('appearance',null);await setSetting('vibrationFeedback',null);const result=await getLibraryOverview();expect(result.guns).toHaveLength(1);expect(result.activeGun).toBeNull();expect(await getSetting('activeGunId',null)).toBe('deleted');expect(result.devicePreferences).toEqual({appearance:'dark',vibrationFeedback:false});
++});
++
++test('the first snapshot completes the existing legacy migration before exposing ownership',async()=>{
++ await new Promise((resolve,reject)=>{const opened=indexedDB.open('dryfire-sound-trainer',1);opened.onupgradeneeded=()=>{const db=opened.result,ex=db.createObjectStore('examples',{keyPath:'id'}),events=db.createObjectStore('events',{keyPath:'id'});ex.createIndex('label','label');events.createIndex('createdAt','createdAt');db.createObjectStore('settings',{keyPath:'key'});ex.put({id:'old',label:'trigger',features:Array(15).fill(0.2),createdAt:1});};opened.onsuccess=()=>{opened.result.close();resolve();};opened.onerror=()=>reject(opened.error);});
++ const snapshot=await getLibraryOverview();expect(snapshot.guns).toHaveLength(1);expect(snapshot.activeGun).toEqual(snapshot.guns[0]);expect(snapshot.activeGun.needsDetails).toBe(true);const backup=await exportBackup();expect(backup.activeGunId).toBe(snapshot.activeGun.id);expect(await getOutdatedExampleCount(snapshot.activeGun.id)).toBe(1);expect(backup.examples).toEqual([]);
++});
 diff --git a/visual-tests/drill-setup-template.spec.js b/visual-tests/drill-setup-template.spec.js
 new file mode 100644
 index 0000000..f8b6698
