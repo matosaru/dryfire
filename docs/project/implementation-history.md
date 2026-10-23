@@ -833,3 +833,8 @@ Owner approves reusing Sequence configuration template for trigger-mode setup. I
 First complete candidate 39953233357: validation passes; both screenshot suites pass all non-safety cases but flag the safety overlay because the newly approved Practice setup is visible behind it. Capture/review those eight derived references while preserving modal content/geometry. Public WebKit warm startup fails42→47ms; preview WebKit click feedback fails81→84ms. Preserve these results and original gates.
 
 Investigation found a duplicate Practice render: controller changed() renders then global onChange called refresh() again. Remove that recursive refresh, retain external/Sequence refresh, avoid redundant native text/disabled/image URL mutations and use fresh ID lookups. New DOM mutation/owner-replacement and refresh-ownership tests cover the optimization; no caches of React-replaced nodes, data changes or measurement changes. Application remains uncommitted until full acceptance.
+
+
+### 2026-10-23 — Consistent sound list and guide-control suggestion
+
+The owner reaffirmed the shared Sequence sound-list UI for the trigger group; CHG-058 already implements it via DrillSetupSteps. Requested a better About-this-practice link suggestion. Prepared [an outlined information-control proposal](../design/proposals/guide-control/README.md), positioned after gun context/sounds and before setup, without underline/arrow. Local Trigger/Sequence examples preserve real guide navigation and keyboard activation. This is a proposal only; no guide-control application change or approval is inferred.
