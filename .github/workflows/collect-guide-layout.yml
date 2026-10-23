@@ -33,7 +33,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           p=Path('visual-tests/screens.spec.js');s=p.read_text().replace("import { readFileSync } from 'node:fs';", "import { readFileSync, mkdirSync } from 'node:fs';")
-          s=s.replace("await expect(page).toHaveScreenshot(baselineName(item).split('/'));", "const path = `docs/design/review-candidates/chg-059/${testInfo.project.name}/${baselineName(item)}`; mkdirSync(path.slice(0,path.lastIndexOf('/')), {recursive:true}); await page.screenshot({path,fullPage:true,animations:'disabled',caret:'hide',scale:'css'});")
+          s=s.replace("await expect(page).toHaveScreenshot(baselineName(item).split('/'));", "const path = `docs/design/review-candidates/chg-059/${testInfo.project.name}/${baselineName(item)}`; mkdirSync(path.slice(0,path.lastIndexOf('/')), {recursive:true}); await page.screenshot({path,fullPage:false,animations:'disabled',caret:'hide',scale:'css'});")
           p.write_text(s)
           PY
           APP_EDITION=public npm run build
