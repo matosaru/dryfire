@@ -14,7 +14,7 @@ const extract=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end
 const deferred=()=>{let resolve;const promise=new Promise(yes=>{resolve=yes;});return{promise,resolve};};
 function setup(gun={id:'a',name:'Test',type:'Handguns'}){
  document.body.innerHTML=renderPageTemplates('{{app}}');
- const context={historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
+ const context={initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
   activeGun:null,guns:[],examples:[],customDrills:[],audioPreferences:{},calibration:[],enabledSoundLabels:[],
   processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',vibrationFeedback:false,vibrationRejected:true,
   getActiveGun:jest.fn(async()=>gun),getGuns:jest.fn(async()=>gun?[gun]:[]),
@@ -31,7 +31,7 @@ function setup(gun={id:'a',name:'Test',type:'Handguns'}){
 }
 test('profile loading preserves owned values, preference normalization and final reset/render state',async()=>{
  const {context:c,load}=setup();await load();
- expect(c.activeGun.id).toBe('a');expect(c.guns).toEqual([c.activeGun]);
+ expect(c.initializeTimedControllers).toHaveBeenCalledTimes(1);expect(c.activeGun.id).toBe('a');expect(c.guns).toEqual([c.activeGun]);
  for(const getter of ['getExamples','getCustomDrills','getOutdatedExampleCount','getCalibrationExamples'])expect(c[getter]).toHaveBeenCalledWith('a');
  expect(document.querySelector('#maxResults').value).toBe('75');expect(document.querySelector('#sensitivity').value).toBe('high');
  expect(c.getGunSetting).toHaveBeenCalledWith('selectedDrill','','a');expect(c.currentDrill).toHaveBeenCalledWith('valid');expect(c.audioPreferences.noiseFilter).toBe(false);expect(c.enabledSoundLabels).toEqual(['rack','trigger']);
@@ -43,7 +43,7 @@ test('profile loading preserves owned values, preference normalization and final
 test('empty libraries retain defaults without requesting another gun’s records',async()=>{
  const {context:c,load}=setup(null);await load();
  for(const getter of ['getExamples','getCustomDrills','getOutdatedExampleCount','getGunSetting','getCalibrationExamples'])expect(c[getter]).not.toHaveBeenCalled();
- expect(c.examples).toEqual([]);expect(c.calibration).toEqual([]);expect(c.customDrills).toEqual([]);
+ expect(c.initializeTimedControllers).not.toHaveBeenCalled();expect(c.examples).toEqual([]);expect(c.calibration).toEqual([]);expect(c.customDrills).toEqual([]);
  expect(document.querySelector('#maxResults').value).toBe('50');expect(document.querySelector('#sensitivity').value).toBe('normal');
  expect(c.enabledSoundLabels).toEqual(['trigger']);expect(c.renderHome).toHaveBeenCalledTimes(1);
 });

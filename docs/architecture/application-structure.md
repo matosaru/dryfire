@@ -116,3 +116,6 @@ Before a valid gun profile exists, Settings keeps its immediately usable native 
 ### Drills discovery — CHG-054
 
 `tools/page-templates.mjs` renders the four-entry `PRACTICE_MODES` discovery list from `src/practiceModes.js` through `PracticeCatalog`; shared `DrillsPage` titles the section Trigger Press Group. The React handoff reuses the prerendered mode descriptors. Sequence drills are unchanged. CHG-055 removes the two retired engines and uses schema 4 to selectively remove only their sessions/configuration; supported practice/sequence records are preserved. The four-mode list now drives discovery and the engine directly.
+
+
+CHG-053: `features/live-listen/readiness.ts` is the pure navigation/capture-reason owner. `renderListeningReadiness` supplies native and React Home/Drills/Live Listen ports and shared chrome; the page owns reason-copy metadata. Timing controllers initialize once after a gun profile exists, before its capture/configure flows become available. Empty onboarding retains immediate native controls; restore/reset/background paths safely handle absent timing owners. This preserves first-entry adapters and capture APIs while avoiding unused startup construction.

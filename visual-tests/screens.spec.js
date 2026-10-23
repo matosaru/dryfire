@@ -54,6 +54,7 @@ async function prepare(page, item) {
     const backup = structuredClone(library);
     if (item.screen === 'session' || item.state.startsWith('sequence-trigger-only')) addLegacySequence(backup);
     backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
+    if(item.screen==='recognize' && item.state.startsWith('needs-training'))backup.examples=backup.examples.filter(row=>row.gunId!==backup.activeGunId || row.label!=='trigger');
     if (item.state.startsWith('add-second-gun')) {
       backup.guns = backup.guns.filter(gun => gun.id === backup.activeGunId);
       for (const key of ['examples', 'events', 'sessions', 'gunSettings']) backup[key] = backup[key].filter(row => row.gunId === backup.activeGunId);
@@ -173,6 +174,8 @@ async function prepare(page, item) {
     }
     case 'recognize':
       await tab(page, 'recognize');
+      if(item.state.startsWith('needs-training')){await expect(page.locator('#trainingSummary')).toContainText('0/3');await expect(page.locator('#listenBtn')).toBeDisabled();}
+      if(item.state.startsWith('connecting')){await page.evaluate(()=>{navigator.mediaDevices.getUserMedia=()=>new Promise(()=>{});});await page.locator('#listenBtn').click();await confirmSafety(page);await expect(page.locator('#trainingSummary')).toContainText('Connecting');await expect(page.locator('#listenBtn')).toBeDisabled();}
       if (item.state.startsWith('listening')) { await page.locator('#listenBtn').click(); await confirmSafety(page); await expect(page.locator('#listeningIndicator')).toContainText('Microphone active'); await emit(page); await expect(page.locator('#sessionTimeline li')).toHaveCount(1); }
       break;
     case 'history':

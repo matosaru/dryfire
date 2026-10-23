@@ -665,6 +665,66 @@
       "width": 390,
       "height": 2346
     },
+    "chromium/public/live-listen/needs-training.dark.390.png": {
+      "sha256": "c57fc814a7818482ca23dbe4ecff047ccd736cdf4c1cd5d5bc0c44ce0dc09d14",
+      "width": 390,
+      "height": 1744
+    },
+    "chromium/public/live-listen/needs-training.dark.320.png": {
+      "sha256": "e92b67333084989c70ce068a3a7e4e70ab3f71d4197ede18726d6ae103a0451f",
+      "width": 320,
+      "height": 1922
+    },
+    "chromium/preview/live-listen/needs-training.dark.390.png": {
+      "sha256": "231ca8accf3cdbbaf106a55d9d70acf824662e89dcb526de0f5f0e9c40234c02",
+      "width": 390,
+      "height": 1783
+    },
+    "chromium/preview/live-listen/needs-training.dark.320.png": {
+      "sha256": "947bb7a35da6464523b04883e0c228051a73d76a6dc019c4501eedd6a47c79d5",
+      "width": 320,
+      "height": 1960
+    },
+    "chromium/public/live-listen/needs-training.light.390.png": {
+      "sha256": "93bf18ced58546623021401e8594a4cc61b30bc2856261fec80e73b8df749d77",
+      "width": 390,
+      "height": 1744
+    },
+    "chromium/public/live-listen/needs-training.light.320.png": {
+      "sha256": "64e12929257cb789244f7bcb29de134c44abb867fda5914cba0c03868c22e903",
+      "width": 320,
+      "height": 1922
+    },
+    "chromium/preview/live-listen/needs-training.light.390.png": {
+      "sha256": "3653c970502eab1e2411c97ccf620c9e6a8f7a681b655c8cc1fd799edcf2fb0f",
+      "width": 390,
+      "height": 1783
+    },
+    "chromium/preview/live-listen/needs-training.light.320.png": {
+      "sha256": "9fc174c7b156a92380716b4c91b8cfe04c54c5c6c799086d85f4741e5a420acf",
+      "width": 320,
+      "height": 1960
+    },
+    "chromium/public/live-listen/connecting.dark.390.png": {
+      "sha256": "29de813ce2db81e0d13dd6499823dd5c175b13320dcfb65d8e5bc15b00031c4b",
+      "width": 390,
+      "height": 1723
+    },
+    "chromium/preview/live-listen/connecting.dark.390.png": {
+      "sha256": "f9fc81032fd52cde3589628826084a31ad96ac7a32aa58e413acd06d1a68f451",
+      "width": 390,
+      "height": 1762
+    },
+    "chromium/public/live-listen/connecting.light.390.png": {
+      "sha256": "a66799f63f82aa70b716df3bb8fe4f3bc0ce7f7f2d4cefc4fa7682beb913b7ed",
+      "width": 390,
+      "height": 1723
+    },
+    "chromium/preview/live-listen/connecting.light.390.png": {
+      "sha256": "6ff72bf2cd0ea0befab50fb396e2cedd73680a46413f39c7fd73264bbbef2c1f",
+      "width": 390,
+      "height": 1762
+    },
     "chromium/public/history/overview.dark.390.png": {
       "sha256": "989abfe85744f9096c29013e84622ece35e18da087e908b1290be6fd5a3061cc",
       "width": 390,
@@ -1579,6 +1639,66 @@
       "sha256": "c1734208f8647b969684b609613569b0aae3025dfc88faaaa93d1618d8daea0e",
       "width": 390,
       "height": 2334
+    },
+    "webkit/public/live-listen/needs-training.dark.390.png": {
+      "sha256": "52177baac7f6cf695910bd4851c0d81f84690e575bdf21ed2e87cb85d417f13d",
+      "width": 390,
+      "height": 1733
+    },
+    "webkit/public/live-listen/needs-training.dark.320.png": {
+      "sha256": "7247bd1b7bb6e63315eff4e65f1190c8e191c790d51bce7c197b82c74c92d7a7",
+      "width": 320,
+      "height": 1907
+    },
+    "webkit/preview/live-listen/needs-training.dark.390.png": {
+      "sha256": "5a86a5a276be046385fe18029941889b45f8b2ffde5f95343a83f428eb44abfe",
+      "width": 390,
+      "height": 1771
+    },
+    "webkit/preview/live-listen/needs-training.dark.320.png": {
+      "sha256": "0d142851565ba1169d740ce9cb8fbabb0d8b4b21caf01f135a30e61e478dc3d1",
+      "width": 320,
+      "height": 1945
+    },
+    "webkit/public/live-listen/needs-training.light.390.png": {
+      "sha256": "bd75b52a8b214f39b6005d9e0f099c16e060c24e23fde11a212b34a535bcd98c",
+      "width": 390,
+      "height": 1733
+    },
+    "webkit/public/live-listen/needs-training.light.320.png": {
+      "sha256": "04f024c023ac2cb8020c849adc9ccc7e941dfd180252143a349078e8cb64dd87",
+      "width": 320,
+      "height": 1907
+    },
+    "webkit/preview/live-listen/needs-training.light.390.png": {
+      "sha256": "df0d89d6c50822d7c31992fff20dd5816e64af6e08409e4fffaee189f6a636c4",
+      "width": 390,
+      "height": 1771
+    },
+    "webkit/preview/live-listen/needs-training.light.320.png": {
+      "sha256": "be6f532c186480537816170dac669dbd064a0e15124960ed6b9a0ee0de4bce7b",
+      "width": 320,
+      "height": 1945
+    },
+    "webkit/public/live-listen/connecting.dark.390.png": {
+      "sha256": "2b3d1173937df9fc783ad6ca3cdf63dfb185f63234c82de2f456fb58f1351893",
+      "width": 390,
+      "height": 1712
+    },
+    "webkit/preview/live-listen/connecting.dark.390.png": {
+      "sha256": "bee462ab6167f2686e09a43bc589aebf4bd2561c39e47fee1bc2a35c1dd9d722",
+      "width": 390,
+      "height": 1750
+    },
+    "webkit/public/live-listen/connecting.light.390.png": {
+      "sha256": "b3607341e36d636b1eeb406aa9847874e6e139a47c458ab179a5611f0793fbed",
+      "width": 390,
+      "height": 1712
+    },
+    "webkit/preview/live-listen/connecting.light.390.png": {
+      "sha256": "3a61e2988862831276a4822728585dbcd5c81c76585f9bab280375d6e0755e90",
+      "width": 390,
+      "height": 1750
     },
     "webkit/public/history/overview.dark.390.png": {
       "sha256": "b0c9e55023df44d528d51116ce9c64ca5d7a82fcf16d02694f326c0f6a5f55f5",

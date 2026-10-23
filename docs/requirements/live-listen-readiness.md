@@ -1,6 +1,6 @@
 # Live Listen availability — CHG-053
 
-Approved by direct user instruction on 2026-10-22: review intermittent availability, synchronize all entry points and visibly explain unavailable controls. Implementation is queued after CHG-052 acceptance. This preserves the existing three-trigger-example requirement; it does not add a new numeric restriction.
+Approved by direct user instruction on 2026-10-22: review intermittent availability, synchronize all entry points and visibly explain unavailable controls. Implementation proceeds after CHG-057 full pre-merge acceptance and publication; its post-push verification is tracked separately. This preserves the existing three-trigger-example requirement; it does not add a new numeric restriction.
 
 | ID | Requirement |
 | --- | --- |
@@ -15,3 +15,5 @@ Approved by direct user instruction on 2026-10-22: review intermittent availabil
 Use a pure reason-code/navigation model shared by all presenters. Keep user-facing copy with the shared Live Listen page; its prerendered metadata supplies the native adapter as well. Never parse user text as HTML to show a reason.
 
 Acceptance: unit state/priority cases; actual 0/2/3-example navigation/capture flows; optional-sound independence; reset/switch/stop recovery; native/React handoffs; both editions/themes and narrow layouts. Review current [Live Listen designs](../design/screens/live-listen/README.md), update affected screenshots/state registry, and retain original performance/visual gates. Publication, CI and deployment are separate statuses.
+
+Navigation also respects saving preferences and unsaved-result locks, matching the existing screenNavigation.canLeave contract. Connecting/active timed capture can be left through the established cancellation/interruption path; these do not independently disable navigation. Capture remains blocked until ready, and an active continuous Stop action remains enabled.

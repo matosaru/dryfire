@@ -520,6 +520,26 @@
           "anchor": "listeningIndicator",
           "label": "Continuous listening",
           "image": "docs/design/screens/live-listen/listening.dark.png"
+        },
+        {
+          "key": "needs-training.dark",
+          "anchor": "trainingSummary",
+          "image": "docs/design/screens/live-listen/needs-training.dark.png"
+        },
+        {
+          "key": "needs-training.light",
+          "anchor": "trainingSummary",
+          "image": "docs/design/screens/live-listen/needs-training.light.png"
+        },
+        {
+          "key": "connecting.dark",
+          "anchor": "trainingSummary",
+          "image": "docs/design/screens/live-listen/connecting.dark.png"
+        },
+        {
+          "key": "connecting.light",
+          "anchor": "trainingSummary",
+          "image": "docs/design/screens/live-listen/connecting.light.png"
         }
       ],
       "design": "docs/design/screens/live-listen/README.md"
@@ -758,7 +778,7 @@
   ],
   "reviewedSources": {
     "index.html": "c54cdf3ebdec26c41b6a51e00dfaccb177edd25a3b8fa2c157887eda3f47ccf3",
-    "src/main.js": "aaf5ef37fb1d38e9c689262eb099d9566bfde6fb1c97760988434287577ddccc",
+    "src/main.js": "c0ca18444fed9fb5dca25639e9e0b1074891cae37ac3db87a7a467a91d1269ce",
     "src/styles.css": "754b80c112c49bea2bc3d2af15c82dd8731fac1a5353f8369ec5eef52d9a818f",
     "src/screenNavigation.js": "669474748d7646273387386e19788a10e3f38f0c1623fe5ebb3a3b1af4f1f865",
     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
@@ -869,13 +889,13 @@
     "apps/web/src/app/learnPage.tsx": "81c0401a017f3d210327bc622fa43662a4bbcc29df4064f546a15990cc7bb81b",
     "apps/web/src/app/liveListenPage.tsx": "c538704e32add37632cf3885ccb4778d536ac9a32dc010d9a67336e06ae4ac28",
     "apps/web/src/app/renderLiveListenPage.tsx": "b94a079090eee2558540829a3d9508155a58bbb2f94b03073e00a74cf759b579",
-    "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "b68c166105674792427939d60e563bac2f8d94403c7b5012c23cc2cc5530f562",
+    "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "24cf7641d17206fc6229db91b9f644d04b57b0a586361f639fca8fa2d83472e7",
     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
     "apps/web/src/features/live-listen/presentation.ts": "88218eeaefbac140403beb0d7ece18340942b015399726f5c32618770b8263b8",
     "apps/web/src/styles/legacy-before-live-listen.css": "1351bd3f07949fe353ce8743c61a280badaa2b16eb007801a9d52357f490d497",
-    "apps/web/src/app/drillsPage.tsx": "705b56741fe31c90b4720833a6da8faabb7feb94f0859c6072b1cc67a3669d4c",
+    "apps/web/src/app/drillsPage.tsx": "4461ac757c62c6ef5820636ec6636b3f87a83b2b5f968bd793a0d3cfc65d0a9f",
     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
-    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "c3e7d4892c917f86e58101f96a5902b29dea7ba39c76da612904be66ee3faa0a",
+    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "7fb89db4b9df0f6df18241a83be9307444f704a6ae2ccbab92816052ef2517a2",
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
     "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
     "packages/ui/src/DrillCard/DrillCard.css": "11312ad4e2573980ea41fff44f877bc9ba921d1c6289269845be2c243ea5fdb1",
@@ -981,6 +1001,7 @@
     "CHG-049 P1 route ownership extraction (no visual change)",
     "CHG-049 static practice catalog prerender (unchanged final UI)",
     "CHG-049 P2 shared chrome and static controls (unchanged final UI)",
-    "CHG-057"
+    "CHG-057",
+    "CHG-053"
   ]
 }

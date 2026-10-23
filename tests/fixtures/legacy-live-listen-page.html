@@ -30,10 +30,18 @@
       </section>
       <div class="listen-panel">
         <div class="listen-visual" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-        <p id="trainingSummary" class="muted">Checking sound profiles…</p>
+        <p id="trainingSummary" class="muted" role="status" aria-live="polite"
+          data-reason-gun="Choose a gun before listening."
+          data-reason-loading="Loading this gun's sound profiles. Please wait."
+          data-reason-busy="Finish recording or testing the current sound before listening."
+          data-reason-saving="Saving preferences. Please wait."
+          data-reason-connecting="Connecting microphone… Allow permission or leave this screen to cancel."
+          data-reason-unsaved="Save the pending drill results before listening. Use Retry on the results page."
+          data-reason-session="Finish or leave the active drill before listening."
+          data-reason-training="Learn at least {minimum} trigger examples ({count}/{minimum}) for this gun. Open Learn to record them. Other sound types are optional.">Checking sound profiles…</p>
         <div class="listener-control">
-          <button id="listenBtn" class="button primary" type="button">Start continuous listening</button>
-          <button id="singleShotBtn" class="button secondary" type="button">Single sound test</button>
+          <button id="listenBtn" aria-describedby="trainingSummary" class="button primary" type="button">Start continuous listening</button>
+          <button id="singleShotBtn" aria-describedby="trainingSummary" class="button secondary" type="button">Single sound test</button>
         </div>
         <label class="sensitivity-control" for="sensitivity">Detection sensitivity
           <select id="sensitivity"><option value="normal">Normal</option><option value="high">High (quieter events)</option><option value="low">Low (noisier rooms)</option></select>

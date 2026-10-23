@@ -1,3 +1,4 @@
+import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
 import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
 import { createModulePreparation } from './modulePreparation.js';
 import {distancePresentation,liveDrillPresentation} from '../apps/web/src/features/live-listen/presentation.ts';
@@ -149,9 +150,31 @@ function ownerId() {
 }
 function profileLocked() { return busy || profileLoading || preferencePending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked(); }
 function currentDrill(id) { return getDrill(id, customDrills); }
+/** One navigation/capture policy for native startup and owned React pages. */
+function renderListeningReadiness(counts = getCounts()) {
+  const gunAvailable = !!activeGun && !activeGun.needsDetails;
+  const view = listeningReadiness({gunAvailable,count:counts.trigger,minimum:MIN_EXAMPLES_PER_CLASS,
+    loading:profileLoading,busy,saving:preferencePending,connecting:livePendingStart,
+    unsaved:!!sessionController?.hasUnsavedResults() || !!practiceController?.hasUnsavedResults(),
+    timed:!!sessionController?.locked() || !!practiceController?.locked()});
+  const summary = $('#trainingSummary');
+  const text = view.reason
+    ? summary.getAttribute('data-reason-' + view.reason).replaceAll('{minimum}',MIN_EXAMPLES_PER_CLASS).replaceAll('{count}',counts.trigger)
+    : `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
+  const disabled = {listenBtn:!liveSession && !!view.reason,singleShotBtn:!!liveSession || !!view.reason};
+  if(livePage)livePage.update({texts:{trainingSummary:text},disabled});
+  else { if(summary.textContent!==text)summary.textContent=text; for(const[id,value]of Object.entries(disabled))$('#'+id).disabled=value; }
+  informationPages.setNavigationDisabled(view.entryDisabled);
+  const context = {gunName:activeGun?.name || 'No gun selected',contextHidden:!gunAvailable};
+  const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
+  if(homePage)homePage.update({...context,training,listenDisabled:view.entryDisabled});
+  else {$('#homeExamples').textContent=training;$('#homeListenBtn').disabled=view.entryDisabled;}
+  if(drillsPage)drillsPage.update({...context,freeListenDisabled:view.entryDisabled});
+  else $('#freeListenBtn').disabled=view.entryDisabled;
+}
+
 function renderGunControls() {
-  informationPages.setNavigationDisabled(!activeGun || activeGun.needsDetails || profileLoading);
-  homePage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
+  renderListeningReadiness();
   $('#gunSwitcherBtn').disabled = profileLocked();
   $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
   $('#gunSwitcherBtn').title = profileLocked() ? 'Finish recording or stop listening before switching guns.' : 'Choose another gun';
@@ -177,11 +200,26 @@ function renderGunControls() {
   learnPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   livePage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   historyPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
-  drillsPage?.update({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
   if (!activeGun || activeGun.needsDetails) {settingsDisabled('resetModelBtn',true);liveDisabled('verifyLatestBtn',true);historyDisabled('clearHistoryBtn',true);}
   settingsDisabled('exportBtn',profileLocked());
   settingsDisabled('importBtn',profileLocked());
   liveDisabled("verifyLatestBtn",!latestEventId || profileLocked());
+}
+
+/** Hidden timing forms acquire their controllers only after a gun exists.
+ * Keep immediate onboarding/restore controls and create each owner once. */
+function initializeTimedControllers() {
+  practiceController ||=  createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
+    onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
+    vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
+  sessionController ||=  createSessionController({
+    getContext: practiceContext,
+    titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
+    onChange: () => { renderLiveButton(); renderClassCards(); },
+    onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
+    onVibration: reportVibration,
+    onPracticeRecord: record => practiceController.showRecord(record),
+  });
 }
 
 async function loadActiveGun() {
@@ -193,6 +231,7 @@ async function loadActiveGun() {
   // Independent reads share the wait; profile content renders only after loading.
   [activeGun, guns] = await Promise.all([getActiveGun(), getGuns(), loadDevicePreferences()]);
   const id = activeGun?.id;
+  if (id) initializeTimedControllers();
   examples = id ? await getExamples(id) : [];
   customDrills = id ? await getCustomDrills(id) : [];
   const legacy = id ? await getOutdatedExampleCount(id) : 0;
@@ -281,9 +320,9 @@ async function renderGunLibrary() {
 
 async function flushLibraryWork() {
   await eventQueue;
-  await sessionController.flush();
-  await practiceController.flush();
-  if (sessionController.hasUnsavedResults() || practiceController.hasUnsavedResults()) {
+  await sessionController?.flush();
+  await practiceController?.flush();
+  if (sessionController?.hasUnsavedResults() || practiceController?.hasUnsavedResults()) {
     throw new Error('Session results are not saved. Retry saving before deleting data.');
   }
 }
@@ -316,8 +355,8 @@ async function selectGunProfile(id) {
   renderLiveButton();
   try {
     await eventQueue;
-    await sessionController.flush();
-    await practiceController.flush();
+    await sessionController?.flush();
+    await practiceController?.flush();
     await setActiveGun(id);
     await loadActiveGun();
     $('#safetyAck').checked = false;
@@ -405,7 +444,6 @@ function ensureSafe(action) { return safetyGate.ensure(action); }
 function setBusy(next) {
   busy = next;
   settingsDisabled('resetModelBtn',next);
-  liveDisabled('singleShotBtn',next);
   historyDisabled('clearHistoryBtn',next);
   renderLearningLocks();
   renderGunControls();
@@ -456,15 +494,7 @@ function renderClassCards() {
     }
     renderCalibrationCards();
   }
-  const ready = !!activeGun && !activeGun.needsDetails && triggerReady();
-  liveText("trainingSummary",ready
-    ? `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`
-    : `Learn at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before trigger practice. Other sound types are optional.`);
-  liveDisabled("listenBtn",busy || livePendingStart || !!sessionController?.locked() || !!practiceController?.locked() || (!ready && !liveSession));
-  liveDisabled("singleShotBtn",profileLocked() || !ready);
-  const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
-  if(homePage)homePage.update({training,listenDisabled:busy || !ready});
-  else { $('#homeExamples').textContent = training; $('#homeListenBtn').disabled = busy || !ready; }
+  renderListeningReadiness(counts);
 }
 
 async function toggleOptionalSound(label, enabled) {
@@ -591,7 +621,7 @@ function displayView(name) {
     if($('#practiceCatalog').firstElementChild?.tagName==='TEMPLATE')practiceController.renderCatalog();
     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
-      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>{if(!profileLocked())switchView('recognize');}},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
+      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>switchView('recognize')},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
     }
     if(drillsPage && !profileLocked() && !$('#safetyModal').open){try{customEditor.connectView(drillsModule.mountCustomDrillFields);}catch(error){showError(error);}}
   }
@@ -737,7 +767,7 @@ async function savePrediction(features, token = null, gunId = ownerId(), predict
 async function recognize() {
   if (!triggerReady()) {
     switchView('learn');
-    setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before trying recognition. Other sound types are optional.`);
+    setMessage($('#trainingSummary').textContent);
     return;
   }
   const gunId = ownerId();
@@ -757,9 +787,6 @@ function renderLiveButton() {
   liveDisabled("sensitivity",listening || livePendingStart || profileLoading || timed);
   liveDisabled("drillSelect",listening || livePendingStart || profileLoading || timed);
   liveDisabled("resetDrillBtn",listening || livePendingStart);
-  const ready = triggerReady();
-  liveDisabled("listenBtn",busy || profileLoading || livePendingStart || timed || (!ready && !listening));
-  liveDisabled("singleShotBtn",listening || busy || profileLoading || livePendingStart || timed || !ready);
   settingsDisabled('resetModelBtn',busy || profileLoading || listening || livePendingStart || timed);
   historyDisabled('clearHistoryBtn',busy || profileLoading || listening || livePendingStart || timed);
   renderLearningLocks();
@@ -1000,17 +1027,6 @@ async function init() {
   safetyGate = createSafetyGate({ dialog: $('#safetyModal'), checkbox: $('#safetyModalAck'), confirmButton: $('#safetyConfirmBtn'), cancelButton: $('#safetyCancelBtn'),
     isConfirmed: () => $('#safetyAck').checked, confirmState: () => { $('#safetyAck').checked = true; $('#safetyAck').dispatchEvent(new Event('change')); },
     identity: () => `${activeGun?.id}|${activeView}`, onError: showError });
-  practiceController = createPracticeController({ getContext: practiceContext, titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'),
-    onError: showError, onStatus: setStatus, onCatalogLock:locked=>{if(!drillsPage)return false;drillsPage.update({practiceDisabled:locked});return true;}, onChange: () => { renderLiveButton(); renderClassCards(); }, onProcessing: reportAudioProcessing,
-    vibrationEnabled: () => vibrationFeedback && !vibrationRejected, onVibration: reportVibration });
-  sessionController = createSessionController({
-    getContext: practiceContext,
-    titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
-    onChange: () => { renderLiveButton(); renderClassCards(); },
-    onProcessing: reportAudioProcessing, vibrationEnabled: () => vibrationFeedback && !vibrationRejected,
-    onVibration: reportVibration,
-    onPracticeRecord: record => practiceController.showRecord(record),
-  });
   practiceGuideController = createPracticeGuideBridge({ onBack: parent => goBack(parent), onNavigate: () => switchView('practiceGuide'), onError: showError });
   for (const [id, parent] of [['practiceGuideLink', 'practice'], ['sessionGuideLink', 'session']]) {
     const handler=event => {
@@ -1065,7 +1081,7 @@ async function init() {
   $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
   bindLive('changeDrillBtn','click', () => switchView('drills'));
-  $('#freeListenBtn').addEventListener('click', () => { if (!profileLocked()) switchView('recognize'); });
+  $('#freeListenBtn').addEventListener('click', () => switchView('recognize'));
   renderDrillCatalog();
   bindLive('listenBtn','click', toggleLive);
   bindLive('drillSelect','change', () => { if (profileLocked()) return; resetDrill(); setGunSetting('selectedDrill', $('#drillSelect').value, ownerId()).catch(showError); });
@@ -1075,8 +1091,8 @@ async function init() {
   bindSettings('importBtn','click', () => $('#importFile').click());
   bindSettings('exportBtn','click', async () => {
     try {
-      await sessionController.flush();
-      await practiceController.flush();
+      await sessionController?.flush();
+      await practiceController?.flush();
       const data = JSON.stringify(await exportBackup(), null, 2);
       const url = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
       const anchor = document.createElement('a');
@@ -1099,8 +1115,8 @@ async function init() {
     setBusy(true);
     try {
       await eventQueue;
-      await sessionController.flush();
-      await practiceController.flush();
+      await sessionController?.flush();
+      await practiceController?.flush();
       const result = await restoreBackup(JSON.parse(await file.text()));
       await loadActiveGun();
       await renderHistory();
@@ -1125,19 +1141,19 @@ async function init() {
   });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && (liveSession || livePendingStart)) void stopLive();
-    if (document.hidden && sessionController.locked()) sessionController.interrupt('background').catch(showError);
-    if (document.hidden && practiceController.locked()) practiceController.interrupt('background').catch(showError);
+    if (document.hidden && sessionController?.locked()) sessionController.interrupt('background').catch(showError);
+    if (document.hidden && practiceController?.locked()) practiceController.interrupt('background').catch(showError);
   });
   window.addEventListener('pagehide', () => {
     if (liveSession || livePendingStart) void stopLive();
-    if (sessionController.locked()) sessionController.interrupt('pagehide').catch(() => {});
-    if (practiceController.locked()) practiceController.interrupt('pagehide').catch(() => {});
+    if (sessionController?.locked()) sessionController.interrupt('pagehide').catch(() => {});
+    if (practiceController?.locked()) practiceController.interrupt('pagehide').catch(() => {});
   });
   $('#safetyAck').addEventListener('change', () => {
     $('#safetySummaryState').textContent = $('#safetyAck').checked ? 'Confirmed for this session' : 'Required before recording';
     if (!$('#safetyAck').checked && (liveSession || livePendingStart)) void stopLive();
-    if (!$('#safetyAck').checked && sessionController.locked()) sessionController.interrupt('safety-check').catch(showError);
-    if (!$('#safetyAck').checked && practiceController.locked()) practiceController.interrupt('safety-check').catch(showError);
+    if (!$('#safetyAck').checked && sessionController?.locked()) sessionController.interrupt('safety-check').catch(showError);
+    if (!$('#safetyAck').checked && practiceController?.locked()) practiceController.interrupt('safety-check').catch(showError);
   });
   bindSettings('resetModelBtn','click', async () => {
     if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Reset all learned sounds and reset/noise/beep calibration for ${activeGun.name}? Gun profiles, presets, saved sessions, recognition history and other guns will be kept.`)) return;
@@ -1161,8 +1177,8 @@ async function init() {
     setBusy(true);
     try {
       await eventQueue;
-      await sessionController.flush();
-      await practiceController.flush();
+      await sessionController?.flush();
+      await practiceController?.flush();
       await resetLibrary();
       window.location.reload();
     } catch (error) { showError(error); setBusy(false); }
@@ -1200,8 +1216,8 @@ async function init() {
     try {
       await flushLibraryWork();
       await clearSessions(gunId);
-      sessionController.reset();
-      practiceController.reset();
+      sessionController?.reset();
+      practiceController?.reset();
       await renderHistory();
       setStatus('Saved sessions cleared');
       historyText('sessionsClearOutcome',`Saved sessions and progress statistics for ${activeGun.name} were cleared. Learned sounds and recognition history were kept.`);
@@ -1230,7 +1246,7 @@ async function init() {
     else await sessionController.showRecord(recoveredForGun);
   }
   setStatus('Ready');
-  afterPaint(practiceController.renderCatalog).catch(showError);
+  if (practiceController) afterPaint(practiceController.renderCatalog).catch(showError);
 }
 
 const informationPages = createInformationBridge({ onBack: () => goBack(), onError: showError, onNavigate: name => { if (screenNavigation) switchView(name); },
