@@ -1,0 +1,2 @@
+.gun-context { border:1px solid #2f414f; border-radius:9px; padding:9px 11px; margin:0 0 15px; color:#b5c8db; font-size:.74rem; line-height:1.5; overflow-wrap:anywhere; }
+.gun-context strong { color:var(--primary-text,#deebf8); font-weight:650; }

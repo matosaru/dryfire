@@ -1,0 +1,50 @@
+{
+  "scope": "P7 semantic duplicate cleanup: eight page-module preparation paths share one cache.",
+  "baseRevision": "459e2df",
+  "sourceHashes": {
+    "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93",
+    "src/main.js": "71bf047fa67d3ad1be9c86919ea90cdddce7fbcb49729603d4b286ab841bfe64",
+    "tests/modulePreparation.test.js": "f590af3ccf672f39c31398fefc4c8fa5ebf449941d8cb319352558f1f8ba7bf1",
+    "workers/sw.js": "de907a76d13ad6cc9c1e6481c95604562e7185666b222e165063531f97ffa723"
+  },
+  "contract": [
+    "First entry starts/deduplicates import and returns no module.",
+    "Completion caches only; never mounts or mutates DOM.",
+    "A later explicit entry returns the module; existing controller/route/safety/context/draft guards remain at the call site.",
+    "Failed imports report once and permit later explicit retry.",
+    "Home/profile and information/chrome loading remain distinct because mount/disposal semantics differ."
+  ],
+  "artifacts": {
+    "public": {
+      "jsRaw": 178499,
+      "jsGzip": 54491,
+      "js": "index-B8dhljjM.js",
+      "deltaFromOriginalRaw": 7582,
+      "deltaFromOriginalGzip": 3684
+    },
+    "preview": {
+      "jsRaw": 179795,
+      "jsGzip": 54854,
+      "js": "index-C7DrJoDH.js",
+      "deltaFromOriginalRaw": 7712,
+      "deltaFromOriginalGzip": 3708
+    },
+    "cssRaw": 61451,
+    "cssGzip": 13011,
+    "html": "Complete compiled app HTML byte-identical to retained pre-cleanup checkpoint.",
+    "cacheVersion": 60
+  },
+  "verification": {
+    "fullTests": 923,
+    "suites": 134,
+    "coverageRatchet": "Passed unchanged.",
+    "modulePreparationCoverage": "100% statements/branches/functions/lines.",
+    "serviceWorkerTestsAfterCacheBump": 12,
+    "publicBrowserWorkflows": 34,
+    "smokeChecks": 16,
+    "typeLintArchitectureDocs": "Passed.",
+    "browser": "System Chromium diagnostic; pinned-image CI remains separate.",
+    "previewBrowserWorkflows": 33
+  },
+  "openDebt": "Native startup fallback retirement, final duplicate audit and original performance acceptance remain open. Preview payload gate still fails against original172083/51146 raw/gzip; baseline unchanged."
+}

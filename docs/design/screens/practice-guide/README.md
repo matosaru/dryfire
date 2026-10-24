@@ -2,11 +2,11 @@
 
 CHG-044 · 2026-10-15 · Implementation/capture/CI status is recorded in the [delivery tracker](../../../project/implementation-history.md).
 
-One shared `practiceGuideView` page opens from **About this practice ›**, below the title of stopped Practice or Sequence configuration. It keeps the shared BETA header, Settings, informational footer and fixed five-tab navigation with Drills active. The informational page omits the setup safety/gun-switch controls; reading never acquires audio, asks for safety permission or starts practice.
+One shared `practiceGuideView` page opens from **ⓘ About this practice**, after context/sounds and before setup of stopped Practice or Sequence configuration. It keeps the shared BETA header, Settings, informational footer and fixed five-tab navigation with Drills active. The informational page omits the setup safety/gun-switch controls; reading never acquires audio, asks for safety permission or starts practice.
 
 The page includes a mode/preset title and purpose, actual selected sequence/endpoints where relevant, current start-source explanation, static synthetic example, What it measures, three How it works steps, Good to know, Before you start and Back to setup. User titles/steps are inserted as text. Back/Forward and both Back controls preserve the same gun/source context and invalid/unsaved form values; stale contexts fall back safely. An active/pending/unsaved session cannot enter the guide.
 
-The shared live-template illustration follows the [reviewed animation direction](../../proposals/practice-guides/README.md#animation-direction), using the actual pure session engines with synthetic detections. Small example targets and optional app beep are clearly disclosed; external/silent setups explain the difference. Initial motion is stopped in all motion preferences. Play/Pause/Resume/Replay work without audio; navigating away or hiding the page pauses; Review stops playback. Single provides separate Normal/Early examples. Reload uses the selected endpoints; custom examples follow the saved preset's actual order. Long presets show one complete example attempt, avoiding unnecessarily repeated long media.
+The shared live-template illustration follows the [reviewed animation direction](../../proposals/practice-guides/README.md#animation-direction), using the actual pure session engines with synthetic detections. Small example targets and optional app beep are clearly disclosed; external/silent setups explain the difference. Initial motion is stopped in all motion preferences. Play/Pause/Resume/Replay work without audio; navigating away or hiding the page pauses; Review stops playback. Single provides separate Normal/Early examples. Custom examples follow the saved preset's actual order. Long presets show one complete example attempt, avoiding unnecessarily repeated long media.
 
 Requirements: [practice guides](../../../requirements/practice-guides.md), [shared layout](../../../requirements/page-layout.md), [practice modes](../../../requirements/practice-modes.md), [ordered sessions](../../../requirements/drill-sessions.md). Local/pinned browser evidence does not establish deployment or microphone accuracy.
 
@@ -24,10 +24,6 @@ The state/theme image list below is generated from the screen registry when the 
 | par guide, light | [par.light.png](par.light.png) | `practiceGuideExample` |
 | control guide, dark | [control.dark.png](control.dark.png) | `practiceGuideExample` |
 | control guide, light | [control.light.png](control.light.png) | `practiceGuideExample` |
-| reload guide, dark | [reload.dark.png](reload.dark.png) | `practiceGuideExample` |
-| reload guide, light | [reload.light.png](reload.light.png) | `practiceGuideExample` |
-| free guide, dark | [free.dark.png](free.dark.png) | `practiceGuideExample` |
-| free guide, light | [free.light.png](free.light.png) | `practiceGuideExample` |
 | sequence trigger only guide, dark | [sequence-trigger-only.dark.png](sequence-trigger-only.dark.png) | `practiceGuideExample` |
 | sequence trigger only guide, light | [sequence-trigger-only.light.png](sequence-trigger-only.light.png) | `practiceGuideExample` |
 | sequence rack trigger guide, dark | [sequence-rack-trigger.dark.png](sequence-rack-trigger.dark.png) | `practiceGuideExample` |
@@ -40,7 +36,6 @@ The state/theme image list below is generated from the screen registry when the 
 | sequence custom guide, light | [sequence-custom.light.png](sequence-custom.light.png) | `practiceGuideExample` |
 | single early guide, dark | [single-early.dark.png](single-early.dark.png) | `practiceGuideExample` |
 | single early guide, light | [single-early.light.png](single-early.light.png) | `practiceGuideExample` |
-| reload selected endpoints context | [reload-selected-endpoints.dark.png](reload-selected-endpoints.dark.png) | `practiceGuideExample` |
 | external start context | [external-start.dark.png](external-start.dark.png) | `practiceGuideExample` |
 | silent start context | [silent-start.dark.png](silent-start.dark.png) | `practiceGuideExample` |
 
@@ -53,3 +48,5 @@ Current animated exports are generated from this working component using `node t
 ## Component and theme ownership
 
 Existing runtime tokens in `src/styles.css` remain canonical. The guide reuses the shared app shell and the actual Practice/Sequence run and review fragments; `sessionPresentation.js` owns their read-only display, while `practiceGuideController.js` owns example playback only. The guide caption and Play control use the existing `--session-muted` / `--session-text` roles in Light; Dark retains its reviewed values. The browser regression requires at least 4.5:1 rendered text contrast on the caption surface. Requirements own behavior; current captures/GIF manifests own visual evidence. There is no separate help theme or second session drawing.
+
+CHG-059 adopts the shared outlined information link and ordered sound list from DrillSetup. See [guide layout requirements](../../../requirements/guide-layout.md); preserve shared shell, fixed navigation and read-only simulated examples. Screenshot acceptance is recorded in project history.

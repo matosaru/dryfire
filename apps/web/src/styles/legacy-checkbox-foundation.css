@@ -1,0 +1,2 @@
+.checkbox-row { display:flex; align-items:center; gap:9px; font-size:.88rem; color:var(--primary-text,#f0f2f3); }
+.checkbox-row input { width:19px; height:19px; flex:none; accent-color:#ff9141; }

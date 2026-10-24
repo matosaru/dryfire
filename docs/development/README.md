@@ -2,11 +2,11 @@
 
 Repository workflow: [b/main Free, dev Full, PR protection and test-gated builds](../project/branching-strategy.md).
 
-CHG-046: [React refactor plan](../project/react-refactor-plan.md) maps all 13 existing screens, component/CSS/test ownership and regression gates. CHG-047 starts implementation: workspaces, typed About/Contact and shared heading/card packages are introduced first. The [migration architecture](../architecture/react-migration.md) and [component map](../architecture/component-map.json) distinguish current and remaining owners; the requested DEV.to article comparison still awaits access.
+The [active refactor plan](../project/react-refactor/plan.md) and [application structure/entry-point guide](../architecture/application-structure.md) describe the 13 typed pages, 26 shared UI components, guarded lazy runtime owners and CHG-051 retained startup adapters. The requested structure article and first-party guidance have been reviewed in the [specification](../project/react-refactor/spec.md). [component-map.json](../architecture/component-map.json) is the authoritative source/controller/test registry; [migration architecture](../architecture/react-migration.md) retains historical increments. Consult the active plan for final CI acceptance rather than inferring it from structural completion.
 
 Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with dev/production verification.
 
-[Public-Free/private-full-preview testing](free-preview-testing.md) documents the authorized two-gun public build and retained full preview. Hosted preview protection and a proposed authenticated in-app tester switch remain unimplemented; broader billing/accounts/cloud work is still paused.
+[Public-Free/private-full-preview testing](free-preview-testing.md) documents the authorized two-gun public build and retained full preview. The private-preview Free/Full simulation and signed Access asset gate are implemented and tested; live Cloudflare Access policy/deployment remain owner-managed and separately verified. Broader billing/accounts/cloud work is still paused.
 
 Product planning: [Requirements and approvals](../requirements/README.md) · [Design catalog](../design/README.md). Read these before changing product behavior.
 
@@ -21,7 +21,7 @@ The next verification target is iPhone Safari/Home Screen. Use the [release chec
 - First use asks for a gun name and one of **Handguns**, **Rifles and Carbines**, or **Shotguns**. The public edition allows creating two profiles; full preview allows five. Existing larger libraries remain usable. Use **My Guns** to switch the selected gun.
 - Learned examples, recognition history, custom sequences and selected drill are owned by a gun. Sound/history resets affect only that gun. Stop recording/listening before switching so in-flight data keeps its original owner.
 - On **Drills**, full preview can create a saved custom preset; both editions can edit an existing preset with a name and ordered known actions; repeated actions are supported. **Start Drill** opens its explicit, safety-gated session configuration. Built-in sequences remain unchanged.
-- IndexedDB schema 3 retains `dryfire-sound-trainer` and adds durable saved sessions alongside gun-owned data. Existing legacy sounds/history are assigned to one profile requiring the user's name/type; an empty legacy database starts with no fabricated profile. Selection and owned data persist after compatible same-origin reloads/deployments.
+- IndexedDB schema 4 retains `dryfire-sound-trainer` and adds durable saved sessions alongside gun-owned data. Existing legacy sounds/history are assigned to one profile requiring the user's name/type; an empty legacy database starts with no fabricated profile. Selection and owned data persist after compatible same-origin reloads/deployments.
 - Export creates a version-4 whole-library backup including legacy/practice sessions, calibration and preferences. Compatible versions 1–3 remain readable; version-1 data restores into a profile requiring details and older backups contain no saved sessions. Imports validate before atomic replacement, disclose replacing sessions and reject files over 10 MB. Export excludes outdated feature vectors as before; migration preserves those vectors until a confirmed relevant-sound reset.
 
 ## Six practice modes
@@ -163,7 +163,7 @@ For step-by-step hosting instructions (GitHub + Netlify or manual Netlify Drop),
 
 ## CHG-017 improvements
 
-[Approved requirements](../requirements/practice-improvements.md) cover automatic Single repetitions, comparable gun-owned History statistics/chart/table, ten new recordings per type/category, reviewed numeric limits, transient unknown input, app/browser navigation and once-per-page safety confirmation that resumes the original action. [Current captures](../design/README.md) and [validation](PRACTICE_VALIDATION.md) distinguish local source/browser checks from publication, Cloudflare and physical iPhone results. Cache v15 updates the application without changing IndexedDB schema 3, feature version 2 or backup format 4. Older compatible over-cap profiles remain usable/exportable/restorable; no automatic truncation is introduced.
+[Approved requirements](../requirements/practice-improvements.md) cover automatic Single repetitions, comparable gun-owned History statistics/chart/table, ten new recordings per type/category, reviewed numeric limits, transient unknown input, app/browser navigation and once-per-page safety confirmation that resumes the original action. [Current captures](../design/README.md) and [validation](PRACTICE_VALIDATION.md) distinguish local source/browser checks from publication, Cloudflare and physical iPhone results. Cache v15 updates the application without changing IndexedDB schema 4, feature version 2 or backup format 4. Older compatible over-cap profiles remain usable/exportable/restorable; no automatic truncation is introduced.
 
 ## Documentation and browser capability maintenance
 
@@ -171,4 +171,6 @@ Run `npm run docs:check` before publishing; see [screen architecture maintenance
 
 [Native iPhone/Android release guide](NATIVE_RELEASE.md) · [Monetization planning](../business/monetization.md)
 
-The [reusable page architecture](../architecture/page-templates.md) compiles all screen content through shared app/view templates. Use `src/templates/shared/` for header/footer/navigation and `src/templates/pages/` for screen content; index.html owns metadata and the single app mount.
+The [reusable page architecture](../architecture/page-templates.md) compiles all screen content through shared app/view templates. Use typed page packages in `apps/web/src/pages/` and shared UI packages for screen content/chrome. Only the view wrapper and retained private progress/testing fragments remain under `src/templates/`; index.html owns metadata and the single app mount.
+
+CHG-049: [coverage and performance gates](PERFORMANCE.md) run before and after refactor slices; the independent original artifacts, paired browser reports and React shell feasibility probe preserve the unchanged-startup contract.

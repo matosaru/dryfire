@@ -27,20 +27,17 @@ export function progressSummary(group, { days = 0, now = Date.now() } = {}) {
   for (const record of records) {
     const rows = record.repetitions.filter(row => ['hit', 'miss', 'completed'].includes(row.status));
     const hitRows = rows.filter(row => row.status !== 'miss');
-    const samples = hitRows.map(row => ['repeated', 'control'].includes(group.mode) ? row.intervalMs
-      : group.mode === 'reload' ? row.stepTimings.at(-1)?.splitMs : row.elapsedMs).filter(valid);
+    const samples = hitRows.map(row => ['repeated', 'control'].includes(group.mode) ? row.intervalMs : row.elapsedMs).filter(valid);
     const stats = summarize(samples), hitCount = hitRows.length, missCount = rows.length - hitCount;
     hits += hitCount; misses += missCount; shots += record.shots || 0; allSamples.push(...samples);
     const value = group.mode === 'par' ? (rows.length ? hitCount / rows.length * 100 : null)
-      : group.mode === 'free' ? (record.elapsedMs > 0 ? record.shots / record.elapsedMs * 60000 : null)
         : group.mode === 'control' ? (samples.length >= 2 ? stats.spread : null) : stats.median;
-    if (valid(value)) points.push({ id: record.id, date: record.startedAt, value, count: group.mode === 'free' ? record.shots : samples.length,
+    if (valid(value)) points.push({ id: record.id, date: record.startedAt, value, count: samples.length,
       hits: hitCount, misses: missCount, ...stats });
   }
-  const metrics = summarize(allSamples), unit = group.mode === 'par' ? '%' : group.mode === 'free' ? 'clicks/min' : 'ms';
-  const metric = group.mode === 'par' ? 'Hit rate' : group.mode === 'free' ? 'Clicks per active minute'
-    : group.mode === 'control' ? 'Interval variation' : group.mode === 'repeated' ? 'Median click interval'
-      : group.mode === 'reload' ? 'Median endpoint time' : 'Median detected time';
+  const metrics = summarize(allSamples), unit = group.mode === 'par' ? '%' : 'ms';
+  const metric = group.mode === 'par' ? 'Hit rate'
+    : group.mode === 'control' ? 'Interval variation' : group.mode === 'repeated' ? 'Median click interval' : 'Median detected time';
   let trend = null;
   if (points.length >= 4) {
     const half = Math.floor(points.length / 2);
@@ -50,6 +47,5 @@ export function progressSummary(group, { days = 0, now = Date.now() } = {}) {
     trend = { before, after, change, compared: half, direction: after === before ? 'unchanged' : after < before ? 'lower' : 'higher' };
   }
   return { points, metrics, unit, metric, trend, sessions: records.length, hits, misses, shots,
-    hitRate: hits + misses ? hits / (hits + misses) * 100 : null,
-    rate: group.mode === 'free' ? summarize(points.map(row => row.value)).median : null };
+    hitRate: hits + misses ? hits / (hits + misses) * 100 : null };
 }

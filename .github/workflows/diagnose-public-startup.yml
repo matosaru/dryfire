@@ -1,0 +1,78 @@
+name: Advisory startup diagnosis
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_patch:
+        type: string
+        required: false
+        default: ""
+      measure_webkit_gate:
+        type: boolean
+        required: false
+        default: false
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      options: --ipc=host
+    env:
+      VISUAL_IMAGE: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0
+      APP_EDITION: public
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 6c38bff81662d30279d94d41ca5c949bdbbe1c6e
+          path: .performance-baseline
+          persist-credentials: false
+      - run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/.performance-baseline"
+      - name: Apply optional review candidate
+        if: inputs.candidate_patch != ''
+        env:
+          CANDIDATE_PATCH: ${{ inputs.candidate_patch }}
+        run: git apply -- "$CANDIDATE_PATCH"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
+        working-directory: .performance-baseline
+      - run: npm run build
+        working-directory: .performance-baseline
+      - run: npm run build
+      - name: Crossed WebKit HTML/module diagnostic, never acceptance
+        if: ${{ !inputs.measure_webkit_gate }}
+        run: node --experimental-vm-modules tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
+      - name: Measure the original public WebKit gate in isolation
+        if: inputs.measure_webkit_gate
+        run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist --browser=webkit
+      - name: Publish actual performance evidence
+        if: always() && inputs.measure_webkit_gate
+        id: gate
+        run: node tools/performance/report.mjs
+      - name: "Timing result: ${{ steps.gate.outputs.outcome || 'not measured' }}"
+        if: always() && inputs.measure_webkit_gate
+        run: ':'
+      - name: Expose diagnostic results
+        id: results
+        if: always()
+        run: |
+          node --input-type=module -e "import {existsSync,readFileSync,appendFileSync} from 'node:fs'; const path='performance-results/startup-diagnostic.json'; if(existsSync(path)){const data=JSON.parse(readFileSync(path)); appendFileSync(process.env.GITHUB_OUTPUT,'medians='+JSON.stringify(data.medians)+'\nfailures='+JSON.stringify(data.failures)+'\n');}"
+      - name: "Phases: ${{ steps.results.outputs.medians || 'missing' }}"
+        if: always()
+        run: ':'
+      - name: "Incompatible crossings: ${{ steps.results.outputs.failures || 'none' }}"
+        if: always()
+        run: ':'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: advisory-startup-diagnosis
+          path: performance-results/

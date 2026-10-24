@@ -1,0 +1,4 @@
+.safety-card { display:flex; align-items:flex-start; gap:13px; padding:16px; margin-bottom:20px; }
+.safety-icon { display:grid; place-items:center; background:#392419; color:#ff9b5e; border:1px solid #62402a; border-radius:12px; width:32px; height:32px; flex:none; font-weight:900; }
+.safety-card h2 { font-size:1rem; margin-bottom:4px; }
+.safety-card p { margin-bottom:12px; color:#c1cbd0; font-size:.91rem; line-height:1.5; }

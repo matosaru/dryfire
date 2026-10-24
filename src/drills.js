@@ -25,6 +25,9 @@ export const DRILLS = Object.freeze([
   }),
 ]);
 
+// The first definition is retained legacy trigger-only; display the remaining built-ins.
+export const SEQUENCE_DRILLS = Object.freeze(DRILLS.slice(1));
+
 const SOUND_LABELS = Object.freeze(['draw', 'rack', 'trigger', 'reload']);
 
 /** Validate user/imported presets and return an independent recognition definition. */

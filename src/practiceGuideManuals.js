@@ -14,19 +14,19 @@ export const GUIDE_MANUALS = [
     "requires": "Learn Trigger pull for the selected gun. Other sound types are optional.",
     "stages": [
       "Microphone ready",
-      "2.4 s countdown → beep",
+      "2.4 s countdown \u2192 beep",
       "Click at 0.50 s",
-      "Automatic 3.2 s countdown → second beep → 0.60 s click"
+      "Automatic 3.2 s countdown \u2192 second beep \u2192 0.60 s click"
     ],
     "sequence": [
       "trigger"
     ],
-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
+    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
   },
   {
     "id": "repeated",
     "kind": "practice",
-    "title": "Repeated trigger presses",
+    "title": "Repeated trigger press",
     "purpose": "Count separate recognized trigger clicks and see the time between them.",
     "measures": "Accepted click count and the intervals between consecutive clicks.",
     "steps": [
@@ -38,7 +38,7 @@ export const GUIDE_MANUALS = [
     "requires": "Learn Trigger pull. Optional reset/noise examples can help reject other clicks.",
     "stages": [
       "Microphone ready",
-      "2.4 s countdown → one beep",
+      "2.4 s countdown \u2192 one beep",
       "Three clicks: 0.50 / 1.30 / 2.10 s",
       "Two intervals: 0.80 / 0.80 s"
     ],
@@ -47,12 +47,12 @@ export const GUIDE_MANUALS = [
       "trigger",
       "trigger"
     ],
-    "exampleConfig": "3 clicks · random 2–5 s delay · app beep on"
+    "exampleConfig": "3 clicks \u00b7 random 2\u20135 s delay \u00b7 app beep on"
   },
   {
     "id": "par",
     "kind": "practice",
-    "title": "Par-time practice",
+    "title": "Par time practice",
     "purpose": "Check whether a recognized trigger click arrives within your chosen time limit.",
     "measures": "Time from the start signal to a click, with an in-time or missed outcome.",
     "steps": [
@@ -64,14 +64,14 @@ export const GUIDE_MANUALS = [
     "requires": "Learn Trigger pull. Example: a 0.64 s click is in time for a 1.50 s limit.",
     "stages": [
       "Microphone ready",
-      "Countdown → beep → 0.60 s hit within 1.50 s",
+      "Countdown \u2192 beep \u2192 0.60 s hit within 1.50 s",
       "User selects Next repetition",
-      "Fresh countdown → beep → no click → miss"
+      "Fresh countdown \u2192 beep \u2192 no click \u2192 miss"
     ],
     "sequence": [
       "trigger"
     ],
-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
+    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
   },
   {
     "id": "control",
@@ -88,67 +88,16 @@ export const GUIDE_MANUALS = [
     "requires": "Learn Trigger pull. Optional reset/noise calibration can improve discrimination.",
     "stages": [
       "Microphone ready",
-      "2.4 s countdown → one beep",
+      "2.4 s countdown \u2192 one beep",
       "Three distinct clicks",
-      "0.80 s intervals → review"
+      "0.80 s intervals \u2192 review"
     ],
     "sequence": [
       "trigger",
       "trigger",
       "trigger"
     ],
-    "exampleConfig": "3 clicks · random 2–5 s delay · app beep on"
-  },
-  {
-    "id": "reload",
-    "kind": "practice",
-    "title": "Reload practice",
-    "purpose": "Measure the time between two mechanical sounds you choose.",
-    "measures": "Elapsed time between the first and second recognized event, in that order.",
-    "steps": [
-      "Choose two different sound endpoints, such as Rack slide and Change magazine.",
-      "After the signal, perform the selected actions in the displayed order.",
-      "Read the interval, then select Next repetition when ready to continue."
-    ],
-    "expect": "Handling events are not shots. Only an explicitly selected Trigger endpoint can add an accepted shot.",
-    "requires": "Learn both selected endpoint sounds. Trigger is needed only when it is a selected endpoint.",
-    "stages": [
-      "Microphone ready",
-      "Countdown → beep",
-      "Rack at 0.40 s → Magazine at 1.60 s",
-      "1.20 s interval → user selects Next → repeat"
-    ],
-    "sequence": [
-      "rack",
-      "reload"
-    ],
-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
-  },
-  {
-    "id": "free",
-    "kind": "practice",
-    "title": "Free practice",
-    "purpose": "Practice for a chosen duration without a fixed click target.",
-    "measures": "Total recognized trigger clicks and active practice time.",
-    "steps": [
-      "Choose the session duration and ready delay.",
-      "After one start signal, practice at your own pace while the app counts clicks.",
-      "The session ends at the duration limit. You can also use STOP to save and finish early."
-    ],
-    "expect": "Pause stops microphone capture and pauses active time. There is no new beep for each click.",
-    "requires": "Learn Trigger pull. No extra mechanical sound categories are required.",
-    "stages": [
-      "Microphone ready",
-      "Countdown → one beep",
-      "Three clicks during a 6 s example session",
-      "Deadline → finish captured audio → 3 clicks in 6 s"
-    ],
-    "sequence": [
-      "trigger",
-      "trigger",
-      "trigger"
-    ],
-    "exampleConfig": "6 s duration · random 2–5 s delay · app beep on"
+    "exampleConfig": "3 clicks \u00b7 random 2\u20135 s delay \u00b7 app beep on"
   },
   {
     "id": "sequence-trigger-only",
@@ -166,19 +115,19 @@ export const GUIDE_MANUALS = [
     "requires": "Learn Trigger pull. Sounds in the initial 0.30 s after the app beep are excluded to reject the cue.",
     "stages": [
       "Microphone connected",
-      "2.4 s countdown → beep",
+      "2.4 s countdown \u2192 beep",
       "trigger",
-      "Result → automatic 3.2 s countdown → repeat"
+      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
     ],
     "sequence": [
       "trigger"
     ],
-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
+    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
   },
   {
     "id": "sequence-rack-trigger",
     "kind": "sequence",
-    "title": "Rack slide → Trigger pull",
+    "title": "Rack slide \u2192 Trigger pull",
     "purpose": "Complete the learned Rack slide and Trigger pull sounds in the displayed order.",
     "measures": "Time from the start signal to sequence completion, plus the time at each matched step.",
     "steps": [
@@ -190,20 +139,20 @@ export const GUIDE_MANUALS = [
     "requires": "Learn Rack slide and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep.",
     "stages": [
       "Microphone connected",
-      "2.4 s countdown → beep",
-      "rack → trigger",
-      "Result → automatic 3.2 s countdown → repeat"
+      "2.4 s countdown \u2192 beep",
+      "rack \u2192 trigger",
+      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
     ],
     "sequence": [
       "rack",
       "trigger"
     ],
-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
+    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
   },
   {
     "id": "sequence-mag-trigger",
     "kind": "sequence",
-    "title": "Magazine change → Trigger pull",
+    "title": "Magazine change \u2192 Trigger pull",
     "purpose": "Complete the learned magazine-change and trigger sounds in the displayed order.",
     "measures": "Signal-to-completion time and the detected timing of each sequence step.",
     "steps": [
@@ -215,21 +164,21 @@ export const GUIDE_MANUALS = [
     "requires": "Learn Change magazine and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep.",
     "stages": [
       "Microphone connected",
-      "2.4 s countdown → beep",
-      "reload → trigger",
-      "Result → automatic 3.2 s countdown → repeat"
+      "2.4 s countdown \u2192 beep",
+      "reload \u2192 trigger",
+      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
     ],
     "sequence": [
       "reload",
       "trigger"
     ],
-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
+    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
   },
   {
     "id": "sequence-draw-mag-trigger",
     "kind": "sequence",
-    "title": "Draw → Magazine → Trigger",
-    "setupTitle": "Draw from holster → Magazine change → Trigger pull",
+    "title": "Draw \u2192 Magazine \u2192 Trigger",
+    "setupTitle": "Draw from holster \u2192 Magazine change \u2192 Trigger pull",
     "purpose": "Match the three learned sounds in one ordered sequence.",
     "measures": "Time from the signal to the final recognized trigger, plus detected step timings.",
     "steps": [
@@ -241,16 +190,16 @@ export const GUIDE_MANUALS = [
     "requires": "Learn Draw, Change magazine and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep.",
     "stages": [
       "Microphone connected",
-      "2.4 s countdown → beep",
-      "draw → reload → trigger",
-      "Result → automatic 3.2 s countdown → repeat"
+      "2.4 s countdown \u2192 beep",
+      "draw \u2192 reload \u2192 trigger",
+      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
     ],
     "sequence": [
       "draw",
       "reload",
       "trigger"
     ],
-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
+    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
   },
   {
     "id": "sequence-custom",
@@ -264,19 +213,19 @@ export const GUIDE_MANUALS = [
       "Choose repetitions and delay, then follow that displayed order after the signal.",
       "A matching sequence completes a repetition; the next countdown starts automatically."
     ],
-    "expect": "This example uses Rack → Trigger → Trigger. The real guide must reflect the selected saved preset, not a generic fixed sequence.",
+    "expect": "This example uses Rack \u2192 Trigger \u2192 Trigger. The real guide must reflect the selected saved preset, not a generic fixed sequence.",
     "requires": "Learn only the sounds referenced by this preset. Creating a new custom preset remains a Full-only feature.",
     "stages": [
       "Microphone connected",
-      "2.4 s countdown → beep",
-      "rack → trigger → trigger",
-      "Result → automatic 3.2 s countdown → repeat"
+      "2.4 s countdown \u2192 beep",
+      "rack \u2192 trigger \u2192 trigger",
+      "Result \u2192 automatic 3.2 s countdown \u2192 repeat"
     ],
     "sequence": [
       "rack",
       "trigger",
       "trigger"
     ],
-    "exampleConfig": "2 attempts · random 2–5 s delay · app beep on"
+    "exampleConfig": "2 attempts \u00b7 random 2\u20135 s delay \u00b7 app beep on"
   }
 ];

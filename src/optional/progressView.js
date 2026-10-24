@@ -1,14 +1,18 @@
-import { progressGroups, progressSummary, summarize } from '../practiceProgress.js';
-const element = (doc, tag, text, className = '') => { const node = doc.createElement(tag); node.textContent = text; node.className = className; return node; };
+import { textElement } from '../textElement.js';
+import {progressPresentation} from '../../apps/web/src/features/history/progressPresentation.ts';
+import { progressGroups, progressSummary } from '../practiceProgress.js';
+const element = (doc, tag, text, className = '') => textElement(tag, text, className, doc);
 const format = (value, unit = 'ms') => value === null ? '—' : unit === 'ms' ? `${(value / 1000).toFixed(2)} s` : `${value.toFixed(1)} ${unit}`;
 const timing = group => {
   const c = group.config;
   return `${c.startSource === 'external' ? 'External beep' : c.soundAtStart ? 'App beep' : 'Silent start'} · ${c.delayMode === 'fixed' ? `${c.fixedDelaySeconds}s fixed` : `${c.randomMinSeconds}–${c.randomMaxSeconds}s random`}${group.mode === 'par' ? ` · ${c.parSeconds}s par` : ''}`;
 };
-export function createProgressView(doc, { enabled = () => true } = {}) {
+export function createProgressView(doc, { enabled = () => true, onError = () => {} } = {}) {
   const $ = id => doc.getElementById(id), select = $('progressGroup'), range = $('progressRange'), host = $('progressContent');
-  let groups = [], owner = null;
+  let groups = [], owner = null, view, module, pending;
+  function model(){if(!enabled())return{};const group=groups.find(row=>row.key===select.value);const data=group?progressSummary(group,{days:Number(range.value)}):undefined;return progressPresentation(group,data);}
   function renderSelected() {
+    if(view){view.update(model());return;}
     host.replaceChildren();
     if (!enabled()) return;
     const group = groups.find(row => row.key === select.value);
@@ -19,7 +23,6 @@ export function createProgressView(doc, { enabled = () => true } = {}) {
     const card = (label, value) => { const node = element(doc, 'div'); node.append(element(doc, 'span', label), element(doc, 'strong', value)); stats.append(node); };
     card('Sessions', String(data.sessions));
     if (group.mode === 'par') { card('Hit rate', format(data.hitRate, '%')); card('Hits / misses', `${data.hits} / ${data.misses}`); card('Median hit time', format(data.metrics.median)); }
-    else if (group.mode === 'free') { card('Median rate', format(data.rate, 'clicks/min')); card('Mean rate', format(summarize(data.points.map(point => point.value)).mean, 'clicks/min')); card('Recognized clicks', String(data.shots)); }
     else { card('Median timing', format(data.metrics.median)); card('Mean timing', format(data.metrics.mean)); card('Timing variation', format(data.metrics.spread)); }
     host.append(stats);
     const trend = data.trend;
@@ -28,7 +31,6 @@ export function createProgressView(doc, { enabled = () => true } = {}) {
       const direction = trend.direction === 'unchanged' ? 'Unchanged'
         : group.mode === 'control' ? trend.direction === 'lower' ? 'Steadier intervals' : 'More variable intervals'
           : group.mode === 'par' ? trend.direction === 'higher' ? 'Higher hit rate' : 'Lower hit rate'
-            : group.mode === 'free' ? trend.direction === 'higher' ? 'Higher click rate' : 'Lower click rate'
               : trend.direction === 'lower' ? 'Faster detected timing' : 'Slower detected timing';
       description = `${direction}${trend.change === null ? '' : ` · ${Math.abs(trend.change).toFixed(1)} ${data.unit === '%' ? 'percentage points' : '%'}`} · recent ${trend.compared} vs earlier ${trend.compared} sessions.`;
     }
@@ -62,7 +64,15 @@ export function createProgressView(doc, { enabled = () => true } = {}) {
     table.append(body); details.append(table); host.append(details);
   }
   select.addEventListener('change', renderSelected); range.addEventListener('change', renderSelected);
-  return { render(records, gunId) {
+  return {
+    prepare(){
+      if(!enabled()||view)return;
+      if(module){view=module.mountProgressContent(host,model());return;}
+      if(!pending)pending=import('../../apps/web/src/app/progressContent.tsx').then(loaded=>{module=loaded;}).catch(onError).finally(()=>{pending=null;});
+      return pending;
+    },
+    clear(){if(view)view.update({});else host.replaceChildren();},
+    render(records, gunId) {
     const previous = owner === gunId ? select.value : null; owner = gunId; groups = progressGroups(records, gunId);
     select.replaceChildren(...groups.map(group => { const option = element(doc, 'option', `${group.title} · ${timing(group)}`); option.value = group.key; return option; }));
     select.disabled = !groups.length;

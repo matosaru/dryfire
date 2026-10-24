@@ -1,6 +1,20 @@
+import {renderSessionFragments} from '@dryfire/testing/session-fragments';
 import { readFileSync } from 'node:fs';
 import { renderPageTemplates } from '../tools/page-templates.mjs';
-import { PAGE_DEFINITIONS } from '../src/pageDefinitions.js';
+import { PAGE_DEFINITIONS, PAGE_IDS } from '../src/pageDefinitions.js';
+
+test('route IDs and build-time heading metadata preserve the released screen order', () => {
+  expect(Object.isFrozen(PAGE_IDS)).toBe(true);
+  expect(Object.isFrozen(PAGE_DEFINITIONS)).toBe(true);
+  expect(PAGE_DEFINITIONS).toEqual([
+    ['gunSetup', 'gunSetupTitle'], ['guns', 'gunsTitle'], ['home', 'home-title'],
+    ['learn', 'learn-title'], ['drills', 'drills-title'], ['practice', 'practice-title'],
+    ['session', 'session-title'], ['practiceGuide', 'practiceGuide-title'],
+    ['recognize', 'recognize-title'], ['history', 'history-title'],
+    ['settings', 'settings-title'], ['about', 'about-title'], ['contact', 'contact-title'],
+  ].map(([id, titleId]) => ({ id, titleId })));
+  expect(PAGE_IDS).toEqual(PAGE_DEFINITIONS.map(page => page.id));
+});
 
 test('all screen content uses one wrapper and one shared application layout', () => {
   const html = renderPageTemplates(readFileSync(new URL('../index.html', import.meta.url), 'utf8'));
@@ -33,13 +47,9 @@ test('the public/preview filter still has the private controls in its trusted so
 
 test('guide examples compile the exact live run and review fragments with unique IDs', () => {
   const html = renderPageTemplates('{{app}}');
-  for (const name of ['practice-run', 'practice-review', 'session-run', 'session-review']) {
-    const fragment = readFileSync(new URL(`../src/templates/shared/${name}.html`, import.meta.url), 'utf8');
-    expect(html).toContain(fragment.trim());
-    const example = fragment.replace(/\bid="([^"]+)"/g, (_, id) => `id="example-${id}"`)
-      .replace(/\b(aria-labelledby|aria-describedby|for)="([^"]+)"/g, (_, attr, ids) => `${attr}="${ids.split(' ').map(id => `example-${id}`).join(' ')}"`);
-    expect(html).toContain(example.trim());
-  }
+  // Production compiler and both live/example branches use the same typed owner.
+  // Independent frozen native DOM and complete-frame parity live in component/sharedSessionFragments tests.
+  for (const fragment of Object.values(renderSessionFragments())) expect(html).toContain(fragment);
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
   expect(new Set(ids).size).toBe(ids.length);
 });

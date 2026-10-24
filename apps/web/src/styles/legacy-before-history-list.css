@@ -1,0 +1,27 @@
+.button { min-height:46px; padding:10px 15px; border:1px solid transparent; border-radius:12px; font-weight:800; cursor:pointer; }
+.button.primary { background:#ff9141; color:#21150e; }
+.button.secondary { background:#1a252b; border-color:#364650; color:var(--primary-text,#e2e9eb); }
+.button:disabled { opacity:.52; cursor:not-allowed; }
+.tip,.info-note { color:#bdcad0; padding:15px; line-height:1.55; font-size:.9rem; }
+.info-note { border-color:#5f4227; background:#2d2017; margin-top:12px; }
+.listen-panel { padding:28px 20px; text-align:center; margin-top:18px; }
+.listen-panel .button { width:min(300px,100%); }
+.listen-visual { display:flex; align-items:center; justify-content:center; height:96px; gap:6px; }
+.listen-visual span { height:28px; width:5px; border-radius:6px; background:#ff9141; }
+.listen-visual span:nth-child(2),.listen-visual span:nth-child(8) { height:51px; }
+.listen-visual span:nth-child(3),.listen-visual span:nth-child(7) { height:32px; }
+.listen-visual span:nth-child(4),.listen-visual span:nth-child(6) { height:70px; }
+.listen-visual span:nth-child(5) { height:90px; }
+.small { font-size:.82rem; line-height:1.5; }
+.listen-panel .small { margin-top:15px; margin-bottom:0; }
+.prediction { margin-top:17px; padding:18px; }
+.prediction.empty,.empty-state { color:#9aa9b0; text-align:center; padding:28px 16px; }
+.prediction-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.prediction-row h3 { margin:0 0 5px; font-size:1.65rem; }
+.score { color:#ff9b56; font-size:2rem; font-weight:900; white-space:nowrap; }
+.distance-list { display:grid; gap:12px; margin:18px 0; }
+.distance-label { display:flex; justify-content:space-between; gap:10px; color:#b8c3c9; font-size:.85rem; margin-bottom:6px; }
+.bar { height:8px; background:#28343a; border-radius:10px; overflow:hidden; }
+.bar span { display:block; background:#ff9141; height:100%; border-radius:10px; }
+.settings-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:16px; font-size:.9rem; }
+.settings-row input { width:88px; min-height:44px; border:1px solid #394852; border-radius:10px; padding:7px; background:#0e1418; color:white; }

@@ -1,0 +1,19 @@
+.gun-switcher:focus-visible,.gun-card:focus-visible,.text-button:focus-visible,.segmented-control button:focus-visible,.gun-form select:focus-visible,.custom-drill-editor select:focus-visible { outline:2px solid #ffad62; outline-offset:3px; }
+@media(max-width:360px) {
+  .gun-switcher { padding:12px; gap:9px; }
+  .gun-switcher-action { font-size:.64rem; }
+  .gun-library-heading h2 { font-size:1.5rem; }
+  .custom-drill-editor { padding:11px; }
+  .custom-step-controls { gap:3px; }
+  .custom-step-controls button { width:29px; }
+}
+
+/* Timed sessions keep configuration, a live repetition and saved review in one view. */
+:root {
+  --session-surface:#14212b;
+  --session-surface-raised:#1a2935;
+  --session-border:#344a5a;
+  --session-muted:#b2c5d5;
+  --session-text:var(--primary-text,#eef5fb);
+  --session-positive:#73e2ad;
+}

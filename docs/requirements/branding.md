@@ -23,13 +23,13 @@ Direct instruction: **“add some marker, that this site only a Beta version. Ma
 
 | ID | Approved requirement and acceptance criteria |
 | --- | --- |
-| BRAND-07 | Show a clearly readable, non-interactive **BETA** badge beside the full wordmark in the shared header on every existing page, in public and private builds. Use the existing orange accent with dark text, readable in both themes. Preserve logo/name, Settings access and header geometry without overlap or horizontal overflow at 320, 390 and 1024 px. Provide an accessible Beta version label. No storage, installed-app identity or edition change. |
+| BRAND-07 | Show a clearly readable, non-interactive **BETA** badge beside the full wordmark in the shared typed header on every existing page, in public and private builds. Use the existing orange accent with dark text, readable in both themes. Preserve logo/name, Settings access and header geometry without overlap or horizontal overflow at 320, 390 and 1024 px. Provide an accessible Beta version label. No storage, installed-app identity or edition change. |
 
 Generic descriptions of dry-fire practice and technical `dryfire` identifiers are not display-brand labels. They do not need a forced wording change.
 
 ## Design record
 
-The canonical DF monogram remains [public/logo.svg](../../public/logo.svg). The complete production lockup combines that monogram with the accessible HTML wordmark and BETA marker in [the shared header](../../src/templates/shared/header.html), styled by [src/styles.css](../../src/styles.css); the SVG alone does not contain the full name. See the [actual header screenshot](../design/archive/chg-011/brand/lockup.png), including Settings, and [Home screenshot](../design/archive/chg-011/home/overview.png).
+The canonical DF monogram remains [public/logo.svg](../../public/logo.svg). The complete production lockup combines that monogram with the accessible HTML wordmark and BETA marker in [the shared typed header](../../packages/ui/src/BrandHeader/BrandHeader.tsx), styled by [src/styles.css](../../src/styles.css); the SVG alone does not contain the full name. See the [actual header screenshot](../design/archive/chg-011/brand/lockup.png), including Settings, and [Home screenshot](../design/archive/chg-011/home/overview.png).
 
 This is the approved wording extension, retaining the existing monogram rather than adopting generated variants from earlier mockups. Existing [reviewed mockups](../design/README.md) remain available as historical flow/design evidence.
 

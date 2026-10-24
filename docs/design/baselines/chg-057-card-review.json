@@ -1,0 +1,48 @@
+{
+  "change": "CHG-057",
+  "expandedCSSSha256": "6fe76dd2962b1b7d71d3876de9b4374f1def2d21d3f3b7b2cb4f96c903196e67",
+  "previousCSSReview": "shared-shell-refactor-review.json",
+  "scope": "Shared DrillCard/PracticeCatalog copy column and removal of catalog chips only; configure/help chip styles retained.",
+  "status": "All eight pre-merge jobs pass: validate, both screenshot suites, four browser/edition performance jobs and aggregate acceptance. Exact candidate verified before commit; post-push verification separate.",
+  "unrelatedCSSProof": {
+    "previousExpandedCSSSha256": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
+    "reconstructedExpandedCSSSha256": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
+    "onlyChangedSources": [
+      "packages/ui/src/DrillCard/DrillCard.css",
+      "apps/web/src/styles/legacy-after-drill-cards.css"
+    ]
+  },
+  "collectorRun": 39897542328,
+  "collectorCommit": "2266f01",
+  "renderer": "Pinned Playwright1.58.2 Noble Chromium/WebKit, public/preview",
+  "imageReview": "Reviewed20-image contact sheet plus full-size WebKit catalog: aligned title/sublabel and full-width actions across trigger/built-in/custom cards, long title wraps, no catalog chips; unchanged Configure/help chips and shared shell. Only Drills references accepted.",
+  "images": {
+    "webkit/preview/drills/custom-editor.dark.390.png": "f7abd0a32aa62857928693221c626538c2bc1905c3e1bb228bb144c3988727f0",
+    "webkit/preview/drills/catalog.dark.320.png": "d4d9f72b74dfdef7e2aa433fb02c8101e822fa50bdf38152ec6d96f73b03f204",
+    "webkit/preview/drills/catalog.light.390.png": "51739296c0065cb5d562aa9395b010d398cef3e860ebece31194fd4dc4c74488",
+    "webkit/preview/drills/custom.dark.390.png": "716f18cdb6b19f532d15961f2da356460e46e962d4e03173216fcd6500c65e89",
+    "webkit/preview/drills/catalog.dark.390.png": "28151560243c0c061f1885ac694aa8722478afe39741b3a55b8aae92c75083d8",
+    "webkit/public/drills/catalog.dark.320.png": "323693d11839f603341179568feb48ad53afd74665dc196b7391af4b12202b58",
+    "webkit/public/drills/catalog.light.390.png": "4a68667f981777c3b58f65da58499fe2024b515eee936df88d5b15771ab80969",
+    "webkit/public/drills/custom.dark.390.png": "16f25ebe4ee3e076ae584e91aaac1e79176cf429697f2c92e38f4a247e5c5a44",
+    "webkit/public/drills/edit-custom.dark.390.png": "d6665e287ed6dcc6de2b89379aec4115740a0f7fbbd63cff5901fac49eee8400",
+    "webkit/public/drills/catalog.dark.390.png": "edaf0138cbc5ec50ec64ae3bc4f369c449b06ec6b88f2bbbbbb564b23d21f58e",
+    "chromium/preview/drills/custom-editor.dark.390.png": "5af323551a304f12bbc43fab48594b3884e3c1effcc81afe06054b62b4f8734a",
+    "chromium/preview/drills/catalog.dark.320.png": "12f206aa03e45a49619dd395dc5e75fac7e0b262876ddd8876c62b45e7ce5cf9",
+    "chromium/preview/drills/catalog.light.390.png": "18606edc85c17ad9f63615147124085d5cb6856b2dfe6938cbee6c6defc5676b",
+    "chromium/preview/drills/custom.dark.390.png": "d954920317cabb41ec23119632ea5eb524c057a595226d1ef53c0da22ec970df",
+    "chromium/preview/drills/catalog.dark.390.png": "90111ef16b12948c753e19370352a825aaa9c7e6c9491bc5b75338d7b51c69eb",
+    "chromium/public/drills/catalog.dark.320.png": "861e14a7dec49db3df6c61a1bed567312a35546e98c30c975bb193cf3f543bd6",
+    "chromium/public/drills/catalog.light.390.png": "b608dbb2f280cd3cf84a3d12747812b4c49748e581096a55d1f3aa9766f8e22b",
+    "chromium/public/drills/custom.dark.390.png": "e1c9636d3fff671ab5ca6e5a50f6d96836df242ebc7b1600bc9637e7e3698d13",
+    "chromium/public/drills/edit-custom.dark.390.png": "6fca4feb6e82f9b2b045b8588ce336553bce2bac3787c3ca2bec021d0ac6ab83",
+    "chromium/public/drills/catalog.dark.390.png": "817fbc5eeadc475ea4867ec0cf5a2b662b7ad587f82ca49a2d07cab38f3a04f6"
+  },
+  "performanceInvestigation": "Post-push39835341026 and candidate39897915233 public WebKit warm failed. The body-entry experiment also regressed Chromium returning startup and was removed. Current candidate compacts safe HTML syntax/layout whitespace with DOM/value/raw-text tests; complete unchanged acceptance pending.",
+  "acceptanceRun": 39900134721,
+  "acceptanceCandidateCommit": "c161108",
+  "reviewPatchCommit": "39b71df",
+  "reviewPatchSha256": "9ed3245a6e80faab40377c483155942837614653219ee3c975f70100630136ff",
+  "performanceResolution": "Standard Vite loading retained; safe HTML syntax/layout-whitespace compression tested. Advisory mixed-build experiments run separately from required benchmarks. Original baselines, metrics, sample counts, limits and controls unchanged.",
+  "localAcceptance": "983 tests/142 suites plus original coverage ratchet;16smoke;14public+14preview Chromium workflows; type/lints/architecture/docs/minified distribution/payload checks pass."
+}

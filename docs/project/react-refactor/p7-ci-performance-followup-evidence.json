@@ -1,0 +1,331 @@
+{
+  "date": "2026-10-21",
+  "stage": "P7, incomplete",
+  "sourceParent": "539692c82d7fa577822514a928981da0aabf1450",
+  "canonicalPriorRun": {
+    "id": 39543701173,
+    "conclusion": "failure",
+    "passed": [
+      "validate",
+      "screenshots (public)",
+      "screenshots (preview)"
+    ],
+    "failed": {
+      "public": [
+        "WebKit warm median 37 -> 44 ms; 38/40 slower pairs; 99% median difference 6..11 ms",
+        "Chromium navigation median 27.6 -> 31.2 ms; 40/40 slower pairs; interval 2.7..4.5 ms"
+      ],
+      "preview": [
+        "Chromium startup JavaScript gzip 55502 > 55101 in eight samples",
+        "Chromium navigation median 21.8 -> 25 ms; 40/40 slower pairs; interval 2.1..4.7 ms",
+        "Chromium returning median 674.7 -> 682 ms; 32/40 slower pairs; interval 1.8..10.8 ms"
+      ]
+    }
+  },
+  "changes": [
+    "Prepare optional Drills module after the native frame, retaining its guarded later-entry mount",
+    "Import private progressView only on Full History entry; text records render independently",
+    "Guard late graph completion by current history token, gun, route and entitlement; preserve text and report failed download",
+    "Service worker cache v63"
+  ],
+  "verification": {
+    "jest": {
+      "tests": 945,
+      "suites": 138,
+      "coverageRatchet": "pass, unchanged"
+    },
+    "static": [
+      "typecheck",
+      "lint:runtime",
+      "lint:components",
+      "verify:architecture"
+    ],
+    "smoke": 16,
+    "localBrowser": {
+      "renderer": "system Chromium, diagnostic; canonical pinned-image acceptance separate",
+      "public": 7,
+      "preview": 11,
+      "newCases": [
+        "no chart startup request; pending load preserves text/navigation/filter identity",
+        "failed chart download preserves saved text; Free hides charts",
+        "old-gun chart completion cannot paint current gun"
+      ]
+    },
+    "payload": {
+      "public": {
+        "jsRaw": 165907,
+        "jsGzip": 50417,
+        "htmlRaw": 55757,
+        "htmlGzip": 12460
+      },
+      "preview": {
+        "jsRaw": 167480,
+        "jsGzip": 50892,
+        "htmlRaw": 56396,
+        "htmlGzip": 12627
+      },
+      "css": {
+        "raw": 61451,
+        "gzip": 13011
+      },
+      "originalBudgets": "unchanged; both static payload gates pass"
+    },
+    "visualReferences": "390 references / 83 captures / 12 GIFs unchanged; affected same-theme runtime pixels pass"
+  },
+  "remaining": [
+    "Canonical timing acceptance including WebKit warm and preview returning",
+    "First-entry fallback retirement and final semantic duplicate audit",
+    "Steady-state memory audit",
+    "Final acceptance and P8 architecture/entry-point handoff",
+    "Real-device iPhone acceptance separate"
+  ],
+  "publication": "b only; main/dev and deployments unchanged",
+  "localTiming": {
+    "renderer": "system Chromium 154; diagnostic, not canonical acceptance",
+    "requestedPairs": 2,
+    "actualPairs": 4,
+    "errors": [],
+    "comparisons": {
+      "cold": {
+        "baseline": {
+          "median": 741.3999999761581,
+          "p95": 775,
+          "samples": [
+            741.3999999761581,
+            775,
+            719.1000000238419,
+            711.7000000476837
+          ]
+        },
+        "candidate": {
+          "median": 722.3000000119209,
+          "p95": 723.5,
+          "samples": [
+            723.5,
+            722.3000000119209,
+            681,
+            706.5
+          ]
+        },
+        "slowerPairs": 0,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -52.69999998807907,
+            "upper": -5.200000047683716
+          },
+          "p95": {
+            "lower": -52.69999998807907,
+            "upper": -12.600000023841858
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "warm": {
+        "baseline": {
+          "median": 262.10000002384186,
+          "p95": 273.9000000357628,
+          "samples": [
+            205.5999999642372,
+            256.7999999523163,
+            262.10000002384186,
+            273.9000000357628
+          ]
+        },
+        "candidate": {
+          "median": 262,
+          "p95": 339.0999999642372,
+          "samples": [
+            262,
+            191.9000000357628,
+            194,
+            339.0999999642372
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": true,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -68.10000002384186,
+            "upper": 65.19999992847443
+          },
+          "p95": {
+            "lower": -68.10000002384186,
+            "upper": 65.19999992847443
+          }
+        },
+        "regression": false,
+        "interpretation": "Point signal not confirmed after resampling; retain uncertainty, no speedup claimed."
+      },
+      "returning": {
+        "baseline": {
+          "median": 329.0999999642372,
+          "p95": 356.30000001192093,
+          "samples": [
+            329.0999999642372,
+            356.30000001192093,
+            286.9000000357628,
+            306.89999997615814
+          ]
+        },
+        "candidate": {
+          "median": 301.69999998807907,
+          "p95": 317.10000002384186,
+          "samples": [
+            265.2999999523163,
+            288,
+            301.69999998807907,
+            317.10000002384186
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -68.30000001192093,
+            "upper": 14.799999952316284
+          },
+          "p95": {
+            "lower": -68.30000001192093,
+            "upper": 10.200000047683716
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "firstAction": {
+        "baseline": {
+          "median": 79,
+          "p95": 84.5,
+          "samples": [
+            84.5,
+            79,
+            62.60000002384186,
+            74.69999998807907
+          ]
+        },
+        "candidate": {
+          "median": 73.60000002384186,
+          "p95": 85.89999997615814,
+          "samples": [
+            85.89999997615814,
+            62.700000047683716,
+            63.799999952316284,
+            73.60000002384186
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -16.299999952316284,
+            "upper": 1.399999976158142
+          },
+          "p95": {
+            "lower": -15.200000047683716,
+            "upper": 1.399999976158142
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "navigation": {
+        "baseline": {
+          "median": 70.89999997615814,
+          "p95": 75.20000004768372,
+          "samples": [
+            75.20000004768372,
+            70.89999997615814,
+            68.19999998807907,
+            68.19999998807907
+          ]
+        },
+        "candidate": {
+          "median": 72.30000001192093,
+          "p95": 76.69999998807907,
+          "samples": [
+            76.69999998807907,
+            65.19999998807907,
+            72.30000001192093,
+            70.40000003576279
+          ]
+        },
+        "slowerPairs": 3,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -5.699999988079071,
+            "upper": 4.100000023841858
+          },
+          "p95": {
+            "lower": -0.4999999403953552,
+            "upper": 4.100000023841858
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "clickFeedback": {
+        "baseline": {
+          "median": 124.5,
+          "p95": 132,
+          "samples": [
+            132,
+            123.5,
+            124.5,
+            124.10000002384186
+          ]
+        },
+        "candidate": {
+          "median": 121.30000001192093,
+          "p95": 130.9000000357628,
+          "samples": [
+            104.60000002384186,
+            119.19999998807907,
+            121.30000001192093,
+            130.9000000357628
+          ]
+        },
+        "slowerPairs": 1,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -27.399999976158142,
+            "upper": 6.800000011920929
+          },
+          "p95": {
+            "lower": -12.800000011920929,
+            "upper": 6.800000011920929
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
-import { sequenceResultDetails, renderSequenceRun, renderSequenceReview } from './sessionPresentation.js';
+import { textElement as node } from './textElement.js';
 import { startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
-import { classify, labels, MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
+import { MIN_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
 import {
   DEFAULT_SESSION_CONFIG, normalizeSessionConfig, createSession, tickSession,
   recordSessionDetection, pauseSession, resumeSession, endSession, toSessionRecord,
@@ -11,17 +11,13 @@ import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
 
 const $ = selector => document.querySelector(selector);
-const node = (tag, text, className = '') => {
-  const item = document.createElement(tag);
-  item.textContent = text;
-  item.className = className;
-  return item;
-};
-const seconds = ms => Number.isFinite(ms) ? `${(ms / 1000).toFixed(2)} s` : '—';
+
 
 /** Dedicated timed sessions; free listening retains its own capture lifecycle. */
 export function createSessionController({ getContext, titleFor, ensureSafe, onNavigate, onBack,
-  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord }) {
+  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord, loadPresentation = () => import('./sessionPresentation.js') }) {
+  let presentation;
+  const preparePresentation = async () => presentation ??= await loadPresentation();
   let selection = null;
   let state = null;
   let review = null;
@@ -43,7 +39,11 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   let saveError = null;
   let readToken = 0;
   let lastAnnouncement = '';
-  let routeKey = null;
+  let routeKey = null, view = null, page = null, runModel, reviewModel;
+  const actions = new Map();
+  const bind = (id, handler) => { actions.set(id,handler); $('#'+id).addEventListener('click',handler); };
+  const presentRun = model => { runModel=model; if(!view)return false; view.setRun(model); return true; };
+  const presentReview = model => { reviewModel=model; if(!view)return false; view.setReview(model); return true; };
 
   const locked = () => pending || saving || finishing || !!interruption || !!state && state.phase !== 'review';
   const times = () => ({ monoNow: clock(), epochNow: Date.now(), randomValue: Math.random() });
@@ -100,21 +100,13 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
 
   function renderSequence(record) {
     const steps = record?.drillSteps || selection?.steps || [];
-    const host = $('#sessionSteps');
-    host.replaceChildren();
-    steps.forEach((label, index) => {
-      const item = node('li', titleFor(label), 'drill-step');
-      if (state?.phase === 'active') {
-        if (index < state.current.stepIndex) item.classList.add('done');
-        else if (index === state.current.stepIndex) item.classList.add('current');
-      }
-      host.append(item);
-    });
-    $('#sessionPresetName').textContent = `${steps.length} sound action${steps.length === 1 ? '' : 's'} · ${record ? 'Saved session' : 'Session setup'}`;
+    const rows=steps.map((label,index)=>({text:titleFor(label),className:'drill-step'+(state?.phase==='active'?(index<state.current.stepIndex?' done':index===state.current.stepIndex?' current':''):'')}));
+    const presetName=`${steps.length} sound action${steps.length===1?'':'s'} · ${record?'Saved session':'Session setup'}`;
+    if(page)page.update({steps:rows,presetName});else{const host=$('#sessionSteps');host.replaceChildren(...rows.map(row=>node('li',row.text,row.className)));$('#sessionPresetName').textContent=presetName;}
   }
 
-  const resultDetails = row => sequenceResultDetails(row, { node, titleFor });
-  const renderReview = record => renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails });
+  const resultDetails = row => presentation.sequenceResultDetails(row, { node, titleFor });
+  const renderReview = record => presentation.renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails, present:presentReview });
 
   function announce(text) {
     if (text !== lastAnnouncement) {
@@ -126,7 +118,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   function render() {
     const record = state?.phase === 'review' ? toSessionRecord(state) : review;
     const running = pending || !!state && state.phase !== 'review';
-    $('#sessionGuideLink').classList.toggle('hidden', !!running || !!record);
+    if(page)page.update({guideHidden:!!running||!!record});else $('#sessionGuideLink').classList.toggle('hidden',!!running||!!record);
     $('#sessionConfigure').classList.toggle('hidden', running || !!record);
     $('#sessionRun').classList.toggle('hidden', !running);
     $('#sessionReview').classList.toggle('hidden', running || !record);
@@ -135,7 +127,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if (record && !running) { renderReview(record); return; }
     updateReadiness();
     if (!running) return;
-    renderSequenceRun({ $, state, pending, clock, microphone, readConfig, savedRevision, titleFor, resultDetails, announce, node });
+    presentation.renderSequenceRun({ $, state, pending, clock, microphone, readConfig, savedRevision, titleFor, resultDetails, announce, node, present:presentRun });
   }
 
   async function persist() {
@@ -298,6 +290,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   }
 
   function interrupt(reason = 'ended') {
+    ++readToken; // Navigation cancels pending configuration/review imports as well as capture.
     if (interruption) return interruption;
     if (!locked()) return Promise.resolve();
     const token = ++operation;
@@ -333,7 +326,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     const token = ++readToken;
     const gunId = getContext().gun?.id;
     await configQueue;
-    const saved = config || await getGunSetting('drillConfig', DEFAULT_SESSION_CONFIG, gunId);
+    const [saved] = await Promise.all([config || getGunSetting('drillConfig', DEFAULT_SESSION_CONFIG, gunId), preparePresentation()]);
     if (token !== readToken || getContext().gun?.id !== gunId || locked()) return;
     selection = structuredClone(drill);
     state = null;
@@ -345,17 +338,23 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     $('#session-title').setAttribute('tabindex', '-1'); $('#session-title').focus();
   }
 
-  function showRecord(record) {
+  async function showRecord(record) {
     if (locked() || record.gunId !== getContext().gun?.id) return;
+    const token = ++readToken;
+    try { await preparePresentation(); } catch (error) { if (token === readToken) onError(error); return; }
+    if (token !== readToken || locked() || record.gunId !== getContext().gun?.id) return;
     state = null; review = structuredClone(record); saveError = null; savedRevision = null;
     selection = { id: record.drillId, title: record.drillTitle, steps: [...record.drillSteps] };
     fillConfig(record.config);
     routeKey = crypto.randomUUID(); changed(); onNavigate('session');
   }
 
-  async function renderSavedSessions(gunId, isCurrent = () => true) {
+  function openSavedRecord(record){return record.kind === 'practice' ? onPracticeRecord(record) : showRecord(record);}
+
+  async function renderSavedSessions(gunId, isCurrent = () => true, paint = true) {
     const records = gunId ? await getSessions(gunId) : [];
     if (gunId !== getContext().gun?.id || !isCurrent()) return;
+    if(!paint)return records;
     const host = $('#savedSessions');
     host.replaceChildren();
     if (!records.length) host.append(node('p', 'No saved drill sessions for this gun yet.', 'empty-state'));
@@ -364,7 +363,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
       const count = record.kind === 'practice' ? `${record.shots} shots · ${record.completed} attempts` : `${record.completed}/${record.config.repetitions}`;
       const button = node('button', `${new Date(record.startedAt).toLocaleString()} · ${count} · ${record.status}`, 'button secondary wide-action');
       button.type = 'button';
-      button.addEventListener('click', () => record.kind === 'practice' ? onPracticeRecord(record) : showRecord(record));
+      button.addEventListener('click', () => openSavedRecord(record));
       card.append(node('strong', record.drillTitle), button); host.append(card);
     }
     return records;
@@ -372,7 +371,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
 
   const retrySaveButton = node('button', 'Retry saving results', 'button secondary wide-action hidden');
   retrySaveButton.type = 'button';
-  retrySaveButton.addEventListener('click', () => { enqueue(persist).then(changed).catch(onError); });
+  const retrySave = () => { enqueue(persist).then(changed).catch(onError); };
+  actions.set('retrySessionSave',retrySave);retrySaveButton.addEventListener('click',retrySave);
   $('#sessionReview .session-review-card').append(retrySaveButton);
   $('#sessionConfigForm').addEventListener('submit', event => { event.preventDefault(); start().catch(onError); });
   $('#sessionConfigForm').addEventListener('input', updateReadiness);
@@ -388,13 +388,13 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
       } catch { /* Invalid draft remains editable. */ }
     }
   });
-  $('#pauseSessionBtn').addEventListener('click', () => pause().catch(onError));
-  $('#resumeSessionBtn').addEventListener('click', () => start(true).catch(onError));
-  $('#endSessionBtn').addEventListener('click', () => interrupt().catch(onError));
+  bind('pauseSessionBtn', () => pause().catch(onError));
+  bind('resumeSessionBtn', () => start(true).catch(onError));
+  bind('endSessionBtn', () => interrupt().catch(onError));
   $('#sessionBackBtn').addEventListener('click', () => onBack());
-  $('#backToDrillsBtn').addEventListener('click', () => onNavigate('drills'));
+  bind('backToDrillsBtn', () => onNavigate('drills'));
   $('#sessionLearnBtn').addEventListener('click', () => onNavigate('learn'));
-  $('#repeatSessionBtn').addEventListener('click', () => {
+  bind('repeatSessionBtn', () => {
     const record = state ? toSessionRecord(state) : review;
     if (record) open({ id: record.drillId, title: record.drillTitle, steps: record.drillSteps }, record.config).catch(onError);
   });
@@ -405,6 +405,12 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     return { type: 'sequence', gunId: getContext().gun?.id, routeKey, drill: structuredClone(selection),
       config: { soundAtStart: $('#sessionStartSound').checked } };
   }
-  return { open, showRecord, guideContext, interrupt, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
+  function connectView(mount) {
+    if(view||locked()||saveError)return false;
+    view=mount($('#sessionRun'),$('#sessionReview'),{runModel,reviewModel,titleFor,onAction:id=>actions.get(id)?.()});
+    return true;
+  }
+  function connectPage(mount,onGuide){if(page||locked()||saveError)return false;page=mount($('#sessionView'),{onBack,onGuide});return true;}
+  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

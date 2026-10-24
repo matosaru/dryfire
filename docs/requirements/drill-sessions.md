@@ -2,7 +2,7 @@
 
 CHG-032 current public availability is governed by [build editions](build-editions.md): two-gun public creation under CHG-034, no new custom creation or advanced graphs publicly; full preview retains them. Existing data/preset editing/use/export/restore remain available. This overrides earlier all-free availability statements for these actions without implementing billing or deleting data. Publication/deployment are tracked separately.
 
-Revision: 1.6 · Scope: CHG-014 delivered; CHG-015 optional readiness/practice extension authorized · Implementation: legacy sequences and six practice modes implemented; deployment/device evidence separate
+Revision: 1.6 · Scope: CHG-014 delivered; CHG-015 optional readiness/practice extension authorized · Implementation: legacy sequences and four trigger practices implemented; deployment/device evidence separate
 
 The current app has built-in/custom drill selection, separate free listening and the approved configurable session runner with durable repetition results/start cue. CHG-014 is implemented and locally validated on 2026-10-11; GitHub publication, production deployment and physical-device verification remain separately tracked in [implementation history](../project/implementation-history.md).
 
@@ -65,3 +65,12 @@ The [consolidated practice plan](practice-modes.md) adds six modes and makes non
 5. Completed repetition information is saved against the same gun and session and can be read after a refresh.
 6. The full action sequence is not duplicated in the page title and strip.
 7. Both beep-on and silent modes retain the visual start signal; the generated beep must not be recorded as a learned action.
+
+
+## Distinct sequence catalog — CHG-052
+
+DRILL-10: Display the three multi-action built-in sequences (Rack → Trigger, Magazine → Trigger, Draw → Magazine → Trigger). Do not display the duplicate standalone Trigger pull card; Single trigger press remains in Dry-fire practice. Preserve the legacy `trigger-only` identifier, saved sessions, history/repeat and imported data. Existing custom one-action presets remain accessible. This is a catalog change, not a storage migration.
+
+## CHG-057 catalog card alignment
+
+All trigger-practice, built-in sequence and saved-custom cards use the same shared presentation: decorative target icon, title, sublabel and full-width **▶ Start Drill** action; saved-custom Edit stays separate. Title and sublabel start at exactly the same horizontal text edge, including wrapped/long titles and narrow screens, in both themes and before/after React handoff. Remove the `preset-steps` chip strip from cards only. Underlying sequence order, Configure's single sequence display, help examples, recognition and saved history remain unchanged. No button starts recording directly. Acceptance includes native/React parity, callbacks, no chips, measured text alignment, wrapping/no overflow, and refreshed pinned Chromium/WebKit references for affected catalog/editor states.

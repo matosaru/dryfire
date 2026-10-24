@@ -1,0 +1,9 @@
+.preset-card{border:1px solid #304048;background:#111a20;border-radius:17px;padding:12px;display:grid;gap:9px}
+.preset-header{display:flex;align-items:flex-start;gap:13px}
+.preset-copy{min-width:0;overflow-wrap:anywhere}
+.preset-header h3{font-size:.91rem;line-height:1.35;margin:0}
+.drill-target{flex:0 0 37px;font-size:37px;color:#46baff;line-height:1}
+#drillCatalog .drill-target,#customDrillCatalog .drill-target{color:#b574f6}
+.drill-description{font-size:.73rem;color:#b3c0cc;margin:4px 0 0}
+.preset-card .button{width:100%;min-height:35px;padding:6px;border-radius:8px;font-size:.78rem}
+.wide-action{width:100%}

@@ -1,6 +1,6 @@
 # Drill Session design
 
-CHG-044: stopped configuration now includes **About this practice ›** immediately below its title. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
+CHG-044: stopped configuration now includes **ⓘ About this practice** after context/sounds, immediately before setup. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
 
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
 
@@ -36,3 +36,5 @@ Functional specifications: [drill-sessions](../../../requirements/drill-sessions
 Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
+
+CHG-059 adopts the shared outlined information link and ordered sound list from DrillSetup. See [guide layout requirements](../../../requirements/guide-layout.md); preserve shared shell, fixed navigation and read-only simulated examples. Screenshot acceptance is recorded in project history.

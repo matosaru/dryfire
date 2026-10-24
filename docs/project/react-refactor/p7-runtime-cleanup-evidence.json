@@ -1,0 +1,53 @@
+{
+  "scope": "P7 unused runtime declaration cleanup; no product behavior or visual redesign.",
+  "baseRevision": "fda7dbc",
+  "removed": [
+    "Unused analyzeRecording, classify, labels and practiceStatistics imports.",
+    "Unused seconds formatter, drill-card index and catch binding.",
+    "Write-only selectedTimedDrillId variable and assignments."
+  ],
+  "preserved": [
+    "selectedDrill read and getDrill validation order/error paths.",
+    "selectedDrill persistence writes and controller-owned selection.",
+    "Deliberate rest-sibling persistence-field omissions.",
+    "Compiled HTML, CSS and screenshot/GIF baselines."
+  ],
+  "prevention": "CI lint:runtime rejects unused declarations; deliberate unused binding probe fails as expected. ignoreRestSiblings preserves intentional schema omissions.",
+  "sourceHashes": {
+    "src/main.js": "6e18fa38d4b1f1251e155cbcf80516208fa44049f15e1a95a162b8195ab54025",
+    "src/practiceController.js": "507579f91dc536e5d7f9bb2fca820ee3a3f8357135678b5855a501e65f487021",
+    "src/sessionController.js": "2ead2e4a390eda73c20a40f92282c096f8c6353293a05f2eab5daf90cc58c9a0",
+    "src/uiComponents.js": "332f407603a84aa32b82abd439e2cfd6b19ee6f33ec25e740b070a25484b9686",
+    "workers/sw.js": "4ef50f0601096df46224c3a27d6c586d49507a1729ecfc4f453635791e0b82c6",
+    "tests/profileLoading.test.js": "d596db5fb1749f34824cb846b9dd68fd0f2f76eeed2bbacfaba4784df269e3ac",
+    "eslint.config.mjs": "daf343743b066ba31bd901583f689d6de3ae97eca73e3969695dfa8f65df9a91",
+    ".github/workflows/check.yml": "15d82ee3f71be5d20c990c88327e1dd2b0c6dc0cb824a7b3417b3af96387b854"
+  },
+  "artifacts": {
+    "public": {
+      "jsRaw": 178738,
+      "jsGzip": 54609,
+      "js": "index-BkM5Qdv2.js"
+    },
+    "preview": {
+      "jsRaw": 180033,
+      "jsGzip": 54987,
+      "js": "index-yzBFcvT-.js"
+    },
+    "cssRaw": 61451,
+    "cssGzip": 13011,
+    "cacheVersion": 59
+  },
+  "verification": {
+    "affectedTests": 86,
+    "publicBrowserWorkflows": 13,
+    "previewBrowserWorkflows": 12,
+    "localBrowser": "System Chromium diagnostic; canonical CI remains separate.",
+    "smokeChecks": 16,
+    "typeLintArchitectureDocs": "Passed.",
+    "fullTests": 920,
+    "suites": 133,
+    "coverageRatchet": "Passed, original policy unchanged."
+  },
+  "limitations": "Full-preview gzip is2 bytes above prior artifact. Both editions remain above original performance budgets. Native startup fallback retirement and final duplicate audit remain open."
+}

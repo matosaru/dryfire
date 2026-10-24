@@ -1,0 +1,7 @@
+.gun-switcher { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 15px; margin:0 0 18px; background:linear-gradient(135deg,#1b2833,#101b24); border:1px solid #354c60; border-radius:13px; color:var(--primary-text,#f2f5f9); text-align:left; cursor:pointer; }
+.gun-switcher-copy { display:grid; gap:4px; min-width:0; }
+.gun-switcher-label { font-size:.63rem; font-weight:700; color:#a5b7ca; text-transform:uppercase; letter-spacing:.09em; }
+.gun-switcher strong { font-size:1rem; line-height:1.35; overflow-wrap:anywhere; }
+#activeGunType { color:#b0c5d9; font-size:.75rem; }
+.gun-switcher-action { flex:none; color:#61bfff; font-size:.7rem; }
+.gun-switcher-action>span { display:block; text-align:right; color:#bfcede; font-size:24px; line-height:1; margin-bottom:4px; }

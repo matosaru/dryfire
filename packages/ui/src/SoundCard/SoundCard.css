@@ -1,0 +1,12 @@
+.class-card { display:flex; flex-direction:column; gap:13px; padding:16px; min-width:0; }
+.class-card-top { display:flex; flex-direction:column; align-items:flex-start; gap:12px; min-height:131px; }
+.class-symbol { display:grid; place-items:center; height:45px; width:45px; border-radius:13px; font-size:.9rem; font-weight:900; background:#302014; color:#fa974d; }
+.tone-blue .class-symbol { background:#102942; color:#56adff; }
+.tone-purple .class-symbol { background:#31233c; color:#cb8ef3; }
+.class-card h3 { margin:0 0 5px; font-size:1.25rem; }
+.class-card p { margin:0; line-height:1.42; font-size:.88rem; }
+.progress-label { font-size:.78rem!important; color:#b9c5cb!important; }
+.progress-track { width:100%; background:#273239; border-radius:50px; height:6px; overflow:hidden; }
+.progress-track span { display:block; height:100%; background:#fa9349; border-radius:50px; }
+.tone-blue .progress-track span { background:#56adff; }
+.tone-purple .progress-track span { background:#cb8ef3; }

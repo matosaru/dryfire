@@ -1,0 +1,13 @@
+/**
+ * @jest-environment jsdom
+ * @jest-environment-options {"customExportConditions":["node","node-addons"]}
+ */
+import '@dryfire/testing/setup';
+import {act} from '@testing-library/react';
+import {jest} from '@jest/globals';
+import {mountProgressContent} from '../apps/web/src/app/progressContent';
+import type {ProgressModel} from '@dryfire/ui/ProgressContent';
+const model:ProgressModel={chart:{label:'Example',grid:[],line:'',dots:[],dates:[],note:'Read only',rows:[]},metric:'Timing'};
+test('handoff retains initial disclosure/focus, refresh resets it, and dispose/update are guarded',()=>{document.body.innerHTML='<div id="progressContent"><details open><summary tabindex="0">Old values</summary></details></div>';const host=document.querySelector('#progressContent')!;host.querySelector<HTMLElement>('summary')!.focus();let view:ReturnType<typeof mountProgressContent>;act(()=>{view=mountProgressContent(host,model);});expect(host.querySelector('details')).toHaveAttribute('open');expect(document.activeElement).toBe(host.querySelector('summary'));act(()=>view.update(model));expect(host.querySelector('details')).not.toHaveAttribute('open');act(()=>view.update({empty:'No samples'}));expect(host).toHaveTextContent('No samples');act(()=>view.dispose());act(()=>view.dispose());act(()=>view.update(model));expect(host.childNodes).toHaveLength(0);});
+test('empty and unfocused initial handoff never takes external focus',()=>{document.body.innerHTML='<input id="outside"><div id="progressContent"></div>';const input=document.querySelector<HTMLInputElement>('#outside')!;input.focus();let view:ReturnType<typeof mountProgressContent>;act(()=>{view=mountProgressContent(document.querySelector('#progressContent')!,{});});expect(document.activeElement).toBe(input);act(()=>view.dispose());});
+test('failed commit restores old nodes, focus and event handlers',()=>{document.body.innerHTML='<div id="progressContent"><details><summary tabindex="0">Native</summary></details></div>';const host=document.querySelector('#progressContent')!,summary=host.querySelector<HTMLElement>('summary')!,click=jest.fn();summary.addEventListener('click',click);summary.focus();const environment=globalThis as typeof globalThis&{IS_REACT_ACT_ENVIRONMENT?:boolean},previous=environment.IS_REACT_ACT_ENVIRONMENT;environment.IS_REACT_ACT_ENVIRONMENT=false;try{expect(()=>mountProgressContent(host,{empty:{invalid:true} as unknown as string})).toThrow();}finally{environment.IS_REACT_ACT_ENVIRONMENT=previous;}expect(host.querySelector('summary')).toBe(summary);expect(document.activeElement).toBe(summary);summary.click();expect(click).toHaveBeenCalledTimes(1);});

@@ -1,0 +1,19 @@
+.history-item { flex-wrap:wrap; }
+.history-item .history-controls { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+.history-item .history-controls label { font-size:.78rem; color:#b4c0c7; }
+.history-item select { max-width:175px; font-size:.85rem; }
+.sensitivity-control select:focus-visible,.verify-inline select:focus-visible,.history-item select:focus-visible { outline:3px solid #ffb77f; outline-offset:3px; }
+@media(max-width:440px) { .eval-stats strong { font-size:1.12rem; } .eval-stats { gap:5px; } .eval-stats>div { padding:8px; } }
+
+/* v0.5 · iPhone-first installed experience */
+html { -webkit-text-size-adjust:100%; }
+body { overscroll-behavior-y:contain; }
+button, select, input { font-size:16px; }
+button { -webkit-tap-highlight-color:transparent; }
+.tabs { grid-template-columns:repeat(5,minmax(0,1fr)); gap:2px; }
+.tab { padding:8px 2px; min-width:0; font-size:.78rem; }
+.nav-glyph { display:block; font-size:1.35rem; line-height:1.1; margin-bottom:2px; font-weight:500; }
+.app-shell { padding-bottom:max(40px,env(safe-area-inset-bottom)); }
+.home-kicker { color:#ff9b56; font-weight:850; font-size:.74rem; letter-spacing:.15em; margin-top:10px; }
+.home-title { font-size:clamp(2.2rem,8vw,3.65rem); line-height:1.06; letter-spacing:-.055em; margin:15px 0 14px; }
+.home-title em { color:#ff9141; font-style:normal; }

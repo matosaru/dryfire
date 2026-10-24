@@ -23,13 +23,10 @@ test('par misses remain in hit rate even when only successful timings improve', 
   const stats = progressSummary(progressGroups([r], 'a')[0]);
   expect(stats.hitRate).toBeCloseTo(100 / 3); expect(stats.metrics.median).toBe(300); expect(stats.misses).toBe(2); expect(stats.trend).toBeNull();
 });
-test('repeated/control use intervals, reload uses endpoint split, free uses active rate', () => {
+test('repeated/control use completed click intervals', () => {
   const repeated = record('1', [], { practiceMode: 'repeated', repetitions: [row(100), row(500, 'hit', { intervalMs: 400 }), row(1100, 'hit', { intervalMs: 600 })] });
   expect(progressSummary(progressGroups([repeated], 'a')[0]).metrics.median).toBe(500);
   expect(progressSummary(progressGroups([{ ...repeated, practiceMode: 'control' }], 'a')[0]).points[0].value).toBe(100);
-  const reload = record('1', [], { practiceMode: 'reload', repetitions: [row(1200, 'hit', { stepTimings: [{ splitMs: 500 }, { splitMs: 700 }] })] });
-  expect(progressSummary(progressGroups([reload], 'a')[0]).metrics.median).toBe(700);
-  expect(progressSummary(progressGroups([record('1', [], { practiceMode: 'free', shots: 12, elapsedMs: 120000 })], 'a')[0]).rate).toBe(6);
 });
 test('range filtering, zero-rate and insufficient-data states are truthful', () => {
   const group = progressGroups([record('1', [1000]), record('20', [500])], 'a')[0];

@@ -1,0 +1,27 @@
+/* Shared contextual practice manuals. Their examples never use real audio. */
+.guide-play:focus-visible,.guide-example-options button:focus-visible { outline:3px solid #ffad62; outline-offset:3px; border-radius:5px; }
+body[data-view="practiceGuide"] :is(.safety-disclosure,.gun-switcher) { display:none; }
+.guide-title { font-size:1.55rem; line-height:1.25; margin:0 0 10px; overflow-wrap:anywhere; letter-spacing:-.025em; }
+.guide-kicker { font-size:.68rem; letter-spacing:.13em; color:var(--session-muted); font-weight:750; margin:5px 0 10px; }
+.guide-intro { font-size:1rem; line-height:1.6; margin:6px 0 18px; }
+.guide-current-setup,.guide-example-note { font-size:.72rem; line-height:1.55; color:var(--session-muted); margin:0 0 18px; }
+.guide-media { border:1px solid var(--session-border); border-radius:14px; overflow:hidden; background:#101a22; margin:0 0 10px; }
+
+.guide-media figcaption { display:flex; align-items:center; justify-content:space-between; gap:8px; border-top:1px solid #33434f; padding:8px 11px; font-size:.67rem; color:#c0d1de; }
+.guide-play { min-height:44px; background:transparent; color:#fff; border:1px solid #526674; border-radius:8px; padding:5px 10px; font:inherit; cursor:pointer; white-space:nowrap; }
+.guide-example-options { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px; }
+.guide-example-options button { min-height:44px; padding:8px 12px; border:1px solid var(--session-border); border-radius:9px; background:var(--session-surface); color:inherit; font:inherit; font-size:.8rem; cursor:pointer; }
+.guide-example-options button[aria-pressed="true"] { border-color:#ff9141; text-decoration:underline; text-underline-offset:4px; }
+.guide-card { border:1px solid var(--session-border); background:var(--session-surface); border-radius:13px; padding:15px; margin:0 0 18px; }
+.guide-card h3,.guide-how h3,.guide-note h3 { font-size:.83rem; margin:0 0 8px; }
+.guide-card p,.guide-note p { font-size:.83rem; line-height:1.6; margin:0; }
+.guide-how { margin-bottom:22px; }
+.guide-how ol { list-style:none; counter-reset:guide; margin:0; padding:0; display:grid; gap:14px; }
+.guide-how li { counter-increment:guide; display:grid; grid-template-columns:25px 1fr; gap:10px; font-size:.86rem; line-height:1.55; }
+.guide-how li:before { content:counter(guide); display:grid; place-items:center; align-self:start; width:25px; height:25px; border:1px solid #9e591f; border-radius:50%; background:#3a2517; color:#ffb078; font-size:.75rem; font-weight:850; }
+.guide-note { border-left:3px solid var(--accent-orange); padding-left:12px; margin:0 0 18px; }
+.guide-note p { color:var(--session-muted); }
+.guide-ready { color:var(--session-muted); font-size:.78rem; line-height:1.55; margin:0 0 18px; }
+.guide-ready strong { display:block; color:var(--session-text); margin-bottom:5px; }
+.guide-disclosure { font-size:.72rem; line-height:1.6; text-align:center; color:var(--session-muted); margin:14px 0 0; }
+html[data-theme="light"] .guide-how li:before { background:#fff0e5; color:#713706; border-color:#c98047; }

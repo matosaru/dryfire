@@ -38,7 +38,6 @@ There are **11 numeric input controls**: six in Practice, four in legacy Drill S
 | Positive recording examples: Trigger, Draw, Rack, Magazine, separately for each gun | 10 maximum per type | 3 needed to recognize; 8–10 recommended |
 | Reset, background-noise and external-beep calibration examples, separately per gun/category | 10 maximum per category | Optional; external-beep start needs 3 cue examples |
 | Practice repetitions/click target (`practiceRepetitions`); Drill Session repetitions (`sessionRepetitions`) | 1–100, whole numbers | 10 |
-| Free practice active seconds (`practiceDuration`) | 1–3600, whole seconds | 60; upper limit 60 minutes |
 | Par-time seconds (`practicePar`) | 0.1–30, steps of 0.1 seconds | 1.5 |
 | Fixed start-delay seconds (`practiceFixedDelay`, `sessionFixedDelay`) | 0–30, steps of 0.1 seconds | 3; zero deliberately permits immediate start |
 | Random minimum seconds (`practiceMinDelay`, `sessionMinDelay`) | 0–30, steps of 0.1 seconds | 2; must not exceed maximum |

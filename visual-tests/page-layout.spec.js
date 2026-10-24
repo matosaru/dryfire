@@ -9,6 +9,9 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
     await page.goto('/');
     async function shell() {
       await page.evaluate(() => window.scrollTo(0, 0));
+      const activeView=await page.locator('body').getAttribute('data-view');
+      await expect(page.locator('.view:not(.hidden)')).toHaveCount(1);
+      await expect(page.locator('.view:not(.hidden)')).toHaveAttribute('id',activeView+'View');
       await expect(page.getByRole('banner')).toHaveCount(1);
       await expect(page.getByRole('main')).toHaveCount(1);
       await expect(page.getByRole('contentinfo')).toHaveCount(1);

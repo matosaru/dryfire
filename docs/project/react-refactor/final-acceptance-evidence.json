@@ -1,0 +1,958 @@
+{
+  "date": "2026-10-21",
+  "sourceParent": "48466f88f4ca5b4acee7ea34673e77d928207880",
+  "priorCI": {
+    "runId": 39584821542,
+    "validate": "success",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "performancePublic": "navigation load timed out at30000ms; no completed comparison",
+    "performancePreview": "confirmed Chromium navigation median27.6->29ms,37/40 slower pairs; original policy unchanged"
+  },
+  "change": "Look up registered screen hosts by direct document.getElementById instead of CSS selector parsing; same IDs/class toggles/ownership/order",
+  "localVerification": {
+    "affectedTests": 20,
+    "publicBrowserWorkflows": 10,
+    "payloadPublic": {
+      "jsRaw": 166223,
+      "jsGzip": 50557,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "timingErrors": [],
+    "timingComparisons": {
+      "cold": {
+        "baseline": {
+          "median": 734.2000000476837,
+          "p95": 746.8999999761581,
+          "samples": [
+            729.3999999761581,
+            734.2000000476837,
+            746.8999999761581,
+            728.0999999642372
+          ]
+        },
+        "candidate": {
+          "median": 701.1999999880791,
+          "p95": 729,
+          "samples": [
+            701.1999999880791,
+            695.4000000357628,
+            682.5,
+            729
+          ]
+        },
+        "slowerPairs": 1,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -64.39999997615814,
+            "upper": 0.9000000357627869
+          },
+          "p95": {
+            "lower": -51.499999940395355,
+            "upper": -0.3999999761581421
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "warm": {
+        "baseline": {
+          "median": 246,
+          "p95": 258.60000002384186,
+          "samples": [
+            246,
+            241.79999995231628,
+            242.5,
+            258.60000002384186
+          ]
+        },
+        "candidate": {
+          "median": 268.89999997615814,
+          "p95": 299.89999997615814,
+          "samples": [
+            299.89999997615814,
+            210.69999998807907,
+            215.30000001192093,
+            268.89999997615814
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": true,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -31.099999964237213,
+            "upper": 53.89999997615814
+          },
+          "p95": {
+            "lower": -27.19999998807907,
+            "upper": 53.89999997615814
+          }
+        },
+        "regression": false,
+        "interpretation": "Point signal not confirmed after resampling; retain uncertainty, no speedup claimed."
+      },
+      "returning": {
+        "baseline": {
+          "median": 339.2999999523163,
+          "p95": 346.10000002384186,
+          "samples": [
+            319.19999998807907,
+            346.10000002384186,
+            322.80000001192093,
+            339.2999999523163
+          ]
+        },
+        "candidate": {
+          "median": 393.5999999642372,
+          "p95": 417.5999999642372,
+          "samples": [
+            393.5999999642372,
+            309.7999999523163,
+            276.5999999642372,
+            417.5999999642372
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": true,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -46.200000047683716,
+            "upper": 78.30000001192093
+          },
+          "p95": {
+            "lower": -36.300000071525574,
+            "upper": 78.30000001192093
+          }
+        },
+        "regression": false,
+        "interpretation": "Point signal not confirmed after resampling; retain uncertainty, no speedup claimed."
+      },
+      "firstAction": {
+        "baseline": {
+          "median": 73,
+          "p95": 96.19999998807907,
+          "samples": [
+            96.19999998807907,
+            65.89999997615814,
+            59.89999997615814,
+            73
+          ]
+        },
+        "candidate": {
+          "median": 74.60000002384186,
+          "p95": 81.89999997615814,
+          "samples": [
+            60.5,
+            74.60000002384186,
+            69.80000001192093,
+            81.89999997615814
+          ]
+        },
+        "slowerPairs": 3,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -35.69999998807907,
+            "upper": 9.900000035762787
+          },
+          "p95": {
+            "lower": -26.399999976158142,
+            "upper": 8.899999976158142
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "navigation": {
+        "baseline": {
+          "median": 79.80000001192093,
+          "p95": 111.80000001192093,
+          "samples": [
+            111.80000001192093,
+            79.80000001192093,
+            74.19999998807907,
+            76.30000001192093
+          ]
+        },
+        "candidate": {
+          "median": 85.69999998807907,
+          "p95": 99.69999998807907,
+          "samples": [
+            85.69999998807907,
+            66.69999998807907,
+            67.20000004768372,
+            99.69999998807907
+          ]
+        },
+        "slowerPairs": 1,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -26.100000023841858,
+            "upper": 23.399999976158142
+          },
+          "p95": {
+            "lower": -26.100000023841858,
+            "upper": 23.399999976158142
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "clickFeedback": {
+        "baseline": {
+          "median": 158.80000001192093,
+          "p95": 168.69999998807907,
+          "samples": [
+            168.69999998807907,
+            135.19999998807907,
+            115.30000001192093,
+            158.80000001192093
+          ]
+        },
+        "candidate": {
+          "median": 140.29999995231628,
+          "p95": 140.4000000357628,
+          "samples": [
+            140.4000000357628,
+            116.10000002384186,
+            126.60000002384186,
+            140.29999995231628
+          ]
+        },
+        "slowerPairs": 1,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -28.299999952316284,
+            "upper": 11.300000011920929
+          },
+          "p95": {
+            "lower": -28.299999952316284,
+            "upper": -8.599999964237213
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      }
+    },
+    "timingScope": "4-pair system Chromium diagnostic; not canonical acceptance"
+  },
+  "architectureDecision": "CHG-051/decision001: retain tested startup adapters and original gates",
+  "references": "CSS,390 reference images,83 captures,12 GIFs unchanged",
+  "cache": "v65",
+  "publication": "b only; no main/dev/deployment",
+  "finalLocalVerification": {
+    "source": "785a69be681f2bee661a70061588a380713b1ab2",
+    "tests": 953,
+    "suites": 138,
+    "coverageRatchet": "pass after full completion; unchanged",
+    "smoke": 16,
+    "static": [
+      "typecheck",
+      "lint:components",
+      "lint:runtime",
+      "verify:architecture",
+      "docs:check"
+    ],
+    "browser": {
+      "public": 10,
+      "preview": 16,
+      "renderer": "system Chromium; pinned canonical acceptance separate"
+    },
+    "previewPayload": {
+      "jsRaw": 167799,
+      "jsGzip": 51029,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "privateFixedDataMemory": {
+      "kind": "fixed-data route lifecycle diagnostic",
+      "source": "785a69b",
+      "samples": [
+        {
+          "index": 1,
+          "errors": [],
+          "samples": [
+            {
+              "cycle": 0,
+              "Documents": 5,
+              "JSEventListeners": 549,
+              "Nodes": 2189,
+              "JSHeapUsedSize": 3415480
+            },
+            {
+              "cycle": 1,
+              "Documents": 5,
+              "JSEventListeners": 842,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 3780540
+            },
+            {
+              "cycle": 2,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 3913424
+            },
+            {
+              "cycle": 3,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4001840
+            },
+            {
+              "cycle": 4,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4088600
+            },
+            {
+              "cycle": 5,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4118832
+            },
+            {
+              "cycle": 6,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4131044
+            },
+            {
+              "cycle": 7,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4141304
+            },
+            {
+              "cycle": 8,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4178844
+            },
+            {
+              "cycle": 9,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4203720
+            },
+            {
+              "cycle": 10,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4222344
+            },
+            {
+              "cycle": 11,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4230508
+            },
+            {
+              "cycle": 12,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4279756
+            },
+            {
+              "cycle": 13,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4285616
+            },
+            {
+              "cycle": 14,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4289576
+            },
+            {
+              "cycle": 15,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4304184
+            },
+            {
+              "cycle": 16,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4306348
+            },
+            {
+              "cycle": 17,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4312360
+            },
+            {
+              "cycle": 18,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4317048
+            },
+            {
+              "cycle": 19,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4327248
+            },
+            {
+              "cycle": 20,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4349408
+            },
+            {
+              "cycle": 21,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4367072
+            },
+            {
+              "cycle": 22,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4375696
+            },
+            {
+              "cycle": 23,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4382316
+            },
+            {
+              "cycle": 24,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4448344
+            },
+            {
+              "cycle": 25,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4450432
+            },
+            {
+              "cycle": 26,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4453800
+            },
+            {
+              "cycle": 27,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4474388
+            },
+            {
+              "cycle": 28,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4478532
+            },
+            {
+              "cycle": 29,
+              "Documents": 5,
+              "JSEventListeners": 985,
+              "Nodes": 2190,
+              "JSHeapUsedSize": 4483740
+            }
+          ]
+        }
+      ]
+    },
+    "privateMemoryInterpretation": "30 cycles alternate Full graph filters and canceled unsaved custom-editor drafts, then Free mode. No page errors; nodes/listeners stable2190/985 by cycle5 through29. Post-GC heap cycle5->29 4118832->4483740 bytes. No zero-leak/flat-heap claim; no new records saved."
+  },
+  "finalContentAudit": {
+    "files": 308,
+    "scopes": [
+      "src",
+      "apps/web/src",
+      "packages/ui/src",
+      "tools"
+    ],
+    "nonemptyExactDuplicateGroups": [],
+    "limits": "Does not establish zero semantic duplication or unreferenced CSS; active startup/platform adapters retained underCHG-051."
+  },
+  "canonicalRun785a69b": {
+    "runId": 39587543820,
+    "validate": "success",
+    "publicScreenshots": "success",
+    "previewScreenshots": "317 passed,1 failed: resume test called synthetic ready before input attachment at practice-start:122",
+    "performance": {
+      "public": "confirmed WebKit warm median38->43ms,36/40 slower pairs; DOMInteractive15->21ms, responseEnd3->5ms",
+      "preview": "confirmed Chromium navigation median21.6->22ms,32/40 slower pairs"
+    }
+  },
+  "testSynchronizationRepair": {
+    "file": "visual-tests/practice-start.spec.js",
+    "change": "Wait for observable synthetic inputActive before manual ready; hold resume permission explicitly and assert connecting/no input until release",
+    "unchanged": [
+      "application sources",
+      "timing thresholds and clocks",
+      "existing scenario assertions",
+      "screenshot/image baselines",
+      "test retries and CI gates"
+    ],
+    "localPreview": 6,
+    "localPublic": 6
+  },
+  "supersededTestOnlyRun": {
+    "id": 39589082064,
+    "action": "cancellation requested to avoid spending on superseded source; not treated as acceptance",
+    "conclusion": "cancelled"
+  },
+  "htmlAndVisibilityCandidate": {
+    "parent": "7b6999fbe3b18e349ff67850a2de90e8de9d8bcb",
+    "changes": [
+      "Only previous and destination registered hosts receive hidden-class updates; every route starts from one active host",
+      "Build-only html-minifier-terser7.2.0 removes safe body quotes; head, literal classes and preview marker preserved; no runtime dependency added"
+    ],
+    "tests": 956,
+    "suites": 139,
+    "originalCoverageRatchet": "pass after completion",
+    "parsedDomEquivalence": "3 tests preserve compiled full-app DOM, native values, text/whitespace, SVG, raw script/style and quoted edge values",
+    "previewBrowser": 20,
+    "previewDetail": "18 primary workflows plus2 guide pixel cases; six layout cases rerun with strengthened exactly-one-active-host assertions",
+    "publicBrowser": 18,
+    "references": "CSS/image/GIF/frame baselines unchanged",
+    "cache": "v66",
+    "payload": {
+      "public": {
+        "jsRaw": 166286,
+        "jsGzip": 50575,
+        "htmlRaw": 54087,
+        "htmlGzip": 12376
+      },
+      "preview": {
+        "jsRaw": 167862,
+        "jsGzip": 51042,
+        "htmlRaw": 54708,
+        "htmlGzip": 12538
+      },
+      "css": {
+        "raw": 61451,
+        "gzip": 13011
+      },
+      "originalBudgets": "unchanged and both static gates pass"
+    }
+  },
+  "retainedIntermediateLocalFailure": {
+    "renderer": "system Chromium,4 pairs; intermediate two-host remove() variant before final no-op-preserving toggle()",
+    "errors": [
+      "chromium clickFeedback: confirmed p95 tail slowdown (3/4 slower pairs); baseline median/p95 128.30000001192093/141.80000001192093, candidate 142.19999998807907/165.69999998807907; 99% difference interval {\"method\":\"paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds\",\"median\":{\"lower\":-9.500000059604645,\"upper\":64.69999998807907},\"p95\":{\"lower\":0.3999999761581421,\"upper\":44.59999996423721}}."
+    ],
+    "comparisons": {
+      "cold": {
+        "baseline": {
+          "median": 737.5,
+          "p95": 743.5,
+          "samples": [
+            716,
+            737.5,
+            729.5999999642372,
+            743.5
+          ]
+        },
+        "candidate": {
+          "median": 717.5999999642372,
+          "p95": 752.8999999761581,
+          "samples": [
+            682.5,
+            752.8999999761581,
+            717.5999999642372,
+            714.6000000238419
+          ]
+        },
+        "slowerPairs": 1,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -33.5,
+            "upper": 15.399999976158142
+          },
+          "p95": {
+            "lower": -28.899999976158142,
+            "upper": 15.399999976158142
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "warm": {
+        "baseline": {
+          "median": 244,
+          "p95": 272.69999998807907,
+          "samples": [
+            237.80000001192093,
+            242.89999997615814,
+            244,
+            272.69999998807907
+          ]
+        },
+        "candidate": {
+          "median": 251,
+          "p95": 256.19999998807907,
+          "samples": [
+            241.89999997615814,
+            241.4000000357628,
+            256.19999998807907,
+            251
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -21.69999998807907,
+            "upper": 12.199999988079071
+          },
+          "p95": {
+            "lower": -21.69999998807907,
+            "upper": 12.199999988079071
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "returning": {
+        "baseline": {
+          "median": 335.60000002384186,
+          "p95": 353.30000001192093,
+          "samples": [
+            323,
+            335.60000002384186,
+            353.30000001192093,
+            305.80000001192093
+          ]
+        },
+        "candidate": {
+          "median": 322.2999999523163,
+          "p95": 338.69999998807907,
+          "samples": [
+            298.30000001192093,
+            338.69999998807907,
+            322.2999999523163,
+            319.5
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -31.000000059604645,
+            "upper": 13.699999988079071
+          },
+          "p95": {
+            "lower": -31.000000059604645,
+            "upper": 3.099999964237213
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "firstAction": {
+        "baseline": {
+          "median": 69.60000002384186,
+          "p95": 76.39999997615814,
+          "samples": [
+            69.60000002384186,
+            76.39999997615814,
+            64.60000002384186,
+            60.69999998807907
+          ]
+        },
+        "candidate": {
+          "median": 68.29999995231628,
+          "p95": 71.90000003576279,
+          "samples": [
+            63,
+            71.90000003576279,
+            68.29999995231628,
+            66.10000002384186
+          ]
+        },
+        "slowerPairs": 2,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -6.600000023841858,
+            "upper": 5.400000035762787
+          },
+          "p95": {
+            "lower": -4.499999940395355,
+            "upper": 3.6999999284744263
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "navigation": {
+        "baseline": {
+          "median": 78.89999997615814,
+          "p95": 85.89999997615814,
+          "samples": [
+            78.89999997615814,
+            57.40000003576279,
+            85.89999997615814,
+            68.59999996423721
+          ]
+        },
+        "candidate": {
+          "median": 79.60000002384186,
+          "p95": 81.09999996423721,
+          "samples": [
+            81.09999996423721,
+            76.39999997615814,
+            72.59999996423721,
+            79.60000002384186
+          ]
+        },
+        "slowerPairs": 3,
+        "observedSignal": false,
+        "confirmedSignal": false,
+        "medianConfirmed": false,
+        "tailConfirmed": false,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -13.300000011920929,
+            "upper": 18.999999940395355
+          },
+          "p95": {
+            "lower": -9.5,
+            "upper": 11.000000059604645
+          }
+        },
+        "regression": false,
+        "interpretation": "No repeatable slowdown detected; no speedup claimed."
+      },
+      "clickFeedback": {
+        "baseline": {
+          "median": 128.30000001192093,
+          "p95": 141.80000001192093,
+          "samples": [
+            101,
+            121.10000002384186,
+            128.30000001192093,
+            141.80000001192093
+          ]
+        },
+        "candidate": {
+          "median": 142.19999998807907,
+          "p95": 165.69999998807907,
+          "samples": [
+            165.69999998807907,
+            132.10000002384186,
+            118.79999995231628,
+            142.19999998807907
+          ]
+        },
+        "slowerPairs": 3,
+        "observedSignal": true,
+        "confirmedSignal": true,
+        "medianConfirmed": false,
+        "tailConfirmed": true,
+        "confidence": {
+          "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+          "median": {
+            "lower": -9.500000059604645,
+            "upper": 64.69999998807907
+          },
+          "p95": {
+            "lower": 0.3999999761581421,
+            "upper": 44.59999996423721
+          }
+        },
+        "regression": true,
+        "interpretation": "Confirmed timing regression: stop migration."
+      }
+    },
+    "limits": "Not canonical and not final-source acceptance; failure retained, not discarded."
+  },
+  "canonical65334f0": {
+    "id": 39591151715,
+    "conclusion": "failure",
+    "validate": "success",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "performancePreview": "comparison passes; overall job status recorded separately if needed",
+    "performancePublic": "WebKit warm confirmed median42->50ms,36/40 slower pairs; responseEnd3->6ms, DOMInteractive17->25ms; original policy unchanged"
+  },
+  "catalogParsingCandidate": {
+    "parent": "65334f081576f1c10a8bb8860f103b741e905f7f",
+    "change": "Same typed Practice/calibration card output carried as non-executable trusted HTML data; Practice materializes at normal startup renderCatalog, calibration immediately before first Learn render. No network/idle delay or removed controls.",
+    "validation": {
+      "tests": 959,
+      "suites": 140,
+      "coverageRatchet": "pass unchanged; new runtime helper100% measured statements/branches/functions/lines",
+      "affectedTests": 55,
+      "browserPublic": 19,
+      "browserPreview": 18,
+      "typedDom": "Both catalog roots materialize exactly to their typed/frozen shape; host and delegated handler survive, repeated calls preserve nodes, escaped malicious-looking title stays text",
+      "public": {
+        "jsRaw": 166415,
+        "jsGzip": 50617,
+        "htmlRaw": 54193,
+        "htmlGzip": 12393
+      },
+      "preview": {
+        "jsRaw": 167989,
+        "jsGzip": 51078,
+        "htmlRaw": 54814,
+        "htmlGzip": 12559
+      },
+      "css": {
+        "raw": 61451,
+        "gzip": 13011
+      }
+    },
+    "security": "Only build-owned typed catalog output; roots restricted and nested scripts rejected. Runtime receives no user/stored HTML strings.",
+    "references": "All image/GIF/frame baselines unchanged",
+    "cache": "v67",
+    "canonical": "pending new candidate publication",
+    "initialParserElements": {
+      "original": 813,
+      "candidate": 826
+    }
+  },
+  "canonicalD59c96d": {
+    "id": 39594094772,
+    "validation": "success",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "publicComparison": "WebKit warm median37->44ms,33/40 slower pairs; responseEnd3->5ms, DOMInteractive15->22ms",
+    "finalStatus": "observe before claiming full pipeline result"
+  },
+  "inertTemplateAndDiagnosticCandidate": {
+    "parent": "d59c96d533a89dd93c142e0096e09e601fd27566",
+    "changes": [
+      "Replace catalog HTML data scripts/runtime parsing with inert template node movement; no runtime HTML-string parsing",
+      "Add advisory crossed HTML/module startup probe before public comparison; injected diagnostic responses and server timing headers never modify actual dist or original benchmark commands/conditions/policy. Fresh independent browser closes before original gate."
+    ],
+    "verification": {
+      "tests": 959,
+      "suites": 140,
+      "coverageRatchet": "unchanged/pass; runtime catalog helper100% coverage",
+      "affectedTests": 50,
+      "publicBrowser": 19,
+      "publicFinalGuardCases": 4,
+      "previewBrowser": 18,
+      "public": {
+        "jsRaw": 166414,
+        "jsGzip": 50609,
+        "htmlRaw": 54129,
+        "htmlGzip": 12383
+      },
+      "preview": {
+        "jsRaw": 167988,
+        "jsGzip": 51082,
+        "htmlRaw": 54750,
+        "htmlGzip": 12548
+      },
+      "cssRaw": 61451,
+      "cssGzip": 13011,
+      "originalPayloadGates": "pass unchanged"
+    },
+    "diagnosticSmoke": "System Chromium; all crossed cases/no-module controls completed. For harness functionality only, not WebKit acceptance.",
+    "imageGifFrameBaselines": "unchanged",
+    "cache": "v68",
+    "canonical": "pending publication"
+  },
+  "finalAcceptance": {
+    "observedDate": "2026-10-22",
+    "sourceRevision": "8a8906e42c3d9342c9343f2e096ee5f5469d5f68",
+    "runId": 39598533411,
+    "url": "https://github.com/matosaru/dryfire/actions/runs/39598533411",
+    "conclusion": "success",
+    "jobs": {
+      "validate": "success",
+      "screenshots (public)": "success",
+      "screenshots (preview)": "success",
+      "performance (public)": "success",
+      "performance (preview)": "success",
+      "screenshots": "success"
+    },
+    "localFullCoverage": {
+      "tests": 959,
+      "suites": 140
+    },
+    "originalGatesPreserved": true,
+    "architectureDecision": "CHG-051: retain tested progressive startup adapters and guarded lazy React owners",
+    "scope": "b only; no main/dev updates, release merge or manual deployment",
+    "remainingOwnerChecks": [
+      "release promotion",
+      "Cloudflare deployment verification",
+      "physical iPhone Safari/Home Screen acceptance"
+    ]
+  }
+}

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./setup": "./src/setup.ts"
+    "./setup": "./src/setup.ts",
+    "./session-fragments": "./src/renderSessionFragments.tsx"
   }
 }

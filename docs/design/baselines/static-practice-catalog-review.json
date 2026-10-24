@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "change": "CHG-049",
+  "measuredOn": "2026-10-17",
+  "originalApplicationRevision": "6c38bff81662d30279d94d41ca5c949bdbbe1c6e",
+  "originalLocalArtifactMetadata": "54903d6e2f37916cf7aab445aadf77e40c8c8132",
+  "workingTreeBasedOn": "3bbe1b8",
+  "catalogParity": "Frozen released-controller DOM compared with typed prerender output in practiceCatalogParity.test.tsx; all elements/attributes/text equal.",
+  "unchangedSections": {
+    "practiceGuideView": "9468d4ea8b4c844201a8cc7cae76ecf2e652c286c7a210f236db676e8ccb0204",
+    "practiceView": "c5c5f886dd2cb183b0d12ce6a7a630ab170093a1fea66f53279e91a6a886914d",
+    "sessionView": "d4f991b0a3c3a4c55d1256777b44f9749ca6f83bfcb33dfb99427187236d7675"
+  },
+  "unchangedProductionCSS": {
+    "file": "assets/index-DnLrZEQ0.css",
+    "sha256": "235ad2e132f412f60103792e215d91f6e0c8cfa9d23f6c78410182caebb28ec7"
+  },
+  "guideExports": {
+    "count": 12,
+    "bytes": "Retained; every GIF hash verified unchanged.",
+    "reason": "Only the static catalog outside guide/run/review changed. Actual guide/run/review HTML and CSS are byte-identical; presentation/example/engine sources unchanged. Coarse template-compiler fingerprint revalidated against this input proof; no claim of re-encoding."
+  },
+  "candidateCanonicalValidation": "Pending both-edition pinned screenshot/performance CI; no expected image updated."
+}

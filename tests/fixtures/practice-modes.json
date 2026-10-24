@@ -1,0 +1,22 @@
+[
+  {
+    "id": "single",
+    "title": "Single trigger press",
+    "description": "Reaction time for one click after each start signal."
+  },
+  {
+    "id": "repeated",
+    "title": "Repeated trigger press",
+    "description": "Count distinct clicks and the intervals between them."
+  },
+  {
+    "id": "par",
+    "title": "Par time practice",
+    "description": "Recognize a click within your chosen time limit."
+  },
+  {
+    "id": "control",
+    "title": "Trigger control",
+    "description": "Compare the consistency of your detected click intervals."
+  }
+]

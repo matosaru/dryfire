@@ -1,0 +1,377 @@
+{
+  "version": 1,
+  "measuredOn": "2026-10-17",
+  "applicationRevision": "6c38bff81662d30279d94d41ca5c949bdbbe1c6e",
+  "scope": [
+    "src/**/*.js",
+    "workers/**/*.js",
+    "apps/web/src/**/*.{ts,tsx}",
+    "packages/ui/src/**/*.{ts,tsx}"
+  ],
+  "total": {
+    "statements": 55.04,
+    "branches": 61.11,
+    "functions": 61.32,
+    "lines": 57.97
+  },
+  "files": {
+    "apps/web/src/app/informationBridge.ts": {
+      "statements": 98.24,
+      "branches": 94.44,
+      "functions": 93.33,
+      "lines": 97.29
+    },
+    "apps/web/src/app/informationPages.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/app/renderInformationPages.tsx": {
+      "statements": 80,
+      "branches": 75,
+      "functions": 100,
+      "lines": 66.66
+    },
+    "apps/web/src/pages/AboutPage/AboutPage.copy.ts": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/pages/AboutPage/AboutPage.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/pages/ContactPage/ContactPage.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/InformationCard/InformationCard.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/PageHeading/PageHeading.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/audio.js": {
+      "statements": 86.78,
+      "branches": 77.96,
+      "functions": 82.35,
+      "lines": 90.67
+    },
+    "src/audioPreferences.js": {
+      "statements": 100,
+      "branches": 85,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/buildEdition.js": {
+      "statements": 100,
+      "branches": 90,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/calibration.js": {
+      "statements": 50,
+      "branches": 75,
+      "functions": 35.71,
+      "lines": 55.55
+    },
+    "src/classifier.js": {
+      "statements": 100,
+      "branches": 96.22,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/drillSession.js": {
+      "statements": 94.95,
+      "branches": 90.18,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/drills.js": {
+      "statements": 97.5,
+      "branches": 98.03,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/evaluation.js": {
+      "statements": 100,
+      "branches": 94.11,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/eventDetector.js": {
+      "statements": 92.24,
+      "branches": 79.24,
+      "functions": 91.66,
+      "lines": 94.21
+    },
+    "src/feedback.js": {
+      "statements": 94.73,
+      "branches": 84.61,
+      "functions": 100,
+      "lines": 95.34
+    },
+    "src/inputLimits.js": {
+      "statements": 95.45,
+      "branches": 95,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/main.js": {
+      "statements": 0,
+      "branches": 0,
+      "functions": 0,
+      "lines": 0
+    },
+    "src/pageDefinitions.js": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/practiceController.js": {
+      "statements": 72.44,
+      "branches": 65.85,
+      "functions": 62.96,
+      "lines": 84.16
+    },
+    "src/practiceGuideController.js": {
+      "statements": 0,
+      "branches": 0,
+      "functions": 0,
+      "lines": 0
+    },
+    "src/practiceGuideExamples.js": {
+      "statements": 97.75,
+      "branches": 98.54,
+      "functions": 86.36,
+      "lines": 99.1
+    },
+    "src/practiceGuideManuals.js": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/practiceGuideRendering.js": {
+      "statements": 0,
+      "branches": 0,
+      "functions": 0,
+      "lines": 0
+    },
+    "src/practiceGuides.js": {
+      "statements": 96.29,
+      "branches": 93.47,
+      "functions": 88.88,
+      "lines": 95.34
+    },
+    "src/practiceProgress.js": {
+      "statements": 100,
+      "branches": 81.33,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/practiceSession.js": {
+      "statements": 92.3,
+      "branches": 92.28,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/recognition.js": {
+      "statements": 97.67,
+      "branches": 78.57,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/safetyGate.js": {
+      "statements": 91.66,
+      "branches": 68.75,
+      "functions": 77.77,
+      "lines": 94.73
+    },
+    "src/screenNavigation.js": {
+      "statements": 89.28,
+      "branches": 75,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/sessionController.js": {
+      "statements": 0,
+      "branches": 0,
+      "functions": 0,
+      "lines": 0
+    },
+    "src/sessionPresentation.js": {
+      "statements": 50.37,
+      "branches": 53.33,
+      "functions": 60,
+      "lines": 49.1
+    },
+    "src/storage.js": {
+      "statements": 90.11,
+      "branches": 84.72,
+      "functions": 96.27,
+      "lines": 95.32
+    },
+    "src/uiComponents.js": {
+      "statements": 87.17,
+      "branches": 69.69,
+      "functions": 83.33,
+      "lines": 94.28
+    },
+    "src/optional/customDrillEditor.js": {
+      "statements": 0,
+      "branches": 0,
+      "functions": 0,
+      "lines": 0
+    },
+    "src/optional/previewTesting.js": {
+      "statements": 67.44,
+      "branches": 62.06,
+      "functions": 69.23,
+      "lines": 65.51
+    },
+    "src/optional/progressView.js": {
+      "statements": 0,
+      "branches": 0,
+      "functions": 0,
+      "lines": 0
+    },
+    "workers/pcm-capture.worklet.js": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "workers/privatePreview.js": {
+      "statements": 88.57,
+      "branches": 75.75,
+      "functions": 80,
+      "lines": 92.59
+    },
+    "workers/sw.js": {
+      "statements": 100,
+      "branches": 94.28,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/app/routeContext.ts": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/app/renderPracticeCatalog.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/app/chromeBridge.ts": {
+      "statements": 100,
+      "branches": 97.43,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/app/chromePages.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/app/renderAppShell.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/app/renderCalibrationCatalog.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "apps/web/src/app/renderNumberInput.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/AppShell/AppShell.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/BottomNavigation/BottomNavigation.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/BrandHeader/BrandHeader.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/CalibrationCatalog/CalibrationCatalog.copy.ts": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/InfoFooter/InfoFooter.tsx": {
+      "statements": 100,
+      "branches": 83.33,
+      "functions": 100,
+      "lines": 100
+    },
+    "packages/ui/src/NumberInput/NumberInput.tsx": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    },
+    "src/practiceModes.js": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    }
+  },
+  "newRuntimeRoots": [
+    "apps/web/src/",
+    "packages/ui/src/"
+  ],
+  "newRuntimeMinimum": {
+    "statements": 90,
+    "branches": 80,
+    "functions": 90,
+    "lines": 90
+  }
+}

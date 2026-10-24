@@ -1,0 +1,130 @@
+{
+  "change": "CHG-049 P6 shared structural components",
+  "reviewedOn": "2026-10-20",
+  "nativeSourceRevision": "d4d5aa9",
+  "candidateBase": "d4d5aa9",
+  "scope": "Shared structural prerender only; native controllers and read-only live/example rendering unchanged. Runtime React handoff remains pending.",
+  "sourceHashes": {
+    "apps/web/src/app/renderSessionFragments.tsx": "36b22fd867e153d4c95d7253eff529f39f1bd3f315cc62c539a36b564a59be4c",
+    "packages/ui/src/PracticeRun/PracticeRun.tsx": "e7c5d932087a744e8f7314784244cef2776b2cb7b02c4c1d2b34180c053c053d",
+    "packages/ui/src/PracticeRun/PracticeRun.css": "1733f93c5580166ed12c7672c41ca462b70ffe47a26ce301a658b69ceeb34d3a",
+    "packages/ui/src/PracticeRun/PracticeRun.test.tsx": "a22a8bb048702a126d3411758a8eabcbd0778dc115bf05a38c5961073e4e0ed4",
+    "packages/ui/src/PracticeReview/PracticeReview.tsx": "89f2e20453b5653dc40d5861650106e41e9d3006f7e1a2bdf796099c9a507d1d",
+    "packages/ui/src/PracticeReview/PracticeReview.css": "371db58124b0e00f9be8f17c289ea3c13fd581caf7cf01ffcf5b948c11778357",
+    "packages/ui/src/PracticeReview/PracticeReview.test.tsx": "5bdbf030f4c07c94ce2497f25b6b142869af4c6b3e5726118d34c14cdec215de",
+    "packages/ui/src/SequenceRun/SequenceRun.tsx": "399c695a396e126b46bb63da463b287a58c913eb925c18d468cab5281f746502",
+    "packages/ui/src/SequenceRun/SequenceRun.css": "949ad9dd299acd94b1563bf6c1107c8d6ebefa487531ed40dd117c8c90ee0ab2",
+    "packages/ui/src/SequenceRun/SequenceRun.test.tsx": "3b784ef21c95d7294a536c7cdedcf580aceabe2dc74f14df46d44a1d3eba03c5",
+    "packages/ui/src/SequenceReview/SequenceReview.tsx": "d8c6ecc53e89e2848db900d29406eaabd5f2b0d557a881c9828294f923eeaf0d",
+    "packages/ui/src/SequenceReview/SequenceReview.css": "3f8a7949dda9e2d07ba7102db172279cf0e4bf7850cfc794d71065f7b20a475a",
+    "packages/ui/src/SequenceReview/SequenceReview.test.tsx": "ba276affc64d363315d41056ed4c108c13125721efac96d61c96148aaab9a091"
+  },
+  "cases": {
+    "single": {
+      "frames": 91,
+      "sha256": "b9bdb4feeaa709e0006ce4a812093a506bd2b3d7fff5bf27158292a9d05d63d8"
+    },
+    "single-early": {
+      "frames": 81,
+      "sha256": "94c5e9011b0076581e5e364b8dacf5df7f4003854be330d8f29bcfca2286c663"
+    },
+    "repeated": {
+      "frames": 68,
+      "sha256": "df650f7007016d29fd04bc7b6ac34d19e0e79010ca61e123c8a7ff7dcd2d7172"
+    },
+    "par": {
+      "frames": 133,
+      "sha256": "c832db96c622325f93cd2f37ef57ad2c0711de505c961d85c33d838da675f8c9"
+    },
+    "control": {
+      "frames": 68,
+      "sha256": "df650f7007016d29fd04bc7b6ac34d19e0e79010ca61e123c8a7ff7dcd2d7172"
+    },
+    "reload": {
+      "frames": 123,
+      "sha256": "dfe791a9cd0b942c43fdec3bae84937c55b4c03fcba3d2cefb941dd744578aab"
+    },
+    "free": {
+      "frames": 128,
+      "sha256": "f62cb6cac3122a91e27deda8bece0bad976e954e8b353c4738cb43a648f9f790"
+    },
+    "sequence-trigger-only": {
+      "frames": 109,
+      "sha256": "d1428b519e6bd53146bea21bed374cc10f72755c4021ddf06baf5b94df9c377c"
+    },
+    "sequence-rack-trigger": {
+      "frames": 125,
+      "sha256": "2daa7e9a0bfad861fbdddcf780ba44ddb59920fe4ffd2659cdb143b3a86226e5"
+    },
+    "sequence-mag-trigger": {
+      "frames": 125,
+      "sha256": "011d1f919acb4f3fef17ae2cf8b75004e623738c1e6bb55c1dde0e5d5880fa98"
+    },
+    "sequence-draw-mag-trigger": {
+      "frames": 141,
+      "sha256": "66ff59c51862ebeff61168c9c3a727f47fc2ca1769267603f72b7228d8a7a599"
+    },
+    "sequence-custom": {
+      "frames": 141,
+      "sha256": "66ff59c51862ebeff61168c9c3a727f47fc2ca1769267603f72b7228d8a7a599"
+    }
+  },
+  "frameCount": 1333,
+  "evidence": [
+    "All native and typed complete-frame semantic DOM digests match across12 engine-generated scenarios.",
+    "Exact diagnostic Chromium pixels match native/typed Single, early Single, Reload and custom Sequence posters/reviews in both themes.",
+    "Expanded CSS matches the original baseline byte for byte; optimized index-DnLrZEQ0.css unchanged.",
+    "No image/GIF baseline or comparison threshold changed. Existing encodings retained by input-equivalence review."
+  ],
+  "expandedCSSSha256": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
+  "retainedGifBytes": [
+    {
+      "file": "single.gif",
+      "sha256": "5a54b915c3e89ce9c9dc4c1654533f1100ae8e69e0fe20b4eeb1c0b7ef646888"
+    },
+    {
+      "file": "single-early.gif",
+      "sha256": "a9c97db122e3915ba2ac2d9967a794245d3bbd04515a4a3e32bf6f70b174d9cc"
+    },
+    {
+      "file": "repeated.gif",
+      "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182"
+    },
+    {
+      "file": "par.gif",
+      "sha256": "13dc5caa54b004d3ae240bb74c6579a6240ac4d0a1d97dc7e27b2906d607334a"
+    },
+    {
+      "file": "control.gif",
+      "sha256": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182"
+    },
+    {
+      "file": "reload.gif",
+      "sha256": "e368a9f55028260969757a4d14139dbc0eaee58e8614452fcdc01e946261c97c"
+    },
+    {
+      "file": "free.gif",
+      "sha256": "bb1e2a8b9b62a650ab3fa3f99e57eaca1b3fc075bd84e5d03bea970645c0af58"
+    },
+    {
+      "file": "sequence-trigger-only.gif",
+      "sha256": "e33b277c31155abd1fe024dadad2fbe0905e747d84af4b4bcbc3a3afdab1e1cf"
+    },
+    {
+      "file": "sequence-rack-trigger.gif",
+      "sha256": "ea25a1da44c8d815d89c38124e249d7bc30e579aa1ec7e7c64b7eaf528092614"
+    },
+    {
+      "file": "sequence-mag-trigger.gif",
+      "sha256": "21042b77c1f62af2f489961f84a6e98c613c75fa6e4a42caaf07ce72f1c3fd66"
+    },
+    {
+      "file": "sequence-draw-mag-trigger.gif",
+      "sha256": "28f3d78736d0b457b779d1ae3ca6e3658192988adfec5598038bca5c8174ef51"
+    },
+    {
+      "file": "sequence-custom.gif",
+      "sha256": "bb9904dce957cee1052bc408a7a54eff19502e7f4f6c459fe95efc05a3953cd8"
+    }
+  ]
+}

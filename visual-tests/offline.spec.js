@@ -89,5 +89,34 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
     await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);
     if (edition === 'preview') await expect(page.locator('.progress-chart')).toBeVisible();
     else await expect(page.locator('#progressSection')).not.toBeVisible();
+    const modules=JSON.parse(readFileSync(new URL('../dist/edition.json',import.meta.url))).assets;
+    for(const [view,entry,mount,marker] of [['settings','settingsPage','mountSettingsPage','data-react-settings'],['learn','learnPage','mountLearnPage','data-react-learn'],['recognize','liveListenPage','mountLiveListenPage','data-react-live-listen'],['drills','drillsPage','mountDrillsPage','data-react-drills'],['history','historyPage','mountHistoryPage','data-react-history']]){
+      if(view==='settings')await page.locator('#settingsShortcut').click();else await page.locator(`.tab[data-view="${view}"]`).click();
+      const module=modules.find(path=>path.includes(`/assets/${entry}-`));expect(module).toBeTruthy();
+      expect(await page.evaluate(async({module,mount})=>typeof(await import(module))[mount]==='function',{module,mount})).toBe(true);
+      await page.locator('.tab[data-view="home"]').click();if(view==='settings')await page.locator('#settingsShortcut').click();else await page.locator(`.tab[data-view="${view}"]`).click();
+      await expect(page.locator(`#${view}View`)).toHaveAttribute(marker,'');
+    }
+
+    for(const [entry,view,selector,host] of [['practiceContents','practice','[data-practice-mode="single"]','#practiceRun'],['sequenceContents','session','#drillCatalog .preset-card button','#sessionRun']]){
+      const module=modules.find(path=>path.includes(`/assets/${entry}-`));expect(module).toBeTruthy();
+      await page.locator('.tab[data-view="drills"]').click();await page.locator(selector).first().click();
+      expect(await page.evaluate(async({module,entry})=>typeof(await import(module))[entry==='practiceContents'?'mountPracticeContents':'mountSequenceContents']==='function',{module,entry})).toBe(true);
+      await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="drills"]').click();await page.locator(selector).first().click();
+      await expect(page.locator(host)).toHaveAttribute('data-react-session','');
+      await expect(page.locator('#'+view+'View')).toHaveAttribute(view==='practice'?'data-react-practice':'data-react-session-page','');
+    }
+    const guideModule=modules.find(path=>path.includes('/assets/guideContents-'));expect(guideModule).toBeTruthy();
+    await page.locator('#sessionGuideLink').click();
+    expect(await page.evaluate(async path=>typeof(await import(path)).mountGuideContents==='function',guideModule)).toBe(true);
+    await page.locator('#practiceGuideReturnBtn').click();await page.locator('#sessionGuideLink').click();await expect(page.locator('#example-sessionRun')).toHaveAttribute('data-react-session','');await expect(page.locator('#practiceGuideView')).toHaveAttribute('data-react-guide','');
+    const progressModule=modules.find(path=>path.includes('/assets/progressContent-'));
+    if(edition==='preview'){
+      expect(progressModule).toBeTruthy();
+      expect(await page.evaluate(async path=>typeof(await import(path)).mountProgressContent==='function',progressModule)).toBe(true);
+      await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="history"]').click();
+      await expect(page.locator('#progressContent')).toHaveAttribute('data-react-progress','');
+    }else expect(progressModule).toBeUndefined();
+
   } finally { await disconnect(); }
 });

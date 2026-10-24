@@ -2,9 +2,12 @@ import js from '@eslint/js';
 import ts from 'typescript-eslint';
 import hooks from 'eslint-plugin-react-hooks';
 
-// Incremental scope: new typed components/adapters. Existing tested JavaScript
-// keeps its current contract until its own migration step.
+// Typed components/adapters keep their existing rules. Native runtime cleanup
+// also rejects unused declarations; rest-sibling omissions define saved schemas.
 export default [{
+  files: ['src/**/*.js', 'workers/**/*.js'],
+  rules: { 'no-unused-vars': ['error', { ignoreRestSiblings: true }] },
+}, {
   files: ['apps/**/*.ts', 'apps/**/*.tsx', 'packages/**/*.ts', 'packages/**/*.tsx'],
   languageOptions: { parser: ts.parser, parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
     globals: Object.fromEntries(['document','window','Element','Event','Document','afterEach','beforeEach','test','expect'].map(name => [name, 'readonly'])) },

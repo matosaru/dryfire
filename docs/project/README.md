@@ -1,7 +1,7 @@
 # Project delivery and change control
 
 - [Implementation history and remaining plan](implementation-history.md): delivered, pending, verified and published status after each request.
-- [React refactor plan](react-refactor-plan.md): proposed component/page packages, separate CSS/tests and incremental migration with unchanged visual/data/audio contracts; article comparison remains pending.
+- [React refactor specification](react-refactor/spec.md) and [execution plan](react-refactor/plan.md): current structure/article analysis, measured coverage gaps, unchanged design/functionality, performance/compression gates and staged migration. CHG-049 approves autonomous implementation through the gates; P0 is in progress and the first React increment is already released.
 - [Web commercial roadmap](web-commercial-plan.md): current Contact/SEO, security/performance, research, cloud recovery, single-plan billing and testing stages; native apps deferred.
 - [Approval log](approval-log.md): append-only evidence of user-authorized scope.
 - [Change process](change-process.md): requirements/design maintenance and approval rules.

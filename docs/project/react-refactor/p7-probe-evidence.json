@@ -1,0 +1,267 @@
+{
+  "scope": "Local diagnostic deliberate-slowdown control only; not application acceptance or canonical CI.",
+  "baseRevision": "503b4a9",
+  "edition": "preview",
+  "image": "local-diagnostic",
+  "browserVersion": "154.0.8037.57",
+  "identicalApplicationAssets": true,
+  "runtimeProbe": "Deliberate candidate-only 250 ms startup CPU stall; expected regression.",
+  "samples": "Two requested paired runs plus two confirmation pairs; original confidence/statistical policies unchanged.",
+  "sourceHashes": {
+    "tools/performance/probe-timing.mjs": "59fa94b1fc59e734d04a260a74e27fec249c7330a39dba907586eba6476b725a",
+    "tools/performance/timing-probe-policy.mjs": "0c56f60d0f5f299909d4d38a0868cdbc2b2a02c33e8b52cc5b6a0dbd43150dd4",
+    "tools/performance/measure-browser.mjs": "eed9eed612422692dd0ebbe42d86e8e76f42c8fda79c6a5f0018ee10892f99f7",
+    "tools/performance/observe-readiness.mjs": "98c2702372b30bf935b722c68ff41bb9bcd99c73d310cf505d2465fa020fd4ea",
+    "tests/performanceProbe.test.js": "4f4080968aa930e32f80c16f90787fe40fa9d66e78ae01e59bdd9dcd277c0eca",
+    "tests/performanceReadinessObserver.test.js": "fb35ca666ab1d5799d287266b3dd736ebf112e2179052d5e325a39ccf8bcb8d7"
+  },
+  "comparisons": {
+    "cold": {
+      "baseline": {
+        "median": 778.9000000059605,
+        "p95": 946.9000000059605,
+        "samples": [
+          946.9000000059605,
+          774.1999999880791,
+          769.9000000059605,
+          778.9000000059605
+        ]
+      },
+      "candidate": {
+        "median": 1070.4000000059605,
+        "p95": 1109.300000011921,
+        "samples": [
+          1070.4000000059605,
+          1109.300000011921,
+          1065.0999999940395,
+          1068.699999988079
+        ]
+      },
+      "slowerPairs": 4,
+      "observedSignal": true,
+      "confirmedSignal": true,
+      "medianConfirmed": true,
+      "tailConfirmed": true,
+      "confidence": {
+        "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+        "median": {
+          "lower": 123.5,
+          "upper": 335.10000002384186
+        },
+        "p95": {
+          "lower": 123.5,
+          "upper": 335.10000002384186
+        }
+      },
+      "regression": true,
+      "interpretation": "Confirmed timing regression: stop migration."
+    },
+    "warm": {
+      "baseline": {
+        "median": 699.8000000119209,
+        "p95": 731.9000000059605,
+        "samples": [
+          731.9000000059605,
+          673.1999999880791,
+          665.4000000059605,
+          699.8000000119209
+        ]
+      },
+      "candidate": {
+        "median": 951.5,
+        "p95": 954.5999999940395,
+        "samples": [
+          945.3999999761581,
+          954.5999999940395,
+          937.5999999940395,
+          951.5
+        ]
+      },
+      "slowerPairs": 4,
+      "observedSignal": true,
+      "confirmedSignal": true,
+      "medianConfirmed": true,
+      "tailConfirmed": true,
+      "confidence": {
+        "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+        "median": {
+          "lower": 213.49999997019768,
+          "upper": 281.40000000596046
+        },
+        "p95": {
+          "lower": 213.49999997019768,
+          "upper": 281.40000000596046
+        }
+      },
+      "regression": true,
+      "interpretation": "Confirmed timing regression: stop migration."
+    },
+    "returning": {
+      "baseline": {
+        "median": 787.4000000059605,
+        "p95": 793.4000000059605,
+        "samples": [
+          793.4000000059605,
+          767.9000000059605,
+          787.4000000059605,
+          749.9000000059605
+        ]
+      },
+      "candidate": {
+        "median": 1038,
+        "p95": 1116.2999999821186,
+        "samples": [
+          1033.5,
+          1116.2999999821186,
+          1038,
+          1025.0999999940395
+        ]
+      },
+      "slowerPairs": 4,
+      "observedSignal": true,
+      "confirmedSignal": true,
+      "medianConfirmed": true,
+      "tailConfirmed": true,
+      "confidence": {
+        "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+        "median": {
+          "lower": 240.09999999403954,
+          "upper": 348.39999997615814
+        },
+        "p95": {
+          "lower": 240.09999999403954,
+          "upper": 348.39999997615814
+        }
+      },
+      "regression": true,
+      "interpretation": "Confirmed timing regression: stop migration."
+    },
+    "firstAction": {
+      "baseline": {
+        "median": 81.19999998807907,
+        "p95": 114.5,
+        "samples": [
+          114.5,
+          81.19999998807907,
+          80.19999998807907,
+          62.69999998807907
+        ]
+      },
+      "candidate": {
+        "median": 103,
+        "p95": 103.7999999821186,
+        "samples": [
+          103.7999999821186,
+          103,
+          98.40000000596046,
+          75
+        ]
+      },
+      "slowerPairs": 3,
+      "observedSignal": false,
+      "confirmedSignal": false,
+      "medianConfirmed": false,
+      "tailConfirmed": false,
+      "confidence": {
+        "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+        "median": {
+          "lower": -10.700000017881393,
+          "upper": 21.80000001192093
+        },
+        "p95": {
+          "lower": -10.700000017881393,
+          "upper": 21.80000001192093
+        }
+      },
+      "regression": false,
+      "interpretation": "No repeatable slowdown detected; no speedup claimed."
+    },
+    "navigation": {
+      "baseline": {
+        "median": 99.30000001192093,
+        "p95": 104.5,
+        "samples": [
+          99.30000001192093,
+          104.5,
+          83.80000001192093,
+          70.80000001192093
+        ]
+      },
+      "candidate": {
+        "median": 89.39999997615814,
+        "p95": 92.30000001192093,
+        "samples": [
+          89.39999997615814,
+          92.30000001192093,
+          72.09999999403954,
+          78.5
+        ]
+      },
+      "slowerPairs": 1,
+      "observedSignal": false,
+      "confirmedSignal": false,
+      "medianConfirmed": false,
+      "tailConfirmed": false,
+      "confidence": {
+        "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+        "median": {
+          "lower": -12.199999988079071,
+          "upper": 7.699999988079071
+        },
+        "p95": {
+          "lower": -12.199999988079071,
+          "upper": -5.300000011920929
+        }
+      },
+      "regression": false,
+      "interpretation": "No repeatable slowdown detected; no speedup claimed."
+    },
+    "clickFeedback": {
+      "baseline": {
+        "median": 142.30000001192093,
+        "p95": 192,
+        "samples": [
+          192,
+          142.30000001192093,
+          126.39999997615814,
+          98.7000000178814
+        ]
+      },
+      "candidate": {
+        "median": 128.30000001192093,
+        "p95": 146.7999999821186,
+        "samples": [
+          111.2000000178814,
+          115.59999999403954,
+          128.30000001192093,
+          146.7999999821186
+        ]
+      },
+      "slowerPairs": 2,
+      "observedSignal": false,
+      "confirmedSignal": false,
+      "medianConfirmed": false,
+      "tailConfirmed": false,
+      "confidence": {
+        "method": "paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds",
+        "median": {
+          "lower": -80.7999999821186,
+          "upper": 48.09999996423721
+        },
+        "p95": {
+          "lower": -76.40000000596046,
+          "upper": 20.400000005960464
+        }
+      },
+      "regression": false,
+      "interpretation": "No repeatable slowdown detected; no speedup claimed."
+    }
+  },
+  "errors": [
+    "chromium cold: confirmed paired median slowdown (4/4 slower pairs); baseline median/p95 778.9000000059605/946.9000000059605, candidate 1070.4000000059605/1109.300000011921; 99% difference interval {\"method\":\"paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds\",\"median\":{\"lower\":123.5,\"upper\":335.10000002384186},\"p95\":{\"lower\":123.5,\"upper\":335.10000002384186}}.",
+    "chromium warm: confirmed paired median slowdown (4/4 slower pairs); baseline median/p95 699.8000000119209/731.9000000059605, candidate 951.5/954.5999999940395; 99% difference interval {\"method\":\"paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds\",\"median\":{\"lower\":213.49999997019768,\"upper\":281.40000000596046},\"p95\":{\"lower\":213.49999997019768,\"upper\":281.40000000596046}}.",
+    "chromium warm navigation phase medians (ms since navigation, diagnostic only): baseline {\"responseEnd\":109.2000000178814,\"domInteractive\":122.69999998807907,\"ready\":699.8000000119209}; candidate {\"responseEnd\":118.7999999821186,\"domInteractive\":130.5,\"ready\":951.5}.",
+    "chromium returning: confirmed paired median slowdown (4/4 slower pairs); baseline median/p95 787.4000000059605/793.4000000059605, candidate 1038/1116.2999999821186; 99% difference interval {\"method\":\"paired bootstrap 99% interval, 5000 deterministic resamples; milliseconds\",\"median\":{\"lower\":240.09999999403954,\"upper\":348.39999997615814},\"p95\":{\"lower\":240.09999999403954,\"upper\":348.39999997615814}}."
+  ],
+  "result": "CLI exit 0: actual measurement rejected the deliberate startup slowdown. The former error predicate would reject its accompanying warm-phase diagnostic."
+}

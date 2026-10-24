@@ -1,0 +1,24 @@
+{
+  "change": "CHG-054/055",
+  "collectorRun": 39825212092,
+  "collectorCommit": "bb2befa",
+  "renderer": "Pinned Playwright 1.58.2 Noble Chromium/WebKit in public/preview",
+  "review": "Reviewed 40-image contact sheet: four-card Drills catalog and unchanged sequences, two renamed retained Configure headings, four matching guide headings/themes. Existing shell, layout, manual examples and controls retained. Candidate runtime/no-overflow/state assertions all pass.",
+  "baselinePolicy": "Accept only intended Drills and retained repeated/par heading changes; remove 28 retired screen references and seven current captures. All other golden PNGs retained.",
+  "mediaPolicy": "Delete two retired GIFs; retain ten characterizations and matching media bytes. No retained animation behavior changed.",
+  "dataPolicy": "Schema 4/backup boundary retire only the two specified practice IDs; supported practices/sequences, guns and sounds retained.",
+  "status": "Local acceptance complete; actual application commit/push and remote CI pending. Main/dev/deployment unchanged.",
+  "localAcceptance": {
+    "unit": "964/141 passed with unchanged coverage ratchet; additional retained-mode restore proof 4/4 targeted migration tests passed",
+    "publicBrowser": "12/12 Chromium catalog/manual/loading/native-typed pixel parity checks passed",
+    "previewBrowser": "10/10 Chromium catalog/manual/loading checks passed",
+    "smoke": "16/16 passed",
+    "static": "typecheck, runtime/component lint, architecture, docs and visual manifest passed",
+    "payload": {
+      "publicCriticalJsGzip": 46860,
+      "previewCriticalJsGzip": 47325,
+      "cssGzip": 13011,
+      "originalBudgets": "unchanged and passing"
+    }
+  }
+}

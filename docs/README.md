@@ -6,7 +6,7 @@ Each topic has one authoritative home. A package here is a documentation directo
 | --- | --- |
 | [requirements](requirements/README.md) | Current functional behavior, stable IDs, approved bounds and acceptance criteria |
 | [design](design/README.md) | Current screen/state layouts and screenshots; archived reviewed visual revisions; asset provenance |
-| [architecture](architecture/README.md) | App screen/state registry, generated site tree and maintenance checks |
+| [architecture](architecture/README.md) | App screen/state registry, [application sitemap](architecture/application-sitemap.md), generated site tree and maintenance checks |
 | [development](development/README.md) | Setup, tests, deployment and device validation |
 | [project](project/README.md) | Append-only approval evidence, change process, implementation history and next steps |
 | [business](business/README.md) | Competitor research, simple Free/Pro proposal, Lithuania/Europe requirements and billing/entitlement decisions |

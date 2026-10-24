@@ -1,0 +1,45 @@
+import {test,expect} from '@playwright/test';
+import {readFileSync} from 'node:fs';
+import {installSyntheticMedia} from './media.js';
+const library=readFileSync(new URL('./fixtures/library.json',import.meta.url));
+
+test('delayed chrome enhancement preserves the native safety gate and never duplicates capture or navigation',async({page})=>{
+  let release;
+  const loaded=new Promise(resolve=>{release=resolve;});
+  await page.route('**/assets/informationPages-*.js',async route=>{await loaded;await route.continue();});
+  await page.addInitScript(installSyntheticMedia);
+  await page.addInitScript(()=>{
+    const acquire=navigator.mediaDevices.getUserMedia;
+    window.__chromeMicrophoneRequests=0;
+    navigator.mediaDevices.getUserMedia=(...args)=>{window.__chromeMicrophoneRequests++;return acquire(...args);};
+  });
+  page.on('dialog',dialog=>dialog.accept());
+  await page.goto('/');await page.locator('#restoreGunBackupBtn').click();
+  await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});
+  await expect(page.locator('#homeView')).toBeVisible();
+  await page.evaluate(()=>{window.__nativeSettingsButton=document.getElementById('settingsShortcut');});
+  await page.locator('#aboutBtn').click();await expect(page.locator('#aboutView')).toBeVisible();
+  await page.locator('[data-react-back]').first().click();await expect(page.locator('#homeView')).toBeVisible();
+  await page.locator('.tab[data-view="drills"]').click();await page.locator('[data-practice-mode="single"]').click();
+  await page.locator('#practiceStartBtn').click();await expect(page.locator('#safetyModal')).toBeVisible();
+  release();
+  const module=JSON.parse(readFileSync(new URL('../dist/edition.json',import.meta.url))).assets.find(path=>/\/informationPages-[^/]+\.js$/.test(path));
+  await page.evaluate(async path=>{await import(path);},module);
+  await expect(page.locator('#safetyModalAck')).toBeFocused();
+  expect(await page.evaluate(()=>document.getElementById('settingsShortcut')===window.__nativeSettingsButton)).toBe(true);
+  expect(await page.evaluate(()=>window.__chromeMicrophoneRequests)).toBe(0);
+  await page.locator('#safetyCancelBtn').click();await expect(page.locator('#safetyModal')).not.toBeVisible();
+  await page.locator('.tab[data-view="learn"]').click();await expect(page.locator('#learnView')).toBeVisible();
+  expect(await page.evaluate(()=>document.getElementById('settingsShortcut')===window.__nativeSettingsButton)).toBe(false);
+  const historyLength=await page.evaluate(()=>history.length);
+  await page.locator('#aboutBtn').click();await expect(page.locator('#aboutView')).toBeVisible();
+  expect(await page.evaluate(()=>history.length)).toBe(historyLength+1);
+  await page.locator('.tab[data-view="drills"]').click();await page.locator('[data-practice-mode="single"]').click();
+  await page.locator('#practiceStartBtn').click();await page.locator('#safetyModalAck').check();
+  await page.locator('#safetyConfirmBtn').click();
+  await expect.poll(()=>page.evaluate(()=>window.__visualAudio.inputActive())).toBe(true);
+  expect(await page.evaluate(()=>window.__chromeMicrophoneRequests)).toBe(1);
+  await page.locator('#practiceStopBtn').click();await expect(page.locator('#practiceReview')).toBeVisible();
+  await expect(page.locator('#statusPill')).toHaveText('Practice saved');
+  expect(await page.evaluate(()=>window.__visualAudio.inputActive())).toBe(false);
+});

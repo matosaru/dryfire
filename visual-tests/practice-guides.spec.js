@@ -1,7 +1,14 @@
+import { installPausedClock } from './clock.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { installSyntheticMedia } from './media.js';
 const library = JSON.parse(readFileSync(new URL('./fixtures/library.json', import.meta.url)));
+
+const practice = async (page, mode = 'single') => {
+  await page.locator('.tab[data-view="drills"]').click();
+  await page.locator(`[data-practice-mode="${mode}"]`).click();
+  await expect(page.locator('#practiceConfigure')).toBeVisible();
+};
 
 async function openLibrary(page, theme = 'dark', synthetic = false) {
   if (synthetic) await page.addInitScript(installSyntheticMedia);
@@ -19,17 +26,12 @@ async function openLibrary(page, theme = 'dark', synthetic = false) {
   await page.locator('#importFile').setInputFiles({ name: 'guide-library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
   await expect(page.locator('#homeView')).toBeVisible();
 }
-async function practice(page, mode = 'single') {
-  await page.locator('.tab[data-view="drills"]').click();
-  await page.locator(`[data-practice-mode="${mode}"]`).click();
-  await expect(page.locator('#practiceConfigure')).toBeVisible();
-}
 
-test('all six guides preserve invalid and unsaved setup values, without microphone or safety prompts', async ({ page }) => {
+test('all four guides preserve invalid and unsaved setup values, without microphone or safety prompts', async ({ page }) => {
   await openLibrary(page);
-  for (const mode of ['single', 'repeated', 'par', 'control', 'reload', 'free']) {
+  for (const mode of ['single', 'repeated', 'par', 'control']) {
     await practice(page, mode);
-    const count = mode === 'free' ? '#practiceDuration' : '#practiceRepetitions';
+    const count = '#practiceRepetitions';
     await page.locator(count).fill('17'); await page.locator('#practiceMinDelay').fill('');
     await page.locator('#practiceGuideLink').click();
     await expect(page.locator('#practiceGuideView')).toBeVisible();
@@ -86,12 +88,9 @@ test('animation is initially static, pauses, resumes, stops at review and offers
   expect(await page.evaluate(() => window.__guideMicRequests)).toBe(0);
 });
 
-test('actual Reload endpoints and external/silent setup descriptions are retained', async ({ page }) => {
-  await openLibrary(page, 'light'); await practice(page, 'reload');
-  await page.locator('#practiceReloadStart').selectOption('trigger'); await page.locator('#practiceReloadEnd').selectOption('draw');
+test('external/silent setup descriptions and light-mode contrast are retained', async ({ page }) => {
+  await openLibrary(page, 'light'); await practice(page, 'par');
   await page.locator('#practiceStartSource').selectOption('external'); await page.locator('#practiceGuideLink').click();
-  await expect(page.locator('#practiceGuideSequence')).toContainText('Trigger pull');
-  await expect(page.locator('#practiceGuideSequence')).toContainText('Draw from holster');
   await expect(page.locator('#practiceGuideCurrentSetup')).toContainText('no app countdown');
   const contrasts = await page.locator('.guide-media figcaption').evaluate(caption => {
     const rgb = value => value.match(/[\d.]+/g).slice(0, 3).map(Number);
@@ -105,26 +104,24 @@ test('actual Reload endpoints and external/silent setup descriptions are retaine
     });
   });
   for (const contrast of contrasts) expect(contrast).toBeGreaterThanOrEqual(4.5);
-  await page.locator('#practiceGuideReturnBtn').click(); await expect(page.locator('#practiceReloadStart')).toHaveValue('trigger');
-  await expect(page.locator('#practiceReloadEnd')).toHaveValue('draw');
+  await page.locator('#practiceGuideReturnBtn').click();
+  await expect(page.locator('#practiceConfigure')).toBeVisible();
   await page.locator('#practiceStartSource').selectOption('app'); await page.locator('#practiceStartSound').uncheck();
   await page.locator('#practiceGuideLink').click(); await expect(page.locator('#practiceGuideCurrentSetup')).toContainText('silent visual start');
-  await page.locator('#practiceGuideReturnBtn').click(); await page.locator('#practiceReloadEnd').selectOption('trigger');
-  await page.locator('#practiceGuideLink').click(); await expect(page.locator('#practiceGuideRequires')).toContainText('two different endpoints');
 });
 
 test('built-in and existing custom sequence guides keep their actual steps and edited values', async ({ page }) => {
   await openLibrary(page); await page.locator('.tab[data-view="drills"]').click();
-  await page.locator('#drillCatalog .preset-card').nth(1).getByRole('button', { name: 'Start Drill' }).click();
+  await page.locator('#drillCatalog .preset-card').filter({ has: page.getByRole('heading', { name: 'Rack slide → Trigger pull', exact: true }) }).getByRole('button', { name: 'Start Drill' }).click();
   await expect(page.locator('#sessionConfigure')).toBeVisible(); await page.locator('#sessionRepetitions').fill('29');
   await page.locator('#sessionGuideLink').click(); await expect(page.locator('#practiceGuideKind')).toHaveText('ORDERED SEQUENCE GUIDE');
-  await expect(page.locator('#practiceGuideSequence .preset-chip')).toHaveText(['Rack slide', 'Trigger pull']);
+  await expect(page.locator('#practiceGuideSequence > li.drill-step')).toHaveText(['Rack slide', 'Trigger pull']);
   await page.locator('#practiceGuideReturnBtn').click(); await expect(page.locator('#sessionRepetitions')).toHaveValue('29');
   await page.locator('.tab[data-view="drills"]').click(); await page.locator('#customDrillsTab').click();
   await page.locator('#customDrillCatalog').getByRole('button', { name: 'Start Drill' }).first().click();
   await page.locator('#sessionGuideLink').click(); await expect(page.locator('#practiceGuideName')).toHaveText('QA saved sequence');
   const preset = library.gunSettings.find(row => row.gunId === library.activeGunId && row.key === 'customDrills').value[0];
-  await expect(page.locator('#practiceGuideSequence .preset-chip')).toHaveText(preset.steps.map(s => ({ draw: 'Draw from holster', rack: 'Rack slide', trigger: 'Trigger pull', reload: 'Change magazine' })[s]));
+  await expect(page.locator('#practiceGuideSequence > li.drill-step')).toHaveText(preset.steps.map(s => ({ draw: 'Draw from holster', rack: 'Rack slide', trigger: 'Trigger pull', reload: 'Change magazine' })[s]));
   expect(await page.evaluate(() => window.__guideMicRequests)).toBe(0);
 });
 
@@ -141,7 +138,7 @@ test('a forced guide click cannot leave a pending microphone start', async ({ pa
 
 test('an old guide history entry cannot reopen a setup guide after practice has started', async ({ page }) => {
   await openLibrary(page, 'dark', true);
-  const now = new Date('2026-10-11T11:00:00Z'); await page.clock.install({ time: now }); await page.clock.pauseAt(now);
+  await installPausedClock(page);
   await practice(page);
   await page.locator('#practiceDelayMode').selectOption('fixed'); await page.locator('#practiceFixedDelay').fill('0');
   await page.locator('#practiceStartSound').uncheck();

@@ -588,3 +588,73 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 - Start shared work directly on b and synchronize into Full dev, preserving destination profiles/private deployment controls. Main remains a checked PR; no direct main write or Cloudflare deployment. Production PR #23 is observed merged by the owner before this refactor starts.
 - The exact DEV.to article remains unavailable under the running network policy. The user's instruction starts independent work using the published plan and verified first-party React sources; do not claim the unread article has been compared. R0 remains explicitly pending. No monetization/native/backend feature is started.
 - Implementation, stage validation, publication and remaining work belong in the delivery tracker and migration ledger; no approval is inferred for a visual redesign or data migration.
+
+## CHG-048 — Refactor specification and review gate
+
+- Date: 2026-10-17 (Europe/Vilnius).
+- Latest user request: **“Analyze existing structure”**, **“Prepare spec.md document”**, **“Analyze best practices provided in website”**, **“Prepare plan.md document with refactoring plan”** and **“Show me this plan before processing”**.
+- The expanded request explicitly requires unchanged design/functionality, **“js and css compressing should still be used”**, no final performance downgrade, desirable measured performance improvement, and good visual/unit/integration test coverage **before** refactoring.
+- Authorized now: inspect/research, measure existing tests/build/coverage, prepare and publish [the specification](react-refactor/spec.md) and [plan](react-refactor/plan.md) for review. This latest specific gate pauses further CHG-047 application migration; prior general automation instructions do not approve the new concrete plan.
+- The linked article is successfully retrieved and read on this date. Current architecture, broad vs configured coverage and the lazy-React startup risk are recorded without claiming complete test/accessibility/performance validation.
+- **Proposed, not approved:** stage order, coverage thresholds/ratchets, performance measurement/gates and subsequent implementation. Await owner approval before changing application code, tests/configuration, CSS or reference images/media. Publishing planning documents is not approval or deployment.
+
+## CHG-049 — Approved autonomous refactor implementation
+
+- Date: 2026-10-17 (Europe/Vilnius).
+- Evidence: **“ok. I want you to proceed with a plan. I want to give you full autonomy for implementation. Initial changes should go to b and dev branches”**.
+- This approves the presented CHG-048 specification, staged plan, test/visual/performance gates and unchanged-design/functionality/data/edition constraints. The earlier plan-review pause is satisfied.
+- Execute P0 onward autonomously through the exit gates, without repeating approval for unchanged scope. Shared work enters b then synchronizes into dev retaining Full additions/profile. Main remains checked-PR-only; Cloudflare setup remains owner-managed.
+- A failed exit gate requires investigation and correction, not silently weakened tests, changed designs or a false completion claim. New product behavior and paused commercial/native features remain outside scope.
+
+## CHG-050 — Refactor sequencing and deferred optimization
+
+- Evidence, 2026-10-18: during CHG-049 implementation the owner said **“sometimes it makes sence to do all the refactoring, and then work on optimizations”**.
+- Scope: continue the approved structural migration with functional, visual, data/edition and payload checks; retain known timing debt for final optimization. No design, product behavior or test-baseline change is authorized.
+- Acceptance: timing reports and gates remain unchanged and honestly failing where applicable. Final release still requires original-baseline performance acceptance. Dev remains paused under the existing cost-saving instruction; main is unchanged/PR-only.
+- Tracking: [active refactor plan](react-refactor/plan.md).
+
+## CHG-051 — Delegated startup architecture resolution
+
+- Date: 2026-10-21 (Europe/Vilnius).
+- Evidence: after asking what the native first-entry renderers were and receiving the explanation, the owner said **“use your judgement”** regarding retaining the tested adapters versus revising startup performance requirements.
+- Chosen implementation: retain progressive startup adapters and guarded lazy React ownership. Preserve the original performance budgets, visuals, behavior, data, edition and test invariants. This resolves the unconditional-retirement objective; active adapters are intentional boundaries, while obsolete consumers/duplicate formatting/styles must still be cleaned up.
+- Exact rationale and consequences: [architecture decision001](../architecture/decisions/001-progressive-react-startup.md). No claim of React-only runtime rendering, zero duplication, zero memory overhead or hardware/deployment acceptance.
+- Work remains b only; main/dev unchanged. Complete automated acceptance and the final component/entry-point handoff. No further product scope is authorized.
+
+
+## CHG-052 — Consistent practice cards and distinct sequence catalog
+
+2026-10-22. Direct user instruction: “remove Trigger pull from sequnce drills … match sequence drills styles, add icon, first goes label, then sublabel, and same styleand naming buttons as in sequence drills”. Approved scope: hide the built-in one-action Trigger pull from the displayed sequence catalog; retain its stable definition and saved-data compatibility. All six practice cards reuse sequence-card header/icon/description/button styling and the exact “▶ Start Drill” action label. Actions still open their existing configuration screens before capture. No timing, safety, custom presets, recordings or history changes. Main/dev remain unchanged; publish b only.
+
+## CHG-053 — Consistent Live Listen entry and visible readiness guidance
+
+2026-10-22. Direct request: “review live listen section … it isnot always enabled … still available and accessible in floating bottom menu … sync states of all entry points … add some explanation, visible for a user, why it is not enabled”. User says this follows the current card work and green tests. [Requirements](../requirements/live-listen-readiness.md) preserve the existing trigger minimum/safety/data policies. Engineering choice: navigation consistently opens setup guidance for a valid loaded gun; capture controls alone require training and current-operation readiness. Work remains b-only; main/dev unchanged. Implementation is queued after CHG-052 acceptance, without another confirmation request.
+
+## CHG-054 — Four trigger practices and unchanged sequences
+
+2026-10-22. Direct owner instruction: show “Trigger Press Group” with Single trigger press, Repeated trigger press, Par time practice and Trigger control; remove Reload practice and Free practice; leave Sequence drills as is. Supersedes CHG-052’s six visible practice choices only. Retain saved sessions, their review/repeat/manual compatibility and the existing sequence catalog. No storage migration or deletion. Update catalog tests, documentation and reviewed screen evidence. Work on b only; main/dev remain unchanged.
+
+## CHG-055 — Retire two practice modes and clean their data
+
+2026-10-22. Owner supersedes CHG-054 compatibility decision: “remove all sessions from history, cleanup the code, leave no refence to removed drills”, “optmize the code and structure after removal”. Clarified History scope explicitly: **“Only Reload/Free sessions”**. Remove these two practice engines, controls, manuals, examples and current screenshot states. Delete only their saved sessions/configurations across guns during local schema migration and omit them from old-backup restores. Preserve every other session, sequence drills, magazine-change sound labels/calibration, guns and recordings. Simplify four-mode catalog and shared presentation instead of keeping dormant implementations. Necessary migration regression fixtures and historical change records explain the removal; no user-facing retired choices remain. b only; main/dev unchanged.
+
+## CHG-056 — Complete acceptance before merging
+
+2026-10-22 direct instruction: “can you check all tests before merging to a branch each time ?”. Require complete candidate unit/coverage, integration, public/preview minified builds, pinned Chromium/WebKit screenshots and unchanged performance acceptance before application merges/promotions. No pending, failed or cancelled check is a pass. When local pinned browsers are unavailable, validate a repository review patch through workflow_dispatch before applying application changes. This does not authorize main/dev merges or deployment, nor relax existing gates. The screenshot failure correction is authorized by the owner's bug report.
+
+## CHG-057 — Aligned uniform drill catalog cards
+
+2026-10-22 direct owner request: “after you finish current work … fix alignments of a drill card … Align title with sublabel … Use same style for every card, remove preset-steps section from the drill cards, update all unit and visual tests”. CHG-056 is now fully green before this implementation starts. Apply one icon/title/description/action layout to trigger, built-in and saved-custom cards; remove catalog step chips only. Preserve underlying ordered steps, Configure/session/manual detail, Start/Edit actions, data and edition availability. Update functional/design specifications and pinned reviewed screenshots; require complete acceptance before applying on b. Main/dev remain frozen.
+
+
+## CHG-058 — Shared sequence-style trigger configuration
+
+2026-10-23 direct owner instruction: “sequence drill configuration page looks better … Use sequence drills template in single trigger pull drills configuration pages. Try reusing template”. Authorizes the shared configuration presentation for the four retained trigger modes, preserving mode-specific options, timing/capture/data/safety/edition behavior. [Requirements](../requirements/drill-setup-template.md). Work b only with complete pre-publication gate; main/dev/deployment frozen.
+
+## CHG-059 — Shared guide control, guide sound lists and catalog group colors
+
+2026-10-23: direct owner request: “update link design with your suggestion”, “about this practice pages … common layouts … practiceGuideSequence … old style”, and trigger target #46baff / sequence catalog target #b574f6; update tests and deploy on b. This approves [guide-layout.md](../requirements/guide-layout.md) and the previously proposed outlined information link. No main/dev changes. Cloudflare remains owner-managed; verify publication separately from deployment.
+
+## 2026-10-24 — Application sitemap documentation
+
+Direct owner instruction: “after you finish, create a sitemap of application”. Produce a maintained application navigation map and screen directory on b after CHG-059. This is documentation of implemented screens, not authorization to add public routes, accounts or SEO landing pages.

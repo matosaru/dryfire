@@ -1,0 +1,10 @@
+{
+  "change": "CHG-056",
+  "candidateCommit": "52ff7dd",
+  "candidatePatchSha256": "7b5319973566ca303a04f52d09c60fefff5502369a33ceefe1d99f9d1d32ba87",
+  "acceptanceRun": 39833498121,
+  "result": "All eight jobs succeeded",
+  "policy": "Original baselines, sample counts, thresholds, controls and screenshot references unchanged; independent pinned browser performance jobs.",
+  "local": "980 tests/142 suites, coverage ratchet,16 smoke; public/preview integration passed",
+  "scope": "b only; main/dev frozen; no deployment"
+}

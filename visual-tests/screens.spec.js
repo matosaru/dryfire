@@ -1,3 +1,6 @@
+import { installPausedClock } from './clock.js';
+import { addLegacySequence, openLegacySequence } from './legacy-sequence.js';
+import {freezeMotionArtwork} from './motion-fixture.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { cases, baselineName } from './catalog.js';
@@ -5,13 +8,10 @@ import { installSyntheticMedia } from './media.js';
 
 const library = JSON.parse(readFileSync(new URL('./fixtures/library.json', import.meta.url)));
 const environment = JSON.parse(readFileSync(new URL('./environment.json', import.meta.url)));
-const motionSources = new Map(['draw', 'rack', 'trigger', 'reload'].map(name => [
-  `/motions/${name}.svg`, readFileSync(new URL(`../dist/motions/${name}.svg`, import.meta.url), 'utf8'),
-]));
 const visible = async (page, id) => expect(page.locator(`#${id}`)).toBeVisible();
 const tab = async (page, name) => { await page.locator(`.tab[data-view="${name}"]`).click(); await visible(page, `${name}View`); };
 const practice = async (page, mode = 'single') => { await tab(page, 'drills'); await page.locator(`[data-practice-mode="${mode}"]`).click(); await visible(page, 'practiceConfigure'); };
-const session = async page => { await tab(page, 'drills'); await page.locator('#drillCatalog .preset-card').first().getByRole('button', { name: 'Start Drill' }).click(); await visible(page, 'sessionConfigure'); };
+const session = openLegacySequence;
 
 async function confirmSafety(page) {
   await visible(page, 'safetyModal');
@@ -44,23 +44,17 @@ async function prepare(page, item) {
   await page.addInitScript(installSyntheticMedia);
   // External SVG documents can retain their own CSS/SMIL animation clock.
   // Freeze the existing artwork at its initial frame without changing its shapes.
-  await page.route('**/motions/*.svg', async route => {
-    const path = new URL(route.request().url()).pathname;
-    const source = motionSources.get(path);
-    if (source === undefined) throw new Error(`Unknown built motion asset: ${path}`);
-    const svg = source.replace(/<animate\b[^>]*\/>/g, '')
-      .replace('animation:cue 2s ease-in-out infinite', 'animation:none');
-    await route.fulfill({ status: 200, body: svg, contentType: 'image/svg+xml' });
-  });
-  await page.clock.install({ time: new Date(environment.clock) });
-  await page.clock.pauseAt(new Date(environment.clock));
+  await freezeMotionArtwork(page);
+  await installPausedClock(page, environment.clock);
   if (item.edition === 'preview' && item.state.startsWith('preview-free')) await page.addInitScript(() => localStorage.setItem('dryfire-private-preview-mode', 'free'));
   await page.goto('/');
   expect(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true);
   await visible(page, 'gunSetupView');
   if (item.state !== 'first-gun.dark') {
     const backup = structuredClone(library);
+    if (item.screen === 'session' || item.state.startsWith('sequence-trigger-only')) addLegacySequence(backup);
     backup.settings.appearance = item.state.endsWith('.light') ? 'light' : 'dark';
+    if(item.screen==='recognize' && item.state.startsWith('needs-training'))backup.examples=backup.examples.filter(row=>row.gunId!==backup.activeGunId || row.label!=='trigger');
     if (item.state.startsWith('add-second-gun')) {
       backup.guns = backup.guns.filter(gun => gun.id === backup.activeGunId);
       for (const key of ['examples', 'events', 'sessions', 'gunSettings']) backup[key] = backup[key].filter(row => row.gunId === backup.activeGunId);
@@ -102,8 +96,8 @@ async function prepare(page, item) {
       break;
     case 'drills':
       await tab(page, 'drills');
-      await expect(page.locator('[data-practice-mode]')).toHaveCount(6);
-      await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(4);
+      await expect(page.locator('[data-practice-mode]')).toHaveCount(4);
+      await expect(page.locator('#drillCatalog .preset-card')).toHaveCount(3);
       if (item.state.startsWith('custom')) await page.locator('#customDrillsTab').click();
       if (item.state.startsWith('custom-editor')) {
         await page.locator('#newCustomDrillBtn').click(); await page.locator('#customDrillName').fill('Draw and press');
@@ -158,15 +152,16 @@ async function prepare(page, item) {
         if (state === 'sequence-custom') {
           await page.locator('#customDrillsTab').click();
           await page.locator('#customDrillCatalog').getByRole('button', { name: 'Start Drill' }).first().click();
+        } else if (state === 'sequence-trigger-only') {
+          await openLegacySequence(page);
         } else {
-          const ids = ['trigger-only', 'rack-trigger', 'mag-trigger', 'draw-mag-trigger'];
+          const ids = ['rack-trigger', 'mag-trigger', 'draw-mag-trigger'];
           await page.locator('#drillCatalog .preset-card').nth(ids.indexOf(state.replace('sequence-', ''))).getByRole('button', { name: 'Start Drill' }).click();
         }
         await page.locator('#sessionGuideLink').click();
       } else {
-        const mode = ['single-early', 'external-start', 'silent-start'].includes(state) ? 'single' : state.startsWith('reload-') ? 'reload' : state;
+        const mode = ['single-early', 'external-start', 'silent-start'].includes(state) ? 'single' : state;
         await practice(page, mode);
-        if (state === 'reload-selected-endpoints') { await page.locator('#practiceReloadStart').selectOption('trigger'); await page.locator('#practiceReloadEnd').selectOption('draw'); }
         if (state === 'external-start') await page.locator('#practiceStartSource').selectOption('external');
         if (state === 'silent-start') await page.locator('#practiceStartSound').uncheck();
         await page.locator('#practiceGuideLink').click();
@@ -179,6 +174,8 @@ async function prepare(page, item) {
     }
     case 'recognize':
       await tab(page, 'recognize');
+      if(item.state.startsWith('needs-training')){await expect(page.locator('#trainingSummary')).toContainText('0/3');await expect(page.locator('#listenBtn')).toBeDisabled();}
+      if(item.state.startsWith('connecting')){await page.evaluate(()=>{navigator.mediaDevices.getUserMedia=()=>new Promise(()=>{});});await page.locator('#listenBtn').click();await confirmSafety(page);await expect(page.locator('#trainingSummary')).toContainText('Connecting');await expect(page.locator('#listenBtn')).toBeDisabled();}
       if (item.state.startsWith('listening')) { await page.locator('#listenBtn').click(); await confirmSafety(page); await expect(page.locator('#listeningIndicator')).toContainText('Microphone active'); await emit(page); await expect(page.locator('#sessionTimeline li')).toHaveCount(1); }
       break;
     case 'history':
@@ -230,6 +227,13 @@ for (const item of cases) {
     // Native WebKit controls paint a different accent in an inactive page.
     // Capture an explicitly active page, rather than depending on worker order.
     await page.bringToFront();
+    // Set hover only after activating/resizing the native control surface.
+    if (item.screen === 'practice' && item.state.startsWith('configure-')) {
+      await page.mouse.move(0, 0);
+      // Preserve reviewed native hover states by field, never source-card coordinates.
+      if (item.width === 390 && item.state === 'configure-single.dark' && testInfo.project.name === 'chromium') await page.locator('#practiceRepetitions').hover();
+      if (item.state === 'configure-repeated.dark' && testInfo.project.name === 'webkit') await page.locator('#practiceDelayMode').hover();
+    }
     await expect.poll(() => page.evaluate(() => document.hasFocus())).toBe(true);
     if (item.screen === 'learn') expect(await page.locator('#learnView img').first().evaluate(image => image.currentSrc)).toMatch(/\.svg$/);
     const overflow = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth) - innerWidth);

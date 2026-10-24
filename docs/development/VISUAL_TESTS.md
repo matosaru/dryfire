@@ -85,3 +85,16 @@ CHG-032/033: compare both build editions in independent matrix jobs. Current tar
 CHG-035 private tests use an explicit Full fixture preference for ordinary preview captures and separate Free/Full Settings states. Dedicated clean-context tests check Free default, refresh persistence, full-to-free data preservation, existing-preset editing and forced changes during confirmation/pending microphone permission. Public builds reject browser overrides and omit the test control/module. Private cache-retirement/online refresh replaces its old offline-shell check; public real-offline coverage remains.
 
 CHG-037 target: 266 screenshot comparisons (128 public + 138 preview) plus 82 functional browser checks, **348 total** (168 public / 180 preview). Twelve additional viewport/theme layout checks per edition exercise all pages at 320/390/1024 px; expanded Settings installation-help states are captured in both themes/widths. Pinned candidate generation, unchanged comparison and engineering image review must precede baseline acceptance.
+
+
+## Native configuration hover states — CHG-052
+
+Changing source catalog geometry must not accidentally change destination controls. After resizing/activating a Configure page, move the pointer to the noninteractive gutter, then explicitly reproduce the native states already present in the reviewed references:
+
+| Browser / case | Reviewed hover target |
+| --- | --- |
+| Chromium, Single390px Dark | Repetitions input (native spinner visible) |
+| WebKit, Repeated390px Dark | Ready delay select (native hover background) |
+| Other practice Configure cases | Noninteractive gutter |
+
+Use logical field locators, not source-card click coordinates. No CSS masking, forced browser appearance, tolerance increase or configuration PNG rebaseline is involved. Failure images in diagnostic commit1bd5180 isolated exactly the spinner rectangle (348,538–363,558) and delay select (180,709–359,760). [Run39726431676](https://github.com/matosaru/dryfire/actions/runs/39726431676) explicitly reports successful comparison for all six affected browser/width cases against the original PNGs. Do not infer passing tests from the normalized API conclusion of a continue-on-error step: inspect raw outcome, annotations and whole-job result.

@@ -11,8 +11,6 @@ Build public assets, export frames with `node tools/export-guide-examples.mjs --
 | repeated | [repeated.gif](repeated.gif) |
 | par | [par.gif](par.gif) |
 | control | [control.gif](control.gif) |
-| reload | [reload.gif](reload.gif) |
-| free | [free.gif](free.gif) |
 | sequence trigger only | [sequence-trigger-only.gif](sequence-trigger-only.gif) |
 | sequence rack trigger | [sequence-rack-trigger.gif](sequence-rack-trigger.gif) |
 | sequence mag trigger | [sequence-mag-trigger.gif](sequence-mag-trigger.gif) |
@@ -20,3 +18,9 @@ Build public assets, export frames with `node tools/export-guide-examples.mjs --
 | sequence custom | [sequence-custom.gif](sequence-custom.gif) |
 
 CHG-047 regenerates these exports after the CSS composition refactor. The manifest now fingerprints every ordered component/global stylesheet. All frame counts, durations, dimensions and endpoints remain unchanged; five encodings have sparse reviewed color differences, and seven retain exact bytes. [Review evidence](../../../baselines/react-refactor-review.json) preserves comparison/source details without changing PNG references.
+
+P6 shared run/review source extraction retains all encoded GIF bytes by [input-equivalence review](../../../baselines/p6-shared-session-review.json): the original and typed structures match across1,333 complete frames/all12 scenarios, CSS remains byte-identical, and representative poster/review pixels match in both themes. Only source ownership/compilation changes here; the active live/example rendering and engines remain unchanged. Future behavior or visual changes still require refreshed exports.
+
+The subsequent [shared result-model review](../../../baselines/p6-result-presentation-review.json) retains the same encodings: native and prepared typed details reuse one pure formatting model, all original frame signatures remain unchanged, and both-edition pixel/workflow checks pass.
+
+CHG-055: current exports cover four trigger practices, early Single and five unchanged sequence examples. Removed modes have no current media. The retained animation frame signatures remain checked against their pre-removal characterization; catalog/header copy is outside these animation frames.

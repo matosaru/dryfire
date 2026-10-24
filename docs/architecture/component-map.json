@@ -1,67 +1,84 @@
 {
   "schemaVersion": 1,
-  "shellOwner": "src/templates/layout.html",
+  "shellOwner": "packages/ui/src/AppShell/AppShell.tsx",
   "routerOwner": "src/screenNavigation.js",
   "screens": [
     {
       "id": "gunSetup",
       "targetOwner": "GunSetupPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/gunSetup.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/GunSetupPage/GunSetupPage.tsx",
       "behaviorTests": [
         "tests/multiGunStorage.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "apps/web/src/pages/GunSetupPage/GunSetupPage.test.tsx",
+        "tests/gunSetupPageMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
-        "src/storage.js"
+        "src/storage.js",
+        "apps/web/src/app/gunSetupPage.tsx"
       ],
       "stableSelectorExamples": [
         "gunForm",
         "gunName",
         "gunType"
       ],
-      "draftOwnership": "Mounted native form retains add/edit and invalid details; submit validates before atomic owned storage.",
+      "draftOwnership": "Native uncontrolled name and React type state; saving/notice updates retain nodes and invalid values; explicit Add/Edit reset alone replaces the form.",
       "effects": [
         "IndexedDB gun create/update; selected-gun context"
+      ],
+      "integrationTests": [
+        "visual-tests/gun-management.spec.js",
+        "visual-tests/build-editions.spec.js"
       ]
     },
     {
       "id": "home",
       "targetOwner": "HomePage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/home.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/HomePage/HomePage.tsx",
       "behaviorTests": [
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "apps/web/src/pages/HomePage/HomePage.test.tsx",
+        "tests/homePresentation.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
-        "src/main.js"
+        "src/main.js",
+        "apps/web/src/app/homePage.tsx"
       ],
       "stableSelectorExamples": [
         "homeExamples",
         "homeEvents",
         "homeAccuracy"
       ],
-      "draftOwnership": "Derived from active gun; no independent persisted draft.",
+      "draftOwnership": "No form drafts; latest summary/context values transfer atomically and stale asynchronous results remain rejected.",
       "effects": [
         "Read owned examples/history and refresh summaries"
+      ],
+      "integrationTests": [
+        "visual-tests/gun-management.spec.js",
+        "visual-tests/build-editions.spec.js"
       ]
     },
     {
       "id": "guns",
       "targetOwner": "GunsPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/guns.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/GunsPage/GunsPage.tsx",
       "behaviorTests": [
         "tests/multiGunStorage.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "apps/web/src/pages/GunsPage/GunsPage.test.tsx",
+        "tests/gunsPageMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
-        "src/storage.js"
+        "src/storage.js",
+        "apps/web/src/app/gunsPage.tsx"
       ],
       "stableSelectorExamples": [
         "gunList",
@@ -70,29 +87,40 @@
       "draftOwnership": "Selected profile owned by active gun context; capture locks switching.",
       "effects": [
         "Select profile; confirmed atomic owned deletion"
+      ],
+      "integrationTests": [
+        "visual-tests/gun-management.spec.js",
+        "visual-tests/build-editions.spec.js"
       ]
     },
     {
       "id": "learn",
       "targetOwner": "LearnPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/learn.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/LearnPage/LearnPage.tsx",
       "behaviorTests": [
         "tests/storage.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/calibrationCatalogLegacy.test.js",
+        "tests/calibrationCatalogParity.test.tsx",
+        "apps/web/src/pages/LearnPage/LearnPage.test.tsx",
+        "packages/ui/src/SoundCard/SoundCard.test.tsx",
+        "tests/learnPageMount.test.tsx",
+        "tests/learningPresentation.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
         "src/audio.js",
-        "src/calibration.js"
+        "src/calibration.js",
+        "apps/web/src/app/learnPage.tsx"
       ],
       "stableSelectorExamples": [
         "classCards",
         "optionalClassCards",
         "calibrationCards"
       ],
-      "draftOwnership": "Sound/calibration class and gun ID captured before async microphone permission.",
+      "draftOwnership": "Typed page/card/calibration runtime on later unlocked entry; disclosure and focus snapshots preserve drafts. Capture, feature data, sample limits and safety remain native feature controllers. Initial fallback remains P7.",
       "effects": [
         "Safety-gated recording and track/context cleanup; owned numeric feature writes/resets"
       ]
@@ -100,41 +128,77 @@
     {
       "id": "drills",
       "targetOwner": "DrillsPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/drills.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/DrillsPage/DrillsPage.tsx",
       "behaviorTests": [
         "tests/drills.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "packages/ui/src/PracticeCatalog/PracticeCatalog.test.tsx",
+        "tests/practiceCatalogParity.test.tsx",
+        "tests/practiceController.test.js",
+        "apps/web/src/pages/DrillsPage/DrillsPage.test.tsx",
+        "packages/ui/src/DrillCard/DrillCard.test.tsx",
+        "packages/ui/src/RetainedNode/RetainedNode.test.tsx",
+        "tests/drillsPageMount.test.tsx",
+        "packages/ui/src/CustomDrillEditor/CustomDrillEditor.test.tsx",
+        "tests/customDrillEditor.test.js",
+        "tests/customDrillFieldsMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
-        "src/optional/customDrillEditor.js"
+        "src/optional/customDrillEditor.js",
+        "apps/web/src/app/drillsPage.tsx",
+        "src/practiceController.js",
+        "apps/web/src/app/customDrillFields.tsx"
       ],
       "stableSelectorExamples": [
         "practiceCatalog",
         "drillCatalog",
         "customDrillForm"
       ],
-      "draftOwnership": "Mounted existing-preset edit draft; Full-only creation checks capabilities.",
+      "draftOwnership": "Typed page/cards/catalog and CustomDrillEditor fields after guarded later entry. The stable native form host retains one submit/visibility lifetime; feature owns private steps/capabilities/persistence. Typed field ports preserve invalid drafts, selection and explicit-open/reset semantics. Initial native UI fallbacks remain P7.",
       "effects": [
         "Read/update owned presets; navigation only for a selected mode/preset"
+      ],
+      "prerenderedComponents": [
+        "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx"
+      ],
+      "runtimeBrowserTests": [
+        "visual-tests/drills-runtime.spec.js"
       ]
     },
     {
       "id": "practice",
       "targetOwner": "PracticePage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/practice.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/PracticePage/PracticePage.tsx",
       "behaviorTests": [
         "tests/practiceSession.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/sharedSessionFragments.test.js",
+        "packages/ui/src/PracticeRun/PracticeRun.test.tsx",
+        "packages/ui/src/PracticeReview/PracticeReview.test.tsx",
+        "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
+        "apps/web/src/features/sessions/resultPresentation.test.ts",
+        "apps/web/src/features/sessions/phasePresentation.test.ts",
+        "tests/sessionComponentStates.test.tsx",
+        "tests/sessionPresentationPort.test.js",
+        "tests/sessionContentsMount.test.tsx",
+        "tests/practiceController.test.js",
+        "apps/web/src/pages/PracticePage/PracticePage.test.tsx",
+        "tests/sessionParentBaseline.test.js",
+        "tests/practiceParentMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/practiceController.js",
         "src/practiceSession.js",
-        "src/sessionPresentation.js"
+        "src/sessionPresentation.js",
+        "apps/web/src/app/practiceContents.tsx",
+        "apps/web/src/app/sessionContents.tsx",
+        "apps/web/src/app/practicePage.tsx",
+        "apps/web/src/app/retainedPage.tsx"
       ],
       "stableSelectorExamples": [
         "practiceConfigForm",
@@ -144,22 +208,58 @@
       "draftOwnership": "Controller keeps mode/gun route key and mounted invalid configuration while opening a guide.",
       "effects": [
         "Readiness/capture/beep/timers; background/navigation cancellation; owned partial/final session saves"
-      ]
+      ],
+      "structuralSources": [
+        "packages/ui/src/PracticeRun/PracticeRun.tsx",
+        "packages/ui/src/PracticeReview/PracticeReview.tsx",
+        "apps/web/src/pages/PracticePage/PracticePage.tsx",
+        "apps/web/src/app/renderSessionPages.tsx"
+      ],
+      "integrationTests": [
+        "visual-tests/practice-start.spec.js",
+        "visual-tests/practice-guides.spec.js",
+        "visual-tests/session-fragment-parity.spec.js",
+        "visual-tests/session-runtime.spec.js"
+      ],
+      "presentationSources": [
+        "src/sessionPresentation.js",
+        "apps/web/src/features/sessions/resultPresentation.ts",
+        "apps/web/src/features/sessions/phasePresentation.ts",
+        "apps/web/src/features/sessions/controlClasses.ts"
+      ],
+      "runtimeOwner": "Typed parent root and shared live/example child contents after guarded later entry. Exact Configure nodes/child hosts or guide figure are retained islands; controller owns their services and native configuration/clock lifetimes. First-entry native fallback retirement remains P7."
     },
     {
       "id": "session",
       "targetOwner": "SequencePage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/session.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/SequencePage/SequencePage.tsx",
       "behaviorTests": [
         "tests/drillSession.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/sharedSessionFragments.test.js",
+        "packages/ui/src/SequenceRun/SequenceRun.test.tsx",
+        "packages/ui/src/SequenceReview/SequenceReview.test.tsx",
+        "tests/sequenceController.test.js",
+        "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
+        "apps/web/src/features/sessions/resultPresentation.test.ts",
+        "apps/web/src/features/sessions/phasePresentation.test.ts",
+        "tests/sessionComponentStates.test.tsx",
+        "tests/sessionPresentationPort.test.js",
+        "tests/sessionContentsMount.test.tsx",
+        "apps/web/src/pages/SequencePage/SequencePage.test.tsx",
+        "tests/sessionParentBaseline.test.js",
+        "tests/sequenceParentMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/sessionController.js",
         "src/drillSession.js",
-        "src/sessionPresentation.js"
+        "src/sessionPresentation.js",
+        "apps/web/src/app/sequenceContents.tsx",
+        "apps/web/src/app/sessionContents.tsx",
+        "apps/web/src/app/sequencePage.tsx",
+        "apps/web/src/app/retainedPage.tsx"
       ],
       "stableSelectorExamples": [
         "sessionConfigForm",
@@ -168,22 +268,60 @@
       "draftOwnership": "Controller keeps selected sequence/gun route key and mounted invalid configuration.",
       "effects": [
         "Ordered capture/beep/countdown; interruption and durable owned repetitions"
-      ]
+      ],
+      "structuralSources": [
+        "packages/ui/src/SequenceRun/SequenceRun.tsx",
+        "packages/ui/src/SequenceReview/SequenceReview.tsx",
+        "apps/web/src/pages/SequencePage/SequencePage.tsx",
+        "apps/web/src/app/renderSessionPages.tsx"
+      ],
+      "integrationTests": [
+        "visual-tests/practice-start.spec.js",
+        "visual-tests/practice-guides.spec.js",
+        "visual-tests/session-fragment-parity.spec.js",
+        "visual-tests/session-runtime.spec.js"
+      ],
+      "presentationSources": [
+        "src/sessionPresentation.js",
+        "apps/web/src/features/sessions/resultPresentation.ts",
+        "apps/web/src/features/sessions/phasePresentation.ts",
+        "apps/web/src/features/sessions/controlClasses.ts"
+      ],
+      "runtimeOwner": "Typed parent root and shared live/example child contents after guarded later entry. Exact Configure nodes/child hosts or guide figure are retained islands; controller owns their services and native configuration/clock lifetimes. First-entry native fallback retirement remains P7."
     },
     {
       "id": "practiceGuide",
       "targetOwner": "PracticeGuidePage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/practiceGuide.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx",
       "behaviorTests": [
         "tests/practiceGuides.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/sharedSessionFragments.test.js",
+        "packages/ui/src/PracticeRun/PracticeRun.test.tsx",
+        "packages/ui/src/PracticeReview/PracticeReview.test.tsx",
+        "packages/ui/src/SequenceRun/SequenceRun.test.tsx",
+        "packages/ui/src/SequenceReview/SequenceReview.test.tsx",
+        "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
+        "apps/web/src/features/sessions/resultPresentation.test.ts",
+        "apps/web/src/features/sessions/phasePresentation.test.ts",
+        "tests/guideContentsMount.test.tsx",
+        "tests/guideControllerHandoff.test.js",
+        "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.test.tsx",
+        "tests/sessionParentBaseline.test.js",
+        "tests/guideParentMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/practiceGuideController.js",
         "src/practiceGuideExamples.js",
-        "src/practiceGuideRendering.js"
+        "src/practiceGuideRendering.js",
+        "apps/web/src/app/guideContents.tsx",
+        "apps/web/src/app/practiceContents.tsx",
+        "apps/web/src/app/sequenceContents.tsx",
+        "apps/web/src/app/sessionContents.tsx",
+        "apps/web/src/app/guidePage.tsx",
+        "apps/web/src/app/retainedPage.tsx"
       ],
       "stableSelectorExamples": [
         "practiceGuideView",
@@ -192,29 +330,54 @@
       "draftOwnership": "Exact source/gun/context snapshot; return preserves original setup draft.",
       "effects": [
         "Synthetic clock only; pause on navigation/visibility; no capture or persistence"
-      ]
+      ],
+      "structuralSources": [
+        "packages/ui/src/PracticeRun/PracticeRun.tsx",
+        "packages/ui/src/PracticeReview/PracticeReview.tsx",
+        "packages/ui/src/SequenceRun/SequenceRun.tsx",
+        "packages/ui/src/SequenceReview/SequenceReview.tsx",
+        "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx",
+        "apps/web/src/app/renderSessionPages.tsx"
+      ],
+      "integrationTests": [
+        "visual-tests/practice-start.spec.js",
+        "visual-tests/practice-guides.spec.js",
+        "visual-tests/session-fragment-parity.spec.js",
+        "visual-tests/guide-runtime.spec.js"
+      ],
+      "presentationSources": [
+        "src/sessionPresentation.js",
+        "apps/web/src/features/sessions/resultPresentation.ts",
+        "apps/web/src/features/sessions/phasePresentation.ts"
+      ],
+      "runtimeOwner": "Typed parent root and shared live/example child contents after guarded later entry. Exact Configure nodes/child hosts or guide figure are retained islands; controller owns their services and native configuration/clock lifetimes. First-entry native fallback retirement remains P7."
     },
     {
       "id": "recognize",
       "targetOwner": "LiveListenPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/recognize.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx",
       "behaviorTests": [
         "tests/recognition.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "apps/web/src/pages/LiveListenPage/LiveListenPage.test.tsx",
+        "apps/web/src/features/live-listen/presentation.test.ts",
+        "tests/liveListenPageMount.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
         "src/audio.js",
-        "src/recognition.js"
+        "src/recognition.js",
+        "apps/web/src/app/liveListenPage.tsx",
+        "apps/web/src/features/live-listen/presentation.ts"
       ],
       "stableSelectorExamples": [
         "listenBtn",
         "drillSelect",
         "sessionTimeline"
       ],
-      "draftOwnership": "Continuous recognition owner captures selected gun and processing preferences.",
+      "draftOwnership": "Typed lazy page after later unlocked entry; select/result/sequence/timeline presentation uses one update port. Microphone levels use a direct dedicated port; native audio/event queue/storage/safety remain controller-owned. Startup fallback remains P7.",
       "effects": [
         "Safety-gated microphone and explicit cleanup; known-event storage and verification"
       ]
@@ -222,49 +385,79 @@
     {
       "id": "history",
       "targetOwner": "HistoryPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/history.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/HistoryPage/HistoryPage.tsx",
       "behaviorTests": [
         "tests/sessionStorage.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/savedSessionPresentation.test.js",
+        "packages/ui/src/SavedSessionList/SavedSessionList.test.tsx",
+        "tests/historyPresentation.test.js",
+        "tests/historyPageMount.test.tsx",
+        "apps/web/src/features/history/presentation.test.ts",
+        "apps/web/src/pages/HistoryPage/HistoryPage.test.tsx",
+        "packages/ui/src/RecognitionList/RecognitionList.test.tsx",
+        "packages/ui/src/EvaluationPanel/EvaluationPanel.test.tsx",
+        "tests/progressView.test.js",
+        "tests/progressContentMount.test.tsx",
+        "tests/progressLoading.test.js",
+        "apps/web/src/features/history/progressPresentation.test.ts",
+        "packages/ui/src/ProgressContent/ProgressContent.test.tsx"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
-        "src/optional/progressView.js"
+        "src/optional/progressView.js",
+        "src/sessionController.js",
+        "apps/web/src/app/historyPage.tsx",
+        "apps/web/src/app/progressContent.tsx"
       ],
       "stableSelectorExamples": [
         "savedSessions",
         "historyList",
         "progressSection"
       ],
-      "draftOwnership": "Owned result/session queries and optional Full comparison filters.",
+      "draftOwnership": "Later unlocked entry transfers result/evaluation/session presentation; exact numeric row and private filter nodes are retained. Private progress content has its own later-entry renderer; grouping/statistics, filters and entitlements remain feature-owned. Startup fallbacks remain P7. Private chart implementation loads only for Full History; saved text renders independently. Pending completion rechecks history generation, active gun, route and entitlement before painting; failure preserves text and reports recovery. Native first-entry and React recognition/evaluation formatting share features/history/presentation.ts; async reads and native verification actions remain controller-owned.",
       "effects": [
         "Read history; separate confirmed recognition/session deletion; saved-review navigation"
+      ],
+      "integrationTests": [
+        "visual-tests/history-runtime.spec.js",
+        "visual-tests/history-controls.spec.js",
+        "visual-tests/offline.spec.js",
+        "visual-tests/progress-runtime.spec.js",
+        "visual-tests/progress-loading.spec.js"
       ]
     },
     {
       "id": "settings",
       "targetOwner": "SettingsPage",
-      "renderer": "legacy",
-      "source": "src/templates/pages/settings.html",
+      "renderer": "react",
+      "source": "apps/web/src/pages/SettingsPage/SettingsPage.tsx",
       "behaviorTests": [
         "tests/audioPreferences.test.js",
-        "tests/pageTemplates.test.js"
+        "tests/pageTemplates.test.js",
+        "tests/settingsPreferencesPresentation.test.js",
+        "apps/web/src/features/settings/preferencePresentation.test.ts",
+        "apps/web/src/pages/SettingsPage/SettingsPage.test.tsx",
+        "tests/settingsTemplateParity.test.tsx",
+        "tests/settingsPageMount.test.tsx",
+        "tests/previewTestingDom.test.js"
       ],
       "visualTests": "visual-tests/screens.spec.js",
       "controllerSources": [
         "src/main.js",
         "src/audioPreferences.js",
-        "src/optional/previewTesting.js"
+        "src/optional/previewTesting.js",
+        "apps/web/src/features/settings/preferencePresentation.ts",
+        "apps/web/src/app/settingsPage.tsx"
       ],
       "stableSelectorExamples": [
         "appearance",
         "exportBtn",
-        "importFile",
-        "maxResults"
+        "importFile"
       ],
-      "draftOwnership": "Device appearance and gun-owned recognition preferences retain existing validation.",
+      "draftOwnership": "Typed prerender and lazy Settings runtime; guarded later-entry handoff preserves original file-input/private-preview nodes. React owns page structure and callbacks; one typed update port owns dynamic presentation. Initial native fallback remains until P7.",
       "effects": [
         "Capability checks and preference writes; validated restore/export; confirmed full-library reset"
       ]
@@ -321,5 +514,148 @@
     "packages/ui cannot import app or acquire browser services",
     "domain/audio/storage remain existing src modules until their own migration increment",
     "CSS composition is ordered; page and component imports must not reorder the existing cascade"
-  ]
+  ],
+  "routerContextOwner": "apps/web/src/app/routeContext.ts",
+  "navigationTests": [
+    "tests/screenNavigation.test.js",
+    "tests/routeContext.test.js",
+    "tests/routeSelection.test.js"
+  ],
+  "shellRuntime": {
+    "build": "apps/web/src/app/renderAppShell.tsx",
+    "native": "apps/web/src/app/chromeBridge.ts",
+    "lazyReact": "apps/web/src/app/chromePages.tsx",
+    "loading": "apps/web/src/app/informationBridge.ts",
+    "invariant": "One writer per region; React takes header/footer-link/tab contents only after a safe informational-route load. Persistent sections, forms, safety/context and the private badge retain their owners."
+  },
+  "shellTests": [
+    "tests/shellParity.test.tsx",
+    "tests/routeSelection.test.js",
+    "apps/web/src/app/chromeBridge.test.ts",
+    "apps/web/src/app/chromePages.test.tsx",
+    "apps/web/src/app/informationBridge.test.ts",
+    "tests/contextTemplateParity.test.tsx",
+    "tests/safetyTemplateIntegration.test.ts",
+    "visual-tests/chrome-lifecycle.spec.js"
+  ],
+  "staticComponents": [
+    {
+      "source": "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx",
+      "runtimeOwner": "DrillsPage after guarded handoff; practiceController native startup fallback and guarded actions"
+    },
+    {
+      "source": "packages/ui/src/NumberInput/NumberInput.tsx",
+      "runtimeOwner": "Native inputs; existing controller and domain validation"
+    },
+    {
+      "source": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx",
+      "runtimeOwner": "LearnPage after guarded handoff; main count/action native startup fallback"
+    },
+    {
+      "source": "packages/ui/src/GunSwitcher/GunSwitcher.tsx",
+      "runtimeOwner": "src/main.js selected-gun context and profile locks"
+    },
+    {
+      "source": "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx",
+      "runtimeOwner": "src/main.js page-session acknowledgment"
+    },
+    {
+      "source": "packages/ui/src/SafetyDialog/SafetyDialog.tsx",
+      "runtimeOwner": "src/safetyGate.js native modal/focus/pending intent"
+    },
+    {
+      "source": "packages/ui/src/DrillSetup/DrillSetup.tsx",
+      "css": "packages/ui/src/DrillSetup/DrillSetup.css",
+      "tests": "packages/ui/src/DrillSetup/DrillSetup.test.tsx",
+      "runtimeOwner": "Shared Sequence/Practice configuration markup; native controller owns retained form, validation and capture. Shared ordered steps serve setup and guides through existing parent ports; shared outlined guide navigation follows context/sounds before setup."
+    }
+  ],
+  "retainedSubtreeBoundary": {
+    "source": "packages/ui/src/RetainedNode/RetainedNode.tsx",
+    "consumers": [
+      "apps/web/src/app/settingsPage.tsx",
+      "apps/web/src/app/drillsPage.tsx"
+    ],
+    "contract": "Preserve exact platform/independent native nodes and event state. display:contents contributes no box; an explicit structural class preserves existing sibling selectors. Settings file/preview nodes and the custom editor native form host keep their platform lifetimes; CustomDrillEditor now owns its live field UI."
+  },
+  "modulePreparation": {
+    "source": "src/modulePreparation.js",
+    "consumer": "src/main.js",
+    "tests": [
+      "tests/modulePreparation.test.js"
+    ],
+    "contract": "Caches eight lazy page modules and deduplicates pending imports. Import completion never mounts a page; existing route/capture/safety/context guards retain later-entry ownership. Failed imports report and may retry on another explicit entry."
+  },
+  "nativeTextPrimitive": {
+    "source": "src/textElement.js",
+    "consumers": [
+      "src/practiceController.js",
+      "src/sessionController.js",
+      "src/practiceGuideRendering.js",
+      "src/optional/progressView.js"
+    ],
+    "tests": [
+      "tests/textElement.test.js"
+    ],
+    "contract": "Literal textContent and explicit className; document acquired on call. Guide/progress retain injected document ownership. Card factories with different empty-class semantics remain separate."
+  },
+  "deferredGuideRuntime": {
+    "source": "src/practiceGuideBridge.js",
+    "consumer": "src/main.js",
+    "tests": [
+      "tests/practiceGuideBridge.test.js",
+      "visual-tests/guide-loading.spec.js"
+    ],
+    "contract": "Prepare read-only native guide code on practice/sequence setup entry, never startup. Import completion only caches. Explicit Open rechecks route/gun/capture/modal ownership and reads fresh settings; navigation cancels pending opens. Native and React guide controllers keep the existing presentation and document ownership."
+  },
+  "deferredSettingsPreparation": {
+    "source": "src/afterPaint.js",
+    "consumer": "src/main.js",
+    "tests": [
+      "tests/afterPaint.test.js"
+    ],
+    "contract": "Prepare optional Settings React enhancement in a task after the native screen frame. Initial controls/handlers remain immediately usable; later-entry handoff guards unchanged."
+  },
+  "runtimeArchitecture": {
+    "decision": "docs/architecture/decisions/001-progressive-react-startup.md",
+    "guide": "docs/architecture/application-structure.md",
+    "htmlEntry": "index.html",
+    "browserEntry": "src/main.js",
+    "buildEntry": "vite.config.js",
+    "compositionEntry": "tools/page-templates.mjs",
+    "policy": "Typed prerender plus immediate startup adapters; guarded lazy React ownership, one writer per region. Original performance gates unchanged."
+  },
+  "trustedStaticCatalogs": {
+    "buildSource": "tools/static-catalog.mjs",
+    "runtimeSource": "src/staticCatalog.js",
+    "consumers": [
+      "tools/page-templates.mjs",
+      "src/practiceController.js",
+      "src/main.js"
+    ],
+    "tests": [
+      "tests/staticCatalog.test.js",
+      "tests/practiceController.test.js",
+      "tests/calibrationCatalogLegacy.test.js",
+      "visual-tests/learning-runtime.spec.js",
+      "visual-tests/drills-runtime.spec.js"
+    ],
+    "contract": "Two known typed catalog roots use inert template nodes; Practice prepares after usable paint with synchronous first-entry fallback, calibration before Learn. Move trusted nodes once without parsing stored/user HTML, preserving host, handlers, current availability and exclusive ownership."
+  },
+  "sessionPresentationLoading": {
+    "source": "src/sessionPresentation.js",
+    "consumers": [
+      "src/practiceController.js",
+      "src/sessionController.js"
+    ],
+    "contract": "On-demand shared presentation resolves before configuration/review and therefore before microphone/countdown. Navigation/reset/gun changes invalidate pending reads; failures keep data and allow retry. Same shared models/native/React renderers.",
+    "tests": [
+      "tests/practiceController.test.js",
+      "tests/sequenceController.test.js",
+      "tests/sessionPresentationPort.test.js",
+      "visual-tests/session-runtime.spec.js",
+      "visual-tests/practice-guides.spec.js",
+      "visual-tests/offline.spec.js"
+    ]
+  }
 }

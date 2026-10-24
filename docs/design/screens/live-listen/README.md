@@ -32,3 +32,17 @@ Functional specifications: [core](../../../requirements/core.md) · [practice-mo
 Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
+
+
+## CHG-053 readiness guidance
+
+Home, Drills free listening and the bottom tab share one navigation rule: a valid loaded gun can open this page before training. The existing summary immediately above the capture buttons explains why capture is unavailable. Missing training shows the selected gun’s current count out of three and tells the user to open Learn; optional sounds do not block it. Connecting/saving/current-operation/unsaved-result states have clear recovery text. Active listening keeps Stop usable. No new layout, colors or microphone permission on navigation. Native and React owners use the same policy and copy.
+
+| State | Current reference |
+| --- | --- |
+| Needs trigger training · Dark | [needs-training.dark.png](needs-training.dark.png) |
+| Needs trigger training · Light | [needs-training.light.png](needs-training.light.png) |
+| Connecting microphone · Dark | [connecting.dark.png](connecting.dark.png) |
+| Connecting microphone · Light | [connecting.light.png](connecting.light.png) |
+
+These revised states were reviewed from pinned collector39903205415 / image-only commit4ae6c44; implementation and full acceptance are tracked separately in the project history. Ready/listening images retain their existing approved appearance.

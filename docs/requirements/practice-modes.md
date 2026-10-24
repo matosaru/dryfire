@@ -1,16 +1,16 @@
 # Trigger-first practice — current functional specification
 
-Revision: 1.6 · Changes: CHG-015/016/017 · Scope: authorized for automatic implementation · Implementation: CHG-015 published in [`8b8aec9`](https://github.com/matosaru/dryfire/commit/8b8aec9); CHG-016 implemented, locally validated and published in [`34d3136`](https://github.com/matosaru/dryfire/commit/34d3136), designs in [`9b24b7d`](https://github.com/matosaru/dryfire/commit/9b24b7d); CI/production/device acceptance remain separate in the delivery tracker
+Revision: 1.7 · Current scope CHG-054/055 · Changes: CHG-015/016/017 · Scope: authorized for automatic implementation · Implementation: CHG-015 published in [`8b8aec9`](https://github.com/matosaru/dryfire/commit/8b8aec9); CHG-016 implemented, locally validated and published in [`34d3136`](https://github.com/matosaru/dryfire/commit/34d3136), designs in [`9b24b7d`](https://github.com/matosaru/dryfire/commit/9b24b7d); CI/production/device acceptance remain separate in the delivery tracker
 
 Evidence, 2026-10-11: the user requested **“other sounds then trigger pull recognition to be optional”** and **“all the practice modes”**, then instructed **“adjust the final plan, try to optimise the steps”** and **“after plan is adjusted, proceed with next steps… stop confirming each step, do all steps automatically, i will verify final changes in an app and give a feedback.”** This authorizes completing the consolidated plan below and choosing routine implementation details without repeated confirmation. It supersedes the earlier proposal to seek separate confirmation for each detailed choice. Changes remain documented; approvals are not inferred from silence.
 
-CHG-017 defines automatic fresh-delay/countdown/signal Single cycles. See [the approved revision-1.2 plan](practice-improvements.md) for progress charts, transient unknown input, navigation, safety modal and the explicitly approved limit table. Par/Reload manual Next behavior remains unchanged.
+CHG-017 defines automatic fresh-delay/countdown/signal Single cycles. See [the approved revision-1.2 plan](practice-improvements.md) for progress charts, transient unknown input, navigation, safety modal and the explicitly approved limit table. Par manual Next behavior remains unchanged.
 
 ## Outcome and compatibility
 
-Trigger-based practice works with only the selected gun's trigger examples. Optional Draw, Rack and Magazine calibration stays available and never blocks an unrelated mode. A sequence or reload mode asks only for its own required events. Preserve existing gun IDs, four positive sound identifiers, learned features, custom presets, old session snapshots, history and device preferences.
+Trigger-based practice works with only the selected gun's trigger examples. Optional Draw, Rack and Magazine calibration stays available and never blocks an unrelated mode. A sequence asks only for its own required events. Preserve existing gun IDs, four positive sound identifiers, learned features, custom presets, old session snapshots, history and device preferences.
 
-The shipped CHG-014 runner remains available for legacy built-in/custom sequences. Its historical fixed-delay/default/300 ms cue policy is preserved. New practice modes share a single engine, recorder and saved review rather than six independent implementations.
+The shipped CHG-014 runner remains available for legacy built-in/custom sequences. Its historical fixed-delay/default/300 ms cue policy is preserved. New practice modes share a single engine, recorder and saved review rather than separate implementations.
 
 ## Requirements
 
@@ -23,8 +23,6 @@ The shipped CHG-014 runner remains available for legacy built-in/custom sequence
 | PRACTICE-05 | Repeated trigger presses: accepted click count and consecutive intervals |
 | PRACTICE-06 | Par-time: accepted click within the configured deadline, or explicit miss/late outcome |
 | PRACTICE-07 | Trigger control: timing consistency statistics, with no microphone-only movement/aim/technique grading |
-| PRACTICE-08 | Reload: timing between two explicitly selected event endpoints. Handling endpoints never count as shots; an explicitly selected Trigger endpoint counts only an accepted trigger click |
-| PRACTICE-09 | Free practice: accepted total and active session duration |
 | PRACTICE-10 | All configuration/calibration/results are gun-owned and survive compatible same-origin refreshes/deployments and backups |
 | PRACTICE-11 | Test labelled positive and rejection examples, including resets, noise and cues. Measure real-device false counts and missed clicks separately; synthetic checks are not field accuracy |
 | PRACTICE-12 | Keep existing safety acknowledgement and accurate acoustic limits: no verification of unloaded status, aim or safe movement |
@@ -34,11 +32,10 @@ The shipped CHG-014 runner remains available for legacy built-in/custom sequence
 ## Concrete defaults and mode behavior
 
 - New practice defaults: 10 repetitions/clicks, random 2–5-second ready delay, app start beep On. Fixed timing remains available at 3 seconds. Existing saved legacy-session configuration is not overwritten.
-- Repetition/count target: 1–100; delays: 0–30 seconds in tenths, minimum no greater than maximum. Free practice defaults to 60 active seconds, configurable 1–3600. Par defaults to 1.5 seconds, configurable 0.1–30 in tenths; a click exactly at the deadline is in time.
-- Single/par/reload use individual repetitions. Single automatically starts a fresh configured countdown and signal after saving each first accepted click, until the target is reached; no manual Next action is required. Par and Reload stop accepting input and offer **Next repetition** after a resolved repetition so the user can reset before a fresh countdown. Completed attempts and accepted shots are distinct; a par miss consumes an attempt but adds no shot. Late/pre-start events cannot become the next repetition's result.
-- Par/free deadlines stop accepting later onsets, then allow up to two seconds for the existing 1.55-second maximum event segment to finish. Show finishing status; judge accepted events by captured onset, not callback/persistence time.
-- Repeated/trigger-control use one start signal, continuously accept distinct clicks and finish at the count target. Free practice uses one start signal and finishes at its active-duration limit or explicit End. Pause releases capture; resumed continuous practice excludes paused time and does not compute an interval across the pause.
-- Reload defaults to Rack → Magazine change; the two endpoint selectors also offer Draw and Trigger where desired. Distinct endpoints required. Only the endpoint calibration is required; trigger clicks count as shots only when accepted as trigger events, never when a handling label is detected.
+- Repetition/count target: 1–100; delays: 0–30 seconds in tenths, minimum no greater than maximum. Par defaults to 1.5 seconds, configurable 0.1–30 in tenths; a click exactly at the deadline is in time.
+- Single/par use individual repetitions. Single automatically starts a fresh configured countdown and signal after saving each first accepted click, until the target is reached; no manual Next action is required. Par stop accepting input and offer **Next repetition** after a resolved repetition so the user can reset before a fresh countdown. Completed attempts and accepted shots are distinct; a par miss consumes an attempt but adds no shot. Late/pre-start events cannot become the next repetition's result.
+- Par deadlines stop accepting later onsets, then allow up to two seconds for the existing 1.55-second maximum event segment to finish. Show finishing status; judge accepted events by captured onset, not callback/persistence time.
+- Repeated/trigger-control use one start signal, continuously accept distinct clicks and finish at the count target. Pause releases capture; resumed continuous practice excludes paused time and does not compute an interval across the pause.
 - Start source: **App signal** by default or **External beep**. External mode requires three compatible cue examples, waits with the acquired microphone, and starts timing at the detected cue onset. It does not also play the app beep or apply its ready delay.
 - CHG-022 waits for actual incoming microphone audio before starting a countdown, monitors the Single countdown, and stores pre-GO triggers as failed attempts with automatic progression; see [practice-start](practice-start.md). The app cue has stronger output. The app-cue input guard is 80 ms, disclosed in Configure/Review; the generated beep and calibrated cue examples are also rejection evidence. Audio offsets start at the scheduled GO reference, with audible-output/device latency limitations stated. Actual beep exclusion and fast-click capture require iPhone validation. Legacy sequences retain their approved 300 ms guard.
 - Trigger positives retain the existing three-example minimum, 8–10 recommended, ten new examples maximum per type per gun. Optional reset/noise rejection examples improve discrimination and remain optional, up to ten new examples per category per gun, preserving older over-cap profiles. Calibrated external cues are also rejection evidence for shots. Optional recognized classes have saved per-gun controls; existing trained optional classes are initially enabled to preserve prior behavior.
@@ -48,7 +45,7 @@ The shipped CHG-014 runner remains available for legacy built-in/custom sequence
 
 ## Storage and review
 
-Reuse IndexedDB schema 3 and its owned sessions store. Add a discriminated practice-record shape with immutable mode/configuration/gun snapshots, append-only completed outcomes/detections, truthful saving/error/retry, and last-durable-snapshot interruption recovery. Keep old drill records readable. Reuse owned settings for rejection/cue features, optional-label preferences and practice configuration; validate these before atomic restore.
+Use IndexedDB schema 4 and its owned sessions store. Add a discriminated practice-record shape with immutable mode/configuration/gun snapshots, append-only completed outcomes/detections, truthful saving/error/retry, and last-durable-snapshot interruption recovery. Keep old drill records readable. Reuse owned settings for rejection/cue features, optional-label preferences and practice configuration; validate these before atomic restore.
 
 Export backup format 4 containing old/new sessions and calibration/preferences. Accept compatible formats 1–3; disclose whole-library replacement and keep the existing 10 MB import limit. No reset/history trim deletes saved practice results; optional-label changes do not delete examples.
 
@@ -57,7 +54,7 @@ Full sound reset clears the selected gun's positive examples and reset/noise/cue
 ## Revised flow
 
 1. Learn: primary Trigger card, optional sound cards with recognition controls, and reset/noise/external-cue calibration.
-2. Drills: six practice cards plus the preserved sequence-drill catalog/custom editor.
+2. Drills: four trigger practice cards plus the preserved sequence-drill catalog/custom editor.
 3. Practice Configure: mode-relevant target/timing/endpoints/start-source controls and explicit readiness/Start.
 4. Practice Run: state, countdown or external-cue waiting, functional **STOP** while running with the real microphone indicator below when capture is active, attempts/clicks/time, Pause/Resume, mode-dependent Next, and End. Paused capture does not show a live meter; End remains available.
 5. Review/History: per-gun mode/configuration snapshots, hits/misses/partials, accepted-click intervals and saved-state status.
@@ -67,11 +64,11 @@ Reuse the approved dark/orange brand, light/system settings, shared cards and Co
 ## Optimized execution and acceptance
 
 1. **Shared recognition first:** one-class positive matching, rejection calibration, per-mode readiness and optional-label preferences; regression fixtures precede logic changes.
-2. **One practice engine and integration:** implement all six mode rules with shared capture/cue/lifecycle/saving/review. Add the discriminated portable record and backup compatibility together, avoiding repeated migrations.
-3. **Complete validation and publication:** test deadlines, reset/noise/cue rejection, distinct repeated clicks, pause/background/refresh, gun ownership, old records/backups and atomic invalid imports; check production assets and mobile layouts; publish directly to `main` and update history.
+2. **One practice engine and integration:** implement all four mode rules with shared capture/cue/lifecycle/saving/review. Add the discriminated portable record and backup compatibility together, avoiding repeated migrations.
+3. **Complete validation and publication:** test deadlines, reset/noise/cue rejection, distinct repeated clicks, pause/background/refresh, gun ownership, old records/backups and atomic invalid imports; check production assets and mobile layouts; publish to `b` and update history.
 4. **Production/device evidence:** verify deployment when gateway/dashboard evidence becomes available; use the confirmed iPhone Safari/Home Screen target. Hardware observations remain separate from local checks. User reviews final app and supplies feedback; no repeated step confirmations.
 
-The user's third-party-app reference is context, not verified benchmarking or permission to copy artwork. No competitor assets are used. Specifications and implementation history remain under `docs/design`.
+The user's third-party-app reference is context, not verified benchmarking or permission to copy artwork. No competitor assets are used. Specifications and implementation history follow the documentation package index.
 
 ## CHG-016 — User feedback: missed triggers and visible microphone input
 
@@ -83,8 +80,21 @@ Design revision: keep the existing Configure / Run / Review layout, gun context,
 
 Recognition corrections within PRACTICE-02/11: preserve all saved feature-version-2 examples, normalize microphone gain for comparison, ignore the click's arbitrary position within its recording window, account for the half-frame alignment of brief clicks, retain captured room background in compatible streaming windows and align the detector's minimum peak with accepted Learn captures. Distance rejection and calibrated-negative vetoes remain; near-identical reset/press sounds may still be rejected together. These restore intended recognition rather than changing shot-count semantics.
 
-Acceptance: expected-failing early-capture, gain-change, quiet-click and room-noise regressions pass; distinct reset/noise/cue and ambiguous-negative rejection remain tested; a short input spike appears on the meter; pause/end stop input and clear the display; a saved legacy model works without retraining; all six practice modes/mobile themes use the same input display; updated service-worker cache preserves IndexedDB. Real iPhone accuracy/deployment are recorded separately from synthetic checks. Earlier approved screens remain preserved; revised actual Run captures are in the design catalog and published in `9b24b7d`. Implementation: locally complete. Final Node 22 acceptance: **227 Jest / 17 suites**, **16 smoke**, build/asset checks and **seven browser suites / 35 checks**, zero page errors. [Validation](../development/PRACTICE_VALIDATION.md) records source output and remaining release evidence.
+Acceptance: expected-failing early-capture, gain-change, quiet-click and room-noise regressions pass; distinct reset/noise/cue and ambiguous-negative rejection remain tested; a short input spike appears on the meter; pause/end stop input and clear the display; a saved legacy model works without retraining; all four practice modes/mobile themes use the same input display; updated service-worker cache preserves IndexedDB. Real iPhone accuracy/deployment are recorded separately from synthetic checks. Earlier approved screens remain preserved; revised actual Run captures are in the design catalog and published in `9b24b7d`. Implementation: locally complete. Final Node 22 acceptance: **227 Jest / 17 suites**, **16 smoke**, build/asset checks and **seven browser suites / 35 checks**, zero page errors. [Validation](../development/PRACTICE_VALIDATION.md) records source output and remaining release evidence.
 
 ## Current design mapping
 
-See [Practice screen and all six mode configurations](../design/screens/practice/README.md), [Learn](../design/screens/learn/README.md), [Drills](../design/screens/drills/README.md) and [History](../design/screens/history/README.md). Current captures reflect CHG-017; older CHG-015/016 images are archived evidence, not the latest run state.
+See [Practice screen and all four mode configurations](../design/screens/practice/README.md), [Learn](../design/screens/learn/README.md), [Drills](../design/screens/drills/README.md) and [History](../design/screens/history/README.md). Current captures reflect CHG-017; older CHG-015/016 images are archived evidence, not the latest run state.
+
+
+## Catalog presentation — CHG-052
+
+PRACTICE-20: All six Dry-fire practice choices use the existing sequence-card layout: decorative target icon beside the title, description below the title, and a full-width orange “▶ Start Drill” button. Reuse shared card classes/theme rules. The button opens the existing selected-mode Configure screen; microphone capture still requires the subsequent configured start and safety flow. Preserve keyboard navigation, disabled/capture guards, both themes and narrow layouts.
+
+## Current discovery catalog — CHG-054
+
+PRACTICE-21: Drills shows exactly two groups: **Trigger Press Group**, followed by **Sequence drills**. The first group contains, in order, **Single trigger press**, **Repeated trigger press**, **Par time practice**, **Trigger control**. These four cards retain CHG-052 target icon, title, description and **▶ Start Drill** configuration action. Reload practice and Free practice are absent from discovery in both editions. Sequence built-ins, custom presets, styles and actions remain unchanged.
+
+PRACTICE-22 — CHG-055 supersedes CHG-054 historical-mode compatibility: the engine and catalog contain only these four trigger modes. Remove the retired modes’ controls, manuals, animation exports, statistics and current screenshots. On upgrade delete only their saved sessions/settings, across all guns. Older backups omit retired sessions/settings on restore. All supported practice/sequence sessions, gun profiles, sound recordings, calibration and presets remain intact. Schema 4 performs this atomic retirement. Stable magazine-change sound identifiers remain available to sequences and learning.
+
+Acceptance: native and React entry show four ordered trigger cards and unchanged sequence cards; all configure without microphone access. Migration/import regressions verify selective retirement, preservation across two guns, idempotent reopens/restores and atomic rejection of malformed retained data. No retired discovery, replay or manual route remains. Keep minified assets within the original budgets and update intended current screenshot evidence only.

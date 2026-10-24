@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "change": "CHG-049",
+  "measuredOn": "2026-10-17",
+  "originalApplicationRevision": "6c38bff81662d30279d94d41ca5c949bdbbe1c6e",
+  "candidateBase": "3bd1f7bf5bc679b451cad60b3e52e7b72e9cd7a0",
+  "contracts": [
+    "Released shell semantic DOM/SVG/ID parity in shellParity.test.tsx; no new page wrapper.",
+    "Numeric input fields match the original initialized fields/attributes/hints for all eleven controls.",
+    "Calibration cards match released nodes/text/attributes except new nonvisual data-description; reset/action characterization passes before and after extraction.",
+    "All six mode IDs/titles/descriptions and public lookup identity preserve the frozen released API."
+  ],
+  "unchangedInitializedSections": {
+    "practiceGuideView": "5c5779971b1d545883464a8bf5e260b135d6afcd7ff87088a2f75c1f5085e3f0",
+    "practiceView": "1129d4c719d2245e6b49282608060d445782ba65e10257f5634d5b6756838689",
+    "sessionView": "af9bf7d9d78f4768395a5d725b429dce0d8e3f9989ea58998d37b2d264e5f971",
+    "historyView": "02a812f8ab88c3be4b1ba946cdf684f515a4a1e99a0d327bea839b489ed9050c"
+  },
+  "unchangedProductionCSS": {
+    "file": "assets/index-DnLrZEQ0.css",
+    "sha256": "235ad2e132f412f60103792e215d91f6e0c8cfa9d23f6c78410182caebb28ec7"
+  },
+  "expandedCSSSha256": "6cd5f8c77852631a04e2db47c2b285315bf6a1bd3da4ec73d75ac9cbc1aac962",
+  "scenarios": [
+    {
+      "name": "single",
+      "frames": 91,
+      "sha256": "402cf1f1f6b2b41801ca288f18747a7551d3be8b3f0434d3f4a317e26d22a66d",
+      "equivalent": true
+    },
+    {
+      "name": "repeated",
+      "frames": 68,
+      "sha256": "c405f6eea06cea4777cd6134692789ef9d82c930a74986f4eaf6895664cc9418",
+      "equivalent": true
+    },
+    {
+      "name": "par",
+      "frames": 133,
+      "sha256": "7c85025ea1a31a90420a1dd6461df570b06d31ab31ed9cda6648842db51ca9dd",
+      "equivalent": true
+    },
+    {
+      "name": "control",
+      "frames": 68,
+      "sha256": "5c5c3d108c14864f1fccf60d1f7042208a35f3133609105ddf8acfffa25a8f61",
+      "equivalent": true
+    },
+    {
+      "name": "reload",
+      "frames": 123,
+      "sha256": "625ad609f4cec436791f12cb319a6cdf764a411fa39bab88349b2b43ee8f72fa",
+      "equivalent": true
+    },
+    {
+      "name": "free",
+      "frames": 128,
+      "sha256": "a21adf7cb208c33fb76efb5cf70108490955cbe26f6f20d0312419ee54d5e843",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-trigger-only",
+      "frames": 109,
+      "sha256": "595c3a595963a757d5e27a478c066029f89fec5fda8211f5b1bc5dd01005c134",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-rack-trigger",
+      "frames": 125,
+      "sha256": "ae5deede91ed233e68392ab286dd354fc40e8977535d805c5501b970267d9160",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-mag-trigger",
+      "frames": 125,
+      "sha256": "320266d963cfe6bef4df7bde022406ec55089cdba5c323182ab7e931f5e55bb3",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-draw-mag-trigger",
+      "frames": 141,
+      "sha256": "a952878fe8705d278b40f04182e99ab5f1b7334bd563ea256a83e6b154cf37e0",
+      "equivalent": true
+    },
+    {
+      "name": "sequence-custom",
+      "frames": 141,
+      "sha256": "8c2247a3c3bd106ff84aff654df1fb5bc2be9d81035520f5fef0cafa20a38f66",
+      "equivalent": true
+    },
+    {
+      "name": "single-early",
+      "frames": 81,
+      "sha256": "0123cde53a00efee59ccf3253f0e62e228fa229cd7b432f6abda6f801ae84343",
+      "equivalent": true
+    }
+  ],
+  "guideExports": {
+    "count": 12,
+    "bytes": "Every existing GIF hash verified unchanged; not re-encoded.",
+    "reason": "All original/current synthetic frame snapshots and event timelines are identical. The guide/run/review presentation and fragments are unchanged. Only coarse engine metadata/compiler/CSS ownership sources moved; reviewed under this input-equivalence proof."
+  },
+  "browserChecks": "28 public + 29 preview local Chromium diagnostic workflows pass; complete pinned Chromium/WebKit comparison remains normal CI.",
+  "canonicalValidation": "Pending normal both-edition CI; no image reference or comparison tolerance updated.",
+  "contextExtraction": {
+    "reviewedOn": "2026-10-18",
+    "base": "44e8e901e3d91489bba96821983a9523285ade23",
+    "scope": "Build-only gun/safety source and ordered CSS extraction. Runtime owners unchanged.",
+    "tests": [
+      "tests/contextTemplateParity.test.tsx",
+      "tests/safetyTemplateIntegration.test.ts"
+    ],
+    "evidence": "Frozen complete shell/context/modal semantic parity and exact ordered/optimized CSS hash pass. Compiler diff removes only context/modal string slots; guide fragments, engines and presentation are unchanged from the prior complete scenario comparison. All 12 GIF hashes unchanged; retained, not re-encoded.",
+    "canonicalValidation": "Pending b both-edition pinned screenshots and timing evidence; CHG-050 defers known timing debt to final optimization without changing the original-baseline gate. Dev synchronization is paused."
+  },
+  "gunsPageExtraction": {
+    "reviewedOn": "2026-10-18",
+    "base": "21948d438cbef5151a1095159fd12d808325cb3d",
+    "scope": "Guns page runtime React owner; existing storage and select/edit/delete workflows retained.",
+    "evidence": "Frozen static-page DOM parity, mounted callback/focus/lock/rollback tests, existing real backup/edit/delete/draft workflows. Expanded and optimized CSS remain byte-identical. No practice/sequence/guide fragments, presentation, engines, example settings or GIF bytes change; coarse compiler and CSS-partition source fingerprints reviewed and updated only.",
+    "canonicalValidation": "Pending normal both-edition pinned CI; no reference image or GIF modified. Known performance debt remains tracked under CHG-050."
+  },
+  "homeAndGunSetup": {
+    "reviewedOn": "2026-10-18",
+    "scope": "Typed Home/GunSetup source and runtime ownership transfer. Native controls remain functional until safe lazy handoff. No template or other page is replaced by a neighboring root.",
+    "evidence": "Frozen full Home/form DOM parity, actual controller async ownership/readiness characterization, mounted form native validation/draft/reset/focus and rollback tests. Ordered and optimized CSS unchanged; no guide engines/fragments, example settings or animation bytes changed. Initial image preload hints suppressed by build adapter to preserve request graph.",
+    "canonicalValidation": "Pending both-edition pinned CI; no reference image or GIF updated. All performance gates remain unchanged; interim debt stays open for final optimization."
+  },
+  "settingsSource": {
+    "reviewedOn": "2026-10-19",
+    "scope": "Build-only SettingsPage source and ordered CSS extraction; native runtime owners retained.",
+    "evidence": "Frozen full-page DOM parity for public/preview plus callbacks/disclosure tests. Expanded CSS remains byte-identical. Shared native preview fragment retains edition markers. Guide fragments, engines, settings and media bytes are unchanged; only coarse compiler/CSS ownership fingerprints move.",
+    "canonicalValidation": "Pending normal pinned both-edition CI; no new image reference or GIF accepted."
+  },
+  "settingsRuntime": {
+    "source": "apps/web/src/app/settingsPage.tsx",
+    "review": "No visible design/CSS/media change. Lazy later-entry root handoff retains original file/preview nodes in display-contents islands. Frozen static DOM parity, native presentation characterization, focus/rollback/picker/state tests and real browser import/export/theme/reset workflows protect the boundary. Canonical screenshots remain required and unchanged."
+  },
+  "learnRuntime": {
+    "source": "apps/web/src/app/learnPage.tsx",
+    "review": "Frozen complete Learn template parity, every native SoundCard count/lock/optional state and byte-identical expanded/optimized CSS protect source equivalence. Guide engines, fragments, scenario settings and encoded exports are unchanged; coarse compiler/style fingerprints are updated for unchanged inputs. Runtime disclosures, focus, rollback, limits and action ownership have unit/integration coverage. Both-theme native/React pixel checks and both-edition workflows are required before publication."
+  },
+  "liveListenRuntime": {
+    "source": "apps/web/src/app/liveListenPage.tsx",
+    "review": "Frozen complete template parity, frozen native sequence/distance renderer comparison, root snapshot/rollback/focus/select/timeline/meter tests and byte-identical expanded CSS protect the handoff. The actual mounted browser page preserves Dark/Light pixels and synthetic consecutive detection, unknown rejection, verification and microphone cleanup. Guide engines/fragments/scenarios/encoded exports are unchanged; only coarse compiler/CSS fingerprints are refreshed for equivalent inputs. No threshold or image baseline changed."
+  },
+  "drillsComposition": {
+    "source": "apps/web/src/app/drillsPage.tsx",
+    "review": "Frozen full Drills template/editor and native preset-card parity, byte-identical CSS and both-theme native/React browser pixels protect composition. Existing custom editor keeps its exact form/draft/lifetime inside a reusable retained-node boundary; its full UI transfer remains P5. An explicit non-layout structural class preserves the existing adjacent-editor/free-button spacing selector. Settings reuses the same boundary. Full-mode description and simulation changes use the React port. Four migrated pages reuse the existing PageHeading with unchanged numbered-heading/native-back DOM. Guide engines/fragments/scenarios/media are unchanged; only equivalent coarse compiler/CSS fingerprints change."
+  },
+  "customEditorFields": {
+    "source": "apps/web/src/app/customDrillFields.tsx",
+    "review": "Complete frozen form DOM and action tests protect the typed editor source; original native behavior was characterized before extraction and the same cases now run against native and React fields. Native form host/submit lifetime is retained, field UI owns its children after guarded entry, and failed initial commit restores native nodes/focus. Explicit open/reset preserves dropdown and draft semantics. Native/React Dark/Light pixels, Free saved edit vs Full create/simulation, and byte-identical CSS protect the handoff. Shared raw HTML is removed; guide engines/fragments/scenarios/media remain unchanged with coarse compiler/CSS equivalence review."
+  }
+}

@@ -1,0 +1,12 @@
+.evaluation-panel { border:1px solid #29353c; background:#10171b; border-radius:17px; margin:16px 0; padding:16px; }
+.evaluation-panel h3 { font-size:1.08rem; margin:0 0 15px; }
+.eval-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
+.eval-stats>div { border-radius:12px; background:#172126; padding:11px; min-width:0; }
+.eval-stats strong { display:block; font-size:1.5rem; color:#ff9b56; }
+.eval-stats span { display:block; font-size:.73rem; color:#b4c0c7; }
+.confusion-wrap { margin:15px 0; overflow-x:auto; }
+.confusion-wrap table { border-collapse:collapse; min-width:420px; width:100%; font-size:.78rem; }
+.confusion-wrap th,.confusion-wrap td { border:1px solid #29353c; padding:8px 6px; text-align:center; }
+.confusion-wrap th:first-child { text-align:left; }
+.confusion-wrap th { color:#bcc9d0; }
+.confusion-wrap td.correct { background:#14382d; color:#94efc3; }

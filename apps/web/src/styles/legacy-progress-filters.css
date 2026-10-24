@@ -1,0 +1,5 @@
+.practice-progress-section { border: 1px solid var(--session-border); background: var(--session-surface); border-radius: 16px; padding: 16px; margin: 20px 0; }
+.practice-progress-section h3 { margin-top: 0; }
+.progress-filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.progress-filters label { display: grid; gap: 8px; font-size: .8rem; color: var(--session-muted); min-width: 0; }
+.progress-filters select { contain: paint; min-width: 0; width: 100%; max-width: 100%; min-height: 44px; padding: 10px; border: 1px solid var(--session-border); border-radius: 10px; background: var(--session-surface-raised); color: var(--session-text); font-size: 1rem; }

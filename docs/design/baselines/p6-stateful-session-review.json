@@ -1,0 +1,74 @@
+{
+  "change": "CHG-049 P6 stateful session contents and guarded live handoff",
+  "reviewedOn": "2026-10-20",
+  "candidateBase": "79815b5",
+  "sourceHashes": {
+    "src/sessionPresentation.js": "497230e70f637237f59be44d1ca152a1347583e0500729065c5e4e283e510674",
+    "packages/ui/src/PracticeRun/PracticeRun.tsx": "ae960a84696a7882797a391e06923243e142762aead1fb8af389e43610719fc1",
+    "packages/ui/src/PracticeRun/index.ts": "f55f10e07db39a44c21d9938ddc251ceba7835ffcdc4032d160682187cdde8d4",
+    "packages/ui/src/PracticeReview/PracticeReview.tsx": "1ac7376704bc331caa7a0465b5dd2c0fa2dc15cd9e138780495eac1b42b332e4",
+    "packages/ui/src/PracticeReview/index.ts": "9c5505f720fbbb76719cc0e7d124cd40794a5126977c636dc3c795c5bebcd904",
+    "packages/ui/src/SequenceRun/SequenceRun.tsx": "ec5b98fffb920ac6a4c418cacbcaa947910f66eebd17e7007677a3d8baadbbd1",
+    "packages/ui/src/SequenceRun/index.ts": "f320c4332689a07ed20a7a3b9223a65e5dc6a6149bba1758c14166f319b95701",
+    "packages/ui/src/SequenceReview/SequenceReview.tsx": "b6723e2fe002859120cb4f0bbf2bf3e1f8282fbac4bb4b83e3aae2812a0dc874",
+    "packages/ui/src/SequenceReview/index.ts": "8a778eaff0f4799346ba6dc47b85bd0f04cf04079e49fa427fa3059af7332184"
+  },
+  "contracts": [
+    "41 frozen-native component state comparisons preserve both live and example markup.",
+    "All 1,333 original full-frame guide signatures remain unchanged across 12 scenarios.",
+    "Both-theme native/typed poster and completed guide pixel comparisons pass; original GIF and screenshot bytes are retained.",
+    "Explicit synchronous live handoffs retain numeric forms, microphone node identity, initial details/focus, result refresh reset behavior and atomic two-host rollback.",
+    "Actual Practice and Sequence controller suites execute both native and React presentation paths with unchanged engines, synthetic recognition, save/retry and cleanup guards.",
+    "This increment does not yet transfer guide runtime or parent page ownership."
+  ],
+  "cases": {
+    "single": {
+      "frames": 91,
+      "sha256": "b9bdb4feeaa709e0006ce4a812093a506bd2b3d7fff5bf27158292a9d05d63d8"
+    },
+    "single-early": {
+      "frames": 81,
+      "sha256": "94c5e9011b0076581e5e364b8dacf5df7f4003854be330d8f29bcfca2286c663"
+    },
+    "repeated": {
+      "frames": 68,
+      "sha256": "df650f7007016d29fd04bc7b6ac34d19e0e79010ca61e123c8a7ff7dcd2d7172"
+    },
+    "par": {
+      "frames": 133,
+      "sha256": "c832db96c622325f93cd2f37ef57ad2c0711de505c961d85c33d838da675f8c9"
+    },
+    "control": {
+      "frames": 68,
+      "sha256": "df650f7007016d29fd04bc7b6ac34d19e0e79010ca61e123c8a7ff7dcd2d7172"
+    },
+    "reload": {
+      "frames": 123,
+      "sha256": "dfe791a9cd0b942c43fdec3bae84937c55b4c03fcba3d2cefb941dd744578aab"
+    },
+    "free": {
+      "frames": 128,
+      "sha256": "f62cb6cac3122a91e27deda8bece0bad976e954e8b353c4738cb43a648f9f790"
+    },
+    "sequence-trigger-only": {
+      "frames": 109,
+      "sha256": "d1428b519e6bd53146bea21bed374cc10f72755c4021ddf06baf5b94df9c377c"
+    },
+    "sequence-rack-trigger": {
+      "frames": 125,
+      "sha256": "2daa7e9a0bfad861fbdddcf780ba44ddb59920fe4ffd2659cdb143b3a86226e5"
+    },
+    "sequence-mag-trigger": {
+      "frames": 125,
+      "sha256": "011d1f919acb4f3fef17ae2cf8b75004e623738c1e6bb55c1dde0e5d5880fa98"
+    },
+    "sequence-draw-mag-trigger": {
+      "frames": 141,
+      "sha256": "66ff59c51862ebeff61168c9c3a727f47fc2ca1769267603f72b7228d8a7a599"
+    },
+    "sequence-custom": {
+      "frames": 141,
+      "sha256": "66ff59c51862ebeff61168c9c3a727f47fc2ca1769267603f72b7228d8a7a599"
+    }
+  }
+}

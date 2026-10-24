@@ -1,0 +1,1321 @@
+{
+  "change": "CHG-059",
+  "status": "Complete pre-publication and normal post-push CI passed; Cloudflare b-preview deployment check success",
+  "expandedCSSSha256": "a1dafd6e9a465a67c7f0b0159855f9d6fd2cb12f1cebf9113a6b59b5dfdc642e",
+  "collectorRun": 39979166376,
+  "collectorCommit": "bcf363b",
+  "collectedImages": 204,
+  "unchangedImages": 104,
+  "changedImages": {
+    "chromium/preview/drills/catalog.dark.320.png": {
+      "beforeSHA256": "12f206aa03e45a49619dd395dc5e75fac7e0b262876ddd8876c62b45e7ce5cf9",
+      "afterSHA256": "d7b4f640e2a1bd9eec44c12ec29b94f042e40f19022d54c3cedb6c6e80c21194",
+      "beforeSize": [
+        320,
+        2043
+      ],
+      "afterSize": [
+        320,
+        2043
+      ]
+    },
+    "chromium/preview/drills/catalog.dark.390.png": {
+      "beforeSHA256": "90111ef16b12948c753e19370352a825aaa9c7e6c9491bc5b75338d7b51c69eb",
+      "afterSHA256": "5c61856123ee0b12d4798ef08c19867db2fea9013a7a6be60efb852c523e3d9a",
+      "beforeSize": [
+        390,
+        1968
+      ],
+      "afterSize": [
+        390,
+        1968
+      ]
+    },
+    "chromium/preview/drills/catalog.light.390.png": {
+      "beforeSHA256": "18606edc85c17ad9f63615147124085d5cb6856b2dfe6938cbee6c6defc5676b",
+      "afterSHA256": "41de5da746942016f81c4fe294a5f239d755c03761d4fd59678373b8134fccb4",
+      "beforeSize": [
+        390,
+        1968
+      ],
+      "afterSize": [
+        390,
+        1968
+      ]
+    },
+    "chromium/preview/drills/custom-editor.dark.390.png": {
+      "beforeSHA256": "5af323551a304f12bbc43fab48594b3884e3c1effcc81afe06054b62b4f8734a",
+      "afterSHA256": "d9461a563a6a145db1ec1be9cb44ac21e58ae81d0c614f174b98aa8b10b60d1f",
+      "beforeSize": [
+        390,
+        2417
+      ],
+      "afterSize": [
+        390,
+        2417
+      ]
+    },
+    "chromium/preview/drills/custom.dark.390.png": {
+      "beforeSHA256": "d954920317cabb41ec23119632ea5eb524c057a595226d1ef53c0da22ec970df",
+      "afterSHA256": "2945fff5794faf0da185bb25eb3369e30365ee6b3906c33dcc3e1310dcc202a7",
+      "beforeSize": [
+        390,
+        1809
+      ],
+      "afterSize": [
+        390,
+        1809
+      ]
+    },
+    "chromium/preview/practice/configure-control.dark.390.png": {
+      "beforeSHA256": "33b8407fce692efc891b5d101b9e4727e7dedfbb9a45eb404aafd437f50e4314",
+      "afterSHA256": "326870df2d3aacc85874db4b9e286a3cf85cc2256831759e92aff4006f1eedfe",
+      "beforeSize": [
+        390,
+        1574
+      ],
+      "afterSize": [
+        390,
+        1578
+      ]
+    },
+    "chromium/preview/practice/configure-par.dark.390.png": {
+      "beforeSHA256": "ee3a3a3784190bc601abf247e7147b1dccb43c9df63f246c6ff5103cc3806039",
+      "afterSHA256": "3a18eb05b0cfa2bf316051dfbddc586d41b095858977fd25a550b293d2fc1bb8",
+      "beforeSize": [
+        390,
+        1660
+      ],
+      "afterSize": [
+        390,
+        1664
+      ]
+    },
+    "chromium/preview/practice/configure-par.light.390.png": {
+      "beforeSHA256": "99c33b1ec8711afc330c7bbc78a196129cb2e6ff122723d990140fac54138951",
+      "afterSHA256": "9957c64b663b0ca1e9694c01c850a3a49900e2ef43dbd10e0ced3e5c4d3e3039",
+      "beforeSize": [
+        390,
+        1660
+      ],
+      "afterSize": [
+        390,
+        1664
+      ]
+    },
+    "chromium/preview/practice/configure-repeated.dark.390.png": {
+      "beforeSHA256": "0ceebd9c48c6a5ed4ddbf60be84b3582e4a23239432063511d596a23d48cfcda",
+      "afterSHA256": "bc7cd3ae346d12a7722122c2e743f87709e6b1b6f0297c4fca6ed30f817e5c9b",
+      "beforeSize": [
+        390,
+        1574
+      ],
+      "afterSize": [
+        390,
+        1578
+      ]
+    },
+    "chromium/preview/practice/configure-single.dark.320.png": {
+      "beforeSHA256": "a56d160790e11695ccd68a4d0dc6915904b038c8e2ed0292c1011fe6b68562e6",
+      "afterSHA256": "5eeced1a67884f26c37a82b4fab37e879f8b9aebc7904b534ec13b99e1342cf7",
+      "beforeSize": [
+        320,
+        1632
+      ],
+      "afterSize": [
+        320,
+        1636
+      ]
+    },
+    "chromium/preview/practice/configure-single.dark.390.png": {
+      "beforeSHA256": "64fb59446aa89179e957baf40f2305eb86fe19926246c0342ce16e7242aac303",
+      "afterSHA256": "241a115760319906c774f6ba5a14e5f5aaf22ffd9628c057d829c8b8a82f3850",
+      "beforeSize": [
+        390,
+        1574
+      ],
+      "afterSize": [
+        390,
+        1578
+      ]
+    },
+    "chromium/preview/practice/configure-single.light.390.png": {
+      "beforeSHA256": "65ba23554e9ffb0c92322dd01591b12ff9dc4e21282bfa5759cebfe8f49969b7",
+      "afterSHA256": "3ed170b10df18544bc4c82b828861ae55af20d38708e7a679b8e131671d74e0e",
+      "beforeSize": [
+        390,
+        1574
+      ],
+      "afterSize": [
+        390,
+        1578
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-custom.dark.390.png": {
+      "beforeSHA256": "06ae48fbe5a0850a41c31b6e8426b5c14dc2df64a5fea5d801a7d55169c93b4a",
+      "afterSHA256": "d709227f343ca0e5ad6f6714e7ed910247f71a1b2091e19ec74a99c9b2eedf41",
+      "beforeSize": [
+        390,
+        2181
+      ],
+      "afterSize": [
+        390,
+        2197
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-custom.light.390.png": {
+      "beforeSHA256": "85630d46e209f9dfe30f7c2c2a22ffd6f53e853b5cf6164cb1fb10681a46138a",
+      "afterSHA256": "9c422bee29895ec7b57e02e3bb81809e17aadcfdd313cbfcfac062878f7286a1",
+      "beforeSize": [
+        390,
+        2181
+      ],
+      "afterSize": [
+        390,
+        2197
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-draw-mag-trigger.dark.390.png": {
+      "beforeSHA256": "8795916b69f1fa07a3276f25302605b78ccee1aceff1d39a3c4d4afc919f504b",
+      "afterSHA256": "3e3361c944ac4416a29adaaca71e4b687e7c66acdc5970ad9003fa0e39e12f5d",
+      "beforeSize": [
+        390,
+        2212
+      ],
+      "afterSize": [
+        390,
+        2228
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-draw-mag-trigger.light.390.png": {
+      "beforeSHA256": "21e7845789c462ee74d85423f562429b16b635064ea54010d69a6115e19a4334",
+      "afterSHA256": "1a94c8fe7e187f8e9f4d81c56d9e09362ecc297611ee45bc47d0e10fbc0f0ea9",
+      "beforeSize": [
+        390,
+        2212
+      ],
+      "afterSize": [
+        390,
+        2228
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-mag-trigger.dark.390.png": {
+      "beforeSHA256": "d2f4f357177c2dc9579ffb8051a7230f12ff50c30827e1558bba900ac3ecfbc3",
+      "afterSHA256": "3f79d9c4b4ef6878128e5bf95bbba22279d76fdc829370c191b9739f5c18ae97",
+      "beforeSize": [
+        390,
+        2181
+      ],
+      "afterSize": [
+        390,
+        2197
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-mag-trigger.light.390.png": {
+      "beforeSHA256": "35da36fea143efc86d18f0cf3c024596a02092d318e10e144cf105acd70c51a9",
+      "afterSHA256": "01b3e513dbb5f3799dad53c58ff9b4f3aed6ab26e93f463e63b68c50ba8006a7",
+      "beforeSize": [
+        390,
+        2181
+      ],
+      "afterSize": [
+        390,
+        2197
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-rack-trigger.dark.390.png": {
+      "beforeSHA256": "efe6f0019fe5c358677473c23d88c76a9d4ce96342c9c5ff3b3aa7fb02b6d829",
+      "afterSHA256": "9e7363e1fb8c5fdbdc4d1c27eb2aed04d30a19e49a1389aedfdf018c1524e9cf",
+      "beforeSize": [
+        390,
+        2181
+      ],
+      "afterSize": [
+        390,
+        2197
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-rack-trigger.light.390.png": {
+      "beforeSHA256": "83fae735657cb73e120b0e1ea481643d3fb626bbd351be33dca91e0725df1b33",
+      "afterSHA256": "834ad7343534d9eeffc1e619cefdf95be9536ff6660032377dab31e6b8b37fea",
+      "beforeSize": [
+        390,
+        2181
+      ],
+      "afterSize": [
+        390,
+        2197
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-trigger-only.dark.390.png": {
+      "beforeSHA256": "40b859c732ca458566bddc4af378135db38fafafb27a20a169d5c33c7388f4ac",
+      "afterSHA256": "7fcd1436a202a1234ae9aa3816f9f0845bc4bd092b64075ccf95994df33299d4",
+      "beforeSize": [
+        390,
+        2181
+      ],
+      "afterSize": [
+        390,
+        2197
+      ]
+    },
+    "chromium/preview/practice-guide/sequence-trigger-only.light.390.png": {
+      "beforeSHA256": "bc3ec5919ab95e05d83c451d6328856cde784c04d498e7257609d8c926fafb1f",
+      "afterSHA256": "40d8a37157ab71c1b7a08320df4be744f1e209d730267bfaf652cc2c099bc05d",
+      "beforeSize": [
+        390,
+        2181
+      ],
+      "afterSize": [
+        390,
+        2197
+      ]
+    },
+    "chromium/preview/session/configure.dark.390.png": {
+      "beforeSHA256": "4771857e507f99876c41824440ae9d1b207b83cba3af00a445dda825743374f3",
+      "afterSHA256": "0e7ea7b5ca222b814c588707cb5618cd1bdca0ec069235f4876698028084da64",
+      "beforeSize": [
+        390,
+        1447
+      ],
+      "afterSize": [
+        390,
+        1451
+      ]
+    },
+    "chromium/preview/shared/safety-modal.dark.320.png": {
+      "beforeSHA256": "4e4efc4032b3c3ebbc69fb6f5e3b0ca179aee332aba7be16bfbe87bc9ffe9fe8",
+      "afterSHA256": "9adfdc2438467ee4ce95b40a8cd360f3b1b061adda6a34733733030cab0b7f86",
+      "beforeSize": [
+        320,
+        844
+      ],
+      "afterSize": [
+        320,
+        844
+      ]
+    },
+    "chromium/preview/shared/safety-modal.dark.390.png": {
+      "beforeSHA256": "8ae664fa663c5035c04fc28c1d9b2d35b111170f89021bb64699a70669af2dbc",
+      "afterSHA256": "3e06f80ec32318358af9b2f81e96b211a656fcc8805d4bf43ed2b517bbd7dd53",
+      "beforeSize": [
+        390,
+        844
+      ],
+      "afterSize": [
+        390,
+        844
+      ]
+    },
+    "chromium/public/drills/catalog.dark.320.png": {
+      "beforeSHA256": "861e14a7dec49db3df6c61a1bed567312a35546e98c30c975bb193cf3f543bd6",
+      "afterSHA256": "4817df8637ade049c1bd7845860f6a29be0e59f91b026a6df780198cdb59ac17",
+      "beforeSize": [
+        320,
+        2004
+      ],
+      "afterSize": [
+        320,
+        2004
+      ]
+    },
+    "chromium/public/drills/catalog.dark.390.png": {
+      "beforeSHA256": "817fbc5eeadc475ea4867ec0cf5a2b662b7ad587f82ca49a2d07cab38f3a04f6",
+      "afterSHA256": "45ae220bfc1a65241f8f2a866415f5e90b628df38c786c9ff06c65b1bc611123",
+      "beforeSize": [
+        390,
+        1929
+      ],
+      "afterSize": [
+        390,
+        1929
+      ]
+    },
+    "chromium/public/drills/catalog.light.390.png": {
+      "beforeSHA256": "b608dbb2f280cd3cf84a3d12747812b4c49748e581096a55d1f3aa9766f8e22b",
+      "afterSHA256": "cda4badf46c074145b899dfccb585a37cf70858ac8723bc86862232ae20bbf84",
+      "beforeSize": [
+        390,
+        1929
+      ],
+      "afterSize": [
+        390,
+        1929
+      ]
+    },
+    "chromium/public/drills/custom.dark.390.png": {
+      "beforeSHA256": "e1c9636d3fff671ab5ca6e5a50f6d96836df242ebc7b1600bc9637e7e3698d13",
+      "afterSHA256": "614204984c51e3faa32bc2853d6cd6472d55cf4e08e996e1d13fc1a878150acb",
+      "beforeSize": [
+        390,
+        1710
+      ],
+      "afterSize": [
+        390,
+        1710
+      ]
+    },
+    "chromium/public/drills/edit-custom.dark.390.png": {
+      "beforeSHA256": "6fca4feb6e82f9b2b045b8588ce336553bce2bac3787c3ca2bec021d0ac6ab83",
+      "afterSHA256": "1f9e7ce82e5bd899bbe1cdc1ceca7d9276035755977f91aea58b87daca6e0795",
+      "beforeSize": [
+        390,
+        2381
+      ],
+      "afterSize": [
+        390,
+        2381
+      ]
+    },
+    "chromium/public/practice/configure-control.dark.390.png": {
+      "beforeSHA256": "9f1571cfe38455e4ac521489f703c08a27e5ead8399c31f821290c668e087d2b",
+      "afterSHA256": "57476a2ad18e60375230fb438f8e2b56676da1ed742dffe4330247fb56f9cfb3",
+      "beforeSize": [
+        390,
+        1535
+      ],
+      "afterSize": [
+        390,
+        1539
+      ]
+    },
+    "chromium/public/practice/configure-par.dark.390.png": {
+      "beforeSHA256": "7c151e99f3db1fe182780d292731283123aa6fc6d79d98d70441d76d1914bc18",
+      "afterSHA256": "bfdb2a2383bd540868ef628eb4259cfab9efc812f6b00f03975020fe790a9aca",
+      "beforeSize": [
+        390,
+        1621
+      ],
+      "afterSize": [
+        390,
+        1625
+      ]
+    },
+    "chromium/public/practice/configure-par.light.390.png": {
+      "beforeSHA256": "9d5de7a2ce45a2e13b8b353c7288e28e597c26c69dc9d23df1b3b68c81307564",
+      "afterSHA256": "2e7a618ecb0b46f26c32b90bbbf645121815468b956ebe342c3538ba85f87347",
+      "beforeSize": [
+        390,
+        1621
+      ],
+      "afterSize": [
+        390,
+        1625
+      ]
+    },
+    "chromium/public/practice/configure-repeated.dark.390.png": {
+      "beforeSHA256": "26092d78839c21759a15de4f489f6bb995412fd07ee7311d64f1aa58bb656d33",
+      "afterSHA256": "60dd50a2f4cbd8ff06f6a385149e116586151a51c7727f4663a9e302ff04f42a",
+      "beforeSize": [
+        390,
+        1535
+      ],
+      "afterSize": [
+        390,
+        1539
+      ]
+    },
+    "chromium/public/practice/configure-single.dark.320.png": {
+      "beforeSHA256": "f43bc57773595be84e83b4147d41aa1f645e178dff5e61bee765fb49c4db2281",
+      "afterSHA256": "8ad60abfb6f78e927e6bf9e59bac558bd6daac0cbb0090e867ab8e1ce63c25eb",
+      "beforeSize": [
+        320,
+        1593
+      ],
+      "afterSize": [
+        320,
+        1597
+      ]
+    },
+    "chromium/public/practice/configure-single.dark.390.png": {
+      "beforeSHA256": "1d74242d933d99789f2dd2c1dbd18f4f8e24695140e330aa13723f07578fb59a",
+      "afterSHA256": "b448e6c6abe6783e8a42e0e5e62730387e98f529cd27ec637fcadc309e0b22a4",
+      "beforeSize": [
+        390,
+        1535
+      ],
+      "afterSize": [
+        390,
+        1539
+      ]
+    },
+    "chromium/public/practice/configure-single.light.390.png": {
+      "beforeSHA256": "cb57fc1eca4b0070a33f63c6a7a6046d41267ef7d789c507a0ec8813588c84ca",
+      "afterSHA256": "8ce30079c11ff418dcdde0a011d6c98e28d0f7d1905c2cae96d43a4b070334f4",
+      "beforeSize": [
+        390,
+        1535
+      ],
+      "afterSize": [
+        390,
+        1539
+      ]
+    },
+    "chromium/public/practice-guide/sequence-custom.dark.390.png": {
+      "beforeSHA256": "83bd4da06e939236609d5c8a8f41489145822da034251a37473d044d423445f9",
+      "afterSHA256": "3a8ee2693f44a36d7dfd844d3274bad3203cfbf0deedfdff628c16daf5579dd1",
+      "beforeSize": [
+        390,
+        2142
+      ],
+      "afterSize": [
+        390,
+        2158
+      ]
+    },
+    "chromium/public/practice-guide/sequence-custom.light.390.png": {
+      "beforeSHA256": "5033b16c09e1d5c6752f1b9b504993ed147c45d05c938798f7416235a2bd017b",
+      "afterSHA256": "888832eb33aaf6e807f624e8a8335f8caa3310495a3958e2b263a9aad732881f",
+      "beforeSize": [
+        390,
+        2142
+      ],
+      "afterSize": [
+        390,
+        2158
+      ]
+    },
+    "chromium/public/practice-guide/sequence-draw-mag-trigger.dark.390.png": {
+      "beforeSHA256": "6b8404f5993afc198095f4dfa0d8a969675fc4d3cbac6d9df6c494f7366c656a",
+      "afterSHA256": "0454e2a28637e3b7912d2a8925c0f5fd6eb8a986568aa475c732c352c71d0429",
+      "beforeSize": [
+        390,
+        2173
+      ],
+      "afterSize": [
+        390,
+        2189
+      ]
+    },
+    "chromium/public/practice-guide/sequence-draw-mag-trigger.light.390.png": {
+      "beforeSHA256": "9ca0c54193f0d64d16b2b39715558ddbe9b0ef80991755a357fd1e5c3b2a88c7",
+      "afterSHA256": "ca26e498366a51ab75635d75c720ffddb8d04e15023bbe1cd419f54ed03ea6a4",
+      "beforeSize": [
+        390,
+        2173
+      ],
+      "afterSize": [
+        390,
+        2189
+      ]
+    },
+    "chromium/public/practice-guide/sequence-mag-trigger.dark.390.png": {
+      "beforeSHA256": "c1e605d4890e830d287aa9e6dc85ea81f044363c38f1f5c06e1766efe4aa7900",
+      "afterSHA256": "d08ad67c3ad62d3afe04f1a5541a0d08a42080b44812296c0d62d578ed644406",
+      "beforeSize": [
+        390,
+        2142
+      ],
+      "afterSize": [
+        390,
+        2158
+      ]
+    },
+    "chromium/public/practice-guide/sequence-mag-trigger.light.390.png": {
+      "beforeSHA256": "d440c59cba197a1f0efac2b8810591c048211c03cbbf8354be60e690c61996e5",
+      "afterSHA256": "1b445404d32cfca7ec5f9ac2784d6455abebd00d1715ae39f6bf98531e293253",
+      "beforeSize": [
+        390,
+        2142
+      ],
+      "afterSize": [
+        390,
+        2158
+      ]
+    },
+    "chromium/public/practice-guide/sequence-rack-trigger.dark.390.png": {
+      "beforeSHA256": "deec474a2ae0f1501f6f2546fe3d44cff6501b8fd3e0ce4f02f19051a5521b14",
+      "afterSHA256": "cbda3ccc936dc7a3e123d4676c33ca683d324872a67cec2988263ab1535729b3",
+      "beforeSize": [
+        390,
+        2142
+      ],
+      "afterSize": [
+        390,
+        2158
+      ]
+    },
+    "chromium/public/practice-guide/sequence-rack-trigger.light.390.png": {
+      "beforeSHA256": "3dfb489f05d807acb3400cbb7a56c87fd62a0c8af82915925cac4261cbcfd1bf",
+      "afterSHA256": "756a6a0681f61d9161e01853bfd3f78e4603d3b46c5c33ab1660b697d29778ec",
+      "beforeSize": [
+        390,
+        2142
+      ],
+      "afterSize": [
+        390,
+        2158
+      ]
+    },
+    "chromium/public/practice-guide/sequence-trigger-only.dark.390.png": {
+      "beforeSHA256": "7ddd622c9756e78e58d18083f1929aa7471bd29ab60f9e0c117e1eed00cfc74f",
+      "afterSHA256": "0cccc693b69dbf96c9397f6db0634ccf9b657654266cee411338749fcaa83951",
+      "beforeSize": [
+        390,
+        2142
+      ],
+      "afterSize": [
+        390,
+        2158
+      ]
+    },
+    "chromium/public/practice-guide/sequence-trigger-only.light.390.png": {
+      "beforeSHA256": "3041c0c016615c64c11a9e1b0cad813b5b8461eca43453799a10023d5682447d",
+      "afterSHA256": "3d3d7545869713a7b036e2ceaca0152ddf9e2f1be122ba5cd781ac232740db55",
+      "beforeSize": [
+        390,
+        2142
+      ],
+      "afterSize": [
+        390,
+        2158
+      ]
+    },
+    "chromium/public/session/configure.dark.390.png": {
+      "beforeSHA256": "cee25c36441ab1b43ecf48f04f062f589c336408f4e1767a1c93e36cdee4a241",
+      "afterSHA256": "b6b220d955ac7e01b62043843bd8632500877429bc53a17d8a5e9a45bc54bc35",
+      "beforeSize": [
+        390,
+        1409
+      ],
+      "afterSize": [
+        390,
+        1413
+      ]
+    },
+    "chromium/public/shared/safety-modal.dark.320.png": {
+      "beforeSHA256": "bb2606ee2b1adcf056680e9fcfce8b14f8696f71efdb02afdc5af35f50fed999",
+      "afterSHA256": "71521f6030a100324aad0092757030a5a8520fca3aae3c9460d1bf6ab00daae9",
+      "beforeSize": [
+        320,
+        844
+      ],
+      "afterSize": [
+        320,
+        844
+      ]
+    },
+    "chromium/public/shared/safety-modal.dark.390.png": {
+      "beforeSHA256": "872e8120508ec75ffac424757d20032144d5b0af43764990bd306d838c329757",
+      "afterSHA256": "5ce6ffb4ab6c470b8b7541406ca9698bf24565c6af2e6b1c58b5c83cf1a32df0",
+      "beforeSize": [
+        390,
+        844
+      ],
+      "afterSize": [
+        390,
+        844
+      ]
+    },
+    "webkit/preview/drills/catalog.dark.320.png": {
+      "beforeSHA256": "d4d9f72b74dfdef7e2aa433fb02c8101e822fa50bdf38152ec6d96f73b03f204",
+      "afterSHA256": "565080ebf5f6300078ad8120a3a0c81cf4616faf7ef9e8d5f188e4a2169530c5",
+      "beforeSize": [
+        320,
+        2026
+      ],
+      "afterSize": [
+        320,
+        2026
+      ]
+    },
+    "webkit/preview/drills/catalog.dark.390.png": {
+      "beforeSHA256": "28151560243c0c061f1885ac694aa8722478afe39741b3a55b8aae92c75083d8",
+      "afterSHA256": "f0ab619c8e56b73a4b6e972cef5ff4e8ff05898003a25254975b5764d3c3de9c",
+      "beforeSize": [
+        390,
+        1953
+      ],
+      "afterSize": [
+        390,
+        1953
+      ]
+    },
+    "webkit/preview/drills/catalog.light.390.png": {
+      "beforeSHA256": "51739296c0065cb5d562aa9395b010d398cef3e860ebece31194fd4dc4c74488",
+      "afterSHA256": "a27449cdfb2f397c173784f723d323a33b9380e9be7ff6e5518e00546e1907d4",
+      "beforeSize": [
+        390,
+        1953
+      ],
+      "afterSize": [
+        390,
+        1953
+      ]
+    },
+    "webkit/preview/drills/custom-editor.dark.390.png": {
+      "beforeSHA256": "f7abd0a32aa62857928693221c626538c2bc1905c3e1bb228bb144c3988727f0",
+      "afterSHA256": "894353182350acd90f0dcdb4275769bc3aa1fdbbcdcc86607c84135fe492657f",
+      "beforeSize": [
+        390,
+        2412
+      ],
+      "afterSize": [
+        390,
+        2412
+      ]
+    },
+    "webkit/preview/drills/custom.dark.390.png": {
+      "beforeSHA256": "716f18cdb6b19f532d15961f2da356460e46e962d4e03173216fcd6500c65e89",
+      "afterSHA256": "23909b35c0b6fd0bbf7f1215e1816bd0546a96aa94dc4c86b134ec1a0b4e6e8a",
+      "beforeSize": [
+        390,
+        1796
+      ],
+      "afterSize": [
+        390,
+        1796
+      ]
+    },
+    "webkit/preview/practice/configure-control.dark.390.png": {
+      "beforeSHA256": "538c3bb96afc2ce050ce1462bb919a0ab637f695a5ce292b91fe1b2c9be3cc7e",
+      "afterSHA256": "8feb1e87299e05316638852a535b7f351b8e2fa4fd08f844e42bb53834934a1e",
+      "beforeSize": [
+        390,
+        1577
+      ],
+      "afterSize": [
+        390,
+        1581
+      ]
+    },
+    "webkit/preview/practice/configure-par.dark.390.png": {
+      "beforeSHA256": "a3674caa2219ed4b410d18e8e74bc3fdb9d0f12c8802ab59df309530b2315ce6",
+      "afterSHA256": "159f1963fa8f901ad131dd64e1f966f64d6254756dd7d9d5c48be40997886fc3",
+      "beforeSize": [
+        390,
+        1663
+      ],
+      "afterSize": [
+        390,
+        1667
+      ]
+    },
+    "webkit/preview/practice/configure-par.light.390.png": {
+      "beforeSHA256": "15e728864252c3e0e92cb0ea0994fcde24483646cd6b87d5da403b5030be4097",
+      "afterSHA256": "59d83ce8880db38fee29ab56e814a9cc2c0cf6050dfa90832c1413a6b7a158f5",
+      "beforeSize": [
+        390,
+        1663
+      ],
+      "afterSize": [
+        390,
+        1667
+      ]
+    },
+    "webkit/preview/practice/configure-repeated.dark.390.png": {
+      "beforeSHA256": "335369b4bca7ab14a845ab3259e7b87dac40de75a53c027e337266db00b96cfc",
+      "afterSHA256": "a555c237ec8f51500cc24532e9f61f7ea38ef89b8eb5195da6d1581bd234ae25",
+      "beforeSize": [
+        390,
+        1577
+      ],
+      "afterSize": [
+        390,
+        1581
+      ]
+    },
+    "webkit/preview/practice/configure-single.dark.320.png": {
+      "beforeSHA256": "91a8b6212780a3d17a35377568eec4cbab8612d5e1767d719eb0a2a479f6ee6b",
+      "afterSHA256": "8a82ac48a9c7db902877b80d8aba223115bbb42137f92d0509ef97c60625cadc",
+      "beforeSize": [
+        320,
+        1632
+      ],
+      "afterSize": [
+        320,
+        1636
+      ]
+    },
+    "webkit/preview/practice/configure-single.dark.390.png": {
+      "beforeSHA256": "03076d296e61d0a4dec64ac1de7f78bf6b8619dc90592d889601cfc69d877895",
+      "afterSHA256": "5f29a1161c8875f7538feadc96889cc26f16afc74a0ed48959b2c6276902b9eb",
+      "beforeSize": [
+        390,
+        1577
+      ],
+      "afterSize": [
+        390,
+        1581
+      ]
+    },
+    "webkit/preview/practice/configure-single.light.390.png": {
+      "beforeSHA256": "8c47a55a2b4f46c1333c895c0b07e91e35fd94563622fd89946d29c7f0d52417",
+      "afterSHA256": "12b1cef7c0c7589dd119b097b370a07bc3d06012fcb2c86ab13be288bc059429",
+      "beforeSize": [
+        390,
+        1577
+      ],
+      "afterSize": [
+        390,
+        1581
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-custom.dark.390.png": {
+      "beforeSHA256": "0a2a5301d0a86753729c49334e0888e0c1812c807335608ec84e387b6f9fed8f",
+      "afterSHA256": "92a595a6be83bb12075a3237643437636c97f39f49042eb642fe69c397a6bd45",
+      "beforeSize": [
+        390,
+        2161
+      ],
+      "afterSize": [
+        390,
+        2177
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-custom.light.390.png": {
+      "beforeSHA256": "91eae634548e813ebfa0cf284146864e42a97de61d9d4ca06a172fc8d0e45257",
+      "afterSHA256": "e61c5240a4df5f9919408f805c6e42799be215430dc00f7430924e2e7bcae170",
+      "beforeSize": [
+        390,
+        2161
+      ],
+      "afterSize": [
+        390,
+        2177
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-draw-mag-trigger.dark.390.png": {
+      "beforeSHA256": "3b6c35dbb06e3596162b13b9d8327b8eb8551198a5a6d97e87d1a2be7d9ab763",
+      "afterSHA256": "904e41915ff1015a6a235c82d9ea2b781b8cd09f6777a531bcc4d14d7a6c1b9d",
+      "beforeSize": [
+        390,
+        2191
+      ],
+      "afterSize": [
+        390,
+        2207
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-draw-mag-trigger.light.390.png": {
+      "beforeSHA256": "920a6a5ff92615e148f048d6c6f00be102daf9eb5a1c2aa98248a1230e641bdb",
+      "afterSHA256": "bc8a0cbd478d38fa7b6949e59302c106772781459d278f8d52acfa40c1eb6e64",
+      "beforeSize": [
+        390,
+        2191
+      ],
+      "afterSize": [
+        390,
+        2207
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-mag-trigger.dark.390.png": {
+      "beforeSHA256": "d4b076aca7b6b243ef9ed467ef8fb9612bf883502f33c3ec81ca0172062f4b71",
+      "afterSHA256": "04486f43309763f1fbf0eac5ccaa9f6ddae38adf4229d2e9a3ae95fb1c0ea193",
+      "beforeSize": [
+        390,
+        2161
+      ],
+      "afterSize": [
+        390,
+        2177
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-mag-trigger.light.390.png": {
+      "beforeSHA256": "0384ecbb03b646719c579b83af851e4ce3675929dd3768a4546c6b49faa52b98",
+      "afterSHA256": "313a956aab93f41fdb848d7d7c96332341b43ff107a3f3a4577113cca6a90f65",
+      "beforeSize": [
+        390,
+        2161
+      ],
+      "afterSize": [
+        390,
+        2177
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-rack-trigger.dark.390.png": {
+      "beforeSHA256": "edb101c530e5026614dfd07f93c5ec3661071d92d5c696689195254e46b9b2a3",
+      "afterSHA256": "aced56f7335a71f4fb0aada4dbe8cd46623ab8f900d1d469862ab64ea508ae69",
+      "beforeSize": [
+        390,
+        2161
+      ],
+      "afterSize": [
+        390,
+        2177
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-rack-trigger.light.390.png": {
+      "beforeSHA256": "c7820629dbf3881d2821c9c892ebbf2db18bf2bbeb034f72eb6375c5f720312e",
+      "afterSHA256": "fab094af97d8659348671b9656289daa4cb22fafc7dfaa6ca29db662fff3d7bf",
+      "beforeSize": [
+        390,
+        2161
+      ],
+      "afterSize": [
+        390,
+        2177
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-trigger-only.dark.390.png": {
+      "beforeSHA256": "05bf6bbe2a44767e22510847f79509d05e41fde73d21427945ab3c1d178b5996",
+      "afterSHA256": "f9afed19428f598ef0a7344d523afcd4c3b0f85c2ebc9fbb8b0f414b3c822b93",
+      "beforeSize": [
+        390,
+        2161
+      ],
+      "afterSize": [
+        390,
+        2177
+      ]
+    },
+    "webkit/preview/practice-guide/sequence-trigger-only.light.390.png": {
+      "beforeSHA256": "22013c0009cadb6ed0a2649b733da6db4492f361e961deebe9cf18252ed24df9",
+      "afterSHA256": "486d59a36626849f951ab24c1e9570ddd0c9635fe62c48c4014dd33a3546f756",
+      "beforeSize": [
+        390,
+        2161
+      ],
+      "afterSize": [
+        390,
+        2177
+      ]
+    },
+    "webkit/preview/session/configure.dark.390.png": {
+      "beforeSHA256": "b507245a9f1dbbcc789d56fbfd8cc2d9760be7e1269bf30601828f83706c952d",
+      "afterSHA256": "929b17bae82ed65e57b06b0af53bc6a48f74cfd8e155d5866ae05d2b858cadae",
+      "beforeSize": [
+        390,
+        1445
+      ],
+      "afterSize": [
+        390,
+        1449
+      ]
+    },
+    "webkit/preview/shared/safety-modal.dark.320.png": {
+      "beforeSHA256": "615bc6c84b0da33993f12e91dc7b42423f182d068d83d803caac3ba822a68167",
+      "afterSHA256": "106861e41904fde1c718415a77e34c80747903e28e17669d83587b90bdac5349",
+      "beforeSize": [
+        320,
+        844
+      ],
+      "afterSize": [
+        320,
+        844
+      ]
+    },
+    "webkit/preview/shared/safety-modal.dark.390.png": {
+      "beforeSHA256": "515379ae20ad10f5a0476ed473aa23d38ac872e1f6e941b387dd91c34a7fe1d2",
+      "afterSHA256": "474b3f5ba47efa4b3ce92e5e460d4f03265b85caf37a2f3b94547571b5c1cded",
+      "beforeSize": [
+        390,
+        844
+      ],
+      "afterSize": [
+        390,
+        844
+      ]
+    },
+    "webkit/public/drills/catalog.dark.320.png": {
+      "beforeSHA256": "323693d11839f603341179568feb48ad53afd74665dc196b7391af4b12202b58",
+      "afterSHA256": "5741494b3c79fcf64c34614baec747ee044200b71e450afe6cbee6e409b8ed6c",
+      "beforeSize": [
+        320,
+        1988
+      ],
+      "afterSize": [
+        320,
+        1988
+      ]
+    },
+    "webkit/public/drills/catalog.dark.390.png": {
+      "beforeSHA256": "edaf0138cbc5ec50ec64ae3bc4f369c449b06ec6b88f2bbbbbb564b23d21f58e",
+      "afterSHA256": "c656e99c85792a26aa0846af7a306c9025c20d994d2d9f91ab72f61e6ca30bb5",
+      "beforeSize": [
+        390,
+        1915
+      ],
+      "afterSize": [
+        390,
+        1915
+      ]
+    },
+    "webkit/public/drills/catalog.light.390.png": {
+      "beforeSHA256": "4a68667f981777c3b58f65da58499fe2024b515eee936df88d5b15771ab80969",
+      "afterSHA256": "e580f6b33ce45ed7f151cc7e8cd9fe55fc0f2787526356d1a09e3d2edf9a93d9",
+      "beforeSize": [
+        390,
+        1915
+      ],
+      "afterSize": [
+        390,
+        1915
+      ]
+    },
+    "webkit/public/drills/custom.dark.390.png": {
+      "beforeSHA256": "16f25ebe4ee3e076ae584e91aaac1e79176cf429697f2c92e38f4a247e5c5a44",
+      "afterSHA256": "e3481954a64c69d9c37e1aa3e4c7c02306c114184aa098fa2e0a035575fda3c8",
+      "beforeSize": [
+        390,
+        1698
+      ],
+      "afterSize": [
+        390,
+        1698
+      ]
+    },
+    "webkit/public/drills/edit-custom.dark.390.png": {
+      "beforeSHA256": "d6665e287ed6dcc6de2b89379aec4115740a0f7fbbd63cff5901fac49eee8400",
+      "afterSHA256": "ad2f71a496df7b42020bb2182acbf2592d365cb5c39a51361a6c57dc82be06b8",
+      "beforeSize": [
+        390,
+        2376
+      ],
+      "afterSize": [
+        390,
+        2376
+      ]
+    },
+    "webkit/public/practice/configure-control.dark.390.png": {
+      "beforeSHA256": "eb7e88a8b3d419b236549d3e2164c92c2c525d84a40c6f9aeb381040a83f916a",
+      "afterSHA256": "b4f12503e03f8a007a6abc8ad03d85b73621eaf4053c6f81f78065f7aafbf3a7",
+      "beforeSize": [
+        390,
+        1539
+      ],
+      "afterSize": [
+        390,
+        1543
+      ]
+    },
+    "webkit/public/practice/configure-par.dark.390.png": {
+      "beforeSHA256": "3d09e7e3ff1a93f68d51efba73f5db385500d39ba95da6792f3b265d2442cc09",
+      "afterSHA256": "8ba0e52888995522ad54d0b3312deaa1e17baa1aca6164ccb14d10a53d86b572",
+      "beforeSize": [
+        390,
+        1625
+      ],
+      "afterSize": [
+        390,
+        1629
+      ]
+    },
+    "webkit/public/practice/configure-par.light.390.png": {
+      "beforeSHA256": "d86467f251e68a1af8f28b33d68d2b49425dc54e9ddc20504fc4be40bb5843c0",
+      "afterSHA256": "49e326f4a66ed00241418c2dcdd9bfdffea9a8e5a08729b9863517c01003913d",
+      "beforeSize": [
+        390,
+        1625
+      ],
+      "afterSize": [
+        390,
+        1629
+      ]
+    },
+    "webkit/public/practice/configure-repeated.dark.390.png": {
+      "beforeSHA256": "11490179ce89deccc7dbcb3c6903041d9afc43356b3117e10972bae75ae05c9e",
+      "afterSHA256": "8e88037e7167a510a76a983a84d700867ce7c8f7e4e4fc9b9df9ab44b33f959a",
+      "beforeSize": [
+        390,
+        1539
+      ],
+      "afterSize": [
+        390,
+        1543
+      ]
+    },
+    "webkit/public/practice/configure-single.dark.320.png": {
+      "beforeSHA256": "5cfca3a4c607afe435061c9cf0004e85c51df8563c6e387685fc5b2c178e5e32",
+      "afterSHA256": "6016a66d8eaf6d99b87e369feb6e83bb75ff0780ddb2c9aabb1df2333e9891b1",
+      "beforeSize": [
+        320,
+        1594
+      ],
+      "afterSize": [
+        320,
+        1598
+      ]
+    },
+    "webkit/public/practice/configure-single.dark.390.png": {
+      "beforeSHA256": "2be506164a7a2b11f65648c8828e9c59ab541be6d968e5a89d318ab2c22736aa",
+      "afterSHA256": "6cba4d96ff0d8db6bb194aa3d98b064975133ae57b339506bf281921b3bd55b5",
+      "beforeSize": [
+        390,
+        1539
+      ],
+      "afterSize": [
+        390,
+        1543
+      ]
+    },
+    "webkit/public/practice/configure-single.light.390.png": {
+      "beforeSHA256": "b5569bef626a1cf777eae4866aaeae3c2c4763cbdc1bdb70be3a26bfc9c66f30",
+      "afterSHA256": "27a714c869927769168a01e254e64fe1a49c2ad344834487bed8f0f0a321c443",
+      "beforeSize": [
+        390,
+        1539
+      ],
+      "afterSize": [
+        390,
+        1543
+      ]
+    },
+    "webkit/public/practice-guide/sequence-custom.dark.390.png": {
+      "beforeSHA256": "0c29e46dfbfcaa76b559f6a5fa38aaa8746a13388e27ff06562c2436dc97d62b",
+      "afterSHA256": "9dc44740ac4a30038d8560248ae6a41b0b83fd4a412c88f2bd269aa8977593a0",
+      "beforeSize": [
+        390,
+        2123
+      ],
+      "afterSize": [
+        390,
+        2139
+      ]
+    },
+    "webkit/public/practice-guide/sequence-custom.light.390.png": {
+      "beforeSHA256": "278e8aea0f38f7b720e9f15db5fa8d1b181b86664924fb26c0b49a9fdb68e23b",
+      "afterSHA256": "d8806f15a05760821b67a4fb6b5a4bfaa6815bdd38727b95de07869316b6dab8",
+      "beforeSize": [
+        390,
+        2123
+      ],
+      "afterSize": [
+        390,
+        2139
+      ]
+    },
+    "webkit/public/practice-guide/sequence-draw-mag-trigger.dark.390.png": {
+      "beforeSHA256": "8e0574693941e1f8f03f5743985415975f5b9cb14d7a26eaeede8075976dd07c",
+      "afterSHA256": "163bbe51159370d573f0cda35c7fab09ede2c8bdd33529856e3e8927d493d6e2",
+      "beforeSize": [
+        390,
+        2153
+      ],
+      "afterSize": [
+        390,
+        2169
+      ]
+    },
+    "webkit/public/practice-guide/sequence-draw-mag-trigger.light.390.png": {
+      "beforeSHA256": "104f76d688e2e122c3d1009fafcf65f29e16a42cd4680253cbda2392b7b2fa62",
+      "afterSHA256": "ed36f304e4ce538342f9b4ed855a82d30d8287ef18a80788e6081be1e73a90a4",
+      "beforeSize": [
+        390,
+        2153
+      ],
+      "afterSize": [
+        390,
+        2169
+      ]
+    },
+    "webkit/public/practice-guide/sequence-mag-trigger.dark.390.png": {
+      "beforeSHA256": "4014cbd00af076bfa4c3823dd2ca32033f2cabcc537a5a94354720c539337b91",
+      "afterSHA256": "1eef5b2f3e277e3a9346c4746b1d344bf318cb4848aceff5fdf19b680a99d1e3",
+      "beforeSize": [
+        390,
+        2123
+      ],
+      "afterSize": [
+        390,
+        2139
+      ]
+    },
+    "webkit/public/practice-guide/sequence-mag-trigger.light.390.png": {
+      "beforeSHA256": "e72785e2dab4f019697c5e48374ba36976c162e27801db82f41113e54dd2d010",
+      "afterSHA256": "ad08b7ac9a2e7c7c2a0cda625ebd7fe25a6b56f0398c9aaeeb44c245e5224280",
+      "beforeSize": [
+        390,
+        2123
+      ],
+      "afterSize": [
+        390,
+        2139
+      ]
+    },
+    "webkit/public/practice-guide/sequence-rack-trigger.dark.390.png": {
+      "beforeSHA256": "c78c0d58292615bff1eb018d3cccd6d753f36a4e8865b7744baf3e6ed9e3784d",
+      "afterSHA256": "4bef084b86f4650131c2631c3152c4852f2c4af60850cf9a15efe2fdc6f8401d",
+      "beforeSize": [
+        390,
+        2123
+      ],
+      "afterSize": [
+        390,
+        2139
+      ]
+    },
+    "webkit/public/practice-guide/sequence-rack-trigger.light.390.png": {
+      "beforeSHA256": "155a36aa2a93643f6e70d75576372d530d5a051597aa581bf0977c853fa667d7",
+      "afterSHA256": "bfecf7823108875731f59c4d9500eeb557d067425447bc42ab9bb00195dac497",
+      "beforeSize": [
+        390,
+        2123
+      ],
+      "afterSize": [
+        390,
+        2139
+      ]
+    },
+    "webkit/public/practice-guide/sequence-trigger-only.dark.390.png": {
+      "beforeSHA256": "562eb1f0e6ae5948ec0a84e09da2b6bc082940f4543333b861bdd64f0f7c987b",
+      "afterSHA256": "0fa3b792fbe7e218fc05f11d9564f923febfbecf8f6aeb83f081005e44fd57cf",
+      "beforeSize": [
+        390,
+        2123
+      ],
+      "afterSize": [
+        390,
+        2139
+      ]
+    },
+    "webkit/public/practice-guide/sequence-trigger-only.light.390.png": {
+      "beforeSHA256": "5cb9c81cff189ec423133a0036bb66c2322bb99355ec3143c2747947a145b082",
+      "afterSHA256": "7239ba1529bf182d1187df607581c75817afb93d1d0f6306fe93f73d72e8458e",
+      "beforeSize": [
+        390,
+        2123
+      ],
+      "afterSize": [
+        390,
+        2139
+      ]
+    },
+    "webkit/public/session/configure.dark.390.png": {
+      "beforeSHA256": "48cd771a7bcd0d198a69a551ba65b00ed9810aefe44f0bcd28404c0b7181973e",
+      "afterSHA256": "23b995a5cc86db27e4f3560c9dd09758e1aba607d0fa34135c8bffa219e0babe",
+      "beforeSize": [
+        390,
+        1407
+      ],
+      "afterSize": [
+        390,
+        1411
+      ]
+    },
+    "webkit/public/shared/safety-modal.dark.320.png": {
+      "beforeSHA256": "79f60323403b3384a8dbcaa90ca8f77d289b7415c15820062b3640bf5952402b",
+      "afterSHA256": "5d743d58c521f68b04366ce6f0c05459f09ce053572fcaebff050909410df2fd",
+      "beforeSize": [
+        320,
+        844
+      ],
+      "afterSize": [
+        320,
+        844
+      ]
+    },
+    "webkit/public/shared/safety-modal.dark.390.png": {
+      "beforeSHA256": "0b3c6581ec75114de1e6975069cea0a1409a55f021e5887365feb9f0e560a2b0",
+      "afterSHA256": "005c9c5dfb0b98d2aaf88a954769204da018e50ee2effe17b9da5f21e49bd829",
+      "beforeSize": [
+        390,
+        844
+      ],
+      "afterSize": [
+        390,
+        844
+      ]
+    }
+  },
+  "safetyModalInterior": {
+    "chromium/preview/shared/safety-modal.dark.320.png": {
+      "interior": [
+        45,
+        204,
+        275,
+        640
+      ],
+      "identical": true,
+      "sha256": "ccefc758c90ab2807d9441c1f0db25dbce81d7f1cebe6b0248e208e4921210b4"
+    },
+    "chromium/preview/shared/safety-modal.dark.390.png": {
+      "interior": [
+        45,
+        226,
+        345,
+        618
+      ],
+      "identical": true,
+      "sha256": "e0a34e61150be423c001484ac53668e21a9476de89999d66a789999dc57c1414"
+    },
+    "chromium/public/shared/safety-modal.dark.320.png": {
+      "interior": [
+        45,
+        204,
+        275,
+        640
+      ],
+      "identical": true,
+      "sha256": "ccefc758c90ab2807d9441c1f0db25dbce81d7f1cebe6b0248e208e4921210b4"
+    },
+    "chromium/public/shared/safety-modal.dark.390.png": {
+      "interior": [
+        45,
+        226,
+        345,
+        618
+      ],
+      "identical": true,
+      "sha256": "e0a34e61150be423c001484ac53668e21a9476de89999d66a789999dc57c1414"
+    },
+    "webkit/preview/shared/safety-modal.dark.320.png": {
+      "interior": [
+        45,
+        205,
+        275,
+        639
+      ],
+      "identical": true,
+      "sha256": "2a3e9e36f5fc9a35bc8a43454f8e4e1203f347d99d062d33b75c72800c0edf1c"
+    },
+    "webkit/preview/shared/safety-modal.dark.390.png": {
+      "interior": [
+        45,
+        227,
+        345,
+        617
+      ],
+      "identical": true,
+      "sha256": "503475fc2e20d0f3ee86a5b3317c1ae94a34316f911db0a2cc1e0e7fa916f506"
+    },
+    "webkit/public/shared/safety-modal.dark.320.png": {
+      "interior": [
+        45,
+        205,
+        275,
+        639
+      ],
+      "identical": true,
+      "sha256": "2a3e9e36f5fc9a35bc8a43454f8e4e1203f347d99d062d33b75c72800c0edf1c"
+    },
+    "webkit/public/shared/safety-modal.dark.390.png": {
+      "interior": [
+        45,
+        227,
+        345,
+        617
+      ],
+      "identical": true,
+      "sha256": "503475fc2e20d0f3ee86a5b3317c1ae94a34316f911db0a2cc1e0e7fa916f506"
+    }
+  },
+  "review": "100 changed references: setup guide link/position, guide sequence list, group target colors and derived safety backdrop only. 104 collected references identical, including other guide modes and all run/review states. Modal interior pixels unchanged in all eight references. GIF encoded bytes/shared examples unchanged.",
+  "unchangedGIFs": {
+    "control.gif": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182",
+    "par.gif": "13dc5caa54b004d3ae240bb74c6579a6240ac4d0a1d97dc7e27b2906d607334a",
+    "repeated.gif": "3decdcb02107cf328d5d7ad12e020f09796b46d28ac0d1d8970cf010b7de5182",
+    "sequence-custom.gif": "bb9904dce957cee1052bc408a7a54eff19502e7f4f6c459fe95efc05a3953cd8",
+    "sequence-draw-mag-trigger.gif": "28f3d78736d0b457b779d1ae3ca6e3658192988adfec5598038bca5c8174ef51",
+    "sequence-mag-trigger.gif": "21042b77c1f62af2f489961f84a6e98c613c75fa6e4a42caaf07ce72f1c3fd66",
+    "sequence-rack-trigger.gif": "ea25a1da44c8d815d89c38124e249d7bc30e579aa1ec7e7c64b7eaf528092614",
+    "sequence-trigger-only.gif": "e33b277c31155abd1fe024dadad2fbe0905e747d84af4b4bcbc3a3afdab1e1cf",
+    "single-early.gif": "a9c97db122e3915ba2ac2d9967a794245d3bbd04515a4a3e32bf6f70b174d9cc",
+    "single.gif": "5a54b915c3e89ce9c9dc4c1654533f1100ae8e69e0fe20b4eeb1c0b7ef646888"
+  },
+  "acceptanceRun": 40075428666,
+  "acceptanceURL": "https://github.com/matosaru/dryfire/actions/runs/40075428666",
+  "acceptanceResult": "All8 jobs green: validate, both screenshot editions, four performance gates/controls, aggregate screenshots",
+  "reviewPatchCommit": "9af1303",
+  "reviewPatchPath": "docs/design/review-inputs/chg-059-final.patch",
+  "reviewPatchSHA256": "780af0d539a14bdaacbba3c5eaeeb5b9a1824ea392c821baf198bad677ad512e",
+  "unitTests": 1017,
+  "unitSuites": 147,
+  "applicationCommit": "5b8aeed",
+  "postPushRun": 40076234770,
+  "postPushURL": "https://github.com/matosaru/dryfire/actions/runs/40076234770",
+  "postPushResult": "All8 jobs succeeded",
+  "cloudflarePreviewBuild": "ec5dfaf5-9714-464f-8014-5de4bff17e11",
+  "cloudflarePreviewCheck": "success",
+  "cloudflarePreviewURL": "https://dash.cloudflare.com/cec726c2d5dbcf61f72d7f8dbe03037e/workers/services/view/dryfire/production/previews/b/builds/ec5dfaf5-9714-464f-8014-5de4bff17e11"
+}

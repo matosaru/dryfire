@@ -1,0 +1,7 @@
+export type Evaluation={verified:number;accuracy:string;falsePositive:string;actual:string[];predicted:string[];matrix:Record<string,Record<string,number>>};
+export function EvaluationPanel({value}:{value?:Evaluation}){return <div className="evaluation-panel" aria-live="polite">
+<h3>Retained recognition checks · verified events only</h3>
+<div className="eval-stats"><div><strong id="verifiedCount">{value?.verified??0}</strong><span>Verified</span></div><div><strong id="accuracyPct">{value?.accuracy??'—'}</strong><span>Accuracy</span></div><div><strong id="falsePositivePct">{value?.falsePositive??'—'}</strong><span>Other-sound false positives</span></div></div>
+<div id="confusionTable" className="confusion-wrap">{value&&(value.verified?<table><caption>Actual sound by predicted label (counts)</caption><thead><tr>{['Actual ↓ / Predicted →',...value.predicted].map(name=><th scope="col" key={name}>{name}</th>)}</tr></thead><tbody>{value.actual.map(actual=><tr key={actual}><th scope="row">{actual}</th>{value.predicted.map(predicted=><td key={predicted} className={predicted===actual||(actual==='other'&&predicted==='unknown')?'correct':undefined}>{value.matrix[actual][predicted]}</td>)}</tr>)}</tbody></table>:<p className="muted small">Verify at least one event below to see the confusion matrix.</p>)}</div>
+<p className="small muted">New unknown detections are not saved. These checks cover manually verified retained events only; they cannot measure missed sounds or an overall false-count rate.</p>
+</div>;}

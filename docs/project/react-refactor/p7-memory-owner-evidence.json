@@ -1,0 +1,971 @@
+{
+  "date": "2026-10-21",
+  "sourceCommit": "496c85062242b52afa1b0c92ccbe8bd7ca15113d",
+  "canonicalCI": {
+    "runId": 39556414876,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      "validate",
+      "screenshots (public)",
+      "screenshots (preview)",
+      "performance (public)",
+      "performance (preview)",
+      "screenshots"
+    ],
+    "thresholds": "unchanged original gates"
+  },
+  "exactContentScan": {
+    "files": 305,
+    "exactDuplicateGroups": []
+  },
+  "recordGrowingDiagnostic": {
+    "renderer": "system Chromium 154; forced GC after each repetition",
+    "method": "Existing original-baseline comparison with final repetition loop extended from10 to60 in a temporary local diagnostic copy; committed benchmark/gates unchanged",
+    "samples": [
+      {
+        "build": "original",
+        "memory": [
+          {
+            "cycle": 0,
+            "bytes": 2889696
+          },
+          {
+            "cycle": 0,
+            "bytes": 2890856
+          },
+          {
+            "cycle": 1,
+            "bytes": 2956588
+          },
+          {
+            "cycle": 2,
+            "bytes": 3037040
+          },
+          {
+            "cycle": 3,
+            "bytes": 3031320
+          },
+          {
+            "cycle": 4,
+            "bytes": 3056692
+          },
+          {
+            "cycle": 5,
+            "bytes": 3087960
+          },
+          {
+            "cycle": 6,
+            "bytes": 3076924
+          },
+          {
+            "cycle": 7,
+            "bytes": 3086660
+          },
+          {
+            "cycle": 8,
+            "bytes": 3158804
+          },
+          {
+            "cycle": 9,
+            "bytes": 3170200
+          },
+          {
+            "cycle": 10,
+            "bytes": 3188300
+          },
+          {
+            "cycle": 11,
+            "bytes": 3197288
+          },
+          {
+            "cycle": 12,
+            "bytes": 3204780
+          },
+          {
+            "cycle": 13,
+            "bytes": 3204344
+          },
+          {
+            "cycle": 14,
+            "bytes": 3245200
+          },
+          {
+            "cycle": 15,
+            "bytes": 3263988
+          },
+          {
+            "cycle": 16,
+            "bytes": 3310452
+          },
+          {
+            "cycle": 17,
+            "bytes": 3323128
+          },
+          {
+            "cycle": 18,
+            "bytes": 3319312
+          },
+          {
+            "cycle": 19,
+            "bytes": 3321116
+          },
+          {
+            "cycle": 20,
+            "bytes": 3335092
+          },
+          {
+            "cycle": 21,
+            "bytes": 3324460
+          },
+          {
+            "cycle": 22,
+            "bytes": 3326848
+          },
+          {
+            "cycle": 23,
+            "bytes": 3333952
+          },
+          {
+            "cycle": 24,
+            "bytes": 3353708
+          },
+          {
+            "cycle": 25,
+            "bytes": 3356064
+          },
+          {
+            "cycle": 26,
+            "bytes": 3366656
+          },
+          {
+            "cycle": 27,
+            "bytes": 3359184
+          },
+          {
+            "cycle": 28,
+            "bytes": 3361376
+          },
+          {
+            "cycle": 29,
+            "bytes": 3368424
+          },
+          {
+            "cycle": 30,
+            "bytes": 3362008
+          },
+          {
+            "cycle": 31,
+            "bytes": 3363868
+          },
+          {
+            "cycle": 32,
+            "bytes": 3390512
+          },
+          {
+            "cycle": 33,
+            "bytes": 3387184
+          },
+          {
+            "cycle": 34,
+            "bytes": 3388408
+          },
+          {
+            "cycle": 35,
+            "bytes": 3395516
+          },
+          {
+            "cycle": 36,
+            "bytes": 3389016
+          },
+          {
+            "cycle": 37,
+            "bytes": 3388992
+          },
+          {
+            "cycle": 38,
+            "bytes": 3400816
+          },
+          {
+            "cycle": 39,
+            "bytes": 3404340
+          },
+          {
+            "cycle": 40,
+            "bytes": 3406688
+          },
+          {
+            "cycle": 41,
+            "bytes": 3415140
+          },
+          {
+            "cycle": 42,
+            "bytes": 3408832
+          },
+          {
+            "cycle": 43,
+            "bytes": 3407944
+          },
+          {
+            "cycle": 44,
+            "bytes": 3417204
+          },
+          {
+            "cycle": 45,
+            "bytes": 3412180
+          },
+          {
+            "cycle": 46,
+            "bytes": 3413512
+          },
+          {
+            "cycle": 47,
+            "bytes": 3420936
+          },
+          {
+            "cycle": 48,
+            "bytes": 3417300
+          },
+          {
+            "cycle": 49,
+            "bytes": 3416672
+          },
+          {
+            "cycle": 50,
+            "bytes": 3425572
+          },
+          {
+            "cycle": 51,
+            "bytes": 3417856
+          },
+          {
+            "cycle": 52,
+            "bytes": 3419140
+          },
+          {
+            "cycle": 53,
+            "bytes": 3426188
+          },
+          {
+            "cycle": 54,
+            "bytes": 3436512
+          },
+          {
+            "cycle": 55,
+            "bytes": 3436460
+          },
+          {
+            "cycle": 56,
+            "bytes": 3465984
+          },
+          {
+            "cycle": 57,
+            "bytes": 3458592
+          },
+          {
+            "cycle": 58,
+            "bytes": 3460212
+          },
+          {
+            "cycle": 59,
+            "bytes": 3478888
+          }
+        ],
+        "captureActiveSamples": 0,
+        "cleanupSamples": 61
+      },
+      {
+        "build": "candidate",
+        "memory": [
+          {
+            "cycle": 0,
+            "bytes": 3372724
+          },
+          {
+            "cycle": 0,
+            "bytes": 3176812
+          },
+          {
+            "cycle": 1,
+            "bytes": 4051732
+          },
+          {
+            "cycle": 2,
+            "bytes": 4234436
+          },
+          {
+            "cycle": 3,
+            "bytes": 4252232
+          },
+          {
+            "cycle": 4,
+            "bytes": 4306692
+          },
+          {
+            "cycle": 5,
+            "bytes": 4350644
+          },
+          {
+            "cycle": 6,
+            "bytes": 4370160
+          },
+          {
+            "cycle": 7,
+            "bytes": 4383220
+          },
+          {
+            "cycle": 8,
+            "bytes": 4576244
+          },
+          {
+            "cycle": 9,
+            "bytes": 4583044
+          },
+          {
+            "cycle": 10,
+            "bytes": 4588888
+          },
+          {
+            "cycle": 11,
+            "bytes": 4606792
+          },
+          {
+            "cycle": 12,
+            "bytes": 4617976
+          },
+          {
+            "cycle": 13,
+            "bytes": 4634096
+          },
+          {
+            "cycle": 14,
+            "bytes": 4678152
+          },
+          {
+            "cycle": 15,
+            "bytes": 4689348
+          },
+          {
+            "cycle": 16,
+            "bytes": 4719624
+          },
+          {
+            "cycle": 17,
+            "bytes": 4732204
+          },
+          {
+            "cycle": 18,
+            "bytes": 4794312
+          },
+          {
+            "cycle": 19,
+            "bytes": 4799364
+          },
+          {
+            "cycle": 20,
+            "bytes": 4810596
+          },
+          {
+            "cycle": 21,
+            "bytes": 4804384
+          },
+          {
+            "cycle": 22,
+            "bytes": 4805696
+          },
+          {
+            "cycle": 23,
+            "bytes": 4824928
+          },
+          {
+            "cycle": 24,
+            "bytes": 4839728
+          },
+          {
+            "cycle": 25,
+            "bytes": 4846820
+          },
+          {
+            "cycle": 26,
+            "bytes": 4877868
+          },
+          {
+            "cycle": 27,
+            "bytes": 4919288
+          },
+          {
+            "cycle": 28,
+            "bytes": 4921660
+          },
+          {
+            "cycle": 29,
+            "bytes": 4929328
+          },
+          {
+            "cycle": 30,
+            "bytes": 4934148
+          },
+          {
+            "cycle": 31,
+            "bytes": 4937296
+          },
+          {
+            "cycle": 32,
+            "bytes": 4950088
+          },
+          {
+            "cycle": 33,
+            "bytes": 4949568
+          },
+          {
+            "cycle": 34,
+            "bytes": 4952120
+          },
+          {
+            "cycle": 35,
+            "bytes": 4961208
+          },
+          {
+            "cycle": 36,
+            "bytes": 4991596
+          },
+          {
+            "cycle": 37,
+            "bytes": 4991776
+          },
+          {
+            "cycle": 38,
+            "bytes": 5002628
+          },
+          {
+            "cycle": 39,
+            "bytes": 5006472
+          },
+          {
+            "cycle": 40,
+            "bytes": 5009332
+          },
+          {
+            "cycle": 41,
+            "bytes": 5019212
+          },
+          {
+            "cycle": 42,
+            "bytes": 5012556
+          },
+          {
+            "cycle": 43,
+            "bytes": 5028408
+          },
+          {
+            "cycle": 44,
+            "bytes": 5037060
+          },
+          {
+            "cycle": 45,
+            "bytes": 5032160
+          },
+          {
+            "cycle": 46,
+            "bytes": 5033604
+          },
+          {
+            "cycle": 47,
+            "bytes": 5040556
+          },
+          {
+            "cycle": 48,
+            "bytes": 5036612
+          },
+          {
+            "cycle": 49,
+            "bytes": 5036196
+          },
+          {
+            "cycle": 50,
+            "bytes": 5045988
+          },
+          {
+            "cycle": 51,
+            "bytes": 5040736
+          },
+          {
+            "cycle": 52,
+            "bytes": 5045128
+          },
+          {
+            "cycle": 53,
+            "bytes": 5068380
+          },
+          {
+            "cycle": 54,
+            "bytes": 5062224
+          },
+          {
+            "cycle": 55,
+            "bytes": 5075608
+          },
+          {
+            "cycle": 56,
+            "bytes": 5090000
+          },
+          {
+            "cycle": 57,
+            "bytes": 5082372
+          },
+          {
+            "cycle": 58,
+            "bytes": 5083724
+          },
+          {
+            "cycle": 59,
+            "bytes": 5105972
+          }
+        ],
+        "captureActiveSamples": 0,
+        "cleanupSamples": 61
+      }
+    ],
+    "limitation": "Each successful repetition saves additional results. Growth includes intentionally retained data and lazy runtime ownership; not a fixed-data leak test or memory acceptance."
+  },
+  "fixedDataNavigationDiagnostic": {
+    "kind": "fixed-data route lifecycle diagnostic",
+    "source": "496c850",
+    "samples": [
+      {
+        "index": 0,
+        "errors": [],
+        "samples": [
+          {
+            "cycle": 0,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2753132
+          },
+          {
+            "cycle": 1,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2785284
+          },
+          {
+            "cycle": 2,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2790760
+          },
+          {
+            "cycle": 3,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2794396
+          },
+          {
+            "cycle": 4,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2803700
+          },
+          {
+            "cycle": 5,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2824568
+          },
+          {
+            "cycle": 6,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2826104
+          },
+          {
+            "cycle": 7,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2828496
+          },
+          {
+            "cycle": 8,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2830004
+          },
+          {
+            "cycle": 9,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2830772
+          },
+          {
+            "cycle": 10,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2832104
+          },
+          {
+            "cycle": 11,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2835088
+          },
+          {
+            "cycle": 12,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2853364
+          },
+          {
+            "cycle": 13,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2853400
+          },
+          {
+            "cycle": 14,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2856128
+          },
+          {
+            "cycle": 15,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2858612
+          },
+          {
+            "cycle": 16,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2859200
+          },
+          {
+            "cycle": 17,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2859788
+          },
+          {
+            "cycle": 18,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2859788
+          },
+          {
+            "cycle": 19,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2859836
+          },
+          {
+            "cycle": 20,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2865488
+          },
+          {
+            "cycle": 21,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2870116
+          },
+          {
+            "cycle": 22,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2870060
+          },
+          {
+            "cycle": 23,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2873980
+          },
+          {
+            "cycle": 24,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2890504
+          },
+          {
+            "cycle": 25,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2917700
+          },
+          {
+            "cycle": 26,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2918832
+          },
+          {
+            "cycle": 27,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2923196
+          },
+          {
+            "cycle": 28,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2923256
+          },
+          {
+            "cycle": 29,
+            "Documents": 5,
+            "JSEventListeners": 450,
+            "Nodes": 2581,
+            "JSHeapUsedSize": 2924672
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "errors": [],
+        "samples": [
+          {
+            "cycle": 0,
+            "Documents": 5,
+            "JSEventListeners": 1140,
+            "Nodes": 2287,
+            "JSHeapUsedSize": 3250784
+          },
+          {
+            "cycle": 1,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3609924
+          },
+          {
+            "cycle": 2,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3707256
+          },
+          {
+            "cycle": 3,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3740588
+          },
+          {
+            "cycle": 4,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3760824
+          },
+          {
+            "cycle": 5,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3808772
+          },
+          {
+            "cycle": 6,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3818728
+          },
+          {
+            "cycle": 7,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3848272
+          },
+          {
+            "cycle": 8,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3882784
+          },
+          {
+            "cycle": 9,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3897672
+          },
+          {
+            "cycle": 10,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3902200
+          },
+          {
+            "cycle": 11,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3927252
+          },
+          {
+            "cycle": 12,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3953576
+          },
+          {
+            "cycle": 13,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3960504
+          },
+          {
+            "cycle": 14,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3964108
+          },
+          {
+            "cycle": 15,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 3964072
+          },
+          {
+            "cycle": 16,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4006268
+          },
+          {
+            "cycle": 17,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4016412
+          },
+          {
+            "cycle": 18,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4016200
+          },
+          {
+            "cycle": 19,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4018244
+          },
+          {
+            "cycle": 20,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4024164
+          },
+          {
+            "cycle": 21,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4026292
+          },
+          {
+            "cycle": 22,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4027248
+          },
+          {
+            "cycle": 23,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4030820
+          },
+          {
+            "cycle": 24,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4037888
+          },
+          {
+            "cycle": 25,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4069200
+          },
+          {
+            "cycle": 26,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4070680
+          },
+          {
+            "cycle": 27,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4076216
+          },
+          {
+            "cycle": 28,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4076332
+          },
+          {
+            "cycle": 29,
+            "Documents": 5,
+            "JSEventListeners": 1742,
+            "Nodes": 2302,
+            "JSHeapUsedSize": 4075964
+          }
+        ]
+      }
+    ],
+    "method": "Same imported library, no practice starts or result creation;30 cycles through History/Drills/Learn/Home/Settings/About/Contact/Home,50ms settle then forced GC; system Chromium, not a CI timing gate",
+    "interpretation": "Original nodes/listeners remain2581/450. Candidate nodes/listeners stabilize2302/1742 by cycle5 and remain unchanged through29. Candidate has more root event listeners but fewer DOM nodes. Both heaps grow; candidate cycle5->29 3808772->4075964 bytes versus original2824568->2924672. No monotonically accumulating DOM/listeners observed in this scope; not proof of zero leaks or equal memory usage."
+  }
+}

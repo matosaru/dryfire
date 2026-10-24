@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     "./information": "./src/app/informationPages.tsx",
-    "./information-bridge": "./src/app/informationBridge.ts"
+    "./information-bridge": "./src/app/informationBridge.ts",
+    "./route-context": "./src/app/routeContext.ts"
   },
   "peerDependencies": {
     "react": "19.3.1",

@@ -1,3 +1,4 @@
+import { addLegacySequence, openLegacySequence } from '../visual-tests/legacy-sequence.js';
 // Export the working help component, never a second animation drawing.
 // Requires a built public dist and Playwright Chromium. Encode with the paired
 // Python/Pillow tool. The pinned CI collector is the reviewed renderer.
@@ -11,7 +12,7 @@ const out = resolve(process.argv.includes('--output') ? process.argv[process.arg
 const edition = JSON.parse(readFileSync('dist/edition.json'));
 if (edition.edition !== 'public') throw new Error('Export guides from the public build.');
 mkdirSync(out, { recursive: true });
-const sources = [...styleSources(), 'tools/style-sources.mjs', 'src/sessionPresentation.js', 'src/practiceGuideController.js', 'src/practiceGuideRendering.js', 'src/practiceGuideExamples.js', 'src/practiceGuides.js', 'src/practiceGuideManuals.js', 'src/practiceSession.js', 'src/drillSession.js', 'src/templates/pages/practiceGuide.html', 'tools/page-templates.mjs', 'tools/export-guide-examples.mjs', 'tools/encode-guide-examples.py', ...['practice','session'].flatMap(n => ['run','review'].map(s => `src/templates/shared/${n}-${s}.html`))];
+const sources = [...styleSources(), 'tools/style-sources.mjs', 'vite.config.js', 'tools/minify-html.mjs', 'tools/static-catalog.mjs', 'src/staticCatalog.js', 'src/sessionPresentation.js', 'src/textElement.js', 'apps/web/src/features/sessions/resultPresentation.ts', 'apps/web/src/features/sessions/phasePresentation.ts', 'src/practiceGuideController.js', 'src/practiceGuideBridge.js', 'src/main.js', 'src/afterPaint.js', 'src/practiceGuideRendering.js', 'src/practiceGuideExamples.js', 'src/practiceGuides.js', 'src/practiceGuideManuals.js', 'src/practiceSession.js', 'src/practiceModes.js', 'src/drillSession.js', 'src/drills.js', 'apps/web/src/pages/PracticePage/PracticePage.tsx', 'apps/web/src/pages/PracticePage/index.ts', 'apps/web/src/pages/SequencePage/SequencePage.tsx', 'apps/web/src/pages/SequencePage/index.ts', 'apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx', 'apps/web/src/pages/PracticeGuidePage/index.ts', 'apps/web/src/app/renderSessionPages.tsx', 'packages/ui/src/PageHeading/PageHeading.tsx', 'packages/ui/src/PageHeading/index.ts', 'tools/page-templates.mjs', 'tools/export-guide-examples.mjs', 'visual-tests/legacy-sequence.js', 'tools/encode-guide-examples.py', 'apps/web/src/app/sessionContents.tsx', 'apps/web/src/app/practiceContents.tsx', 'apps/web/src/app/sequenceContents.tsx', 'apps/web/src/app/guideContents.tsx', 'apps/web/src/app/practicePage.tsx', 'apps/web/src/app/sequencePage.tsx', 'apps/web/src/app/guidePage.tsx', 'apps/web/src/app/retainedPage.tsx', 'apps/web/src/features/sessions/controlClasses.ts', 'packages/ui/src/RepetitionResult/RepetitionResult.tsx', 'packages/ui/src/RepetitionResult/index.ts', ...['PracticeRun','PracticeReview','SequenceRun','SequenceReview'].flatMap(name=>[`packages/ui/src/${name}/${name}.tsx`,`packages/ui/src/${name}/index.ts`])];
 const sourceHashes = Object.fromEntries(sources.map(p => [p, createHash('sha256').update(readFileSync(p)).digest('hex')]));
 const server = spawn(process.execPath, ['--import', 'tsx', 'node_modules/vite/bin/vite.js', 'preview', '--host', '127.0.0.1', '--port', '4174', '--strictPort'], { stdio: 'ignore' });
 let browser;
@@ -29,17 +30,18 @@ try {
   page.on('dialog', d => d.accept());
   await page.goto('http://127.0.0.1:4174');
   await page.locator('#restoreGunBackupBtn').click();
-  const library = JSON.parse(readFileSync('visual-tests/fixtures/library.json')); library.settings.appearance = 'dark';
+  const library = JSON.parse(readFileSync('visual-tests/fixtures/library.json')); library.settings.appearance = 'dark'; addLegacySequence(library);
   await page.locator('#importFile').setInputFiles({ name:'example-library.json', mimeType:'application/json', buffer:Buffer.from(JSON.stringify(library)) });
   await page.locator('#homeView').waitFor({ state:'visible' });
   const now = new Date('2026-10-11T11:00:00Z'); await page.clock.install({ time: now }); await page.clock.pauseAt(now);
-  const cases = ['single','single-early','repeated','par','control','reload','free','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
+  const cases = ['single','single-early','repeated','par','control','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
   const exports = [];
   for (const name of cases.filter(name => !process.argv.includes('--only') || name === process.argv[process.argv.indexOf('--only') + 1])) {
     await page.locator('.tab[data-view="drills"]').click();
     if (name.startsWith('sequence-')) {
       if (name==='sequence-custom') { await page.locator('#customDrillsTab').click(); await page.locator('#customDrillCatalog').getByRole('button', { name:'Start Drill' }).first().click(); }
-      else await page.locator('#drillCatalog .preset-card').nth(cases.slice(7).indexOf(name)).getByRole('button', { name:'Start Drill' }).click();
+      else if (name==='sequence-trigger-only') await openLegacySequence(page);
+      else await page.locator('#drillCatalog .preset-card').nth(cases.slice(6).indexOf(name)).getByRole('button', { name:'Start Drill' }).click();
       await page.locator('#sessionGuideLink').click();
     } else { await page.locator(`[data-practice-mode="${name==='single-early'?'single':name}"]`).click(); await page.locator('#practiceGuideLink').click(); }
     if (name==='single-early') await page.locator('#practiceGuideEarlyBtn').click();

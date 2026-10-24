@@ -1,0 +1,204 @@
+{
+  "date": "2026-10-22",
+  "approval": "CHG-052",
+  "collectorRun": 39721556553,
+  "collectorConclusion": "success",
+  "candidateCommit": "e743bbe",
+  "reviewed": "Chromium/WebKit public and preview Drills catalog/custom/editor states, including 320px catalog; 16 affected baselines and four current design captures updated. Same target/header/description/action styling; three displayed built-ins. No unrelated baselines or comparison thresholds changed.",
+  "localTests": {
+    "unit": 960,
+    "suites": 140,
+    "publicLayoutAndGuides": 13,
+    "publicCatalog": 1,
+    "previewCatalog": 1,
+    "previewRuntime": 4
+  },
+  "collectionFailuresRetained": [
+    "39721234330: anchored grep matched no tests",
+    "39721357879: obsolete four-card assertion; changed to approved three-card expectation"
+  ],
+  "separatePriorFailure": "Documentation-only e9057b7 run39719816877 public WebKit warm38->46ms failed original timing policy; retain as failed checkpoint. New application CI must pass independently.",
+  "deployment": "Not verified; main/dev unchanged",
+  "normalCI39721871449": {
+    "validate": "success",
+    "screenshotsPublic": "two configuration hover differences: Chromium single320px300 pixels, WebKit repeated390px8598 pixels",
+    "screenshotsPreview": "same two differences and counts; other checks passed",
+    "repair": "Move pointer to noninteractive gutter for practice Configure captures, preserving original references, thresholds, browser controls and retry policy. Taller source catalog cards must not determine destination hover state. Final pinned comparison required."
+  },
+  "startupCorrection": {
+    "reason": "39721871449 public WebKit warm42->49ms confirmed32/40 slower pairs; DOMInteractive17->24ms. Preview actual comparison passes; full run is not accepted.",
+    "implementation": "Non-executable trusted typed catalog text expands only on entry to Drills/Learn. Exact final DOM, host/delegated callbacks and availability locks preserved; remove two unused loop-index arguments. Cache v70.",
+    "tests": {
+      "unit": 963,
+      "suites": 140,
+      "coverageRatchet": "pass",
+      "focused": 50,
+      "publicBrowser": 14,
+      "previewBrowser": 12,
+      "smoke": 16
+    },
+    "payload": {
+      "publicJSRaw": 166550,
+      "publicJSGzip": 50673,
+      "previewJSRaw": 168126,
+      "previewJSGzip": 51134,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "advisory": "Missing --experimental-vm-modules in advisory workflow caused its import failure; flag repaired. Six crossed/control cases now complete locally in Chromium. This is diagnostic, not pinned WebKit acceptance.",
+    "pinnedComparison": "pending"
+  },
+  "targetedPinnedConfigurationReview": {
+    "run": 39723613633,
+    "comparison": "Correction: annotations show two failures/four passes, not the initially reported six passes. Continue-on-error normalized the step conclusion to success.",
+    "publicationFailure": "Diagnostics were copied under a nested test-results directory ignored by Git; no images were published.",
+    "fullReview39725131566": "Annotations show two failures, ten skips and296 passes. Additional attachment/copy escaping problems corrected; rerun only reproducible six target cases with comparison outcome explicitly named.",
+    "localPairedTiming": "Four original-baseline Chromium pairs passed unchanged runtime/payload policy; local only."
+  },
+  "confirmedNativeHoverRepair": {
+    "diagnosticCommit": "1bd5180",
+    "cause": "Reviewed configuration references contain native hover states. Source-card height changed pointer location; neutral-only capture also removed legitimate reference hover.",
+    "rectangles": {
+      "chromiumSingle390Spinner": [
+        348,
+        538,
+        363,
+        558
+      ],
+      "webkitRepeated390DelaySelect": [
+        180,
+        709,
+        359,
+        760
+      ]
+    },
+    "fix": "Activate/resize page, neutralize Configure pointer, then explicitly hover repetitions for Chromium Single390 Dark and ready delay for WebKit Repeated390 Dark. All other Configure cases remain neutral.",
+    "verificationRun": 39726431676,
+    "rawComparisonOutcome": "success",
+    "wholeJobConclusion": "success",
+    "configurationReferencesChanged": false
+  },
+  "idlePreparation": {
+    "implementation": "Warm trusted practice catalog after initial usable paint; retain synchronous first-entry fallback and skip repeated expansion/lock writes when script is already consumed. Direct trusted markup replacement avoids a temporary template allocation. Existing OXC minifier retained; Terser trial increased gzip and was reverted. Cache v72.",
+    "previewPayload": {
+      "jsRaw": 168093,
+      "jsGzip": 51124,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "localFocusedCases": 54,
+    "localPreviewWorkflows": 14,
+    "finalCanonicalCI": "pending",
+    "publicPayload": {
+      "jsRaw": 166514,
+      "jsGzip": 50639,
+      "cssRaw": 61451,
+      "cssGzip": 13011
+    },
+    "finalLocalCoverage": {
+      "tests": 963,
+      "suites": 140,
+      "ratchet": "pass"
+    },
+    "finalLocalPublicBrowser": 14
+  },
+  "normalCI39726986360": {
+    "source": "a190f9a",
+    "validate": "success, 963 tests/140 suites",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "performancePreview": "success",
+    "performancePublic": "failed: WebKit warm median 38 to 44 ms, p95 42 to 52, 38/40 slower",
+    "acceptance": "failed; original gates retained"
+  },
+  "v74Candidate": {
+    "change": "Existing-host escaped data-catalog, quoted attributes retained; no additional script/template parser nodes. OXC/LightningCSS and original gates unchanged.",
+    "advisoryRun": 39728971313,
+    "advisoryCheck": 119659352560,
+    "advisory": "Pinned 3-sample crossed-source diagnostic only; old HTML/old JS ready 54 ms, new HTML/new JS 48 ms. Not canonical acceptance.",
+    "localCoverage": "963 tests/140 suites and coverage ratchet passed",
+    "previewWorkflows": 14,
+    "canonicalCI": 39812900361
+  },
+  "normalCI39812900361": {
+    "application": "854d0a0",
+    "validate": "success",
+    "screenshotsPublic": "success",
+    "screenshotsPreview": "success",
+    "performancePreviewPrimary": "pass",
+    "performancePublicPrimary": "FAIL: WebKit warm baseline median/p95 36/40 ms, candidate43/54;35/40 slower, paired median interval4 to10 ms. DOMInteractive15 to22 ms.",
+    "controls": "Both identical-build controls and public deliberate-slowdown rejection steps passed; top-level completion status was stale at review time.",
+    "acceptance": "not accepted; do not weaken policy"
+  },
+  "settingsWarmDiagnostic": {
+    "initialProbe": 39816066825,
+    "initialOutcome": "success; HTML-only variants did not reproduce canonical slowdown",
+    "matchedProbe": 39816601358,
+    "matchedOutcome": "success, 12 samples/variant after actual cold Settings visit and network idle",
+    "mediansMs": {
+      "baselineReady": 42,
+      "currentReady": 57,
+      "templateReady": 46,
+      "directReady": 50,
+      "compactTemplateReady": 49,
+      "oldHtmlNewJsReady": 56,
+      "newHtmlOldJsReady": 42
+    },
+    "interpretation": "Current JS remains slower with original HTML; current HTML plus original JS matches baseline. Advisory modified-response evidence only, not acceptance.",
+    "v75Correction": "Do not prepare optional React Settings before a valid gun exists; retain all native onboarding controls and normal post-profile ownership. Existing canonical advisory now follows the same cold Settings visit; acceptance policy unchanged.",
+    "publicLocalWorkflows": 15,
+    "canonicalCI": "pending publication",
+    "localVerification": {
+      "coverage": "963 tests/140 suites, unchanged coverage ratchet passed",
+      "browserWorkflows": "15 public +15 preview passed",
+      "staticChecks": "type/lints/architecture/docs and16 smoke passed",
+      "criticalJsRawGzip": {
+        "public": [
+          166529,
+          50613
+        ],
+        "preview": [
+          168108,
+          51110
+        ]
+      },
+      "cssRawGzip": [
+        61451,
+        13011
+      ]
+    }
+  },
+  "normalCI39817683863": {
+    "source": "c3c8903",
+    "validate": "success",
+    "performancePreviewPrimary": "pass",
+    "performancePublicPrimary": "FAIL: WebKit warm40/42 to46/53 ms,39/40 slower; median interval5 to8 ms. DOMInteractive16 to23.",
+    "remainingJobs": "Cancellation requested after failure because v76 supersedes source. Do not infer passing whole-run acceptance.",
+    "conclusion": "not accepted; onboarding guard alone does not solve startup"
+  },
+  "v76Candidate": {
+    "change": "Shared sessionPresentation module now loads before configuration/saved-review instead of startup. Controllers preserve models/capture and invalidate pending imports on navigation/reset/gun changes; failures are visible/retryable. Restore established inert-template catalog movement; remove experimental runtime HTML-string expansion.",
+    "focused": "106 tests/5 suites pass",
+    "coverage": "987 tests/140 suites + original ratchet pass",
+    "publicWorkflows": "20 pass, including native/React parity, guides, session lifetime and installed offline refresh",
+    "publicCriticalRawGzip": [
+      156872,
+      47683
+    ],
+    "cssRawGzip": [
+      61451,
+      13011
+    ],
+    "preview": "20 workflows pass; critical JS158445raw/48147gzip",
+    "canonicalCI": 39820533629,
+    "staticChecks": "type/lints/architecture/docs and16 smoke pass",
+    "ciUnitCorrection": {
+      "reporterRun": 39821140123,
+      "observedFailure": "Two native/React variants of six-catalog-choice test read guideContext before lazy configuration completed after a hardcoded20 microtasks. No application error shown in these unit failures.",
+      "fix": "Await actual onNavigate callback using a deferred promise; retain exact mode/order/callback-count/no-microphone assertions.",
+      "node22": "v22.23.4 full987 tests/140 suites + coverage ratchet passed after correction",
+      "applicationSource": "07f5f34 unchanged by reporter/fixture correction",
+      "performance": "Canonical source07f5f34 measurement still running; not accepted yet"
+    }
+  }
+}

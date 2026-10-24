@@ -1,0 +1,7 @@
+/** DOM-write characterization driver; complete-frame real DOM tests remain the visual/ARIA oracle. */
+export function sessionViewDriver(){
+ type Field={textContent:string;dataset:Record<string,string>;disabled:boolean;max:number;value:number;children:unknown[];classList:{toggle:(token:string,enabled:boolean)=>void};append:(...rows:unknown[])=>void;replaceChildren:(...rows:unknown[])=>void};
+ const fields=new Map<string,{field:Field;classes:Map<string,boolean>}>();
+ const get=(id:string)=>{id=id.replace(/^#/,'');let entry=fields.get(id);if(!entry){const classes=new Map<string,boolean>();let text='';const field:Field={get textContent(){return text;},set textContent(value){text=String(value??'');this.children=[];},dataset:{},disabled:false,max:0,value:0,children:[],classList:{toggle:(token,enabled)=>{classes.set(token,enabled);}},append(...rows){this.children.push(...rows);},replaceChildren(...rows){this.children=rows;}};entry={field,classes};fields.set(id,entry);}return entry.field;};
+ return{get,node:(tag:string,text:string,className='')=>({tag,text,className}),details:(row:{ordinal:number})=>({detail:row.ordinal}),snapshot:()=>Object.fromEntries([...fields].sort(([a],[b])=>a.localeCompare(b)).map(([id,{field,classes}])=>[id,{text:field.textContent,dataset:field.dataset,disabled:field.disabled,max:field.max,value:field.value,children:field.children,classes:Object.fromEntries([...classes].sort())}]))};
+}
