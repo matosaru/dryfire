@@ -26,3 +26,10 @@ test.each([null,{id:'a',needsDetails:true}])('missing or incomplete profiles ret
 test('settings remains available without a profile and still waits for its guarded route',async()=>{
  const s=setup({view:'settings'},null);const completed=s.run();await Promise.resolve();expect(s.context.switchView).toHaveBeenCalledWith('settings');expect(s.context.openGunSetup).not.toHaveBeenCalled();expect(s.context.setStatus).not.toHaveBeenCalled();s.release();await completed;expect(s.context.setStatus).toHaveBeenCalledWith('Ready');
 });
+
+test.each(['rack-trigger','mag-trigger','draw-mag-trigger'])('sequence entry initializes the exact requested preset before readiness: %s',async preset=>{
+ const s=setup({view:'session',preset});s.context.getDrill=jest.fn(id=>({id,steps:['trigger']}));s.context.customDrills=[];s.context.DRILLS=[];s.context.chooseDrill=jest.fn(()=>Promise.resolve());await s.run();expect(s.context.chooseDrill).toHaveBeenCalledWith(preset);expect(s.context.practiceController.open).not.toHaveBeenCalled();expect(s.context.setStatus).toHaveBeenCalledWith('Ready');
+});
+test('a missing custom selection returns to Drills rather than inventing a built-in',async()=>{
+ const s=setup({view:'session',preset:'custom'});s.context.getGunSetting=jest.fn(async()=> 'missing');s.context.getDrill=jest.fn(()=>null);s.context.customDrills=[];s.context.setMessage=jest.fn();const completed=s.run();await new Promise(resolve=>setImmediate(resolve));expect(s.context.switchView).toHaveBeenCalledWith('drills');s.release();await completed;expect(s.context.setMessage).toHaveBeenCalledWith(expect.stringContaining('not available'));
+});

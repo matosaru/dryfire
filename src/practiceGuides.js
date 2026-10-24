@@ -1,6 +1,11 @@
 import { GUIDE_MANUALS } from './practiceGuideManuals.js';
 import { normalizeCustomDrill, getDrill } from './drills.js';
 
+export const PUBLIC_GUIDE_GUN = 'public-guide';
+export function isPublicGuideContextCurrent(guide, gunId) {
+  return !!guide?.publicEntry && guide.gunId === (gunId ?? PUBLIC_GUIDE_GUN) && guide.sourceKey === `public:${guide.id}`;
+}
+
 const labels = { draw: 'Draw from holster', rack: 'Rack slide', trigger: 'Trigger pull', reload: 'Change magazine' };
 
 /** Read-only guide snapshot. Never validates or writes the original form draft. */
@@ -15,7 +20,7 @@ export function getPracticeGuide(context) {
   } else throw new TypeError('Unknown guide context.');
   const source = GUIDE_MANUALS.find(m => m.id === id);
   if (!source) throw new TypeError('Unknown practice guide.');
-  const guide = { ...structuredClone(source), gunId: context.gunId, sourceKey: context.routeKey,
+  const guide = { ...structuredClone(source), ...(context.publicEntry ? { publicEntry: true } : {}), gunId: context.gunId, sourceKey: context.routeKey,
     parent: context.type === 'practice' ? 'practice' : 'session', contextKey: `${context.type}:${context.routeKey}` };
   if (drill) {
     guide.title = drill.title; guide.sequence = [...drill.steps];
@@ -38,6 +43,7 @@ export function getPracticeGuide(context) {
   } else if (config.soundAtStart === false) {
     guide.currentSetup = 'Your setup uses a silent visual start. Wait for the on-screen signal; the illustration demonstrates the optional app beep.';
   } else guide.currentSetup = 'App-signal example. Your chosen counts and timing stay unchanged when you return to setup.';
+  if (context.publicEntry) guide.currentSetup = 'Example settings shown. Return to setup to choose your counts and timing.';
   return guide;
 }
 

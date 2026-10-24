@@ -5,13 +5,16 @@
   "publicOrigin": "https://easydryfire.com",
   "publicPaths": [
     "/",
-    "/practice/",
-    "/practice/single-trigger-press/",
-    "/practice/repeated-trigger-press/",
-    "/practice/par-time/",
-    "/practice/trigger-control/",
-    "/guides/sequence-drills/",
-    "/guides/trigger-click-calibration/",
+    "/practice-modes/",
+    "/single-trigger-press-guide/",
+    "/repeated-trigger-press-guide/",
+    "/par-time-practice-guide/",
+    "/trigger-control-guide/",
+    "/rack-slide-trigger-pull-guide/",
+    "/magazine-change-trigger-pull-guide/",
+    "/draw-magazine-change-trigger-pull-guide/",
+    "/sequence-drills-guide/",
+    "/trigger-click-calibration-guide/",
     "/help/",
     "/about/",
     "/contact/"
@@ -804,26 +807,26 @@
     }
   ],
   "reviewedSources": {
-    "index.html": "a4057346c9f2eb9a0af60be09f3ce09e6b06a0a5f913d0d58b5be7dca2ef4f95",
-    "src/main.js": "b7970259e7c7c4e4e490bc8c9d87127368e6c0560097f62db67653a06576af6b",
-    "src/styles.css": "da2b105c40b06bf659a3b4fb26b094fb4e401f21de041eeaba5533a78fcd689b",
+    "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
+    "src/main.js": "0dee5fbfb0156e5618f938588ee9557a637f2b2bc73332c65e65c65b7982ba09",
+    "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
     "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
-    "src/practiceController.js": "04aa7dec2e223fc7dc63fa81f159ff7dc460d26161f57f825b421d54f8caa966",
-    "src/sessionController.js": "79ff9a03fa2855fa9e356077e3941fccd24eb44730f8dc995349b54a9028b342",
+    "src/practiceController.js": "a7cf652a0ebbb91fecdb5796d1922d309bb172f8a8dbd4089a58523e086140dd",
+    "src/sessionController.js": "34692dbd4927d02f8c76994c426bf5b397082dc01732efacfe8b5ed2543db947",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "1aeeb5369f15b50b0510b6463537b92beb6a5d0d1763a140a0915f9b9126fbc6",
     "src/optional/progressView.js": "7cd6d75e07c89eeb7a9cf7f2b62874f71f789b6839408c87a5c3ad0d2f20e9de",
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
     "src/storage.js": "c16080ebe834e7aff8d31ca4d8277df735827041cab6ddf3dcc43ae2d90de03f",
-    "vite.config.js": "db2c857ff70bebdac7f08631104246a17c652d623686a7e121c1f670f5bd1c98",
+    "vite.config.js": "c08e425fc7305e585097d6f953b1e3635e211bf15e6ed1a677b8de80b992a729",
     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
     "tools/page-templates.mjs": "bb899733efa8a4347c5cd6b19774931b9907ebf3e050aea083ea87601b4f1a4a",
     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
-    "src/practiceGuides.js": "58f31bcb12c220f8f15688a6b2c1173a406945660c7386c52aa0c0a1e6e8dc2e",
+    "src/practiceGuides.js": "e0c006baa36c8d8661594b098f755c2adf4113c079e7d5301d49886f62c9800a",
     "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
     "src/practiceGuideManuals.js": "da39dc4e262d951d39b854c10364507730509acb3f01f33f94eb37edb189238e",
@@ -832,7 +835,7 @@
     "apps/web/src/app/informationPages.tsx": "442185805bb7faf789afcdf2f636e9e6d195e32d0be0a9b281a470880531f48d",
     "apps/web/src/app/informationBridge.ts": "e84274388661321ce8ce1624a01395f26172257dfd153bf2973a0a46f4494e42",
     "apps/web/src/app/renderInformationPages.tsx": "d542fa36fa4f04133493b9a12f93fe22eb8a9e7876ed14624c888b54a2e7a9cd",
-    "apps/web/src/pages/AboutPage/AboutPage.tsx": "c7671b8fbbd2a42b017737121dc89e26e7add5b837fbb87fbe371d36484c23b3",
+    "apps/web/src/pages/AboutPage/AboutPage.tsx": "68fec4cae9f2b6aab65b74c6c2b42251116b5094cd8e7e7e18d127da666e0168",
     "apps/web/src/pages/AboutPage/index.ts": "a336de4df893b66990d2dc8b062a79ab26cba13d0a0b9fa3ed96d3e82f6b5298",
     "apps/web/src/pages/AboutPage/AboutPage.css": "f461cfe293e1fec12d7a8bbbca835abd9a7495db77e1a5effa56241150b900b5",
     "apps/web/src/pages/ContactPage/ContactPage.tsx": "65a01c0f7560d15c40f725f3cf715ec41adcff7daf53903845c667ee042ce244",
@@ -846,7 +849,7 @@
     "packages/ui/src/InformationCard/InformationCard.tsx": "2e0c4d1a75ac8c869282fad19f76aa22a8cd256a2f377095a90b42574293b532",
     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
     "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "b041999974ca3986bbf24f40f8bfe40a124c66b396ea47cf5aa3d2a554bbe40d",
-    "apps/web/src/app/routeContext.ts": "8edb4b9d133e4914784d4938581a3bfd63fcbbde42d201ff4057d94f2db19391",
+    "apps/web/src/app/routeContext.ts": "8211be0b05a2947d3ea5d44bad6e57a0af63e32c426d744ba4de0d3e38c91f59",
     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
     "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "d58bb053f365017ef15cec7f4b6da2e7918770d001b15122438db5a33071df70",
     "apps/web/src/app/chromeBridge.ts": "e3276d510da2db886b0ad226bf5a884a351252b79ba78f6696a847031b08e2f1",
@@ -979,8 +982,8 @@
     "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
     "apps/web/src/app/guideContents.tsx": "52da80bafebfe6213fb93dd34f75792998ed70d1bccadbc9331b3190eabb9209",
     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "cc44de6c45b28910f9f3d26b899ee8f895622bd2eb0961c350ecbc102d514779",
-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "034f882058ea539134acf6179cdd5568887b3e67c13b51017d0030547b4b3c23",
+    "apps/web/src/pages/PracticePage/PracticePage.tsx": "7254db8dd57e5481cd4ab390852037a7b7b6a30a3dd7fa19886773cee7b67381",
+    "apps/web/src/pages/SequencePage/SequencePage.tsx": "c7963318041bbcbe1ea386c7f0563ad6b52373fc1c68769bb421d46b07085c0f",
     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "39e68450b650292de4523e345ba76388cfe50a5cb418a9704fac9ae7d2f570b8",
     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "23ea6107bb58f6fa46fb2fa82421ad63ddac3e49fe9e97540382e384d5b37fba",
@@ -990,8 +993,8 @@
     "apps/web/src/styles/legacy-after-sequence-page.css": "c90ccd88154cfa632538ba68db076cd939bc8333b511348ea9e2b25057f64d09",
     "packages/ui/src/SavedSessionList/SavedSessionList.css": "f9a0c565ff87a62a2488e41cff9a05a0ef23a953cf1f153163d2cc6740ae67b1",
     "apps/web/src/pages/PracticePage/PracticePage.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
-    "apps/web/src/app/practicePage.tsx": "e3bc96c6c95ac47ec7570a83357828c7c8dc790e79dd3080acd424ac762ae3ec",
-    "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
+    "apps/web/src/app/practicePage.tsx": "31df92bc14158bab94b873a011f1b92b93936cfbc46ebac5db032f0c774b1025",
+    "apps/web/src/app/sequencePage.tsx": "b11242558b94cffc0c4d6f0521ddba0368b64abfa709656facd9cfc439199783",
     "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93",
@@ -1001,15 +1004,18 @@
     "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
-    "packages/ui/src/DrillSetup/DrillSetup.tsx": "d8d803a87a3050830ba22a8977799cce0b016145c2192c809dd22fbfca6ac33c",
+    "packages/ui/src/DrillSetup/DrillSetup.tsx": "8de68317ae17cbd015bcbca5c7c52bbe38bf01a92545ad7be672be0dabd2a288",
     "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
     "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b",
-    "src/appPaths.js": "c6b146ff1640a145c95ecdb8b6c56bcc97adb5804f5eef78b2cb8a1693cf9f7c",
-    "site/routes.js": "214cd71616cdafe7e6396cc13c2b72a003cf81bbe991c3d0f7dc878d118880da",
-    "workers/publicSite.js": "308f15bcc5873c73d4cd5f8a290bf56603c58a9122d41b57dd2badf6704890db",
-    "tools/public-pages.mjs": "57517a71e4a51bace6686fbe09a57ef87d5d166bc1d3e020904d41837eed0494",
-    "apps/web/src/public-site/PublicPage/PublicPage.tsx": "9247dcd556c0e4110bf676e4e117f70e652ace74615c61c4df34741159990626",
-    "apps/web/src/public-site/PublicPage/PublicPage.css": "f0625927b4f0df203ae499fdd3ac9fe0d83e5fe78d767df5db93ab0e0a6cf334"
+    "src/appPaths.js": "89ed90c94501954c4004816a9cb060b46f018f8c895114c046837af7ea8f0cae",
+    "site/routes.js": "3a9808b5fe8f6b3fb63358dabea45f02c056c47bbedc50e791646971465732d5",
+    "workers/publicSite.js": "7bb305c224398c9de614a91549eb941547bb5bc51ce1caf1d09a542b62749f41",
+    "tools/public-pages.mjs": "145724f54ce9749b4f0bdbc3877e0f9ac50f078c71a78d1fdf339b238caadae7",
+    "apps/web/src/public-site/PublicPage/PublicPage.tsx": "034b06d3729ad0ae8caecf1501d011639b8f3df27cee6e18f50ff44ca1cad42d",
+    "apps/web/src/public-site/PublicPage/PublicPage.css": "a0476fc565c09bbdae2f2acbde3744899ef1bd02057145e6c46325cdfc3da92b",
+    "tools/app-document.mjs": "a912278db3447503765fe1221e663931897ca5f3d565b690becd9f1930b75cb0",
+    "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx": "0e2ca183b5963dd6d8d02c3c7f9c0e731df994391a1855a0de64652a4131bba2",
+    "apps/web/src/public-site/MarketingOverview/MarketingOverview.css": "835ecb53212b8b940f593c2108cb16cd8d737e3457eb14558130b61791eeeed3"
   },
   "implementationChanges": [
     "CHG-017",
@@ -1039,7 +1045,8 @@
     "CHG-057",
     "CHG-053",
     "CHG-059 shared guide control/layout and group accents",
-    "CHG-060 public SEO and readable app paths"
+    "CHG-060 public SEO and readable app paths",
+    "CHG-061 app homepage, flat routes, unique sequences and retained marketing About"
   ],
   "publicScreens": [
     {
@@ -1048,17 +1055,12 @@
       "domId": "public-content",
       "title": "Public website",
       "parent": null,
-      "entry": "Public URLs; readable without profile or JavaScript",
+      "entry": "Canonical public information and app homepage; shared app shell for About/Contact/manuals",
       "design": "docs/design/screens/public-site/README.md",
       "requirements": [
         "docs/requirements/public-seo.md"
       ],
       "states": [
-        {
-          "key": "home.dark",
-          "anchor": "public-content",
-          "image": "docs/design/screens/public-site/home.dark.png"
-        },
         {
           "key": "practice.dark",
           "anchor": "public-content",
@@ -1066,23 +1068,38 @@
         },
         {
           "key": "single.dark",
-          "anchor": "public-content",
+          "anchor": "practiceGuideView",
           "image": "docs/design/screens/public-site/single.dark.png"
         },
         {
           "key": "repeated.dark",
-          "anchor": "public-content",
+          "anchor": "practiceGuideView",
           "image": "docs/design/screens/public-site/repeated.dark.png"
         },
         {
           "key": "par.dark",
-          "anchor": "public-content",
+          "anchor": "practiceGuideView",
           "image": "docs/design/screens/public-site/par.dark.png"
         },
         {
           "key": "control.dark",
-          "anchor": "public-content",
+          "anchor": "practiceGuideView",
           "image": "docs/design/screens/public-site/control.dark.png"
+        },
+        {
+          "key": "sequence-rack-trigger.dark",
+          "anchor": "practiceGuideView",
+          "image": "docs/design/screens/public-site/sequence-rack-trigger.dark.png"
+        },
+        {
+          "key": "sequence-mag-trigger.dark",
+          "anchor": "practiceGuideView",
+          "image": "docs/design/screens/public-site/sequence-mag-trigger.dark.png"
+        },
+        {
+          "key": "sequence-draw-mag-trigger.dark",
+          "anchor": "practiceGuideView",
+          "image": "docs/design/screens/public-site/sequence-draw-mag-trigger.dark.png"
         },
         {
           "key": "sequence.dark",
@@ -1098,16 +1115,6 @@
           "key": "help.dark",
           "anchor": "public-content",
           "image": "docs/design/screens/public-site/help.dark.png"
-        },
-        {
-          "key": "about.dark",
-          "anchor": "public-content",
-          "image": "docs/design/screens/public-site/about.dark.png"
-        },
-        {
-          "key": "contact.dark",
-          "anchor": "public-content",
-          "image": "docs/design/screens/public-site/contact.dark.png"
         }
       ]
     }

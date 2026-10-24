@@ -676,3 +676,7 @@ After a pause and discussion of duplicate-content/canonical alternatives, owner 
 2026-10-24: owner requests indexable paths/URLs, correct metadata/URL names, confirms .com canonical with .app redirect, reports redirect created and then says “proceed” after public URLs/metadata on b are identified as next work. This starts [public-seo.md](../requirements/public-seo.md), preserving storage/recovery, architecture, edition policy and owner-managed production promotion. No other-branch changes or unrelated structural/commercial work.
 
 CHG-060 follow-up: owner also reports favicon.ico404 and asks to fix it. Generate a16/32/48px ICO from existing icon-512.png, reference it in public/app heads and verify200/image/x-icon; no new logo design or external asset source.
+
+## CHG-061 — flat app routes and retained marketing About (2026-10-24)
+
+Owner reported the app homepage was replaced by marketing, requested removing `/app`, and reported all sequence URLs opening the same page. Approved the proposed flat lowercase hyphenated names: “ok, works for me, proceed.” Explicitly instructed “don't delete permanently marketing homepage, make it part of about page,” then “ok, proceed.” Restore the real app at `/`, unique preset setups/manual URLs, compatible redirects and reusable marketing content within About. Existing instruction permits a checked b→main PR after all gates pass; dev untouched. Approval is not evidence of implementation, test success or deployment.

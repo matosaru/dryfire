@@ -100,6 +100,10 @@ try {
           const kind = path.endsWith('.js')?'js':'css'; startup[kind].raw+=bytes.length; startup[kind].gzip+=gzipSync(bytes).length;
         }
         data[index].startupPayload.push(startup);
+        // Warm startup compares the same root/onboarding destination in both
+        // builds. URL-backed Settings now survives refresh; normalize only the
+        // harness URL before the original reload, outside the measured startup.
+        await page.evaluate(()=>history.replaceState(history.state,'','/'));
         await page.reload();
         await page.waitForFunction(()=>Number.isFinite(window.__performanceReview?.ready));
         // Collect navigation phases only after Ready; this does not instrument or

@@ -1,0 +1,3 @@
+.marketing-mode-list{display:grid;gap:12px}.marketing-mode-list>a{display:grid;gap:8px;color:var(--session-text);text-decoration:none;border-top:1px solid var(--session-border);padding-top:14px}.marketing-mode-list>a:first-child{border:0;padding:0}.marketing-mode-list span{font-size:.8rem;line-height:1.6;color:var(--session-muted)}
+
+.marketing-start{display:block;text-align:center;text-decoration:none}

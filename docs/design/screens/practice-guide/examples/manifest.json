@@ -2,7 +2,7 @@
   "sourceCommit": "1c5e027ef546d51bb877b67aaad14f00e57802cf",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
-    "src/styles.css": "da2b105c40b06bf659a3b4fb26b094fb4e401f21de041eeaba5533a78fcd689b",
+    "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
     "packages/ui/src/PageHeading/PageHeading.css": "17a188929d245b237da7e8832a3779beb7f3a3208acc7131d1433f3617225b5d",
     "apps/web/src/pages/AboutPage/AboutPage.css": "f461cfe293e1fec12d7a8bbbca835abd9a7495db77e1a5effa56241150b900b5",
     "packages/ui/src/InformationCard/InformationCard.css": "5c866ea8582066954f298ce2e43ee6f474d85b11539e516cc615b7da27b97f0d",
@@ -12,7 +12,7 @@
     "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
-    "src/practiceGuides.js": "58f31bcb12c220f8f15688a6b2c1173a406945660c7386c52aa0c0a1e6e8dc2e",
+    "src/practiceGuides.js": "e0c006baa36c8d8661594b098f755c2adf4113c079e7d5301d49886f62c9800a",
     "src/practiceGuideManuals.js": "da39dc4e262d951d39b854c10364507730509acb3f01f33f94eb37edb189238e",
     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
@@ -103,26 +103,27 @@
     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
     "packages/ui/src/PageHeading/PageHeading.tsx": "49f5e8c76db7f93c4bc5300116b068c1635519fc68c354188eb7a2027d53da58",
     "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "cc44de6c45b28910f9f3d26b899ee8f895622bd2eb0961c350ecbc102d514779",
+    "apps/web/src/pages/PracticePage/PracticePage.tsx": "7254db8dd57e5481cd4ab390852037a7b7b6a30a3dd7fa19886773cee7b67381",
     "apps/web/src/pages/PracticePage/index.ts": "5b5b81bf639048fdae1497102f8195e6f3e88390603e112e39e0ec56f5ae5876",
-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "034f882058ea539134acf6179cdd5568887b3e67c13b51017d0030547b4b3c23",
+    "apps/web/src/pages/SequencePage/SequencePage.tsx": "c7963318041bbcbe1ea386c7f0563ad6b52373fc1c68769bb421d46b07085c0f",
     "apps/web/src/pages/SequencePage/index.ts": "35d27d3e9d6ca4e0b66385e97fb718a7aebe519045baa635d7d0cb77dc0465ec",
-    "apps/web/src/app/practicePage.tsx": "e3bc96c6c95ac47ec7570a83357828c7c8dc790e79dd3080acd424ac762ae3ec",
-    "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
+    "apps/web/src/app/practicePage.tsx": "31df92bc14158bab94b873a011f1b92b93936cfbc46ebac5db032f0c774b1025",
+    "apps/web/src/app/sequencePage.tsx": "b11242558b94cffc0c4d6f0521ddba0368b64abfa709656facd9cfc439199783",
     "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
-    "src/main.js": "b7970259e7c7c4e4e490bc8c9d87127368e6c0560097f62db67653a06576af6b",
+    "src/main.js": "0dee5fbfb0156e5618f938588ee9557a637f2b2bc73332c65e65c65b7982ba09",
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
-    "vite.config.js": "db2c857ff70bebdac7f08631104246a17c652d623686a7e121c1f670f5bd1c98",
+    "vite.config.js": "c08e425fc7305e585097d6f953b1e3635e211bf15e6ed1a677b8de80b992a729",
     "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
     "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c",
     "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
-    "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b"
+    "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b",
+    "apps/web/src/public-site/MarketingOverview/MarketingOverview.css": "835ecb53212b8b940f593c2108cb16cd8d737e3457eb14558130b61791eeeed3"
   },
   "exports": [
     {
@@ -301,6 +302,6 @@
     "date": "2026-10-22",
     "scope": "Same shared Practice/Sequence presentation loads before configuration/review, outside initial startup. Inert catalogs move compiler-owned template nodes; no runtime stored/user HTML parsing. Full987/140 suite and20 public guide/layout/session/offline workflows pass. Frame models, compiled CSS and encoded GIF bytes unchanged; no media rebaseline."
   },
-  "reviewNote": "CHG060 adds public link variants and operational URL handling; default shared example markup/engines/CSS and ten encoded GIF files are unchanged. Existing frame parity remains required.",
+  "reviewNote": "CHG061 changes flat routing/public ownership, parent guide hrefs and About-only marketing styling. Shared example/run/review markup, animation engines, media CSS and ten encoded GIF bytes remain unchanged. Pinned guide poster/playback/parity suites remain required. Trial re-encoding was not accepted: dimensions and scenario durations matched, but animation sampling/merged-frame bytes differed; retain the original approved exports.",
   "chg058Review": "Sequence setup styles relocated byte-for-byte; only #practiceSteps-specific legacy margin removed. Setup-only template changes; shared run/review/help fragments and ten encoded GIF files unchanged. Full guide-frame/visual acceptance required."
 }

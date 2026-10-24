@@ -1,6 +1,6 @@
 {
   "change": "CHG-061",
-  "status": "Candidate; complete acceptance pending",
+  "status": "Complete candidate acceptance passed; publishing b, checked production PR pending",
   "expandedCSSSha256": "665e4a05242f1e15a5f3ef15feadc7be78ef377e0b4c54d44baeb32e53895df6",
   "scope": "App root and flat routes; actual shared app informational screens; retained marketing About. Only About/public captures may change; original performance budgets and unrelated references retained.",
   "audit": {
@@ -99,5 +99,11 @@
     "Root/About/Contact reuse canonical app captures instead of duplicate PNGs; separate HTTP/deep-entry tests remain.",
     "Only About/public references change; 382 unrelated app references must remain byte-identical.",
     "Ten original guide GIFs retained byte-identically; parent URLs/marketing styles do not alter guide media."
-  ]
+  ],
+  "acceptanceRun": 40124104473,
+  "candidateCommit": "abf214456f9b7c015cbabbef8ea88e646670c87e",
+  "acceptedPatchSha256": "e0baf64972655bb82241fa98efd8b95e6e2573d1217e14deeba0c05371067236",
+  "unitTests": 1068,
+  "unitSuites": 154,
+  "allRequiredJobs": "8 success"
 }

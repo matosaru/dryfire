@@ -668,6 +668,9 @@
       "visual-tests/public-site.spec.js",
       "tests/publicSite.test.js",
       "tests/appPaths.test.js"
-    ]
+    ],
+    "marketingSource": "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx",
+    "marketingTests": "apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx",
+    "appPrerender": "tools/app-document.mjs"
   }
 }

@@ -6,4 +6,4 @@ export function DrillSetupCount({id,inputId,label,hidden=false,children}:{id?:st
 export function DrillSetupSteps({id,label,children,hidden=false}:{id:string;label:string;children?:ReactNode;hidden?:boolean}){return <ol id={id} className={`drill-steps session-sequence${hidden?' hidden':''}`} aria-label={label}>{children}</ol>;}
 
 /** A navigation affordance, never an action that starts capture. */
-export function DrillGuideLink({id,hidden=false,onClick}:{id:string;hidden?:boolean;onClick?:MouseEventHandler<HTMLAnchorElement>}){return <a id={id} className={`practice-guide-link${hidden?' hidden':''}`} href="#practice-guide" onClick={onClick}><span aria-hidden="true">ⓘ</span>About this practice</a>;}
+export function DrillGuideLink({id,href="#practice-guide",hidden=false,onClick}:{id:string;href?:string;hidden?:boolean;onClick?:MouseEventHandler<HTMLAnchorElement>}){return <a id={id} className={`practice-guide-link${hidden?' hidden':''}`} href={href} onClick={onClick}><span aria-hidden="true">ⓘ</span>About this practice</a>;}
