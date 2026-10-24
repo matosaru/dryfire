@@ -1,8 +1,8 @@
 diff --git a/DESIGN.md b/DESIGN.md
-index a7dfe65..0277ed3 100644
+index a7dfe65..5c6cd9a 100644
 --- a/DESIGN.md
 +++ b/DESIGN.md
-@@ -15,3 +15,7 @@ CHG-058 makes Sequence configuration the shared template for all four trigger mo
+@@ -15,3 +15,9 @@ CHG-058 makes Sequence configuration the shared template for all four trigger mo
  CHG-059 adopts the outlined information-link proposal below context/sounds and before setup through DrillSetup's shared guide control. Guide sound orders use DrillSetupSteps and semantic list items in native and React views. Catalog target colors are group-scoped: Trigger #46baff, Sequence/custom #b574f6, in both themes; no position-dependent color. Preserve existing shell, guide examples and navigation/data contracts.
  
  CHG-060 public static SEO pages reuse AppShell, BrandHeader, InfoFooter and fixed navigation through a real-link public variant. PublicPage owns editorial content/scoped CSS only, with current Dark palette, white text, orange action, type and card geometry.11 pages share actual manual sources and opt-in exported examples; existing app/GIF appearance remains unchanged. No new font or branding. Reading needs no profile/capture. Default app chrome remains guarded/callback-driven.
@@ -10,6 +10,8 @@ index a7dfe65..0277ed3 100644
 +## CHG-061 — app-first root and marketing retained in About
 +
 +Owner-approved: `/` opens the real trainer, informational and setup URLs are flat, and every built-in sequence has a distinct path. Retain marketing as `MarketingOverview` inside About with the existing brand, routine, free/local promise, CTA and mode guide cards. Public About/Contact/manuals use the same actual app components and fixed navigation as their in-app equivalents. Preserve the original marketing capture as historical evidence. No rebrand or unrelated layout changes. Review changed About/public captures in both pinned browsers and preserve unrelated baselines; original performance budgets apply.
++
++Existing native selects remain OS-owned: practice delay/start-source, appearance, History progress filter and private preview simulation. Native popup geometry is intentionally platform-dependent; no authored dropdown redesign is authorized by this routing change. Preserve existing labels, keyboard behavior and numeric validation contracts. This explicit ownership decision also applies to the retained native template adapters.
 diff --git a/apps/web/src/app/practicePage.tsx b/apps/web/src/app/practicePage.tsx
 index 59af43d..890b704 100644
 --- a/apps/web/src/app/practicePage.tsx
@@ -147,11 +149,13 @@ index 2cded09..9085e31 100644
        <div id="sessionConfigure">
 diff --git a/apps/web/src/public-site/MarketingOverview/MarketingOverview.css b/apps/web/src/public-site/MarketingOverview/MarketingOverview.css
 new file mode 100644
-index 0000000..fbbfccd
+index 0000000..ebe6ba2
 --- /dev/null
 +++ b/apps/web/src/public-site/MarketingOverview/MarketingOverview.css
-@@ -0,0 +1 @@
-+.marketing-mode-list{display:grid;gap:12px}.marketing-mode-list>a{display:grid;gap:8px;text-decoration:none;border-top:1px solid var(--session-border);padding-top:14px}.marketing-mode-list>a:first-child{border:0;padding:0}.marketing-mode-list span{font-size:.8rem;line-height:1.6;color:var(--session-muted)}
+@@ -0,0 +1,3 @@
++.marketing-mode-list{display:grid;gap:12px}.marketing-mode-list>a{display:grid;gap:8px;color:var(--session-text);text-decoration:none;border-top:1px solid var(--session-border);padding-top:14px}.marketing-mode-list>a:first-child{border:0;padding:0}.marketing-mode-list span{font-size:.8rem;line-height:1.6;color:var(--session-muted)}
++
++.marketing-start{display:block;text-align:center;text-decoration:none}
 diff --git a/apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx b/apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx
 new file mode 100644
 index 0000000..5ac7d5c
@@ -172,7 +176,7 @@ index 0000000..5ac7d5c
 +test('Full preview feature summary remains available without changing the free marketing promise',()=>{render(<MarketingOverview full/>);expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe(document.getElementById('aboutFeatureSummary')?.getAttribute('data-full-summary'));});
 diff --git a/apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx b/apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx
 new file mode 100644
-index 0000000..0c792aa
+index 0000000..09b3a00
 --- /dev/null
 +++ b/apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx
 @@ -0,0 +1,19 @@
@@ -191,7 +195,7 @@ index 0000000..0c792aa
 + return <>
 +  <div className="about-intro"><img className="brand-logo" src="/logo.svg" width="64" height="64" alt=""/><p className="about-name">Dry Fire With Ease</p><p className="muted small">Sound trainer · Beta · v0.8.0</p><h3>Dry-fire practice,<br/>made simple.</h3><p>Use your device's microphone to recognize your learned trigger click, time your repetitions and review your progress.</p></div>
 +  {afterIntro}
-+  <InformationCard id="aboutRoutineTitle" title="A simple practice routine"><ol><li>Add a gun and learn its trigger click.</li><li>Choose a practice mode or drill.</li><li>Follow the start signal and review your saved results.</li></ol><p id="aboutFeatureSummary" data-full-summary={aboutFeatureSummary(true)}>{aboutFeatureSummary(full)}</p><p>No account or payment details are required. The free app creates up to two guns and keeps compatible existing profiles.</p><a className="button primary wide-action" href="/" data-app-route="">Open the free app</a></InformationCard>
++  <InformationCard id="aboutRoutineTitle" title="A simple practice routine"><ol><li>Add a gun and learn its trigger click.</li><li>Choose a practice mode or drill.</li><li>Follow the start signal and review your saved results.</li></ol><p id="aboutFeatureSummary" data-full-summary={aboutFeatureSummary(true)}>{aboutFeatureSummary(full)}</p><p>No account or payment details are required. The free app creates up to two guns and keeps compatible existing profiles.</p><a className="button primary wide-action marketing-start" href="/" data-app-route="">Open the free app</a></InformationCard>
 +  <InformationCard id="aboutModesTitle" title="Four ways to practice">{links}</InformationCard>
 + </>;
 +}
@@ -273,6 +277,18 @@ index ad863d2..d5e8fb3 100644
 +The implemented public path inventory is `https://easydryfire.com/`, `https://easydryfire.com/practice-modes/`, `https://easydryfire.com/single-trigger-press-guide/`, `https://easydryfire.com/repeated-trigger-press-guide/`, `https://easydryfire.com/par-time-practice-guide/`, `https://easydryfire.com/trigger-control-guide/`, `https://easydryfire.com/rack-slide-trigger-pull-guide/`, `https://easydryfire.com/magazine-change-trigger-pull-guide/`, `https://easydryfire.com/draw-magazine-change-trigger-pull-guide/`, `https://easydryfire.com/sequence-drills-guide/`, `https://easydryfire.com/trigger-click-calibration-guide/`, `https://easydryfire.com/help/`, `https://easydryfire.com/about/`, `https://easydryfire.com/contact/`. Public routes have prerendered HTML/metadata. Operational screens use flat noindex paths with history-backed state; personal records are not public pages. This application map does not invent indexable URLs for Settings, sessions or guides. The generated [SEO XML sitemap](../seo/templates/sitemap.xml) and [SEO routing documentation](../seo/README.md) describe indexing; production deployment and crawler decisions remain separate outcomes.
  
  [Complete URL catalog](../seo/routes.md) · [Detailed generated screen/state tree](site-tree.md) · [Architecture and entry point](application-structure.md) · [Maintenance](README.md)
+diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
+index 56d0cd5..01b8b8c 100644
+--- a/docs/architecture/application-structure.md
++++ b/docs/architecture/application-structure.md
+@@ -126,3 +126,7 @@ CHG-058 shared setup: packages/ui/src/DrillSetup exports the configuration shell
+ Startup reads its gun list, active selection and device preferences from storage.getLibraryOverview: one read-only transaction and one database open, reused after interrupted-session recovery. The existing schema/migration/write owners remain unchanged. Later profile changes request a fresh snapshot; standalone preference reload retains its public API.
+ 
+ CHG-060: apps/web/src/public-site/PublicPage is the four-file public template, composed at build time by tools/public-pages.mjs from site/routes.js. Public content is not eagerly hydrated. The public Worker maps canonical .com public URLs and noindex operational app paths; src/appPaths.js and serialized navigation preserve existing controller guards. Existing13 app pages/26UI packages plus1 public template total40 checked packages. Existing Workers/nonproduction root remains the app; .com root is the public landing. Favicon is derived from the existing app icon.
++
++## CHG-061 public/app routing
++
++`src/main.js` remains the progressive application entry; `src/appPaths.js` supplies flat mode/preset/guide identities. `workers/publicSite.js` maps canonical and compatible legacy HTTP routes. `site/routes.js` owns public metadata/XML/robots; build-only `tools/app-document.mjs` prerenders actual About/Contact/PracticeGuide screens, avoiding a second manual implementation in public output. Root `/` is the real app. `MarketingOverview` is a separate tested/CSS-isolated package reused inside About and the static mode directory; original marketing design is archived. Native/lazy React page ownership, capture, schema and performance contracts remain unchanged.
 diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
 index 5ab2eab..bf98f28 100644
 --- a/docs/architecture/component-map.json
@@ -483,7 +499,7 @@ index 1c2e549..fbee11f 100644
  ## Layout and interaction
  
 diff --git a/docs/design/screens/public-site/README.md b/docs/design/screens/public-site/README.md
-index 8bb8e75..65f6eae 100644
+index 8bb8e75..946e507 100644
 --- a/docs/design/screens/public-site/README.md
 +++ b/docs/design/screens/public-site/README.md
 @@ -1,6 +1,6 @@
@@ -495,18 +511,16 @@ index 8bb8e75..65f6eae 100644
  
  | Page | Current capture |
  | --- | --- |
-@@ -16,4 +16,12 @@ CHG-060,2026-10-24. [Public SEO requirements](../../../requirements/public-seo.m
+@@ -15,5 +15,10 @@ CHG-060,2026-10-24. [Public SEO requirements](../../../requirements/public-seo.m
+ | help | [help.dark.png](help.dark.png) |
  | about | [about.dark.png](about.dark.png) |
  | contact | [contact.dark.png](contact.dark.png) |
++| sequence-rack-trigger | [sequence-rack-trigger.dark.png](sequence-rack-trigger.dark.png) |
++| sequence-mag-trigger | [sequence-mag-trigger.dark.png](sequence-mag-trigger.dark.png) |
++| sequence-draw-mag-trigger | [sequence-draw-mag-trigger.dark.png](sequence-draw-mag-trigger.dark.png) |
  
 -Public images use no personal fixtures. Nonproduction /welcome/ previews the .com landing with noindex; production redirects that preview alias to root. Existing app images/GIF appearance remains unchanged.
 +Public images use no personal fixtures. `/welcome/` redirects to About on every host. The original marketing-home design is archived outside the current screenshot set; marketing content remains live in About. Existing unrelated app/GIF appearance stays unchanged.
-+
-+| sequence-rack-trigger | [sequence-rack-trigger.dark.png](sequence-rack-trigger.dark.png) |
-+
-+| sequence-mag-trigger | [sequence-mag-trigger.dark.png](sequence-mag-trigger.dark.png) |
-+
-+| sequence-draw-mag-trigger | [sequence-draw-mag-trigger.dark.png](sequence-draw-mag-trigger.dark.png) |
 +
 +[Preserved original marketing design](../../archive/chg-060/README.md) is historical evidence; the live marketing content belongs to About.
 diff --git a/docs/project/approval-log.md b/docs/project/approval-log.md

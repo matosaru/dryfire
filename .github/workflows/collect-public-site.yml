@@ -39,12 +39,6 @@ jobs:
           APP_EDITION=public VISUAL_EDITION=public npx playwright test screens.spec.js --grep '(public-site/|about/)' 
           APP_EDITION=preview npm run build
           APP_EDITION=preview VISUAL_EDITION=preview npx playwright test screens.spec.js --grep '(public-site/|about/)' 
-      - name: Export actual guides for media parity review
-        run: |
-          APP_EDITION=public npm run build
-          if node tools/export-guide-examples.mjs --output /tmp/chg061-guide-frames > /tmp/guide-export.log 2>&1; then cat /tmp/guide-export.log; else cat /tmp/guide-export.log >> "$GITHUB_STEP_SUMMARY"; exit 1; fi
-          python3 -c 'from PIL import Image' || (apt-get update && apt-get install -y python3-pil)
-          if python3 tools/encode-guide-examples.py /tmp/chg061-guide-frames docs/design/review-candidates/chg-061/guides > /tmp/guide-encode.log 2>&1; then cat /tmp/guide-encode.log; else cat /tmp/guide-encode.log >> "$GITHUB_STEP_SUMMARY"; exit 1; fi
       - name: Publish only review images
         if: always()
         run: |
