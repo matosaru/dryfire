@@ -1,6 +1,6 @@
 {
   "change": "CHG-060",
-  "status": "Complete Home-startup candidate accepted; release push/PR checks next",
+  "status": "Released to main; complete candidate, b push, PR and main CI plus production build succeeded",
   "collectorRun": 40081504473,
   "collectorCommit": "3e2c75c",
   "newBrowserReferences": 56,
@@ -178,5 +178,19 @@
     40099688597,
     40101754914
   ],
-  "focusedHomeGate": 40103350936
+  "focusedHomeGate": 40103350936,
+  "publication": {
+    "sourceCommit": "7bd97462c89ba02601557d76393abdc7b588f4c3",
+    "pullRequest": 26,
+    "mainMergeCommit": "f634df1895723b93f6d975edf84d8ddbbe7e0482",
+    "identicalReleaseTree": "643dbb76b6c62b9c4e091e631230eac31c6653d3",
+    "bPushRun": 40105017838,
+    "pullRequestRun": 40105023506,
+    "mainRun": 40105990809,
+    "allRunsConclusion": "success",
+    "cloudflarePreviewBuild": "d66dc62b-6510-420c-9f8e-97ccbb5da3a8",
+    "cloudflareProductionBuild": "f43699f0-5a1f-403f-995a-400fe28453ba",
+    "cloudflareConclusion": "success",
+    "liveHTTP": "Direct favicon/sitemap checks blocked before origin by workspace proxy403 CONNECT/curl56; HTTP000 is not an observed site response."
+  }
 }
