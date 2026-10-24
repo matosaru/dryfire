@@ -12,3 +12,5 @@ Directly authorized by the owner's “proceed” on2026-10-24 after requesting i
 - Update designs/public route and screen maps, screenshots, metadata/HTTP/deep-link tests and docs. Complete full acceptance before b publication; owner production deployment/Search Console/indexing remain separate outcomes.
 
 Favicon follow-up: serve the approved-logo derivative at /favicon.ico as image/x-icon with16/32/48sizes. Public pages declare it explicitly; the app uses the standard root favicon fallback and retains Apple icons, avoiding the extra eager ICO declaration in its head. Verify actual asset200, offline installation and unchanged startup gates.
+
+Startup follow-up: discover the existing critical app stylesheet immediately after the viewport declaration, ahead of module loading, without changing resource attributes, stylesheet order or body markup. Preserve the original performance gates; cache84 refreshes old app shells without deleting IndexedDB data.

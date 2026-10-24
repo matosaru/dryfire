@@ -1,6 +1,6 @@
 # Public SEO and routing
 
-CHG-060 ·2026-10-24. Repository implementation passed complete candidate acceptance40098705431 and is published on b; production promotion, live HTTP verification and crawler indexing are separate outcomes. [History](../project/implementation-history.md) records exact CI/publication status. The owner reports creating the public .app→.com301 redirect; this workspace cannot independently access those public domains.
+CHG-060 ·2026-10-24. Repository implementation passed complete candidate acceptance40100798238 and is published on b; production promotion, live HTTP verification and crawler indexing are separate outcomes. [History](../project/implementation-history.md) records exact CI/publication status. The owner reports creating the public .app→.com301 redirect; this workspace cannot independently access those public domains.
 
 ## Current implementation
 

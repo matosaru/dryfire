@@ -8,7 +8,7 @@ import { renderPageTemplates } from './tools/page-templates.mjs';
 import { publicPagesPlugin } from './tools/public-pages.mjs';
 import {publicRoute,publicAssetPath} from './site/routes.js';
 import {isAppPath, offlineAppPaths} from './src/appPaths.js';
-import { minifyProductionHtml } from './tools/minify-html.mjs';
+import { minifyProductionHtml, prioritizeAppStyles } from './tools/minify-html.mjs';
 
 // Ship minified production code without exposing the readable src/ modules.
 // Worker entries also pass through Oxc, unlike files copied from public/.
@@ -41,7 +41,7 @@ export default defineConfig(({ mode }) => {
       assets: Object.keys(bundle).filter(path => /\.(js|css)$/.test(path)).sort().map(path => `/${path}`) }, null, 2) + '\n' });
   } } }, { name: 'compact-production-html', generateBundle: { order: 'post', async handler(_options, bundle) {
     const html = bundle['index.html'];
-    if (html?.type === 'asset') html.source = await minifyProductionHtml(String(html.source));
+    if (html?.type === 'asset') html.source = await minifyProductionHtml(prioritizeAppStyles(String(html.source)));
   } } }],
   base: '/',
   build: {
