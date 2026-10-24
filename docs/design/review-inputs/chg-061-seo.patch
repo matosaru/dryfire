@@ -1,0 +1,1442 @@
+diff --git a/DESIGN.md b/DESIGN.md
+index a7dfe65..0277ed3 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -15,3 +15,7 @@ CHG-058 makes Sequence configuration the shared template for all four trigger mo
+ CHG-059 adopts the outlined information-link proposal below context/sounds and before setup through DrillSetup's shared guide control. Guide sound orders use DrillSetupSteps and semantic list items in native and React views. Catalog target colors are group-scoped: Trigger #46baff, Sequence/custom #b574f6, in both themes; no position-dependent color. Preserve existing shell, guide examples and navigation/data contracts.
+ 
+ CHG-060 public static SEO pages reuse AppShell, BrandHeader, InfoFooter and fixed navigation through a real-link public variant. PublicPage owns editorial content/scoped CSS only, with current Dark palette, white text, orange action, type and card geometry.11 pages share actual manual sources and opt-in exported examples; existing app/GIF appearance remains unchanged. No new font or branding. Reading needs no profile/capture. Default app chrome remains guarded/callback-driven.
++
++## CHG-061 — app-first root and marketing retained in About
++
++Owner-approved: `/` opens the real trainer, informational and setup URLs are flat, and every built-in sequence has a distinct path. Retain marketing as `MarketingOverview` inside About with the existing brand, routine, free/local promise, CTA and mode guide cards. Public About/Contact/manuals use the same actual app components and fixed navigation as their in-app equivalents. Preserve the original marketing capture as historical evidence. No rebrand or unrelated layout changes. Review changed About/public captures in both pinned browsers and preserve unrelated baselines; original performance budgets apply.
+diff --git a/apps/web/src/app/practicePage.tsx b/apps/web/src/app/practicePage.tsx
+index 59af43d..890b704 100644
+--- a/apps/web/src/app/practicePage.tsx
++++ b/apps/web/src/app/practicePage.tsx
+@@ -2,10 +2,10 @@ import {PracticePage,type PracticePageProps} from '../pages/PracticePage';
+ import {RetainedNode} from '@dryfire/ui/RetainedNode';
+ import {mountRetainedPage} from './retainedPage';
+ type Step={text:string;className:string};
+-type Model={title:string;guideHidden:boolean;gunName:string;contextHidden:boolean;steps:Step[]};
++type Model={title:string;guideHidden:boolean;guideHref:string;gunName:string;contextHidden:boolean;steps:Step[]};
+ export function mountPracticePage(host:HTMLElement,callbacks:Pick<PracticePageProps,'onBack'|'onGuide'>){
+  const get=(id:string)=>host.querySelector<HTMLElement>('#'+id)!;
+  const configure=get('practiceConfigure'),run=get('practiceRun'),review=get('practiceReview');
+- const initial:Model={title:get('practice-title').textContent!,guideHidden:get('practiceGuideLink').classList.contains('hidden'),gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),steps:[...get('practiceSteps').children].map(node=>({text:node.textContent!,className:node.className}))};
++ const initial:Model={title:get('practice-title').textContent!,guideHref:get('practiceGuideLink').getAttribute('href')!,guideHidden:get('practiceGuideLink').classList.contains('hidden'),gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),steps:[...get('practiceSteps').children].map(node=>({text:node.textContent!,className:node.className}))};
+  return mountRetainedPage(host,initial,state=><PracticePage {...callbacks} {...state} steps={state.steps.map((step,index)=><li key={index} className={step.className}>{step.text}</li>)} configure={<RetainedNode node={configure}/>} run={<RetainedNode node={run}/>} review={<RetainedNode node={review}/>}/>,'data-react-practice');
+ }
+diff --git a/apps/web/src/app/routeContext.ts b/apps/web/src/app/routeContext.ts
+index 15ca50c..b533b67 100644
+--- a/apps/web/src/app/routeContext.ts
++++ b/apps/web/src/app/routeContext.ts
+@@ -1,9 +1,9 @@
+ import { PAGE_IDS } from '../../../../src/pageDefinitions.js';
+-import { isGuideContextCurrent } from '../../../../src/practiceGuides.js';
++import { isGuideContextCurrent, isPublicGuideContextCurrent } from '../../../../src/practiceGuides.js';
+ 
+ type GunId = string | number;
+ type Controller = { routeKey(): string | null; guideContext(): unknown };
+-type Guide = { gunId: GunId; parent: string; sourceKey: string; contextKey: string };
++type Guide = { id?: string; publicEntry?: boolean; gunId: GunId; parent: string; sourceKey: string; contextKey: string };
+ export type AppRoute = { view: string; gunId: GunId | null; context?: string | null };
+ type Context = readonly [
+   gun: { id: GunId; needsDetails?: boolean } | null,
+@@ -15,6 +15,8 @@ type Context = readonly [
+ /** Route validation reads current gun/controller owners supplied at the call.
+  * The router still owns history serialization and capture/save guards. */
+ export function resolveRouteView(route: AppRoute, [activeGun, practiceController, sessionController, practiceGuideController]: Context): string {
++  const publicGuide = practiceGuideController?.current();
++  if (route.view === 'practiceGuide' && route.gunId === (activeGun?.id ?? null) && route.context === publicGuide?.contextKey && isPublicGuideContextCurrent(publicGuide, activeGun?.id)) return 'practiceGuide';
+   if (!activeGun || activeGun.needsDetails) return ['gunSetup', 'guns', 'settings', 'about', 'contact'].includes(route.view) ? route.view : 'gunSetup';
+   if (route.gunId !== activeGun.id) return route.view === 'practiceGuide' ? 'drills' : 'home';
+   if (route.view === 'practiceGuide') {
+diff --git a/apps/web/src/app/sequencePage.tsx b/apps/web/src/app/sequencePage.tsx
+index 731c511..a537e53 100644
+--- a/apps/web/src/app/sequencePage.tsx
++++ b/apps/web/src/app/sequencePage.tsx
+@@ -2,10 +2,10 @@ import {SequencePage,type SequencePageProps} from '../pages/SequencePage';
+ import {RetainedNode} from '@dryfire/ui/RetainedNode';
+ import {mountRetainedPage} from './retainedPage';
+ type Step={text:string;className:string};
+-type Model={title:string;guideHidden:boolean;gunName:string;contextHidden:boolean;steps:Step[];presetName:string};
++type Model={title:string;guideHidden:boolean;guideHref:string;gunName:string;contextHidden:boolean;steps:Step[];presetName:string};
+ export function mountSequencePage(host:HTMLElement,callbacks:Pick<SequencePageProps,'onBack'|'onGuide'>){
+  const get=(id:string)=>host.querySelector<HTMLElement>('#'+id)!;
+  const configure=get('sessionConfigure'),run=get('sessionRun'),review=get('sessionReview');
+- const initial:Model={title:get('session-title').textContent!,guideHidden:get('sessionGuideLink').classList.contains('hidden'),gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),presetName:get('sessionPresetName').textContent!,steps:[...get('sessionSteps').children].map(node=>({text:node.textContent!,className:node.className}))};
++ const initial:Model={title:get('session-title').textContent!,guideHref:get('sessionGuideLink').getAttribute('href')!,guideHidden:get('sessionGuideLink').classList.contains('hidden'),gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),presetName:get('sessionPresetName').textContent!,steps:[...get('sessionSteps').children].map(node=>({text:node.textContent!,className:node.className}))};
+  return mountRetainedPage(host,initial,state=><SequencePage {...callbacks} {...state} steps={state.steps.map((step,index)=><li key={index} className={step.className}>{step.text}</li>)} configure={<RetainedNode node={configure}/>} run={<RetainedNode node={run}/>} review={<RetainedNode node={review}/>}/>,'data-react-session-page');
+ }
+diff --git a/apps/web/src/pages/AboutPage/AboutPage.tsx b/apps/web/src/pages/AboutPage/AboutPage.tsx
+index 67aac34..2306a4b 100644
+--- a/apps/web/src/pages/AboutPage/AboutPage.tsx
++++ b/apps/web/src/pages/AboutPage/AboutPage.tsx
+@@ -1,4 +1,4 @@
+-import { aboutFeatureSummary } from './AboutPage.copy.ts';
++import {MarketingOverview} from '../../public-site/MarketingOverview';
+ import { PageHeading } from '@dryfire/ui/PageHeading';
+ import { InformationCard } from '@dryfire/ui/InformationCard';
+ 
+@@ -7,19 +7,7 @@ export interface AboutPageProps { full?: boolean; onBack?: () => void }
+ export function AboutPage({ full = false, onBack }: AboutPageProps) {
+   return <>
+     <PageHeading id="about-title" title="About" onBack={onBack} />
+-    <div className="about-intro">
+-      <img className="brand-logo" src="/logo.svg" width="64" height="64" alt="" />
+-      <p className="about-name">Dry Fire With Ease</p><p className="muted small">Sound trainer · Beta · v0.8.0</p>
+-      <h3>Dry-fire practice,<br />made simple.</h3>
+-      <p>Use your device's microphone to recognize your learned trigger click, time your repetitions and review your progress.</p>
+-    </div>
+-    <InformationCard id="aboutBetaTitle" title="Feedback welcome">
+-      <p>This app is in beta. All feedback and suggestions are welcome. Visit Contact to share an idea or report a problem.</p>
+-    </InformationCard>
+-    <InformationCard id="aboutRoutineTitle" title="A simple practice routine">
+-      <ol><li>Learn your trigger click.</li><li>Choose a practice mode or drill.</li><li>Follow the start signal and review your saved results.</li></ol>
+-      <p id="aboutFeatureSummary" data-full-summary={aboutFeatureSummary(true)}>{aboutFeatureSummary(full)}</p>
+-    </InformationCard>
++    <MarketingOverview full={full} afterIntro={<InformationCard id="aboutBetaTitle" title="Feedback welcome"><p>This app is in beta. All feedback and suggestions are welcome. Visit Contact to share an idea or report a problem.</p></InformationCard>} />
+     <InformationCard id="aboutDataTitle" title="Saved on your device">
+       <p>No account is required. Your profiles, learned sound features, drills and history stay in this browser. Use Settings → Export backup to keep a recovery copy before changing device or clearing browser data.</p>
+     </InformationCard>
+diff --git a/apps/web/src/pages/PracticePage/PracticePage.tsx b/apps/web/src/pages/PracticePage/PracticePage.tsx
+index d3df075..0df7383 100644
+--- a/apps/web/src/pages/PracticePage/PracticePage.tsx
++++ b/apps/web/src/pages/PracticePage/PracticePage.tsx
+@@ -3,14 +3,14 @@ import type {ReactNode} from 'react';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import {PracticeRun} from '@dryfire/ui/PracticeRun';
+ import {PracticeReview} from '@dryfire/ui/PracticeReview';
+-export type PracticePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
++export type PracticePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;guideHref?:string;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
+ /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
+-export function PracticePage({title,gunName,contextHidden=false,guideHidden=false,configure,run,review,steps,onBack,onGuide,onAction}:PracticePageProps){return <>
++export function PracticePage({title,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,onBack,onGuide,onAction}:PracticePageProps){return <>
+ <PageHeading id="practice-title" title={title??'Practice'} backId="practiceBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
+ 
+       <p className={contextHidden?'gun-context hidden':'gun-context'}>Practice for <strong className="gun-context-name">{gunName}</strong>.</p>
+       <DrillSetupSteps id="practiceSteps" label="Required sounds">{steps}</DrillSetupSteps>
+-      <DrillGuideLink id="practiceGuideLink" hidden={guideHidden} onClick={onGuide}/>
++      <DrillGuideLink id="practiceGuideLink" href={guideHref} hidden={guideHidden} onClick={onGuide}/>
+       {configure??<>
+       <div id="practiceConfigure">
+         <DrillSetup prefix="practice" legend="Practice setup" footer={<><p id="practiceCueNote" className="muted small"></p><p id="practiceReadiness" className="session-readiness" role="status"></p><button onClick={()=>onAction?.('practiceLearnBtn')} id="practiceLearnBtn" className="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" className="button primary wide-action" type="submit">Start Practice</button></>}>
+diff --git a/apps/web/src/pages/SequencePage/SequencePage.tsx b/apps/web/src/pages/SequencePage/SequencePage.tsx
+index 2cded09..9085e31 100644
+--- a/apps/web/src/pages/SequencePage/SequencePage.tsx
++++ b/apps/web/src/pages/SequencePage/SequencePage.tsx
+@@ -3,15 +3,15 @@ import type {ReactNode} from 'react';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import {SequenceRun} from '@dryfire/ui/SequenceRun';
+ import {SequenceReview} from '@dryfire/ui/SequenceReview';
+-export type SequencePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
++export type SequencePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;guideHref?:string;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
+ /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
+-export function SequencePage({title,gunName,contextHidden=false,guideHidden=false,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){return <>
++export function SequencePage({title,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){return <>
+ <PageHeading id="session-title" title={title??'Drill Session'} backId="sessionBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
+ 
+       <p className={contextHidden?'gun-context hidden':'gun-context'}>Session for <strong className="gun-context-name">{gunName}</strong>.</p>
+       <p id="sessionPresetName" className="session-preset-name">{presetName}</p>
+       <DrillSetupSteps id="sessionSteps" label="Ordered sound sequence">{steps}</DrillSetupSteps>
+-      <DrillGuideLink id="sessionGuideLink" hidden={guideHidden} onClick={onGuide}/>
++      <DrillGuideLink id="sessionGuideLink" href={guideHref} hidden={guideHidden} onClick={onGuide}/>
+ 
+       {configure??<>
+       <div id="sessionConfigure">
+diff --git a/apps/web/src/public-site/MarketingOverview/MarketingOverview.css b/apps/web/src/public-site/MarketingOverview/MarketingOverview.css
+new file mode 100644
+index 0000000..fbbfccd
+--- /dev/null
++++ b/apps/web/src/public-site/MarketingOverview/MarketingOverview.css
+@@ -0,0 +1 @@
++.marketing-mode-list{display:grid;gap:12px}.marketing-mode-list>a{display:grid;gap:8px;text-decoration:none;border-top:1px solid var(--session-border);padding-top:14px}.marketing-mode-list>a:first-child{border:0;padding:0}.marketing-mode-list span{font-size:.8rem;line-height:1.6;color:var(--session-muted)}
+diff --git a/apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx b/apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx
+new file mode 100644
+index 0000000..5ac7d5c
+--- /dev/null
++++ b/apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx
+@@ -0,0 +1,12 @@
++/** @jest-environment jsdom */
++import '@testing-library/jest-dom';
++import {render,screen} from '@testing-library/react';
++import {MarketingOverview} from './MarketingOverview';
++test('retains the marketing overview and all four unique practice manuals inside About',()=>{
++ render(<MarketingOverview afterIntro={<p>Feedback welcome</p>}/>);
++ expect(screen.getByText('Feedback welcome')).toBeVisible();expect(screen.getByRole('link',{name:'Open the free app'})).toHaveAttribute('href','/');
++ expect(screen.getByRole('heading',{name:'A simple practice routine'})).toBeVisible();expect(screen.getByRole('heading',{name:'Four ways to practice'})).toBeVisible();
++ const links=screen.getAllByRole('link').filter(node=>node.getAttribute('href')?.endsWith('-guide/'));expect(links).toHaveLength(4);expect(new Set(links.map(node=>node.getAttribute('href'))).size).toBe(4);
++});
++test('the mode-directory variant reuses links without repeating the introduction',()=>{render(<MarketingOverview variant="links"/>);expect(screen.getAllByRole('link')).toHaveLength(4);expect(screen.queryByText('Dry Fire With Ease')).not.toBeInTheDocument();});
++test('Full preview feature summary remains available without changing the free marketing promise',()=>{render(<MarketingOverview full/>);expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe(document.getElementById('aboutFeatureSummary')?.getAttribute('data-full-summary'));});
+diff --git a/apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx b/apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx
+new file mode 100644
+index 0000000..0c792aa
+--- /dev/null
++++ b/apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx
+@@ -0,0 +1,19 @@
++import type {ReactNode} from 'react';
++import {InformationCard} from '@dryfire/ui/InformationCard';
++// @ts-expect-error Shared runtime mode registry remains JavaScript.
++import {PRACTICE_MODES} from '../../../../../src/practiceModes.js';
++// @ts-expect-error Shared runtime route registry remains JavaScript.
++import {guidePathFor} from '../../../../../src/appPaths.js';
++import {aboutFeatureSummary} from '../../pages/AboutPage/AboutPage.copy';
++export type MarketingOverviewProps={full?:boolean;variant?:'overview'|'links';afterIntro?:ReactNode};
++/** Retained marketing content, shared by About and the public mode directory. */
++export function MarketingOverview({full=false,variant='overview',afterIntro}:MarketingOverviewProps){
++ const links=<div className="marketing-mode-list">{PRACTICE_MODES.map((mode:{id:string;title:string;description:string})=><a key={mode.id} href={guidePathFor(mode.id)} data-app-route=""><strong>{mode.title}</strong><span>{mode.description}</span><span>Read the guide</span></a>)}</div>;
++ if(variant==='links')return links;
++ return <>
++  <div className="about-intro"><img className="brand-logo" src="/logo.svg" width="64" height="64" alt=""/><p className="about-name">Dry Fire With Ease</p><p className="muted small">Sound trainer · Beta · v0.8.0</p><h3>Dry-fire practice,<br/>made simple.</h3><p>Use your device's microphone to recognize your learned trigger click, time your repetitions and review your progress.</p></div>
++  {afterIntro}
++  <InformationCard id="aboutRoutineTitle" title="A simple practice routine"><ol><li>Add a gun and learn its trigger click.</li><li>Choose a practice mode or drill.</li><li>Follow the start signal and review your saved results.</li></ol><p id="aboutFeatureSummary" data-full-summary={aboutFeatureSummary(true)}>{aboutFeatureSummary(full)}</p><p>No account or payment details are required. The free app creates up to two guns and keeps compatible existing profiles.</p><a className="button primary wide-action" href="/" data-app-route="">Open the free app</a></InformationCard>
++  <InformationCard id="aboutModesTitle" title="Four ways to practice">{links}</InformationCard>
++ </>;
++}
+diff --git a/apps/web/src/public-site/MarketingOverview/index.ts b/apps/web/src/public-site/MarketingOverview/index.ts
+new file mode 100644
+index 0000000..bcd24ec
+--- /dev/null
++++ b/apps/web/src/public-site/MarketingOverview/index.ts
+@@ -0,0 +1,2 @@
++export {MarketingOverview} from './MarketingOverview';
++export type {MarketingOverviewProps} from './MarketingOverview';
+diff --git a/apps/web/src/public-site/PublicPage/PublicPage.css b/apps/web/src/public-site/PublicPage/PublicPage.css
+index 5da4d94..ec52137 100644
+--- a/apps/web/src/public-site/PublicPage/PublicPage.css
++++ b/apps/web/src/public-site/PublicPage/PublicPage.css
+@@ -1 +1 @@
+-.public-site .app-shell{margin:0 auto}.public-site .brand-name{margin:0}.public-site .icon-button{display:grid;place-items:center;text-decoration:none}.public-site .tab{text-decoration:none}.public-top-links,.public-related{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 24px;font-size:.8rem}.public-site a{color:var(--session-text);cursor:pointer}.public-site a:hover{color:#ffad62}.public-site a:focus-visible{outline:3px solid #ffad62;outline-offset:4px}.public-kicker{font-size:.68rem;letter-spacing:.1em;color:var(--session-muted);margin:0 0 10px}.public-article>h1{font-size:1.85rem;line-height:1.15;letter-spacing:-.03em;margin:0 0 16px}.public-intro{font-size:1rem;line-height:1.65;margin:0 0 22px}.public-panel{border:1px solid var(--session-border);border-radius:14px;background:var(--session-surface);padding:16px;margin:20px 0}.public-panel h2{font-size:1rem;margin:0 0 12px}.public-panel p,.public-panel li{font-size:.85rem;line-height:1.65}.public-panel ol,.public-panel ul{padding-left:22px}.public-panel li+li{margin-top:10px}.public-start{display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:46px}.public-mode-list{display:grid;gap:12px}.public-mode-list>a{display:grid;gap:8px;text-decoration:none;border-top:1px solid var(--session-border);padding-top:14px}.public-mode-list>a:first-child{border:0;padding:0}.public-mode-list span{font-size:.8rem;line-height:1.6;color:var(--session-muted)}.public-mode-list .public-read{color:#ffad62}.public-site .about-email{overflow-wrap:anywhere}.public-site .footer-page-link{display:inline-block}.public-related{padding-top:12px}.public-site footer{margin-top:20px}.public-site .public-start:hover{color:#16100b;filter:brightness(1.06)}.public-site .public-start:active{filter:brightness(.95)}
++.public-site .app-shell{margin:0 auto}.public-site .brand-name{margin:0}.public-site .icon-button{display:grid;place-items:center;text-decoration:none}.public-site .tab{text-decoration:none}.public-top-links,.public-related{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 24px;font-size:.8rem}.public-site a{color:var(--session-text);cursor:pointer}.public-site a:hover{color:#ffad62}.public-site a:focus-visible{outline:3px solid #ffad62;outline-offset:4px}.public-kicker{font-size:.68rem;letter-spacing:.1em;color:var(--session-muted);margin:0 0 10px}.public-article>h1{font-size:1.85rem;line-height:1.15;letter-spacing:-.03em;margin:0 0 16px}.public-intro{font-size:1rem;line-height:1.65;margin:0 0 22px}.public-panel{border:1px solid var(--session-border);border-radius:14px;background:var(--session-surface);padding:16px;margin:20px 0}.public-panel h2{font-size:1rem;margin:0 0 12px}.public-panel p,.public-panel li{font-size:.85rem;line-height:1.65}.public-panel ol,.public-panel ul{padding-left:22px}.public-panel li+li{margin-top:10px}.public-start{display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:46px}.public-site .about-email{overflow-wrap:anywhere}.public-site .footer-page-link{display:inline-block}.public-related{padding-top:12px}.public-site footer{margin-top:20px}.public-site .public-start:hover{color:#16100b;filter:brightness(1.06)}.public-site .public-start:active{filter:brightness(.95)}
+diff --git a/apps/web/src/public-site/PublicPage/PublicPage.test.tsx b/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
+index cb3ff3e..217f61c 100644
+--- a/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
++++ b/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
+@@ -6,4 +6,4 @@ import '@dryfire/testing/setup';import{render,cleanup}from'@testing-library/reac
+ // @ts-expect-error Build-only JS route registry.
+ import{PUBLIC_ROUTES}from'../../../../../site/routes.js';
+ afterEach(cleanup);
+-test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Open settings'})).toHaveAttribute('href','/app/settings/');expect(v.container.querySelector('script')).toBeNull();});
++test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Open settings'})).toHaveAttribute('href','/settings/');expect(v.container.querySelector('script')).toBeNull();});
+diff --git a/apps/web/src/public-site/PublicPage/PublicPage.tsx b/apps/web/src/public-site/PublicPage/PublicPage.tsx
+index 9173781..b432438 100644
+--- a/apps/web/src/public-site/PublicPage/PublicPage.tsx
++++ b/apps/web/src/public-site/PublicPage/PublicPage.tsx
+@@ -1,25 +1,26 @@
+ import {AppShell} from '@dryfire/ui/AppShell';
++import {MarketingOverview} from '../MarketingOverview';
+ import type {ReactNode} from 'react';
+ type Guide={id:string;title:string;purpose:string;measures:string;steps:string[];expect:string;requires:string};
+ export type PublicRoute={id:string;path:string;title:string;heading:string;description:string;guide?:Guide};
+ export type PublicPageProps={route:PublicRoute;routes:PublicRoute[]};
+-const links={home:'/app/',learn:'/app/learn/',drills:'/app/drills/',recognize:'/app/live-listen/',history:'/app/history/',settings:'/app/settings/',about:'/about/',contact:'/contact/'};
++const links={home:'/',learn:'/learn/',drills:'/drills/',recognize:'/live-listen/',history:'/history/',settings:'/settings/',about:'/about/',contact:'/contact/'};
+ function Panel({title,children}:{title:string;children:ReactNode}){return <section className="public-panel"><h2>{title}</h2>{children}</section>;}
+-export function PublicPage({route,routes}:PublicPageProps){
+- const guide=route.guide,modePath=guide?`/app/practice/${route.path.split('/')[2]}/`:'/app/';
++export function PublicPage({route}:PublicPageProps){
++ const guide=route.guide,modePath=guide?`/${route.path.slice(1).replace('-guide/','/')}`:'/';
+  return <AppShell view={['about','contact'].includes(route.id)?route.id:'public'} status="Beta" links={links}>
+-  <nav className="public-top-links" aria-label="Public pages"><a href="/">Home</a><a href="/practice/">Practice modes</a><a href="/help/">Help</a></nav>
++  <nav className="public-top-links" aria-label="Public pages"><a href="/">Home</a><a href="/practice-modes/">Practice modes</a><a href="/help/">Help</a></nav>
+   <article id="public-content" className="public-article"><p className="public-kicker">{guide?'PRACTICE GUIDE':'DRY FIRE WITH EASE · BETA'}</p><h1>{route.heading}</h1><p className="public-intro">{route.description}</p>
+-  {route.id==='home'&&<><a className="button primary public-start" href="/app/">Open the free app</a><Panel title="A simple practice routine"><ol><li>Add a gun and learn its trigger click.</li><li>Choose a practice mode, confirm safety and wait for the signal.</li><li>Review your recognized clicks and saved timings.</li></ol><p>No account or payment details are required. The public version creates up to two guns and keeps compatible existing profiles.</p></Panel></>}
+-  {['home','practice'].includes(route.id)&&<Panel title="Four ways to practice"><div className="public-mode-list">{routes.filter(r=>r.guide).map(item=><a key={item.path} href={item.path}><strong>{item.heading}</strong><span>{item.description}</span><span className="public-read">Read the guide</span></a>)}</div></Panel>}
++  {route.id==='home'&&<MarketingOverview/>}
++  {route.id==='practice'&&<Panel title="Four ways to practice"><MarketingOverview variant="links"/></Panel>}
+   {guide&&<><Panel title="What it measures"><p>{guide.measures}</p></Panel><p><a href={`/guide-examples/${guide.id}.gif`}>View the silent animated example</a></p><p className="muted small">Synthetic detections at 1× timing; no live microphone. Opens the exported example, which stops at Review.</p><Panel title="How it works"><ol>{guide.steps.map(step=><li key={step}>{step}</li>)}</ol></Panel><Panel title="Good to know"><p>{guide.expect}</p><p>{guide.requires}</p></Panel><a className="button primary public-start" href={modePath}>Configure this practice</a><p className="muted small">The app asks for a gun and compatible trigger examples before practice. Opening this guide never starts your microphone.</p></>}
+-  {route.id==='sequence'&&<><Panel title="Built-in sequences"><ul><li>Rack slide → Trigger pull</li><li>Magazine change → Trigger pull</li><li>Draw from holster → Magazine change → Trigger pull</li></ul><p>Learn each distinct sound required by the selected sequence. Other sound categories remain optional.</p></Panel><Panel title="How a repetition works"><ol><li>Choose a sequence, repetitions and fixed or random ready delay.</li><li>Confirm safety, wait for the start signal and perform the sequence.</li><li>The app advances only on recognized sounds in the expected order, saves each result and starts the next countdown.</li></ol><p>Timings describe detected audio, not verified physical actions. With the sequence start beep on, the first 0.30 seconds after GO are excluded to reject the cue.</p></Panel><a className="button primary public-start" href="/app/drills/">Choose a sequence</a></>}
+-  {route.id==='calibration'&&<><Panel title="Record useful examples"><ol><li>Confirm the firearm is unloaded and complete the app safety check.</li><li>In Learn, select Trigger pull and record separate, clear examples for the active gun. At least three compatible examples are needed; up to ten are allowed per type.</li><li>Test recognition in your actual room and device position. Optional reset/noise examples can help reject similar clicks.</li></ol></Panel><Panel title="If clicks are missed"><p>Confirm microphone permission and watch the live microphone indicator. Keep background noise low and record fresh examples when device placement or audio processing changes. Recognition is experimental and can miss or misclassify sounds.</p></Panel><a className="button primary public-start" href="/app/learn/">Open Learn</a></>}
+-  {route.id==='help'&&<><Panel title="Microphone and recognition"><p>Open the app over HTTPS, allow microphone permission and learn your selected gun’s trigger sound. Capture runs while the app is open; switching away stops it. The level indicator helps confirm input is reaching the app.</p><a href="/guides/trigger-click-calibration/">Read the calibration guide</a></Panel><Panel title="iPhone Home Screen"><ol><li>Open easydryfire.com/app/ in Safari.</li><li>Tap Share, then Add to Home Screen.</li><li>Open the installed app and allow microphone permission when starting capture.</li></ol><p>Noise Filter, Auto Gain and vibration depend on browser/device capabilities. Settings explains unsupported controls. Raise device volume if the start beep is quiet.</p></Panel><Panel title="Keep a recovery copy"><p>Use Settings → Export backup before clearing browser data, changing device or moving domain. Import replaces the current local library after confirmation. A redirect does not transfer data between .app, .com or workers.dev.</p><a href="/app/settings/">Open Settings</a></Panel></>}
++  {route.id==='sequence'&&<><Panel title="Built-in sequences"><ul><li>Rack slide → Trigger pull</li><li>Magazine change → Trigger pull</li><li>Draw from holster → Magazine change → Trigger pull</li></ul><p>Learn each distinct sound required by the selected sequence. Other sound categories remain optional.</p></Panel><Panel title="How a repetition works"><ol><li>Choose a sequence, repetitions and fixed or random ready delay.</li><li>Confirm safety, wait for the start signal and perform the sequence.</li><li>The app advances only on recognized sounds in the expected order, saves each result and starts the next countdown.</li></ol><p>Timings describe detected audio, not verified physical actions. With the sequence start beep on, the first 0.30 seconds after GO are excluded to reject the cue.</p></Panel><a className="button primary public-start" href="/drills/">Choose a sequence</a></>}
++  {route.id==='calibration'&&<><Panel title="Record useful examples"><ol><li>Confirm the firearm is unloaded and complete the app safety check.</li><li>In Learn, select Trigger pull and record separate, clear examples for the active gun. At least three compatible examples are needed; up to ten are allowed per type.</li><li>Test recognition in your actual room and device position. Optional reset/noise examples can help reject similar clicks.</li></ol></Panel><Panel title="If clicks are missed"><p>Confirm microphone permission and watch the live microphone indicator. Keep background noise low and record fresh examples when device placement or audio processing changes. Recognition is experimental and can miss or misclassify sounds.</p></Panel><a className="button primary public-start" href="/learn/">Open Learn</a></>}
++  {route.id==='help'&&<><Panel title="Microphone and recognition"><p>Open the app over HTTPS, allow microphone permission and learn your selected gun’s trigger sound. Capture runs while the app is open; switching away stops it. The level indicator helps confirm input is reaching the app.</p><a href="/trigger-click-calibration-guide/">Read the calibration guide</a></Panel><Panel title="iPhone Home Screen"><ol><li>Open easydryfire.com/ in Safari.</li><li>Tap Share, then Add to Home Screen.</li><li>Open the installed app and allow microphone permission when starting capture.</li></ol><p>Noise Filter, Auto Gain and vibration depend on browser/device capabilities. Settings explains unsupported controls. Raise device volume if the start beep is quiet.</p></Panel><Panel title="Keep a recovery copy"><p>Use Settings → Export backup before clearing browser data, changing device or moving domain. Import replaces the current local library after confirmation. A redirect does not transfer data between .app, .com or workers.dev.</p><a href="/settings/">Open Settings</a></Panel></>}
+   {route.id==='about'&&<><Panel title="Feedback welcome"><p>Dry Fire With Ease is a Beta sound trainer. All feedback and suggestions are welcome.</p><a href="/contact/">Contact us</a></Panel><Panel title="What the free app includes"><p>Trigger-click calibration, four trigger practice modes, built-in sequences, live listening, local history and manual backups. No account is required.</p><p>New public gun profiles are limited to two. Existing saved data remains available; advanced feature availability follows the current public version.</p></Panel></>}
+   {route.id==='contact'&&<Panel title="Email support"><p>Send questions, suggestions or a bug report to:</p><a className="about-email" href="mailto:easydryfire@gmail.com">easydryfire@gmail.com</a><p>Opens your email app. You can also select and copy the address. Do not send private backups or raw recordings unless you deliberately choose to share them.</p></Panel>}
+   <Panel title="Practice responsibly"><p>Verify the firearm is unloaded, remove live ammunition from the practice area and establish a safe direction and backstop. The microphone cannot verify unloaded status, aim, movement or safe handling.</p></Panel>
+-  <nav className="public-related" aria-label="More guides"><a href="/guides/sequence-drills/">Sequence drills</a><a href="/guides/trigger-click-calibration/">Calibration</a></nav>
++  <nav className="public-related" aria-label="More guides"><a href="/sequence-drills-guide/">Sequence drills</a><a href="/trigger-click-calibration-guide/">Calibration</a></nav>
+   </article>
+  </AppShell>;
+ }
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index 31e1ba5..6858ce7 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -5,13 +5,16 @@
+   "publicOrigin": "https://easydryfire.com",
+   "publicPaths": [
+     "/",
+-    "/practice/",
+-    "/practice/single-trigger-press/",
+-    "/practice/repeated-trigger-press/",
+-    "/practice/par-time/",
+-    "/practice/trigger-control/",
+-    "/guides/sequence-drills/",
+-    "/guides/trigger-click-calibration/",
++    "/practice-modes/",
++    "/single-trigger-press-guide/",
++    "/repeated-trigger-press-guide/",
++    "/par-time-practice-guide/",
++    "/trigger-control-guide/",
++    "/rack-slide-trigger-pull-guide/",
++    "/magazine-change-trigger-pull-guide/",
++    "/draw-magazine-change-trigger-pull-guide/",
++    "/sequence-drills-guide/",
++    "/trigger-click-calibration-guide/",
+     "/help/",
+     "/about/",
+     "/contact/"
+@@ -1004,12 +1007,14 @@
+     "packages/ui/src/DrillSetup/DrillSetup.tsx": "d8d803a87a3050830ba22a8977799cce0b016145c2192c809dd22fbfca6ac33c",
+     "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
+     "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b",
+-    "src/appPaths.js": "c6b146ff1640a145c95ecdb8b6c56bcc97adb5804f5eef78b2cb8a1693cf9f7c",
+-    "site/routes.js": "214cd71616cdafe7e6396cc13c2b72a003cf81bbe991c3d0f7dc878d118880da",
+-    "workers/publicSite.js": "308f15bcc5873c73d4cd5f8a290bf56603c58a9122d41b57dd2badf6704890db",
++    "src/appPaths.js": "pending review",
++    "site/routes.js": "pending review",
++    "workers/publicSite.js": "pending review",
+     "tools/public-pages.mjs": "57517a71e4a51bace6686fbe09a57ef87d5d166bc1d3e020904d41837eed0494",
+     "apps/web/src/public-site/PublicPage/PublicPage.tsx": "9247dcd556c0e4110bf676e4e117f70e652ace74615c61c4df34741159990626",
+-    "apps/web/src/public-site/PublicPage/PublicPage.css": "f0625927b4f0df203ae499fdd3ac9fe0d83e5fe78d767df5db93ab0e0a6cf334"
++    "apps/web/src/public-site/PublicPage/PublicPage.css": "f0625927b4f0df203ae499fdd3ac9fe0d83e5fe78d767df5db93ab0e0a6cf334",
++    "tools/app-document.mjs": "pending review",
++    "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx": "pending review"
+   },
+   "implementationChanges": [
+     "CHG-017",
+@@ -1039,7 +1044,8 @@
+     "CHG-057",
+     "CHG-053",
+     "CHG-059 shared guide control/layout and group accents",
+-    "CHG-060 public SEO and readable app paths"
++    "CHG-060 public SEO and readable app paths",
++    "CHG-061 app homepage, flat routes, unique sequences and retained marketing About"
+   ],
+   "publicScreens": [
+     {
+@@ -1048,7 +1054,7 @@
+       "domId": "public-content",
+       "title": "Public website",
+       "parent": null,
+-      "entry": "Public URLs; readable without profile or JavaScript",
++      "entry": "Canonical public information and app homepage; shared app shell for About/Contact/manuals",
+       "design": "docs/design/screens/public-site/README.md",
+       "requirements": [
+         "docs/requirements/public-seo.md"
+@@ -1056,7 +1062,7 @@
+       "states": [
+         {
+           "key": "home.dark",
+-          "anchor": "public-content",
++          "anchor": "gunSetupView",
+           "image": "docs/design/screens/public-site/home.dark.png"
+         },
+         {
+@@ -1066,24 +1072,39 @@
+         },
+         {
+           "key": "single.dark",
+-          "anchor": "public-content",
++          "anchor": "practiceGuideView",
+           "image": "docs/design/screens/public-site/single.dark.png"
+         },
+         {
+           "key": "repeated.dark",
+-          "anchor": "public-content",
++          "anchor": "practiceGuideView",
+           "image": "docs/design/screens/public-site/repeated.dark.png"
+         },
+         {
+           "key": "par.dark",
+-          "anchor": "public-content",
++          "anchor": "practiceGuideView",
+           "image": "docs/design/screens/public-site/par.dark.png"
+         },
+         {
+           "key": "control.dark",
+-          "anchor": "public-content",
++          "anchor": "practiceGuideView",
+           "image": "docs/design/screens/public-site/control.dark.png"
+         },
++        {
++          "key": "sequence-rack-trigger.dark",
++          "anchor": "practiceGuideView",
++          "image": "docs/design/screens/public-site/sequence-rack-trigger.dark.png"
++        },
++        {
++          "key": "sequence-mag-trigger.dark",
++          "anchor": "practiceGuideView",
++          "image": "docs/design/screens/public-site/sequence-mag-trigger.dark.png"
++        },
++        {
++          "key": "sequence-draw-mag-trigger.dark",
++          "anchor": "practiceGuideView",
++          "image": "docs/design/screens/public-site/sequence-draw-mag-trigger.dark.png"
++        },
+         {
+           "key": "sequence.dark",
+           "anchor": "public-content",
+@@ -1101,12 +1122,12 @@
+         },
+         {
+           "key": "about.dark",
+-          "anchor": "public-content",
++          "anchor": "aboutView",
+           "image": "docs/design/screens/public-site/about.dark.png"
+         },
+         {
+           "key": "contact.dark",
+-          "anchor": "public-content",
++          "anchor": "contactView",
+           "image": "docs/design/screens/public-site/contact.dark.png"
+         }
+       ]
+diff --git a/docs/project/approval-log.md b/docs/project/approval-log.md
+index 9206846..b8ae928 100644
+--- a/docs/project/approval-log.md
++++ b/docs/project/approval-log.md
+@@ -676,3 +676,7 @@ After a pause and discussion of duplicate-content/canonical alternatives, owner
+ 2026-10-24: owner requests indexable paths/URLs, correct metadata/URL names, confirms .com canonical with .app redirect, reports redirect created and then says “proceed” after public URLs/metadata on b are identified as next work. This starts [public-seo.md](../requirements/public-seo.md), preserving storage/recovery, architecture, edition policy and owner-managed production promotion. No other-branch changes or unrelated structural/commercial work.
+ 
+ CHG-060 follow-up: owner also reports favicon.ico404 and asks to fix it. Generate a16/32/48px ICO from existing icon-512.png, reference it in public/app heads and verify200/image/x-icon; no new logo design or external asset source.
++
++## CHG-061 — flat app routes and retained marketing About (2026-10-24)
++
++Owner reported the app homepage was replaced by marketing, requested removing `/app`, and reported all sequence URLs opening the same page. Approved the proposed flat lowercase hyphenated names: “ok, works for me, proceed.” Explicitly instructed “don't delete permanently marketing homepage, make it part of about page,” then “ok, proceed.” Restore the real app at `/`, unique preset setups/manual URLs, compatible redirects and reusable marketing content within About. Existing instruction permits a checked b→main PR after all gates pass; dev untouched. Approval is not evidence of implementation, test success or deployment.
+diff --git a/docs/project/implementation-history.md b/docs/project/implementation-history.md
+index 45ffaa2..71254d4 100644
+--- a/docs/project/implementation-history.md
++++ b/docs/project/implementation-history.md
+@@ -940,3 +940,9 @@ Removed a redundant first Home statistics read: loadActiveGun already awaits/ren
+ CHG-060 release complete. Published7bd9746 on b; all8push jobs40105017838 and all8PR jobs40105023506 SUCCESS. PR#26 was CLEAN with17successful checks, then merged through the normal protected API using the exact tested head SHA into main as f634df1895723b93f6d975edf84d8ddbbe7e0482. Full release tree643dbb76b6c62b9c4e091e631230eac31c6653d3 is identical between tested b source and main merge. Main post-merge40105990809 ALL8SUCCESS. Cloudflare b preview d66dc62b-6510-420c-9f8e-97ccbb5da3a8 and production f43699f0-5a1f-403f-995a-400fe28453ba both SUCCESS. Retained b and left dev untouched.
+ 
+ Release includes public SEO HTML/metadata/XML/robots, readable app routes, favicon, complete generated URL documentation and tested startup/cache85 fixes. Direct production favicon/sitemap requests were blocked before origin by the workspace proxy403 CONNECT (curl56/HTTP000), not observed application403/404. Live response/indexing/Search Console and real iPhone microphone checks are not inferred from build success. All required source checks are complete; no application work remains for this release. This closing history/context/proof update is documentation-only on b; the tested application is identical on b and main.
++
++## 2026-10-24 — CHG-061 routing correction and retained marketing About (in progress)
++
++Owner-approved repair restores the actual app at `/`, removes `/app` prefixes, gives each sequence a unique reloadable URL and moves retained marketing content into the shared About page. `MarketingOverview` is reusable, with local-data/free promise, routine, CTA and four guide links. Known old URLs permanently redirect with query preservation; ambiguous sequence bookmarks resolve to Drills. Informational routes prerender actual app screens, not a second manual layout. Schema/data/audio ownership unchanged; dev untouched.
++
++Baseline1049tests/152suites, smoke and minified artifact checks passed before edits. Focused About/marketing/routing checks14pass; production build/artifact verifies14canonical routes, links, favicon, metadata and redirects. First broad run identified old URL expectations, a noscript minification fixture issue and expected CSS proof drift; browser checks exposed a shared query being dropped at client initialization, corrected without changing stored data. Complete candidate acceptance, reviewed captures and publication remain pending; no live deployment claimed.
+diff --git a/docs/project/react-refactor/context.md b/docs/project/react-refactor/context.md
+index 32e9264..a385d59 100644
+--- a/docs/project/react-refactor/context.md
++++ b/docs/project/react-refactor/context.md
+@@ -1,5 +1,13 @@
+ # Working context
+ 
++## Active CHG-061 — owner-approved routing correction
++
++Owner reports changed default homepage/prefixed URLs/all sequences same path; approves flat naming proposal and explicitly retains marketing as a reusable About section (not deleted). Restore actual app at / on every host, remove /app prefix, distinct built-in sequence identities restored on direct load/refresh. Preserve data/capture/safety/guide drafts and original gates. Legacy URLs redirect. Public About/Contact/manuals use the actual app shell/screens; marketing remains reusable inside About, no separate default landing. B-first + fully checked PR main repair; dev untouched.
++
++Baseline local1049tests/152suites, smoke/build/artifact checks PASS before code changes. New flat-path tests first fail on missing contract, now4pass with updated src/appPaths.js. Current source changes local; no publication. Continue main/controller/server/prerender integration and tests; do not release before complete acceptance.
++
++Marketing retention implemented locally in MarketingOverview, reused by About and the public practice directory: introduction, routine, free-app promise/CTA and four unique manual links. About retains feedback, local-data and safety sections. Focused About/marketing/routing/Worker checks:14tests/4suites PASS; complete acceptance/screenshots remain pending. Latest owner reiteration explicitly forbids permanently deleting the marketing homepage content.
++
+ Updated2026-10-24. [History](../implementation-history.md) · [Release proof](../../design/baselines/chg-060-public-review.json) · [Complete URL inventory](../../seo/routes.md) · [Merged PR#26](https://github.com/matosaru/dryfire/pull/26).
+ 
+ ## Completed release
+diff --git a/docs/requirements/public-seo.md b/docs/requirements/public-seo.md
+index 72edb68..ef1892a 100644
+--- a/docs/requirements/public-seo.md
++++ b/docs/requirements/public-seo.md
+@@ -1,20 +1,14 @@
+-# Public SEO and readable operational URLs — CHG-060
+-
+-Directly authorized by the owner's “proceed” on2026-10-24 after requesting indexable URLs, metadata and .com navigation. Public .app→.com301 is owner-reported created; external verification is workspace-network blocked. Implementation/publication stays b; owner promotes production.
+-
+--11 canonical public routes from site/routes.js: landing, mode index/four manuals, sequence/calibration guides, Help, About and Contact. Initial HTML has useful content, unique title/description/canonical/social metadata and factual JSON-LD. Reading needs no JS, gun, login or microphone.
+-- PublicPage composes shared AppShell/brand/footer/fixed navigation with real links. Preserve current Dark palette/white text/orange actions/cards/type and BETA identity. No new font/brand/theme UI. Guide copy and opt-in silent GIF links reuse actual manuals/media.
+-- .com root serves the public landing; /app/ and known operational paths serve the existing app with noindex. Preserve the Workers/nonproduction root app entry. Nonproduction /welcome/ previews the landing with noindex; production redirects this alias to root.
+-- Readable operational paths contain only screen/mode identity. Preserve Back/Forward, refresh, profile/training/save/safety guards, invalid drafts and capture lifecycle. No automatic recording, schema change or cross-origin transfer. Manifest id/scope remain root; new install start becomes /app/.
+-- Generate sitemap.xml with only implemented public .com URLs; robots and correct content types. Unknown paths404; canonical path variants redirect deliberately. Private preview remains independently authenticated. Noindex does not replace access controls.
+-- Keep Vite/minification, original payload/timing gates and progressive startup; public rendering adds no eager React to the app entry. No monetization/account/native service or unrelated F1–F7 refactor.
+-- Preserve stored data. Same-origin path changes keep IndexedDB; hostname changes still need deliberate export/import. Cached/installed clients and live domains require separate verification.
+-- Update designs/public route and screen maps, screenshots, metadata/HTTP/deep-link tests and docs. Complete full acceptance before b publication; owner production deployment/Search Console/indexing remain separate outcomes.
+-
+-Favicon follow-up: serve the approved-logo derivative at /favicon.ico as image/x-icon with16/32/48sizes. Public pages declare it explicitly; the app uses the standard root favicon fallback and retains Apple icons, avoiding the extra eager ICO declaration in its head. Verify actual asset200, offline installation and unchanged startup gates.
+-
+-Startup follow-up: discover the existing critical app stylesheet immediately after the viewport declaration, ahead of module loading, without changing resource attributes, stylesheet order or body markup. Preserve the original performance gates; cache84 refreshes old app shells without deleting IndexedDB data.
+-
+-Maintain a complete generated URL inventory in docs/seo/routes.md: every public canonical URL, operational app path, alias/redirect, generated endpoint and static asset. Derive pages from the runtime registries; reject stale documentation in docs:check. Only the implemented public pages belong in the deployed XML sitemap; private/local app screens remain noindex.
+-
+-Returning startup preserves original non-blocking Home initialization while explicit non-Home entries remain awaited and guarded. Reuse Home statistics already awaited during profile loading on its first display; refresh them on later Home visits. Keep actual usable-screen readiness criteria unchanged. Cache85 delivers the updated shell without clearing local data.
++# Public SEO and readable operational URLs — CHG-060/061
++
++CHG-061 corrects the released routing contract. The owner approved flat naming and explicitly instructed: “don't delete permanently marketing homepage, make it part of about page.” Work starts on b, with a fully checked PR to main after acceptance; dev remains untouched.
++
++- `/` is the actual app homepage on every host: first-use gun setup or the returning user's Home. The app requires JavaScript; provide a readable noscript notice. No separate marketing homepage replaces it.
++- Preserve and reuse marketing content in About: product introduction, simple practice routine, free/local-data promise, free-app action and four mode/manual links. Retain Beta feedback, local-data and safety information. Keep the historical marketing design in Git and the archived capture; do not delete the content.
++- Use flat lowercase hyphenated trailing-slash URLs from `src/appPaths.js`. No `/app` prefix. Practice modes and each built-in sequence have unique identities; direct entry/refresh restores that setup without automatically capturing audio. Source guide navigation preserves invalid/unsaved drafts and history.
++- Fourteen canonical pages from `site/routes.js`: app root, mode directory, seven real mode/sequence manuals, sequence/calibration overviews, Help, About and Contact. Informational pages have useful initial HTML without JavaScript, gun profile, login or microphone. About/Contact/manuals prerender the actual shared app components; do not maintain a parallel visual manual.
++- Every public page has unique title, description, `.com` canonical/social metadata and factual JSON-LD. XML sitemap includes only implemented canonical pages. Operational configuration/history/settings paths remain noindex and outside XML. Gun names, custom IDs and records stay local and never appear in public URLs or metadata.
++- Legacy `/app/*`, nested guides and slashless known paths redirect permanently to their matching flat URLs, preserving queries. Ambiguous old sequence URLs go to Drills, never an arbitrary preset. `/welcome/` redirects to About. Unknown paths return 404; unsupported methods 405. Previews remain noindex, with the private Full access gate independent of indexing.
++- `.com` remains canonical. The owner reported `.app` → `.com` permanent redirect configured. Same-origin path changes preserve IndexedDB; redirects between domains cannot migrate local libraries. Retain backups/import and schema compatibility.
++- Preserve progressive startup, minification and original payload/timing budgets. Keep self-contained classic service worker, early critical CSS, root favicon fallback and complete offline route inventory. Increment cache version without deleting user data. Manifest id/scope/start remain `/`.
++- Serve the approved-logo favicon at `/favicon.ico` with image/x-icon and 16/32/48 sizes. No new identity, font, monetization, account or native feature scope.
++- Maintain generated path/screen inventories, design references, guide exports and tests. Complete unit/coverage, integration, both-edition artifact checks, pinned Chromium/WebKit visual suites and unchanged performance acceptance before publication. Report push/merge/deployment/indexing separately.
+diff --git a/index.html b/index.html
+index 9ee52e6..f378cce 100644
+--- a/index.html
++++ b/index.html
+@@ -12,13 +12,14 @@
+   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+   <meta name="description" content="Dry Fire With Ease: private, offline-first trigger-click practice, optional mechanical sound learning and saved sessions for each gun." />
+   <title>Dry Fire With Ease</title>
+-  <meta name="robots" content="noindex, nofollow" />
+-  <link rel="canonical" href="https://easydryfire.com/app/" />
++  <meta name="robots" content="index, follow" />
++  <link rel="canonical" href="https://easydryfire.com/" />
+   <link rel="manifest" href="/manifest.webmanifest" />
+   <link rel="stylesheet" href="/src/styles.css" />
+ </head>
+ <body data-view="loading">
+   {{app}}
++  <noscript>Enable JavaScript to use the trainer. Visit /about/ or /help/ for features and instructions.</noscript>
+   <script type="module" src="/src/main.js"></script>
+ </body>
+ </html>
+diff --git a/packages/ui/src/DrillSetup/DrillSetup.tsx b/packages/ui/src/DrillSetup/DrillSetup.tsx
+index d121239..4362257 100644
+--- a/packages/ui/src/DrillSetup/DrillSetup.tsx
++++ b/packages/ui/src/DrillSetup/DrillSetup.tsx
+@@ -6,4 +6,4 @@ export function DrillSetupCount({id,inputId,label,hidden=false,children}:{id?:st
+ export function DrillSetupSteps({id,label,children,hidden=false}:{id:string;label:string;children?:ReactNode;hidden?:boolean}){return <ol id={id} className={`drill-steps session-sequence${hidden?' hidden':''}`} aria-label={label}>{children}</ol>;}
+ 
+ /** A navigation affordance, never an action that starts capture. */
+-export function DrillGuideLink({id,hidden=false,onClick}:{id:string;hidden?:boolean;onClick?:MouseEventHandler<HTMLAnchorElement>}){return <a id={id} className={`practice-guide-link${hidden?' hidden':''}`} href="#practice-guide" onClick={onClick}><span aria-hidden="true">ⓘ</span>About this practice</a>;}
++export function DrillGuideLink({id,href="#practice-guide",hidden=false,onClick}:{id:string;href?:string;hidden?:boolean;onClick?:MouseEventHandler<HTMLAnchorElement>}){return <a id={id} className={`practice-guide-link${hidden?' hidden':''}`} href={href} onClick={onClick}><span aria-hidden="true">ⓘ</span>About this practice</a>;}
+diff --git a/public/manifest.webmanifest b/public/manifest.webmanifest
+index 801741d..4182544 100644
+--- a/public/manifest.webmanifest
++++ b/public/manifest.webmanifest
+@@ -8,7 +8,7 @@
+     "utilities"
+   ],
+   "orientation": "portrait-primary",
+-  "start_url": "/app/",
++  "start_url": "/",
+   "scope": "/",
+   "display": "standalone",
+   "background_color": "#090d10",
+diff --git a/site/routes.js b/site/routes.js
+index d4df321..74a8050 100644
+--- a/site/routes.js
++++ b/site/routes.js
+@@ -1,20 +1,25 @@
++import {DRILLS} from '../src/drills.js';
+ import {GUIDE_MANUALS} from '../src/practiceGuideManuals.js';
++import {guidePathFor,appTitleFor} from '../src/appPaths.js';
+ export const CANONICAL_ORIGIN='https://easydryfire.com';
+-const manual=(id,path,title)=>({id,path,title,heading:GUIDE_MANUALS.find(row=>row.id===id).title,description:GUIDE_MANUALS.find(row=>row.id===id).purpose,guide:GUIDE_MANUALS.find(row=>row.id===id)});
++const manual=id=>{const guide=GUIDE_MANUALS.find(row=>row.id===id);return{id,path:guidePathFor(id),title:appTitleFor({view:'practiceGuide',guideId:id}),heading:DRILLS.find(drill=>id==='sequence-'+drill.id)?.title??guide.title,description:guide.purpose,guide,appView:'practiceGuide'};};
+ export const PUBLIC_ROUTES=[
+- {id:'home',path:'/',title:'Dry Fire With Ease — Free Dry-Fire Practice App',heading:'Dry-fire practice, made simple.',description:'Learn your trigger click, choose a dry-fire practice mode and review timed repetitions. A free, microphone-based Beta app with local browser storage.'},
+- {id:'practice',path:'/practice/',title:'Dry-Fire Practice Modes — Dry Fire With Ease',heading:'Choose your practice.',description:'Compare Single trigger press, Repeated trigger press, Par-time practice and Trigger control. Learn what each mode measures before you begin.'},
+- manual('single','/practice/single-trigger-press/','Single Trigger Press Practice — Dry Fire With Ease'),
+- manual('repeated','/practice/repeated-trigger-press/','Repeated Trigger Press Practice — Dry Fire With Ease'),
+- manual('par','/practice/par-time/','Par-Time Practice — Dry Fire With Ease'),
+- manual('control','/practice/trigger-control/','Trigger Control Practice — Dry Fire With Ease'),
+- {id:'sequence',path:'/guides/sequence-drills/',title:'Sequence Drills Guide — Dry Fire With Ease',heading:'Practice a sound sequence.',description:'Understand built-in sequence drills, the sounds they need and how the app times recognized events in order.'},
+- {id:'calibration',path:'/guides/trigger-click-calibration/',title:'Trigger-Click Calibration — Dry Fire With Ease',heading:'Learn your trigger click.',description:'Calibrate microphone recognition for your selected gun, test separate trigger clicks and reduce confusion with reset and handling sounds.'},
++ {id:'home',path:'/',appView:'home',title:'Dry Fire With Ease — Free Dry-Fire Practice App',heading:'Dry Fire With Ease',description:'Learn your trigger click, choose a dry-fire practice mode and review timed repetitions. A free, microphone-based Beta app with local browser storage.'},
++ {id:'practice',path:'/practice-modes/',title:'Dry-Fire Practice Modes — Dry Fire With Ease',heading:'Choose your practice.',description:'Compare Single trigger press, Repeated trigger press, Par-time practice and Trigger control. Learn what each mode measures before you begin.'},
++ manual('single'),
++ manual('repeated'),
++ manual('par'),
++ manual('control'),
++ manual('sequence-rack-trigger'),
++ manual('sequence-mag-trigger'),
++ manual('sequence-draw-mag-trigger'),
++ {id:'sequence',path:'/sequence-drills-guide/',title:'Sequence Drills Guide — Dry Fire With Ease',heading:'Practice a sound sequence.',description:'Understand built-in sequence drills, the sounds they need and how the app times recognized events in order.'},
++ {id:'calibration',path:'/trigger-click-calibration-guide/',title:'Trigger-Click Calibration — Dry Fire With Ease',heading:'Learn your trigger click.',description:'Calibrate microphone recognition for your selected gun, test separate trigger clicks and reduce confusion with reset and handling sounds.'},
+  {id:'help',path:'/help/',title:'Help and Browser Setup — Dry Fire With Ease',heading:'Set up your practice.',description:'Get help with microphone permissions, Safari Home Screen installation, recognition, start beeps and local backup recovery.'},
+- {id:'about',path:'/about/',title:'About — Dry Fire With Ease',heading:'About Dry Fire With Ease',description:'A Beta dry-fire sound trainer for timing recognized trigger clicks and sequences. Learn its current features, local storage and limitations.'},
+- {id:'contact',path:'/contact/',title:'Contact — Dry Fire With Ease',heading:'Get in touch.',description:'Contact Dry Fire With Ease with feedback, suggestions or a bug report. Email easydryfire@gmail.com.'},
++ {id:'about',path:'/about/',appView:'about',title:'About — Dry Fire With Ease',heading:'About',description:'Dry Fire With Ease is a Beta sound trainer for trigger-click practice and timed sequences. Learn how it works, explore the four practice modes and send feedback.'},
++ {id:'contact',path:'/contact/',appView:'contact',title:'Contact — Dry Fire With Ease',heading:'Contact',description:'Contact Dry Fire With Ease with feedback, suggestions or a bug report. Email easydryfire@gmail.com.'},
+ ];
+ export const publicRoute=path=>PUBLIC_ROUTES.find(route=>route.path===path);
+-export const publicAssetPath=path=>`/site${path==='/'?'/':path}index.html`;
+-export function sitemapXML(){return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+PUBLIC_ROUTES.map(route=>`  <url><loc>${CANONICAL_ORIGIN}${route.path}</loc></url>`).join('\n')+'\n</urlset>\n';}
+-export const robotsTXT=`User-agent: *\nAllow: /\n\nSitemap: ${CANONICAL_ORIGIN}/sitemap.xml\n`;
++export const publicAssetPath=path=>path==='/'?'/index.html':`/site${path}index.html`;
++export const sitemapXML=()=>`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${PUBLIC_ROUTES.map(route=>`  <url><loc>${CANONICAL_ORIGIN}${route.path}</loc></url>`).join('\n')}\n</urlset>\n`;
++export const robotsTXT=`User-agent: *\nAllow: /\nSitemap: ${CANONICAL_ORIGIN}/sitemap.xml\n`;
+diff --git a/src/appPaths.js b/src/appPaths.js
+index 9b48863..df12a86 100644
+--- a/src/appPaths.js
++++ b/src/appPaths.js
+@@ -1,17 +1,83 @@
+-/** Publicly readable app paths contain screen identity, never personal records. */
+-const views={home:'',gunSetup:'guns/setup',guns:'guns',learn:'learn',drills:'drills',recognize:'live-listen',history:'history',settings:'settings',about:'about',contact:'contact',session:'sequence',practiceGuide:'practice-guide'};
+-const modes={single:'single-trigger-press',repeated:'repeated-trigger-press',par:'par-time',control:'trigger-control'};
+-export function offlineAppPaths() { return ['/app', ...Object.values(views).map(slug => `/app/${slug}${slug ? '/' : ''}`), ...Object.values(modes).map(slug => `/app/practice/${slug}/`)]; }
++import {DRILLS} from './drills.js';
++import {practiceDefinition} from './practiceModes.js';
++
++/** Stable public identities only. Gun names, results and custom IDs stay local. */
++const views={home:'',gunSetup:'gun-setup',guns:'guns',learn:'learn',drills:'drills',recognize:'live-listen',history:'history',settings:'settings',about:'about',contact:'contact'};
++const modes={single:'single-trigger-press',repeated:'repeated-trigger-press',par:'par-time-practice',control:'trigger-control'};
++const sequences={'rack-trigger':'rack-slide-trigger-pull','mag-trigger':'magazine-change-trigger-pull','draw-mag-trigger':'draw-magazine-change-trigger-pull','trigger-only':'trigger-pull-sequence'};
++const pathFor=slug=>`/${slug}${slug?'/':''}`;
++export function setupForGuide(guideId){
++ if(Object.hasOwn(modes,guideId))return{view:'practice',mode:guideId};
++ if(guideId==='sequence-custom')return{view:'session',preset:'custom'};
++ const preset=guideId?.startsWith('sequence-')?guideId.slice(9):null;
++ return Object.hasOwn(sequences,preset)?{view:'session',preset}:null;
++}
++export function guidePathFor(guideId){
++ const setup=setupForGuide(guideId);
++ if(!setup)return '/drills/';
++ const slug=setup.view==='practice'?modes[setup.mode]:setup.preset==='custom'?'custom-sequence':sequences[setup.preset];
++ return pathFor(slug+'-guide');
++}
++/** Build-only inventory; do not eagerly allocate this list in the app entry. */
++export function offlineAppPaths(){return[
++ ...Object.values(views).map(pathFor),...Object.values(modes).map(pathFor),...Object.values(sequences).map(pathFor),'/custom-sequence/',
++ ...Object.keys(modes).map(guidePathFor),...Object.keys(sequences).map(id=>guidePathFor('sequence-'+id)),guidePathFor('sequence-custom'),
++];}
+ export function parseAppPath(path){
+- if(path==='/app'||path==='/app/')return{view:'home'};
+- for(const[view,slug]of Object.entries(views))if(path===`/app/${slug}/`)return{view};
+- for(const[mode,slug]of Object.entries(modes))if(path===`/app/practice/${slug}/`)return{view:'practice',mode};
++ if(path==='/')return{view:'home'};
++ for(const[view,slug]of Object.entries(views))if(path===pathFor(slug))return{view};
++ for(const[mode,slug]of Object.entries(modes))if(path===pathFor(slug))return{view:'practice',mode};
++ for(const[preset,slug]of Object.entries(sequences))if(path===pathFor(slug))return{view:'session',preset};
++ if(path==='/custom-sequence/')return{view:'session',preset:'custom'};
++ for(const mode of Object.keys(modes))if(path===guidePathFor(mode))return{view:'practiceGuide',guideId:mode};
++ for(const preset of Object.keys(sequences))if(path===guidePathFor('sequence-'+preset))return{view:'practiceGuide',guideId:'sequence-'+preset};
++ if(path===guidePathFor('sequence-custom'))return{view:'practiceGuide',guideId:'sequence-custom'};
+  return null;
+ }
+ export function isAppPath(path){return parseAppPath(path)!==null;}
+ export function appPathFor(route){
+- if(route.view==='practice'){const mode=route.mode??String(route.context??'').split(':')[0];return `/app/practice/${modes[mode]??modes.single}/`;}
+- return `/app/${views[route.view]??''}${views[route.view]?'/':''}`;
++ if(route.view==='practice'){const mode=route.mode??String(route.context??'').split(':')[0];return pathFor(modes[mode]??modes.single);}
++ if(route.view==='session')return pathFor(sequences[route.preset]??'custom-sequence');
++ if(route.view==='practiceGuide')return guidePathFor(route.guideId);
++ return pathFor(views[route.view]??'');
++}
++export function isIndexableAppPath(path){
++ const route=parseAppPath(path);
++ return !!route && (['home','about','contact'].includes(route.view)||route.view==='practiceGuide'&&!['sequence-custom','sequence-trigger-only'].includes(route.guideId));
++}
++/** Compatibility redirects never guess which sequence a generic old URL meant. */
++export function legacyPathRedirect(path){
++ if(path==='/index.html')return '/';
++ const canonical=path.endsWith('/')?path:path+'/';
++ if(canonical==='/app/')return '/';
++ if(canonical.startsWith('/app/')){
++  const old=canonical.slice(4);
++  if(old==='/guns/setup/')return '/gun-setup/';
++  if(['/sequence/','/practice-guide/'].includes(old))return '/drills/';
++  if(old.startsWith('/practice/')){const slug=old.slice(10,-1);for(const[mode,value]of Object.entries(modes))if(slug===value||mode==='par'&&slug==='par-time')return appPathFor({view:'practice',mode});return null;}
++  const route=parseAppPath(old);return route?appPathFor(route):null;
++ }
++ if(canonical==='/welcome/')return '/about/';
++ if(canonical==='/practice/')return '/practice-modes/';
++ if(canonical==='/guides/sequence-drills/')return '/sequence-drills-guide/';
++ if(canonical==='/guides/trigger-click-calibration/')return '/trigger-click-calibration-guide/';
++ if(canonical.startsWith('/practice/')){const slug=canonical.slice(10,-1);for(const[mode,value]of Object.entries(modes))if(slug===value||mode==='par'&&slug==='par-time')return guidePathFor(mode);}
++ return null;
++}
++export function appTitleFor(route){
++ const product='Dry Fire With Ease';
++ if(route?.view==='home')return product+' — Free Dry-Fire Practice App';
++ const titles={gunSetup:'Gun setup',guns:'My Guns',learn:'Learn Sounds',drills:'Drills',recognize:'Live Listen',history:'History',settings:'Settings',about:'About',contact:'Contact'};
++ let title=titles[route?.view]??'App';
++ if(route?.view==='practice')title=practiceDefinition(route.mode)?.title??'Practice';
++ if(route?.view==='session')title=DRILLS.find(drill=>drill.id===route.preset)?.title??'Custom sequence';
++ if(route?.view==='practiceGuide'){const setup=setupForGuide(route.guideId);return appTitleFor(setup??{view:'drills'}).replace(' — '+product,' guide — '+product);}
++ return title+' — '+product;
++}
++/** Build-only redirect inventory for installed offline clients using old bookmarks. */
++export function legacyRedirects(){
++ const paths=['/app/','/app/guns/setup/','/app/sequence/','/app/practice-guide/','/practice/','/welcome/','/guides/sequence-drills/','/guides/trigger-click-calibration/','/index.html',
++  ...Object.values(views).filter(Boolean).map(slug=>'/app/'+slug+'/'),
++  ...Object.entries(modes).flatMap(([mode,slug])=>{const old=mode==='par'?'par-time':slug;return['/app/practice/'+old+'/','/practice/'+old+'/'];})];
++ return Object.fromEntries(paths.flatMap(path=>[path,...(path.endsWith('/')?[path.slice(0,-1)]:[])].map(from=>[from,legacyPathRedirect(from)])));
+ }
+-
+-export function appTitleFor(route){const titles={home:'Home',gunSetup:'Gun setup',guns:'My Guns',learn:'Learn Sounds',drills:'Drills',recognize:'Live Listen',history:'History',settings:'Settings',about:'About',contact:'Contact',practice:'Practice',session:'Drill Session',practiceGuide:'About this practice'};return `${titles[route?.view]??'App'} — Dry Fire With Ease`;}
+diff --git a/src/main.js b/src/main.js
+index 10a697b..44c2fed 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -1,4 +1,4 @@
+-import {parseAppPath,appPathFor,appTitleFor} from './appPaths.js';
++import {parseAppPath,isAppPath,appPathFor,appTitleFor,isIndexableAppPath,setupForGuide} from './appPaths.js';
+ import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
+ import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
+ import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
+@@ -44,9 +44,49 @@ const labelMeta = {
+   reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple' },
+ };
+ const $ = selectNode;
+-const appURLs=location.pathname==='/app'||location.pathname.startsWith('/app/');
++const appURLs=isAppPath(location.pathname);
+ let pendingEntry=appURLs?parseAppPath(location.pathname):null;
+-async function openEntry(){const entry=pendingEntry;pendingEntry=null;if(entry?.mode)return practiceController.open(entry.mode);return switchView(entry?.view??'home');}
++let appStarted=false;
++let metadataPath=document.querySelector('link[rel=canonical]')?.getAttribute('href')?.replace('https://easydryfire.com','');
++async function openEntry(){const entry=pendingEntry;pendingEntry=null;return openAppEntry(entry??{view:'home'});}
++async function missingSequence(){await switchView('drills');setMessage('This sequence is not available for the selected gun. Choose a drill.');}
++async function openAppEntry(entry){
++  if(entry.view==='practiceGuide' && entry.guideId) return openPublicGuide(entry.guideId);
++  if((!activeGun||activeGun.needsDetails) && ['practice','session'].includes(entry.view)){pendingEntry=entry;openGunSetup(activeGun);return;}
++  if(entry.mode)return practiceController.open(entry.mode);
++  if(entry.view==='session'){
++    const owner=activeGun?.id;
++    const id=entry.preset==='custom'?await getGunSetting('selectedDrill','',owner):entry.preset;
++    if(owner!==activeGun?.id)return;
++    const drill=getDrill(id,customDrills);
++    if(!drill || entry.preset==='custom'&&DRILLS.some(row=>row.id===id))return missingSequence();
++    return chooseDrill(id);
++  }
++  return switchView(entry.view);
++}
++async function openPublicGuide(guideId){
++  const setup=setupForGuide(guideId);if(!setup)return missingSequence();
++  const owner=activeGun?.id;
++  let drill;
++  if(setup.view==='session'){
++    if(setup.preset==='custom' && (!activeGun||activeGun.needsDetails)){pendingEntry={view:'practiceGuide',guideId};openGunSetup(activeGun);return;}
++    const id=setup.preset==='custom'?await getGunSetting('selectedDrill','',owner):setup.preset;
++    if(owner!==activeGun?.id)return;
++    drill=getDrill(id,customDrills);
++    if(!drill || setup.preset==='custom'&&DRILLS.some(row=>row.id===id))return missingSequence();
++  }
++  return practiceGuideController.open(()=>({type:setup.view==='practice'?'practice':'sequence',mode:setup.mode,drill,
++    gunId:activeGun?.id??'public-guide',routeKey:`public:${guideId}`,publicEntry:true}));
++}
++function navigateAppLink(event){
++  const link=event.target?.closest?.('a[data-app-route]');
++  if(!link||!appStarted||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||link.target&&link.target!=='_self')return;
++  const url=new URL(link.href,location.href),entry=url.origin===location.origin?parseAppPath(url.pathname):null;
++  if(!entry)return;
++  event.preventDefault();
++  if(profileLocked()||practiceController?.hasUnsavedResults()||sessionController?.hasUnsavedResults()){showError(new Error('Finish the current action or save results before leaving this screen.'));return;}
++  openAppEntry(entry).catch(showError);
++}
+ const gunTypeImages = { Handguns: 'handgun', 'Rifles and Carbines': 'rifle', Shotguns: 'shotgun' };
+ function gunImagePath(type) { return `/gun-types/${gunTypeImages[type] || 'unknown'}.svg`; }
+ let examples = [];
+@@ -425,7 +465,7 @@ async function chooseDrill(id) {
+     await setGunSetting('selectedDrill', id, activeGun.id);
+   } catch (error) { showError(error); return; }
+   finally { preferencePending = false; renderLiveButton(); renderClassCards(); }
+-  sessionController.open(drill).catch(showError);
++  await sessionController.open(drill);
+ }
+ function renderCustomCatalog() {
+   if(drillsPage){const view=drillCards();drillsPage.update({customs:view.customs,emptyCustom:view.emptyCustom});return;}
+@@ -583,7 +623,7 @@ function renderDrillCatalog() {
+   }
+ }
+ 
+-function routeFor(name) { return { view: name, mode:name==='practice'?practiceController?.practiceMode?.():undefined, gunId: activeGun?.id || null,
++function routeFor(name) { return { view: name, preset:name==='session'?sessionController?.selectionId?.():undefined, guideId:name==='practiceGuide'?practiceGuideController?.current()?.id:undefined, mode:name==='practice'?practiceController?.practiceMode?.():undefined, gunId: activeGun?.id || null,
+   context: name === 'practiceGuide' ? practiceGuideController?.current()?.contextKey : name === 'practice' ? practiceController?.routeKey() : name === 'session' ? sessionController?.routeKey() : null }; }
+ function resolveRoute(route) {
+   return routeFor(resolveRouteView(route, [activeGun, practiceController, sessionController, practiceGuideController]));
+@@ -596,7 +636,7 @@ function displayView(name) {
+     showError(new Error('Practice results are not saved. Keep this review open and retry saving.'));
+     return;
+   }
+-  if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name)) { openGunSetup(activeGun); return; }
++  if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
+   if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
+   const initialDisplay = document.body.dataset.view === 'loading';
+   informationPages.show(name);
+@@ -606,7 +646,7 @@ function displayView(name) {
+   if(name==='practice'||name==='session')void practiceGuideController.prepare().catch(()=>{});
+   const previousView=activeView;
+   activeView=name;
+-  if(appURLs){document.title=appTitleFor(routeFor(name));const canonical=document.querySelector('link[rel=canonical]');if(canonical)canonical.href='https://easydryfire.com'+appPathFor(routeFor(name));}
++  if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);const canonical=document.querySelector('link[rel=canonical]');if(canonical)canonical.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
+   document.body.dataset.view = name;
+   window.scrollTo({top:0,behavior:'instant'});
+   if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
+@@ -1033,7 +1073,7 @@ async function init() {
+   }
+   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
+     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
+-  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?appPathFor:undefined,
++  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search):undefined,
+     show: route => displayView(route.view), canLeave: () => !busy && !profileLoading && !preferencePending && !practiceController?.hasUnsavedResults() && !sessionController?.hasUnsavedResults(),
+     beforeLeave: async () => { practiceGuideController?.pause(); safetyGate?.cancel(); if (liveSession || livePendingStart) await stopLive();
+       if (sessionController?.locked()) await sessionController.interrupt('navigation');
+@@ -1041,9 +1081,11 @@ async function init() {
+   safetyGate = createSafetyGate({ dialog: $('#safetyModal'), checkbox: $('#safetyModalAck'), confirmButton: $('#safetyConfirmBtn'), cancelButton: $('#safetyCancelBtn'),
+     isConfirmed: () => $('#safetyAck').checked, confirmState: () => { $('#safetyAck').checked = true; $('#safetyAck').dispatchEvent(new Event('change')); },
+     identity: () => `${activeGun?.id}|${activeView}`, onError: showError });
+-  practiceGuideController = createPracticeGuideBridge({ onBack: parent => goBack(parent), onNavigate: () => switchView('practiceGuide'), onError: showError });
++  practiceGuideController = createPracticeGuideBridge({ onBack: parent => {const guide=practiceGuideController.current();if(guide?.publicEntry){const target=setupForGuide(guide.id);if(target)openAppEntry(target).catch(showError);}else goBack(parent);}, onNavigate: () => switchView('practiceGuide'), onError: showError });
++  document.addEventListener('click',navigateAppLink);
+   for (const [id, parent] of [['practiceGuideLink', 'practice'], ['sessionGuideLink', 'session']]) {
+     const handler=event => {
++      if(event.button||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+       event.preventDefault();
+       void practiceGuideController.open(() => {
+         if (activeView !== parent || profileLocked() || $('#safetyModal').open) return null;
+@@ -1253,7 +1295,7 @@ async function init() {
+   for (const gun of library.guns) recovered.push(...await recoverInterruptedSessions(gun.id));
+   await loadActiveGun(library);
+   renderLiveButton();
+-  if (!activeGun || activeGun.needsDetails) {if(pendingEntry&&['settings','about','contact','guns','gunSetup'].includes(pendingEntry.view))await openEntry();else openGunSetup(activeGun);}
++  if (!activeGun || activeGun.needsDetails) {if(pendingEntry&&(['settings','about','contact','guns','gunSetup'].includes(pendingEntry.view)||pendingEntry.view==='practiceGuide'&&pendingEntry.guideId!=='sequence-custom'))await openEntry();else openGunSetup(activeGun);}
+   else if (pendingEntry && pendingEntry.view !== 'home') await openEntry();
+   else { pendingEntry = null; switchView('home'); }
+   const recoveredForGun = recovered.find(record => record.gunId === activeGun?.id);
+@@ -1262,6 +1304,7 @@ async function init() {
+     else await sessionController.showRecord(recoveredForGun);
+   }
+   setStatus('Ready');
++  appStarted=true;
+   if (practiceController) afterPaint(practiceController.renderCatalog).catch(showError);
+ }
+ 
+diff --git a/src/practiceController.js b/src/practiceController.js
+index 01ac780..e364221 100644
+--- a/src/practiceController.js
++++ b/src/practiceController.js
+@@ -1,3 +1,4 @@
++import {guidePathFor} from './appPaths.js';
+ import { textElement as node } from './textElement.js';
+ import { startContinuousListening } from './audio.js';
+ import { recognitionFeatures, recognizeRecording, selectRecognition } from './recognition.js';
+@@ -117,8 +118,8 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
+   function render() {
+     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
+     const running = pending || state && state.phase !== 'review';
+-    const parent={guideHidden:!!running||!!record,title:practiceDefinition(record?.practiceMode||mode)?.title||'Practice'};
+-    if(page)page.update(parent);else{$('practiceGuideLink').classList.toggle('hidden',parent.guideHidden);$('practice-title').textContent=parent.title;}
++    const parent={guideHref:guidePathFor(mode),guideHidden:!!running||!!record,title:practiceDefinition(record?.practiceMode||mode)?.title||'Practice'};
++    if(page)page.update(parent);else{$('practiceGuideLink').setAttribute('href',parent.guideHref);$('practiceGuideLink').classList.toggle('hidden',parent.guideHidden);$('practice-title').textContent=parent.title;}
+     $('practiceConfigure').classList.toggle('hidden', !!running || !!record);
+     $('practiceRun').classList.toggle('hidden', !running); $('practiceReview').classList.toggle('hidden', !!running || !record);
+     $('practiceConfigFields').disabled = !!running;
+diff --git a/src/practiceGuides.d.ts b/src/practiceGuides.d.ts
+index e0330e4..051e7ff 100644
+--- a/src/practiceGuides.d.ts
++++ b/src/practiceGuides.d.ts
+@@ -5,3 +5,5 @@ export function isGuideContextCurrent(
+   gunId: string | number,
+   sourceKey?: string | null,
+ ): boolean;
++
++export function isPublicGuideContextCurrent(guide: {gunId:string|number;sourceKey:string;id?:string;publicEntry?:boolean}|null|undefined,gunId:string|number|null|undefined):boolean;
+diff --git a/src/practiceGuides.js b/src/practiceGuides.js
+index 3c83d7a..4e97079 100644
+--- a/src/practiceGuides.js
++++ b/src/practiceGuides.js
+@@ -1,6 +1,11 @@
+ import { GUIDE_MANUALS } from './practiceGuideManuals.js';
+ import { normalizeCustomDrill, getDrill } from './drills.js';
+ 
++export const PUBLIC_GUIDE_GUN = 'public-guide';
++export function isPublicGuideContextCurrent(guide, gunId) {
++  return !!guide?.publicEntry && guide.gunId === (gunId ?? PUBLIC_GUIDE_GUN) && guide.sourceKey === `public:${guide.id}`;
++}
++
+ const labels = { draw: 'Draw from holster', rack: 'Rack slide', trigger: 'Trigger pull', reload: 'Change magazine' };
+ 
+ /** Read-only guide snapshot. Never validates or writes the original form draft. */
+@@ -15,7 +20,7 @@ export function getPracticeGuide(context) {
+   } else throw new TypeError('Unknown guide context.');
+   const source = GUIDE_MANUALS.find(m => m.id === id);
+   if (!source) throw new TypeError('Unknown practice guide.');
+-  const guide = { ...structuredClone(source), gunId: context.gunId, sourceKey: context.routeKey,
++  const guide = { ...structuredClone(source), ...(context.publicEntry ? { publicEntry: true } : {}), gunId: context.gunId, sourceKey: context.routeKey,
+     parent: context.type === 'practice' ? 'practice' : 'session', contextKey: `${context.type}:${context.routeKey}` };
+   if (drill) {
+     guide.title = drill.title; guide.sequence = [...drill.steps];
+@@ -38,6 +43,7 @@ export function getPracticeGuide(context) {
+   } else if (config.soundAtStart === false) {
+     guide.currentSetup = 'Your setup uses a silent visual start. Wait for the on-screen signal; the illustration demonstrates the optional app beep.';
+   } else guide.currentSetup = 'App-signal example. Your chosen counts and timing stay unchanged when you return to setup.';
++  if (context.publicEntry) guide.currentSetup = 'Example settings shown. Return to setup to choose your counts and timing.';
+   return guide;
+ }
+ 
+diff --git a/src/sessionController.js b/src/sessionController.js
+index 9ad5610..3609274 100644
+--- a/src/sessionController.js
++++ b/src/sessionController.js
+@@ -1,3 +1,5 @@
++import {DRILLS} from './drills.js';
++import {guidePathFor} from './appPaths.js';
+ import { textElement as node } from './textElement.js';
+ import { startContinuousListening } from './audio.js';
+ import { recognizeRecording } from './recognition.js';
+@@ -118,7 +120,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
+   function render() {
+     const record = state?.phase === 'review' ? toSessionRecord(state) : review;
+     const running = pending || !!state && state.phase !== 'review';
+-    if(page)page.update({guideHidden:!!running||!!record});else $('#sessionGuideLink').classList.toggle('hidden',!!running||!!record);
++    const guideHref=guidePathFor(DRILLS.some(drill=>drill.id===selection?.id)?'sequence-'+selection.id:'sequence-custom');
++    if(page)page.update({guideHidden:!!running||!!record,guideHref});else{$('#sessionGuideLink').classList.toggle('hidden',!!running||!!record);$('#sessionGuideLink').setAttribute('href',guideHref);}
+     $('#sessionConfigure').classList.toggle('hidden', running || !!record);
+     $('#sessionRun').classList.toggle('hidden', !running);
+     $('#sessionReview').classList.toggle('hidden', running || !record);
+@@ -411,6 +414,6 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
+     return true;
+   }
+   function connectPage(mount,onGuide){if(page||locked()||saveError)return false;page=mount($('#sessionView'),{onBack,onGuide});return true;}
+-  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
++  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, selectionId: () => selection?.id ?? null, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
+     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
+ }
+diff --git a/src/styles.css b/src/styles.css
+index 9fda6c9..e1d4cbd 100644
+--- a/src/styles.css
++++ b/src/styles.css
+@@ -17,6 +17,7 @@
+ @import "../packages/ui/src/InfoFooter/InfoFooter.css";
+ @import "../apps/web/src/styles/legacy-info-visibility.css";
+ @import "../apps/web/src/pages/AboutPage/AboutPage.css";
++@import "../apps/web/src/public-site/MarketingOverview/MarketingOverview.css";
+ @import "../packages/ui/src/InformationCard/InformationCard.css";
+ @import "../apps/web/src/pages/ContactPage/ContactPage.css";
+ @import "../apps/web/src/styles/legacy-before-evaluation.css";
+diff --git a/tests/appPaths.test.js b/tests/appPaths.test.js
+index 4385f75..9f0fb1c 100644
+--- a/tests/appPaths.test.js
++++ b/tests/appPaths.test.js
+@@ -1,7 +1,25 @@
+-import {parseAppPath,appPathFor,isAppPath} from '../src/appPaths.js';
+-test('known app paths map to stable screen/mode identities without private URL fields',()=>{
+- expect(parseAppPath('/app/history/')).toEqual({view:'history'});expect(parseAppPath('/app/practice/single-trigger-press/')).toEqual({view:'practice',mode:'single'});expect(appPathFor({view:'recognize'})).toBe('/app/live-listen/');expect(appPathFor({view:'practice',context:'single'})).toBe('/app/practice/single-trigger-press/');
+- for(const path of ['/app/unknown/','/app/practice/unknown/','/app/history/private-id/','/help/'])expect(parseAppPath(path)).toBeNull();expect(isAppPath('/app/')).toBe(true);
++import {parseAppPath,appPathFor,isAppPath,offlineAppPaths,legacyPathRedirect,guidePathFor} from '../src/appPaths.js';
++test('canonical application pages use flat paths with the application at root',()=>{
++ for(const [view,path]of Object.entries({home:'/',guns:'/guns/',gunSetup:'/gun-setup/',learn:'/learn/',drills:'/drills/',recognize:'/live-listen/',history:'/history/',settings:'/settings/',about:'/about/',contact:'/contact/'})){
++  expect(appPathFor({view})).toBe(path);expect(parseAppPath(path)).toEqual({view});
++ }
++ expect(parseAppPath('/app/learn/')).toBeNull();for(const path of ['/unknown/','/history/private-id/','/help/'])expect(isAppPath(path)).toBe(false);
++});
++test('each practice and built-in sequence has a distinct restorable identity',()=>{
++ for(const [mode,slug]of Object.entries({single:'single-trigger-press',repeated:'repeated-trigger-press',par:'par-time-practice',control:'trigger-control'})){
++  const path=`/${slug}/`;expect(appPathFor({view:'practice',mode})).toBe(path);expect(parseAppPath(path)).toEqual({view:'practice',mode});expect(parseAppPath(guidePathFor(mode))).toEqual({view:'practiceGuide',guideId:mode});
++ }
++ const paths=[];
++ for(const [preset,slug]of Object.entries({'rack-trigger':'rack-slide-trigger-pull','mag-trigger':'magazine-change-trigger-pull','draw-mag-trigger':'draw-magazine-change-trigger-pull'})){
++  const path=`/${slug}/`;paths.push(path);expect(appPathFor({view:'session',preset})).toBe(path);expect(parseAppPath(path)).toEqual({view:'session',preset});expect(parseAppPath(guidePathFor('sequence-'+preset))).toEqual({view:'practiceGuide',guideId:'sequence-'+preset});
++ }
++ expect(new Set(paths).size).toBe(3);
++});
++test('offline path inventory is unique, flat and restricted to implemented screens',()=>{
++ const paths=offlineAppPaths();expect(new Set(paths).size).toBe(paths.length);for(const path of paths){expect(isAppPath(path)).toBe(true);expect(path.split('/').filter(Boolean).length).toBeLessThanOrEqual(1);}expect(paths).toContain('/');
++ expect(appPathFor({view:'session',preset:'private-preset-id',gunId:'private-gun'})).toBe('/custom-sequence/');expect(appPathFor({view:'unknown',gunId:'private'})).toBe('/');
++});
++test('legacy links preserve their meaning without the app prefix or a replacement marketing homepage',()=>{
++ for(const[path,target]of Object.entries({'/app/':'/','/app':'/','/app/learn/':'/learn/','/app/guns/setup/':'/gun-setup/','/app/practice/par-time/':'/par-time-practice/','/practice/par-time/':'/par-time-practice-guide/','/app/sequence/':'/drills/','/welcome/':'/about/','/guides/sequence-drills/':'/sequence-drills-guide/','/index.html':'/'}))expect(legacyPathRedirect(path)).toBe(target);
++ for(const path of ['/learn/','/app/unknown/','/app/../private/','//outside.test/'])expect(legacyPathRedirect(path)).toBeNull();
+ });
+-
+-test('all supported app screens round-trip, and unknown/private identifiers do not become URL paths',()=>{for(const view of ['home','guns','gunSetup','learn','drills','recognize','history','settings','about','contact','session','practiceGuide'])expect(parseAppPath(appPathFor({view}))).toEqual({view});for(const mode of ['single','repeated','par','control'])expect(parseAppPath(appPathFor({view:'practice',mode}))).toEqual({view:'practice',mode});expect(appPathFor({view:'unknown',gunId:'secret'})).toBe('/app/');});
+diff --git a/tests/privatePreview.test.js b/tests/privatePreview.test.js
+index 7292d33..5b13ef6 100644
+--- a/tests/privatePreview.test.js
++++ b/tests/privatePreview.test.js
+@@ -52,6 +52,6 @@ test('a signed identity without expiry cannot create indefinite access', async (
+ 
+ test('authenticated app deep links resolve assets only after authorization, with private headers',async()=>{
+  const allowed=await token({}),env=environment();let location;env.ASSETS.fetch=async request=>{location=new URL(request.url);return new Response('app');};
+- const response=await gate().fetch(request(allowed,'/app/history/?private=ignored'),env);expect(response.status).toBe(200);expect(location.pathname).toBe('/');expect(location.search).toBe('');expect(response.headers.get('X-Robots-Tag')).toContain('noindex');
++ const response=await gate().fetch(request(allowed,'/history/?private=ignored'),env);expect(response.status).toBe(200);expect(location.pathname).toBe('/index.html');expect(location.search).toBe('');expect(response.headers.get('X-Robots-Tag')).toContain('noindex');
+  const denied=environment();expect((await gate().fetch(request(null,'/app/history/'),denied)).status).toBe(401);expect(denied.reads).toBe(0);
+ });
+diff --git a/tests/publicSite.test.js b/tests/publicSite.test.js
+index a0415e2..03990ce 100644
+--- a/tests/publicSite.test.js
++++ b/tests/publicSite.test.js
+@@ -1,17 +1,24 @@
+ import site from '../workers/publicSite.js';
+ import {PUBLIC_ROUTES,CANONICAL_ORIGIN,publicAssetPath,sitemapXML} from '../site/routes.js';
+ const env=()=>({ASSETS:{fetch:async request=>new Response(new URL(request.url).pathname,{headers:{'Content-Type':'text/html'}})}});
+-test('production public pages have canonical asset routing; app and legacy previews remain noindex',async()=>{
+- const root=await site.fetch(new Request('https://easydryfire.com/'),env());expect(await root.text()).toBe(publicAssetPath('/'));expect(root.headers.get('X-Robots-Tag')).toBeNull();
+- const app=await site.fetch(new Request('https://easydryfire.com/app/settings/'),env());expect(await app.text()).toBe('/index.html');expect(app.headers.get('X-Robots-Tag')).toContain('noindex');
+- const legacy=await site.fetch(new Request('https://dryfire.matosaru.workers.dev/'),env());expect(await legacy.text()).toBe('/index.html');expect(legacy.headers.get('X-Robots-Tag')).toContain('noindex');
++test('the application is the homepage on production and preview; About retains the editorial entry',async()=>{
++ for(const origin of ['https://easydryfire.com','https://dryfire.matosaru.workers.dev']){const response=await site.fetch(new Request(origin+'/'),env());expect(await response.text()).toBe('/index.html');expect(response.headers.get('X-Robots-Tag')?.includes('noindex')??false).toBe(origin.includes('workers.dev'));}
++ const about=await site.fetch(new Request(CANONICAL_ORIGIN+'/about/'),env());expect(await about.text()).toBe(publicAssetPath('/about/'));expect(about.headers.get('X-Robots-Tag')).toBeNull();
++ const app=await site.fetch(new Request(CANONICAL_ORIGIN+'/settings/'),env());expect(await app.text()).toBe('/index.html');expect(app.headers.get('X-Robots-Tag')).toContain('noindex');
+ });
+-test('unknown/internal paths are real404s, public variants redirect once, HEAD has no body and unsafe methods fail',async()=>{
+- expect((await site.fetch(new Request('https://easydryfire.com/not-a-page/'),env())).status).toBe(404);
+- expect((await site.fetch(new Request('https://easydryfire.com/site/index.html'),env())).status).toBe(404);
+- const redirect=await site.fetch(new Request('https://easydryfire.com/help?q=1'),env());expect(redirect.status).toBe(308);expect(redirect.headers.get('Location')).toBe('https://easydryfire.com/help/?q=1');
+- expect(await(await site.fetch(new Request('https://easydryfire.com/help/',{method:'HEAD'}),env())).text()).toBe('');expect((await site.fetch(new Request('https://easydryfire.com/help/',{method:'POST'}),env())).status).toBe(405);
++test('legacy app and editorial links redirect to their clean equivalent while preserving queries',async()=>{
++ for(const[path,target]of Object.entries({'/app/':'/','/app/learn/':'/learn/','/app/practice/par-time/':'/par-time-practice/','/practice/par-time/':'/par-time-practice-guide/','/app/sequence/':'/drills/','/welcome/':'/about/'})){
++  const response=await site.fetch(new Request(CANONICAL_ORIGIN+path+'?keep=1'),env());expect(response.status).toBe(308);expect(response.headers.get('Location')).toBe(CANONICAL_ORIGIN+target+'?keep=1');
++ }
+ });
+-test('public sitemap contains only unique canonical public pages, never personal screens',()=>{
+- expect(CANONICAL_ORIGIN).toBe('https://easydryfire.com');const xml=sitemapXML();expect(PUBLIC_ROUTES).toHaveLength(11);for(const route of PUBLIC_ROUTES)expect(xml).toContain(CANONICAL_ORIGIN+route.path);expect(xml).not.toContain('/app/');expect(new Set(PUBLIC_ROUTES.map(r=>r.title)).size).toBe(PUBLIC_ROUTES.length);
++test('each sequence path is recognized independently, not collapsed to a generic session endpoint',async()=>{
++ for(const path of ['/rack-slide-trigger-pull/','/magazine-change-trigger-pull/','/draw-magazine-change-trigger-pull/']){const response=await site.fetch(new Request(CANONICAL_ORIGIN+path),env());expect(response.status).toBe(200);expect(response.headers.get('X-Robots-Tag')).toContain('noindex');}
++});
++test('unknown/internal paths are real404s, canonical variants redirect once, HEAD is empty and unsafe methods fail',async()=>{
++ for(const path of ['/not-a-page/','/site/index.html','/app/unknown/'])expect((await site.fetch(new Request(CANONICAL_ORIGIN+path),env())).status).toBe(404);
++ const redirect=await site.fetch(new Request(CANONICAL_ORIGIN+'/learn?q=1'),env());expect(redirect.status).toBe(308);expect(redirect.headers.get('Location')).toBe(CANONICAL_ORIGIN+'/learn/?q=1');
++ expect(await(await site.fetch(new Request(CANONICAL_ORIGIN+'/help/',{method:'HEAD'}),env())).text()).toBe('');expect((await site.fetch(new Request(CANONICAL_ORIGIN+'/help/',{method:'POST'}),env())).status).toBe(405);
++});
++test('sitemap contains canonical public content, including the app homepage and unique manuals, without private setup URLs',()=>{
++ const xml=sitemapXML();expect(PUBLIC_ROUTES).toHaveLength(14);for(const route of PUBLIC_ROUTES)expect(xml).toContain(CANONICAL_ORIGIN+route.path);for(const path of ['/app/','/settings/','/history/','/rack-slide-trigger-pull/'])expect(xml).not.toContain('<loc>'+CANONICAL_ORIGIN+path+'</loc>');expect(new Set(PUBLIC_ROUTES.map(r=>r.title)).size).toBe(PUBLIC_ROUTES.length);
+ });
+diff --git a/tests/serviceWorker.test.js b/tests/serviceWorker.test.js
+index 631cbb6..1e1cd0f 100644
+--- a/tests/serviceWorker.test.js
++++ b/tests/serviceWorker.test.js
+@@ -1,10 +1,11 @@
+ import { jest } from '@jest/globals';
+-import { offlineAppPaths } from '../src/appPaths.js';
++import { offlineAppPaths, legacyRedirects } from '../src/appPaths.js';
+ 
+ let handlers, cache, platform, metadata;
+ beforeEach(() => {
+   jest.resetModules();
+   globalThis.__APP_OFFLINE_PATHS__ = offlineAppPaths();
++  globalThis.__APP_NAV_REDIRECTS__ = legacyRedirects();
+   handlers = {};
+   cache = { addAll: jest.fn(async () => {}), match: jest.fn(async () => undefined), put: jest.fn(async () => {}) };
+   platform = { skipWaiting: jest.fn(async () => {}), clients: { claim: jest.fn(async () => {}) },
+@@ -17,7 +18,7 @@ beforeEach(() => {
+     ? Response.json(metadata) : new Response('<script type="module" src="/assets/entry.js"></script>'));
+ });
+ const originalFetch = globalThis.fetch;
+-afterEach(() => { globalThis.fetch = originalFetch; delete globalThis.self; delete globalThis.caches; delete globalThis.__BUILD_EDITION__; delete globalThis.__APP_OFFLINE_PATHS__; });
++afterEach(() => { globalThis.fetch = originalFetch; delete globalThis.self; delete globalThis.caches; delete globalThis.__BUILD_EDITION__; delete globalThis.__APP_OFFLINE_PATHS__; delete globalThis.__APP_NAV_REDIRECTS__; });
+ 
+ async function install(edition = 'public') { globalThis.__BUILD_EDITION__ = edition; await import('../workers/sw.js'); }
+ function fire(type, request) {
+@@ -77,7 +78,7 @@ test('non-GET and cross-origin requests bypass the shell cache entirely', async
+ test('offline navigation falls back to the shell; unavailable scripts still reject', async () => {
+   await install(); fetch.mockRejectedValue(new Error('offline'));
+   cache.match.mockImplementation(async input => input === '/index.html' ? new Response('offline shell') : undefined);
+-  expect(await (await fire('fetch',request('/app/history/',{mode:'navigate',destination:'document'}))).text()).toBe('offline shell');
++  expect(await (await fire('fetch',request('/history/',{mode:'navigate',destination:'document'}))).text()).toBe('offline shell');
+   await expect(fire('fetch',request())).rejects.toThrow('offline');
+ });
+ 
+@@ -91,3 +92,7 @@ test('private preview retires shell caches and unregisters without installing an
+ });
+ 
+ test('offline public/unknown URLs never become an app shell with a misleading200',async()=>{await install();fetch.mockRejectedValue(new Error('offline'));cache.match.mockImplementation(async input=>input==='/index.html'?new Response('offline shell'):undefined);await expect(fire('fetch',request('/help/',{mode:'navigate',destination:'document'}))).rejects.toThrow('offline');});
++
++test('installed clients redirect old navigation URLs before consulting cached obsolete pages',async()=>{
++ await install();cache.match.mockResolvedValue(new Response('obsolete page'));const response=await fire('fetch',request('/app/learn/?keep=1',{mode:'navigate',destination:'document'}));expect(response.status).toBe(308);expect(response.headers.get('Location')).toBe('https://practice.test/learn/?keep=1');expect(cache.match).not.toHaveBeenCalled();
++});
+diff --git a/tools/app-document.mjs b/tools/app-document.mjs
+new file mode 100644
+index 0000000..4a67105
+--- /dev/null
++++ b/tools/app-document.mjs
+@@ -0,0 +1,22 @@
++import {JSDOM} from 'jsdom';
++import {DRILLS} from '../src/drills.js';
++import {setupForGuide} from '../src/appPaths.js';
++import {createPracticeGuideController} from '../src/practiceGuideController.js';
++/** Build-only activation of the same trusted app screens used at runtime. No capture/storage APIs. */
++export function prerenderAppScreen(html,route){
++ if(route.appView==='home')return html;
++ const dom=new JSDOM(html),doc=dom.window.document;
++ try{
++  for(const view of doc.querySelectorAll('.view'))view.classList.toggle('hidden',view.id!==route.appView+'View');
++  doc.body.dataset.view=route.appView;
++  doc.getElementById('gunSwitcherBtn').classList.add('hidden');
++  for(const row of doc.querySelectorAll('.gun-context'))row.classList.add('hidden');
++  if(route.guide){
++   const setup=setupForGuide(route.id);
++   const context={type:setup.view==='practice'?'practice':'sequence',mode:setup.mode,drill:DRILLS.find(drill=>drill.id===setup.preset),gunId:'public-guide',routeKey:`public:${route.id}`,publicEntry:true};
++   createPracticeGuideController({document:doc,onBack:()=>{}}).open(context);
++   const note=doc.createElement('noscript'),link=doc.createElement('a');link.href=`/guide-examples/${route.id}.gif`;link.textContent='View the silent animated example';note.append(link);doc.getElementById('practiceGuideView').append(note);
++  }
++  return dom.serialize();
++ }finally{dom.window.close();}
++}
+diff --git a/tools/public-pages.mjs b/tools/public-pages.mjs
+index acc718a..49e5e54 100644
+--- a/tools/public-pages.mjs
++++ b/tools/public-pages.mjs
+@@ -5,8 +5,17 @@ import{createElement}from'react';
+ import{transform}from'lightningcss';
+ import{PublicPage}from'../apps/web/src/public-site/PublicPage/PublicPage.tsx';
+ import{PUBLIC_ROUTES,CANONICAL_ORIGIN,publicAssetPath,sitemapXML,robotsTXT}from'../site/routes.js';
+-import{minifyProductionHtml}from'./minify-html.mjs';
++import{minifyProductionHtml,prioritizeAppStyles}from'./minify-html.mjs';
++import{prerenderAppScreen}from'./app-document.mjs';
+ const escape=text=>String(text).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
++export function publicHead(route){
++ const canonical=CANONICAL_ORIGIN+route.path;
++ const structured={'@context':'https://schema.org','@type':route.id==='home'?'SoftwareApplication':'WebPage',name:route.id==='home'?'Dry Fire With Ease':route.heading,url:canonical,description:route.description,...(route.id==='home'?{applicationCategory:'SportsApplication',operatingSystem:'Web browser'}:{})};
++ return `<title>${escape(route.title)}</title><meta name="description" content="${escape(route.description)}"><link rel="canonical" href="${canonical}"><meta name="robots" content="index, follow"><meta property="og:type" content="website"><meta property="og:site_name" content="Dry Fire With Ease"><meta property="og:title" content="${escape(route.title)}"><meta property="og:description" content="${escape(route.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${CANONICAL_ORIGIN}/icon-512.png"><meta property="og:image:alt" content="Dry Fire With Ease app icon"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escape(route.title)}"><meta name="twitter:description" content="${escape(route.description)}"><meta name="twitter:image" content="${CANONICAL_ORIGIN}/icon-512.png"><script id="page-structured-data" type="application/ld+json">${JSON.stringify(structured).replaceAll('<','\\u003c')}</script>`;
++}
++export function appDocumentHead(html,route){
++ return html.replace(/<head\b[^>]*>[\s\S]*?<\/head>/i,head=>head.replace(/<title>[\s\S]*?<\/title>/gi,'').replace(/<meta\b[^>]*(?:name="(?:description|robots|twitter:[^"]+)"|property="og:[^"]+")[^>]*>/gi,'').replace(/<link\b[^>]*rel="canonical"[^>]*>/gi,'').replace(/<script\b[^>]*id="page-structured-data"[^>]*>[\s\S]*?<\/script>/gi,'').replace('</head>',publicHead(route)+'</head>'));
++}
+ export function renderPublicHTML(route,styles){
+  const canonical=CANONICAL_ORIGIN+route.path;
+  const structured={'@context':'https://schema.org','@type':route.id==='home'?'SoftwareApplication':'WebPage',name:route.id==='home'?'Dry Fire With Ease':route.heading,url:canonical,description:route.description,...(route.id==='home'?{applicationCategory:'SportsApplication',operatingSystem:'Web browser'}:{})};
+@@ -19,8 +28,15 @@ export function publicPagesPlugin(){return{name:'public-pages',generateBundle:{o
+  this.emitFile({type:'asset',fileName:name,source:css});
+  const shared=Object.keys(bundle).find(file=>file.endsWith('.css')&&file!==name);
+  if(!shared)throw new Error('Public pages need the existing shared application styles.');
+- for(const route of PUBLIC_ROUTES)this.emitFile({type:'asset',fileName:publicAssetPath(route.path).slice(1),source:await minifyProductionHtml(renderPublicHTML(route,[shared,name]))});
++ const index=bundle['index.html'];if(index?.type!=='asset')throw new Error('Public pages require the compiled app document.');
++ const app=String(index.source);
++ for(const route of PUBLIC_ROUTES){
++  const html=route.appView?appDocumentHead(prerenderAppScreen(app,route),route):renderPublicHTML(route,[shared,name]);
++  const source=await minifyProductionHtml(prioritizeAppStyles(html));
++  if(route.path==='/')index.source=source;
++  else this.emitFile({type:'asset',fileName:publicAssetPath(route.path).slice(1),source});
++ }
+  for(const route of PUBLIC_ROUTES.filter(row=>row.guide))this.emitFile({type:'asset',fileName:`guide-examples/${route.id}.gif`,source:readFileSync(`docs/design/screens/practice-guide/examples/${route.id}.gif`)});
+  this.emitFile({type:'asset',fileName:'sitemap.xml',source:sitemapXML()});this.emitFile({type:'asset',fileName:'robots.txt',source:robotsTXT});
+- this.emitFile({type:'asset',fileName:'404.html',source:'<!doctype html><html lang="en"><meta charset="UTF-8"><meta name="robots" content="noindex"><title>Page not found — Dry Fire With Ease</title><h1>Page not found</h1><p><a href="/">Home</a> · <a href="/app/">Open app</a></p></html>'});
++ this.emitFile({type:'asset',fileName:'404.html',source:'<!doctype html><html lang="en"><meta charset="UTF-8"><meta name="robots" content="noindex"><title>Page not found — Dry Fire With Ease</title><h1>Page not found</h1><p><a href="/">Home</a> · <a href="/">Open app</a></p></html>'});
+ }}};}
+diff --git a/tools/verify-docs.mjs b/tools/verify-docs.mjs
+index cc4499c..249822a 100644
+--- a/tools/verify-docs.mjs
++++ b/tools/verify-docs.mjs
+@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
+ import { styleSources } from './style-sources.mjs';
+ import {PUBLIC_ROUTES,CANONICAL_ORIGIN} from '../site/routes.js';
+ import {renderPublicHTML} from './public-pages.mjs';
+-import {offlineAppPaths,parseAppPath,appTitleFor} from '../src/appPaths.js';
++import {offlineAppPaths,parseAppPath,appTitleFor,isIndexableAppPath} from '../src/appPaths.js';
+ import publicSite from '../workers/publicSite.js';
+ import { PRACTICE_MODES } from '../src/practiceSession.js';
+ import { renderPageTemplates } from './page-templates.mjs';
+@@ -17,7 +17,7 @@ const digest = path => createHash('sha256').update(readFileSync(resolve(root, pa
+ const registry = JSON.parse(read(mapPath));
+ const screens = registry.screens;
+ const entries = [...screens, ...registry.shared, ...(registry.publicScreens??[])];
+-const publicIds=new Set([...renderPublicHTML(PUBLIC_ROUTES[0],[]).matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
++const publicIds=new Set([...renderPublicHTML(PUBLIC_ROUTES.find(route=>!route.appView),[]).matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
+ const args = process.argv.slice(2);
+ const errors = [];
+ const check = (condition, message) => { if (!condition) errors.push(message); };
+@@ -45,6 +45,7 @@ if (existsSync(resolve(root, exampleManifest))) {
+ 
+ const html = renderPageTemplates(read('index.html'));
+ const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]));
++for(const id of ids)publicIds.add(id);
+ const views = [...html.matchAll(/<section\b[^>]*\bid="([^"]+View)"[^>]*\bclass="[^"]*\bview\b/g)].map(m => m[1]);
+ check(same(views, screens.map(s => s.domId)), 'HTML functional views differ from the screen registry; update architecture/design coverage.');
+ check(new Set(entries.map(s => s.id)).size === entries.length, 'Duplicate screen/shared IDs in registry.');
+@@ -117,7 +118,7 @@ const append = (screen, prefix, last) => {
+ append(screens.find(s => s.id === 'home'), '', false);
+ treeLines.push('└── Shared capture gate', '    └── Safety confirmation dialog', '```');
+ const rows = entries.map(s => `| ${s.title} | \`${s.domId}\` | ${s.entry} | ${s.states.map(st => `\`${st.key}\`${st.edition ? ` (${st.edition})` : ""}`).join(', ')} | ${link('Design', s.design)} | ${s.requirements.map(p => link(p.split('/').at(-1).replace('.md',''),p)).join(', ')} |`);
+-const tree = `# Site and screen tree\n\nGenerated from [screen-map.json](screen-map.json). Reviewed ${registry.reviewedOn}; application source baseline \`${registry.sourceBaseline.slice(0,7)}\`, with ${(registry.implementationChanges ?? []).join(" / ")} documented changes and exact reviewed-source fingerprints in the registry. Regenerate with \`npm run docs:generate\`.\n\n## Public site\n\nCanonical production origin: \`${registry.publicOrigin}/\`. **${PUBLIC_ROUTES.length} implemented public routes**, generated with initial HTML/metadata, sitemap and robots from site/routes.js. Operational screens have readable /app/ paths and noindex; personal records are not public sitemap entries. Workers/nonproduction root retains the legacy app entry. [SEO routing](../seo/indexable-routes-plan.md) records implementation and production acceptance separately.\n\n## App hierarchy\n\n${treeLines.join('\n')}\n\nRegistry edition labels identify public-only and full-preview-only states; shared current images use public, and browser references test both editions. About and Contact retain the shared five-item bottom navigation.\n\nThe tree describes primary destinations, not a restriction on Back/Forward. About and Contact open separate screens from centered shared-footer controls, including before gun setup; Back returns to the visited screen. Settings is accessible from the common branded header on every screen; My Guns links to the shared add/edit form and backup/restore. History opens Practice or Drill Session review. Missing required sounds link to Learn. Gun Setup can also be reached from My Guns after first use.\n\n## Functional screens and states\n\n| Screen / shared gate | App anchor | Entry path | Captured states | Visual layout | Functional specifications |\n| --- | --- | --- | --- | --- | --- |\n${rows.join('\n')}\n\n## Shared templates\n\nEvery screen uses the [reusable app layout and view wrapper](page-templates.md), one branded header, main content, informational footer and fixed five-item bottom navigation. Installation/help is existing Settings content. Keep this shell consistent when adding screens.\n\n## State transitions\n\n\`Practice/Sequence Configure → About this practice → Same Configure\`; preserve source/gun context and invalid/unsaved draft values, with no microphone/safety prompt. Guides use controlled synthetic examples and pause on navigation/background.\n\n\`First visit → Gun setup → Home\`; returning visits restore a valid selected gun.\n\n\`Drills → Practice Configure → Safety if needed → Connecting → Countdown or external cue → Listening → Review\`. Single saves its first accepted click then automatically repeats fresh countdown/signal/listening until the target; Par offers Next; repeated/control remain continuous. Pause releases capture; Resume restarts appropriately. STOP/End saves partial results.\n\n\`Drills → Sequence Configure → Safety if needed → Countdown/GO → Ordered sounds → Saved repetition → Fresh countdown → Review\`. Pause/Resume and interruption preserve durable results.\n\n\`History → Saved Practice/Sequence Review\`; Back returns to the visited screen. Native/browser Back/Forward cleanly end active capture and validate gun/context ownership. Refresh preserves local data but never automatically acquires a microphone.\n\n\`My Guns → Delete one gun → Confirm → Remaining gun library or first-gun setup\`; atomically delete all records owned by that gun, preserving other guns/device preferences. Cancel keeps all data.\n\n\`History → Clear recognition history or Clear saved sessions → Confirm → Refreshed corresponding log/statistics\`; separate scopes preserve other data and guns. Deleted Review contexts resolve to Drills.\n\n\`Any capture action → Safety modal if unconfirmed → Confirm & continue original action or Cancel\`. Page-session safety acknowledgement resets on refresh or gun change.\n\n[Maintenance and data architecture](README.md) · [Current design catalog](../design/README.md) · [Implementation plan](../project/implementation-history.md)\n`;
++const tree = `# Site and screen tree\n\nGenerated from [screen-map.json](screen-map.json). Reviewed ${registry.reviewedOn}; application source baseline \`${registry.sourceBaseline.slice(0,7)}\`, with ${(registry.implementationChanges ?? []).join(" / ")} documented changes and exact reviewed-source fingerprints in the registry. Regenerate with \`npm run docs:generate\`.\n\n## Public site\n\nCanonical production origin: \`${registry.publicOrigin}/\`. **${PUBLIC_ROUTES.length} implemented public routes**, generated with initial HTML/metadata, sitemap and robots from site/routes.js. The app opens at / on every host. Operational screens have flat paths and noindex; About, Contact and seven public manuals reuse the app shell with readable initial HTML. Personal records are not public sitemap entries. [SEO routing](../seo/indexable-routes-plan.md) records implementation and production acceptance separately.\n\n## App hierarchy\n\n${treeLines.join('\n')}\n\nRegistry edition labels identify public-only and full-preview-only states; shared current images use public, and browser references test both editions. About and Contact retain the shared five-item bottom navigation.\n\nThe tree describes primary destinations, not a restriction on Back/Forward. About and Contact open separate screens from centered shared-footer controls, including before gun setup; Back returns to the visited screen. Settings is accessible from the common branded header on every screen; My Guns links to the shared add/edit form and backup/restore. History opens Practice or Drill Session review. Missing required sounds link to Learn. Gun Setup can also be reached from My Guns after first use.\n\n## Functional screens and states\n\n| Screen / shared gate | App anchor | Entry path | Captured states | Visual layout | Functional specifications |\n| --- | --- | --- | --- | --- | --- |\n${rows.join('\n')}\n\n## Shared templates\n\nEvery screen uses the [reusable app layout and view wrapper](page-templates.md), one branded header, main content, informational footer and fixed five-item bottom navigation. Installation/help is existing Settings content. Keep this shell consistent when adding screens.\n\n## State transitions\n\n\`Practice/Sequence Configure → About this practice → Same Configure\`; preserve source/gun context and invalid/unsaved draft values, with no microphone/safety prompt. Guides use controlled synthetic examples and pause on navigation/background.\n\n\`First visit → Gun setup → Home\`; returning visits restore a valid selected gun.\n\n\`Drills → Practice Configure → Safety if needed → Connecting → Countdown or external cue → Listening → Review\`. Single saves its first accepted click then automatically repeats fresh countdown/signal/listening until the target; Par offers Next; repeated/control remain continuous. Pause releases capture; Resume restarts appropriately. STOP/End saves partial results.\n\n\`Drills → Sequence Configure → Safety if needed → Countdown/GO → Ordered sounds → Saved repetition → Fresh countdown → Review\`. Pause/Resume and interruption preserve durable results.\n\n\`History → Saved Practice/Sequence Review\`; Back returns to the visited screen. Native/browser Back/Forward cleanly end active capture and validate gun/context ownership. Refresh preserves local data but never automatically acquires a microphone.\n\n\`My Guns → Delete one gun → Confirm → Remaining gun library or first-gun setup\`; atomically delete all records owned by that gun, preserving other guns/device preferences. Cancel keeps all data.\n\n\`History → Clear recognition history or Clear saved sessions → Confirm → Refreshed corresponding log/statistics\`; separate scopes preserve other data and guns. Deleted Review contexts resolve to Drills.\n\n\`Any capture action → Safety modal if unconfirmed → Confirm & continue original action or Cancel\`. Page-session safety acknowledgement resets on refresh or gun change.\n\n[Maintenance and data architecture](README.md) · [Current design catalog](../design/README.md) · [Implementation plan](../project/implementation-history.md)\n`;
+ const coverage = `| Screen / shared gate | Current layout and captures | Requirements |\n| --- | --- | --- |\n${entries.map(s => `| ${s.title} | [${s.states.length} state/theme references](${relative(resolve(root,'docs/design'),resolve(root,s.design)).split(sep).join('/')}) | ${s.requirements.map(p => `[${p.split('/').at(-1).replace('.md','')}](${relative(resolve(root,'docs/design'),resolve(root,p)).split(sep).join('/')})`).join(', ')} |`).join('\n')}\n`;
+ // The application sitemap is generated from the same reviewed screen inventory.
+ const appSitemapPath = 'docs/architecture/application-sitemap.md';
+@@ -176,16 +177,16 @@ The public edition permits creation of up to two guns and retains existing saved
+ 
+ ## Public URLs and indexing
+ 
+-The implemented public path inventory is ${registry.publicPaths.map(path => `\`${registry.publicOrigin}${path}\``).join(', ')}. Public routes have prerendered HTML/metadata. Operational screens are noindex /app/ paths with history-backed state; personal records are not public pages. This application map does not invent indexable URLs for Settings, sessions or guides. The generated [SEO XML sitemap](../seo/templates/sitemap.xml) and [SEO routing documentation](../seo/README.md) describe indexing; production deployment and crawler decisions remain separate outcomes.
++The implemented public path inventory is ${registry.publicPaths.map(path => `\`${registry.publicOrigin}${path}\``).join(', ')}. Public routes have prerendered HTML/metadata. Operational screens use flat noindex paths with history-backed state; personal records are not public pages. This application map does not invent indexable URLs for Settings, sessions or guides. The generated [SEO XML sitemap](../seo/templates/sitemap.xml) and [SEO routing documentation](../seo/README.md) describe indexing; production deployment and crawler decisions remain separate outcomes.
+ 
+ [Complete URL catalog](../seo/routes.md) · [Detailed generated screen/state tree](site-tree.md) · [Architecture and entry point](application-structure.md) · [Maintenance](README.md)
+ `;
+ // Publish a complete URL inventory from the runtime route registries.
+ const routeInventoryPath = 'docs/seo/routes.md';
+ const publicRows = PUBLIC_ROUTES.map(route => `| [${route.path}](${CANONICAL_ORIGIN}${route.path}) | ${route.title} | Yes |`);
+-const appRows = offlineAppPaths().filter(path => path.endsWith('/')).map(path => {
++const appRows = offlineAppPaths().filter(path => path.endsWith('/')&&!isIndexableAppPath(path)).map(path => {
+   const route = parseAppPath(path);
+-  const title = route.mode ? PUBLIC_ROUTES.find(item => item.id === route.mode)?.heading : appTitleFor(route).split(' — ')[0];
++  const title = appTitleFor(route).split(' — ')[0];
+   return `| \`${path}\` | ${title} | No; noindex |`;
+ });
+ const copiedAssetPaths = (dir => {
+@@ -203,7 +204,7 @@ The deployed XML endpoint is **[https://easydryfire.com/sitemap.xml](https://eas
+ 
+ ## Indexable public pages
+ 
+-Canonical origin: **${CANONICAL_ORIGIN}**. Each page has useful prerendered content, its own initial title/description/canonical/social metadata and factual JSON-LD. No JavaScript, gun profile or microphone is needed to read it. Only production public pages are indexable; previews remain noindex.
++Canonical origin: **${CANONICAL_ORIGIN}**. Each page has useful prerendered content, its own initial title/description/canonical/social metadata and factual JSON-LD. No gun profile or microphone is needed to read informational pages; they are readable without JavaScript. The app homepage requires JavaScript and discloses that requirement. Only production public pages are indexable; previews remain noindex.
+ 
+ | Canonical path | Page title | In XML sitemap |
+ | --- | --- | --- |
+@@ -217,7 +218,7 @@ These ${appRows.length} paths open the app with explicit noindex and stay out of
+ | --- | --- | --- |
+ ${appRows.join('\n')}
+ 
+-Public /about/ and /contact/ are distinct from app /app/about/ and /app/contact/; the latter retain the active app context and remain noindex. Installation instructions live in Settings; there is no separate /app/help/ route. Practice setup/run/review share their mode path; saved records do not get public URLs.
++About, Contact and public manuals use one shared app screen at each canonical URL. Installation instructions are in Settings and the public /help/ page. Practice setup/run/review share their mode path; saved records do not get public URLs.
+ 
+ ## Aliases, redirects and errors
+ 
+@@ -225,11 +226,11 @@ Public /about/ and /contact/ are distinct from app /app/about/ and /app/contact/
+ | --- | --- |
+ | easydryfire.app with any path/query | Owner-configured permanent301 to matching easydryfire.com path/query; independently unverified here |
+ | www.easydryfire.com when attached to this Worker, or HTTP .com |308 to HTTPS canonical .com, preserving path/query |
+-| /app or a known public/app path without its trailing slash |308 to matching trailing-slash path |
+-| /index.html | Legacy noindex app entry |
+-| /welcome/ on production .com |308 to / |
+-| /welcome/ on preview/nonproduction | Public landing preview, noindex |
+-| / on nonproduction/Workers hosts | Legacy app entry, noindex |
++| Known legacy /app/* or nested guide URL |308 to matching flat URL, preserving query |
++| Known path without its trailing slash |308 to matching trailing-slash path |
++| /index.html |308 to / |
++| /welcome/ |308 to /about/; marketing content remains there |
++| / on nonproduction/Workers hosts | Same app homepage, noindex |
+ | /site/*, /src/*, source maps and unknown paths |404; internal output paths are not public pages |
+ | Unsupported methods |405 with GET/HEAD allowed |
+ 
+diff --git a/tools/verify-public-site.mjs b/tools/verify-public-site.mjs
+index 09b5be7..06bf1e4 100644
+--- a/tools/verify-public-site.mjs
++++ b/tools/verify-public-site.mjs
+@@ -1,5 +1,6 @@
+ import{readFileSync}from'node:fs';import assert from'node:assert/strict';
+ import{PUBLIC_ROUTES,CANONICAL_ORIGIN,publicAssetPath,sitemapXML,robotsTXT}from'../site/routes.js';
++import{offlineAppPaths,isIndexableAppPath,legacyPathRedirect}from'../src/appPaths.js';
+ import site from'../workers/publicSite.js';
+ const dist=new URL('../dist/',import.meta.url);
+ const read=path=>readFileSync(new URL('.'+path,dist),'utf8');
+@@ -7,15 +8,19 @@ const assets={fetch:async request=>{try{const path=new URL(request.url).pathname
+ for(const route of PUBLIC_ROUTES){
+  const html=read(publicAssetPath(route.path)),head=html.split('</head>')[0];
+  assert.equal((head.match(/<title>/g)||[]).length,1);assert.equal((head.match(/name="description"/g)||[]).length,1);assert.equal((head.match(/rel="canonical"/g)||[]).length,1);
+- assert(head.includes(`href="${CANONICAL_ORIGIN}${route.path}"`));assert(!head.includes('workers.dev'));assert(!html.includes('type="module"'));
++ assert(head.includes(`href="${CANONICAL_ORIGIN}${route.path}"`));assert(!head.includes('workers.dev'));
++ assert.equal(html.includes('type="module"'),!!route.appView,`Shared app entry: ${route.path}`);
+  const json=JSON.parse(head.match(/application\/ld\+json">([^<]+)<\/script>/)[1]);assert.equal(json.url,CANONICAL_ORIGIN+route.path);
+- assert.equal((html.match(/<h1(?:\s|>)/g)||[]).length,1);assert(html.includes('/app/'));assert(!html.includes('gun-switcher'));assert(!html.includes('Opening your saved gun'));
++ assert.equal((html.match(/<h1(?:\s|>)/g)||[]).length,1);
++ if(route.path==='/')assert(html.includes('id=gunSetupView')||html.includes('id="gunSetupView"'));
++ else if(route.appView)assert(html.includes(route.heading),`Missing prerendered content ${route.path}`);
+  const result=await site.fetch(new Request(CANONICAL_ORIGIN+route.path),{ASSETS:assets});assert.equal(result.status,200);assert.equal(result.headers.get('X-Robots-Tag'),null);assert.equal(await result.text(),html);
+- for(const match of html.matchAll(/href=(?:"([^"]+)"|([^\s>]+))/g)){const target=match[1]??match[2];if(target.startsWith('/')&&!target.startsWith('/app/')&&!target.startsWith('/assets/')&&!target.endsWith('.png')){const res=await site.fetch(new Request(CANONICAL_ORIGIN+target),{ASSETS:assets});assert.equal(res.status,200,`Broken public link ${target}`);}}
++ for(const match of html.matchAll(/href=(?:"([^"]+)"|([^\s>]+))/g)){const target=match[1]??match[2];if(target.startsWith('/')){const res=await site.fetch(new Request(CANONICAL_ORIGIN+target),{ASSETS:assets});assert.equal(res.status,200,`Broken link ${target} in ${route.path}`);}}
+ }
+ const icon=readFileSync(new URL('favicon.ico',dist));assert.equal(icon.readUInt16LE(0),0);assert.equal(icon.readUInt16LE(2),1);assert.equal(icon.readUInt16LE(4),3);const favicon=await site.fetch(new Request(CANONICAL_ORIGIN+'/favicon.ico'),{ASSETS:assets});assert.equal(favicon.status,200);assert.equal(favicon.headers.get('Content-Type'),'image/x-icon');
+ assert.equal(read('/sitemap.xml'),sitemapXML());assert.equal(read('/robots.txt'),robotsTXT);
+-for(const path of ['/app/','/app/history/','/app/settings/','/app/practice/par-time/']){const result=await site.fetch(new Request(CANONICAL_ORIGIN+path),{ASSETS:assets});assert.equal(result.status,200);assert.match(result.headers.get('X-Robots-Tag'),/noindex/);}
++for(const path of offlineAppPaths().filter(path=>!isIndexableAppPath(path))){const result=await site.fetch(new Request(CANONICAL_ORIGIN+path),{ASSETS:assets});assert.equal(result.status,200);assert.match(result.headers.get('X-Robots-Tag'),/noindex/);}
++for(const path of ['/app/','/app/history/','/app/settings/','/app/practice/par-time/','/welcome/']){const result=await site.fetch(new Request(CANONICAL_ORIGIN+path+'?keep=1'),{ASSETS:assets});assert.equal(result.status,308);assert.equal(result.headers.get('Location'),CANONICAL_ORIGIN+legacyPathRedirect(path)+'?keep=1');}
+ for(const path of ['/unknown/','/site/index.html','/app/unknown/'])assert.equal((await site.fetch(new Request(CANONICAL_ORIGIN+path),{ASSETS:assets})).status,404);
+ const preview=await site.fetch(new Request('https://preview.example/help/'),{ASSETS:assets});assert.match(preview.headers.get('X-Robots-Tag'),/noindex/);
+-console.log(`Public site verified: ${PUBLIC_ROUTES.length} prerendered pages, metadata, links, XML/robots and production/preview/app HTTP policies. Local Worker execution; live edge not verified.`);
++console.log(`Public site verified: ${PUBLIC_ROUTES.length} canonical pages, app root, shared prerendered guides/About, flat routes, legacy redirects, metadata, links and XML/robots. Local Worker execution; live edge not verified.`);
+diff --git a/visual-tests/public-site.spec.js b/visual-tests/public-site.spec.js
+index f8a2886..0143cb3 100644
+--- a/visual-tests/public-site.spec.js
++++ b/visual-tests/public-site.spec.js
+@@ -1,17 +1,35 @@
+ import{test,expect}from'@playwright/test';import{readFileSync}from'node:fs';
+ import{PUBLIC_ROUTES}from'../site/routes.js';
+-test('favicon is available at its conventional URL',async({request})=>{const response=await request.get('/favicon.ico');expect(response.status()).toBe(200);const icon=await response.body();expect(icon.readUInt16LE(2)).toBe(1);});
++import{DRILLS}from'../src/drills.js';import{appPathFor,guidePathFor}from'../src/appPaths.js';
+ const library=JSON.parse(readFileSync(new URL('./fixtures/library.json',import.meta.url)));
+-test('all public pages have readable initial content and links without JavaScript',async({browser})=>{
++async function restore(page,path='/'){page.on('dialog',d=>d.accept());await page.goto(path);await expect(page.locator('#gunSetupView')).toBeVisible();await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(library))});}
++test('favicon is available at its conventional URL',async({request})=>{const response=await request.get('/favicon.ico');expect(response.status()).toBe(200);expect((await response.body()).readUInt16LE(2)).toBe(1);});
++test('public information is readable without JavaScript; the app root discloses its requirement',async({browser})=>{
+  const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});const page=await context.newPage();
+- for(const route of PUBLIC_ROUTES){await page.goto(route.path==='/'?'/welcome/':route.path);await expect(page.locator('h1')).toHaveText(route.heading);await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://easydryfire.com'+route.path);await expect(page.locator('nav[aria-label="Main navigation"] a')).toHaveCount(5);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(0);}
++ for(const route of PUBLIC_ROUTES){const response=await page.goto(route.path);await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://easydryfire.com'+route.path);if(route.id==='home'){expect(await response.text()).toContain('Enable JavaScript');}else if(route.appView){await expect(page.locator('#'+route.appView+'View')).toBeVisible();await expect(page.locator('#'+route.appView+'View')).toContainText(route.heading);}else await expect(page.locator('h1')).toHaveText(route.heading);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(0);}
+  await context.close();
+ });
+-test('app paths preserve profile data, settings, practice drafts and browser history across refresh',async({page})=>{page.on('dialog',d=>d.accept());
+- await page.goto('/app/history/');await expect(page.locator('#gunSetupView')).toBeVisible();await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(library))});await expect(page.locator('#historyView')).toBeVisible();
+- await page.goto('/app/history/');await expect(page.locator('#historyView')).toBeVisible();await expect(page).toHaveURL(/\/app\/history\/$/);await expect(page).toHaveTitle('History — Dry Fire With Ease');
+- await page.goto('/app/');await expect(page.locator('#homeView')).toBeVisible();await expect(page.locator('#homeDrillsBtn')).toBeEnabled();await expect(page).toHaveTitle('Home — Dry Fire With Ease');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');await expect(page.locator('#homeEvents')).toHaveText(String(library.events.filter(row=>row.gunId===library.activeGunId).length));
+- await page.locator('.tab[data-view="drills"]').click();await expect(page).toHaveURL(/\/app\/drills\/$/);await page.locator('[data-practice-mode="par"]').click();await expect(page).toHaveURL(/\/app\/practice\/par-time\/$/);await page.locator('#practiceRepetitions').fill('');await page.locator('#practiceGuideLink').click();await expect(page).toHaveURL(/\/app\/practice-guide\/$/);await page.locator('#practiceGuideBackBtn').click();await expect(page.locator('#practiceRepetitions')).toHaveValue('');await expect(page).toHaveURL(/\/app\/practice\/par-time\/$/);
++test('flat app routes preserve profile data, invalid drafts and browser history',async({page})=>{
++ await restore(page,'/history/');await expect(page.locator('#historyView')).toBeVisible();
++ await page.reload();await expect(page).toHaveURL(/\/history\/$/);await expect(page).toHaveTitle('History — Dry Fire With Ease');
++ await page.goto('/');await expect(page.locator('#homeView')).toBeVisible();await expect(page.locator('#homeDrillsBtn')).toBeEnabled();await expect(page).toHaveTitle('Dry Fire With Ease — Free Dry-Fire Practice App');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');await expect(page.locator('#homeEvents')).toHaveText(String(library.events.filter(row=>row.gunId===library.activeGunId).length));
++ await page.locator('.tab[data-view="drills"]').click();await expect(page).toHaveURL(/\/drills\/$/);await page.locator('[data-practice-mode="par"]').click();await expect(page).toHaveURL(/\/par-time-practice\/$/);await expect(page.locator('#practiceGuideLink')).toHaveAttribute('href','/par-time-practice-guide/');await page.locator('#practiceRepetitions').fill('');await page.locator('#practiceGuideLink').click();await expect(page).toHaveURL(/\/par-time-practice-guide\/$/);await page.locator('#practiceGuideBackBtn').click();await expect(page.locator('#practiceRepetitions')).toHaveValue('');await expect(page).toHaveURL(/\/par-time-practice\/$/);
+  await page.reload();await expect(page.locator('#practiceConfigure')).toBeVisible();await expect(page.locator('#practice-title')).toHaveText('Par time practice');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
+- await page.locator('#settingsShortcut').click();await expect(page).toHaveURL(/\/app\/settings\/$/);await page.goBack();await expect(page.locator('#practiceConfigure')).toBeVisible();
++ await page.locator('#settingsShortcut').click();await expect(page).toHaveURL(/\/settings\/$/);await page.goBack();await expect(page.locator('#practiceConfigure')).toBeVisible();
++});
++test('each sequence has a distinct URL and survives cold load, refresh, guide and history navigation',async({page})=>{
++ await restore(page);await expect(page.locator('#homeView')).toBeVisible();
++ for(const drill of DRILLS.slice(1)){
++  const path=appPathFor({view:'session',preset:drill.id});await page.goto('/drills/');await page.locator("#drillCatalog .preset-card").filter({has:page.getByRole("heading",{name:drill.title,exact:true})}).getByRole("button",{name:"▶ Start Drill",exact:true}).click();await expect(page).toHaveURL(new RegExp(path+'$'));await expect(page.locator('#sessionSteps li')).toHaveCount(drill.steps.length);await expect(page.locator('#sessionGuideLink')).toHaveAttribute('href',guidePathFor('sequence-'+drill.id));await page.reload();await expect(page.locator('#sessionConfigure')).toBeVisible();await expect(page.locator('#sessionSteps')).toContainText(drill.steps[0]==='rack'?'Rack slide':drill.steps[0]==='draw'?'Draw from holster':'Change magazine');await expect(page.locator('#safetyModal')).not.toBeVisible();await expect(page.locator('#sessionRun')).not.toBeVisible();
++  await page.locator('#sessionGuideLink').click();await expect(page).toHaveURL(new RegExp(guidePathFor('sequence-'+drill.id)+'$'));await page.goBack();await expect(page).toHaveURL(new RegExp(path+'$'));await expect(page.locator('#sessionConfigure')).toBeVisible();await page.goForward();await expect(page.locator('#practiceGuideView')).toBeVisible();
++ }
++});
++test('public guides read without a gun or microphone and return to their own setup',async({page})=>{
++ for(const route of PUBLIC_ROUTES.filter(row=>row.guide)){
++  await page.goto(route.path);await expect(page.locator('#practiceGuideName')).toHaveText(route.heading);await expect(page.locator('#safetyModal')).not.toBeVisible();await expect(page.locator('#gunSetupView')).not.toBeVisible();await page.locator('#practiceGuideBackBtn').click();await expect(page.locator('#gunSetupView')).toBeVisible();
++ }
++});
++test('legacy bookmarks redirect to flat routes and marketing remains inside About',async({page})=>{
++ await page.goto('/app/history/?retained=1');await expect(page).toHaveURL(/\/history\/\?retained=1$/);await expect(page.locator('#gunSetupView')).toBeVisible();
++ await page.goto('/welcome/');await expect(page).toHaveURL(/\/about\/$/);await expect(page.locator('#aboutView')).toContainText('Dry-fire practice,');await expect(page.getByRole('link',{name:'Open the free app'})).toBeVisible();await page.getByRole('link',{name:'Open the free app'}).click();await expect(page).toHaveURL(/\/$/);await expect(page.locator('#gunSetupView')).toBeVisible();
+ });
+diff --git a/visual-tests/screens.spec.js b/visual-tests/screens.spec.js
+index cde50c4..4fbc177 100644
+--- a/visual-tests/screens.spec.js
++++ b/visual-tests/screens.spec.js
+@@ -41,7 +41,7 @@ async function emit(page, label = 'trigger') {
+ }
+ 
+ async function prepare(page, item) {
+-  if(item.screen==='publicSite'){const route=PUBLIC_ROUTES.find(row=>row.id===item.state.split('.')[0]);await page.goto(route.path==='/'?'/welcome/':route.path);await expect(page.locator('h1')).toHaveText(route.heading);return;}
++  if(item.screen==='publicSite'){const route=PUBLIC_ROUTES.find(row=>row.id===item.state.split('.')[0]);await page.goto(route.path);if(route.id==='home')await visible(page,'gunSetupView');else if(route.appView){await visible(page,route.appView+'View');await expect(page.locator('#'+route.appView+'View')).toContainText(route.heading);}else await expect(page.locator('h1')).toHaveText(route.heading);return;}
+ 
+   page.on('dialog', dialog => dialog.accept());
+   await page.addInitScript(installSyntheticMedia);
+diff --git a/vite.config.js b/vite.config.js
+index bb9eaa3..5cedcaf 100644
+--- a/vite.config.js
++++ b/vite.config.js
+@@ -7,7 +7,7 @@ import { readBuildProfile, resolveBuildEdition } from './tools/build-profile.mjs
+ import { renderPageTemplates } from './tools/page-templates.mjs';
+ import { publicPagesPlugin } from './tools/public-pages.mjs';
+ import {publicRoute,publicAssetPath} from './site/routes.js';
+-import {isAppPath, offlineAppPaths} from './src/appPaths.js';
++import {isAppPath, offlineAppPaths, legacyPathRedirect, legacyRedirects} from './src/appPaths.js';
+ import { minifyProductionHtml, prioritizeAppStyles } from './tools/minify-html.mjs';
+ 
+ // Ship minified production code without exposing the readable src/ modules.
+@@ -15,17 +15,25 @@ import { minifyProductionHtml, prioritizeAppStyles } from './tools/minify-html.m
+ export default defineConfig(({ mode }) => {
+   const edition = resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.env.APP_EDITION, mode });
+   const sourceFiles = dir => readdirSync(dir, { withFileTypes: true }).flatMap(item => item.isDirectory() ? sourceFiles(`${dir}/${item.name}`) : /\.(js|html|ts|tsx|css)$/.test(item.name) ? [`${dir}/${item.name}`] : []);
+-  const trackedSources = ['index.html', 'src/styles.css', 'vite.config.js', 'build-profile.json', 'tools/build-profile.mjs', 'tools/page-templates.mjs', 'tools/minify-html.mjs', 'tools/static-catalog.mjs', 'tools/public-pages.mjs', ...sourceFiles('site'), ...sourceFiles('src'), ...sourceFiles('workers'), ...sourceFiles('apps'), ...sourceFiles('packages')].sort();
++  const trackedSources = ['index.html', 'src/styles.css', 'vite.config.js', 'build-profile.json', 'tools/build-profile.mjs', 'tools/page-templates.mjs', 'tools/minify-html.mjs', 'tools/static-catalog.mjs', 'tools/public-pages.mjs', 'tools/app-document.mjs', ...sourceFiles('site'), ...sourceFiles('src'), ...sourceFiles('workers'), ...sourceFiles('apps'), ...sourceFiles('packages')].sort();
+   const sourceDigest = createHash('sha256');
+   for (const path of trackedSources) sourceDigest.update(path).update(readFileSync(path));
+   return {
+-  define: { __APP_OFFLINE_PATHS__: JSON.stringify(offlineAppPaths()), __BUILD_SOURCE_DIGEST__: JSON.stringify(sourceDigest.copy().digest('hex')), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
++  define: { __APP_NAV_REDIRECTS__: JSON.stringify(legacyRedirects()), __APP_OFFLINE_PATHS__: JSON.stringify(offlineAppPaths()), __BUILD_SOURCE_DIGEST__: JSON.stringify(sourceDigest.copy().digest('hex')), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
+   server: { host: '127.0.0.1' },
+   // The optimized preview serves same-origin assets, like the production Worker.
+   // Avoid development CORS Vary headers invalidating preloaded offline assets.
+   preview: { host: '127.0.0.1', cors: false, ...(edition === 'preview' ? { headers: { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow, noarchive' } } : {}) },
+   plugins: [publicPagesPlugin(), { name: 'page-templates', transformIndexHtml: { order: 'pre', handler: renderPageTemplates },
+-    configurePreviewServer(server){server.middlewares.use((req,res,next)=>{const path=new URL(req.url,'http://localhost').pathname;if(isAppPath(path)||path==='/welcome/'||publicRoute(path)&&path!=='/'){const asset=isAppPath(path)?'/index.html':publicAssetPath(path==='/welcome/'?'/':path);try{res.setHeader('Content-Type','text/html; charset=utf-8');res.setHeader('X-Robots-Tag','noindex, nofollow');res.end(readFileSync(resolve('dist','.'+asset)));return;}catch{res.statusCode=404;res.end('Not found.');return;}}next();});},
++    configurePreviewServer(server){server.middlewares.use((req,res,next)=>{
++      const url=new URL(req.url,'http://localhost'),path=url.pathname,legacy=legacyPathRedirect(path);
++      const target=legacy??(!path.endsWith('/')&&(isAppPath(path+'/')||publicRoute(path+'/'))?path+'/':null);
++      if(target){res.statusCode=308;res.setHeader('Location',target+url.search);res.end();return;}
++      const route=publicRoute(path);if(isAppPath(path)||route){
++        try{res.setHeader('Content-Type','text/html; charset=utf-8');res.setHeader('X-Robots-Tag','noindex, nofollow');res.end(readFileSync(resolve('dist','.'+(route?publicAssetPath(path):'/index.html'))));return;}
++        catch{res.statusCode=404;res.end('Not found.');return;}
++      }next();
++    });},
+     configureServer(server) {
+       server.watcher.on('change', path => {
+         if (path.startsWith(resolve(import.meta.dirname, 'src/templates') + '/')) server.ws.send({ type: 'full-reload' });
+diff --git a/workers/privatePreview.js b/workers/privatePreview.js
+index 2838b97..644a928 100644
+--- a/workers/privatePreview.js
++++ b/workers/privatePreview.js
+@@ -1,4 +1,4 @@
+-import {isAppPath} from '../src/appPaths.js';
++import publicSite from './publicSite.js';
+ import { createRemoteJWKSet, jwtVerify } from 'jose';
+ 
+ const privateHeaders = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow, noarchive' };
+@@ -27,8 +27,8 @@ export function createPrivatePreview({ keySetFor } = {}) {
+       const { payload } = await jwtVerify(token, (keySetFor ?? remoteKeys)(issuer), { issuer, audience, algorithms: ['RS256'] });
+       if (typeof payload.exp !== 'number' || typeof payload.email !== 'string' || !emails.includes(payload.email.toLowerCase())) return deny(403, 'This identity is not allowed to use the private preview.');
+     } catch { return deny(401, 'Private preview authentication failed.'); }
+-    let assetRequest=request;if(isAppPath(url.pathname)){const target=new URL(url);target.pathname='/';target.search='';assetRequest=new Request(target,request);}
+-    const asset = await env.ASSETS.fetch(assetRequest);
++    // Route only after signed Access verification; share the same app/public URL policy.
++    const asset = await publicSite.fetch(request, env);
+     const headers = new Headers(asset.headers);
+     for (const [key, value] of Object.entries(privateHeaders)) headers.set(key, value);
+     return new Response(asset.body, { status: asset.status, statusText: asset.statusText, headers });
+diff --git a/workers/publicSite.js b/workers/publicSite.js
+index 176be08..e0fa210 100644
+--- a/workers/publicSite.js
++++ b/workers/publicSite.js
+@@ -1,33 +1,37 @@
+ import {publicRoute,publicAssetPath,CANONICAL_ORIGIN} from '../site/routes.js';
+-import {isAppPath,parseAppPath,appPathFor,appTitleFor} from '../src/appPaths.js';
++import {isAppPath,parseAppPath,appPathFor,appTitleFor,legacyPathRedirect} from '../src/appPaths.js';
+ const noindex='noindex, nofollow, noarchive';
+ const text=(body,status=404)=>new Response(body,{status,headers:{'Content-Type':'text/plain; charset=utf-8','X-Robots-Tag':noindex}});
+ async function missing(request,env){if(!env.ASSETS)return text('Not found.');const result=await env.ASSETS.fetch(new Request(new URL('/404.html',request.url),request));return new Response(request.method==='HEAD'?null:result.body,{status:404,headers:{'Content-Type':'text/html; charset=utf-8','X-Robots-Tag':noindex,'Cache-Control':'no-store'}});}
+ export default {async fetch(request,env){
+  const url=new URL(request.url),production=url.hostname==='easydryfire.com';
+  if(!['GET','HEAD'].includes(request.method))return new Response(null,{status:405,headers:{Allow:'GET, HEAD','X-Robots-Tag':noindex}});
+- if(url.hostname==='www.easydryfire.com'||production&&url.protocol!=='https:')return Response.redirect(CANONICAL_ORIGIN+url.pathname+url.search,308);
+  if(url.pathname.startsWith('/site/'))return missing(request,env);
+- const path=url.pathname,route=publicRoute(path),slashRoute=!path.endsWith('/')&&(publicRoute(path+'/')||isAppPath(path+'/'));
+- if(slashRoute)return Response.redirect(url.origin+path+'/'+url.search,308);
+- if(path==='/welcome/'&&production)return Response.redirect(CANONICAL_ORIGIN+'/',308);
+- let asset=path,indexable=false;
+- if(path==='/'&&!production||path==='/index.html'||isAppPath(path))asset='/index.html';
+- else if(route||path==='/welcome/'){asset=publicAssetPath(path==='/welcome/'?'/':path);indexable=production;}
+- else if(path==='/robots.txt'&&!production)return new Response(request.method==='HEAD'?null:'User-agent: *\nDisallow: /\n',{headers:{'Content-Type':'text/plain; charset=utf-8','X-Robots-Tag':noindex}});
+- else if(path==='/sitemap.xml'||path==='/robots.txt')indexable=production;
+- else if(!/^\/(?:assets\/[a-zA-Z0-9_.-]+\.(?:js|css)|(?:motions|gun-types|guide-examples)\/[a-zA-Z0-9_.-]+\.(?:svg|gif)|(?:logo\.svg|favicon\.ico|icon-192\.png|icon-512\.png|apple-touch-icon\.png|manifest\.webmanifest|edition\.json|sw\.js|pcm-capture\.worklet\.js))$/.test(path))return missing(request,env);
++ const path=url.pathname,legacy=legacyPathRedirect(path);
++ const canonical=legacy??(!path.endsWith('/')&&(publicRoute(path+'/')||isAppPath(path+'/'))?path+'/':path);
++ if(url.hostname==='www.easydryfire.com'||production&&url.protocol!=='https:')return Response.redirect(CANONICAL_ORIGIN+canonical+url.search,308);
++ if(canonical!==path)return Response.redirect(url.origin+canonical+url.search,308);
++ const route=publicRoute(path),app=isAppPath(path);
++ let asset=route?publicAssetPath(path):app?'/index.html':path,indexable=!!route&&production;
++ if(!route&&!app){
++  if(path==='/robots.txt'&&!production)return new Response(request.method==='HEAD'?null:'User-agent: *\nDisallow: /\n',{headers:{'Content-Type':'text/plain; charset=utf-8','X-Robots-Tag':noindex}});
++  if(path==='/sitemap.xml'||path==='/robots.txt')indexable=production;
++  else if(!/^\/(?:assets\/[a-zA-Z0-9_.-]+\.(?:js|css)|(?:motions|gun-types|guide-examples)\/[a-zA-Z0-9_.-]+\.(?:svg|gif)|(?:logo\.svg|favicon\.ico|icon-192\.png|icon-512\.png|apple-touch-icon\.png|manifest\.webmanifest|edition\.json|sw\.js|pcm-capture\.worklet\.js))$/.test(path))return missing(request,env);
++ }
+  if(!env.ASSETS)return text('Static assets are unavailable.',503);
+  if(production&&/^\/(?:favicon\.ico|logo\.svg|icon-192\.png|icon-512\.png|apple-touch-icon\.png)$/.test(path))indexable=true;
+  const target=new URL(url);target.pathname=asset;target.search='';
+- const response=await env.ASSETS.fetch(new Request(target,request));const headers=new Headers(response.headers);
+- if(!indexable||response.status!==200)headers.set('X-Robots-Tag',noindex);
++ const response=await env.ASSETS.fetch(new Request(target,request)),headers=new Headers(response.headers);
++ if(indexable&&response.status===200)headers.delete('X-Robots-Tag');else headers.set('X-Robots-Tag',noindex);
+  headers.set('X-Content-Type-Options','nosniff');
+  if(path==='/favicon.ico')headers.set('Content-Type','image/x-icon');
+  if(path==='/sitemap.xml')headers.set('Content-Type','application/xml; charset=utf-8');
+  if(path==='/robots.txt')headers.set('Content-Type','text/plain; charset=utf-8');
+  let body=request.method==='HEAD'?null:response.body;
+- if(response.status===200&&isAppPath(path)&&request.method!=='HEAD'){const identity=parseAppPath(path);body=(await response.text()).replace(/<title>[^<]*<\/title>/,'<title>'+appTitleFor(identity)+'</title>').replace(/(<link rel="canonical" href=")[^"]+/, '$1'+CANONICAL_ORIGIN+appPathFor(identity));headers.delete('Content-Length');headers.delete('ETag');}
+- if(route||isAppPath(path))headers.set('Cache-Control','public, max-age=0, must-revalidate');
++ if(response.status===200&&app&&!route&&request.method!=='HEAD'){
++  const identity=parseAppPath(path);body=(await response.text()).replace(/<title>[^<]*<\/title>/,'<title>'+appTitleFor(identity)+'</title>').replace(/(<link rel="canonical" href=")[^"]+/, '$1'+CANONICAL_ORIGIN+appPathFor(identity)).replace(/(<meta name="robots" content=")[^"]+/, '$1noindex, nofollow').replace(/<script\b[^>]*id="page-structured-data"[^>]*>[\s\S]*?<\/script>/g,'');
++  headers.delete('Content-Length');headers.delete('ETag');
++ }
++ if(route||app)headers.set('Cache-Control','public, max-age=0, must-revalidate');
+  return new Response(body,{status:response.status,headers});
+ }};
+diff --git a/workers/sw.js b/workers/sw.js
+index 81abb8f..710175d 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -1,8 +1,9 @@
+ // Injected at build time: keep this classic worker free of module dependencies.
+ const appPaths = __APP_OFFLINE_PATHS__;
++const navRedirects = __APP_NAV_REDIRECTS__;
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v85`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v86`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/favicon.ico', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {
+@@ -43,6 +44,7 @@ self.addEventListener('fetch', event => {
+   if (request.method !== 'GET') return;
+   const url = new URL(request.url);
+   if (url.origin !== self.location.origin) return;
++  if (request.mode === 'navigate' && navRedirects[url.pathname]) { event.respondWith(Promise.resolve(Response.redirect(new URL(navRedirects[url.pathname] + url.search, url.origin), 308))); return; }
+   event.respondWith((async () => {
+     const cache = await caches.open(CACHE);
+     const cached = await cache.match(request, { ignoreSearch: true });
