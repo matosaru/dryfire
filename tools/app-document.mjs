@@ -1,3 +1,4 @@
+import {materializeStaticCatalog} from '../src/staticCatalog.js';
 import {JSDOM} from 'jsdom';
 import {DRILLS} from '../src/drills.js';
 import {setupForGuide} from '../src/appPaths.js';
@@ -9,6 +10,7 @@ export function prerenderAppScreen(html,route){
  try{
   for(const view of doc.querySelectorAll('.view'))view.classList.toggle('hidden',view.id!==route.appView+'View');
   doc.body.dataset.view=route.appView;
+  if(route.appView==='about')materializeStaticCatalog(doc.getElementById('aboutView'));
   doc.getElementById('gunSwitcherBtn').classList.add('hidden');
   for(const row of doc.querySelectorAll('.gun-context'))row.classList.add('hidden');
   if(route.guide){

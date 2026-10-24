@@ -23,3 +23,10 @@ test('legacy links preserve their meaning without the app prefix or a replacemen
  for(const[path,target]of Object.entries({'/app/':'/','/app':'/','/app/learn/':'/learn/','/app/guns/setup/':'/gun-setup/','/app/practice/par-time/':'/par-time-practice/','/practice/par-time/':'/par-time-practice-guide/','/app/sequence/':'/drills/','/welcome/':'/about/','/guides/sequence-drills/':'/sequence-drills-guide/','/index.html':'/'}))expect(legacyPathRedirect(path)).toBe(target);
  for(const path of ['/learn/','/app/unknown/','/app/../private/','//outside.test/'])expect(legacyPathRedirect(path)).toBeNull();
 });
+
+test('URL-aware navigation preserves real transitions without redundant same-URL browser work',async()=>{
+ const {readFileSync}=await import('node:fs'),{runInNewContext}=await import('node:vm');const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');const start=source.indexOf('urlFor:appURLs?')+'urlFor:appURLs?'.length,end=source.indexOf(':undefined,',start);const context={appPathFor,pendingEntry:null,location:{pathname:'/',search:'?keep=1'}};const urlFor=runInNewContext(source.slice(start,end),context);
+ expect(urlFor({view:'home'})).toBeUndefined();expect(urlFor({view:'learn'})).toBe('/learn/?keep=1');context.location.pathname='/learn/';expect(urlFor({view:'learn'})).toBeUndefined();expect(urlFor({view:'home'})).toBe('/?keep=1');context.pendingEntry={view:'practice',mode:'par'};expect(urlFor({view:'gunSetup'})).toBe('/par-time-practice/?keep=1');
+});
+
+test('ordinary-route fast lookup still rejects internal view keys that are not canonical URL slugs',()=>{for(const path of ['/home/','/recognize/','/gunSetup/','/settings-extra/','/settings',null,undefined,0,{},[]])expect(parseAppPath(path)).toBeNull();expect(parseAppPath('/gun-setup/')).toEqual({view:'gunSetup'});expect(parseAppPath('/live-listen/')).toEqual({view:'recognize'});});

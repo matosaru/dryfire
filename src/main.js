@@ -1,3 +1,4 @@
+import {startGunPreferenceReads} from './gunPreferenceReads.js';
 import {parseAppPath,isAppPath,appPathFor,appTitleFor,isIndexableAppPath,setupForGuide} from './appPaths.js';
 import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
 import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
@@ -47,7 +48,8 @@ const $ = selectNode;
 const appURLs=isAppPath(location.pathname);
 let pendingEntry=appURLs?parseAppPath(location.pathname):null;
 let appStarted=false;
-let metadataPath=document.querySelector('link[rel=canonical]')?.getAttribute('href')?.replace('https://easydryfire.com','');
+const canonicalLink=document.querySelector('link[rel=canonical]');
+let metadataPath=canonicalLink?.getAttribute('href')?.replace('https://easydryfire.com','');
 async function openEntry(){const entry=pendingEntry;pendingEntry=null;return openAppEntry(entry??{view:'home'});}
 async function missingSequence(){await switchView('drills');setMessage('This sequence is not available for the selected gun. Choose a drill.');}
 async function openAppEntry(entry){
@@ -287,15 +289,16 @@ async function loadActiveGun(overview) {
   customDrills = id ? await getCustomDrills(id) : [];
   const legacy = id ? await getOutdatedExampleCount(id) : 0;
   renderModelNotice(`${legacy} older training sample(s) use an incompatible feature format and are ignored. Reset this gun's sounds and record new samples for the updated model.`,legacy===0);
-  $('#maxResults').value = id ? normalizeMaxResults(await getGunSetting('maxResults', 50, id)) : 50;
-  liveValue("sensitivity",id ? await getGunSetting('sensitivity', 'normal', id) : 'normal');
+  const preferences=id?startGunPreferenceReads(id,getGunSetting,getCalibrationExamples):null;
+  $('#maxResults').value = id ? normalizeMaxResults(await preferences[0]()) : 50;
+  liveValue("sensitivity",id ? await preferences[1]() : 'normal');
   if (!$('#sensitivity').value) liveValue("sensitivity",'normal');
-  const savedDrill = id ? await getGunSetting('selectedDrill', '', id) : '';
-  // Preserve saved-preset validation and its read/error ordering; selection lives in the session controller.
+  const savedDrill = id ? await preferences[2]() : '';
+  // Preserve validation/error consumption order for prefetched reads; selection lives in the session controller.
   currentDrill(savedDrill);
-  audioPreferences = normalizeAudioPreferences(id ? await getGunSetting('audioPreferences', {}, id) : {});
-  calibration = id ? await getCalibrationExamples(id) : [];
-  const storedLabels = id ? await getGunSetting('enabledSoundLabels', null, id) : null;
+  audioPreferences = normalizeAudioPreferences(id ? await preferences[3]() : {});
+  calibration = id ? await preferences[4]() : [];
+  const storedLabels = id ? await preferences[5]() : null;
   enabledSoundLabels = storedLabels ? normalizeEnabledLabels(storedLabels) : initialEnabledLabels(examples);
   processingReport = null;
   renderLiveOptions(); // Free listening and the saved timed preset have separate state.
@@ -646,7 +649,7 @@ function displayView(name) {
   if(name==='practice'||name==='session')void practiceGuideController.prepare().catch(()=>{});
   const previousView=activeView;
   activeView=name;
-  if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);const canonical=document.querySelector('link[rel=canonical]');if(canonical)canonical.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
+  if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
   if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
@@ -1073,7 +1076,7 @@ async function init() {
   }
   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
-  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search):undefined,
+  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>{const path=(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search;return path===location.pathname+location.search?undefined:path;}):undefined,
     show: route => displayView(route.view), canLeave: () => !busy && !profileLoading && !preferencePending && !practiceController?.hasUnsavedResults() && !sessionController?.hasUnsavedResults(),
     beforeLeave: async () => { practiceGuideController?.pause(); safetyGate?.cancel(); if (liveSession || livePendingStart) await stopLive();
       if (sessionController?.locked()) await sessionController.interrupt('navigation');

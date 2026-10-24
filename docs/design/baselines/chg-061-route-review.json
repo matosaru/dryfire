@@ -1,6 +1,6 @@
 {
   "change": "CHG-061",
-  "status": "Complete candidate acceptance passed; publishing b, checked production PR pending",
+  "status": "Optimized complete acceptance all8 success; publishing b, normal PR checks pending",
   "expandedCSSSha256": "665e4a05242f1e15a5f3ef15feadc7be78ef377e0b4c54d44baeb32e53895df6",
   "scope": "App root and flat routes; actual shared app informational screens; retained marketing About. Only About/public captures may change; original performance budgets and unrelated references retained.",
   "audit": {
@@ -100,10 +100,19 @@
     "Only About/public references change; 382 unrelated app references must remain byte-identical.",
     "Ten original guide GIFs retained byte-identically; parent URLs/marketing styles do not alter guide media."
   ],
-  "acceptanceRun": 40124104473,
-  "candidateCommit": "abf214456f9b7c015cbabbef8ea88e646670c87e",
-  "acceptedPatchSha256": "e0baf64972655bb82241fa98efd8b95e6e2573d1217e14deeba0c05371067236",
-  "unitTests": 1068,
-  "unitSuites": 154,
-  "allRequiredJobs": "8 success"
+  "acceptanceRun": 40129243422,
+  "candidateCommit": "9e05360",
+  "acceptedPatchSha256": "b20b475ed44d612547046df35af3d8f22b669391007bf7c89f36ae8f1d6602f6",
+  "unitTests": 1077,
+  "unitSuites": 156,
+  "allRequiredJobs": "8 success",
+  "earlierAcceptanceRun": 40124104473,
+  "optimization": "Ordered concurrent read-only gun preferences; inert native About opened synchronously; public About expanded at build time; ordinary route lookup/canonical-node reuse; cache87. No visual/gate change.",
+  "postPublicationFailures": [
+    40125084628,
+    40125108456,
+    40126563124,
+    40127617015,
+    40127962620
+  ]
 }

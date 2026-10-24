@@ -25,7 +25,9 @@ export function offlineAppPaths(){return[
 ];}
 export function parseAppPath(path){
  if(path==='/')return{view:'home'};
- for(const[view,slug]of Object.entries(views))if(path===pathFor(slug))return{view};
+ if(typeof path!=='string')return null;
+ const slug=path.slice(1,-1),view=slug===views.recognize?'recognize':slug===views.gunSetup?'gunSetup':slug;
+ if(Object.hasOwn(views,view)&&path===pathFor(views[view]))return{view};
  for(const[mode,slug]of Object.entries(modes))if(path===pathFor(slug))return{view:'practice',mode};
  for(const[preset,slug]of Object.entries(sequences))if(path===pathFor(slug))return{view:'session',preset};
  if(path==='/custom-sequence/')return{view:'session',preset:'custom'};
