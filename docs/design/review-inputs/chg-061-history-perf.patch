@@ -1,0 +1,52 @@
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index 0da6578..8f3fe19 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -808,7 +808,7 @@
+   ],
+   "reviewedSources": {
+     "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
+-    "src/main.js": "0dee5fbfb0156e5618f938588ee9557a637f2b2bc73332c65e65c65b7982ba09",
++    "src/main.js": "da439b58ee822747662e129cacd3158e9df0c74b1c6cfd3b47b40aaf19a4d390",
+     "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
+     "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
+     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index 477b02b..5dedf5e 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -112,7 +112,7 @@
+     "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
+     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+-    "src/main.js": "0dee5fbfb0156e5618f938588ee9557a637f2b2bc73332c65e65c65b7982ba09",
++    "src/main.js": "da439b58ee822747662e129cacd3158e9df0c74b1c6cfd3b47b40aaf19a4d390",
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+     "vite.config.js": "c08e425fc7305e585097d6f953b1e3635e211bf15e6ed1a677b8de80b992a729",
+diff --git a/src/main.js b/src/main.js
+index 329b2a8..5f4608f 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -1073,7 +1073,7 @@ async function init() {
+   }
+   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
+     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
+-  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search):undefined,
++  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>{const path=(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search;return path===location.pathname+location.search?undefined:path;}):undefined,
+     show: route => displayView(route.view), canLeave: () => !busy && !profileLoading && !preferencePending && !practiceController?.hasUnsavedResults() && !sessionController?.hasUnsavedResults(),
+     beforeLeave: async () => { practiceGuideController?.pause(); safetyGate?.cancel(); if (liveSession || livePendingStart) await stopLive();
+       if (sessionController?.locked()) await sessionController.interrupt('navigation');
+diff --git a/tests/appPaths.test.js b/tests/appPaths.test.js
+index 9f0fb1c..da7fee1 100644
+--- a/tests/appPaths.test.js
++++ b/tests/appPaths.test.js
+@@ -23,3 +23,8 @@ test('legacy links preserve their meaning without the app prefix or a replacemen
+  for(const[path,target]of Object.entries({'/app/':'/','/app':'/','/app/learn/':'/learn/','/app/guns/setup/':'/gun-setup/','/app/practice/par-time/':'/par-time-practice/','/practice/par-time/':'/par-time-practice-guide/','/app/sequence/':'/drills/','/welcome/':'/about/','/guides/sequence-drills/':'/sequence-drills-guide/','/index.html':'/'}))expect(legacyPathRedirect(path)).toBe(target);
+  for(const path of ['/learn/','/app/unknown/','/app/../private/','//outside.test/'])expect(legacyPathRedirect(path)).toBeNull();
+ });
++
++test('URL-aware navigation preserves real transitions without redundant same-URL browser work',async()=>{
++ const {readFileSync}=await import('node:fs'),{runInNewContext}=await import('node:vm');const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');const start=source.indexOf('urlFor:appURLs?')+'urlFor:appURLs?'.length,end=source.indexOf(':undefined,',start);const context={appPathFor,pendingEntry:null,location:{pathname:'/',search:'?keep=1'}};const urlFor=runInNewContext(source.slice(start,end),context);
++ expect(urlFor({view:'home'})).toBeUndefined();expect(urlFor({view:'learn'})).toBe('/learn/?keep=1');context.location.pathname='/learn/';expect(urlFor({view:'learn'})).toBeUndefined();expect(urlFor({view:'home'})).toBe('/?keep=1');context.pendingEntry={view:'practice',mode:'par'};expect(urlFor({view:'gunSetup'})).toBe('/par-time-practice/?keep=1');
++});
