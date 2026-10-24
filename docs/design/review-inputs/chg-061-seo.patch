@@ -261,6 +261,33 @@ index 9173781..b432438 100644
    </article>
   </AppShell>;
  }
+diff --git a/docs/architecture/application-sitemap.md b/docs/architecture/application-sitemap.md
+index ad863d2..d5e8fb3 100644
+--- a/docs/architecture/application-sitemap.md
++++ b/docs/architecture/application-sitemap.md
+@@ -79,6 +79,6 @@ The public edition permits creation of up to two guns and retains existing saved
+ 
+ ## Public URLs and indexing
+ 
+-The implemented public path inventory is `https://easydryfire.com/`, `https://easydryfire.com/practice/`, `https://easydryfire.com/practice/single-trigger-press/`, `https://easydryfire.com/practice/repeated-trigger-press/`, `https://easydryfire.com/practice/par-time/`, `https://easydryfire.com/practice/trigger-control/`, `https://easydryfire.com/guides/sequence-drills/`, `https://easydryfire.com/guides/trigger-click-calibration/`, `https://easydryfire.com/help/`, `https://easydryfire.com/about/`, `https://easydryfire.com/contact/`. Public routes have prerendered HTML/metadata. Operational screens are noindex /app/ paths with history-backed state; personal records are not public pages. This application map does not invent indexable URLs for Settings, sessions or guides. The generated [SEO XML sitemap](../seo/templates/sitemap.xml) and [SEO routing documentation](../seo/README.md) describe indexing; production deployment and crawler decisions remain separate outcomes.
++The implemented public path inventory is `https://easydryfire.com/`, `https://easydryfire.com/practice-modes/`, `https://easydryfire.com/single-trigger-press-guide/`, `https://easydryfire.com/repeated-trigger-press-guide/`, `https://easydryfire.com/par-time-practice-guide/`, `https://easydryfire.com/trigger-control-guide/`, `https://easydryfire.com/rack-slide-trigger-pull-guide/`, `https://easydryfire.com/magazine-change-trigger-pull-guide/`, `https://easydryfire.com/draw-magazine-change-trigger-pull-guide/`, `https://easydryfire.com/sequence-drills-guide/`, `https://easydryfire.com/trigger-click-calibration-guide/`, `https://easydryfire.com/help/`, `https://easydryfire.com/about/`, `https://easydryfire.com/contact/`. Public routes have prerendered HTML/metadata. Operational screens use flat noindex paths with history-backed state; personal records are not public pages. This application map does not invent indexable URLs for Settings, sessions or guides. The generated [SEO XML sitemap](../seo/templates/sitemap.xml) and [SEO routing documentation](../seo/README.md) describe indexing; production deployment and crawler decisions remain separate outcomes.
+ 
+ [Complete URL catalog](../seo/routes.md) · [Detailed generated screen/state tree](site-tree.md) · [Architecture and entry point](application-structure.md) · [Maintenance](README.md)
+diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
+index 5ab2eab..bf98f28 100644
+--- a/docs/architecture/component-map.json
++++ b/docs/architecture/component-map.json
+@@ -668,6 +668,9 @@
+       "visual-tests/public-site.spec.js",
+       "tests/publicSite.test.js",
+       "tests/appPaths.test.js"
+-    ]
++    ],
++    "marketingSource": "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx",
++    "marketingTests": "apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx",
++    "appPrerender": "tools/app-document.mjs"
+   }
+ }
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
 index 31e1ba5..6858ce7 100644
 --- a/docs/architecture/screen-map.json
@@ -395,6 +422,93 @@ index 31e1ba5..6858ce7 100644
            "image": "docs/design/screens/public-site/contact.dark.png"
          }
        ]
+diff --git a/docs/architecture/site-tree.md b/docs/architecture/site-tree.md
+index 3d3b13f..cb21bfa 100644
+--- a/docs/architecture/site-tree.md
++++ b/docs/architecture/site-tree.md
+@@ -1,10 +1,10 @@
+ # Site and screen tree
+ 
+-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-24; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 / CHG-059 shared guide control/layout and group accents / CHG-060 public SEO and readable app paths documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
++Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-24; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 / CHG-059 shared guide control/layout and group accents / CHG-060 public SEO and readable app paths / CHG-061 app homepage, flat routes, unique sequences and retained marketing About documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+ 
+ ## Public site
+ 
+-Canonical production origin: `https://easydryfire.com/`. **11 implemented public routes**, generated with initial HTML/metadata, sitemap and robots from site/routes.js. Operational screens have readable /app/ paths and noindex; personal records are not public sitemap entries. Workers/nonproduction root retains the legacy app entry. [SEO routing](../seo/indexable-routes-plan.md) records implementation and production acceptance separately.
++Canonical production origin: `https://easydryfire.com/`. **14 implemented public routes**, generated with initial HTML/metadata, sitemap and robots from site/routes.js. The app opens at / on every host. Operational screens have flat paths and noindex; About, Contact and seven public manuals reuse the app shell with readable initial HTML. Personal records are not public sitemap entries. [SEO routing](../seo/indexable-routes-plan.md) records implementation and production acceptance separately.
+ 
+ ## App hierarchy
+ 
+@@ -50,7 +50,7 @@ The tree describes primary destinations, not a restriction on Back/Forward. Abou
+ | About | `aboutView` | Shared app footer → About, including before gun setup | `overview.dark`, `overview.light` | [Design](../design/screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+ | Contact | `contactView` | Shared app footer → Contact, including before gun setup | `overview.dark`, `overview.light` | [Design](../design/screens/contact/README.md) | [contact](../requirements/contact.md), [about](../requirements/about.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md) |
+ | Safety confirmation | `safetyModal` | Any unconfirmed action that would acquire microphone capture | `safety-modal.dark` | [Design](../design/screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
+-| Public website | `public-content` | Public URLs; readable without profile or JavaScript | `home.dark`, `practice.dark`, `single.dark`, `repeated.dark`, `par.dark`, `control.dark`, `sequence.dark`, `calibration.dark`, `help.dark`, `about.dark`, `contact.dark` | [Design](../design/screens/public-site/README.md) | [public-seo](../requirements/public-seo.md) |
++| Public website | `public-content` | Canonical public information and app homepage; shared app shell for About/Contact/manuals | `home.dark`, `practice.dark`, `single.dark`, `repeated.dark`, `par.dark`, `control.dark`, `sequence-rack-trigger.dark`, `sequence-mag-trigger.dark`, `sequence-draw-mag-trigger.dark`, `sequence.dark`, `calibration.dark`, `help.dark`, `about.dark`, `contact.dark` | [Design](../design/screens/public-site/README.md) | [public-seo](../requirements/public-seo.md) |
+ 
+ ## Shared templates
+ 
+diff --git a/docs/design/README.md b/docs/design/README.md
+index c4a0035..b80c667 100644
+--- a/docs/design/README.md
++++ b/docs/design/README.md
+@@ -49,7 +49,7 @@ Current references below are actual production-build captures. CHG-029 separates
+ | About | [2 state/theme references](screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+ | Contact | [2 state/theme references](screens/contact/README.md) | [contact](../requirements/contact.md), [about](../requirements/about.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md) |
+ | Safety confirmation | [1 state/theme references](screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
+-| Public website | [11 state/theme references](screens/public-site/README.md) | [public-seo](../requirements/public-seo.md) |
++| Public website | [14 state/theme references](screens/public-site/README.md) | [public-seo](../requirements/public-seo.md) |
+ <!-- screen-coverage:end -->
+ 
+ This table is generated from the [screen registry](../architecture/screen-map.json). Its [site tree](../architecture/site-tree.md) records entry paths and internal states. Capture links belong to each screen document rather than a flat image dump.
+diff --git a/docs/design/screens/about/README.md b/docs/design/screens/about/README.md
+index 1c2e549..fbee11f 100644
+--- a/docs/design/screens/about/README.md
++++ b/docs/design/screens/about/README.md
+@@ -1,5 +1,7 @@
+ # About design
+ 
++CHG-061: retain marketing content inside About through reusable MarketingOverview, including the routine, free/local-data promise, free-app CTA and four guide cards. The canonical `/about/` is both public and in-app, using the same shell; `/` opens the actual trainer. Changed current images require pinned review. [SEO requirements](../../../requirements/public-seo.md).
++
+ CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
+ 
+ About also shows **Sound trainer · Beta · v0.8.0** and a **Feedback welcome** card: “This app is in beta. All feedback and suggestions are welcome. Visit Contact to share an idea or report a problem.” Contact remains a separate page. See [ABOUT-07](../../../requirements/about.md#beta-and-feedback--chg-041).
+@@ -16,7 +18,7 @@ CHG-029 revises the footer and separates Contact from About. Current captures ar
+ 
+ CHG-027 · Initial copy/layout proposal implemented for review on `feature/about-contact-page`; direct page/contact request authorizes this slice. Exact copy has not received word-for-word user approval.
+ 
+-Entry: shared app footer → About, independently of Settings and also before saving a first gun. App anchor: `aboutView`. This is a history-backed state of `/`, not a separate indexable route.
++Entry: shared app footer → About, independently of Settings and also before saving a first gun. App anchor: `aboutView`. This is a history-backed canonical `/about/` route.
+ 
+ ## Layout and interaction
+ 
+diff --git a/docs/design/screens/public-site/README.md b/docs/design/screens/public-site/README.md
+index 8bb8e75..65f6eae 100644
+--- a/docs/design/screens/public-site/README.md
++++ b/docs/design/screens/public-site/README.md
+@@ -1,6 +1,6 @@
+-# Public website — shared static layout
++# Public website — shared app and informational layouts
+ 
+-CHG-060,2026-10-24. [Public SEO requirements](../../../requirements/public-seo.md) own behavior. PublicPage composes shared chrome with real links, Dark default, white text, orange action and fixed navigation. Content is readable without JS/profile/microphone and reuses actual in-app manuals. [SEO route plan](../../../seo/indexable-routes-plan.md) owns URLs; [history](../../../project/implementation-history.md) separates acceptance/publication from live deployment.
++CHG-061,2026-10-24. Root opens the actual trainer; marketing is retained inside About. Public About/Contact/manuals prerender their actual app components, with the same header/footer/fixed navigation. Static overview/Help pages reuse the same shell.  [Public SEO requirements](../../../requirements/public-seo.md) own behavior. PublicPage composes shared chrome with real links, Dark default, white text, orange action and fixed navigation. Content is readable without JS/profile/microphone and reuses actual in-app manuals. [SEO route plan](../../../seo/indexable-routes-plan.md) owns URLs; [history](../../../project/implementation-history.md) separates acceptance/publication from live deployment.
+ 
+ | Page | Current capture |
+ | --- | --- |
+@@ -16,4 +16,12 @@ CHG-060,2026-10-24. [Public SEO requirements](../../../requirements/public-seo.m
+ | about | [about.dark.png](about.dark.png) |
+ | contact | [contact.dark.png](contact.dark.png) |
+ 
+-Public images use no personal fixtures. Nonproduction /welcome/ previews the .com landing with noindex; production redirects that preview alias to root. Existing app images/GIF appearance remains unchanged.
++Public images use no personal fixtures. `/welcome/` redirects to About on every host. The original marketing-home design is archived outside the current screenshot set; marketing content remains live in About. Existing unrelated app/GIF appearance stays unchanged.
++
++| sequence-rack-trigger | [sequence-rack-trigger.dark.png](sequence-rack-trigger.dark.png) |
++
++| sequence-mag-trigger | [sequence-mag-trigger.dark.png](sequence-mag-trigger.dark.png) |
++
++| sequence-draw-mag-trigger | [sequence-draw-mag-trigger.dark.png](sequence-draw-mag-trigger.dark.png) |
++
++[Preserved original marketing design](../../archive/chg-060/README.md) is historical evidence; the live marketing content belongs to About.
 diff --git a/docs/project/approval-log.md b/docs/project/approval-log.md
 index 9206846..b8ae928 100644
 --- a/docs/project/approval-log.md
@@ -439,6 +553,18 @@ index 32e9264..a385d59 100644
  Updated2026-10-24. [History](../implementation-history.md) · [Release proof](../../design/baselines/chg-060-public-review.json) · [Complete URL inventory](../../seo/routes.md) · [Merged PR#26](https://github.com/matosaru/dryfire/pull/26).
  
  ## Completed release
+diff --git a/docs/requirements/about.md b/docs/requirements/about.md
+index aa2836f..00f25fa 100644
+--- a/docs/requirements/about.md
++++ b/docs/requirements/about.md
+@@ -59,3 +59,7 @@ Use two separate **About** and **Contact** controls centered in the shared foote
+ ## Beta and feedback — CHG-041
+ 
+ **ABOUT-07:** the user directly requests **“In about page mention, tht beta version, and all the suggestions are welcom”**. Display Beta beside the current version and add a short **Feedback welcome** card: **“This app is in beta. All feedback and suggestions are welcome. Visit Contact to share an idea or report a problem.”** Keep the existing Contact destination/email; no new form, email backend or automatic data sharing. Apply to both editions and both themes, preserving independent About/Contact pages and navigation. Refresh actual About and shared-header screenshots; this is a direct implementation instruction, not a new approval request.
++
++## Retained marketing content — CHG-061
++
++The owner explicitly requires the marketing homepage to become part of About, not be permanently deleted. Reuse `MarketingOverview` for the introduction, simple routine, free/local-data promise, “Open the free app” action and four unique practice-guide links. About retains Beta feedback, local-data recovery and safety sections in the common app shell. `/about/` is the single canonical public/app About URL; `/welcome/` redirects here. Root `/` opens the trainer. Existing full-preview copy boundaries and navigation/save/capture guards remain.
 diff --git a/docs/requirements/public-seo.md b/docs/requirements/public-seo.md
 index 72edb68..ef1892a 100644
 --- a/docs/requirements/public-seo.md
@@ -478,6 +604,316 @@ index 72edb68..ef1892a 100644
 +- Preserve progressive startup, minification and original payload/timing budgets. Keep self-contained classic service worker, early critical CSS, root favicon fallback and complete offline route inventory. Increment cache version without deleting user data. Manifest id/scope/start remain `/`.
 +- Serve the approved-logo favicon at `/favicon.ico` with image/x-icon and 16/32/48 sizes. No new identity, font, monetization, account or native feature scope.
 +- Maintain generated path/screen inventories, design references, guide exports and tests. Complete unit/coverage, integration, both-edition artifact checks, pinned Chromium/WebKit visual suites and unchanged performance acceptance before publication. Report push/merge/deployment/indexing separately.
+diff --git a/docs/seo/README.md b/docs/seo/README.md
+index 0cc1e4b..b70aa16 100644
+--- a/docs/seo/README.md
++++ b/docs/seo/README.md
+@@ -1,33 +1,19 @@
+ # Public SEO and routing
+ 
+-CHG-060 ·2026-10-24. Repository implementation passed complete candidate acceptance40104091922 and is published on b; production promotion, live HTTP verification and crawler indexing are separate outcomes. [History](../project/implementation-history.md) records exact CI/publication status. The owner reports creating the public .app→.com301 redirect; this workspace cannot independently access those public domains.
++CHG-061 corrects the homepage/URL contract after CHG-060. [History](../project/implementation-history.md) distinguishes approval, checks, push, merge and observed deployment. The owner reports `.app` → `.com` permanent redirects; public-origin HTTP access remains blocked by this workspace's proxy before origin.
+ 
+-[Complete generated URL inventory and indexing rules](routes.md) lists every public/app path, redirect, generated endpoint and static resource.
++The [complete generated URL inventory](routes.md) lists every canonical/app path, redirect and static resource. `site/routes.js` owns14 canonical pages at https://easydryfire.com; `src/appPaths.js` owns flat app/guide identities. Root `/` is the actual trainer; marketing remains reusable content inside About. Seven public manuals and About/Contact prerender actual shared app screens. Informational content is readable without JavaScript/profile/microphone; the trainer needs JavaScript. Static Help/directory/overview pages share app chrome.
+ 
+-## Current implementation
++Initial public HTML has unique title, description, canonical, Open Graph/Twitter metadata and factual JSON-LD. No invented prices, ratings or recognition guarantees. `workers/publicSite.js` handles routes, permanent legacy redirects,404/405, XML/robots and favicon. Operational paths are noindex, previews remain noindex, private Full still requires signed Access authentication. No private names, custom IDs or saved records enter URLs, metadata or the XML sitemap.
+ 
+-`site/routes.js` owns11 public routes and canonical https://easydryfire.com. `tools/public-pages.mjs` prerenders useful content with unique initial title/description/canonical, Open Graph/Twitter metadata and factual JSON-LD. Public pages require no JS, profile, login or microphone. Existing manual content and opt-in silent GIF exports are reused. No invented price, rating, accuracy guarantee or cloud feature is published.
++## Release and indexing
+ 
+-`workers/publicSite.js` serves the public landing at .com root, public route HTML, XML sitemap, robots and conventional favicon; unknown URLs return404. Operational /app/ paths are noindex and preserve guarded app history. The old Workers/nonproduction root still opens the app; nonproduction /welcome/ previews the landing with noindex. All other preview public responses are noindex. Private preview keeps its independent signed Access gate.
+-
+-Public pages share the existing branding, BETA/header/footer/fixed navigation and Dark visual language. App chrome's default callback-driven behavior is unchanged; public chrome has real href links. The full route inventory and decisions are in [the route/metadata plan](indexable-routes-plan.md), [requirements](../requirements/public-seo.md) and [generated application sitemap](../architecture/application-sitemap.md).
+-
+-## Deployment and indexing
+-
+-- Owner promotes tested b to main and manages Cloudflare domains. No production merge is implied by a b push.
+-- One canonical host: .com. Matching .app redirects preserve path/query but do not transfer IndexedDB. [Redirect guide](../development/cloudflare-public-redirect.md) records owner-reported creation and independent verification limits.
+-- New installs start at /app/ with the existing manifest id/scope. Same-origin path changes preserve local data. Existing cached/installed clients and old-origin data need deliberate verification/export/import; no automatic cross-origin migration exists.
+-- Real public pages return200; personal app states are noindex and excluded from sitemap. Noindex is not an authentication mechanism. Only the actual supported public route registry enters XML; lastmod is omitted rather than fabricated from every build.
+-- After production deployment, verify actual HTML/headers/redirects/robots/sitemap and Search Console ownership, submit https://easydryfire.com/sitemap.xml and inspect representative URLs. Neither valid metadata nor a sitemap guarantees indexing, rankings or rich results.
+-
+-## Verification and reference templates
+-
+-`verify:dist` runs tools/verify-public-site.mjs against the built HTML/assets and local Worker handler: unique metadata, JSON-LD, links, index/noindex policies, XML/robots,404 behavior, operational responses and ICO availability/type. Browser tests cover public reading without JS and operational deep links/refresh/drafts/Back/Forward. Existing both-edition/browser visual and original performance gates remain required.
+-
+-[head.html](templates/head.html), [SoftwareApplication reference](templates/webapplication.json), [robots reference](templates/robots.txt) and [sitemap reference](templates/sitemap.xml) document generated output; the build generator/registry own runtime output. Older [public copy](public-copy.md) and commercial topology proposals remain historical research, not authority to publish unimplemented paid/account/cloud routes.
+-
+-[Shared public designs](../design/screens/public-site/README.md) · [Deployment](../development/DEPLOY.md) · [Architecture](../architecture/README.md)
++- Complete candidate acceptance precedes application publication on b and a checked b→main PR. Dev remains untouched. Cloudflare domain configuration is owner-managed; do not equate code publication with observed deployment.
++- Manifest id/scope/start remain `/`. Same-origin URL changes keep IndexedDB. Domain redirects do not transfer separately stored libraries; retain manual export/import.
++- Verify live HTML/headers, old redirects, robots/sitemap and favicon after deployment. Submit `https://easydryfire.com/sitemap.xml` in Search Console and inspect representative canonical URLs. Metadata and a valid sitemap do not guarantee indexing/rankings.
++- `verify:dist` checks built initial metadata/content, all links, flat routes, HTTP policies, legacy redirects, XML/robots and ICO. Browser checks cover actual app root, unique sequence cold entry/refresh/history, no-JS informational content, guide/source invalid drafts and local data.
++- Maintain [requirements](../requirements/public-seo.md), [routing plan](indexable-routes-plan.md), [screen tree](../architecture/site-tree.md), approved screenshots and actual guide/GIF parity. Original performance/payload and pinned both-browser/both-edition acceptance apply.
+ 
+ ## Planned public topology — CHG-026
+ 
+-Historical proposal reference retained for existing approval links. Earlier split-domain marketing/app and commercial routes were proposals, not implemented commitments. CHG-060 supersedes the public topology with one canonical .com origin,11 actual public pages and noindex operational /app/ paths. Pricing, accounts, cloud/billing and legal-page drafts remain outside this implementation.
++Historical commercial/marketing topology was a proposal. CHG-061 supersedes its root-page and `/app` assumptions: the trainer opens at `/`, marketing remains in About, and [the current generated inventory](routes.md) defines implemented routes. Monetization/account/cloud work remains deferred.
+diff --git a/docs/seo/indexable-routes-plan.md b/docs/seo/indexable-routes-plan.md
+index 669e17e..88fbb9f 100644
+--- a/docs/seo/indexable-routes-plan.md
++++ b/docs/seo/indexable-routes-plan.md
+@@ -1,99 +1,23 @@
+-# Indexable routes and page metadata — Free product
++# Indexable routes and page metadata — CHG-061
+ 
+-Requested 2026-10-24, before the proposed modularization plan. **Implemented; complete candidate acceptance passed in run40104091922. b publication is complete; owner controls production promotion.** Review/work on b only. The owner handles production promotion/domain configuration. Canonical host confirmed by the owner: https://easydryfire.com. easydryfire.app redirects to the matching .com path. Existing libraries on other origins must remain recoverable.
++Canonical origin: **https://easydryfire.com**. The owner configured `.app` permanent redirects. This routing correction is approved; candidate validation/publication is tracked in [history](../project/implementation-history.md). Dev is out of scope.
+ 
+-## Findings before CHG-060
++## Current contract
+ 
+-- The application sitemap at docs/architecture/application-sitemap.md is generated documentation, not a deployed search-engine XML sitemap.
+-- screenNavigation.js uses pushState/replaceState without a URL argument. Screen states share `/`; index.html has one title/description. Public about/contact/help/practice guides are not independent public HTTP resources today.
+-- robots.txt and sitemap.xml exist only under docs/seo/templates and are not copied into public output. Canonical, social metadata and JSON-LD remain draft templates rather than current application metadata.
+-- The root could be crawled/indexed subject to actual production responses and crawler decisions. Source inspection does not establish whether it is indexed; a sitemap never guarantees indexing.
+-- Existing SEO drafts are stale in places (six-mode wording and graph availability); validate all copy against the four current trigger modes and actual public edition before publishing.
++- `/` opens the actual trainer, with first-use gun setup or the selected gun's Home.
++- Preserve the marketing introduction, routine, free promise and mode links inside `/about/` through reusable `MarketingOverview`; do not permanently delete them.
++- Flat `/learn/`, `/drills/`, `/live-listen/`, `/history/`, `/settings/`, `/guns/`, `/gun-setup/` operational paths. No `/app` prefix.
++- `/single-trigger-press/`, `/repeated-trigger-press/`, `/par-time-practice/`, `/trigger-control/` configure the four retained modes.
++- `/rack-slide-trigger-pull/`, `/magazine-change-trigger-pull/`, `/draw-magazine-change-trigger-pull/` restore the exact named sequence on direct entry/refresh. Matching `-guide/` URLs read the actual shared manual screens.
++- About, Contact, Help, mode directory, seven current manuals and two overview guides join the root in the 14-entry XML sitemap. Canonical initial content/metadata is generated at build time. Operational paths remain noindex; preview hosts remain noindex even for public content.
++- Custom sequence IDs, gun names and saved results remain local. `/custom-sequence/` can restore only the selected gun's saved selected custom preset; missing context returns to Drills with an explanation. Legacy trigger-only remains compatible but is not public catalog/sitemap content.
+ 
+-## Intended public route inventory
++[Complete generated URL inventory](routes.md) is authoritative for exact names, titles, redirects and static resources. [Requirements](../requirements/public-seo.md) and [screen tree](../architecture/site-tree.md) own behavior/layout coverage.
+ 
+-The implementation uses these readable, lowercase, hyphenated routes with a consistent trailing slash. They are public HTML resources, separate from operational app screen IDs. Final canonical URLs use https://easydryfire.com; never use .app or preview hostnames in canonical metadata.
++## Compatibility and storage
+ 
+-| Path | Public content | Proposed title |
+-| --- | --- | --- |
+-| `/` | Product landing page, current Free capabilities, useful explanation, Open app action | Dry Fire With Ease — Free Dry-Fire Practice App |
+-| `/practice/` | Four trigger modes and how to choose; links to individual manuals | Dry-Fire Practice Modes — Dry Fire With Ease |
+-| `/practice/single-trigger-press/` | Public short manual and silent example | Single Trigger Press Practice — Dry Fire With Ease |
+-| `/practice/repeated-trigger-press/` | Public short manual and silent example | Repeated Trigger Press Practice — Dry Fire With Ease |
+-| `/practice/par-time/` | Public short manual and silent example | Par-Time Practice — Dry Fire With Ease |
+-| `/practice/trigger-control/` | Public manual; explain timing consistency and microphone limitations | Trigger Control Practice — Dry Fire With Ease |
+-| `/guides/sequence-drills/` | Current built-in sequences, required calibration and limitations | Sequence Drills Guide — Dry Fire With Ease |
+-| `/guides/trigger-click-calibration/` | Accurate calibration/setup instructions and troubleshooting | Trigger-Click Calibration — Dry Fire With Ease |
+-| `/help/` | Browser/microphone/install/start-signal help | Help and Browser Setup — Dry Fire With Ease |
+-| `/about/` | Public product/Beta/about copy | About — Dry Fire With Ease |
+-| `/contact/` | Public email support, easydryfire@gmail.com | Contact — Dry Fire With Ease |
++Known old `/app/*` and nested public manual URLs permanently redirect to flat equivalents, preserving query strings. `/welcome/` redirects to About. Ambiguous old sequence URLs resolve to Drills instead of guessing. Unknown routes remain404. Same-origin paths preserve IndexedDB; domain redirects cannot transfer separate-origin data. Schema, import/export, profile/capture/safety/save guards and invalid drafts remain unchanged. Refresh never starts a microphone.
+ 
+-Publish only complete useful pages. No empty keyword pages, paid features, unverified accuracy claims, prices, ratings, affiliations or promised cloud/native functionality. Privacy/terms public routes need accurate reviewed content before being included; do not invent trader details or publish placeholders.
++## Acceptance and release
+ 
+-## Readable operational app URLs
+-
+-Proposed app paths include `/app/`, `/app/learn/`, `/app/drills/`, `/app/live-listen/`, `/app/history/` and `/app/settings/`. A selected practice can use `/app/practice/single-trigger-press/` and corresponding supported-mode slugs. These are app destinations, not separate SEO landing pages.
+-
+-- Exclude operational/personal app pages, saved sessions, gun profiles, backups and private test states from the XML sitemap. Serve app responses with explicit noindex metadata/header; public editorial pages remain indexable.
+-- Never prerender personal gun names, calibration, results or other local user data into public HTML/metadata. Do not put personal gun names or session data in URLs.
+-- noindex/robots is not authentication or authorization. Keep existing independent private-feature/security boundaries.
+-- Preserve active-gun/training/safety/save/capture guards, Back/Forward, invalid drafts and startup behavior. A direct app URL cannot start capture automatically or bypass prerequisites.
+-- Public information must be readable without stored guns, training, login, microphone permission or JavaScript. It must not redirect first-time visitors to gun setup.
+-
+-## Technical approach
+-
+-Keep Vite and the current shared React presentation. Generate static/prerendered HTML for public routes at build time, with the actual useful body and head for each route. An eager whole-app React root, new SSR framework or heavier startup bundle is unnecessary for this scope.
+-
+-Use one public route/content registry to drive public HTML generation, links, per-page metadata, canonical URLs and the deployed XML sitemap. Keep it separate from the existing operational screen registry, with explicit links between public manuals and app launch destinations. Reuse guide copy/models/examples with in-app manuals instead of maintaining a separate inconsistent manual. Use shared design components; public reading cannot depend on personal app context.
+-
+-The app's existing navigation service can map supported screen states to stable app paths while retaining all serialized transitions/guards. Resolve deep links on initial load and refresh. Keep route context and personal selection in existing validated state rather than inventing public URLs for records. Define known legacy root entry and installed-PWA behavior before changing start URLs.
+-
+-## Per-page metadata and serving rules
+-
+-- Unique factual title and description in the initial HTML; one self-canonical URL per public page. Do not canonicalize all distinct manuals to `/`.
+-- Open Graph/Twitter title, description and valid image; use real asset URLs and reserve dimensions.
+-- Semantic heading structure, useful visible content and ordinary crawlable `<a href>` links to public pages. In-app state buttons alone are not the public discovery strategy.
+-- Appropriate factual WebSite/SoftwareApplication/WebPage/BreadcrumbList structured data where applicable, matching visible content. Structured data does not guarantee a rich result.
+-- `/sitemap.xml`: absolute canonical HTTPS public URLs only, valid XML/content type. Use truthful lastmod only when maintained from content changes, not every build timestamp.
+-- `/robots.txt`: production sitemap location and intended crawling policy. Do not disallow a URL and assume a crawler will still see its noindex directive. Private access is enforced independently.
+-- One canonical host; deliberate redirects from alias hosts and URL variants. Known public pages return200, real redirects use appropriate301/308 responses and unknown paths return404 instead of the app shell with200.
+-- All nonproduction previews have noindex, including b even when using the public feature edition. Production-indexability and Free/Full feature edition are separate configuration concerns. Avoid accidentally shipping preview noindex to production.
+-- Preserve minification, payload limits, service-worker behavior, manifest/start URL compatibility, cache updates and offline app workflows. Test real edge responses rather than relying only on a Vite development server.
+-
+-## Domain and saved-data decision
+-
+-The owner explicitly chose https://easydryfire.com for the complete public site and app navigation, with easydryfire.app redirecting to .com. No split marketing/app origins are planned. All canonical, social URL and public sitemap entries use .com.
+-
+-- Redirect HTTPS .app paths to matching HTTPS .com paths with a permanent301/308 response, not a JavaScript-only redirect. Preserve ordinary path/query meaning and avoid multi-hop chains; never add personal app data to the URL. Unknown target paths still produce a real404.
+-- Normalize HTTP/HTTPS and any configured www alias to the selected bare HTTPS .com host. Preserve valid deep links instead of sending every path to the homepage.
+-- Do not redirect b previews to production; keep their independent testing access and noindex policy.
+-- The existing Workers-origin app is a legacy-data recovery entry until its users can export/restore. Do not silently apply the .app alias policy to that old origin.
+-- Before enabling .app redirects, establish whether it already has saved user libraries; if so, provide a recovery/export window or other explicitly specified handover. Cross-origin IndexedDB cannot simply be read from .com.
+-- Cloudflare host bindings/edge redirect configuration remain owner-managed. Repository preparation/CI and actual live redirect verification are separate deliverables.
+-
+-Existing user storage is origin-scoped: moving from workers.dev to either custom domain does not automatically transfer IndexedDB. Paths on the same origin do not by themselves change IndexedDB ownership, but changing manifest start URLs/service-worker scope still requires compatibility testing. Provide an explicit backup/export/restore or other approved migration approach before moving existing users. Do not silently redirect away from access to an old library without a recovery path. Keep the existing app entry usable during migration.
+-
+-## SEO phase before structural refactoring
+-
+-1. **S1 — Confirm routing/domain/content contracts.** Use the confirmed .com canonical/.app redirect policy; specify legacy-data/installed-PWA compatibility, public versus operational inventory and factual copy/design. Record approved route names and metadata; no new routes are claimed as implemented yet.
+-2. **S2 — Implement public rendering and metadata.** Build-time public pages, shared guides, real internal links, metadata registry, deployed sitemap/robots, correct status/content-type behavior and preview noindex.
+-3. **S3 — Add compatible app deep links.** Preserve guards/drafts/Back/Forward, anonymous reading, noindex operational responses and existing data/offline/installed-app access. Keep URL state and screen state consistent.
+-4. **S4 — Complete acceptance and production handoff.** Full existing application gates plus SEO tests, owner-reviewed public-page visuals and edge HTTP verification. Owner promotes to main/configures production host and Search Console. Record actual results, not assumed indexing.
+-
+-Then refresh the approved baseline for intentional public-page/routing additions and begin the separate structural F1–F7 plan. Do not combine SEO redesign with unrelated persistence/engine refactoring or accept unrelated visual/performance regressions as SEO changes.
+-
+-## Verification
+-
+-- Request every public URL directly with JavaScript disabled: correct200 response, unique initial title/description/canonical and meaningful content; no gun setup or microphone requirement.
+-- Parse deployed HTML, JSON-LD, XML and robots files; verify sitemap URLs, internal links, images, redirect chains, trailing-slash behavior, canonical hosts and unknown404 responses.
+-- Verify public pages indexable, app pages noindex, previews noindex and no personal data in generated HTML/metadata. Review actual headers on target production/preview hosts.
+-- Exercise deep links/refresh, Back/Forward, invalid configuration drafts, active capture/unsaved-result guards, legacy entry, offline service worker and installed-PWA behavior.
+-- Run existing unit/coverage/integration, both-edition minified build/artifact/payload, pinned browser/visual and original performance gates. Add focused route/metadata tests with useful failures for missing or duplicate canonical/title and incorrect status/indexing rules.
+-- Update requirements/designs, route/screen maps, documentation sitemap/tree and component ownership evidence. Separate intentional new page references from unchanged existing screens.
+-- After owner production deployment: verify the chosen Search Console property, submit the real sitemap, inspect representative pages and monitor coverage/crawl errors. Sitemap submission and indexing are separate outcomes; no ranking/indexing guarantee.
+-
+-## Status
+-
+-CHG-060 implements all11public HTML pages, metadata/crawl files, readable operational app paths and the favicon fix. Complete candidate acceptance passed all8jobs in [run40104091922](https://github.com/matosaru/dryfire/actions/runs/40104091922), including1049unit tests/152suites, coverage, both-edition browser screenshots and original performance gates. Intentional new public references are separate from398unchanged app references. Application data schema/engines remain unchanged. b implementation is published; owner production promotion, live HTTP checks and Search Console/indexing are separate checkpoints. The owner-reported redirect and live domain responses remain independently unverified.
+-
+-[Current architecture sitemap](../architecture/application-sitemap.md) · [Existing SEO research](README.md) · [Structural follow-up](../project/react-refactor/follow-up-plan.md)
++Validate HTTP, initial semantic content, metadata/JSON-LD, XML/robots, all links, favicon, no-JS informational pages, production-root flow, unique sequence cold-entry/refresh/history and installed/offline compatibility. Review changed About/public captures in pinned Chromium/WebKit, preserve unrelated visual references and actual guide/GIF parity. Pass unit/coverage, integration, both-edition artifacts and original payload/timing budgets before b publication; promote through a checked b→main PR only. Cloudflare setup belongs to the owner; report observed CI/build/deployment separately. Search Console submission and search-engine indexing are external follow-ups, not guaranteed by a sitemap.
+diff --git a/docs/seo/routes.md b/docs/seo/routes.md
+index e2c5631..f2fcf44 100644
+--- a/docs/seo/routes.md
++++ b/docs/seo/routes.md
+@@ -4,50 +4,55 @@ Generated by `npm run docs:generate`; `npm run docs:check` rejects drift. Public
+ 
+ ## Search-engine sitemap
+ 
+-The deployed XML endpoint is **[https://easydryfire.com/sitemap.xml](https://easydryfire.com/sitemap.xml)**. It contains exactly the 11 public canonical URLs below. [robots.txt](https://easydryfire.com/robots.txt) advertises that sitemap. The build generates both from the same route registry; the [XML reference](templates/sitemap.xml) is documentation, not the deployed endpoint. Production URLs receive this implementation after the checked main release; a valid sitemap does not guarantee indexing.
++The deployed XML endpoint is **[https://easydryfire.com/sitemap.xml](https://easydryfire.com/sitemap.xml)**. It contains exactly the 14 public canonical URLs below. [robots.txt](https://easydryfire.com/robots.txt) advertises that sitemap. The build generates both from the same route registry; the [XML reference](templates/sitemap.xml) is documentation, not the deployed endpoint. Production URLs receive this implementation after the checked main release; a valid sitemap does not guarantee indexing.
+ 
+ ## Indexable public pages
+ 
+-Canonical origin: **https://easydryfire.com**. Each page has useful prerendered content, its own initial title/description/canonical/social metadata and factual JSON-LD. No JavaScript, gun profile or microphone is needed to read it. Only production public pages are indexable; previews remain noindex.
++Canonical origin: **https://easydryfire.com**. Each page has useful prerendered content, its own initial title/description/canonical/social metadata and factual JSON-LD. No gun profile or microphone is needed to read informational pages; they are readable without JavaScript. The app homepage requires JavaScript and discloses that requirement. Only production public pages are indexable; previews remain noindex.
+ 
+ | Canonical path | Page title | In XML sitemap |
+ | --- | --- | --- |
+ | [/](https://easydryfire.com/) | Dry Fire With Ease — Free Dry-Fire Practice App | Yes |
+-| [/practice/](https://easydryfire.com/practice/) | Dry-Fire Practice Modes — Dry Fire With Ease | Yes |
+-| [/practice/single-trigger-press/](https://easydryfire.com/practice/single-trigger-press/) | Single Trigger Press Practice — Dry Fire With Ease | Yes |
+-| [/practice/repeated-trigger-press/](https://easydryfire.com/practice/repeated-trigger-press/) | Repeated Trigger Press Practice — Dry Fire With Ease | Yes |
+-| [/practice/par-time/](https://easydryfire.com/practice/par-time/) | Par-Time Practice — Dry Fire With Ease | Yes |
+-| [/practice/trigger-control/](https://easydryfire.com/practice/trigger-control/) | Trigger Control Practice — Dry Fire With Ease | Yes |
+-| [/guides/sequence-drills/](https://easydryfire.com/guides/sequence-drills/) | Sequence Drills Guide — Dry Fire With Ease | Yes |
+-| [/guides/trigger-click-calibration/](https://easydryfire.com/guides/trigger-click-calibration/) | Trigger-Click Calibration — Dry Fire With Ease | Yes |
++| [/practice-modes/](https://easydryfire.com/practice-modes/) | Dry-Fire Practice Modes — Dry Fire With Ease | Yes |
++| [/single-trigger-press-guide/](https://easydryfire.com/single-trigger-press-guide/) | Single trigger press guide — Dry Fire With Ease | Yes |
++| [/repeated-trigger-press-guide/](https://easydryfire.com/repeated-trigger-press-guide/) | Repeated trigger press guide — Dry Fire With Ease | Yes |
++| [/par-time-practice-guide/](https://easydryfire.com/par-time-practice-guide/) | Par time practice guide — Dry Fire With Ease | Yes |
++| [/trigger-control-guide/](https://easydryfire.com/trigger-control-guide/) | Trigger control guide — Dry Fire With Ease | Yes |
++| [/rack-slide-trigger-pull-guide/](https://easydryfire.com/rack-slide-trigger-pull-guide/) | Rack slide → Trigger pull guide — Dry Fire With Ease | Yes |
++| [/magazine-change-trigger-pull-guide/](https://easydryfire.com/magazine-change-trigger-pull-guide/) | Magazine change → Trigger pull guide — Dry Fire With Ease | Yes |
++| [/draw-magazine-change-trigger-pull-guide/](https://easydryfire.com/draw-magazine-change-trigger-pull-guide/) | Draw from holster → Magazine change → Trigger pull guide — Dry Fire With Ease | Yes |
++| [/sequence-drills-guide/](https://easydryfire.com/sequence-drills-guide/) | Sequence Drills Guide — Dry Fire With Ease | Yes |
++| [/trigger-click-calibration-guide/](https://easydryfire.com/trigger-click-calibration-guide/) | Trigger-Click Calibration — Dry Fire With Ease | Yes |
+ | [/help/](https://easydryfire.com/help/) | Help and Browser Setup — Dry Fire With Ease | Yes |
+ | [/about/](https://easydryfire.com/about/) | About — Dry Fire With Ease | Yes |
+ | [/contact/](https://easydryfire.com/contact/) | Contact — Dry Fire With Ease | Yes |
+ 
+ ## Operational app URLs
+ 
+-These 16 paths open the app with explicit noindex and stay out of the XML sitemap. Paths contain screen/mode identity only; gun names, recordings and saved-session identifiers remain local. Opening a URL preserves existing setup/training/safety/capture guards and never automatically starts recording. A missing source context may return to the corresponding selection/setup screen.
++These 18 paths open the app with explicit noindex and stay out of the XML sitemap. Paths contain screen/mode identity only; gun names, recordings and saved-session identifiers remain local. Opening a URL preserves existing setup/training/safety/capture guards and never automatically starts recording. A missing source context may return to the corresponding selection/setup screen.
+ 
+ | Path | Screen | In XML sitemap |
+ | --- | --- | --- |
+-| `/app/` | Home | No; noindex |
+-| `/app/guns/setup/` | Gun setup | No; noindex |
+-| `/app/guns/` | My Guns | No; noindex |
+-| `/app/learn/` | Learn Sounds | No; noindex |
+-| `/app/drills/` | Drills | No; noindex |
+-| `/app/live-listen/` | Live Listen | No; noindex |
+-| `/app/history/` | History | No; noindex |
+-| `/app/settings/` | Settings | No; noindex |
+-| `/app/about/` | About | No; noindex |
+-| `/app/contact/` | Contact | No; noindex |
+-| `/app/sequence/` | Drill Session | No; noindex |
+-| `/app/practice-guide/` | About this practice | No; noindex |
+-| `/app/practice/single-trigger-press/` | Single trigger press | No; noindex |
+-| `/app/practice/repeated-trigger-press/` | Repeated trigger press | No; noindex |
+-| `/app/practice/par-time/` | Par time practice | No; noindex |
+-| `/app/practice/trigger-control/` | Trigger control | No; noindex |
+-
+-Public /about/ and /contact/ are distinct from app /app/about/ and /app/contact/; the latter retain the active app context and remain noindex. Installation instructions live in Settings; there is no separate /app/help/ route. Practice setup/run/review share their mode path; saved records do not get public URLs.
++| `/gun-setup/` | Gun setup | No; noindex |
++| `/guns/` | My Guns | No; noindex |
++| `/learn/` | Learn Sounds | No; noindex |
++| `/drills/` | Drills | No; noindex |
++| `/live-listen/` | Live Listen | No; noindex |
++| `/history/` | History | No; noindex |
++| `/settings/` | Settings | No; noindex |
++| `/single-trigger-press/` | Single trigger press | No; noindex |
++| `/repeated-trigger-press/` | Repeated trigger press | No; noindex |
++| `/par-time-practice/` | Par time practice | No; noindex |
++| `/trigger-control/` | Trigger control | No; noindex |
++| `/rack-slide-trigger-pull/` | Rack slide → Trigger pull | No; noindex |
++| `/magazine-change-trigger-pull/` | Magazine change → Trigger pull | No; noindex |
++| `/draw-magazine-change-trigger-pull/` | Draw from holster → Magazine change → Trigger pull | No; noindex |
++| `/trigger-pull-sequence/` | Trigger pull | No; noindex |
++| `/custom-sequence/` | Custom sequence | No; noindex |
++| `/trigger-pull-sequence-guide/` | Trigger pull guide | No; noindex |
++| `/custom-sequence-guide/` | Custom sequence guide | No; noindex |
++
++About, Contact and public manuals use one shared app screen at each canonical URL. Installation instructions are in Settings and the public /help/ page. Practice setup/run/review share their mode path; saved records do not get public URLs.
+ 
+ ## Aliases, redirects and errors
+ 
+@@ -55,11 +60,11 @@ Public /about/ and /contact/ are distinct from app /app/about/ and /app/contact/
+ | --- | --- |
+ | easydryfire.app with any path/query | Owner-configured permanent301 to matching easydryfire.com path/query; independently unverified here |
+ | www.easydryfire.com when attached to this Worker, or HTTP .com |308 to HTTPS canonical .com, preserving path/query |
+-| /app or a known public/app path without its trailing slash |308 to matching trailing-slash path |
+-| /index.html | Legacy noindex app entry |
+-| /welcome/ on production .com |308 to / |
+-| /welcome/ on preview/nonproduction | Public landing preview, noindex |
+-| / on nonproduction/Workers hosts | Legacy app entry, noindex |
++| Known legacy /app/* or nested guide URL |308 to matching flat URL, preserving query |
++| Known path without its trailing slash |308 to matching trailing-slash path |
++| /index.html |308 to / |
++| /welcome/ |308 to /about/; marketing content remains there |
++| / on nonproduction/Workers hosts | Same app homepage, noindex |
+ | /site/*, /src/*, source maps and unknown paths |404; internal output paths are not public pages |
+ | Unsupported methods |405 with GET/HEAD allowed |
+ 
+@@ -79,6 +84,9 @@ Noindex is not authentication. The private Full preview keeps its independent ac
+ | /guide-examples/repeated.gif | Opt-in silent example for Repeated trigger press |
+ | /guide-examples/par.gif | Opt-in silent example for Par time practice |
+ | /guide-examples/control.gif | Opt-in silent example for Trigger control |
++| /guide-examples/sequence-rack-trigger.gif | Opt-in silent example for Rack slide → Trigger pull |
++| /guide-examples/sequence-mag-trigger.gif | Opt-in silent example for Magazine change → Trigger pull |
++| /guide-examples/sequence-draw-mag-trigger.gif | Opt-in silent example for Draw from holster → Magazine change → Trigger pull |
+ 
+ ## Copied static asset URLs
+ 
+diff --git a/docs/seo/templates/sitemap.xml b/docs/seo/templates/sitemap.xml
+index 6d40657..692b7e7 100644
+--- a/docs/seo/templates/sitemap.xml
++++ b/docs/seo/templates/sitemap.xml
+@@ -1,13 +1,16 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <url><loc>https://easydryfire.com/</loc></url>
+-  <url><loc>https://easydryfire.com/practice/</loc></url>
+-  <url><loc>https://easydryfire.com/practice/single-trigger-press/</loc></url>
+-  <url><loc>https://easydryfire.com/practice/repeated-trigger-press/</loc></url>
+-  <url><loc>https://easydryfire.com/practice/par-time/</loc></url>
+-  <url><loc>https://easydryfire.com/practice/trigger-control/</loc></url>
+-  <url><loc>https://easydryfire.com/guides/sequence-drills/</loc></url>
+-  <url><loc>https://easydryfire.com/guides/trigger-click-calibration/</loc></url>
++  <url><loc>https://easydryfire.com/practice-modes/</loc></url>
++  <url><loc>https://easydryfire.com/single-trigger-press-guide/</loc></url>
++  <url><loc>https://easydryfire.com/repeated-trigger-press-guide/</loc></url>
++  <url><loc>https://easydryfire.com/par-time-practice-guide/</loc></url>
++  <url><loc>https://easydryfire.com/trigger-control-guide/</loc></url>
++  <url><loc>https://easydryfire.com/rack-slide-trigger-pull-guide/</loc></url>
++  <url><loc>https://easydryfire.com/magazine-change-trigger-pull-guide/</loc></url>
++  <url><loc>https://easydryfire.com/draw-magazine-change-trigger-pull-guide/</loc></url>
++  <url><loc>https://easydryfire.com/sequence-drills-guide/</loc></url>
++  <url><loc>https://easydryfire.com/trigger-click-calibration-guide/</loc></url>
+   <url><loc>https://easydryfire.com/help/</loc></url>
+   <url><loc>https://easydryfire.com/about/</loc></url>
+   <url><loc>https://easydryfire.com/contact/</loc></url>
 diff --git a/index.html b/index.html
 index 9ee52e6..f378cce 100644
 --- a/index.html
@@ -666,7 +1102,7 @@ index 9b48863..df12a86 100644
 -
 -export function appTitleFor(route){const titles={home:'Home',gunSetup:'Gun setup',guns:'My Guns',learn:'Learn Sounds',drills:'Drills',recognize:'Live Listen',history:'History',settings:'Settings',about:'About',contact:'Contact',practice:'Practice',session:'Drill Session',practiceGuide:'About this practice'};return `${titles[route?.view]??'App'} — Dry Fire With Ease`;}
 diff --git a/src/main.js b/src/main.js
-index 10a697b..44c2fed 100644
+index 10a697b..320ca5b 100644
 --- a/src/main.js
 +++ b/src/main.js
 @@ -1,4 +1,4 @@
@@ -785,7 +1221,15 @@ index 10a697b..44c2fed 100644
        event.preventDefault();
        void practiceGuideController.open(() => {
          if (activeView !== parent || profileLocked() || $('#safetyModal').open) return null;
-@@ -1253,7 +1295,7 @@ async function init() {
+@@ -1194,6 +1236,7 @@ async function init() {
+       await sessionController?.flush();
+       await practiceController?.flush();
+       await resetLibrary();
++      if(appURLs)window.history.replaceState(null,'','/');
+       window.location.reload();
+     } catch (error) { showError(error); setBusy(false); }
+   });
+@@ -1253,7 +1296,7 @@ async function init() {
    for (const gun of library.guns) recovered.push(...await recoverInterruptedSessions(gun.id));
    await loadActiveGun(library);
    renderLiveButton();
@@ -794,7 +1238,7 @@ index 10a697b..44c2fed 100644
    else if (pendingEntry && pendingEntry.view !== 'home') await openEntry();
    else { pendingEntry = null; switchView('home'); }
    const recoveredForGun = recovered.find(record => record.gunId === activeGun?.id);
-@@ -1262,6 +1304,7 @@ async function init() {
+@@ -1262,6 +1305,7 @@ async function init() {
      else await sessionController.showRecord(recoveredForGun);
    }
    setStatus('Ready');
@@ -941,6 +1385,48 @@ index 4385f75..9f0fb1c 100644
  });
 -
 -test('all supported app screens round-trip, and unknown/private identifiers do not become URL paths',()=>{for(const view of ['home','guns','gunSetup','learn','drills','recognize','history','settings','about','contact','session','practiceGuide'])expect(parseAppPath(appPathFor({view}))).toEqual({view});for(const mode of ['single','repeated','par','control'])expect(parseAppPath(appPathFor({view:'practice',mode}))).toEqual({view:'practice',mode});expect(appPathFor({view:'unknown',gunId:'secret'})).toBe('/app/');});
+diff --git a/tests/initialEntry.test.js b/tests/initialEntry.test.js
+index 8cf7fa6..ad7a9da 100644
+--- a/tests/initialEntry.test.js
++++ b/tests/initialEntry.test.js
+@@ -26,3 +26,10 @@ test.each([null,{id:'a',needsDetails:true}])('missing or incomplete profiles ret
+ test('settings remains available without a profile and still waits for its guarded route',async()=>{
+  const s=setup({view:'settings'},null);const completed=s.run();await Promise.resolve();expect(s.context.switchView).toHaveBeenCalledWith('settings');expect(s.context.openGunSetup).not.toHaveBeenCalled();expect(s.context.setStatus).not.toHaveBeenCalled();s.release();await completed;expect(s.context.setStatus).toHaveBeenCalledWith('Ready');
+ });
++
++test.each(['rack-trigger','mag-trigger','draw-mag-trigger'])('sequence entry initializes the exact requested preset before readiness: %s',async preset=>{
++ const s=setup({view:'session',preset});s.context.getDrill=jest.fn(id=>({id,steps:['trigger']}));s.context.customDrills=[];s.context.DRILLS=[];s.context.chooseDrill=jest.fn(()=>Promise.resolve());await s.run();expect(s.context.chooseDrill).toHaveBeenCalledWith(preset);expect(s.context.practiceController.open).not.toHaveBeenCalled();expect(s.context.setStatus).toHaveBeenCalledWith('Ready');
++});
++test('a missing custom selection returns to Drills rather than inventing a built-in',async()=>{
++ const s=setup({view:'session',preset:'custom'});s.context.getGunSetting=jest.fn(async()=> 'missing');s.context.getDrill=jest.fn(()=>null);s.context.customDrills=[];s.context.setMessage=jest.fn();const completed=s.run();await new Promise(resolve=>setImmediate(resolve));expect(s.context.switchView).toHaveBeenCalledWith('drills');s.release();await completed;expect(s.context.setMessage).toHaveBeenCalledWith(expect.stringContaining('not available'));
++});
+diff --git a/tests/practiceGuides.test.js b/tests/practiceGuides.test.js
+index 8a236e5..4cb5d08 100644
+--- a/tests/practiceGuides.test.js
++++ b/tests/practiceGuides.test.js
+@@ -1,4 +1,4 @@
+-import { getPracticeGuide, isGuideContextCurrent } from '../src/practiceGuides.js';
++import { getPracticeGuide, isGuideContextCurrent, isPublicGuideContextCurrent } from '../src/practiceGuides.js';
+ import { createScenario } from '../src/practiceGuideExamples.js';
+ const context = (mode, config = {}) => ({ type: 'practice', mode, gunId: 'gun-a', routeKey: 'setup-a', config });
+ 
+@@ -52,3 +52,16 @@ test('unknown modes, invalid endpoints and missing ownership do not create guide
+   expect(() => getPracticeGuide(context('missing'))).toThrow();
+   expect(() => getPracticeGuide({ ...context('single'), gunId: null })).toThrow();
+ });
++
++test('a public manual is a read-only current snapshot without a selected gun',()=>{
++ const source={...context('single'),gunId:'public-guide',routeKey:'public:single',publicEntry:true};
++ const before=structuredClone(source),guide=getPracticeGuide(source);
++ expect(guide.publicEntry).toBe(true);expect(guide.currentSetup).toContain('Example settings shown');expect(source).toEqual(before);
++ expect(isPublicGuideContextCurrent(guide,null)).toBe(true);
++ expect(isPublicGuideContextCurrent(guide,undefined)).toBe(true);
++ expect(isPublicGuideContextCurrent(guide,'other')).toBe(false);
++ expect(isPublicGuideContextCurrent({...guide,gunId:'gun-a'},'gun-a')).toBe(true);
++ expect(isPublicGuideContextCurrent({...guide,sourceKey:'other'},null)).toBe(false);
++ expect(isPublicGuideContextCurrent({...guide,publicEntry:false},null)).toBe(false);
++ expect(isPublicGuideContextCurrent(null,null)).toBe(false);
++});
 diff --git a/tests/privatePreview.test.js b/tests/privatePreview.test.js
 index 7292d33..5b13ef6 100644
 --- a/tests/privatePreview.test.js
@@ -993,6 +1479,24 @@ index a0415e2..03990ce 100644
 +test('sitemap contains canonical public content, including the app homepage and unique manuals, without private setup URLs',()=>{
 + const xml=sitemapXML();expect(PUBLIC_ROUTES).toHaveLength(14);for(const route of PUBLIC_ROUTES)expect(xml).toContain(CANONICAL_ORIGIN+route.path);for(const path of ['/app/','/settings/','/history/','/rack-slide-trigger-pull/'])expect(xml).not.toContain('<loc>'+CANONICAL_ORIGIN+path+'</loc>');expect(new Set(PUBLIC_ROUTES.map(r=>r.title)).size).toBe(PUBLIC_ROUTES.length);
  });
+diff --git a/tests/routeContext.test.js b/tests/routeContext.test.js
+index 7ca9a2f..bc27a81 100644
+--- a/tests/routeContext.test.js
++++ b/tests/routeContext.test.js
+@@ -79,3 +79,13 @@ test.each(['practice', 'session'])('guide validates the %s owner, snapshot, gun
+   guide = null;
+   expect(s.routeFor('practiceGuide')).toEqual({ ...s.route('practiceGuide'), context: undefined });
+ });
++
++test('only a current read-only public guide can bypass the missing-profile setup gate',()=>{
++ const guide={id:'single',publicEntry:true,gunId:'public-guide',parent:'practice',sourceKey:'public:single',contextKey:'practice:public:single'};
++ const route={view:'practiceGuide',gunId:null,context:guide.contextKey};
++ const current=value=>[null,null,null,{current:()=>value}];
++ expect(resolveRouteView(route,current(guide))).toBe('practiceGuide');
++ for(const invalid of [null,{...guide,publicEntry:false},{...guide,gunId:'other'},{...guide,sourceKey:'stale'}])expect(resolveRouteView(route,current(invalid))).toBe('gunSetup');
++ expect(resolveRouteView({...route,context:'old'},current(guide))).toBe('gunSetup');
++ expect(resolveRouteView(route,[{id:'new'},null,null,{current:()=>guide}])).toBe('drills');
++});
 diff --git a/tests/serviceWorker.test.js b/tests/serviceWorker.test.js
 index 631cbb6..1e1cd0f 100644
 --- a/tests/serviceWorker.test.js
@@ -1235,6 +1739,52 @@ index 09b5be7..06bf1e4 100644
  const preview=await site.fetch(new Request('https://preview.example/help/'),{ASSETS:assets});assert.match(preview.headers.get('X-Robots-Tag'),/noindex/);
 -console.log(`Public site verified: ${PUBLIC_ROUTES.length} prerendered pages, metadata, links, XML/robots and production/preview/app HTTP policies. Local Worker execution; live edge not verified.`);
 +console.log(`Public site verified: ${PUBLIC_ROUTES.length} canonical pages, app root, shared prerendered guides/About, flat routes, legacy redirects, metadata, links and XML/robots. Local Worker execution; live edge not verified.`);
+diff --git a/visual-tests/guide-loading.spec.js b/visual-tests/guide-loading.spec.js
+index 3c48251..73a8574 100644
+--- a/visual-tests/guide-loading.spec.js
++++ b/visual-tests/guide-loading.spec.js
+@@ -28,5 +28,5 @@ test('failed guide download leaves setup usable and reports only an explicit ope
+  await page.route('**/assets/practiceGuideController-*.js*',async route=>{await route.abort();rejected();});await restore(page);
+  await practice(page,'single');await failed;
+  await page.locator('#practiceRepetitions').fill('23');await page.locator('#practiceGuideLink').click();await expect(page.locator('#appMessage')).toContainText('Your setup is unchanged');await expect(page.locator('#practiceConfigure')).toBeVisible();await expect(page.locator('#practiceRepetitions')).toHaveValue('23');
+- await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.unroute('**/assets/practiceGuideController-*.js*');await page.reload();await expect(page.locator('#homeView')).toBeVisible();await practice(page,'single');await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceGuideView')).toBeVisible();expect(await page.evaluate(()=>window.__guideMicRequests)).toBe(0);
++ await page.locator('#settingsShortcut').click();await expect(page.locator('#settingsView')).toBeVisible();await page.unroute('**/assets/practiceGuideController-*.js*');await page.reload();await expect(page.locator('#settingsView')).toBeVisible();await practice(page,'single');await page.locator('#practiceGuideLink').click();await expect(page.locator('#practiceGuideView')).toBeVisible();expect(await page.evaluate(()=>window.__guideMicRequests)).toBe(0);
+ });
+diff --git a/visual-tests/gun-management.spec.js b/visual-tests/gun-management.spec.js
+index d2f8846..52c744c 100644
+--- a/visual-tests/gun-management.spec.js
++++ b/visual-tests/gun-management.spec.js
+@@ -27,7 +27,7 @@ test('editing a nonselected gun preserves selection and every owned record acros
+   for(const key of Object.keys(before).filter(key=>!['guns','exportedAt'].includes(key)))expect(after[key]).toEqual(before[key]);
+   expect(after.guns.find(gun=>gun.id==='qa-gun-b')).toMatchObject({name:'Updated carbine',type:'Shotguns'});
+   expect(after.guns.filter(gun=>gun.id!=='qa-gun-b')).toEqual(before.guns.filter(gun=>gun.id!=='qa-gun-b'));
+-  await page.reload();await expect(page.locator('#homeView')).toBeVisible();
++  await page.reload();await expect(page.locator('#settingsView')).toBeVisible();
+   await page.locator('#gunSwitcherBtn').click();await page.locator('[data-edit-gun-id="qa-gun-b"]').click();
+   await expect(page.locator('#gunName')).toHaveValue('Updated carbine');
+   await expect(page.locator('[name="gunTypeChoice"][value="Shotguns"]')).toBeChecked();
+@@ -51,7 +51,7 @@ test('delete cancellation preserves the library; deleting the final gun clears i
+   const cleared=await backup(page);
+   expect(cleared.guns).toEqual([]);expect(cleared.activeGunId).toBeNull();
+   for(const key of ['gunSettings','examples','events','sessions'])expect(cleared[key]).toEqual([]);
+-  await page.reload();await expect(page.locator('#gunSetupView')).toBeVisible();
++  await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();
+ });
+ 
+ test('invalid edit drafts survive About and Contact, then Cancel preserves every saved record',async({page})=>{
+diff --git a/visual-tests/practice-guides.spec.js b/visual-tests/practice-guides.spec.js
+index 9bfd133..a5e79f5 100644
+--- a/visual-tests/practice-guides.spec.js
++++ b/visual-tests/practice-guides.spec.js
+@@ -53,7 +53,7 @@ test('browser Back/Forward restores the same setup and guide; refresh does not r
+   await expect(page.locator('#practiceGuideView')).toBeVisible(); await page.goBack();
+   await expect(page.locator('#practiceConfigure')).toBeVisible(); await expect(page.locator('#practiceRepetitions')).toHaveValue('23');
+   await page.goForward(); await expect(page.locator('#practiceGuideView')).toBeVisible();
+-  await page.reload(); await expect(page.locator('#homeView')).toBeVisible();
++  await page.reload(); await expect(page.locator('#practiceGuideView')).toBeVisible();
+   expect(await page.evaluate(() => window.__guideMicRequests)).toBe(0);
+ });
+ 
 diff --git a/visual-tests/public-site.spec.js b/visual-tests/public-site.spec.js
 index f8a2886..0143cb3 100644
 --- a/visual-tests/public-site.spec.js
@@ -1440,3 +1990,18 @@ index 81abb8f..710175d 100644
    event.respondWith((async () => {
      const cache = await caches.open(CACHE);
      const cached = await cache.match(request, { ignoreSearch: true });
+diff --git a/wrangler.private-preview.jsonc b/wrangler.private-preview.jsonc
+index abd5f4f..1cb2174 100644
+--- a/wrangler.private-preview.jsonc
++++ b/wrangler.private-preview.jsonc
+@@ -7,7 +7,9 @@
+   "assets": {
+     "directory": "./dist",
+     "binding": "ASSETS",
+-    "run_worker_first": true
++    "run_worker_first": true,
++    "html_handling": "none",
++    "not_found_handling": "404-page"
+   },
+   "vars": {
+     "ACCESS_HOSTNAME": "dev-dryfire.matosaru.workers.dev",
