@@ -1,0 +1,115 @@
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index 4749478..803d718 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -817,7 +817,7 @@
+     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
+     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
+     "src/storage.js": "c16080ebe834e7aff8d31ca4d8277df735827041cab6ddf3dcc43ae2d90de03f",
+-    "vite.config.js": "5a1c6e34a2f6c899fca8a6fcb57218f1acca148fb79a047f16bcbeb7c317cde2",
++    "vite.config.js": "db2c857ff70bebdac7f08631104246a17c652d623686a7e121c1f670f5bd1c98",
+     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
+     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
+     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
+@@ -998,7 +998,7 @@
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+-    "tools/minify-html.mjs": "7798a5e447e687c935e325e8ca2a4d05541bb24a7c3cbef90fd0b19503540cfb",
++    "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
+     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "packages/ui/src/DrillSetup/DrillSetup.tsx": "d8d803a87a3050830ba22a8977799cce0b016145c2192c809dd22fbfca6ac33c",
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index a745e51..8581d63 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -115,8 +115,8 @@
+     "src/main.js": "11164f1681c424c8b9c1818881492fdb8605399979d2b4ab4247e44e475b7ef7",
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+-    "vite.config.js": "5a1c6e34a2f6c899fca8a6fcb57218f1acca148fb79a047f16bcbeb7c317cde2",
+-    "tools/minify-html.mjs": "7798a5e447e687c935e325e8ca2a4d05541bb24a7c3cbef90fd0b19503540cfb",
++    "vite.config.js": "db2c857ff70bebdac7f08631104246a17c652d623686a7e121c1f670f5bd1c98",
++    "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
+     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
+diff --git a/tests/htmlMinification.test.js b/tests/htmlMinification.test.js
+index 1ae81a1..6ff7402 100644
+--- a/tests/htmlMinification.test.js
++++ b/tests/htmlMinification.test.js
+@@ -1,6 +1,6 @@
+ import {JSDOM} from 'jsdom';
+ import {readFileSync} from 'node:fs';
+-import {minifyProductionHtml} from '../tools/minify-html.mjs';
++import {minifyProductionHtml, prioritizeAppStyles} from '../tools/minify-html.mjs';
+ import {renderPageTemplates} from '../tools/page-templates.mjs';
+ const dom=new JSDOM('');const document=dom.window.document;afterAll(()=>dom.window.close());
+ const normalized=html=>{
+@@ -26,3 +26,19 @@ test('normal layout whitespace compacts while inline word boundaries and preform
+  const result=await minifyProductionHtml(html);expect(result.length).toBeLessThan(html.length);expect(normalized(result)).toBe(normalized(html));
+  const host=document.createElement('template');host.innerHTML=result;expect(host.content.querySelector('pre').textContent).toBe('  a\n    b');expect(host.content.querySelector('textarea').textContent).toBe('  keep\n    draft');expect(host.content.querySelectorAll('p')[1].textContent).toBe('Second word');
+ });
++
++test('critical app styles are discovered after viewport and before module loading without changing resources or body',()=>{
++ const html='<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>App</title><script type="module" crossorigin src="/app.js"></script><link rel="stylesheet" crossorigin href="/one.css"><link rel="stylesheet" href="/two.css"><link rel="manifest" href="/manifest.json"></head><body><p>Unchanged</p></body></html>';
++ const result=prioritizeAppStyles(html);const page=new JSDOM(result);const head=page.window.document.head;
++ expect([...head.querySelectorAll('link[rel=stylesheet]')].map(node=>node.getAttribute('href'))).toEqual(['/one.css','/two.css']);
++ expect(head.querySelector('link[rel=stylesheet]').hasAttribute('crossorigin')).toBe(true);
++ expect(result.indexOf('name="viewport"')).toBeLessThan(result.indexOf('href="/one.css"'));
++ expect(result.indexOf('href="/two.css"')).toBeLessThan(result.indexOf('type="module"'));
++ expect(head.querySelector('script').getAttribute('src')).toBe('/app.js');
++ expect(head.querySelector('link[rel=manifest]').getAttribute('href')).toBe('/manifest.json');
++ expect(result.slice(result.indexOf('<body>'))).toBe(html.slice(html.indexOf('<body>')));page.window.close();
++});
++test('public documents without modules and documents without styles stay unchanged',()=>{
++ for(const html of ['<html><head><link rel="stylesheet" href="/public.css"></head><body>Public</body></html>','<head><script type="module" src="/app.js"></script></head>','<body>Fragment</body>'])expect(prioritizeAppStyles(html)).toBe(html);
++ expect(prioritizeAppStyles('<head><script type="module" src="/app.js"></script><link rel="stylesheet" href="/app.css"></head>')).toMatch(/^<head>\s*<link/);
++});
+diff --git a/tools/minify-html.mjs b/tools/minify-html.mjs
+index d15b3c2..00bfad8 100644
+--- a/tools/minify-html.mjs
++++ b/tools/minify-html.mjs
+@@ -11,3 +11,19 @@ export async function minifyProductionHtml(html) {
+   const start = body.index + body[1].length;
+   return html.slice(0, start) + await minify(body[2], options) + html.slice(start + body[2].length);
+ }
++
++/** Discover the app's critical CSS before module fetching. Keep resource attributes,
++ * stylesheet order and the viewport declaration; this changes no body markup. */
++export function prioritizeAppStyles(html) {
++  return html.replace(/<head\b[^>]*>[\s\S]*?<\/head>/i, head => {
++    if (!/<script\b[^>]*\btype=["']module["']/i.test(head)) return head;
++    const stylesheet = /<link\b(?=[^>]*\brel=["']stylesheet["'])[^>]*>/gi;
++    const styles = head.match(stylesheet);
++    if (!styles?.length) return head;
++    const remaining = head.replace(stylesheet, '');
++    const anchor = /<meta\b[^>]*\bname=["']viewport["'][^>]*>/i;
++    return anchor.test(remaining)
++      ? remaining.replace(anchor, tag => tag + '\n' + styles.join('\n'))
++      : remaining.replace(/<head\b[^>]*>/i, tag => tag + '\n' + styles.join('\n'));
++  });
++}
+diff --git a/vite.config.js b/vite.config.js
+index d263ca4..bb9eaa3 100644
+--- a/vite.config.js
++++ b/vite.config.js
+@@ -8,7 +8,7 @@ import { renderPageTemplates } from './tools/page-templates.mjs';
+ import { publicPagesPlugin } from './tools/public-pages.mjs';
+ import {publicRoute,publicAssetPath} from './site/routes.js';
+ import {isAppPath, offlineAppPaths} from './src/appPaths.js';
+-import { minifyProductionHtml } from './tools/minify-html.mjs';
++import { minifyProductionHtml, prioritizeAppStyles } from './tools/minify-html.mjs';
+ 
+ // Ship minified production code without exposing the readable src/ modules.
+ // Worker entries also pass through Oxc, unlike files copied from public/.
+@@ -41,7 +41,7 @@ export default defineConfig(({ mode }) => {
+       assets: Object.keys(bundle).filter(path => /\.(js|css)$/.test(path)).sort().map(path => `/${path}`) }, null, 2) + '\n' });
+   } } }, { name: 'compact-production-html', generateBundle: { order: 'post', async handler(_options, bundle) {
+     const html = bundle['index.html'];
+-    if (html?.type === 'asset') html.source = await minifyProductionHtml(String(html.source));
++    if (html?.type === 'asset') html.source = await minifyProductionHtml(prioritizeAppStyles(String(html.source)));
+   } } }],
+   base: '/',
+   build: {
