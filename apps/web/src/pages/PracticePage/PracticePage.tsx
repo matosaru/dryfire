@@ -3,14 +3,14 @@ import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {PracticeRun} from '@dryfire/ui/PracticeRun';
 import {PracticeReview} from '@dryfire/ui/PracticeReview';
-export type PracticePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
+export type PracticePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;guideHref?:string;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
 /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
-export function PracticePage({title,gunName,contextHidden=false,guideHidden=false,configure,run,review,steps,onBack,onGuide,onAction}:PracticePageProps){return <>
+export function PracticePage({title,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,onBack,onGuide,onAction}:PracticePageProps){return <>
 <PageHeading id="practice-title" title={title??'Practice'} backId="practiceBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
 
       <p className={contextHidden?'gun-context hidden':'gun-context'}>Practice for <strong className="gun-context-name">{gunName}</strong>.</p>
       <DrillSetupSteps id="practiceSteps" label="Required sounds">{steps}</DrillSetupSteps>
-      <DrillGuideLink id="practiceGuideLink" hidden={guideHidden} onClick={onGuide}/>
+      <DrillGuideLink id="practiceGuideLink" href={guideHref} hidden={guideHidden} onClick={onGuide}/>
       {configure??<>
       <div id="practiceConfigure">
         <DrillSetup prefix="practice" legend="Practice setup" footer={<><p id="practiceCueNote" className="muted small"></p><p id="practiceReadiness" className="session-readiness" role="status"></p><button onClick={()=>onAction?.('practiceLearnBtn')} id="practiceLearnBtn" className="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" className="button primary wide-action" type="submit">Start Practice</button></>}>

@@ -27,7 +27,7 @@ test('editing a nonselected gun preserves selection and every owned record acros
   for(const key of Object.keys(before).filter(key=>!['guns','exportedAt'].includes(key)))expect(after[key]).toEqual(before[key]);
   expect(after.guns.find(gun=>gun.id==='qa-gun-b')).toMatchObject({name:'Updated carbine',type:'Shotguns'});
   expect(after.guns.filter(gun=>gun.id!=='qa-gun-b')).toEqual(before.guns.filter(gun=>gun.id!=='qa-gun-b'));
-  await page.reload();await expect(page.locator('#homeView')).toBeVisible();
+  await page.reload();await expect(page.locator('#settingsView')).toBeVisible();
   await page.locator('#gunSwitcherBtn').click();await page.locator('[data-edit-gun-id="qa-gun-b"]').click();
   await expect(page.locator('#gunName')).toHaveValue('Updated carbine');
   await expect(page.locator('[name="gunTypeChoice"][value="Shotguns"]')).toBeChecked();
@@ -51,7 +51,7 @@ test('delete cancellation preserves the library; deleting the final gun clears i
   const cleared=await backup(page);
   expect(cleared.guns).toEqual([]);expect(cleared.activeGunId).toBeNull();
   for(const key of ['gunSettings','examples','events','sessions'])expect(cleared[key]).toEqual([]);
-  await page.reload();await expect(page.locator('#gunSetupView')).toBeVisible();
+  await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();
 });
 
 test('invalid edit drafts survive About and Contact, then Cancel preserves every saved record',async({page})=>{

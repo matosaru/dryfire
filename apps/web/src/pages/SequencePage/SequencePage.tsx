@@ -3,15 +3,15 @@ import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {SequenceRun} from '@dryfire/ui/SequenceRun';
 import {SequenceReview} from '@dryfire/ui/SequenceReview';
-export type SequencePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
+export type SequencePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;guideHref?:string;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
 /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
-export function SequencePage({title,gunName,contextHidden=false,guideHidden=false,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){return <>
+export function SequencePage({title,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){return <>
 <PageHeading id="session-title" title={title??'Drill Session'} backId="sessionBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
 
       <p className={contextHidden?'gun-context hidden':'gun-context'}>Session for <strong className="gun-context-name">{gunName}</strong>.</p>
       <p id="sessionPresetName" className="session-preset-name">{presetName}</p>
       <DrillSetupSteps id="sessionSteps" label="Ordered sound sequence">{steps}</DrillSetupSteps>
-      <DrillGuideLink id="sessionGuideLink" hidden={guideHidden} onClick={onGuide}/>
+      <DrillGuideLink id="sessionGuideLink" href={guideHref} hidden={guideHidden} onClick={onGuide}/>
 
       {configure??<>
       <div id="sessionConfigure">

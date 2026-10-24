@@ -47,7 +47,7 @@ function content(id) {
     case 'gunSetup': return renderGunSetupPage();
     case 'home': return renderHomePage();
     case 'guns': return renderGunsPage();
-    case 'about': case 'contact': return renderInformationPage(id);
+    case 'about': case 'contact': return renderInformationPage(id,true);
     default: throw new Error(`Unknown page definition: ${id}`);
   }
 }

@@ -1,4 +1,5 @@
-import {parseAppPath,appPathFor,appTitleFor} from './appPaths.js';
+import {startGunPreferenceReads} from './gunPreferenceReads.js';
+import {parseAppPath,isAppPath,appPathFor,appTitleFor,isIndexableAppPath,setupForGuide} from './appPaths.js';
 import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
 import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
 import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
@@ -44,9 +45,50 @@ const labelMeta = {
   reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple' },
 };
 const $ = selectNode;
-const appURLs=location.pathname==='/app'||location.pathname.startsWith('/app/');
+const appURLs=isAppPath(location.pathname);
 let pendingEntry=appURLs?parseAppPath(location.pathname):null;
-async function openEntry(){const entry=pendingEntry;pendingEntry=null;if(entry?.mode)return practiceController.open(entry.mode);return switchView(entry?.view??'home');}
+let appStarted=false;
+const canonicalLink=document.querySelector('link[rel=canonical]');
+let metadataPath=canonicalLink?.getAttribute('href')?.replace('https://easydryfire.com','');
+async function openEntry(){const entry=pendingEntry;pendingEntry=null;return openAppEntry(entry??{view:'home'});}
+async function missingSequence(){await switchView('drills');setMessage('This sequence is not available for the selected gun. Choose a drill.');}
+async function openAppEntry(entry){
+  if(entry.view==='practiceGuide' && entry.guideId) return openPublicGuide(entry.guideId);
+  if((!activeGun||activeGun.needsDetails) && ['practice','session'].includes(entry.view)){pendingEntry=entry;openGunSetup(activeGun);return;}
+  if(entry.mode)return practiceController.open(entry.mode);
+  if(entry.view==='session'){
+    const owner=activeGun?.id;
+    const id=entry.preset==='custom'?await getGunSetting('selectedDrill','',owner):entry.preset;
+    if(owner!==activeGun?.id)return;
+    const drill=getDrill(id,customDrills);
+    if(!drill || entry.preset==='custom'&&DRILLS.some(row=>row.id===id))return missingSequence();
+    return chooseDrill(id);
+  }
+  return switchView(entry.view);
+}
+async function openPublicGuide(guideId){
+  const setup=setupForGuide(guideId);if(!setup)return missingSequence();
+  const owner=activeGun?.id;
+  let drill;
+  if(setup.view==='session'){
+    if(setup.preset==='custom' && (!activeGun||activeGun.needsDetails)){pendingEntry={view:'practiceGuide',guideId};openGunSetup(activeGun);return;}
+    const id=setup.preset==='custom'?await getGunSetting('selectedDrill','',owner):setup.preset;
+    if(owner!==activeGun?.id)return;
+    drill=getDrill(id,customDrills);
+    if(!drill || setup.preset==='custom'&&DRILLS.some(row=>row.id===id))return missingSequence();
+  }
+  return practiceGuideController.open(()=>({type:setup.view==='practice'?'practice':'sequence',mode:setup.mode,drill,
+    gunId:activeGun?.id??'public-guide',routeKey:`public:${guideId}`,publicEntry:true}));
+}
+function navigateAppLink(event){
+  const link=event.target?.closest?.('a[data-app-route]');
+  if(!link||!appStarted||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||link.target&&link.target!=='_self')return;
+  const url=new URL(link.href,location.href),entry=url.origin===location.origin?parseAppPath(url.pathname):null;
+  if(!entry)return;
+  event.preventDefault();
+  if(profileLocked()||practiceController?.hasUnsavedResults()||sessionController?.hasUnsavedResults()){showError(new Error('Finish the current action or save results before leaving this screen.'));return;}
+  openAppEntry(entry).catch(showError);
+}
 const gunTypeImages = { Handguns: 'handgun', 'Rifles and Carbines': 'rifle', Shotguns: 'shotgun' };
 function gunImagePath(type) { return `/gun-types/${gunTypeImages[type] || 'unknown'}.svg`; }
 let examples = [];
@@ -247,15 +289,16 @@ async function loadActiveGun(overview) {
   customDrills = id ? await getCustomDrills(id) : [];
   const legacy = id ? await getOutdatedExampleCount(id) : 0;
   renderModelNotice(`${legacy} older training sample(s) use an incompatible feature format and are ignored. Reset this gun's sounds and record new samples for the updated model.`,legacy===0);
-  $('#maxResults').value = id ? normalizeMaxResults(await getGunSetting('maxResults', 50, id)) : 50;
-  liveValue("sensitivity",id ? await getGunSetting('sensitivity', 'normal', id) : 'normal');
+  const preferences=id?startGunPreferenceReads(id,getGunSetting,getCalibrationExamples):null;
+  $('#maxResults').value = id ? normalizeMaxResults(await preferences[0]()) : 50;
+  liveValue("sensitivity",id ? await preferences[1]() : 'normal');
   if (!$('#sensitivity').value) liveValue("sensitivity",'normal');
-  const savedDrill = id ? await getGunSetting('selectedDrill', '', id) : '';
-  // Preserve saved-preset validation and its read/error ordering; selection lives in the session controller.
+  const savedDrill = id ? await preferences[2]() : '';
+  // Preserve validation/error consumption order for prefetched reads; selection lives in the session controller.
   currentDrill(savedDrill);
-  audioPreferences = normalizeAudioPreferences(id ? await getGunSetting('audioPreferences', {}, id) : {});
-  calibration = id ? await getCalibrationExamples(id) : [];
-  const storedLabels = id ? await getGunSetting('enabledSoundLabels', null, id) : null;
+  audioPreferences = normalizeAudioPreferences(id ? await preferences[3]() : {});
+  calibration = id ? await preferences[4]() : [];
+  const storedLabels = id ? await preferences[5]() : null;
   enabledSoundLabels = storedLabels ? normalizeEnabledLabels(storedLabels) : initialEnabledLabels(examples);
   processingReport = null;
   renderLiveOptions(); // Free listening and the saved timed preset have separate state.
@@ -425,7 +468,7 @@ async function chooseDrill(id) {
     await setGunSetting('selectedDrill', id, activeGun.id);
   } catch (error) { showError(error); return; }
   finally { preferencePending = false; renderLiveButton(); renderClassCards(); }
-  sessionController.open(drill).catch(showError);
+  await sessionController.open(drill).catch(showError);
 }
 function renderCustomCatalog() {
   if(drillsPage){const view=drillCards();drillsPage.update({customs:view.customs,emptyCustom:view.emptyCustom});return;}
@@ -583,7 +626,7 @@ function renderDrillCatalog() {
   }
 }
 
-function routeFor(name) { return { view: name, mode:name==='practice'?practiceController?.practiceMode?.():undefined, gunId: activeGun?.id || null,
+function routeFor(name) { return { view: name, preset:name==='session'?sessionController?.selectionId?.():undefined, guideId:name==='practiceGuide'?practiceGuideController?.current()?.id:undefined, mode:name==='practice'?practiceController?.practiceMode?.():undefined, gunId: activeGun?.id || null,
   context: name === 'practiceGuide' ? practiceGuideController?.current()?.contextKey : name === 'practice' ? practiceController?.routeKey() : name === 'session' ? sessionController?.routeKey() : null }; }
 function resolveRoute(route) {
   return routeFor(resolveRouteView(route, [activeGun, practiceController, sessionController, practiceGuideController]));
@@ -596,7 +639,7 @@ function displayView(name) {
     showError(new Error('Practice results are not saved. Keep this review open and retry saving.'));
     return;
   }
-  if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name)) { openGunSetup(activeGun); return; }
+  if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
   if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
   const initialDisplay = document.body.dataset.view === 'loading';
   informationPages.show(name);
@@ -606,7 +649,7 @@ function displayView(name) {
   if(name==='practice'||name==='session')void practiceGuideController.prepare().catch(()=>{});
   const previousView=activeView;
   activeView=name;
-  if(appURLs){document.title=appTitleFor(routeFor(name));const canonical=document.querySelector('link[rel=canonical]');if(canonical)canonical.href='https://easydryfire.com'+appPathFor(routeFor(name));}
+  if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
   if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
@@ -1033,7 +1076,7 @@ async function init() {
   }
   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
-  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?appPathFor:undefined,
+  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>{const path=(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search;return path===location.pathname+location.search?undefined:path;}):undefined,
     show: route => displayView(route.view), canLeave: () => !busy && !profileLoading && !preferencePending && !practiceController?.hasUnsavedResults() && !sessionController?.hasUnsavedResults(),
     beforeLeave: async () => { practiceGuideController?.pause(); safetyGate?.cancel(); if (liveSession || livePendingStart) await stopLive();
       if (sessionController?.locked()) await sessionController.interrupt('navigation');
@@ -1041,9 +1084,11 @@ async function init() {
   safetyGate = createSafetyGate({ dialog: $('#safetyModal'), checkbox: $('#safetyModalAck'), confirmButton: $('#safetyConfirmBtn'), cancelButton: $('#safetyCancelBtn'),
     isConfirmed: () => $('#safetyAck').checked, confirmState: () => { $('#safetyAck').checked = true; $('#safetyAck').dispatchEvent(new Event('change')); },
     identity: () => `${activeGun?.id}|${activeView}`, onError: showError });
-  practiceGuideController = createPracticeGuideBridge({ onBack: parent => goBack(parent), onNavigate: () => switchView('practiceGuide'), onError: showError });
+  practiceGuideController = createPracticeGuideBridge({ onBack: parent => {const guide=practiceGuideController.current();if(guide?.publicEntry){const target=setupForGuide(guide.id);if(target)openAppEntry(target).catch(showError);}else goBack(parent);}, onNavigate: () => switchView('practiceGuide'), onError: showError });
+  document.addEventListener('click',navigateAppLink);
   for (const [id, parent] of [['practiceGuideLink', 'practice'], ['sessionGuideLink', 'session']]) {
     const handler=event => {
+      if(event.button||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
       event.preventDefault();
       void practiceGuideController.open(() => {
         if (activeView !== parent || profileLocked() || $('#safetyModal').open) return null;
@@ -1136,7 +1181,7 @@ async function init() {
       await renderHistory();
       setBusy(false);
       if (!activeGun || activeGun.needsDetails) openGunSetup(activeGun);
-      else if(pendingEntry)await openEntry();else switchView('home');
+      else if(pendingEntry&&pendingEntry.view!=='home')await openEntry();else {pendingEntry=null;switchView('home');}
       setMessage(`Restored ${result.guns} gun profiles, ${result.examples} sound examples, ${result.events} recognition results and ${result.sessions} saved drill sessions.`);
     } catch (error) { showError(error); }
     finally { setBusy(false); renderClassCards(); }
@@ -1194,6 +1239,7 @@ async function init() {
       await sessionController?.flush();
       await practiceController?.flush();
       await resetLibrary();
+      if(appURLs)window.history.replaceState(null,'','/');
       window.location.reload();
     } catch (error) { showError(error); setBusy(false); }
   });
@@ -1253,7 +1299,7 @@ async function init() {
   for (const gun of library.guns) recovered.push(...await recoverInterruptedSessions(gun.id));
   await loadActiveGun(library);
   renderLiveButton();
-  if (!activeGun || activeGun.needsDetails) {if(pendingEntry&&['settings','about','contact','guns','gunSetup'].includes(pendingEntry.view))await openEntry();else openGunSetup(activeGun);}
+  if (!activeGun || activeGun.needsDetails) {if(pendingEntry&&(['settings','about','contact','guns','gunSetup'].includes(pendingEntry.view)||pendingEntry.view==='practiceGuide'&&pendingEntry.guideId!=='sequence-custom'))await openEntry();else openGunSetup(activeGun);}
   else if (pendingEntry && pendingEntry.view !== 'home') await openEntry();
   else { pendingEntry = null; switchView('home'); }
   const recoveredForGun = recovered.find(record => record.gunId === activeGun?.id);
@@ -1262,6 +1308,7 @@ async function init() {
     else await sessionController.showRecord(recoveredForGun);
   }
   setStatus('Ready');
+  appStarted=true;
   if (practiceController) afterPaint(practiceController.renderCatalog).catch(showError);
 }
 

@@ -8,7 +8,7 @@
     "utilities"
   ],
   "orientation": "portrait-primary",
-  "start_url": "/app/",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#090d10",

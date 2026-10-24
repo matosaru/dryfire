@@ -1,3 +1,4 @@
+import {materializeStaticCatalog} from '../../../../src/staticCatalog.js';
 import type { mountInformationPages } from './informationPages.tsx';
 import { createChromeBridge, type ChromeFactory } from './chromeBridge.ts';
 type Pages = ReturnType<typeof mountInformationPages>;
@@ -13,7 +14,7 @@ export function createInformationBridge({ onBack, onError, doc = document,
   let pages: Pages | undefined, pending: Promise<void> | undefined;
   let ready: Module | undefined;
   let full = false, disposed = false;
-  const summary = doc.getElementById('aboutFeatureSummary');
+  const summary = doc.getElementById('aboutFeatureSummary') ?? doc.getElementById('aboutView')?.querySelector('template')?.content.getElementById('aboutFeatureSummary');
   const freeSummary = summary?.textContent ?? '';
   const chrome = createChromeBridge(doc, onNavigate);
   const enhance = () => {
@@ -32,6 +33,8 @@ export function createInformationBridge({ onBack, onError, doc = document,
   hosts.forEach(host => host?.addEventListener('click', fallback));
   return {
     show(view: string) {
+      if(disposed)return;
+      if(view==='about'){const host=doc.getElementById('aboutView');if(host)materializeStaticCatalog(host);}
       chrome.view(view); enhance();
       if (disposed || ready || pending || !['about', 'contact'].includes(view)) return;
       pending = load().then(module => {

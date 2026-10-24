@@ -1,3 +1,5 @@
+import {DRILLS} from './drills.js';
+import {guidePathFor} from './appPaths.js';
 import { textElement as node } from './textElement.js';
 import { startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
@@ -118,7 +120,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   function render() {
     const record = state?.phase === 'review' ? toSessionRecord(state) : review;
     const running = pending || !!state && state.phase !== 'review';
-    if(page)page.update({guideHidden:!!running||!!record});else $('#sessionGuideLink').classList.toggle('hidden',!!running||!!record);
+    const guideHref=guidePathFor(DRILLS.some(drill=>drill.id===selection?.id)?'sequence-'+selection.id:'sequence-custom');
+    if(page)page.update({guideHidden:!!running||!!record,guideHref});else{$('#sessionGuideLink').classList.toggle('hidden',!!running||!!record);$('#sessionGuideLink').setAttribute('href',guideHref);}
     $('#sessionConfigure').classList.toggle('hidden', running || !!record);
     $('#sessionRun').classList.toggle('hidden', !running);
     $('#sessionReview').classList.toggle('hidden', running || !record);
@@ -411,6 +414,6 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     return true;
   }
   function connectPage(mount,onGuide){if(page||locked()||saveError)return false;page=mount($('#sessionView'),{onBack,onGuide});return true;}
-  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
+  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, selectionId: () => selection?.id ?? null, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

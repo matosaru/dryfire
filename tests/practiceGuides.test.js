@@ -1,4 +1,4 @@
-import { getPracticeGuide, isGuideContextCurrent } from '../src/practiceGuides.js';
+import { getPracticeGuide, isGuideContextCurrent, isPublicGuideContextCurrent } from '../src/practiceGuides.js';
 import { createScenario } from '../src/practiceGuideExamples.js';
 const context = (mode, config = {}) => ({ type: 'practice', mode, gunId: 'gun-a', routeKey: 'setup-a', config });
 
@@ -51,4 +51,17 @@ test('guide context becomes stale for another gun, setup or missing context', ()
 test('unknown modes, invalid endpoints and missing ownership do not create guide contexts', () => {
   expect(() => getPracticeGuide(context('missing'))).toThrow();
   expect(() => getPracticeGuide({ ...context('single'), gunId: null })).toThrow();
+});
+
+test('a public manual is a read-only current snapshot without a selected gun',()=>{
+ const source={...context('single'),gunId:'public-guide',routeKey:'public:single',publicEntry:true};
+ const before=structuredClone(source),guide=getPracticeGuide(source);
+ expect(guide.publicEntry).toBe(true);expect(guide.currentSetup).toContain('Example settings shown');expect(source).toEqual(before);
+ expect(isPublicGuideContextCurrent(guide,null)).toBe(true);
+ expect(isPublicGuideContextCurrent(guide,undefined)).toBe(true);
+ expect(isPublicGuideContextCurrent(guide,'other')).toBe(false);
+ expect(isPublicGuideContextCurrent({...guide,gunId:'gun-a'},'gun-a')).toBe(true);
+ expect(isPublicGuideContextCurrent({...guide,sourceKey:'other'},null)).toBe(false);
+ expect(isPublicGuideContextCurrent({...guide,publicEntry:false},null)).toBe(false);
+ expect(isPublicGuideContextCurrent(null,null)).toBe(false);
 });

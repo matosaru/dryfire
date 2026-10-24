@@ -79,3 +79,13 @@ test.each(['practice', 'session'])('guide validates the %s owner, snapshot, gun 
   guide = null;
   expect(s.routeFor('practiceGuide')).toEqual({ ...s.route('practiceGuide'), context: undefined });
 });
+
+test('only a current read-only public guide can bypass the missing-profile setup gate',()=>{
+ const guide={id:'single',publicEntry:true,gunId:'public-guide',parent:'practice',sourceKey:'public:single',contextKey:'practice:public:single'};
+ const route={view:'practiceGuide',gunId:null,context:guide.contextKey};
+ const current=value=>[null,null,null,{current:()=>value}];
+ expect(resolveRouteView(route,current(guide))).toBe('practiceGuide');
+ for(const invalid of [null,{...guide,publicEntry:false},{...guide,gunId:'other'},{...guide,sourceKey:'stale'}])expect(resolveRouteView(route,current(invalid))).toBe('gunSetup');
+ expect(resolveRouteView({...route,context:'old'},current(guide))).toBe('gunSetup');
+ expect(resolveRouteView(route,[{id:'new'},null,null,{current:()=>guide}])).toBe('drills');
+});

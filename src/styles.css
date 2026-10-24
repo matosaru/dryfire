@@ -17,6 +17,7 @@
 @import "../packages/ui/src/InfoFooter/InfoFooter.css";
 @import "../apps/web/src/styles/legacy-info-visibility.css";
 @import "../apps/web/src/pages/AboutPage/AboutPage.css";
+@import "../apps/web/src/public-site/MarketingOverview/MarketingOverview.css";
 @import "../packages/ui/src/InformationCard/InformationCard.css";
 @import "../apps/web/src/pages/ContactPage/ContactPage.css";
 @import "../apps/web/src/styles/legacy-before-evaluation.css";

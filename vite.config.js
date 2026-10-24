@@ -7,7 +7,7 @@ import { readBuildProfile, resolveBuildEdition } from './tools/build-profile.mjs
 import { renderPageTemplates } from './tools/page-templates.mjs';
 import { publicPagesPlugin } from './tools/public-pages.mjs';
 import {publicRoute,publicAssetPath} from './site/routes.js';
-import {isAppPath, offlineAppPaths} from './src/appPaths.js';
+import {isAppPath, offlineAppPaths, legacyPathRedirect, legacyRedirects} from './src/appPaths.js';
 import { minifyProductionHtml, prioritizeAppStyles } from './tools/minify-html.mjs';
 
 // Ship minified production code without exposing the readable src/ modules.
@@ -15,17 +15,25 @@ import { minifyProductionHtml, prioritizeAppStyles } from './tools/minify-html.m
 export default defineConfig(({ mode }) => {
   const edition = resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.env.APP_EDITION, mode });
   const sourceFiles = dir => readdirSync(dir, { withFileTypes: true }).flatMap(item => item.isDirectory() ? sourceFiles(`${dir}/${item.name}`) : /\.(js|html|ts|tsx|css)$/.test(item.name) ? [`${dir}/${item.name}`] : []);
-  const trackedSources = ['index.html', 'src/styles.css', 'vite.config.js', 'build-profile.json', 'tools/build-profile.mjs', 'tools/page-templates.mjs', 'tools/minify-html.mjs', 'tools/static-catalog.mjs', 'tools/public-pages.mjs', ...sourceFiles('site'), ...sourceFiles('src'), ...sourceFiles('workers'), ...sourceFiles('apps'), ...sourceFiles('packages')].sort();
+  const trackedSources = ['index.html', 'src/styles.css', 'vite.config.js', 'build-profile.json', 'tools/build-profile.mjs', 'tools/page-templates.mjs', 'tools/minify-html.mjs', 'tools/static-catalog.mjs', 'tools/public-pages.mjs', 'tools/app-document.mjs', ...sourceFiles('site'), ...sourceFiles('src'), ...sourceFiles('workers'), ...sourceFiles('apps'), ...sourceFiles('packages')].sort();
   const sourceDigest = createHash('sha256');
   for (const path of trackedSources) sourceDigest.update(path).update(readFileSync(path));
   return {
-  define: { __APP_OFFLINE_PATHS__: JSON.stringify(offlineAppPaths()), __BUILD_SOURCE_DIGEST__: JSON.stringify(sourceDigest.copy().digest('hex')), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
+  define: { __APP_NAV_REDIRECTS__: JSON.stringify(legacyRedirects()), __APP_OFFLINE_PATHS__: JSON.stringify(offlineAppPaths()), __BUILD_SOURCE_DIGEST__: JSON.stringify(sourceDigest.copy().digest('hex')), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
   server: { host: '127.0.0.1' },
   // The optimized preview serves same-origin assets, like the production Worker.
   // Avoid development CORS Vary headers invalidating preloaded offline assets.
   preview: { host: '127.0.0.1', cors: false, ...(edition === 'preview' ? { headers: { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow, noarchive' } } : {}) },
   plugins: [publicPagesPlugin(), { name: 'page-templates', transformIndexHtml: { order: 'pre', handler: renderPageTemplates },
-    configurePreviewServer(server){server.middlewares.use((req,res,next)=>{const path=new URL(req.url,'http://localhost').pathname;if(isAppPath(path)||path==='/welcome/'||publicRoute(path)&&path!=='/'){const asset=isAppPath(path)?'/index.html':publicAssetPath(path==='/welcome/'?'/':path);try{res.setHeader('Content-Type','text/html; charset=utf-8');res.setHeader('X-Robots-Tag','noindex, nofollow');res.end(readFileSync(resolve('dist','.'+asset)));return;}catch{res.statusCode=404;res.end('Not found.');return;}}next();});},
+    configurePreviewServer(server){server.middlewares.use((req,res,next)=>{
+      const url=new URL(req.url,'http://localhost'),path=url.pathname,legacy=legacyPathRedirect(path);
+      const target=legacy??(!path.endsWith('/')&&(isAppPath(path+'/')||publicRoute(path+'/'))?path+'/':null);
+      if(target){res.statusCode=308;res.setHeader('Location',target+url.search);res.end();return;}
+      const route=publicRoute(path);if(isAppPath(path)||route){
+        try{res.setHeader('Content-Type','text/html; charset=utf-8');res.setHeader('X-Robots-Tag','noindex, nofollow');res.end(readFileSync(resolve('dist','.'+(route?publicAssetPath(path):'/index.html'))));return;}
+        catch{res.statusCode=404;res.end('Not found.');return;}
+      }next();
+    });},
     configureServer(server) {
       server.watcher.on('change', path => {
         if (path.startsWith(resolve(import.meta.dirname, 'src/templates') + '/')) server.ws.send({ type: 'full-reload' });

@@ -1,10 +1,11 @@
 import { jest } from '@jest/globals';
-import { offlineAppPaths } from '../src/appPaths.js';
+import { offlineAppPaths, legacyRedirects } from '../src/appPaths.js';
 
 let handlers, cache, platform, metadata;
 beforeEach(() => {
   jest.resetModules();
   globalThis.__APP_OFFLINE_PATHS__ = offlineAppPaths();
+  globalThis.__APP_NAV_REDIRECTS__ = legacyRedirects();
   handlers = {};
   cache = { addAll: jest.fn(async () => {}), match: jest.fn(async () => undefined), put: jest.fn(async () => {}) };
   platform = { skipWaiting: jest.fn(async () => {}), clients: { claim: jest.fn(async () => {}) },
@@ -17,7 +18,7 @@ beforeEach(() => {
     ? Response.json(metadata) : new Response('<script type="module" src="/assets/entry.js"></script>'));
 });
 const originalFetch = globalThis.fetch;
-afterEach(() => { globalThis.fetch = originalFetch; delete globalThis.self; delete globalThis.caches; delete globalThis.__BUILD_EDITION__; delete globalThis.__APP_OFFLINE_PATHS__; });
+afterEach(() => { globalThis.fetch = originalFetch; delete globalThis.self; delete globalThis.caches; delete globalThis.__BUILD_EDITION__; delete globalThis.__APP_OFFLINE_PATHS__; delete globalThis.__APP_NAV_REDIRECTS__; });
 
 async function install(edition = 'public') { globalThis.__BUILD_EDITION__ = edition; await import('../workers/sw.js'); }
 function fire(type, request) {
@@ -77,7 +78,7 @@ test('non-GET and cross-origin requests bypass the shell cache entirely', async 
 test('offline navigation falls back to the shell; unavailable scripts still reject', async () => {
   await install(); fetch.mockRejectedValue(new Error('offline'));
   cache.match.mockImplementation(async input => input === '/index.html' ? new Response('offline shell') : undefined);
-  expect(await (await fire('fetch',request('/app/history/',{mode:'navigate',destination:'document'}))).text()).toBe('offline shell');
+  expect(await (await fire('fetch',request('/history/',{mode:'navigate',destination:'document'}))).text()).toBe('offline shell');
   await expect(fire('fetch',request())).rejects.toThrow('offline');
 });
 
@@ -91,3 +92,7 @@ test('private preview retires shell caches and unregisters without installing an
 });
 
 test('offline public/unknown URLs never become an app shell with a misleading200',async()=>{await install();fetch.mockRejectedValue(new Error('offline'));cache.match.mockImplementation(async input=>input==='/index.html'?new Response('offline shell'):undefined);await expect(fire('fetch',request('/help/',{mode:'navigate',destination:'document'}))).rejects.toThrow('offline');});
+
+test('installed clients redirect old navigation URLs before consulting cached obsolete pages',async()=>{
+ await install();cache.match.mockResolvedValue(new Response('obsolete page'));const response=await fire('fetch',request('/app/learn/?keep=1',{mode:'navigate',destination:'document'}));expect(response.status).toBe(308);expect(response.headers.get('Location')).toBe('https://practice.test/learn/?keep=1');expect(cache.match).not.toHaveBeenCalled();
+});
