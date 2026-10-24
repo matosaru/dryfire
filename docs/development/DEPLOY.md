@@ -1,5 +1,7 @@
 # Deploy v0.8.0 from GitHub (works on an iPhone)
 
+For the owner-approved public .app→.com301 rule, use the [exact redirect configuration and verification guide](cloudflare-public-redirect.md). The owner reports that the redirect was created; independent live verification is network-blocked in this workspace. Development hosts are unaffected.
+
 The repository holds **editable source**. Only `dist/` is deployed as the minified website.
 
 ## Private tester preview — CHG-035
@@ -45,7 +47,7 @@ Connect GitHub `matosaru/dryfire`. Build command: `npm run build`; publish direc
 
 Use the [iPhone release checklist](IPHONE_RELEASE_CHECKS.md) to record the production commit and test Safari/Home Screen sessions, settings and retained data. Its current results distinguish completed local checks from unverified production/device checks.
 
-The current service-worker public cache version is `dryfire-sound-trainer-public-v31`; the technical cache-name prefix remains unchanged. Active practice displays STOP with the microphone level below it. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
+The current service-worker public cache version is `dryfire-sound-trainer-public-v83`; the technical cache-name prefix remains unchanged. Active practice displays STOP with the microphone level below it. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
 
 ## Verify the current production build
 
@@ -60,3 +62,7 @@ If JavaScript/CSS in a browser Network response appears unminified, use the [res
 The timed-session update upgrades the same IndexedDB database to schema 3 and adds separate saved sessions. Trigger-first practice reuses schema 3; its whole-library backup format is version 4, accepting compatible versions 1–3. The previous gun-profile migration still asks for details only when compatible legacy data has no completed gun name/type. A fresh installation asks for the first gun. Check [implementation history](../project/implementation-history.md) for current validation/push/deployment status; a code update in GitHub does not itself establish a successful production deployment.
 
 Training sounds: separate short illustrative waveform GIFs, not firearm-handling tutorials. With iPhone Reduce Motion enabled, the app displays static frames instead.
+
+## CHG-060 public routes
+
+The public Wrangler config now binds ASSETS to workers/publicSite.js with worker-first routing and real404 handling. Preserve that checked config when owner promotes b. Canonical .com root serves the static landing; /app/ serves the app, and nonproduction root preserves legacy entry. Test /welcome/ on b for the landing. Public information URLs are available without a stored gun; all preview responses remain noindex. verify:dist exercises built HTML/metadata and local Worker routing; network-denied live checks and owner production promotion must not be reported as done.

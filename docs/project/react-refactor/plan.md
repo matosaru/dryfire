@@ -41,3 +41,7 @@ For future changes, keep each component's source/CSS/tests together; reuse share
 - [ ] Physical iPhone Safari/Home Screen microphone recognition, start-beep and supported feedback acceptance.
 
 Only **b** is updated. Main and dev remain unchanged. No release PR, merge or manual deployment was performed. Commercial, cloud-account and native-app work remain outside this refactor.
+
+## Proposed follow-up
+
+The completed P0–P8 scope remains unchanged. The owner subsequently requested review of Copilot's analyses and reusable pages on b. See the separate [follow-up modularization plan](follow-up-plan.md); it is proposed planning, not started implementation or a reopened React migration.

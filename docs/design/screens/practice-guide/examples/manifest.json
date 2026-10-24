@@ -112,10 +112,10 @@
     "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
-    "src/main.js": "fa659d4703f9c8860d256df3e0492551e34c7c4c44f3518e449886c5b29b2e51",
+    "src/main.js": "11164f1681c424c8b9c1818881492fdb8605399979d2b4ab4247e44e475b7ef7",
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
-    "vite.config.js": "d2965ff4b7f3442a2b54e50433a08d3de6dd1ad1a9e50cda0db88005e99c7b16",
+    "vite.config.js": "5a1c6e34a2f6c899fca8a6fcb57218f1acca148fb79a047f16bcbeb7c317cde2",
     "tools/minify-html.mjs": "7798a5e447e687c935e325e8ca2a4d05541bb24a7c3cbef90fd0b19503540cfb",
     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
@@ -301,6 +301,6 @@
     "date": "2026-10-22",
     "scope": "Same shared Practice/Sequence presentation loads before configuration/review, outside initial startup. Inert catalogs move compiler-owned template nodes; no runtime stored/user HTML parsing. Full987/140 suite and20 public guide/layout/session/offline workflows pass. Frame models, compiled CSS and encoded GIF bytes unchanged; no media rebaseline."
   },
-  "reviewNote": "CHG-059 changes only guide navigation, surrounding selected-sound list and catalog accents; shared guide-media run/review content, engine frames and encoded GIF bytes are unchanged. Browser workflows and frozen example parity remain required.",
+  "reviewNote": "CHG060 adds public link variants and operational URL handling; default shared example markup/engines/CSS and ten encoded GIF files are unchanged. Existing frame parity remains required.",
   "chg058Review": "Sequence setup styles relocated byte-for-byte; only #practiceSteps-specific legacy margin removed. Setup-only template changes; shared run/review/help fragments and ten encoded GIF files unchanged. Full guide-frame/visual acceptance required."
 }

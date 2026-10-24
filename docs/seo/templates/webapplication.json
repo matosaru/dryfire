@@ -2,18 +2,18 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Dry Fire With Ease",
-  "url": "https://dryfire.matosaru.workers.dev/",
-  "description": "Practice dry fire with trigger-click calibration, start beeps, six practice modes and progress charts. Gun profiles and history stay on your device.",
+  "url": "https://easydryfire.com/",
+  "description": "Learn your trigger click, choose a dry-fire practice mode and review timed repetitions. A free, microphone-based Beta app with local browser storage.",
   "applicationCategory": "SportsApplication",
   "operatingSystem": "Web browser",
   "browserRequirements": "Requires JavaScript, HTTPS and microphone permission for sound-based practice.",
-  "image": "https://dryfire.matosaru.workers.dev/icon-512.png",
+  "image": "https://easydryfire.com/icon-512.png",
   "featureList": [
     "Gun-specific trigger-click calibration",
-    "Start beep and configurable ready delay",
-    "Six dry-fire practice modes",
-    "Custom ordered sound sequences",
-    "Local saved sessions and progress charts",
-    "Export and restore local backups"
+    "Ready delays and optional start beep",
+    "Four trigger practice modes",
+    "Built-in ordered sound sequences",
+    "Local saved results",
+    "Manual backup export and restore"
   ]
 }

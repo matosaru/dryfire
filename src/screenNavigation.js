@@ -1,9 +1,10 @@
 /** Browser and in-app navigation share one serialized capture/storage guard. */
-export function createScreenNavigation({ history, events, initial, resolve, show, canLeave, beforeLeave, onError }) {
+export function createScreenNavigation({ history, events, initial, resolve, show, canLeave, beforeLeave, onError, urlFor }) {
   const valid = value => value?.dryfireNavigation === 1 && Number.isInteger(value.index) && value.index >= 0 && value.route;
   let current = { dryfireNavigation: 1, index: valid(history.state) ? history.state.index : 0, route: initial };
   let queue = Promise.resolve(), restoring = false;
   history.replaceState(current, '');
+  const write=(method,value)=>{const url=urlFor?.(value.route);if(url)history[method](value,'',url);else history[method](value,'');};
   const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
   const enqueue = work => { const task = queue.then(work); queue = task.catch(onError); return task; };
   async function leave() {
@@ -19,11 +20,11 @@ export function createScreenNavigation({ history, events, initial, resolve, show
       if (valid(history.state) && history.state.index !== target.index) return;
       if (!await leave()) {
         const distance = current.index - target.index;
-        if (distance) { restoring = true; history.go(distance); } else history.replaceState(current, '');
+        if (distance) { restoring = true; history.go(distance); } else write('replaceState',current);
         return;
       }
       const route = resolve(target.route);
-      current = { ...target, route }; history.replaceState(current, ''); await show(route);
+      current = { ...target, route }; write('replaceState',current); await show(route);
     });
   });
   return {
@@ -33,7 +34,7 @@ export function createScreenNavigation({ history, events, initial, resolve, show
       if (!await leave()) return false;
       route = resolve(route);
       current = { dryfireNavigation: 1, index: current.index + 1, route };
-      history.pushState(current, ''); await show(route); return true;
+      write('pushState',current); await show(route); return true;
     }); },
     back(fallback) { if (current.index > 0) history.back(); else return this.navigate(fallback); },
     flush: () => queue,

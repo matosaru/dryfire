@@ -22,3 +22,10 @@ test('stale context is resolved safely and a new route discards obsolete Forward
   await s.nav.navigate({ view: 'history' }); s.history.back(); await s.nav.flush(); await s.nav.navigate({ view: 'learn' });
   expect(s.entries.map(entry => entry.route.view)).toEqual(['home', 'drills', 'learn']);
 });
+
+test('URL-aware navigation writes only resolved paths and keeps Back/Forward serialized',async()=>{
+ const events=new EventTarget(),entries=[],writes=[];let index=-1;
+ const history={get state(){return entries[index];},replaceState(state,_title,url){if(index<0)index=0;entries[index]=state;if(url)writes.push(url);},pushState(state,_title,url){entries.splice(index+1);entries.push(state);index++;writes.push(url);},go(n){index+=n;const event=new Event('popstate');event.state=entries[index];events.dispatchEvent(event);},back(){this.go(-1);}};
+ const shown=[],nav=createScreenNavigation({history,events,initial:{view:'home'},resolve:r=>r.view==='stale'?{view:'drills'}:r,show:r=>shown.push(r.view),canLeave:()=>true,beforeLeave:async()=>{},onError:error=>{throw error;},urlFor:r=>'/app/'+r.view+'/'});
+ await nav.navigate({view:'history'});await nav.navigate({view:'stale'});expect(writes).toEqual(['/app/history/','/app/drills/']);history.back();await nav.flush();expect(writes.at(-1)).toBe('/app/history/');expect(shown.at(-1)).toBe('history');
+});

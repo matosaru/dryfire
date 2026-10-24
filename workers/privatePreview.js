@@ -1,3 +1,4 @@
+import {isAppPath} from '../src/appPaths.js';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 const privateHeaders = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow, noarchive' };
@@ -26,7 +27,8 @@ export function createPrivatePreview({ keySetFor } = {}) {
       const { payload } = await jwtVerify(token, (keySetFor ?? remoteKeys)(issuer), { issuer, audience, algorithms: ['RS256'] });
       if (typeof payload.exp !== 'number' || typeof payload.email !== 'string' || !emails.includes(payload.email.toLowerCase())) return deny(403, 'This identity is not allowed to use the private preview.');
     } catch { return deny(401, 'Private preview authentication failed.'); }
-    const asset = await env.ASSETS.fetch(request);
+    let assetRequest=request;if(isAppPath(url.pathname)){const target=new URL(url);target.pathname='/';target.search='';assetRequest=new Request(target,request);}
+    const asset = await env.ASSETS.fetch(assetRequest);
     const headers = new Headers(asset.headers);
     for (const [key, value] of Object.entries(privateHeaders)) headers.set(key, value);
     return new Response(asset.body, { status: asset.status, statusText: asset.statusText, headers });

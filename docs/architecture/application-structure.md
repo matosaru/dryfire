@@ -25,7 +25,7 @@ flowchart TD
 
 ## Component structure
 
-The authoritative screen/source/controller/test mapping is [component-map.json](component-map.json). Every page/shared UI folder contains its component `.tsx`, colocated `.css`, `.test.tsx` and public `index.ts`. These are isolated source packages within the private `@dryfire/web` and `@dryfire/ui` workspaces, not 38 separately published npm dependencies. `verify:architecture` checks all 38 packages and all 13 screen mappings.
+The authoritative screen/source/controller/test mapping is [component-map.json](component-map.json). Every page/shared UI folder contains its component `.tsx`, colocated `.css`, `.test.tsx` and public `index.ts`. These are isolated source packages within the private `@dryfire/web` and `@dryfire/ui` workspaces, not 40 separately published npm dependencies. `verify:architecture` checks all 40 packages and all 13 screen mappings.
 
 ```text
 index.html                         HTML/build entry
@@ -124,3 +124,5 @@ CHG-053: `features/live-listen/readiness.ts` is the pure navigation/capture-reas
 CHG-058 shared setup: packages/ui/src/DrillSetup exports the configuration shell, numeric card row and ordered steps for both SequencePage and PracticePage. Controller-specific fields are children, not duplicated form shells. Native inputs/listeners and their retained-node handoff stay with the existing page controllers; src/main.js remains the application entry.
 
 Startup reads its gun list, active selection and device preferences from storage.getLibraryOverview: one read-only transaction and one database open, reused after interrupted-session recovery. The existing schema/migration/write owners remain unchanged. Later profile changes request a fresh snapshot; standalone preference reload retains its public API.
+
+CHG-060: apps/web/src/public-site/PublicPage is the four-file public template, composed at build time by tools/public-pages.mjs from site/routes.js. Public content is not eagerly hydrated. The public Worker maps canonical .com public URLs and noindex operational app paths; src/appPaths.js and serialized navigation preserve existing controller guards. Existing13 app pages/26UI packages plus1 public template total40 checked packages. Existing Workers/nonproduction root remains the app; .com root is the public landing. Favicon is derived from the existing app icon.

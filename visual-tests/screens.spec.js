@@ -1,5 +1,6 @@
 import { installPausedClock } from './clock.js';
 import { addLegacySequence, openLegacySequence } from './legacy-sequence.js';
+import {PUBLIC_ROUTES} from '../site/routes.js';
 import {freezeMotionArtwork} from './motion-fixture.js';
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
@@ -40,6 +41,8 @@ async function emit(page, label = 'trigger') {
 }
 
 async function prepare(page, item) {
+  if(item.screen==='publicSite'){const route=PUBLIC_ROUTES.find(row=>row.id===item.state.split('.')[0]);await page.goto(route.path==='/'?'/welcome/':route.path);await expect(page.locator('h1')).toHaveText(route.heading);return;}
+
   page.on('dialog', dialog => dialog.accept());
   await page.addInitScript(installSyntheticMedia);
   // External SVG documents can retain their own CSS/SMIL animation clock.

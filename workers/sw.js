@@ -1,7 +1,9 @@
+// Injected at build time: keep this classic worker free of module dependencies.
+const appPaths = __APP_OFFLINE_PATHS__;
 // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
 const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
-const CACHE = `dryfire-sound-trainer-${EDITION}-v82`;
-const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+const CACHE = `dryfire-sound-trainer-${EDITION}-v83`;
+const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/favicon.ico', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
 
 if (EDITION === 'preview') {
   // Retire earlier authenticated preview shells; never serve assets offline.
@@ -52,7 +54,7 @@ self.addEventListener('fetch', event => {
       }
       return response;
     } catch (error) {
-      if (request.mode === 'navigate') {
+      if (request.mode === 'navigate' && (url.pathname==='/'||url.pathname==='/index.html'||appPaths.includes(url.pathname))) {
         const shell = await cache.match('/index.html');
         if (shell) return shell;
       }

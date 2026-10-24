@@ -1,8 +1,10 @@
 # Web product and commercial roadmap
 
+**Active phase — owner clarification 2026-10-24:** finish and validate the Free product on b; the owner merges tested changes to main. Dev is outside the active workflow. After Free completion, reopen monetization analysis for principles, desired features, structure, business/legal requirements and technical solutions. Earlier proposals below remain research inputs to revisit; no paid/cloud/billing implementation starts now. See [active branching strategy](branching-strategy.md) and [follow-up plan](react-refactor/follow-up-plan.md#after-the-free-product-is-finished).
+
 CHG-026 · revision 1.0 · 2026-10-11. **Planning and analysis requested; commercial feature allocation, price, providers and new data policies are proposals.** Native iPhone/Android releases are deferred by the user's direct instruction. The web/PWA remains the active product.
 
-**Latest execution constraint:** the user explicitly requests **“prepare plans, and commit plans to a feature branch”** and **“do not yet start any implementations”**. This iteration is documentation/research only; no app, billing, auth, cloud, feature gate or deployment implementation starts. Earlier automatic-work instructions do not override this pause. Future stages below remain a plan until a later implementation instruction.
+**Historical CHG-026 execution constraint:** the user explicitly requests **“prepare plans, and commit plans to a feature branch”** and **“do not yet start any implementations”**. This iteration is documentation/research only; no app, billing, auth, cloud, feature gate or deployment implementation starts. Earlier automatic-work instructions do not override this pause. Future stages below remain a plan until a later implementation instruction.
 
 **CHG-027/029 narrow implementation exception:** the user subsequently starts [About](../requirements/about.md) with email support, then requests a separate [Contact screen](../requirements/contact.md) and centered shared-footer links. Proposed copy and the separate feature branch remain; one-time automatic checked dev/main promotion was authorized but is access-blocked as recorded in the delivery tracker. This starts only the informational app screens/email link. Remaining stages, pricing, entitlements, accounts/cloud and public SEO rollout stay paused/planned.
 

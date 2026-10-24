@@ -2,7 +2,7 @@
 
 Read the [component structure and application entry-point guide](application-structure.md) for build/browser startup, screen owners, shared packages and deliberate progressive startup boundaries. [Decision001](decisions/001-progressive-react-startup.md) records CHG-051.
 
-The [application sitemap](application-sitemap.md) shows navigation and the screen directory. It and the detailed [site tree](site-tree.md) are generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. The app has one public address, `/`; its thirteen functional screens, including separate CHG-029 About and Contact, are history-backed UI states, not separate server routes or indexable pages.
+The [application sitemap](application-sitemap.md) shows navigation and the screen directory. It and the detailed [site tree](site-tree.md) are generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. CHG-060 adds11 indexable public HTML routes on .com and noindex /app/ operational paths for the13 existing screens. Public pages require no local data or microphone; personal record data never enters public HTML or XML. The old Workers/nonproduction root remains an app entry.
 
 CHG-026 adds a separate [future cloud-services proposal](cloud-services-proposal.md) and [planned public topology](../seo/README.md#planned-public-topology--chg-026). These are not implemented routes or registry entries. Contact is now an app state; its public server route remains proposed. Add account/public-page states to the maintained tree only when code and reviewed designs exist.
 
