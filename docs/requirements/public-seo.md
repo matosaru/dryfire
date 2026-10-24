@@ -16,3 +16,5 @@ Favicon follow-up: serve the approved-logo derivative at /favicon.ico as image/x
 Startup follow-up: discover the existing critical app stylesheet immediately after the viewport declaration, ahead of module loading, without changing resource attributes, stylesheet order or body markup. Preserve the original performance gates; cache84 refreshes old app shells without deleting IndexedDB data.
 
 Maintain a complete generated URL inventory in docs/seo/routes.md: every public canonical URL, operational app path, alias/redirect, generated endpoint and static asset. Derive pages from the runtime registries; reject stale documentation in docs:check. Only the implemented public pages belong in the deployed XML sitemap; private/local app screens remain noindex.
+
+Returning startup preserves original non-blocking Home initialization while explicit non-Home entries remain awaited and guarded. Reuse Home statistics already awaited during profile loading on its first display; refresh them on later Home visits. Keep actual usable-screen readiness criteria unchanged. Cache85 delivers the updated shell without clearing local data.

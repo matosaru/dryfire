@@ -1,37 +1,23 @@
 # Working context
 
-Updated2026-10-24. Details: [history](../implementation-history.md), [SEO plan](../../seo/indexable-routes-plan.md), [proof](../../design/baselines/chg-060-public-review.json).
+Updated2026-10-24. [History](../implementation-history.md), [proof](../../design/baselines/chg-060-public-review.json), [URL catalog](../../seo/routes.md), [PR#26](https://github.com/matosaru/dryfire/pull/26).
 
 ## Authorization / invariants
 
-Work on b. Latest owner explicitly authorizes promotion to main **once green**, via protected [PR#26](https://github.com/matosaru/dryfire/pull/26). Dev remains frozen. No direct main push/protection bypass. Main base78be09b merges cleanly; merged application tree matches b. Protection-read API403 is not permission to bypass it.
+Work on b; owner explicitly/repeatedly authorizes **merge b→main once all green**, through PR#26. Dev untouched. No direct main push/protection bypass. Main78be09b merges cleanly and its merged application tree matches b. Admin protection-read403; do not bypass.
 
-Require complete candidate unit/coverage/integration, both-edition minified artifacts/payload, pinned Chromium/WebKit screenshots and original performance gates/controls before application publication. Review-only patches are allowed on b. Never weaken limits, rebaseline existing images, fish for a passing retry, or treat diagnostic/pending/cancelled checks as acceptance. Retain ADR001 progressive startup, all data/schema/audio/draft/edition behavior. No subagents. Frequent concise updates.
+Before application publication require complete candidate unit/coverage/integration, both-edition minified artifact/payload, pinned Chromium/WebKit screenshots and original performance gates/controls. Review-only patches allowed; no weakened thresholds/samples/timeouts, replacement of existing images or passing retry fishing. Retain ADR001 startup/data/schema/audio/drafts/edition behavior. No subagents; concise frequent updates.
 
-Canonical.com; owner reports .app301 created. Public HTTP is workspace-proxy403 CONNECT denied; no bypass/site-failure inference. Cloudflare owner-managed. Commercial/native/F1–F7 structural work remains separate.
+Canonical.com; owner reports .app301. Live external HTTP is workspace-proxy403 CONNECT denied, not a site failure; no bypass. Log download redirect also403; no alternate download workaround. Cloudflare owner-managed; observe GitHub check results. Commercial/native/F1–F7 separate later.
 
-## Published CHG-060
+## Accepted CHG-060 / publication
 
-Source ed7e2c8 on b:11prerendered public pages/metadata/XML/robots, readable noindex /app/ paths and favicon.ico. Shared chrome/manuals/GIFs, no public client JS; nonprod root remains app, /welcome/ landing preview. No schema/engine changes; cache83, manifest id/scope retained.398existing app baselines byte-identical;56new public refs/11captures;10GIFbytes unchanged.
+11public prerendered pages/metadata/XML/robots, readable noindex /app/, favicon.ico, shared chrome/manuals/GIFs and no public JS. Legacy nonprod root remains app; /welcome/ landing preview. Manifest id/scope/data schema unchanged.398app baselines byte-identical;56new public refs/11captures;10GIFbytes unchanged. docs/seo/routes.md generated all11public/16app/aliases/resources and drift-checked; published3dead9d.
 
-Acceptance40098705431 all8green; actual push40099688597 also all8green. Cloudflare b build4ee565e3-add1-4948-b1d7-375e5e7dbff6 SUCCESS. **PR40099821636 fails WebKit warm39→43ms despite identical source tree**. Do not merge yet. Prior failures40082119786/40083144281/40097912906 remain recorded. Classic SW import/eager path inventory fixed; app explicit ICO removed, root fallback/public icon declarations retained.
+Current Home fix: original non-awaited Home initialization restored (non-Home entries still awaited/guarded); first Home reuses stats already awaited in loadActiveGun, later visits refresh. Cache85.34focused tests and3local Chromium workflows pass (restored profile/title/event count). Isolated original Chromium40103350936 and **all8complete candidate40104091922 SUCCESS**. Review08c6fce patch SHA256be736c3ed5f9f1fec10b97f3b846024aa343d581b652f39ff5070b11070cb5ea, removed only after acceptance. No layout/readiness/gate changes.
 
-## Published critical-styles source / remaining returning-startup failure
-
-All8candidate40100798238 passed before publishing31825d7 to b (critical CSS before modules; cache84). Cloudflare b build22396edb-b185-468b-91c5-ba861d57df9f SUCCESS. Push40101754914 and PR40101758094 run on31825d7. Both WebKit comparisons pass; **PR Chromium returning190.1→200.2ms fails**. No merge. Previous explicit-ICO removal and CSS priority did not eliminate every timing failure; do not claim completion from a passing candidate alone.
-
-## Active Home startup candidate
-
-Found init awaited openEntry even for default Home after loading saved gun, unlike pre-SEO startup. Restore non-awaited serialized switchView(home) for legacy/default and explicit Home; keep non-Home deep links awaited and missing/incomplete gun setup guards intact. Actual usability observer and all performance policies unchanged.
-
-Added8VM characterization cases using actual initializer/openEntry source:2Home cases fail before fix, all8 pass afterward; combined25profile/route/startup cases pass. Extended real-browser /app/ returning Home/profile/title assertion. Local artifact/docs pass. The await-only Chromium40102567458 still failed returning182→190.1ms. Candidate now also skips duplicate initial Home history read (loadActiveGun already awaited/rendered statistics); later Home visits still refresh. Two added display cases:1fails/1passes before fix, both pass afterward;34focused tests green. Real browser assertion checks restored Home event count. Cache85 ensures update. Source changes LOCAL, not published: src/main.js, workers/sw.js, new tests/initialEntry.test.js and tests/homeInitialDisplay.test.js, visual-tests/public-site.spec.js, DEPLOY current cache/source fingerprints.
-
-Review-onlyaddaa49 updates patch docs/design/review-inputs/chg-060-home-startup.patch SHA25699e7f75bc44fdaa49e29f9574bffc4d3e712f3fe1b1c48b40afc7c26335aba0d and advisory workflow optional browser input (defaultwebkit; original gate command/policy unchanged). Isolated original Chromium40103350936 SUCCESS; refreshed local Chromium public/deep-link/Home-statistics suite3passed. current patch reverse-check passes. No visible styles/screenshots/GIFframes changed.
-
-## SEO documentation request
-
-Owner additionally requests XML sitemap/all-path documentation on GitHub. Build already emits XML/robots. Added generated docs/seo/routes.md with11public,16app paths, redirects/errors/endpoints/static assets, linked from SEO/architecture indexes. docs generator verifies registry/Worker inventory and rejects drift. Documentation-only b publication; no production endpoint claim before main release.
+Earlier accepted31825d7 deployed b (Cloudflare22396edb-b185-468b-91c5-ba861d57df9f), all8push40101754914 pass but PR40101758094 Chromium returning failed. Earlier failures/partial fixes retained in history; do not erase them.
 
 ## Next
 
-If focused gate passes, require complete all8candidate acceptance before application b publication. Remove review patch after acceptance; update PR#26, require all push+PR jobs green and merge only matching tested head. Retain b; dev untouched. Verify main tested source and production Cloudflare build. Record outcomes, keep context concise. No main merge while any current check fails. No F1–F7/commercial/native work during closure.
+Finish publishing this exact accepted source b and update PR#26 body. Wait for **all push+PR jobs green** on matching current head; merge PR#26 retaining b, verify main tested source and production Cloudflare build. No main merge with failed/pending current checks. Record real release outcome and keep context concise. Dev unchanged; no structural/commercial/native implementation. Production live HTTP/favicon/Search Console independent from build success.

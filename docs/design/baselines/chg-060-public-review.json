@@ -1,6 +1,6 @@
 {
   "change": "CHG-060",
-  "status": "Critical-styles/cache84 complete acceptance passed; release PR checks next",
+  "status": "Complete Home-startup candidate accepted; release push/PR checks next",
   "collectorRun": 40081504473,
   "collectorCommit": "3e2c75c",
   "newBrowserReferences": 56,
@@ -149,26 +149,34 @@
     }
   ],
   "liveVerification": "Public domain requests are workspace-proxy denied; owner reports redirect created. Local workerd checks are not live edge verification.",
-  "acceptanceRun": 40100798238,
-  "acceptanceReviewCommit": "407c745",
-  "acceptancePatchSHA256": "3eb494568233bbe50c2cfaf9acd153d57451c7788229fc92df230e7a624f392a",
+  "acceptanceRun": 40104091922,
+  "acceptanceReviewCommit": "08c6fce",
+  "acceptancePatchSHA256": "be736c3ed5f9f1fec10b97f3b846024aa343d581b652f39ff5070b11070cb5ea",
   "acceptanceJobs": "All 8 passed: validate, both-edition pinned screenshots, four original browser performance gates and aggregate",
   "failedCandidates": [
     40082119786,
     40083144281,
     40097912906,
-    40099821636
+    40099821636,
+    40101758094
   ],
   "startupCorrection": "Classic worker uses build-time offline paths; path inventory is generated only during build, not eagerly in app entry.",
-  "unitTests": 1039,
-  "unitSuites": 150,
+  "unitTests": 1049,
+  "unitSuites": 152,
   "initialAcceptanceRun": 40083935270,
   "appIconStrategy": "Public pages declare favicon.ico; app uses standard /favicon.ico fallback, retaining Apple icons. Avoid extra eager ICO declaration in the app head.",
-  "cacheVersion": 84,
+  "cacheVersion": 85,
   "criticalStyles": "Existing stylesheet links discovered after viewport, before modules; resource URLs/attributes, stylesheet order and body preserved.",
   "priorAcceptanceRuns": [
     40083935270,
-    40098705431
+    40098705431,
+    40100798238
   ],
-  "priorSuccessfulPushRun": 40099688597
+  "priorSuccessfulPushRun": 40099688597,
+  "homeStartup": "Restore original non-awaited Home initialization; retain awaited guarded deep links. Reuse profile-loaded first Home statistics; later Home visits refresh.",
+  "priorSuccessfulPushRuns": [
+    40099688597,
+    40101754914
+  ],
+  "focusedHomeGate": 40103350936
 }

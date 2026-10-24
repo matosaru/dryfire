@@ -598,6 +598,7 @@ function displayView(name) {
   }
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name)) { openGunSetup(activeGun); return; }
   if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
+  const initialDisplay = document.body.dataset.view === 'loading';
   informationPages.show(name);
   if(name==='home' && document.body.dataset.view!=='loading' && !homePage && !homePagePending){
     homePagePending=loadProfilePages().then(module=>{if(!profileLocked() && !$('#safetyModal').open)homePage=module.mountHomePage($('#homeView'),view=>switchView(view));}).catch(showError).finally(()=>{homePagePending=null;});
@@ -658,7 +659,8 @@ function displayView(name) {
     if(historyPage && !profileLocked() && !$('#safetyModal').open){try{progressView?.prepare();}catch(error){showError(error);}}
     renderHistory().catch(showError);
   }
-  if(name==='home')renderHome().catch(showError);
+  // loadActiveGun already rendered this first snapshot; later visits refresh it.
+  if(name==='home' && !initialDisplay)renderHome().catch(showError);
   if(name==='guns')renderGunLibrary().catch(showError);
   if(name==='settings'){
     // Restore/help already work natively before onboarding; prepare React after a valid gun exists.
@@ -1252,7 +1254,8 @@ async function init() {
   await loadActiveGun(library);
   renderLiveButton();
   if (!activeGun || activeGun.needsDetails) {if(pendingEntry&&['settings','about','contact','guns','gunSetup'].includes(pendingEntry.view))await openEntry();else openGunSetup(activeGun);}
-  else await openEntry();
+  else if (pendingEntry && pendingEntry.view !== 'home') await openEntry();
+  else { pendingEntry = null; switchView('home'); }
   const recoveredForGun = recovered.find(record => record.gunId === activeGun?.id);
   if (recoveredForGun && !activeGun?.needsDetails) {
     if (recoveredForGun.kind === 'practice') await practiceController.showRecord(recoveredForGun);
