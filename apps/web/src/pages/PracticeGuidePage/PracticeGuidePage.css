@@ -1,13 +1,10 @@
 /* Shared contextual practice manuals. Their examples never use real audio. */
-.practice-guide-link { display:inline-flex; align-items:center; gap:9px; min-height:44px; margin:0 0 12px; color:inherit; font-size:.88rem; text-decoration:underline; text-underline-offset:4px; }
-.practice-guide-link span { font-size:1.2rem; }
-.practice-guide-link:focus-visible,.guide-play:focus-visible,.guide-example-options button:focus-visible { outline:3px solid #ffad62; outline-offset:3px; border-radius:5px; }
+.guide-play:focus-visible,.guide-example-options button:focus-visible { outline:3px solid #ffad62; outline-offset:3px; border-radius:5px; }
 body[data-view="practiceGuide"] :is(.safety-disclosure,.gun-switcher) { display:none; }
 .guide-title { font-size:1.55rem; line-height:1.25; margin:0 0 10px; overflow-wrap:anywhere; letter-spacing:-.025em; }
 .guide-kicker { font-size:.68rem; letter-spacing:.13em; color:var(--session-muted); font-weight:750; margin:5px 0 10px; }
 .guide-intro { font-size:1rem; line-height:1.6; margin:6px 0 18px; }
 .guide-current-setup,.guide-example-note { font-size:.72rem; line-height:1.55; color:var(--session-muted); margin:0 0 18px; }
-.guide-sequence { margin-bottom:14px; }
 .guide-media { border:1px solid var(--session-border); border-radius:14px; overflow:hidden; background:#101a22; margin:0 0 10px; }
 
 .guide-media figcaption { display:flex; align-items:center; justify-content:space-between; gap:8px; border-top:1px solid #33434f; padding:8px 11px; font-size:.67rem; color:#c0d1de; }

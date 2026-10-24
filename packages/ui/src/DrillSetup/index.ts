@@ -1,2 +1,2 @@
-export {DrillSetup,DrillSetupCount,DrillSetupSteps} from './DrillSetup';
+export {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from './DrillSetup';
 export type {DrillSetupProps} from './DrillSetup';

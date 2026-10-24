@@ -1,31 +1,23 @@
 # Working context
 
-Updated 2026-10-23. Keep this file concise; detailed evidence belongs in the linked history/specifications.
+Updated 2026-10-24. Keep concise; detailed evidence belongs in requirements/history.
 
-## Authorization and branch rules
+## Authorization
 
-Work on **b only**. Main/dev are frozen; no release PR, merge or deployment without a new instruction. Main6c38bff/dev741f46e were verified unchanged. Cloudflare is owner-managed. Continue authorized tasks autonomously, with concise progress updates and no routine repeated confirmations.
+Work on **b only**; main6c38bff/dev741f46e remain frozen. Owner explicitly approved CHG-059: implement proposed outlined guide link, common guide layout/sound sequence, Trigger targets #46baff and built-in/custom Sequence targets #b574f6; update tests/screenshots and publish b. Continue without routine questions. Cloudflare owner-managed; distinguish push/CI from live deployment.
 
-Before publishing application changes require complete unit/coverage, integration, both-edition minified build/verification, pinned Chromium/WebKit screenshots and the original performance gate. Never call pending/cancelled/diagnostic checks passes. When pinned browsers are unavailable locally, use review-only CI candidates; preserve original baselines, samples, controls and tolerances. Update context after each completed task and keep requirements/designs/help/media synchronized.
+Require complete unit/coverage, integration, both-edition minified builds, pinned Chromium/WebKit screenshots and unchanged original performance gate before publishing app changes. Never call pending/cancelled/diagnostic checks passes. No threshold/baseline-control weakening. Keep startup adapters/lazy React owners per ADR001; refactor P0–P8 complete.
 
-## Completed and published
+## Current task CHG-059
 
-Application **72b41c7** on b implements CHG-058: all four trigger setup modes reuse Sequence's form, compact count/Par cards, grouped signal/delay, separate sound switch and ordered sound list through packages/ui/src/DrillSetup. Sequence frozen markup, native retained fields/drafts, existing run/review fragments, safety/audio/timing/data and edition behavior stay intact. Obsolete practice step-margin rule is removed; canonical Sequence CSS relocated without unrelated cascade changes. Cachev81.
+Application candidate passed complete acceptance40075428666 on 2026-10-24 and is being published on b. Shared DrillGuideLink follows context/sounds before setup; no underline/arrow, decorative info icon, 44px target/focus. Both setup pages reuse it. Guide native/React views reuse DrillSetupSteps/semantic li.drill-step. Removed unused preset-chip CSS. Explicit catalog-container colors replace third-child rule and Light overrides. Cachev82. Data/audio/timing/navigation/examples stay intact.
 
-Performance corrections remove duplicate Practice refresh after its own render, avoid equal native text/disabled/image writes with fresh DOM lookups, and batch startup library/selection/device-preference reads into one read-only IndexedDB snapshot. Existing schema4, migrations, write policies and stored data remain intact.
+[Spec](../../requirements/guide-layout.md), [review evidence](../../design/baselines/chg-059-guide-review.json), [history](../implementation-history.md). Clean baseline1013tests passes. New unit run1016tests/147suites and coverage ratchet passed before one extra native-list regression was added; rerun final coverage.10focused public and10preview Chromium workflows pass. Both minified editions and original payload budgets pass (CSS60782raw/12823gzip). Generic strict audit has only2 preexisting documented native-select ownership findings.
 
-**All8 jobs pass** in pre-publication39959685865 and normal post-push39961346126:1013tests/147suites+coverage, both-edition Chromium/WebKit workflows/screenshots, four original performance gates/controls and aggregate acceptance.398goldens/83current captures;64 derived Practice/safety references reviewed, modal interior pixels identical. Sequence/guide references and ten GIF files unchanged. Exact accepted patch SHA256d91ef6ba727d54a69363650ec50e1b980ab27a71588a09ad93dd157a2354d937 retained in Git966f2e6, verified before applying. Temporary collector/patches/duplicate images cleaned.
-
-Earlier failures39953233357/39955534502 and cleanup cancellation39957863599 remain in [history](../implementation-history.md) and [review evidence](../../design/baselines/chg-058-setup-review.json). Screenshot CI allowance12→15minutes fixes evidence/cleanup timeout only; no test/image/application gate weakened. Generic strict UI audit retains2 preexisting documented native-select ownership findings; no broad compliance claim.
-
-CHG-057 cards and CHG-053 Live Listen were already accepted/published in da08937, all8 post-push39904517004 jobs green. Refactor P0–P8 remains complete; retain tested startup adapters/lazy React owners under ADR001. Browser entry is src/main.js; build-time typed templates tools/page-templates.mjs.13 page packages/26 shared UI packages have source/CSS/tests/exports; do not restart migration or eagerly hydrate the app.
-
-## Latest guide-control request — proposal only
-
-Owner asks to suggest improved About-this-practice UX. [Proposal](../../design/proposals/guide-control/README.md), published4036c0a: outlined “ⓘ About this practice” after context/sounds before setup, no underline/arrow. Includes Trigger/Sequence screenshots and keyboard navigation check. **Application guide link unchanged.** Do not infer implementation approval from a suggestion request.
+Pinned image collector39979166376 successful, commitbcf363b.204images collected:100approved changed baselines,104identical;23currentcaptures updated. Safety modal interior identical across8refs; ten GIFbytes unchanged. Temporary collector/workflow and review patch are review-only; remove duplicate images/temporary inputs after acceptance, preserving Git proof. Earlier redundant CI39979096427 and collector39979096410 cancelled, not acceptance.
 
 ## Next
 
-Completed shared setup is ready for owner testing on b. Await guide-proposal feedback/new scope; record explicit instruction before implementing that redesign. Do not promote main/dev or claim Cloudflare/physical iPhone acceptance. Final handoff is documentation-only after tested application72b41c7.
+All8 candidate jobs are green:1017tests/147suites+coverage, both editions/browsers/screenshots and4 original performance gates/controls. Accepted patch in Git9af1303 SHA256780af0d539a14bdaacbba3c5eaeeb5b9a1824ea392c821baf198bad677ad512e; reverse check passed. Publish accepted code b, verify normal CI and visible deployment checks. Then fulfill new owner request: maintainable application sitemap; correct stale six-mode architecture text to four. Update docs/context with observed results; never claim physical iPhone/live deployment without evidence. Main/dev unchanged.
 
-[Plan](plan.md) · [Spec](spec.md) · [Architecture/entry point](../../architecture/application-structure.md) · [Component map](../../architecture/component-map.json) · [Requirements](../../requirements/drill-setup-template.md) · [ADR001](../../architecture/decisions/001-progressive-react-startup.md)
+Prior accepted app72b41c7 CHG058 passed all8jobs39961346126. Browser entry src/main.js; typed templates tools/page-templates.mjs;13pages/26UI packages. [Architecture](../../architecture/application-structure.md) · [Plan](plan.md).

@@ -2,7 +2,7 @@
 
 CHG-044 · 2026-10-15 · Implementation/capture/CI status is recorded in the [delivery tracker](../../../project/implementation-history.md).
 
-One shared `practiceGuideView` page opens from **About this practice ›**, below the title of stopped Practice or Sequence configuration. It keeps the shared BETA header, Settings, informational footer and fixed five-tab navigation with Drills active. The informational page omits the setup safety/gun-switch controls; reading never acquires audio, asks for safety permission or starts practice.
+One shared `practiceGuideView` page opens from **ⓘ About this practice**, after context/sounds and before setup of stopped Practice or Sequence configuration. It keeps the shared BETA header, Settings, informational footer and fixed five-tab navigation with Drills active. The informational page omits the setup safety/gun-switch controls; reading never acquires audio, asks for safety permission or starts practice.
 
 The page includes a mode/preset title and purpose, actual selected sequence/endpoints where relevant, current start-source explanation, static synthetic example, What it measures, three How it works steps, Good to know, Before you start and Back to setup. User titles/steps are inserted as text. Back/Forward and both Back controls preserve the same gun/source context and invalid/unsaved form values; stale contexts fall back safely. An active/pending/unsaved session cannot enter the guide.
 
@@ -48,3 +48,5 @@ Current animated exports are generated from this working component using `node t
 ## Component and theme ownership
 
 Existing runtime tokens in `src/styles.css` remain canonical. The guide reuses the shared app shell and the actual Practice/Sequence run and review fragments; `sessionPresentation.js` owns their read-only display, while `practiceGuideController.js` owns example playback only. The guide caption and Play control use the existing `--session-muted` / `--session-text` roles in Light; Dark retains its reviewed values. The browser regression requires at least 4.5:1 rendered text contrast on the caption surface. Requirements own behavior; current captures/GIF manifests own visual evidence. There is no separate help theme or second session drawing.
+
+CHG-059 adopts the shared outlined information link and ordered sound list from DrillSetup. See [guide layout requirements](../../../requirements/guide-layout.md); preserve shared shell, fixed navigation and read-only simulated examples. Screenshot acceptance is recorded in project history.

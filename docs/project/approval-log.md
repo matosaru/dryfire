@@ -650,3 +650,7 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 ## CHG-058 — Shared sequence-style trigger configuration
 
 2026-10-23 direct owner instruction: “sequence drill configuration page looks better … Use sequence drills template in single trigger pull drills configuration pages. Try reusing template”. Authorizes the shared configuration presentation for the four retained trigger modes, preserving mode-specific options, timing/capture/data/safety/edition behavior. [Requirements](../requirements/drill-setup-template.md). Work b only with complete pre-publication gate; main/dev/deployment frozen.
+
+## CHG-059 — Shared guide control, guide sound lists and catalog group colors
+
+2026-10-23: direct owner request: “update link design with your suggestion”, “about this practice pages … common layouts … practiceGuideSequence … old style”, and trigger target #46baff / sequence catalog target #b574f6; update tests and deploy on b. This approves [guide-layout.md](../requirements/guide-layout.md) and the previously proposed outlined information link. No main/dev changes. Cloudflare remains owner-managed; verify publication separately from deployment.

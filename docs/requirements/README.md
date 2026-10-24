@@ -1,6 +1,6 @@
 # Functional requirements
 
-Revision 1.25 · CHG-058 shared drill configuration / CHG-044 contextual practice guides / CHG-041 shared Beta disclosure / CHG-037 shared page architecture / CHG-036 b/main Free and dev Full branch profiles / CHG-035 private-preview simulation / CHG-034 two-gun public edition / CHG-033 informational-page bottom navigation · 2026-10-23
+Revision 1.26 · CHG-059 shared guide layout/catalog accents / CHG-058 shared drill configuration / CHG-044 contextual practice guides / CHG-041 shared Beta disclosure / CHG-037 shared page architecture / CHG-036 b/main Free and dev Full branch profiles / CHG-035 private-preview simulation / CHG-034 two-gun public edition / CHG-033 informational-page bottom navigation · 2026-10-23
 
 CHG-027 starts [About](about.md) with email support; CHG-029 separates [Contact](contact.md) and refines the centered shared footer links in independent app screens. Suggested copy remains reviewable; broader CHG-026 implementations stay paused.
 
@@ -11,6 +11,7 @@ This is the single current functional index. Markdown requirements define behavi
 | [Page layout](page-layout.md) | Shared header/main/footer/fixed navigation across all screens, safe-area/scroll/readiness guards | Implemented with reusable templates; current capture acceptance and CI/publication in the delivery tracker |
 | [Live Listen availability](live-listen-readiness.md) | Consistent navigation, capture readiness and visible reasons | Implemented CHG-053; all eight post-push CI jobs passed on b |
 | [Shared drill setup](drill-setup-template.md) | Sequence-style form, numeric cards and sound list reused by four trigger modes | Implemented CHG-058; all eight pre-publication CI jobs passed, deployment separate |
+| [Guide layout and accents](guide-layout.md) | Shared guide navigation, ordered sound lists, explicit catalog group colors | Implemented CHG-059; all eight pre-publication CI jobs passed, live deployment separate |
 | [Core](core.md) | Learning, recognition, safety, resets and navigation invariants | Implemented |
 | [Branding](branding.md) | Dry Fire With Ease display name, DF / WITH EASE lockup, BETA status and shared copyright | Implemented |
 | [Gun profiles](gun-profiles.md) | Names/types, up to five guns and independent owned data | Implemented, including CHG-019 Edit/type images and CHG-020 single-gun/all-owned-data deletion |

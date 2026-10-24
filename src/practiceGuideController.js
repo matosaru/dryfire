@@ -54,7 +54,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
       for(const[id,value]of Object.entries(manual.texts))text(id,value);
       $('practiceGuideSteps').replaceChildren(...manual.steps.map(step=>{const li=doc.createElement('li');li.textContent=step;return li;}));
       $('practiceGuideSequence').classList.toggle('hidden',manual.sequenceHidden);
-      $('practiceGuideSequence').replaceChildren(...manual.sequence.flatMap((step,index)=>{const chip=doc.createElement('span');chip.className='preset-chip';chip.dataset.sound=step.label;chip.textContent=step.text;return index?[doc.createTextNode(' → '),chip]:[chip];}));
+      $('practiceGuideSequence').replaceChildren(...manual.sequence.map(step=>{const item=doc.createElement('li');item.className='drill-step';item.dataset.sound=step.label;item.textContent=step.text;return item;}));
       $('practiceGuideExamples').classList.toggle('hidden',manual.examplesHidden);
     }
     selectExample(false); return guide;

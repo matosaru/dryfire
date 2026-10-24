@@ -567,7 +567,7 @@
       "source": "packages/ui/src/DrillSetup/DrillSetup.tsx",
       "css": "packages/ui/src/DrillSetup/DrillSetup.css",
       "tests": "packages/ui/src/DrillSetup/DrillSetup.test.tsx",
-      "runtimeOwner": "Shared Sequence/Practice configuration markup; native controller owns retained form, validation and capture. Shared ordered steps update through existing parent ports."
+      "runtimeOwner": "Shared Sequence/Practice configuration markup; native controller owns retained form, validation and capture. Shared ordered steps serve setup and guides through existing parent ports; shared outlined guide navigation follows context/sounds before setup."
     }
   ],
   "retainedSubtreeBoundary": {

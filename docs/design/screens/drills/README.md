@@ -52,3 +52,7 @@ CHG-054/055 [current catalog and retirement review](../../baselines/chg-055-reti
 ## CHG-057 aligned card revision
 
 Every catalog card uses one fixed icon column and a shared text column for title and sublabel, followed by full-width Start (and saved-custom Edit) actions. The catalog chip strip is removed; detailed ordered actions remain in Configure and the practice guide. Keep existing colors, target icon, type scale, border, radius and button appearance. Both themes, narrow/mobile/wide layouts and progressive native/React ownership must match. Pinned Chromium/WebKit public/preview images were reviewed in collector39897542328; the current references below include this revision. Complete functional/performance acceptance remains tracked separately in implementation history.
+
+CHG-059: all Trigger Press Group targets are #46baff and all built-in/custom Sequence targets are #b574f6 in both themes; grouping replaces positional color rules.
+
+[Guide layout and catalog accent requirements](../../../requirements/guide-layout.md).

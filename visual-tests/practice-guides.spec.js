@@ -115,13 +115,13 @@ test('built-in and existing custom sequence guides keep their actual steps and e
   await page.locator('#drillCatalog .preset-card').filter({ has: page.getByRole('heading', { name: 'Rack slide → Trigger pull', exact: true }) }).getByRole('button', { name: 'Start Drill' }).click();
   await expect(page.locator('#sessionConfigure')).toBeVisible(); await page.locator('#sessionRepetitions').fill('29');
   await page.locator('#sessionGuideLink').click(); await expect(page.locator('#practiceGuideKind')).toHaveText('ORDERED SEQUENCE GUIDE');
-  await expect(page.locator('#practiceGuideSequence .preset-chip')).toHaveText(['Rack slide', 'Trigger pull']);
+  await expect(page.locator('#practiceGuideSequence > li.drill-step')).toHaveText(['Rack slide', 'Trigger pull']);
   await page.locator('#practiceGuideReturnBtn').click(); await expect(page.locator('#sessionRepetitions')).toHaveValue('29');
   await page.locator('.tab[data-view="drills"]').click(); await page.locator('#customDrillsTab').click();
   await page.locator('#customDrillCatalog').getByRole('button', { name: 'Start Drill' }).first().click();
   await page.locator('#sessionGuideLink').click(); await expect(page.locator('#practiceGuideName')).toHaveText('QA saved sequence');
   const preset = library.gunSettings.find(row => row.gunId === library.activeGunId && row.key === 'customDrills').value[0];
-  await expect(page.locator('#practiceGuideSequence .preset-chip')).toHaveText(preset.steps.map(s => ({ draw: 'Draw from holster', rack: 'Rack slide', trigger: 'Trigger pull', reload: 'Change magazine' })[s]));
+  await expect(page.locator('#practiceGuideSequence > li.drill-step')).toHaveText(preset.steps.map(s => ({ draw: 'Draw from holster', rack: 'Rack slide', trigger: 'Trigger pull', reload: 'Change magazine' })[s]));
   expect(await page.evaluate(() => window.__guideMicRequests)).toBe(0);
 });
 

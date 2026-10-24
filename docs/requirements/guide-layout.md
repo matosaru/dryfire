@@ -1,0 +1,10 @@
+# Shared practice guidance and catalog accents — CHG-059
+
+Approved by the owner's direct instruction on 2026-10-23: implement the proposed About-this-practice control, use common layouts on practice guide pages, replace the old practiceGuideSequence styling, and use explicit group target colors. Publish accepted code on b only; main/dev remain frozen.
+
+- Both trigger and sequence setup pages use one shared outlined secondary navigation control, `ⓘ About this practice`, after gun context and ordered sounds and before Setup. Keep a real link, minimum 44px target, no underline/arrow, visible keyboard focus, hover/pressed feedback and the existing hidden state during runs/reviews.
+- Keep all four trigger guides and built-in/custom sequence guides within the common app shell/PageHeading and existing shared run/review example components. The selected guide sequence uses the shared DrillSetup ordered-list markup and styles, not catalog preset chips or arrow text. Preserve the actual selected sound order and data-sound selectors in both startup and React ownership.
+- Trigger Press Group targets use #46baff; built-in and saved custom Sequence drill targets use #b574f6. Group identity, never child position, controls color. Apply the requested colors in both themes. Text and labels remain the accessible group identifiers.
+- Preserve guide content, example playback/early-trigger controls, paused initial motion, source/gun context, Back navigation and invalid/unsaved configuration drafts. Reading guidance never starts microphone capture or changes saved data.
+- Review current screenshot references, help pages and animation exports together. Regenerate only media whose visible content changes; record unchanged media hashes when only surrounding page controls change.
+- Require complete existing acceptance before publication: unit/coverage, integration, both-edition minified builds, pinned Chromium/WebKit screenshots and unchanged performance gates. Publication and live Cloudflare deployment are separate evidence.

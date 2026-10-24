@@ -1,3 +1,4 @@
+import {DrillSetupSteps} from '@dryfire/ui/DrillSetup';
 import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {PracticeRun} from '@dryfire/ui/PracticeRun';
@@ -11,7 +12,7 @@ export function PracticeGuidePage({title,texts,sequence,steps,example,early=fals
 <p id="practiceGuideKind" className="guide-kicker">{texts?.practiceGuideKind??'PRACTICE GUIDE'}</p>
 <h3 id="practiceGuideName" className="guide-title">{texts?.practiceGuideName}</h3>
 <p id="practiceGuidePurpose" className="guide-intro">{texts?.practiceGuidePurpose}</p>
-<div id="practiceGuideSequence" className={sequenceHidden?'preset-steps guide-sequence hidden':'preset-steps guide-sequence'} aria-label="Selected sound order">{sequence}</div>
+<DrillSetupSteps id="practiceGuideSequence" label="Selected sound order" hidden={sequenceHidden}>{sequence}</DrillSetupSteps>
 <p id="practiceGuideCurrentSetup" className="guide-current-setup">{texts?.practiceGuideCurrentSetup}</p>
 <div id="practiceGuideExamples" className={examplesHidden?'guide-example-options hidden':'guide-example-options'} role="group" aria-label="Single practice example"><button onClick={()=>onAction?.('practiceGuideNormalBtn')} id="practiceGuideNormalBtn" type="button" aria-pressed={!early}>Normal repetitions</button><button onClick={()=>onAction?.('practiceGuideEarlyBtn')} id="practiceGuideEarlyBtn" type="button" aria-pressed={early}>Early trigger</button></div>
 {example??<>

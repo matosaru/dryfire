@@ -1,4 +1,4 @@
-import {DrillSetup,DrillSetupCount,DrillSetupSteps} from '@dryfire/ui/DrillSetup';
+import {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
 import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {PracticeRun} from '@dryfire/ui/PracticeRun';
@@ -7,9 +7,10 @@ export type PracticePageProps={title?:string;gunName?:string;contextHidden?:bool
 /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
 export function PracticePage({title,gunName,contextHidden=false,guideHidden=false,configure,run,review,steps,onBack,onGuide,onAction}:PracticePageProps){return <>
 <PageHeading id="practice-title" title={title??'Practice'} backId="practiceBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
-<a onClick={onGuide} id="practiceGuideLink" className={guideHidden?'practice-guide-link hidden':'practice-guide-link'} href="#practice-guide">About this practice <span aria-hidden="true">›</span></a>
+
       <p className={contextHidden?'gun-context hidden':'gun-context'}>Practice for <strong className="gun-context-name">{gunName}</strong>.</p>
       <DrillSetupSteps id="practiceSteps" label="Required sounds">{steps}</DrillSetupSteps>
+      <DrillGuideLink id="practiceGuideLink" hidden={guideHidden} onClick={onGuide}/>
       {configure??<>
       <div id="practiceConfigure">
         <DrillSetup prefix="practice" legend="Practice setup" footer={<><p id="practiceCueNote" className="muted small"></p><p id="practiceReadiness" className="session-readiness" role="status"></p><button onClick={()=>onAction?.('practiceLearnBtn')} id="practiceLearnBtn" className="button secondary wide-action hidden" type="button">Learn missing sounds</button><button id="practiceStartBtn" className="button primary wide-action" type="submit">Start Practice</button></>}>

@@ -1,4 +1,4 @@
-import {DrillSetup,DrillSetupCount,DrillSetupSteps} from '@dryfire/ui/DrillSetup';
+import {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
 import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {SequenceRun} from '@dryfire/ui/SequenceRun';
@@ -7,10 +7,11 @@ export type SequencePageProps={title?:string;gunName?:string;contextHidden?:bool
 /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
 export function SequencePage({title,gunName,contextHidden=false,guideHidden=false,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){return <>
 <PageHeading id="session-title" title={title??'Drill Session'} backId="sessionBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
-<a onClick={onGuide} id="sessionGuideLink" className={guideHidden?'practice-guide-link hidden':'practice-guide-link'} href="#practice-guide">About this practice <span aria-hidden="true">›</span></a>
+
       <p className={contextHidden?'gun-context hidden':'gun-context'}>Session for <strong className="gun-context-name">{gunName}</strong>.</p>
       <p id="sessionPresetName" className="session-preset-name">{presetName}</p>
       <DrillSetupSteps id="sessionSteps" label="Ordered sound sequence">{steps}</DrillSetupSteps>
+      <DrillGuideLink id="sessionGuideLink" hidden={guideHidden} onClick={onGuide}/>
 
       {configure??<>
       <div id="sessionConfigure">

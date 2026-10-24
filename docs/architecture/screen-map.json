@@ -171,7 +171,8 @@
         "docs/requirements/drill-sessions.md",
         "docs/requirements/practice-modes.md",
         "docs/requirements/build-editions.md",
-        "docs/requirements/page-layout.md"
+        "docs/requirements/page-layout.md",
+        "docs/requirements/guide-layout.md"
       ],
       "notes": "Six practice cards precede the preserved sequence catalog. Built-in / Custom tabs select sequence presets. The inline custom editor has a title, ordered action list, add/remove/reorder controls, Save and Cancel. A preset is owned by the active gun and uses the existing four event identifiers. The editor is a screen state, not another public route.",
       "states": [
@@ -223,7 +224,8 @@
         "docs/requirements/persistence.md",
         "docs/requirements/practice-start.md",
         "docs/requirements/page-layout.md",
-        "docs/requirements/drill-setup-template.md"
+        "docs/requirements/drill-setup-template.md",
+        "docs/requirements/guide-layout.md"
       ],
       "notes": "Configure exposes only mode-relevant count/par, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par offer Next between resolved attempts; repeated/control remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
       "states": [
@@ -326,7 +328,8 @@
         "docs/requirements/drill-sessions.md",
         "docs/requirements/practice-improvements.md",
         "docs/requirements/persistence.md",
-        "docs/requirements/page-layout.md"
+        "docs/requirements/page-layout.md",
+        "docs/requirements/guide-layout.md"
       ],
       "notes": "Keep the ordered sequence visible once. Configure exposes repetitions (default ten), fixed/random delay (default fixed three seconds), Sound at start (default Off), readiness and Start Session. Require only referenced sound types. Run shows completed/left, countdown/GO, latest repetition and Pause/Resume/End. Legacy GO is a status; the Practice STOP correction does not replace this runner. Each ordered completion is saved and followed by a fresh countdown. Review shows totals and repetition/split details, Repeat Session and Back to Drills.",
       "states": [
@@ -368,7 +371,8 @@
         "docs/requirements/practice-guides.md",
         "docs/requirements/page-layout.md",
         "docs/requirements/practice-modes.md",
-        "docs/requirements/drill-sessions.md"
+        "docs/requirements/drill-sessions.md",
+        "docs/requirements/guide-layout.md"
       ],
       "notes": "One reusable read-only guide for six modes and four built-in/custom sequences. Preserves unsaved/invalid setup and history; no capture or safety prompt. Current endpoints/preset steps and start-source explanation; controlled examples using shared live run/review templates, normal/early Single, Play/Pause/Replay and stopped Review. Shared BETA shell/footer/fixed Drills navigation.",
       "states": [
@@ -810,7 +814,7 @@
     "tools/page-templates.mjs": "bb899733efa8a4347c5cd6b19774931b9907ebf3e050aea083ea87601b4f1a4a",
     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
     "src/practiceGuides.js": "58f31bcb12c220f8f15688a6b2c1173a406945660c7386c52aa0c0a1e6e8dc2e",
-    "src/practiceGuideController.js": "575c8769883a797c8c1ebe73498175548b4618fd50264ad3f9bbce5ec32d7b2f",
+    "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
     "src/practiceGuideManuals.js": "da39dc4e262d951d39b854c10364507730509acb3f01f33f94eb37edb189238e",
     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
@@ -911,10 +915,10 @@
     "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "7fb89db4b9df0f6df18241a83be9307444f704a6ae2ccbab92816052ef2517a2",
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
     "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
-    "packages/ui/src/DrillCard/DrillCard.css": "11312ad4e2573980ea41fff44f877bc9ba921d1c6289269845be2c243ea5fdb1",
+    "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
     "packages/ui/src/RetainedNode/RetainedNode.tsx": "351036d9dee16e01c2e9a29df9ab9704e2c96f5f9626be56d1f7ca70f6208170",
     "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
-    "apps/web/src/styles/legacy-after-drill-cards.css": "75ce8375f9e7f1e1f9279cbbe560c197da1bc91c02960fa42ff2ff71be28b1fa",
+    "apps/web/src/styles/legacy-after-drill-cards.css": "397fa9588e1ba26df0e636c7329f113dcdb2e5cb22e92fd53499a55091bcbfc9",
     "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
@@ -930,7 +934,7 @@
     "apps/web/src/styles/legacy-before-history-list.css": "000531fa0d4af1f326e5998ed8a3f31fb280b86b45fca1e53c2e10addc264d7a",
     "apps/web/src/styles/legacy-before-evaluation.css": "bc3c7495e2cb342a0b60182bc654eb334dc204ee55f91be3421eded18d6fffee",
     "apps/web/src/styles/legacy-after-evaluation.css": "14626bc045626136df9cdfa1bb947a74647f37139727ade34fc85ed59b37e14e",
-    "apps/web/src/styles/legacy-after-saved-sessions.css": "f0949bd914a43db5b644f1aabe77cd036592e8a63dc5379fbf38b0b8bdd89d2e",
+    "apps/web/src/styles/legacy-after-saved-sessions.css": "5e3721e852ce4be55ec6d2ccd686f2a1d74f2287fab18234ab86c4cc98452303",
     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
     "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
     "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
@@ -965,11 +969,11 @@
     "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
     "apps/web/src/app/guideContents.tsx": "52da80bafebfe6213fb93dd34f75792998ed70d1bccadbc9331b3190eabb9209",
     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "0fc47554da1982ce3a502adf1c4c8754863078d473d7d977038f6229e350b1d2",
-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "18836819b07a07f4998ad05ece3abae2dbb93da72fd8ef4dd9ec3774aaa53862",
-    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "5ec336334f797a629f64606b9fb64081bbf7e710fd6d6616c5ccef6e07f4ae1f",
+    "apps/web/src/pages/PracticePage/PracticePage.tsx": "cc44de6c45b28910f9f3d26b899ee8f895622bd2eb0961c350ecbc102d514779",
+    "apps/web/src/pages/SequencePage/SequencePage.tsx": "034f882058ea539134acf6179cdd5568887b3e67c13b51017d0030547b4b3c23",
+    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "39e68450b650292de4523e345ba76388cfe50a5cb418a9704fac9ae7d2f570b8",
     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
-    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "8009730b34473677566e6bec07a950d75446ba39ab08bde6f4557cfc8cb95e82",
+    "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "23ea6107bb58f6fa46fb2fa82421ad63ddac3e49fe9e97540382e384d5b37fba",
     "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
     "apps/web/src/styles/legacy-before-sequence-page.css": "687daa485d1e63a71364d3c8b9c64ab66d7038f687607a88ff9ef76c92a6d3f5",
     "apps/web/src/pages/SequencePage/SequencePage.css": "3395c37a1d09c0a6f3001ce2308d75ad58789892847dba6e317bc50c3500acf4",
@@ -978,7 +982,7 @@
     "apps/web/src/pages/PracticePage/PracticePage.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
     "apps/web/src/app/practicePage.tsx": "e3bc96c6c95ac47ec7570a83357828c7c8dc790e79dd3080acd424ac762ae3ec",
     "apps/web/src/app/sequencePage.tsx": "4e738e44580c39acd9e4d8e47c296154af60125b8a80507bc1df3c2f708395e8",
-    "apps/web/src/app/guidePage.tsx": "d9ef0da7ee93d716a444312ea679d481f60583ffe81aa93073b02b81daacbc52",
+    "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "src/modulePreparation.js": "135dd2208a0ad8c73075dc318f49d3116b57220d369d4836c1336e4d8bbdfd93",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
@@ -987,8 +991,8 @@
     "tools/minify-html.mjs": "7798a5e447e687c935e325e8ca2a4d05541bb24a7c3cbef90fd0b19503540cfb",
     "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
-    "packages/ui/src/DrillSetup/DrillSetup.tsx": "5a2406f23e99d97c4d064d49e48d141c83b1216e72faca3e018f2437306604ee",
-    "packages/ui/src/DrillSetup/DrillSetup.css": "d26b7a0950929db04e8b9e958224d0a82d8a8ee68b7a9ae3188f55f24e7976db",
+    "packages/ui/src/DrillSetup/DrillSetup.tsx": "d8d803a87a3050830ba22a8977799cce0b016145c2192c809dd22fbfca6ac33c",
+    "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
     "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b"
   },
   "implementationChanges": [
@@ -1017,6 +1021,7 @@
     "CHG-049 static practice catalog prerender (unchanged final UI)",
     "CHG-049 P2 shared chrome and static controls (unchanged final UI)",
     "CHG-057",
-    "CHG-053"
+    "CHG-053",
+    "CHG-059 shared guide control/layout and group accents"
   ]
 }

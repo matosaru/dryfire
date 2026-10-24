@@ -70,11 +70,6 @@ html[data-theme="light"] .dashboard-icon.orange { background:#ffe9d8; color:#b54
 html[data-theme="light"] .dashboard-icon.blue { background:#d9eefb; color:#15668d; }
 html[data-theme="light"] .dashboard-icon.green { background:#def2e7; color:#16633f; }
 html[data-theme="light"] .dashboard-icon.purple { background:#eee4fa; color:#75429c; }
-html[data-theme="light"] .drill-target { color:#15668d; }
-html[data-theme="light"] .preset-card:nth-child(3) .drill-target { color:#75429c; }
-html[data-theme="light"] .preset-chip { background:#e6f5fc; border-color:#3080a4; color:#165d7b; }
-html[data-theme="light"] .preset-chip[data-sound="trigger"] { background:#fff0e5; border-color:#b96a2c; color:#9a4005; }
-html[data-theme="light"] .preset-chip[data-sound="reload"] { background:#f2e9fc; border-color:#9664b7; color:#75429c; }
 html[data-theme="light"] :is(.step-number,.custom-step-number) { background:#d4e5f1; color:#264f6e; }
 html[data-theme="light"] .drill-step.current { background:#fff0e5; border-color:#b96a2c; color:#713706; }
 html[data-theme="light"] .drill-step.current .step-number { background:#f5a364; color:#34200b; }

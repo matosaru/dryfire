@@ -11,3 +11,8 @@
 .session-delay-card>.session-field { display:flex; align-items:center; justify-content:space-between; font-weight:700; }
 .session-delay-card>.session-field select { width:55%; }
 .session-delay-card>.muted { margin:0; font-size:.72rem; }
+
+.practice-guide-link { display:inline-flex; align-items:center; gap:8px; min-height:44px; margin:0 0 16px; padding:10px 14px; border:1px solid var(--session-border); border-radius:10px; background:var(--session-surface-raised); color:var(--session-text); font:inherit; font-size:.85rem; font-weight:650; text-decoration:none; box-sizing:border-box; cursor:pointer; }
+.practice-guide-link:hover { border-color:var(--session-muted); }
+.practice-guide-link:active { background:var(--session-surface); }
+.practice-guide-link:focus-visible { outline:3px solid var(--accent-orange); outline-offset:3px; }

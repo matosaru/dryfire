@@ -1,6 +1,6 @@
 # About this practice — control proposal
 
-Requested on 2026-10-23. **Proposal, not implemented in the application.** The owner asked for a suggestion for replacing the underlined arrow link; the shared Sequence-style setup implementation is tracked separately under CHG-058.
+Requested on 2026-10-23. **Approved for implementation by direct owner instruction, CHG-059.** The original proposal replaces the underlined arrow link; the shared Sequence-style setup implementation is tracked separately under CHG-058.
 
 Use the same compact secondary navigation control in both groups:
 
@@ -15,3 +15,5 @@ The images are local Chromium production-build captures with temporary proposal 
 | Trigger group | Sequence group |
 | --- | --- |
 | [Single trigger press](trigger.dark.png) | [Rack slide → Trigger pull](sequence.dark.png) |
+
+The owner approved implementation on 2026-10-23. These images remain proposal provenance; current accepted product captures live under screens/ and acceptance/publication is tracked in implementation history.
