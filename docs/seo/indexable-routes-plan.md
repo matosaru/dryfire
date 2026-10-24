@@ -1,6 +1,6 @@
 # Indexable routes and page metadata — Free product
 
-Requested 2026-10-24, before the proposed modularization plan. **Implemented; complete candidate acceptance passed in run40083935270. b publication is being finalized; owner controls production promotion.** Review/work on b only. The owner handles production promotion/domain configuration. Canonical host confirmed by the owner: https://easydryfire.com. easydryfire.app redirects to the matching .com path. Existing libraries on other origins must remain recoverable.
+Requested 2026-10-24, before the proposed modularization plan. **Implemented; complete candidate acceptance passed in run40098705431. b publication is complete; owner controls production promotion.** Review/work on b only. The owner handles production promotion/domain configuration. Canonical host confirmed by the owner: https://easydryfire.com. easydryfire.app redirects to the matching .com path. Existing libraries on other origins must remain recoverable.
 
 ## Findings before CHG-060
 
@@ -94,6 +94,6 @@ Then refresh the approved baseline for intentional public-page/routing additions
 
 ## Status
 
-CHG-060 implements all11public HTML pages, metadata/crawl files, readable operational app paths and the favicon fix. Complete candidate acceptance passed all8jobs in [run40083935270](https://github.com/matosaru/dryfire/actions/runs/40083935270), including1037unit tests/150suites, coverage, both-edition browser screenshots and original performance gates. Intentional new public references are separate from398unchanged app references. Application data schema/engines remain unchanged. b publication is being finalized; owner production promotion, live HTTP checks and Search Console/indexing are separate checkpoints. The owner-reported redirect and live domain responses remain independently unverified.
+CHG-060 implements all11public HTML pages, metadata/crawl files, readable operational app paths and the favicon fix. Complete candidate acceptance passed all8jobs in [run40098705431](https://github.com/matosaru/dryfire/actions/runs/40098705431), including1037unit tests/150suites, coverage, both-edition browser screenshots and original performance gates. Intentional new public references are separate from398unchanged app references. Application data schema/engines remain unchanged. b implementation is published; owner production promotion, live HTTP checks and Search Console/indexing are separate checkpoints. The owner-reported redirect and live domain responses remain independently unverified.
 
 [Current architecture sitemap](../architecture/application-sitemap.md) · [Existing SEO research](README.md) · [Structural follow-up](../project/react-refactor/follow-up-plan.md)

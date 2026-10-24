@@ -1,6 +1,6 @@
 {
   "change": "CHG-060",
-  "status": "Full candidate acceptance passed; ready for b publication",
+  "status": "Complete follow-up acceptance passed; b publication in progress",
   "collectorRun": 40081504473,
   "collectorCommit": "3e2c75c",
   "newBrowserReferences": 56,
@@ -149,15 +149,18 @@
     }
   ],
   "liveVerification": "Public domain requests are workspace-proxy denied; owner reports redirect created. Local workerd checks are not live edge verification.",
-  "acceptanceRun": 40083935270,
-  "acceptanceReviewCommit": "c2803b4",
-  "acceptancePatchSHA256": "560dc723296b2f08002495f5b809e48006363a818aa4f9334ce60c797c64fcab",
+  "acceptanceRun": 40098705431,
+  "acceptanceReviewCommit": "491d840",
+  "acceptancePatchSHA256": "223fa2de0bf4b1f9352e997e1942bdb3b26efd7ef98b541e0cb69a707e68e6bf",
   "acceptanceJobs": "All 8 passed: validate, both-edition pinned screenshots, four original browser performance gates and aggregate",
   "failedCandidates": [
     40082119786,
-    40083144281
+    40083144281,
+    40097912906
   ],
   "startupCorrection": "Classic worker uses build-time offline paths; path inventory is generated only during build, not eagerly in app entry.",
   "unitTests": 1037,
-  "unitSuites": 150
+  "unitSuites": 150,
+  "initialAcceptanceRun": 40083935270,
+  "appIconStrategy": "Public pages declare favicon.ico; app uses standard /favicon.ico fallback, retaining Apple icons. Avoid extra eager ICO declaration in the app head."
 }

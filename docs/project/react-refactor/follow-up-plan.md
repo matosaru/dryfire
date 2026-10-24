@@ -131,6 +131,6 @@ Produce separate requirements, designs, technical options and an implementation 
 
 ## Current status
 
-Analysis and this plan are prepared locally. Application code is unchanged; no implementation, commit/push, branch promotion or deployment has been started for the review/plan request. Resolve and complete the preceding SEO/routing scope before F1; canonical .com/.app redirect choice is confirmed; content/migration and implementation remain pending.
+Analysis and this structural plan are documented; F1–F7 implementation has not started. The separate CHG-060 SEO/routing work has been implemented and published on b after complete acceptance40098705431. Owner production promotion/live domain verification remain separate. Refresh the structural baseline before starting F1; retain the current Free-first and b-only workflow.
 
 [Copilot review](copilot-review.md) · [Completed refactor](plan.md) · [Architecture decision](../../architecture/decisions/001-progressive-react-startup.md) · [Current application sitemap](../../architecture/application-sitemap.md)
