@@ -1,5 +1,5 @@
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index 803d718..626a0b2 100644
+index 803d718..31e1ba5 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -805,7 +805,7 @@
@@ -7,7 +7,7 @@ index 803d718..626a0b2 100644
    "reviewedSources": {
      "index.html": "a4057346c9f2eb9a0af60be09f3ce09e6b06a0a5f913d0d58b5be7dca2ef4f95",
 -    "src/main.js": "11164f1681c424c8b9c1818881492fdb8605399979d2b4ab4247e44e475b7ef7",
-+    "src/main.js": "46a3f40546884b2c3417d8b707e415c753a22a2afc4ec2beaf8fd570b8e26904",
++    "src/main.js": "b7970259e7c7c4e4e490bc8c9d87127368e6c0560097f62db67653a06576af6b",
      "src/styles.css": "da2b105c40b06bf659a3b4fb26b094fb4e401f21de041eeaba5533a78fcd689b",
      "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
      "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
@@ -25,10 +25,28 @@ index 5d2696b..191d186 100644
  ## Verify the current production build
  
 diff --git a/src/main.js b/src/main.js
-index 819731b..7b1a23e 100644
+index 819731b..10a697b 100644
 --- a/src/main.js
 +++ b/src/main.js
-@@ -1252,7 +1252,8 @@ async function init() {
+@@ -598,6 +598,7 @@ function displayView(name) {
+   }
+   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name)) { openGunSetup(activeGun); return; }
+   if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
++  const initialDisplay = document.body.dataset.view === 'loading';
+   informationPages.show(name);
+   if(name==='home' && document.body.dataset.view!=='loading' && !homePage && !homePagePending){
+     homePagePending=loadProfilePages().then(module=>{if(!profileLocked() && !$('#safetyModal').open)homePage=module.mountHomePage($('#homeView'),view=>switchView(view));}).catch(showError).finally(()=>{homePagePending=null;});
+@@ -658,7 +659,8 @@ function displayView(name) {
+     if(historyPage && !profileLocked() && !$('#safetyModal').open){try{progressView?.prepare();}catch(error){showError(error);}}
+     renderHistory().catch(showError);
+   }
+-  if(name==='home')renderHome().catch(showError);
++  // loadActiveGun already rendered this first snapshot; later visits refresh it.
++  if(name==='home' && !initialDisplay)renderHome().catch(showError);
+   if(name==='guns')renderGunLibrary().catch(showError);
+   if(name==='settings'){
+     // Restore/help already work natively before onboarding; prepare React after a valid gun exists.
+@@ -1252,7 +1254,8 @@ async function init() {
    await loadActiveGun(library);
    renderLiveButton();
    if (!activeGun || activeGun.needsDetails) {if(pendingEntry&&['settings','about','contact','guns','gunSetup'].includes(pendingEntry.view))await openEntry();else openGunSetup(activeGun);}
@@ -38,6 +56,34 @@ index 819731b..7b1a23e 100644
    const recoveredForGun = recovered.find(record => record.gunId === activeGun?.id);
    if (recoveredForGun && !activeGun?.needsDetails) {
      if (recoveredForGun.kind === 'practice') await practiceController.showRecord(recoveredForGun);
+diff --git a/tests/homeInitialDisplay.test.js b/tests/homeInitialDisplay.test.js
+new file mode 100644
+index 0000000..a7b2785
+--- /dev/null
++++ b/tests/homeInitialDisplay.test.js
+@@ -0,0 +1,22 @@
++/**
++ * @jest-environment jsdom
++ * @jest-environment-options {"customExportConditions":["node","node-addons"]}
++ */
++import {jest} from '@jest/globals';
++import {readFileSync} from 'node:fs';
++import {runInNewContext} from 'node:vm';
++import {renderPageTemplates} from '../tools/page-templates.mjs';
++const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
++const implementation=source.slice(source.indexOf('function displayView('),source.indexOf('function renderDistances('));
++function setup(view='loading'){
++ document.body.innerHTML=renderPageTemplates('{{app}}');document.body.dataset.view=view;
++ document.getElementById('homeEvents').textContent='7';document.getElementById('homeAccuracy').textContent='50%';
++ const context={document,window:{scrollTo:jest.fn()},busy:false,profileLoading:false,PAGE_IDS:['home','settings'],practiceController:null,activeGun:{id:'a'},informationPages:{show:jest.fn()},homePage:null,homePagePending:true,activeView:view==='loading'?'home':view,appURLs:false,setMessage:jest.fn(),showError:jest.fn(),renderHome:jest.fn(async()=>{})};
++ const show=runInNewContext(implementation+'\ndisplayView;',context);return{context,show};
++}
++test('first Home displays the statistics already loaded with its profile without a duplicate history read',()=>{
++ const s=setup();s.show('home');expect(s.context.renderHome).not.toHaveBeenCalled();expect(document.body.dataset.view).toBe('home');expect(document.getElementById('homeView').classList.contains('hidden')).toBe(false);expect(document.getElementById('homeEvents').textContent).toBe('7');expect(document.getElementById('homeAccuracy').textContent).toBe('50%');
++});
++test('later Home visits still refresh statistics rather than keeping the initial snapshot',()=>{
++ const s=setup('settings');s.show('home');expect(s.context.renderHome).toHaveBeenCalledTimes(1);expect(document.body.dataset.view).toBe('home');
++});
 diff --git a/tests/initialEntry.test.js b/tests/initialEntry.test.js
 new file mode 100644
 index 0000000..8cf7fa6
@@ -73,14 +119,14 @@ index 0000000..8cf7fa6
 + const s=setup({view:'settings'},null);const completed=s.run();await Promise.resolve();expect(s.context.switchView).toHaveBeenCalledWith('settings');expect(s.context.openGunSetup).not.toHaveBeenCalled();expect(s.context.setStatus).not.toHaveBeenCalled();s.release();await completed;expect(s.context.setStatus).toHaveBeenCalledWith('Ready');
 +});
 diff --git a/visual-tests/public-site.spec.js b/visual-tests/public-site.spec.js
-index 08fe4a6..095d445 100644
+index 08fe4a6..f8a2886 100644
 --- a/visual-tests/public-site.spec.js
 +++ b/visual-tests/public-site.spec.js
 @@ -10,6 +10,7 @@ test('all public pages have readable initial content and links without JavaScrip
  test('app paths preserve profile data, settings, practice drafts and browser history across refresh',async({page})=>{page.on('dialog',d=>d.accept());
   await page.goto('/app/history/');await expect(page.locator('#gunSetupView')).toBeVisible();await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(library))});await expect(page.locator('#historyView')).toBeVisible();
   await page.goto('/app/history/');await expect(page.locator('#historyView')).toBeVisible();await expect(page).toHaveURL(/\/app\/history\/$/);await expect(page).toHaveTitle('History — Dry Fire With Ease');
-+ await page.goto('/app/');await expect(page.locator('#homeView')).toBeVisible();await expect(page.locator('#homeDrillsBtn')).toBeEnabled();await expect(page).toHaveTitle('Home — Dry Fire With Ease');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
++ await page.goto('/app/');await expect(page.locator('#homeView')).toBeVisible();await expect(page.locator('#homeDrillsBtn')).toBeEnabled();await expect(page).toHaveTitle('Home — Dry Fire With Ease');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');await expect(page.locator('#homeEvents')).toHaveText(String(library.events.filter(row=>row.gunId===library.activeGunId).length));
   await page.locator('.tab[data-view="drills"]').click();await expect(page).toHaveURL(/\/app\/drills\/$/);await page.locator('[data-practice-mode="par"]').click();await expect(page).toHaveURL(/\/app\/practice\/par-time\/$/);await page.locator('#practiceRepetitions').fill('');await page.locator('#practiceGuideLink').click();await expect(page).toHaveURL(/\/app\/practice-guide\/$/);await page.locator('#practiceGuideBackBtn').click();await expect(page.locator('#practiceRepetitions')).toHaveValue('');await expect(page).toHaveURL(/\/app\/practice\/par-time\/$/);
   await page.reload();await expect(page.locator('#practiceConfigure')).toBeVisible();await expect(page.locator('#practice-title')).toHaveText('Par time practice');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
   await page.locator('#settingsShortcut').click();await expect(page).toHaveURL(/\/app\/settings\/$/);await page.goBack();await expect(page.locator('#practiceConfigure')).toBeVisible();
