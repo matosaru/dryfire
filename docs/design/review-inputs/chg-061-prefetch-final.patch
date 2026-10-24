@@ -1,0 +1,247 @@
+diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
+index bf98f28..c917641 100644
+--- a/docs/architecture/component-map.json
++++ b/docs/architecture/component-map.json
+@@ -42,12 +42,14 @@
+       "behaviorTests": [
+         "tests/pageTemplates.test.js",
+         "apps/web/src/pages/HomePage/HomePage.test.tsx",
+-        "tests/homePresentation.test.js"
++        "tests/homePresentation.test.js",
++        "tests/gunPreferenceReads.test.js"
+       ],
+       "visualTests": "visual-tests/screens.spec.js",
+       "controllerSources": [
+         "src/main.js",
+-        "apps/web/src/app/homePage.tsx"
++        "apps/web/src/app/homePage.tsx",
++        "src/gunPreferenceReads.js"
+       ],
+       "stableSelectorExamples": [
+         "homeExamples",
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index 0da6578..ceebf55 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -33,7 +33,7 @@
+         "docs/requirements/build-editions.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Name (1–80 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
++      "notes": "Name (1\u201380 characters), three illustrated native radio choices for gun type, public two-gun / full-preview five-gun creation capacity, local-storage explanation and Save. Existing-gun Edit prefills the same form with Save Changes and Cancel; saving retains gun identity and all data without changing active selection. First use offers Restore from backup.",
+       "states": [
+         {
+           "key": "first-gun.dark",
+@@ -144,7 +144,7 @@
+         "docs/requirements/practice-improvements.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
++      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8\u201310 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+       "states": [
+         {
+           "key": "overview.dark",
+@@ -240,7 +240,7 @@
+         "docs/requirements/drill-setup-template.md",
+         "docs/requirements/guide-layout.md"
+       ],
+-      "notes": "Configure exposes only mode-relevant count/par, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2–5-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par offer Next between resolved attempts; repeated/control remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
++      "notes": "Configure exposes only mode-relevant count/par, app/external start source, fixed/random delay, beep and readiness. Single defaults to ten automatic repetitions with fresh random 2\u20135-second countdown/signal/first accepted trigger each time. Running uses STOP and the microphone meter below when capture is live; Pause releases capture. Par offer Next between resolved attempts; repeated/control remain continuous. Review shows saved outcomes and Repeat / Back to Drills. Histories use actual previous-screen Back and never restart capture on refresh.",
+       "states": [
+         {
+           "key": "configure-single.dark",
+@@ -588,7 +588,7 @@
+         "docs/requirements/build-editions.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun’s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
++      "notes": "Public edition retains saved-session text timing/review and recognition history. Full preview retains progress graphs/filters/table. Per-gun session statistics/chart/table and saved practice/sequence Reviews. Distinct confirmed Clear saved sessions removes this gun\u2019s durable results/progress; Clear recognition history removes only its recent-event rows and refreshes recognition statistics, prediction and Live Listen log/counts. Both update immediately, preserve other data/guns and support cancellation. Deleted Review routes resolve to Drills; stale reads cannot repaint deleted records.",
+       "states": [
+         {
+           "key": "overview.dark",
+@@ -725,7 +725,7 @@
+       "domId": "aboutView",
+       "title": "About",
+       "parent": "home",
+-      "entry": "Shared app footer → About, including before gun setup",
++      "entry": "Shared app footer \u2192 About, including before gun setup",
+       "requirements": [
+         "docs/requirements/about.md",
+         "docs/requirements/core.md",
+@@ -757,7 +757,7 @@
+       "domId": "contactView",
+       "title": "Contact",
+       "parent": "home",
+-      "entry": "Shared app footer → Contact, including before gun setup",
++      "entry": "Shared app footer \u2192 Contact, including before gun setup",
+       "requirements": [
+         "docs/requirements/contact.md",
+         "docs/requirements/about.md",
+@@ -808,7 +808,7 @@
+   ],
+   "reviewedSources": {
+     "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
+-    "src/main.js": "0dee5fbfb0156e5618f938588ee9557a637f2b2bc73332c65e65c65b7982ba09",
++    "src/main.js": "83f8733f8aa517d7001fc81ae7d8911f83db05ae67e3905c2a7adbbcff2098ba",
+     "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
+     "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
+     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
+@@ -1015,7 +1015,8 @@
+     "apps/web/src/public-site/PublicPage/PublicPage.css": "a0476fc565c09bbdae2f2acbde3744899ef1bd02057145e6c46325cdfc3da92b",
+     "tools/app-document.mjs": "a912278db3447503765fe1221e663931897ca5f3d565b690becd9f1930b75cb0",
+     "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx": "0e2ca183b5963dd6d8d02c3c7f9c0e731df994391a1855a0de64652a4131bba2",
+-    "apps/web/src/public-site/MarketingOverview/MarketingOverview.css": "835ecb53212b8b940f593c2108cb16cd8d737e3457eb14558130b61791eeeed3"
++    "apps/web/src/public-site/MarketingOverview/MarketingOverview.css": "835ecb53212b8b940f593c2108cb16cd8d737e3457eb14558130b61791eeeed3",
++    "src/gunPreferenceReads.js": "612ee5623de87e64b917624124c08cebd4011215722ae9886b072b3fa973f892"
+   },
+   "implementationChanges": [
+     "CHG-017",
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index 477b02b..8d7bd52 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -112,7 +112,7 @@
+     "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
+     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+-    "src/main.js": "0dee5fbfb0156e5618f938588ee9557a637f2b2bc73332c65e65c65b7982ba09",
++    "src/main.js": "83f8733f8aa517d7001fc81ae7d8911f83db05ae67e3905c2a7adbbcff2098ba",
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+     "vite.config.js": "c08e425fc7305e585097d6f953b1e3635e211bf15e6ed1a677b8de80b992a729",
+diff --git a/docs/project/implementation-history.md b/docs/project/implementation-history.md
+index 4f8b539..9d7ccf3 100644
+--- a/docs/project/implementation-history.md
++++ b/docs/project/implementation-history.md
+@@ -956,3 +956,9 @@ Candidate review also restores the original explicit error reporting on awaited
+ First public screenshot result:364checks passed,10edition skips,2Home references failed (both browsers, +109px). Investigation found the root's retained pending Home entry made backup-import navigation awaited; the restore banner consequently remained on Home instead of clearing with the original non-blocking transition. Treat pending Home as the ordinary Home import branch while still awaiting explicit deep destinations. Preserve original Home screenshots; do not rebaseline the regression. Add a browser assertion that normal root restore settles without that banner.
+ 
+ CHG-061 complete candidate acceptance40124104473: all8jobs SUCCESS, including1068tests/154suites with unchanged coverage, lint/types/docs/smoke/both minified editions, pinned public/preview Chromium/WebKit screenshots/workflows, all4original performance gates/controls and aggregate acceptance. Accepted patch SHA256 e0baf64972655bb82241fa98efd8b95e6e2573d1217e14deeba0c05371067236 at review commitabf2144; reverse-apply check succeeds before publication. Candidate40123578945 verified all4performance jobs but retained the known Home screenshot failure and is not acceptance. Removed only temporary CHG-061 collector/patches/duplicate candidate images and trial GIF encodings; canonical references, archived marketing image, original10GIFs and source proof remain. Publishing exact accepted application to b; checked main PR/production verification follow.
++
++Post-publication push40125084628 and PR40125108456 both report confirmed public Chromium returning-startup slowdown (33/40 slower pairs; baseline medians~192–195ms, candidate~199–200ms). Candidate acceptance40124104473 passed, but these fresh failures still block main; no retry fishing or relaxed gate. Application/tests/build sources were reconstructed from the accepted review patch and match132f8a1 exactly. Investigating avoidable same-URL history work: local route callback now omits the URL argument only when the destination already equals current pathname/query. Real transitions, guarded onboarding targets and queries remain explicit. Five route tests pass. Review-only patchd63ffad submitted to isolated original public Chromium gate40126102576; complete corrected acceptance remains required before publishing the optimization. B preview builda8a38db5 succeeded; no production merge has occurred.
++
++Isolated original public Chromium gate40126102576 SUCCESS with the same-URL history optimization; no thresholds/readiness/samples changed. Increment service-worker cache86→87 for the next application publication so cached shells can update;14SW tests pass, data untouched. Complete corrected all8 acceptance still required; main remains unmerged.
++
++Corrected candidate40126563124 passed validation, both screenshot editions and3performance jobs, but public Chromium returning remained confirmed slower (~212→217.4ms,32/40pairs); do not accept the isolated pass as sufficient or rerun unchanged code. Added tested read-only preference prefetch: six independent per-gun reads overlap, while consumers await and validate in the exact previous order. Rejections are captured immediately but rethrown only at their original consumer, preserving error precedence and avoiding unhandled late failures. No writes/schema/owner/default changes.19focused tests, lint, docs, build and unchanged payload gates pass. New helper is mapped to Home's behavior tests/architecture. Full acceptance required before application publication.
+diff --git a/docs/project/react-refactor/context.md b/docs/project/react-refactor/context.md
+index b59065e..a884ad7 100644
+--- a/docs/project/react-refactor/context.md
++++ b/docs/project/react-refactor/context.md
+@@ -2,7 +2,7 @@
+ 
+ Updated2026-10-24. [History](../implementation-history.md) · [CHG-061 proof](../../design/baselines/chg-061-route-review.json) · [URL inventory](../../seo/routes.md).
+ 
+-## CHG-061 — accepted application, publishing
++## CHG-061 — published b, production PR pending
+ 
+ Owner approved flat URLs, the actual trainer at `/`, distinct reloadable sequence identities and retaining marketing inside About. Existing standing authorization permits checked b→main PR promotion after green tests. Dev remains untouched.
+ 
+@@ -10,9 +10,11 @@ Complete candidate40124104473 ALL8SUCCESS:1068tests/154suites+coverage, types/li
+ 
+ Compatibility fixes preserve root import's original non-blocking Home transition, await exact sequence setup with reported errors, wait actual Ready for prerendered-screen screenshots and normalize only the performance harness URL before its original warm reload. First two candidates failed; detailed evidence stays in history. No reference, readiness definition, sample count, timeout or performance limit weakened.
+ 
+-## Next
++## Current blocker / next
+ 
+-Publish accepted application on b, observe normal push checks, open checked b→main PR and merge with tested head only when required checks pass. Observe main/Cloudflare outcome; do not claim live HTTP verification. Then close release proof/history/context. Preserve protected main flow; dev is out of scope.
++Application132f8a1 is published on b; source/test/build bytes exactly match accepted candidate. Cloudflare b preview a8a38db5 SUCCESS. PR#27 open; main unchanged. Both normal push40125084628 and PR40125108456 nevertheless confirm public Chromium returning slowdown (~192–195→199–200ms,33/40 slower pairs). Do not merge or rerun unchanged code looking for green.
++
++Local optimization skips URL argument only for same-path/query history writes; actual navigation/onboarding targets remain explicit. Five routing tests pass; UI/media unchanged. Review-only commitd63ffad carries docs/design/review-inputs/chg-061-history-perf.patch. Isolated original Chromium gate40126102576 SUCCESS. Cache version87 prepared for the next application publish;14SW tests pass. Run complete all8 candidate acceptance with final startup patch before publishing optimization, then normal checked b/PR→main. Do not push local status docs while checks run. Dev untouched. Main/production and live HTTP/indexing unverified. User provided b-dryfire.matosaru.workers.dev; HTTP read returned403, so no live content assertion. Owner suspects local cached navigation and is testing.
+ 
+ ## Invariants / deferred work
+ 
+diff --git a/src/gunPreferenceReads.js b/src/gunPreferenceReads.js
+new file mode 100644
+index 0000000..b332763
+--- /dev/null
++++ b/src/gunPreferenceReads.js
+@@ -0,0 +1,12 @@
++/** Overlap independent read-only requests for one explicit owner. Consumers
++ * still await/validate in their original order. Capture every rejection now so
++ * a later failed read cannot become unhandled if an earlier consumer fails. */
++export function startGunPreferenceReads(gunId, readSetting, readCalibration) {
++  const tasks=[()=>readSetting('maxResults',50,gunId),()=>readSetting('sensitivity','normal',gunId),
++    ()=>readSetting('selectedDrill','',gunId),()=>readSetting('audioPreferences',{},gunId),
++    ()=>readCalibration(gunId),()=>readSetting('enabledSoundLabels',null,gunId)];
++  return tasks.map(task=>{
++    const result=Promise.resolve().then(task).then(value=>({ok:true,value}),error=>({ok:false,error}));
++    return async()=>{const row=await result;if(!row.ok)throw row.error;return row.value;};
++  });
++}
+diff --git a/src/main.js b/src/main.js
+index 329b2a8..64aa0ce 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -1,3 +1,4 @@
++import {startGunPreferenceReads} from './gunPreferenceReads.js';
+ import {parseAppPath,isAppPath,appPathFor,appTitleFor,isIndexableAppPath,setupForGuide} from './appPaths.js';
+ import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
+ import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
+@@ -287,15 +288,16 @@ async function loadActiveGun(overview) {
+   customDrills = id ? await getCustomDrills(id) : [];
+   const legacy = id ? await getOutdatedExampleCount(id) : 0;
+   renderModelNotice(`${legacy} older training sample(s) use an incompatible feature format and are ignored. Reset this gun's sounds and record new samples for the updated model.`,legacy===0);
+-  $('#maxResults').value = id ? normalizeMaxResults(await getGunSetting('maxResults', 50, id)) : 50;
+-  liveValue("sensitivity",id ? await getGunSetting('sensitivity', 'normal', id) : 'normal');
++  const preferences=id?startGunPreferenceReads(id,getGunSetting,getCalibrationExamples):null;
++  $('#maxResults').value = id ? normalizeMaxResults(await preferences[0]()) : 50;
++  liveValue("sensitivity",id ? await preferences[1]() : 'normal');
+   if (!$('#sensitivity').value) liveValue("sensitivity",'normal');
+-  const savedDrill = id ? await getGunSetting('selectedDrill', '', id) : '';
++  const savedDrill = id ? await preferences[2]() : '';
+   // Preserve saved-preset validation and its read/error ordering; selection lives in the session controller.
+   currentDrill(savedDrill);
+-  audioPreferences = normalizeAudioPreferences(id ? await getGunSetting('audioPreferences', {}, id) : {});
+-  calibration = id ? await getCalibrationExamples(id) : [];
+-  const storedLabels = id ? await getGunSetting('enabledSoundLabels', null, id) : null;
++  audioPreferences = normalizeAudioPreferences(id ? await preferences[3]() : {});
++  calibration = id ? await preferences[4]() : [];
++  const storedLabels = id ? await preferences[5]() : null;
+   enabledSoundLabels = storedLabels ? normalizeEnabledLabels(storedLabels) : initialEnabledLabels(examples);
+   processingReport = null;
+   renderLiveOptions(); // Free listening and the saved timed preset have separate state.
+@@ -1073,7 +1075,7 @@ async function init() {
+   }
+   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
+     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
+-  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search):undefined,
++  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>{const path=(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search;return path===location.pathname+location.search?undefined:path;}):undefined,
+     show: route => displayView(route.view), canLeave: () => !busy && !profileLoading && !preferencePending && !practiceController?.hasUnsavedResults() && !sessionController?.hasUnsavedResults(),
+     beforeLeave: async () => { practiceGuideController?.pause(); safetyGate?.cancel(); if (liveSession || livePendingStart) await stopLive();
+       if (sessionController?.locked()) await sessionController.interrupt('navigation');
+diff --git a/tests/appPaths.test.js b/tests/appPaths.test.js
+index 9f0fb1c..da7fee1 100644
+--- a/tests/appPaths.test.js
++++ b/tests/appPaths.test.js
+@@ -23,3 +23,8 @@ test('legacy links preserve their meaning without the app prefix or a replacemen
+  for(const[path,target]of Object.entries({'/app/':'/','/app':'/','/app/learn/':'/learn/','/app/guns/setup/':'/gun-setup/','/app/practice/par-time/':'/par-time-practice/','/practice/par-time/':'/par-time-practice-guide/','/app/sequence/':'/drills/','/welcome/':'/about/','/guides/sequence-drills/':'/sequence-drills-guide/','/index.html':'/'}))expect(legacyPathRedirect(path)).toBe(target);
+  for(const path of ['/learn/','/app/unknown/','/app/../private/','//outside.test/'])expect(legacyPathRedirect(path)).toBeNull();
+ });
++
++test('URL-aware navigation preserves real transitions without redundant same-URL browser work',async()=>{
++ const {readFileSync}=await import('node:fs'),{runInNewContext}=await import('node:vm');const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');const start=source.indexOf('urlFor:appURLs?')+'urlFor:appURLs?'.length,end=source.indexOf(':undefined,',start);const context={appPathFor,pendingEntry:null,location:{pathname:'/',search:'?keep=1'}};const urlFor=runInNewContext(source.slice(start,end),context);
++ expect(urlFor({view:'home'})).toBeUndefined();expect(urlFor({view:'learn'})).toBe('/learn/?keep=1');context.location.pathname='/learn/';expect(urlFor({view:'learn'})).toBeUndefined();expect(urlFor({view:'home'})).toBe('/?keep=1');context.pendingEntry={view:'practice',mode:'par'};expect(urlFor({view:'gunSetup'})).toBe('/par-time-practice/?keep=1');
++});
+diff --git a/tests/gunPreferenceReads.test.js b/tests/gunPreferenceReads.test.js
+new file mode 100644
+index 0000000..3aaee67
+--- /dev/null
++++ b/tests/gunPreferenceReads.test.js
+@@ -0,0 +1,4 @@
++import {jest} from '@jest/globals';
++import {startGunPreferenceReads} from '../src/gunPreferenceReads.js';
++test('independent settings start together for one explicit owner while consumers retain their order',async()=>{let release;const blocked=new Promise(r=>{release=r;}),setting=jest.fn((key,fallback,id)=>key==='maxResults'?blocked:Promise.resolve({key,fallback,id})),calibration=jest.fn(async id=>({id}));const reads=startGunPreferenceReads('gun-a',setting,calibration);await Promise.resolve();expect(setting).toHaveBeenCalledTimes(5);expect(calibration).toHaveBeenCalledWith('gun-a');expect(setting.mock.calls.every(row=>row[2]==='gun-a')).toBe(true);expect(await reads[1]()).toMatchObject({key:'sensitivity',fallback:'normal',id:'gun-a'});release(75);expect(await reads[0]()).toBe(75);expect(await reads[4]()).toEqual({id:'gun-a'});});
++test('later rejected reads are handled immediately but surface only when their ordered consumer asks',async()=>{const early=new Error('first'),late=new Error('later'),read=jest.fn(async key=>{if(key==='maxResults')throw early;if(key==='audioPreferences')throw late;return null;});const reads=startGunPreferenceReads('gun-b',read,async()=>[]);await new Promise(r=>setImmediate(r));await expect(reads[0]()).rejects.toBe(early);expect(await reads[2]()).toBeNull();await expect(reads[3]()).rejects.toBe(late);});
+diff --git a/workers/sw.js b/workers/sw.js
+index 710175d..5422bbc 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -3,7 +3,7 @@ const appPaths = __APP_OFFLINE_PATHS__;
+ const navRedirects = __APP_NAV_REDIRECTS__;
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v86`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v87`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/favicon.ico', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {
