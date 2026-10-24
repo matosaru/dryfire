@@ -35,6 +35,19 @@ index a745e51..8581d63 100644
      "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
      "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
      "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
+diff --git a/docs/development/DEPLOY.md b/docs/development/DEPLOY.md
+index cde39c2..5d2696b 100644
+--- a/docs/development/DEPLOY.md
++++ b/docs/development/DEPLOY.md
+@@ -47,7 +47,7 @@ Connect GitHub `matosaru/dryfire`. Build command: `npm run build`; publish direc
+ 
+ Use the [iPhone release checklist](IPHONE_RELEASE_CHECKS.md) to record the production commit and test Safari/Home Screen sessions, settings and retained data. Its current results distinguish completed local checks from unverified production/device checks.
+ 
+-The current service-worker public cache version is `dryfire-sound-trainer-public-v83`; the technical cache-name prefix remains unchanged. Active practice displays STOP with the microphone level below it. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
++The current service-worker public cache version is `dryfire-sound-trainer-public-v84`; the technical cache-name prefix remains unchanged. Active practice displays STOP with the microphone level below it. After deployment, reload the page to fetch the update. If an older screen remains visible, close and reopen the Home Screen app after the updated service worker activates. Learned samples, recognition history and saved session results remain in IndexedDB unless explicitly replaced/reset or browser site data is deleted. Do not clear site data to refresh the app.
+ 
+ ## Verify the current production build
+ 
 diff --git a/tests/htmlMinification.test.js b/tests/htmlMinification.test.js
 index 1ae81a1..6ff7402 100644
 --- a/tests/htmlMinification.test.js
@@ -113,3 +126,16 @@ index d263ca4..bb9eaa3 100644
    } } }],
    base: '/',
    build: {
+diff --git a/workers/sw.js b/workers/sw.js
+index 93d41fd..7e318b1 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -2,7 +2,7 @@
+ const appPaths = __APP_OFFLINE_PATHS__;
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v83`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v84`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/favicon.ico', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {
