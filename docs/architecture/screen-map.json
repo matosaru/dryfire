@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-10-23",
+  "reviewedOn": "2026-10-24",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://dryfire.matosaru.workers.dev",
   "publicPaths": [
@@ -174,7 +174,7 @@
         "docs/requirements/page-layout.md",
         "docs/requirements/guide-layout.md"
       ],
-      "notes": "Six practice cards precede the preserved sequence catalog. Built-in / Custom tabs select sequence presets. The inline custom editor has a title, ordered action list, add/remove/reorder controls, Save and Cancel. A preset is owned by the active gun and uses the existing four event identifiers. The editor is a screen state, not another public route.",
+      "notes": "Four trigger-practice cards precede the preserved sequence catalog. Built-in / Custom tabs select sequence presets. The inline custom editor has a title, ordered action list, add/remove/reorder controls, Save and Cancel. A preset is owned by the active gun and uses the existing four event identifiers. The editor is a screen state, not another public route.",
       "states": [
         {
           "key": "catalog.dark",
@@ -217,7 +217,7 @@
       "domId": "practiceView",
       "title": "Practice",
       "parent": "drills",
-      "entry": "Six mode cards or saved practice review in History",
+      "entry": "Four trigger-mode cards or saved practice review in History",
       "requirements": [
         "docs/requirements/practice-modes.md",
         "docs/requirements/practice-improvements.md",
@@ -374,7 +374,7 @@
         "docs/requirements/drill-sessions.md",
         "docs/requirements/guide-layout.md"
       ],
-      "notes": "One reusable read-only guide for six modes and four built-in/custom sequences. Preserves unsaved/invalid setup and history; no capture or safety prompt. Current endpoints/preset steps and start-source explanation; controlled examples using shared live run/review templates, normal/early Single, Play/Pause/Replay and stopped Review. Shared BETA shell/footer/fixed Drills navigation.",
+      "notes": "One reusable read-only guide for four trigger modes and built-in/saved-custom sequences. Preserves unsaved/invalid setup and history; no capture or safety prompt. Current endpoints/preset steps and start-source explanation; controlled examples using shared live run/review templates, normal/early Single, Play/Pause/Replay and stopped Review. Shared BETA shell/footer/fixed Drills navigation.",
       "states": [
         {
           "key": "single.dark",

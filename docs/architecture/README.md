@@ -2,7 +2,7 @@
 
 Read the [component structure and application entry-point guide](application-structure.md) for build/browser startup, screen owners, shared packages and deliberate progressive startup boundaries. [Decision001](decisions/001-progressive-react-startup.md) records CHG-051.
 
-The [site tree](site-tree.md) is generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. The app has one public address, `/`; its thirteen functional screens, including separate CHG-029 About and Contact, are history-backed UI states, not separate server routes or indexable pages.
+The [application sitemap](application-sitemap.md) shows navigation and the screen directory. It and the detailed [site tree](site-tree.md) are generated from [screen-map.json](screen-map.json). The registry is the single source for functional screen/state coverage and design associations. The app has one public address, `/`; its thirteen functional screens, including separate CHG-029 About and Contact, are history-backed UI states, not separate server routes or indexable pages.
 
 CHG-026 adds a separate [future cloud-services proposal](cloud-services-proposal.md) and [planned public topology](../seo/README.md#planned-public-topology--chg-026). These are not implemented routes or registry entries. Contact is now an app state; its public server route remains proposed. Add account/public-page states to the maintained tree only when code and reviewed designs exist.
 
@@ -25,7 +25,7 @@ CHG-044 [implements contextual practice guides](../requirements/practice-guides.
 - `index.html` declares screens; `src/main.js` connects controls and active gun context. `src/screenNavigation.js` maintains app/browser Back/Forward and guards stale contexts.
 - `src/practiceSession.js` / `src/practiceController.js` own the four-mode engine and Configure/Run/Review. `src/drillSession.js` / `src/sessionController.js` preserve ordered sequence sessions.
 - Microphone capture and segmentation run through `src/audio.js`, the AudioWorklet and event detector; calibrated numeric features feed local recognition. No raw audio is durably recorded/uploaded.
-- `src/storage.js` uses IndexedDB schema 3; backup format 4 restores compatible older formats. Gun profiles own examples, presets, calibration/settings and saved sessions. Appearance/vibration are device-wide. Same-origin refresh/deployment preserves stored data; clearing browser storage or changing origin can lose access. Use exported backups for recovery.
+- `src/storage.js` uses IndexedDB schema 4; backup format 4 restores compatible older formats. Gun profiles own examples, presets, calibration/settings and saved sessions. Appearance/vibration are device-wide. Same-origin refresh/deployment preserves stored data; clearing browser storage or changing origin can lose access. Use exported backups for recovery.
 - History derives comparable progress locally. It does not synchronize another device or measure aim, unloaded status or physical technique.
 - Vite emits minified static assets to `dist/`; Cloudflare Workers serves them. The PWA service worker caches the app shell; internal navigation is not a multipage website.
 

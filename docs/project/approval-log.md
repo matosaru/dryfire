@@ -654,3 +654,7 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 ## CHG-059 — Shared guide control, guide sound lists and catalog group colors
 
 2026-10-23: direct owner request: “update link design with your suggestion”, “about this practice pages … common layouts … practiceGuideSequence … old style”, and trigger target #46baff / sequence catalog target #b574f6; update tests and deploy on b. This approves [guide-layout.md](../requirements/guide-layout.md) and the previously proposed outlined information link. No main/dev changes. Cloudflare remains owner-managed; verify publication separately from deployment.
+
+## 2026-10-24 — Application sitemap documentation
+
+Direct owner instruction: “after you finish, create a sitemap of application”. Produce a maintained application navigation map and screen directory on b after CHG-059. This is documentation of implemented screens, not authorization to add public routes, accounts or SEO landing pages.

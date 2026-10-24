@@ -1,6 +1,6 @@
 {
   "change": "CHG-059",
-  "status": "Complete pre-publication acceptance passed on 2026-10-24; live deployment verification separate",
+  "status": "Complete pre-publication and normal post-push CI passed; Cloudflare b-preview deployment check success",
   "expandedCSSSha256": "a1dafd6e9a465a67c7f0b0159855f9d6fd2cb12f1cebf9113a6b59b5dfdc642e",
   "collectorRun": 39979166376,
   "collectorCommit": "bcf363b",
@@ -1310,5 +1310,12 @@
   "reviewPatchPath": "docs/design/review-inputs/chg-059-final.patch",
   "reviewPatchSHA256": "780af0d539a14bdaacbba3c5eaeeb5b9a1824ea392c821baf198bad677ad512e",
   "unitTests": 1017,
-  "unitSuites": 147
+  "unitSuites": 147,
+  "applicationCommit": "5b8aeed",
+  "postPushRun": 40076234770,
+  "postPushURL": "https://github.com/matosaru/dryfire/actions/runs/40076234770",
+  "postPushResult": "All8 jobs succeeded",
+  "cloudflarePreviewBuild": "ec5dfaf5-9714-464f-8014-5de4bff17e11",
+  "cloudflarePreviewCheck": "success",
+  "cloudflarePreviewURL": "https://dash.cloudflare.com/cec726c2d5dbcf61f72d7f8dbe03037e/workers/services/view/dryfire/production/previews/b/builds/ec5dfaf5-9714-464f-8014-5de4bff17e11"
 }
