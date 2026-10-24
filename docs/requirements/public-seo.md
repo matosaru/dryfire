@@ -14,3 +14,5 @@ Directly authorized by the owner's “proceed” on2026-10-24 after requesting i
 Favicon follow-up: serve the approved-logo derivative at /favicon.ico as image/x-icon with16/32/48sizes. Public pages declare it explicitly; the app uses the standard root favicon fallback and retains Apple icons, avoiding the extra eager ICO declaration in its head. Verify actual asset200, offline installation and unchanged startup gates.
 
 Startup follow-up: discover the existing critical app stylesheet immediately after the viewport declaration, ahead of module loading, without changing resource attributes, stylesheet order or body markup. Preserve the original performance gates; cache84 refreshes old app shells without deleting IndexedDB data.
+
+Maintain a complete generated URL inventory in docs/seo/routes.md: every public canonical URL, operational app path, alias/redirect, generated endpoint and static asset. Derive pages from the runtime registries; reject stale documentation in docs:check. Only the implemented public pages belong in the deployed XML sitemap; private/local app screens remain noindex.

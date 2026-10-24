@@ -16,8 +16,22 @@ Source ed7e2c8 on b:11prerendered public pages/metadata/XML/robots, readable noi
 
 Acceptance40098705431 all8green; actual push40099688597 also all8green. Cloudflare b build4ee565e3-add1-4948-b1d7-375e5e7dbff6 SUCCESS. **PR40099821636 fails WebKit warm39→43ms despite identical source tree**. Do not merge yet. Prior failures40082119786/40083144281/40097912906 remain recorded. Classic SW import/eager path inventory fixed; app explicit ICO removed, root fallback/public icon declarations retained.
 
-## Accepted critical-styles source / release next
+## Published critical-styles source / remaining returning-startup failure
 
-Build-only prioritizeAppStyles discovers existing CSS after viewport/before modules; preserves attributes, stylesheet order and body. Cache84 refreshes installed shells without deleting data. Six HTML/19focused tests, local artifacts/docs pass. Isolated original WebKit40100375551 and **all8candidate40100798238 SUCCESS**. Review407c745 patch SHA2563eb494568233bbe50c2cfaf9acd153d57451c7788229fc92df230e7a624f392a removed only after acceptance. No screenshots/GIFframes or performance limits changed.
+All8candidate40100798238 passed before publishing31825d7 to b (critical CSS before modules; cache84). Cloudflare b build22396edb-b185-468b-91c5-ba861d57df9f SUCCESS. Push40101754914 and PR40101758094 run on31825d7. Both WebKit comparisons pass; **PR Chromium returning190.1→200.2ms fails**. No merge. Previous explicit-ICO removal and CSS priority did not eliminate every timing failure; do not claim completion from a passing candidate alone.
 
-Publishing exact accepted source b, then update PR#26 and wait for all push+PR jobs green. Merge only with matching tested head; retain b branch. Verify main contains tested source and Cloudflare production build succeeds. Record real outcomes. Main promotion is authorized; dev remains untouched. Public live HTTP/Search Console still independent. Do not start F1–F7 during release closure.
+## Active Home startup candidate
+
+Found init awaited openEntry even for default Home after loading saved gun, unlike pre-SEO startup. Restore non-awaited serialized switchView(home) for legacy/default and explicit Home; keep non-Home deep links awaited and missing/incomplete gun setup guards intact. Actual usability observer and all performance policies unchanged.
+
+Added8VM characterization cases using actual initializer/openEntry source:2Home cases fail before fix, all8 pass afterward; combined25profile/route/startup cases pass. Extended real-browser /app/ returning Home/profile/title assertion. Local artifact/docs pass. The await-only Chromium40102567458 still failed returning182→190.1ms. Candidate now also skips duplicate initial Home history read (loadActiveGun already awaited/rendered statistics); later Home visits still refresh. Two added display cases:1fails/1passes before fix, both pass afterward;34focused tests green. Real browser assertion checks restored Home event count. Cache85 ensures update. Source changes LOCAL, not published: src/main.js, workers/sw.js, new tests/initialEntry.test.js and tests/homeInitialDisplay.test.js, visual-tests/public-site.spec.js, DEPLOY current cache/source fingerprints.
+
+Review-onlyaddaa49 updates patch docs/design/review-inputs/chg-060-home-startup.patch SHA25699e7f75bc44fdaa49e29f9574bffc4d3e712f3fe1b1c48b40afc7c26335aba0d and advisory workflow optional browser input (defaultwebkit; original gate command/policy unchanged). Isolated original Chromium40103350936 SUCCESS; refreshed local Chromium public/deep-link/Home-statistics suite3passed. current patch reverse-check passes. No visible styles/screenshots/GIFframes changed.
+
+## SEO documentation request
+
+Owner additionally requests XML sitemap/all-path documentation on GitHub. Build already emits XML/robots. Added generated docs/seo/routes.md with11public,16app paths, redirects/errors/endpoints/static assets, linked from SEO/architecture indexes. docs generator verifies registry/Worker inventory and rejects drift. Documentation-only b publication; no production endpoint claim before main release.
+
+## Next
+
+If focused gate passes, require complete all8candidate acceptance before application b publication. Remove review patch after acceptance; update PR#26, require all push+PR jobs green and merge only matching tested head. Retain b; dev untouched. Verify main tested source and production Cloudflare build. Record outcomes, keep context concise. No main merge while any current check fails. No F1–F7/commercial/native work during closure.

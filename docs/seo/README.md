@@ -2,6 +2,8 @@
 
 CHG-060 ·2026-10-24. Repository implementation passed complete candidate acceptance40100798238 and is published on b; production promotion, live HTTP verification and crawler indexing are separate outcomes. [History](../project/implementation-history.md) records exact CI/publication status. The owner reports creating the public .app→.com301 redirect; this workspace cannot independently access those public domains.
 
+[Complete generated URL inventory and indexing rules](routes.md) lists every public/app path, redirect, generated endpoint and static resource.
+
 ## Current implementation
 
 `site/routes.js` owns11 public routes and canonical https://easydryfire.com. `tools/public-pages.mjs` prerenders useful content with unique initial title/description/canonical, Open Graph/Twitter metadata and factual JSON-LD. Public pages require no JS, profile, login or microphone. Existing manual content and opt-in silent GIF exports are reused. No invented price, rating, accuracy guarantee or cloud feature is published.
