@@ -3,15 +3,28 @@
   "name": "Dry Fire With Ease",
   "short_name": "Dry Fire With Ease",
   "description": "Dry Fire With Ease: private, offline sound learning and recognition for safe dry-fire training",
-  "categories": ["sports", "utilities"],
+  "categories": [
+    "sports",
+    "utilities"
+  ],
   "orientation": "portrait-primary",
-  "start_url": "/",
+  "start_url": "/app/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#090d10",
   "theme_color": "#0a0e11",
   "icons": [
-    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any maskable" },
-    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
   ]
 }

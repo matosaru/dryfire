@@ -1,82 +1,33 @@
-# SEO and indexing proposal
+# Public SEO and routing
 
-Prepared for CHG-018 · 2026-10-11 · **Proposed; not applied to the application or deployed.**
+CHG-060 ·2026-10-24. Repository implementation passed complete candidate acceptance40104091922 and is published on b; production promotion, live HTTP verification and crawler indexing are separate outcomes. [History](../project/implementation-history.md) records exact CI/publication status. The owner reports creating the public .app→.com301 redirect; this workspace cannot independently access those public domains.
 
-CHG-026 requests Contact and public SEO in the [forward web plan](../project/web-commercial-plan.md). Existing templates remain preparatory; their current Worker canonical is not changed until final routing/domain design and origin-data migration are specified. Do not publish the example paid price or make account/cloud claims before those features exist.
+[Complete generated URL inventory and indexing rules](routes.md) lists every public/app path, redirect, generated endpoint and static resource.
 
-CHG-027 starts the [About/email-contact app screen](../requirements/about.md) inside the existing `/` UI. It does not add a public `/about/` or `/contact/` route, sitemap entry, canonical/domain redirect or account/cloud claim; the SEO rollout stays planned.
+## Current implementation
+
+`site/routes.js` owns11 public routes and canonical https://easydryfire.com. `tools/public-pages.mjs` prerenders useful content with unique initial title/description/canonical, Open Graph/Twitter metadata and factual JSON-LD. Public pages require no JS, profile, login or microphone. Existing manual content and opt-in silent GIF exports are reused. No invented price, rating, accuracy guarantee or cloud feature is published.
+
+`workers/publicSite.js` serves the public landing at .com root, public route HTML, XML sitemap, robots and conventional favicon; unknown URLs return404. Operational /app/ paths are noindex and preserve guarded app history. The old Workers/nonproduction root still opens the app; nonproduction /welcome/ previews the landing with noindex. All other preview public responses are noindex. Private preview keeps its independent signed Access gate.
+
+Public pages share the existing branding, BETA/header/footer/fixed navigation and Dark visual language. App chrome's default callback-driven behavior is unchanged; public chrome has real href links. The full route inventory and decisions are in [the route/metadata plan](indexable-routes-plan.md), [requirements](../requirements/public-seo.md) and [generated application sitemap](../architecture/application-sitemap.md).
+
+## Deployment and indexing
+
+- Owner promotes tested b to main and manages Cloudflare domains. No production merge is implied by a b push.
+- One canonical host: .com. Matching .app redirects preserve path/query but do not transfer IndexedDB. [Redirect guide](../development/cloudflare-public-redirect.md) records owner-reported creation and independent verification limits.
+- New installs start at /app/ with the existing manifest id/scope. Same-origin path changes preserve local data. Existing cached/installed clients and old-origin data need deliberate verification/export/import; no automatic cross-origin migration exists.
+- Real public pages return200; personal app states are noindex and excluded from sitemap. Noindex is not an authentication mechanism. Only the actual supported public route registry enters XML; lastmod is omitted rather than fabricated from every build.
+- After production deployment, verify actual HTML/headers/redirects/robots/sitemap and Search Console ownership, submit https://easydryfire.com/sitemap.xml and inspect representative URLs. Neither valid metadata nor a sitemap guarantees indexing, rankings or rich results.
+
+## Verification and reference templates
+
+`verify:dist` runs tools/verify-public-site.mjs against the built HTML/assets and local Worker handler: unique metadata, JSON-LD, links, index/noindex policies, XML/robots,404 behavior, operational responses and ICO availability/type. Browser tests cover public reading without JS and operational deep links/refresh/drafts/Back/Forward. Existing both-edition/browser visual and original performance gates remain required.
+
+[head.html](templates/head.html), [SoftwareApplication reference](templates/webapplication.json), [robots reference](templates/robots.txt) and [sitemap reference](templates/sitemap.xml) document generated output; the build generator/registry own runtime output. Older [public copy](public-copy.md) and commercial topology proposals remain historical research, not authority to publish unimplemented paid/account/cloud routes.
+
+[Shared public designs](../design/screens/public-site/README.md) · [Deployment](../development/DEPLOY.md) · [Architecture](../architecture/README.md)
 
 ## Planned public topology — CHG-026
 
-Working routing proposal, **not implemented or added to the current generated site tree**:
-
-| Candidate location | Proposed public content | Indexing/privacy rule |
-| --- | --- | --- |
-| `easydryfire.com/` | Clear landing page with useful free dry-fire explanation and Open app action | Public initial HTML without microphone/sign-in; one canonical |
-| `/features/` and `/help/` on the marketing origin | Real capabilities, calibration/device help, safety/timing limits | Only shipped capabilities; no invented accuracy claims |
-| `/contact/` plus Contact in app navigation | `easydryfire@gmail.com`, Email support action and copy-address fallback | Free/Pro/anonymous access; no automatic gun/history/audio attachment |
-| `/pricing/` | One Free/Pro comparison after offer approval | Publish only actual price/benefits; no charging for roadmap items |
-| `/privacy/` and `/terms/` | Real trader/contact, data purposes/retention and consumer/billing terms | Match implemented services and Lithuania/target-market obligations |
-| `easydryfire.app/` | Existing PWA plus later reviewed account/backup/billing states | Personal/account/session views noindex; device data never public sitemap content |
-
-The user registered both domains, but bindings and deployed origin behavior are unverified. Preserve the current Worker URL and existing libraries until users can explicitly export/link/restore to any new origin; `.com`, `.app` and the Worker origin have distinct IndexedDB storage. Contact can start with `mailto:` and a copy fallback, avoiding a new server email form/spam service. Verify iPhone behavior when no mail client is configured and never claim mailto sent a message.
-
-Define final routes/designs before application changes, maintain real HTTP 404/redirect/content types and then update the architecture registry/tree and screenshots. Only deployed public canonical 200 pages enter sitemap; preview/dev return noindex. Account APIs/private pages are excluded and protected independently—robots rules are not access control. Existing root-only crawl templates remain drafts, not the final proposed multipage sitemap.
-
-## Current audit
-
-The production origin supplied by the user is `https://dryfire.matosaru.workers.dev/`. Source has one public URL; app navigation uses same-URL history states. Gun Setup, Learn, Practice, History and Settings are not separately crawlable pages. Do not advertise invented URLs such as `/practice/` in a sitemap.
-
-`index.html` already has English language, a brand title, descriptive text, mobile metadata and a manifest. Source currently has no canonical link, Open Graph/Twitter metadata, JSON-LD, `robots.txt` or `sitemap.xml`. No production HTTP/indexing audit is claimed: direct Cloudflare access remains blocked by this workspace gateway. Local source and deployed HTTP behavior must be verified separately.
-
-First-time users see a gun setup form after initialization. There is no dedicated public explanation/FAQ page. Accurate metadata helps explain the page, but does not replace visible, useful content or guarantee indexing. Personal local History is not public content to index, and microphone permission must never be needed to read public product information.
-
-## Recommended search listing
-
-**Title (54 characters):** Dry Fire With Ease | Dry-Fire Timer & Practice Tracker
-
-**Description (148 characters):** Practice dry fire with trigger-click calibration, start beeps, six practice modes and progress charts. Gun profiles and history stay on your device.
-
-These lengths are editorial targets, not guaranteed Google display limits. Search engines may rewrite titles/snippets. Use natural phrases such as “dry-fire timer”, “trigger-click calibration”, “dry-fire practice app”, “start beep” and “practice history”; do not add a meta-keywords tag or repeat keywords unnaturally. Keep the full brand name.
-
-## Prepared artifacts
-
-| Draft | Application when authorized |
-| --- | --- |
-| [head.html](templates/head.html) | Replace the existing title/description once and add canonical and social metadata in the initial HTML head |
-| [webapplication.json](templates/webapplication.json) | Inline this exact JSON as `application/ld+json`; keep facts consistent with visible public content |
-| [robots.txt](templates/robots.txt) | Publish at `/robots.txt` after sitemap deployment; production crawling allowed |
-| [sitemap.xml](templates/sitemap.xml) | Publish at `/sitemap.xml`; list only the real canonical root URL |
-| [Public product copy](public-copy.md) | Candidate visible introduction and FAQ, awaiting public-content implementation scope |
-
-Templates live in documentation and are not copied to `public/`, `index.html` or `dist/` by this change. The proposed social image is the existing deployed-path 512 px app icon, with a square `summary` card. A dedicated 1200×630 social preview can be added later; do not reference a nonexistent image. Verify actual production icon availability before enabling metadata.
-
-The JSON-LD describes a SoftwareApplication and omits invented prices, offers, ratings, reviews, downloads, accuracy statistics and affiliation. Structured data does not guarantee a Google app rich result; Google's eligibility requirements may require facts this app does not publish. Describe supported capabilities honestly, including timing limits and unavailable vibration on browsers without the API.
-
-## Efficient implementation sequence
-
-1. **Prepared here:** complete the source audit, title/description, social/canonical/JSON-LD/crawl templates and public copy. Existing app behavior and storage origin remain unchanged.
-2. **Proposed next:** apply the metadata and crawl files alongside an approved visible public introduction/FAQ. Keep the app's start URL, database identity and existing data intact. Moving the app to `/app/`, adding a separate landing page or adding crawlable help/privacy pages requires a specific product/routing design, not a silent SEO-only move. Use real routes and meaningful HTTP 404s for missing content.
-3. **Validate before publishing:** parse JSON-LD/XML, inspect initial and rendered HTML without microphone permission, check mobile accessibility, ensure one canonical/title/description, verify all referenced images and run repository/build checks. Include any actual service-worker/asset changes in cache-version maintenance. Serve production HTML/XML/text with correct content types.
-4. **Verify deployment:** check canonical `/`, `/robots.txt`, `/sitemap.xml` and icon responses over public HTTPS. Check redirects and unknown-path status. Preview deployments should return `X-Robots-Tag: noindex`; do not rely on `robots.txt` blocking to remove an indexed preview. Only include successful public canonical pages in the sitemap. Omit `lastmod` unless a truthful page-content modification date is maintained; do not use a build timestamp for unrelated doc-only commits.
-5. **Owner account action:** verify the exact production URL-prefix property in Google Search Console, submit the sitemap and inspect/request indexing of the canonical URL. A `workers.dev` subdomain does not grant DNS control of the Cloudflare parent domain; use an available URL-prefix verification method. Record verified access and results rather than promising submission from this workspace. Bing Webmaster Tools is an optional separate step.
-6. **Measure:** record indexed coverage, real queries, impressions/clicks and mobile performance after launch. Adjust useful public content using evidence; no ranking/indexing guarantee. If a custom domain is chosen later, approve and test canonical/redirects and the separate same-origin storage migration before moving users.
-
-## Acceptance and remaining work
-
-Prepared templates and source findings are complete. Production metadata/crawl files/public copy remain **not implemented** by this request; Search Console submission, indexing, HTTP verification and performance measurements remain **not verified**. See the [updated plan](../project/implementation-history.md) and [app site tree](../architecture/site-tree.md).
-
-Public copy must say local browser storage and backups accurately: no account-based sync, no firearm-unloaded/aim verification, no perfect trigger/reset discrimination, no trademark or copyright-clearance claims, no unsupported iPhone vibration promise. Do not expose per-gun history or calibration data through indexable URLs.
-
-## Official reference material
-
-- [Google SEO Starter Guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)
-- [JavaScript SEO basics](https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics)
-- [Title links](https://developers.google.com/search/docs/appearance/title-link) and [snippets](https://developers.google.com/search/docs/appearance/snippet)
-- [Canonical URLs](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls)
-- [Build and submit a sitemap](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
-- [Software app structured data](https://developers.google.com/search/docs/appearance/structured-data/software-app)
-- [Block indexing with noindex](https://developers.google.com/search/docs/crawling-indexing/block-indexing)
-- [Search Console verification](https://support.google.com/webmasters/answer/9008080)
-
-These are implementation references, not evidence that the current production URL has been indexed.
+Historical proposal reference retained for existing approval links. Earlier split-domain marketing/app and commercial routes were proposals, not implemented commitments. CHG-060 supersedes the public topology with one canonical .com origin,11 actual public pages and noindex operational /app/ paths. Pricing, accounts, cloud/billing and legal-page drafts remain outside this implementation.

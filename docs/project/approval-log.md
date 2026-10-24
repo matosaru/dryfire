@@ -658,3 +658,21 @@ CHG-037 implementation clarification: the user explicitly adds **“restructure 
 ## 2026-10-24 — Application sitemap documentation
 
 Direct owner instruction: “after you finish, create a sitemap of application”. Produce a maintained application navigation map and screen directory on b after CHG-059. This is documentation of implemented screens, not authorization to add public routes, accounts or SEO landing pages.
+
+## 2026-10-24 — Free product first; dev outside active workflow
+
+Direct owner clarification: “also forget dev branch”, “i will merge b to main”, then after finishing the Free version revisit monetization principles, desired functionality, structure and technical solutions. Active development/review stays b; owner handles main releases. This pauses the former b→dev/paid-branch workflow, without changing runtime editions/data or authorizing commercial implementation. Follow-up modularization remains a presented plan until implementation is instructed.
+
+## 2026-10-24 — Canonical SEO domain
+
+Owner explicitly chooses “.app redirect to .com and then have all the navigation correct on .com”. Plan https://easydryfire.com as the single canonical origin for public pages/app paths; easydryfire.app is a matching-path alias redirect. This confirms the host decision, not a verified live binding/redirect or implementation of proposed routes. Preserve existing user libraries and legacy recovery access during an origin change.
+
+## 2026-10-24 — Resume permanent public redirect first
+
+After a pause and discussion of duplicate-content/canonical alternatives, owner explicitly says “ok, lets do then permanent redirect first”. Prepare/apply host-specific301 from public easydryfire.app to matching HTTPS easydryfire.com path with query preservation; development hosts unchanged. Owner has been informed browser data is not transferred and still selected this action. Live application is blocked by missing Cloudflare authentication, not by an additional approval requirement.
+
+## CHG-060 — Public SEO and readable app routes
+
+2026-10-24: owner requests indexable paths/URLs, correct metadata/URL names, confirms .com canonical with .app redirect, reports redirect created and then says “proceed” after public URLs/metadata on b are identified as next work. This starts [public-seo.md](../requirements/public-seo.md), preserving storage/recovery, architecture, edition policy and owner-managed production promotion. No other-branch changes or unrelated structural/commercial work.
+
+CHG-060 follow-up: owner also reports favicon.ico404 and asks to fix it. Generate a16/32/48px ICO from existing icon-512.png, reference it in public/app heads and verify200/image/x-icon; no new logo design or external asset source.

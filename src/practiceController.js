@@ -333,6 +333,6 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     return true;
   }
   function connectPage(mount,onGuide){if(page||locked())return false;page=mount($('practiceView'),{onBack,onGuide});return true;}
-  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
+  return { practiceMode:()=>mode, connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken++; routeKey = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

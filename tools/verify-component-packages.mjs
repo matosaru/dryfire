@@ -6,7 +6,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = path => readFileSync(resolve(root, path), 'utf8');
 const errors = [];
 const require = (condition, message) => { if (!condition) errors.push(message); };
-const folders = ['packages/ui/src', 'apps/web/src/pages'];
+const folders = ['packages/ui/src', 'apps/web/src/pages', 'apps/web/src/public-site'];
 const imports = text => [...text.matchAll(/\bfrom\s+['"]([^'"]+)['"]/g)].map(m => m[1]);
 let components = 0;
 for (const base of folders) {

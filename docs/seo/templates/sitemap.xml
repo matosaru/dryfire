@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://dryfire.matosaru.workers.dev/</loc></url>
+  <url><loc>https://easydryfire.com/</loc></url>
+  <url><loc>https://easydryfire.com/practice/</loc></url>
+  <url><loc>https://easydryfire.com/practice/single-trigger-press/</loc></url>
+  <url><loc>https://easydryfire.com/practice/repeated-trigger-press/</loc></url>
+  <url><loc>https://easydryfire.com/practice/par-time/</loc></url>
+  <url><loc>https://easydryfire.com/practice/trigger-control/</loc></url>
+  <url><loc>https://easydryfire.com/guides/sequence-drills/</loc></url>
+  <url><loc>https://easydryfire.com/guides/trigger-click-calibration/</loc></url>
+  <url><loc>https://easydryfire.com/help/</loc></url>
+  <url><loc>https://easydryfire.com/about/</loc></url>
+  <url><loc>https://easydryfire.com/contact/</loc></url>
 </urlset>

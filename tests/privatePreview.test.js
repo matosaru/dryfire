@@ -49,3 +49,9 @@ test('a signed identity without expiry cannot create indefinite access', async (
   const value = await new SignJWT({ email: 'matosaru@gmail.com' }).setProtectedHeader({ alg: 'RS256', kid: 'test' }).setIssuer(issuer).setAudience('test-audience').sign(privateKey);
   const env = environment(); expect((await gate().fetch(request(value), env)).status).toBe(403); expect(env.reads).toBe(0);
 });
+
+test('authenticated app deep links resolve assets only after authorization, with private headers',async()=>{
+ const allowed=await token({}),env=environment();let location;env.ASSETS.fetch=async request=>{location=new URL(request.url);return new Response('app');};
+ const response=await gate().fetch(request(allowed,'/app/history/?private=ignored'),env);expect(response.status).toBe(200);expect(location.pathname).toBe('/');expect(location.search).toBe('');expect(response.headers.get('X-Robots-Tag')).toContain('noindex');
+ const denied=environment();expect((await gate().fetch(request(null,'/app/history/'),denied)).status).toBe(401);expect(denied.reads).toBe(0);
+});

@@ -1,3 +1,4 @@
+import {parseAppPath,appPathFor,appTitleFor} from './appPaths.js';
 import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
 import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
 import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
@@ -43,6 +44,9 @@ const labelMeta = {
   reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple' },
 };
 const $ = selectNode;
+const appURLs=location.pathname==='/app'||location.pathname.startsWith('/app/');
+let pendingEntry=appURLs?parseAppPath(location.pathname):null;
+async function openEntry(){const entry=pendingEntry;pendingEntry=null;if(entry?.mode)return practiceController.open(entry.mode);return switchView(entry?.view??'home');}
 const gunTypeImages = { Handguns: 'handgun', 'Rifles and Carbines': 'rifle', Shotguns: 'shotgun' };
 function gunImagePath(type) { return `/gun-types/${gunTypeImages[type] || 'unknown'}.svg`; }
 let examples = [];
@@ -390,7 +394,7 @@ async function submitGun(event) {
     else await createGun({name, type}, { maxGuns: CAPABILITIES.gunCreationLimit });
     await loadActiveGun();
     setBusy(false);
-    switchView(editing && !completingLegacy ? 'guns' : 'home');
+    if(pendingEntry&&!editing)await openEntry();else switchView(editing && !completingLegacy ? 'guns' : 'home');
     setStatus('Gun saved');
   } catch (error) { showError(error); }
   finally { setBusy(false); setGunSaving(false); }
@@ -579,7 +583,7 @@ function renderDrillCatalog() {
   }
 }
 
-function routeFor(name) { return { view: name, gunId: activeGun?.id || null,
+function routeFor(name) { return { view: name, mode:name==='practice'?practiceController?.practiceMode?.():undefined, gunId: activeGun?.id || null,
   context: name === 'practiceGuide' ? practiceGuideController?.current()?.contextKey : name === 'practice' ? practiceController?.routeKey() : name === 'session' ? sessionController?.routeKey() : null }; }
 function resolveRoute(route) {
   return routeFor(resolveRouteView(route, [activeGun, practiceController, sessionController, practiceGuideController]));
@@ -594,6 +598,7 @@ function displayView(name) {
   }
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name)) { openGunSetup(activeGun); return; }
   if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
+  const initialDisplay = document.body.dataset.view === 'loading';
   informationPages.show(name);
   if(name==='home' && document.body.dataset.view!=='loading' && !homePage && !homePagePending){
     homePagePending=loadProfilePages().then(module=>{if(!profileLocked() && !$('#safetyModal').open)homePage=module.mountHomePage($('#homeView'),view=>switchView(view));}).catch(showError).finally(()=>{homePagePending=null;});
@@ -601,6 +606,7 @@ function displayView(name) {
   if(name==='practice'||name==='session')void practiceGuideController.prepare().catch(()=>{});
   const previousView=activeView;
   activeView=name;
+  if(appURLs){document.title=appTitleFor(routeFor(name));const canonical=document.querySelector('link[rel=canonical]');if(canonical)canonical.href='https://easydryfire.com'+appPathFor(routeFor(name));}
   document.body.dataset.view = name;
   window.scrollTo({top:0,behavior:'instant'});
   if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
@@ -653,7 +659,8 @@ function displayView(name) {
     if(historyPage && !profileLocked() && !$('#safetyModal').open){try{progressView?.prepare();}catch(error){showError(error);}}
     renderHistory().catch(showError);
   }
-  if(name==='home')renderHome().catch(showError);
+  // loadActiveGun already rendered this first snapshot; later visits refresh it.
+  if(name==='home' && !initialDisplay)renderHome().catch(showError);
   if(name==='guns')renderGunLibrary().catch(showError);
   if(name==='settings'){
     // Restore/help already work natively before onboarding; prepare React after a valid gun exists.
@@ -1026,7 +1033,7 @@ async function init() {
   }
   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
-  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute,
+  screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?appPathFor:undefined,
     show: route => displayView(route.view), canLeave: () => !busy && !profileLoading && !preferencePending && !practiceController?.hasUnsavedResults() && !sessionController?.hasUnsavedResults(),
     beforeLeave: async () => { practiceGuideController?.pause(); safetyGate?.cancel(); if (liveSession || livePendingStart) await stopLive();
       if (sessionController?.locked()) await sessionController.interrupt('navigation');
@@ -1129,7 +1136,7 @@ async function init() {
       await renderHistory();
       setBusy(false);
       if (!activeGun || activeGun.needsDetails) openGunSetup(activeGun);
-      else switchView('home');
+      else if(pendingEntry)await openEntry();else switchView('home');
       setMessage(`Restored ${result.guns} gun profiles, ${result.examples} sound examples, ${result.events} recognition results and ${result.sessions} saved drill sessions.`);
     } catch (error) { showError(error); }
     finally { setBusy(false); renderClassCards(); }
@@ -1246,8 +1253,9 @@ async function init() {
   for (const gun of library.guns) recovered.push(...await recoverInterruptedSessions(gun.id));
   await loadActiveGun(library);
   renderLiveButton();
-  if (!activeGun || activeGun.needsDetails) openGunSetup(activeGun);
-  else switchView('home');
+  if (!activeGun || activeGun.needsDetails) {if(pendingEntry&&['settings','about','contact','guns','gunSetup'].includes(pendingEntry.view))await openEntry();else openGunSetup(activeGun);}
+  else if (pendingEntry && pendingEntry.view !== 'home') await openEntry();
+  else { pendingEntry = null; switchView('home'); }
   const recoveredForGun = recovered.find(record => record.gunId === activeGun?.id);
   if (recoveredForGun && !activeGun?.needsDetails) {
     if (recoveredForGun.kind === 'practice') await practiceController.showRecord(recoveredForGun);

@@ -10,6 +10,11 @@ on:
         type: boolean
         required: false
         default: false
+      browser:
+        type: choice
+        options: [webkit, chromium]
+        required: false
+        default: webkit
 permissions:
   contents: read
 jobs:
@@ -50,9 +55,9 @@ jobs:
       - name: Crossed WebKit HTML/module diagnostic, never acceptance
         if: ${{ !inputs.measure_webkit_gate }}
         run: node --experimental-vm-modules tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
-      - name: Measure the original public WebKit gate in isolation
+      - name: Measure the original public browser gate in isolation
         if: inputs.measure_webkit_gate
-        run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist --browser=webkit
+        run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist --browser=${{ inputs.browser }}
       - name: Publish actual performance evidence
         if: always() && inputs.measure_webkit_gate
         id: gate

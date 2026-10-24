@@ -42,3 +42,5 @@ test('prerendered navigation does not require application services', async () =>
   render(<BottomNavigation />);
   await userEvent.setup().click(screen.getByRole('button', { name: 'Learn' }));
 });
+
+test('public navigation links use real app paths and retain selected-item semantics',()=>{const hrefs={home:'/app/',learn:'/app/learn/',drills:'/app/drills/',recognize:'/app/live-listen/',history:'/app/history/'};const v=render(<BottomNavigation view="practice" hrefs={hrefs}/>);expect(v.getByRole('link',{name:'Drills'})).toHaveAttribute('aria-current','page');expect(v.getByRole('link',{name:'Home'})).toHaveAttribute('href','/app/');expect(v.queryByRole('button')).toBeNull();});

@@ -49,6 +49,7 @@ Current references below are actual production-build captures. CHG-029 separates
 | About | [2 state/theme references](screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
 | Contact | [2 state/theme references](screens/contact/README.md) | [contact](../requirements/contact.md), [about](../requirements/about.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md) |
 | Safety confirmation | [1 state/theme references](screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
+| Public website | [11 state/theme references](screens/public-site/README.md) | [public-seo](../requirements/public-seo.md) |
 <!-- screen-coverage:end -->
 
 This table is generated from the [screen registry](../architecture/screen-map.json). Its [site tree](../architecture/site-tree.md) records entry paths and internal states. Capture links belong to each screen document rather than a flat image dump.

@@ -1,25 +1,29 @@
 # Branching and release strategy
 
-CHG-036 · revision 2.0 · directly requested 2026-10-12. This replaces CHG-025 feature → dev → main. The main PR requirement remains. Cloudflare setup and deployment are owner-managed.
+Revision3.0 · active Free-product phase · directly clarified 2026-10-24. This supersedes the prior automatic b→dev synchronization and Full-branch development workflow for the current phase. Main remains protected/PR-based; Cloudflare setup is owner-managed.
 
-| Branch | App functionality | Changes enter through | Default build / routing |
-| --- | --- | --- | --- |
-| `b` | Free pre-production: two new guns, basic practice, saved text results and legacy-data access | Direct Free feature/fix commits; no feature branch required | `public`; public assets |
-| `main` | Stable Free production | Tested `b` → `main` PR | `public`; public assets |
-| `dev` | Complete app: Free improvements plus Full-only functionality | Merge Free changes from `b`; direct Full-only commits | `preview`; signed Access asset gate |
+| Branch | Current role | Ownership |
+| --- | --- | --- |
+| `b` | Active Free-product development and pre-production review | Assistant prepares/tests changes here within approved scope |
+| `main` | Stable Free production | Owner merges tested b changes; assistant does not merge or push main unless explicitly instructed |
 
-`dev` contains the complete feature set. Its private **Test as Free / Full** simulation defaults to Free and remembers a valid private preference; choose Full in Settings to test all five-gun/custom/graph functionality. This does not change the build identity. Public output contains no switch or override implementation.
+Dev is outside the active workflow. Do not inspect, update or synchronize it for current work. No paid development or automatic synchronization is needed while finishing the Free product. This workflow change does not alter existing runtime editions, build profiles, saved-data access or deployment configuration.
 
-## Daily changes and synchronization
+## Daily changes and releases
 
-1. Work on `b` for Free features/fixes. Run the required checks, commit and push directly there.
-2. Synchronize tested Free improvements **b → dev**, retaining dev's Full-only additions, `build-profile.json` (`preview`) and private `wrangler.jsonc`. If either configuration conflicts, resolve it to the destination branch's profile; never accept the Free routing into dev blindly. Run `npm run verify:profile -- --branch=dev` and CI after the merge.
-3. Work directly on `dev` for Full-only features/fixes. Bring a shared fix into b deliberately as a reviewed small change; do not release dev wholesale into b/main.
-4. Release the tested Free code by **b → main PR**, with passing `validate` and `screenshots`. Never push main directly or bypass its protection. Synchronize main's merge ancestry back to b, then b → dev, retaining dev's profile.
+1. Work/review on b only for approved Free-product improvements and fixes; no feature branch is required.
+2. Complete the required unit/coverage, integration, both-edition build/artifact, pinned browser/visual and unchanged performance acceptance before application publication.
+3. Commit/push to b only when authorized. The owner handles b→main releases through the protected release process. Do not claim an announced owner merge has occurred without evidence; do not inspect other branches unless later requested.
+4. Keep changes reversible, preserve user data and avoid force-pushing or rewriting shared history. Cloudflare configuration remains owner-managed.
 
-No force pushes, rebases of shared branch history or required feature branches. Urgent Free fixes follow b → main PR as well. All saved data remains compatible. Optional source retained in Free branches supports existing-preset editing and both-edition regression tests; official Free artifacts exclude new Full functionality. Future Full-only development stays on dev.
+## Commercial work after Free completion
 
-## Build and artifact contract
+After the owner finishes the Free version in b/main, revisit monetization principles, desired functionality, business model, application/service structure and necessary technical solutions in a separate planning iteration. Prior Pro/cloud/billing proposals are inputs for reassessment, not automatic implementation instructions. [Commercial roadmap](web-commercial-plan.md) and [current modularization plan](react-refactor/follow-up-plan.md) record this sequence. Native releases remain deferred.
+
+## Existing build/artifact compatibility reference
+
+The following describes retained implementation compatibility, not authorization to resume work on an inactive branch or implement paid functionality.
+
 
 `build-profile.json` is the committed branch default. `npm run dev`, `npm run build` and `npm run verify:dist` follow it. `npm run build:public` and `npm run build:preview` explicitly select an alternate edition for isolated review; `APP_EDITION` is also validated. Unknown values fail closed. A build's `edition.json` identifies its edition, checkout revision, source digest and complete bundle assets.
 

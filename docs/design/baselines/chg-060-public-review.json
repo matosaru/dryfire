@@ -1,0 +1,182 @@
+{
+  "change": "CHG-060",
+  "status": "Complete Home-startup candidate accepted; release push/PR checks next",
+  "collectorRun": 40081504473,
+  "collectorCommit": "3e2c75c",
+  "newBrowserReferences": 56,
+  "newCurrentCaptures": 11,
+  "originalAppReferencesExpectedUnchanged": 398,
+  "images": {
+    "chromium/preview/public-site/about.dark.390.png": "41bff59d0e7bccbc12dcf9303888d3ae98ca3259195cb15100d219d531907df1",
+    "chromium/preview/public-site/calibration.dark.390.png": "af8946bbc3eb55bb441dbee845920a762d8a0952e046b7e4cb25cb405b93563a",
+    "chromium/preview/public-site/contact.dark.390.png": "cfa63af8f0ae1f15c22487146e71de6caf1f42d542ee850c02598eb7b35d60d8",
+    "chromium/preview/public-site/control.dark.390.png": "cd3096b4214733e96d0c9fc178d024434e1f9ede92a66a87b3069a4d067ea367",
+    "chromium/preview/public-site/help.dark.320.png": "11bee83a46fb0df19dfab57e75e2b374ca424248704d48d1a4cb934bd78e0320",
+    "chromium/preview/public-site/help.dark.390.png": "8b3274f5c665ba61658d888d1dfd7c7f9745d1c471731f7477beffa0ee1b7d8e",
+    "chromium/preview/public-site/home.dark.320.png": "c06d4e8a39128a80c2694ab203121743db7c0d2be8a47a38521a547a7f375e64",
+    "chromium/preview/public-site/home.dark.390.png": "edd28c27a5eb4cfe1cf2542d5e6a40bd872ac40628b8974a6689296b809503f6",
+    "chromium/preview/public-site/par.dark.390.png": "ff3ad2f5d3d4ad965a1297b685da5b344f151ba39547a648508809f0b38df9a1",
+    "chromium/preview/public-site/practice.dark.390.png": "d2ae31a101a30df2f09e862b7fc1b88a709b2de40f82d46143e690cdde2746e1",
+    "chromium/preview/public-site/repeated.dark.390.png": "374f59a4d3dab9547443f7f31ffe711831966326764134a8c4e8b6fbbf537531",
+    "chromium/preview/public-site/sequence.dark.390.png": "af41724fc6b927f4f6db5b87f5693a46e2e93c1a10e445abd4872888da793e00",
+    "chromium/preview/public-site/single.dark.320.png": "916a89409d7f6008c61823d1e4dff45b3fc4ffc61f7f6cdf261118fc284e7ea4",
+    "chromium/preview/public-site/single.dark.390.png": "0c0444fb92736967aa355c04fced10232a6ff80387f9be7b7c584f7f2d7d2918",
+    "chromium/public/public-site/about.dark.390.png": "41bff59d0e7bccbc12dcf9303888d3ae98ca3259195cb15100d219d531907df1",
+    "chromium/public/public-site/calibration.dark.390.png": "af8946bbc3eb55bb441dbee845920a762d8a0952e046b7e4cb25cb405b93563a",
+    "chromium/public/public-site/contact.dark.390.png": "cfa63af8f0ae1f15c22487146e71de6caf1f42d542ee850c02598eb7b35d60d8",
+    "chromium/public/public-site/control.dark.390.png": "cd3096b4214733e96d0c9fc178d024434e1f9ede92a66a87b3069a4d067ea367",
+    "chromium/public/public-site/help.dark.320.png": "11bee83a46fb0df19dfab57e75e2b374ca424248704d48d1a4cb934bd78e0320",
+    "chromium/public/public-site/help.dark.390.png": "8b3274f5c665ba61658d888d1dfd7c7f9745d1c471731f7477beffa0ee1b7d8e",
+    "chromium/public/public-site/home.dark.320.png": "c06d4e8a39128a80c2694ab203121743db7c0d2be8a47a38521a547a7f375e64",
+    "chromium/public/public-site/home.dark.390.png": "edd28c27a5eb4cfe1cf2542d5e6a40bd872ac40628b8974a6689296b809503f6",
+    "chromium/public/public-site/par.dark.390.png": "ff3ad2f5d3d4ad965a1297b685da5b344f151ba39547a648508809f0b38df9a1",
+    "chromium/public/public-site/practice.dark.390.png": "d2ae31a101a30df2f09e862b7fc1b88a709b2de40f82d46143e690cdde2746e1",
+    "chromium/public/public-site/repeated.dark.390.png": "374f59a4d3dab9547443f7f31ffe711831966326764134a8c4e8b6fbbf537531",
+    "chromium/public/public-site/sequence.dark.390.png": "af41724fc6b927f4f6db5b87f5693a46e2e93c1a10e445abd4872888da793e00",
+    "chromium/public/public-site/single.dark.320.png": "916a89409d7f6008c61823d1e4dff45b3fc4ffc61f7f6cdf261118fc284e7ea4",
+    "chromium/public/public-site/single.dark.390.png": "0c0444fb92736967aa355c04fced10232a6ff80387f9be7b7c584f7f2d7d2918",
+    "webkit/preview/public-site/about.dark.390.png": "8b6991e1b13383cf28ba9ed00a33be8cd8c3ffdba32694ee4c28741b31d7fac3",
+    "webkit/preview/public-site/calibration.dark.390.png": "6335dd0f963458a7b44375f1be43b9f6f75cda9380b3b37f9f5080d1b6c7ff9e",
+    "webkit/preview/public-site/contact.dark.390.png": "263faea1bc9f61ac941634667e828409d0dc2de5721406673d73b2cfbcaddc9b",
+    "webkit/preview/public-site/control.dark.390.png": "ca8c987b49526e32e1265e5899369cfa71b0affcef6f1ca168811fc62aa700bb",
+    "webkit/preview/public-site/help.dark.320.png": "7b5d9a825eeffe8c06b39b10f804e8157c31979ea79a694e4b4bdce2a07c2fdf",
+    "webkit/preview/public-site/help.dark.390.png": "6be6a770150b4f21bae9ed4fe21381a84ce4bb3694a751c75b48ca8ad117bded",
+    "webkit/preview/public-site/home.dark.320.png": "e6dc3013ec2403e24d49224a87cffcbe2b19e7b8b255d96b4a0b37917cb45504",
+    "webkit/preview/public-site/home.dark.390.png": "f587dd1ed9d1c36b1b4e42bb38690375a497faa88a28a01f4562cad37db6368c",
+    "webkit/preview/public-site/par.dark.390.png": "6803541624f209c64a03106db96dec702f28eb75e8c68633b7f36121b6b75e81",
+    "webkit/preview/public-site/practice.dark.390.png": "3e3b944b969473d79c73f34d6f31e090bb10c696cd11747b2a05da5c34fae9df",
+    "webkit/preview/public-site/repeated.dark.390.png": "f62aa8b2da15d6e460a0d0a009d989453f26c8954d3eb81e7b07e1f35eb52823",
+    "webkit/preview/public-site/sequence.dark.390.png": "936604eb80ff1cd5820c58dbdd85c595a62a794f9892f04293fbffb438da492a",
+    "webkit/preview/public-site/single.dark.320.png": "bb5e15caef0c274dae04ec948988c8f1953cfe596c6f66602bd086549f9548e8",
+    "webkit/preview/public-site/single.dark.390.png": "7ac3e09147feccf55d6aab11e1bdb757d89a18063c9a9239829c916cd4a135d7",
+    "webkit/public/public-site/about.dark.390.png": "8b6991e1b13383cf28ba9ed00a33be8cd8c3ffdba32694ee4c28741b31d7fac3",
+    "webkit/public/public-site/calibration.dark.390.png": "6335dd0f963458a7b44375f1be43b9f6f75cda9380b3b37f9f5080d1b6c7ff9e",
+    "webkit/public/public-site/contact.dark.390.png": "263faea1bc9f61ac941634667e828409d0dc2de5721406673d73b2cfbcaddc9b",
+    "webkit/public/public-site/control.dark.390.png": "ca8c987b49526e32e1265e5899369cfa71b0affcef6f1ca168811fc62aa700bb",
+    "webkit/public/public-site/help.dark.320.png": "7b5d9a825eeffe8c06b39b10f804e8157c31979ea79a694e4b4bdce2a07c2fdf",
+    "webkit/public/public-site/help.dark.390.png": "6be6a770150b4f21bae9ed4fe21381a84ce4bb3694a751c75b48ca8ad117bded",
+    "webkit/public/public-site/home.dark.320.png": "e6dc3013ec2403e24d49224a87cffcbe2b19e7b8b255d96b4a0b37917cb45504",
+    "webkit/public/public-site/home.dark.390.png": "f587dd1ed9d1c36b1b4e42bb38690375a497faa88a28a01f4562cad37db6368c",
+    "webkit/public/public-site/par.dark.390.png": "6803541624f209c64a03106db96dec702f28eb75e8c68633b7f36121b6b75e81",
+    "webkit/public/public-site/practice.dark.390.png": "3e3b944b969473d79c73f34d6f31e090bb10c696cd11747b2a05da5c34fae9df",
+    "webkit/public/public-site/repeated.dark.390.png": "f62aa8b2da15d6e460a0d0a009d989453f26c8954d3eb81e7b07e1f35eb52823",
+    "webkit/public/public-site/sequence.dark.390.png": "936604eb80ff1cd5820c58dbdd85c595a62a794f9892f04293fbffb438da492a",
+    "webkit/public/public-site/single.dark.320.png": "bb5e15caef0c274dae04ec948988c8f1953cfe596c6f66602bd086549f9548e8",
+    "webkit/public/public-site/single.dark.390.png": "7ac3e09147feccf55d6aab11e1bdb757d89a18063c9a9239829c916cd4a135d7"
+  },
+  "favicon": {
+    "source": "public/icon-512.png",
+    "file": "public/favicon.ico",
+    "sizes": [
+      16,
+      32,
+      48
+    ],
+    "sha256": "392268efe87a4b5ec3d255f9fa2f8be11afbaccd36aeede9bda8aabf3222128b"
+  },
+  "localWorkerdHTTP": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/practice/",
+      "status": 200
+    },
+    {
+      "path": "/practice/single-trigger-press/",
+      "status": 200
+    },
+    {
+      "path": "/practice/repeated-trigger-press/",
+      "status": 200
+    },
+    {
+      "path": "/practice/par-time/",
+      "status": 200
+    },
+    {
+      "path": "/practice/trigger-control/",
+      "status": 200
+    },
+    {
+      "path": "/guides/sequence-drills/",
+      "status": 200
+    },
+    {
+      "path": "/guides/trigger-click-calibration/",
+      "status": 200
+    },
+    {
+      "path": "/help/",
+      "status": 200
+    },
+    {
+      "path": "/about/",
+      "status": 200
+    },
+    {
+      "path": "/contact/",
+      "status": 200
+    },
+    {
+      "path": "/app/settings/",
+      "status": 200
+    },
+    {
+      "path": "/app/history/",
+      "status": 200
+    },
+    {
+      "path": "/favicon.ico",
+      "status": 200
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200
+    },
+    {
+      "path": "/unknown/",
+      "status": 404
+    },
+    {
+      "path": "/site/index.html",
+      "status": 404
+    }
+  ],
+  "liveVerification": "Public domain requests are workspace-proxy denied; owner reports redirect created. Local workerd checks are not live edge verification.",
+  "acceptanceRun": 40104091922,
+  "acceptanceReviewCommit": "08c6fce",
+  "acceptancePatchSHA256": "be736c3ed5f9f1fec10b97f3b846024aa343d581b652f39ff5070b11070cb5ea",
+  "acceptanceJobs": "All 8 passed: validate, both-edition pinned screenshots, four original browser performance gates and aggregate",
+  "failedCandidates": [
+    40082119786,
+    40083144281,
+    40097912906,
+    40099821636,
+    40101758094
+  ],
+  "startupCorrection": "Classic worker uses build-time offline paths; path inventory is generated only during build, not eagerly in app entry.",
+  "unitTests": 1049,
+  "unitSuites": 152,
+  "initialAcceptanceRun": 40083935270,
+  "appIconStrategy": "Public pages declare favicon.ico; app uses standard /favicon.ico fallback, retaining Apple icons. Avoid extra eager ICO declaration in the app head.",
+  "cacheVersion": 85,
+  "criticalStyles": "Existing stylesheet links discovered after viewport, before modules; resource URLs/attributes, stylesheet order and body preserved.",
+  "priorAcceptanceRuns": [
+    40083935270,
+    40098705431,
+    40100798238
+  ],
+  "priorSuccessfulPushRun": 40099688597,
+  "homeStartup": "Restore original non-awaited Home initialization; retain awaited guarded deep links. Reuse profile-loaded first Home statistics; later Home visits refresh.",
+  "priorSuccessfulPushRuns": [
+    40099688597,
+    40101754914
+  ],
+  "focusedHomeGate": 40103350936
+}

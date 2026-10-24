@@ -657,5 +657,17 @@
       "visual-tests/practice-guides.spec.js",
       "visual-tests/offline.spec.js"
     ]
+  },
+  "publicPageTemplate": {
+    "source": "apps/web/src/public-site/PublicPage/PublicPage.tsx",
+    "css": "apps/web/src/public-site/PublicPage/PublicPage.css",
+    "tests": "apps/web/src/public-site/PublicPage/PublicPage.test.tsx",
+    "routes": "site/routes.js",
+    "worker": "workers/publicSite.js",
+    "integrationTests": [
+      "visual-tests/public-site.spec.js",
+      "tests/publicSite.test.js",
+      "tests/appPaths.test.js"
+    ]
   }
 }

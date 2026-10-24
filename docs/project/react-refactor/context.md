@@ -1,23 +1,23 @@
 # Working context
 
-Updated 2026-10-24. Keep concise; details belong in linked specifications/history.
+Updated2026-10-24. [History](../implementation-history.md), [proof](../../design/baselines/chg-060-public-review.json), [URL catalog](../../seo/routes.md), [PR#26](https://github.com/matosaru/dryfire/pull/26).
 
-## Authorization and process
+## Authorization / invariants
 
-Work on **b only**. Main6c38bff/dev741f46e remain frozen. Continue authorized tasks autonomously; no routine approval questions. Before application publication require complete unit/coverage, integration, both-edition minified build verification, pinned Chromium/WebKit screenshots and original performance gates/controls. Never weaken thresholds or call pending/cancelled/diagnostic checks passes. Cloudflare is owner-managed; distinguish observed deployment checks from direct browser/device verification. No subagents unless explicitly authorized.
+Work on b; owner explicitly/repeatedly authorizes **merge b→main once all green**, through PR#26. Dev untouched. No direct main push/protection bypass. Main78be09b merges cleanly and its merged application tree matches b. Admin protection-read403; do not bypass.
 
-Refactor P0–P8 is complete. Retain tested progressive startup adapters/lazy exclusive React owners per ADR001; do not restart migration or eagerly hydrate startup. Browser entry src/main.js; build templates tools/page-templates.mjs.13page/26UI packages. [Architecture](../../architecture/application-structure.md) · [Plan](plan.md).
+Before application publication require complete candidate unit/coverage/integration, both-edition minified artifact/payload, pinned Chromium/WebKit screenshots and original performance gates/controls. Review-only patches allowed; no weakened thresholds/samples/timeouts, replacement of existing images or passing retry fishing. Retain ADR001 startup/data/schema/audio/drafts/edition behavior. No subagents; concise frequent updates.
 
-## Latest completed requests
+Canonical.com; owner reports .app301. Live external HTTP is workspace-proxy403 CONNECT denied, not a site failure; no bypass. Log download redirect also403; no alternate download workaround. Cloudflare owner-managed; observe GitHub check results. Commercial/native/F1–F7 separate later.
 
-**CHG-059 application5b8aeed published on b.** Shared outlined DrillGuideLink follows context/sounds before setup, without underline/arrow;44px target/decorative information icon/keyboard focus. Both setup groups reuse it. Native/React guides use shared DrillSetupSteps and semantic li.drill-step. All Trigger targets #46baff; built-in/custom Sequence targets #b574f6 in both themes. Position-dependent colors and obsolete preset-chip CSS removed. Cachev82. Data/audio/timing/drafts/navigation and shared guide examples remain intact.
+## Accepted CHG-060 / publication
 
-All8 candidate jobs40075428666 and all8 normal post-push jobs40076234770 succeeded:1017tests/147suites+coverage, both minified editions/browsers/workflows/screenshots and4 original performance gates/controls. Cloudflare b-preview deployment check ec5dfaf5-9714-464f-8014-5de4bff17e11 reports success for5b8aeed; no physical iPhone/direct live-browser acceptance claim. [Spec](../../requirements/guide-layout.md) · [Review proof](../../design/baselines/chg-059-guide-review.json) · [History](../implementation-history.md).
+11public prerendered pages/metadata/XML/robots, readable noindex /app/, favicon.ico, shared chrome/manuals/GIFs and no public JS. Legacy nonprod root remains app; /welcome/ landing preview. Manifest id/scope/data schema unchanged.398app baselines byte-identical;56new public refs/11captures;10GIFbytes unchanged. docs/seo/routes.md generated all11public/16app/aliases/resources and drift-checked; published3dead9d.
 
-Pinned collector39979166376/commitbcf363b:204images,100 reviewed changed refs/104identical;23currentcaptures updated. All8 modal interiors and10encodedGIF files unchanged. Accepted patch retained in Git9af1303, SHA256780af0d539a14bdaacbba3c5eaeeb5b9a1824ea392c821baf198bad677ad512e, reverse-checked. Temporary collector/patch/duplicate images removed. Earlier cancelled39979096427/39979096410 are not acceptance. Generic strict audit retains only2 preexisting documented native-select ownership findings.
+Current Home fix: original non-awaited Home initialization restored (non-Home entries still awaited/guarded); first Home reuses stats already awaited in loadActiveGun, later visits refresh. Cache85.34focused tests and3local Chromium workflows pass (restored profile/title/event count). Isolated original Chromium40103350936 and **all8complete candidate40104091922 SUCCESS**. Review08c6fce patch SHA256be736c3ed5f9f1fec10b97f3b846024aa343d581b652f39ff5070b11070cb5ea, removed only after acceptance. No layout/readiness/gate changes.
 
-**Application sitemap completed** after UI publication: [navigation map/directory](../../architecture/application-sitemap.md), generated with the detailed site tree from screen-map.json. docs:generate maintains it; docs:check rejects staleness (intentional failure probe verified).13screens, main flows, shared navigation, edition boundaries, design links and actual public URLs are documented. Corrected stale six-mode registry/current flow wording to four and existing DB schema to4. Documentation-only follow-up; no new public routes/SEO implementation. Documentation/link/syntax/idempotence checks pass.
+Earlier accepted31825d7 deployed b (Cloudflare22396edb-b185-468b-91c5-ba861d57df9f), all8push40101754914 pass but PR40101758094 Chromium returning failed. Earlier failures/partial fixes retained in history; do not erase them.
 
 ## Next
 
-Await owner feedback/new scope. No implementation remains in these requests. Preserve main/dev freeze and full acceptance process; keep this handoff concise after each task. Commercial/accounts/native work remains outside scope.
+Finish publishing this exact accepted source b and update PR#26 body. Wait for **all push+PR jobs green** on matching current head; merge PR#26 retaining b, verify main tested source and production Cloudflare build. No main merge with failed/pending current checks. Record real release outcome and keep context concise. Dev unchanged; no structural/commercial/native implementation. Production live HTTP/favicon/Search Console independent from build success.

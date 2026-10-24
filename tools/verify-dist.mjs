@@ -1,5 +1,6 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import { Script } from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { readBuildProfile, resolveBuildEdition } from './build-profile.mjs';
@@ -38,5 +39,8 @@ for (const file of files.filter(path => path.endsWith('.js'))) {
 }
 for (const worker of ['sw.js', 'pcm-capture.worklet.js']) {
   if (!files.includes(worker)) throw new Error(`Missing bundled worker ${worker}`);
+  new Script(await readFile(join(distPath, worker), 'utf8'), { filename: worker });
 }
 console.log(`${expectedEdition} assets verified: minified app + workers, matching edition/source metadata, no src/ modules or source maps.`);
+
+await import('./verify-public-site.mjs');

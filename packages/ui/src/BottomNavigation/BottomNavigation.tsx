@@ -1,5 +1,5 @@
 export type Destination = 'home' | 'learn' | 'drills' | 'recognize' | 'history';
-export type BottomNavigationProps = { view?: string; disabled?: boolean; onNavigate?: (view: Destination) => void };
+export type BottomNavigationProps = { view?: string; disabled?: boolean; onNavigate?: (view: Destination) => void; hrefs?:Record<Destination,string> };
 const items = [
   { view: 'home', title: 'Home', shape: <path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z" /> },
   { view: 'learn', title: 'Learn', shape: <path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4" /> },
@@ -8,10 +8,10 @@ const items = [
   { view: 'history', title: 'History', shape: <path d="M4 14h3v7H4zm7-6h3v13h-3zm7-5h3v18h-3z" /> },
 ] satisfies { view: Destination; title: string; shape: React.ReactNode }[];
 
-export function BottomNavigationContent({ view = 'home', disabled = false, onNavigate }: BottomNavigationProps) {
+export function BottomNavigationContent({ view = 'home', disabled = false, onNavigate, hrefs }: BottomNavigationProps) {
   const selected = ['session', 'practice', 'practiceGuide'].includes(view) ? 'drills' : view;
   return <>
-    {items.map(item => <button key={item.view} className={`tab${item.view === selected ? ' active' : ''}`} data-view={item.view} aria-current={item.view === selected ? 'page' : undefined} type="button" disabled={disabled} onClick={() => onNavigate?.(item.view)}>
+    {items.map(item => hrefs?<a key={item.view} className={`tab${item.view===selected?' active':''}`} href={hrefs[item.view]} aria-current={item.view===selected?'page':undefined}><span className="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">{item.shape}</svg></span>{item.title}</a>:<button key={item.view} className={`tab${item.view === selected ? ' active' : ''}`} data-view={item.view} aria-current={item.view === selected ? 'page' : undefined} type="button" disabled={disabled} onClick={() => onNavigate?.(item.view)}>
       <span className="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">{item.shape}</svg></span>{item.title}
     </button>)}
   </>;
