@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "42be36fa088c1b343f5014198810364125ff50bb",
+  "sourceCommit": "8538e96060657b054adbea82b56e61aa9b719d2b",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
@@ -7,7 +7,7 @@
     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "23ea6107bb58f6fa46fb2fa82421ad63ddac3e49fe9e97540382e384d5b37fba",
     "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
-    "packages/ui/src/BrandHeader/BrandHeader.css": "7b7c934b5c60426be2ba54bbf1ed104b2d9dfcca9ea16f3efbfb84ca19ef833a",
+    "packages/ui/src/BrandHeader/BrandHeader.css": "5613f0d97dc1ba72f2feba1cbf430b0a6108e51b05004444a7f2573e8940877c",
     "apps/web/src/styles/legacy-card-foundation.css": "e8c6acd2cc9413358addb62e57d593b19751b63855e5169c79a8ef4ca21659fb",
     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
     "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
@@ -33,10 +33,10 @@
     "apps/web/src/pages/SettingsPage/SettingsPage.css": "a2140e42d6ee524b59cb95fd26f22335d8a4f1556336dae40c422a6a91298880",
     "apps/web/src/styles/legacy-before-live-listen.css": "f951af54014e5ec3446cfb6f8cc9797af856b563d9159bbffd04411c6bcf0d13",
     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
-    "apps/web/src/styles/legacy-before-drills.css": "4ee665cd96d2ed6aac7c26fe43a962d486740983bdfb7fda67a24fc8afbd86de",
+    "apps/web/src/styles/legacy-before-drills.css": "6e926f2b9df5705eddcab67b68d4b7118556e3582e2572a08262467e3e41c89d",
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
-    "apps/web/src/styles/legacy-after-drill-cards.css": "69996bdd071d363ca685951e8cffc4a5cad4dc5e1b5dd691c4855f4bdea30de9",
+    "apps/web/src/styles/legacy-after-drill-cards.css": "04b9aa34100b3ed7075e28d03b708cca007635ae6e598e7afb8d49fcb0ccae4f",
     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
     "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
@@ -74,14 +74,14 @@
     "vite.config.js": "c08e425fc7305e585097d6f953b1e3635e211bf15e6ed1a677b8de80b992a729",
     "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
-    "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
+    "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
     "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
     "apps/web/src/features/sessions/resultPresentation.ts": "781e1189119cc9a5e3d284497799827bcff2768ce7687f49235b783cbb007542",
     "apps/web/src/features/sessions/phasePresentation.ts": "5c788b0f902338a4ec81352b69d8d3d1f1270203e23d0d29510098f583ad9836",
     "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
-    "src/main.js": "cf92168d1f51b14d2549140ad8d53f89fd6589db2ef6a3cd8c3febb10f4bdaf9",
+    "src/main.js": "5d72b2ae9766a4c0b06cc0a42dcfa56966e1ea0c35c4c92ed3e13da03928be93",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
@@ -130,7 +130,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "d3b88df2614720ecebf055fcda33aafb1154b62fc368be9a638d0953cb6852c8",
+      "sha256": "3a3c802cdd9b410708991aff45d2f9b272413a0c8b79a3dc45b325cf15f74596",
       "width": 358,
       "height": 1004
     },
@@ -139,7 +139,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "1443ee51583fd6d50f79b303dde7a8236ca1edda8c025d6ac5e414a532c393d7",
+      "sha256": "b447cb4ae167c4f114e31f47a1557447a39045b7554fefcfb465fe9eff504c65",
       "width": 358,
       "height": 1004
     },
@@ -148,7 +148,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "repeated.gif",
-      "sha256": "c6917dbbecf0684223688a789e3d820b9a6ca4de56f5cb85fd0fdbc107da9179",
+      "sha256": "fd585598a1774c08a281c900790e5e8ac1f05479f7e9ec2ad66a7abc16717c00",
       "width": 358,
       "height": 949
     },
@@ -157,7 +157,7 @@
       "frames": 68,
       "frameMs": 200,
       "file": "par.gif",
-      "sha256": "e3e3ce78bde8fd585d1429ba59e01ba91d6e9e4cd176e70820c736a6e6e5faaf",
+      "sha256": "2ede994ac5aed464f7c15ae440371ccbf4cda63c62514f78a2e2cb704556ea3e",
       "width": 358,
       "height": 1004
     },
@@ -166,7 +166,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "control.gif",
-      "sha256": "c6917dbbecf0684223688a789e3d820b9a6ca4de56f5cb85fd0fdbc107da9179",
+      "sha256": "fd585598a1774c08a281c900790e5e8ac1f05479f7e9ec2ad66a7abc16717c00",
       "width": 358,
       "height": 949
     },
@@ -175,7 +175,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "adf1153688e2dd5648f14556f82b2dd498346e2c6633c3a3850418184796a6c2",
+      "sha256": "e246c36d0d8abd6ee9651ab4bfd0d75ba1bd7a429d313e7f208f8c963223f1e5",
       "width": 358,
       "height": 750
     },
@@ -184,7 +184,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-rack-trigger.gif",
-      "sha256": "f6676531bfa37e97724a33a392d15b3e1ed5a676f5ef281d63476520b02066c2",
+      "sha256": "1877491264e95ba10f7f912730352f313a66f1becb6354d9a440282dd3b93fc5",
       "width": 358,
       "height": 750
     },
@@ -193,7 +193,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "fdd3cc5871c6012ef5635e94bee6333bb58506f2fa89ab1b9fc7b07bc3ed2d99",
+      "sha256": "ab7262b4b987f46f81728580a3d9ef1ebc6b8f8407ef1b9ade350906af561a5e",
       "width": 358,
       "height": 750
     },
@@ -202,7 +202,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "92a6e45bd4da50f5fe7a47270cfd080671194149b75bea79c4e225e5c9a388ee",
+      "sha256": "2789599633978e9989d313115198279b91318356697e819a0280327a52bd3f0d",
       "width": 358,
       "height": 750
     },
@@ -211,7 +211,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "2465758292b24da294a9dcc84420933b1bdc35e8dea0ffb616216447fac61ab7",
+      "sha256": "ee5584e8320ebab738db52959c85cea2f5fa2658607d075e5e4fc8d107eb379f",
       "width": 358,
       "height": 750
     }
