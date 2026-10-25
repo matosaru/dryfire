@@ -1,4 +1,4 @@
-name: Collect CHG-062 shared-header review images
+name: Collect CHG-062 shared-header review images for approval
 on:
   push:
     branches: [b]
