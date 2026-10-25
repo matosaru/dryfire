@@ -20,8 +20,8 @@ const servers=await Promise.all([arg('baseline'),arg('candidate')||'dist'].map(a
  await new Promise(r=>server.listen(0,'127.0.0.1',r));return{server,url:`http://127.0.0.1:${server.address().port}`};
 }));
 const variants=['baseline','candidate','candidateNoIcons','candidateNoTitle','candidateNoURL','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons'];
-const browser=await webkit.launch(),samples=variants.map(()=>[]);
-try{for(let run=0;run<6;run++)for(const index of variants.map((_,i)=>(i+run)%variants.length)){
+const browser=await webkit.launch(),samples=variants.map(()=>[]),geometries={};
+try{for(let run=0;run<6;run++)for(const index of [0,1,6].map((_,i,a)=>a[(i+run)%a.length])){
  const context=await browser.newContext({viewport:environment.viewport,locale:environment.locale,timezoneId:environment.timezoneId,reducedMotion:'reduce',serviceWorkers:'block'});
  try{
   await context.addInitScript(installSyntheticMedia);await context.addInitScript({content:`window.__performanceUsableScreen=(${usableInitialScreen.toString()});`});await context.addInitScript(observeReadiness);
@@ -47,8 +47,13 @@ try{for(let run=0;run<6;run++)for(const index of variants.map((_,i)=>(i+run)%var
    const observer=new MutationObserver(()=>{if(document.body.dataset.view==='settings'){mark('bodyMutation');observer.disconnect();requestAnimationFrame(()=>{mark('frame');clearTimeout(timeout);resolve(times);});}});observer.observe(document.body,{attributes:true});
   });});
   await page.locator('#settingsShortcut').click();samples[index].push(await page.evaluate(()=>window.__navigationPhases));
+  if(!geometries[variants[index]])geometries[variants[index]]=await page.evaluate(()=>{
+   const rect=selector=>{const e=document.querySelector(selector),r=e?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height,font:getComputedStyle(e).fontSize}:null;};
+   return{width:innerWidth,hero:rect('header.hero'),brand:rect('.brand-name'),copy:rect('.hero-copy'),badge:rect('.beta-badge'),settings:rect('#settingsShortcut'),status:rect('#statusPill')};
+  });
  }finally{await context.close();}
 }}finally{await browser.close();await Promise.all(servers.map(({server})=>new Promise(r=>server.close(r))));}
 const median=a=>a.sort((a,b)=>a-b)[Math.floor(a.length/2)];
-const medians=Object.fromEntries(samples.map((rows,index)=>[variants[index],Object.fromEntries(Object.keys(rows[0]).map(key=>[key,median(rows.map(r=>r[key]))]))]));
+const medians=Object.fromEntries(samples.flatMap((rows,index)=>rows.length?[[variants[index],Object.fromEntries(Object.keys(rows[0]).map(key=>[key,median(rows.map(r=>r[key]))]))]]:[]));
+medians.geometry=geometries;
 const result={kind:'Advisory instrumented Settings phases; not acceptance',medians,samples,failures:[]};mkdirSync('performance-results',{recursive:true});writeFileSync('performance-results/startup-diagnostic.json',JSON.stringify(result,null,2)+'\n');console.log('::notice title=Settings navigation phases::'+JSON.stringify(medians));
