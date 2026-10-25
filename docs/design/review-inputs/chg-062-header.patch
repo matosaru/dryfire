@@ -307,7 +307,7 @@ index 3c538a6..9d08051 100644
  /* Live listening and manual evaluation */
  .listener-control { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
 diff --git a/apps/web/src/styles/legacy-before-live-listen.css b/apps/web/src/styles/legacy-before-live-listen.css
-index 3192c9d..347b7cc 100644
+index 3192c9d..98adc5b 100644
 --- a/apps/web/src/styles/legacy-before-live-listen.css
 +++ b/apps/web/src/styles/legacy-before-live-listen.css
 @@ -4,7 +4,7 @@
@@ -315,7 +315,7 @@ index 3192c9d..347b7cc 100644
    .hero .subhead { font-size:.8rem; }
    .brand-mark { width:46px; height:46px; border-radius:13px; }
 -  .status-pill { font-size:.75rem; }
-+  
++
    .safety-card { gap:9px; padding:13px; }
    .safety-card p { font-size:.8rem; }
    .nav-glyph { font-size:1.25rem; }
@@ -398,9 +398,17 @@ index 9a6f4cd..7eb2b9f 100644
  ```
  
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index e079785..9ea5bd2 100644
+index e079785..0ca37de 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
+@@ -1,6 +1,6 @@
+ {
+   "version": 1,
+-  "reviewedOn": "2026-10-24",
++  "reviewedOn": "2026-10-25",
+   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+   "publicOrigin": "https://easydryfire.com",
+   "publicPaths": [
 @@ -84,7 +84,7 @@
          "docs/requirements/about.md",
          "docs/requirements/page-layout.md"
@@ -455,6 +463,100 @@ index e079785..9ea5bd2 100644
        "states": [
          {
            "key": "overview.dark",
+@@ -852,27 +852,27 @@
+     "apps/web/src/app/routeContext.ts": "8211be0b05a2947d3ea5d44bad6e57a0af63e32c426d744ba4de0d3e38c91f59",
+     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
+     "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "d58bb053f365017ef15cec7f4b6da2e7918770d001b15122438db5a33071df70",
+-    "apps/web/src/app/chromeBridge.ts": "e3276d510da2db886b0ad226bf5a884a351252b79ba78f6696a847031b08e2f1",
+-    "apps/web/src/app/chromePages.tsx": "2bb3be816e7293d68837974cb9d05800eb87b89429ef1667d771dda29ff69bd5",
++    "apps/web/src/app/chromeBridge.ts": "34a1334fcca68b7553fbac56c3504299c260438e09d2071d0afea4d6b0314ceb",
++    "apps/web/src/app/chromePages.tsx": "1aeae34c22405cffdae6c263a47a1d5937e1fa7e85064b64c25b9cb34e8a826f",
+     "apps/web/src/app/renderAppShell.tsx": "360b5abfd9d9cc3d757f2aad7f1f052531f900a37237102473b1b5a3045c9c5d",
+     "apps/web/src/app/renderCalibrationCatalog.tsx": "bc607a2490a1a0e9f3134a220c0d0fdf41273d615a2a74b7c265d2cce7451a3d",
+     "apps/web/src/app/renderNumberInput.tsx": "3e163f74c64013bfa45bb454fbdeceab04096cb4a1319aa9ff26ce1472b0fa08",
+     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
+-    "packages/ui/src/AppShell/AppShell.tsx": "80667fbf416c585e20c60fcca11f8a173779f46491f7c00d0e07615805c7b5f0",
++    "packages/ui/src/AppShell/AppShell.tsx": "4ecfda873aa3dc775c4033f0efd4a54b3ef0b9242f5b2bee8ce7d820711c0439",
+     "packages/ui/src/AppShell/index.ts": "fd2a7ca0f5dc81821e1b940c03b6c2fa15f73d2997aacb7f23f0a16c4e1002c3",
+     "packages/ui/src/BottomNavigation/BottomNavigation.css": "5708fbb98df65fe43f6ec0e2a4f2b1bfb8c973a9c5c95098e78b220975fd0ac4",
+     "packages/ui/src/BottomNavigation/BottomNavigation.tsx": "67906ae23ae5cca321e2ad4d71c43779467a083b0db69cc272d78ef2794900b3",
+     "packages/ui/src/BottomNavigation/index.ts": "cd44fa73fcbc57adbcb618d50ae415cca66ddeaf75552ae312d7d27a4b32fff3",
+-    "packages/ui/src/BrandHeader/BrandHeader.css": "d7ab4f9b64f59b0402293eba82d31611f9f436ea29628758528cf4c412dd35e8",
+-    "packages/ui/src/BrandHeader/BrandHeader.tsx": "e3a0316dbbee6f02517480e1dad08f084c0ba9234c4926fdfdfa1cd6e9e7b2e5",
++    "packages/ui/src/BrandHeader/BrandHeader.css": "7b7c934b5c60426be2ba54bbf1ed104b2d9dfcca9ea16f3efbfb84ca19ef833a",
++    "packages/ui/src/BrandHeader/BrandHeader.tsx": "7531e76a5f566c8e822d767be59685e72b8a15fea4a055687b9a73b8c8809835",
+     "packages/ui/src/BrandHeader/index.ts": "9627490423356d66750d624ed92655f59be182d4e9e286224e2e712e7714d457",
+     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.copy.ts": "e80cc6e405badb60f4023c43d9fd725e0369e376f889fedb7fd6d3efa0a449ba",
+     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css": "540275a1d8e8edd8aff06cf4834bfbbf91ce9685ae770dbe4c01cb6046b21262",
+     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx": "6d4f0727cb78e0353a2bd32352277d1f7d5cd00ded177dc06d393d8916fdb22d",
+     "packages/ui/src/CalibrationCatalog/index.ts": "1bc9f6d3e9ea306a8783da681b3f4995f6dfe5d3be49cd0e825b66c3b60dc239",
+     "packages/ui/src/InfoFooter/InfoFooter.css": "c067b2816187a004a3168219ec42e6091b5517065faceeed7ff22beed70b6b9b",
+-    "packages/ui/src/InfoFooter/InfoFooter.tsx": "948d4bac202410b8e88201055a832ba8ae1ea8ec755d11959649c9f8b1d967b2",
+-    "packages/ui/src/InfoFooter/index.ts": "6b6cf3fbe7f83bd2d33fd1d9577b437bbba3e7e6e1c7a46bbb143684485ab98e",
++    "packages/ui/src/InfoFooter/InfoFooter.tsx": "add43a318b23cf90390fde05b4847bdfa2c072f120b08c0b734f0544465c976d",
++    "packages/ui/src/InfoFooter/index.ts": "fa1bdcd6c659566e2a5ff26f6058ef7e79ccb800983a7bf8b57caf88cb07493b",
+     "packages/ui/src/NumberInput/NumberInput.css": "6b25ec1e508798cc1e6fe16c90c80100f60d71556f9cf1e6b5cf98dce058d806",
+     "packages/ui/src/NumberInput/NumberInput.tsx": "e5d0d03263deaa564876aa35dbed4a3c497088478d18dfd3c190fc0e11ba8338",
+     "packages/ui/src/NumberInput/index.ts": "89d4d8e9821933fa9453dcd0e9f4f804d608f8d505829ccb59f04543f8edafb7",
+@@ -884,7 +884,7 @@
+     "packages/ui/src/GunSwitcher/GunSwitcher.tsx": "da6310e96bce26f52eb6964c9d93359d9af795113000a74a56529c73f8d0c1b9",
+     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx": "ec94aca2ed7ca812312358f8a1c7b455f34847320bc991681cd73093ea091437",
+     "packages/ui/src/SafetyDialog/SafetyDialog.tsx": "d4e5e673dc6018c907e9e990b9d183d2d127165d9dbd62cd6512d1b5f0489d14",
+-    "apps/web/src/styles/legacy-card-foundation.css": "b8dc5ad4dc139ff9ae3f4d0ee31b46c2d3100f1d0f0e93f2681d21926337ebce",
++    "apps/web/src/styles/legacy-card-foundation.css": "e8c6acd2cc9413358addb62e57d593b19751b63855e5169c79a8ef4ca21659fb",
+     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
+     "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
+     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
+@@ -903,7 +903,7 @@
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.tsx": "044f79f543885de79afd6ee7e2d1395a75cdf839d519293d28a409445aee8a24",
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
+     "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
+-    "apps/web/src/styles/legacy-after-gun-setup.css": "a672b0491c990644a45d06032e0d0756f2edc84ccc0240719c3290401dd1a0ee",
++    "apps/web/src/styles/legacy-after-gun-setup.css": "10214881326191c474881e0ee8ea59607ab99552995ac44842f24b3400c753c4",
+     "apps/web/src/features/settings/preferencePresentation.ts": "1779dc0d8b0703f6d0d6cc1068c90d6b8e8cce3bbcbffc136aa8403de5411062",
+     "apps/web/src/pages/SettingsPage/SettingsPage.tsx": "bd327108c86ef700160e570ec237bc799374b3c5af3a9de713cec0e934638966",
+     "apps/web/src/pages/SettingsPage/SettingsPage.css": "a2140e42d6ee524b59cb95fd26f22335d8a4f1556336dae40c422a6a91298880",
+@@ -922,7 +922,7 @@
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "24cf7641d17206fc6229db91b9f644d04b57b0a586361f639fca8fa2d83472e7",
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
+     "apps/web/src/features/live-listen/presentation.ts": "88218eeaefbac140403beb0d7ece18340942b015399726f5c32618770b8263b8",
+-    "apps/web/src/styles/legacy-before-live-listen.css": "1351bd3f07949fe353ce8743c61a280badaa2b16eb007801a9d52357f490d497",
++    "apps/web/src/styles/legacy-before-live-listen.css": "f951af54014e5ec3446cfb6f8cc9797af856b563d9159bbffd04411c6bcf0d13",
+     "apps/web/src/app/drillsPage.tsx": "4461ac757c62c6ef5820636ec6636b3f87a83b2b5f968bd793a0d3cfc65d0a9f",
+     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
+     "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "7fb89db4b9df0f6df18241a83be9307444f704a6ae2ccbab92816052ef2517a2",
+@@ -930,8 +930,8 @@
+     "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
+     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
+     "packages/ui/src/RetainedNode/RetainedNode.tsx": "351036d9dee16e01c2e9a29df9ab9704e2c96f5f9626be56d1f7ca70f6208170",
+-    "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
+-    "apps/web/src/styles/legacy-after-drill-cards.css": "397fa9588e1ba26df0e636c7329f113dcdb2e5cb22e92fd53499a55091bcbfc9",
++    "apps/web/src/styles/legacy-before-drills.css": "4ee665cd96d2ed6aac7c26fe43a962d486740983bdfb7fda67a24fc8afbd86de",
++    "apps/web/src/styles/legacy-after-drill-cards.css": "69996bdd071d363ca685951e8cffc4a5cad4dc5e1b5dd691c4855f4bdea30de9",
+     "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
+@@ -945,9 +945,9 @@
+     "packages/ui/src/EvaluationPanel/EvaluationPanel.tsx": "639b2f6e4a270f27be909b78e62c1d19c00c8700dfa9697d99386d65acc2d2ca",
+     "apps/web/src/styles/legacy-after-history-list.css": "fcadfa3ceda88072b3008771d894c55ab2c6db4881616cde7ba29b055b3a8b7d",
+     "apps/web/src/styles/legacy-before-history-list.css": "000531fa0d4af1f326e5998ed8a3f31fb280b86b45fca1e53c2e10addc264d7a",
+-    "apps/web/src/styles/legacy-before-evaluation.css": "bc3c7495e2cb342a0b60182bc654eb334dc204ee55f91be3421eded18d6fffee",
++    "apps/web/src/styles/legacy-before-evaluation.css": "e4f409bcb58c34271738a62e2d32bbecefd65b1de1e23cfa93b41335b4167ed8",
+     "apps/web/src/styles/legacy-after-evaluation.css": "14626bc045626136df9cdfa1bb947a74647f37139727ade34fc85ed59b37e14e",
+-    "apps/web/src/styles/legacy-after-saved-sessions.css": "5e3721e852ce4be55ec6d2ccd686f2a1d74f2287fab18234ab86c4cc98452303",
++    "apps/web/src/styles/legacy-after-saved-sessions.css": "85d491194ce2baa37d398ba1e8e0358a9927c92ffbf16e616fc4e0db44fde3a5",
+     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
+     "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
+     "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
+@@ -1012,7 +1012,7 @@
+     "workers/publicSite.js": "7bb305c224398c9de614a91549eb941547bb5bc51ce1caf1d09a542b62749f41",
+     "tools/public-pages.mjs": "145724f54ce9749b4f0bdbc3877e0f9ac50f078c71a78d1fdf339b238caadae7",
+     "apps/web/src/public-site/PublicPage/PublicPage.tsx": "034b06d3729ad0ae8caecf1501d011639b8f3df27cee6e18f50ff44ca1cad42d",
+-    "apps/web/src/public-site/PublicPage/PublicPage.css": "a0476fc565c09bbdae2f2acbde3744899ef1bd02057145e6c46325cdfc3da92b",
++    "apps/web/src/public-site/PublicPage/PublicPage.css": "720964429947d545f8af9c93f3a902438fa03c681bc0ff7844c0cb45237f95de",
+     "tools/app-document.mjs": "548b0bf8eb3c476e0149cfc4d46f84dfb441bcf89f0276c526f683987383c80d",
+     "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx": "0e2ca183b5963dd6d8d02c3c7f9c0e731df994391a1855a0de64652a4131bba2",
+     "apps/web/src/public-site/MarketingOverview/MarketingOverview.css": "835ecb53212b8b940f593c2108cb16cd8d737e3457eb14558130b61791eeeed3",
 diff --git a/docs/architecture/site-tree.md b/docs/architecture/site-tree.md
 index b7025f6..ec3fbfd 100644
 --- a/docs/architecture/site-tree.md
@@ -470,19 +572,6 @@ index b7025f6..ec3fbfd 100644
  | Safety confirmation | `safetyModal` | Any unconfirmed action that would acquire microphone capture | `safety-modal.dark` | [Design](../design/screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
  | Public website | `public-content` | Canonical public information and app homepage; shared app shell for About/Contact/manuals | `practice.dark`, `single.dark`, `repeated.dark`, `par.dark`, `control.dark`, `sequence-rack-trigger.dark`, `sequence-mag-trigger.dark`, `sequence-draw-mag-trigger.dark`, `sequence.dark`, `calibration.dark`, `help.dark` | [Design](../design/screens/public-site/README.md) | [public-seo](../requirements/public-seo.md) |
  
-diff --git a/docs/design/screens/shared/README.md b/docs/design/screens/shared/README.md
-index bf01948..94d3a11 100644
---- a/docs/design/screens/shared/README.md
-+++ b/docs/design/screens/shared/README.md
-@@ -35,3 +35,8 @@ Functional specifications: [core](../../../requirements/core.md) · [practice-im
- Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
- 
- For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
-+
-+
-+## CHG-062 — information navigation in the header
-+
-+Supersedes historical footer links: top-right About (information circle), Contact (@ SVG), Settings (gear), in that order on every app page. Shared 24px outlined icons and 44px targets; matching optical weight, baseline and theme treatment. Accessible names, real hrefs, current-page indicator, focus ring and keyboard/hover tooltips. Narrow screens may wrap the Beta badge within brand copy; icons never overlap the brand or overflow. Footer retains disclosure/copyright and divider only. Update every affected current screen reference and both-edition/browser baselines; do not alter unrelated content or guide animation frames. See H1 and LAYOUT-01/05.
 diff --git a/docs/project/approval-log.md b/docs/project/approval-log.md
 index 23a3bae..8fe5c36 100644
 --- a/docs/project/approval-log.md
@@ -982,10 +1071,18 @@ index 249822a..203c225 100644
  ## Screen directory
  
 diff --git a/visual-tests/page-layout.spec.js b/visual-tests/page-layout.spec.js
-index e9f20ca..a723592 100644
+index e9f20ca..b4d7a4d 100644
 --- a/visual-tests/page-layout.spec.js
 +++ b/visual-tests/page-layout.spec.js
-@@ -20,21 +20,31 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+@@ -10,6 +10,7 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+     async function shell() {
+       await page.evaluate(() => window.scrollTo(0, 0));
+       const activeView=await page.locator('body').getAttribute('data-view');
++      const resolvedTheme=await page.locator('html').getAttribute('data-theme');
+       await expect(page.locator('.view:not(.hidden)')).toHaveCount(1);
+       await expect(page.locator('.view:not(.hidden)')).toHaveAttribute('id',activeView+'View');
+       await expect(page.getByRole('banner')).toHaveCount(1);
+@@ -20,21 +21,31 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
        const beta = page.getByRole('banner').getByLabel('Beta version', { exact: true });
        await expect(beta).toBeVisible();
        await expect(beta).toHaveText('BETA');
@@ -996,7 +1093,7 @@ index e9f20ca..a723592 100644
 +      for(const link of await information.getByRole('link').all()){
 +        const box=await link.boundingBox();expect(box.width).toBeGreaterThanOrEqual(44);expect(box.height).toBeGreaterThanOrEqual(44);
 +        await expect(link.locator('svg')).toHaveAttribute('aria-hidden','true');
-+        if(!(await link.getAttribute('aria-current')))await expect(link).toHaveCSS('color',theme==='light'?'rgb(36, 61, 81)':'rgb(255, 255, 255)');
++        if(!(await link.getAttribute('aria-current')))await expect(link).toHaveCSS('color',resolvedTheme==='light'?'rgb(36, 61, 81)':'rgb(255, 255, 255)');
 +      }
 +      await expect(page.getByRole('contentinfo').getByRole('link')).toHaveCount(0);
        const header = await page.evaluate(() => ({
@@ -1020,7 +1117,16 @@ index e9f20ca..a723592 100644
        const bounds = await page.evaluate(() => ({
          footerBottom: document.querySelector('footer').getBoundingClientRect().bottom,
          navigationTop: document.querySelector('.tabs').getBoundingClientRect().top,
-@@ -73,3 +83,19 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+@@ -51,7 +62,7 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+     await page.locator('#restoreGunBackupBtn').click();
+     const backup = structuredClone(library); backup.settings.appearance = theme;
+     await page.locator('#importFile').setInputFiles({ name: 'library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
+-    await expect(page.locator('#homeView')).toBeVisible(); await shell();
++    await expect(page.locator('#homeView')).toBeVisible(); await expect(page.locator('html')).toHaveAttribute('data-theme',theme); await shell();
+     await expect(page.locator('.tabs .tab:enabled')).toHaveCount(5);
+     for (const view of ['learn', 'drills', 'recognize', 'history']) {
+       await page.locator(`.tab[data-view="${view}"]`).click(); await expect(page.locator(`#${view}View`)).toBeVisible(); await shell();
+@@ -73,3 +84,19 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
      await expect(page.locator('#gunName')).toHaveValue('QA Handgun');
    });
  }
@@ -1065,25 +1171,3 @@ index 5422bbc..b142f14 100644
  const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/favicon.ico', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
  
  if (EDITION === 'preview') {
-diff --git a/docs/design/baselines/chg-062-header-review.json b/docs/design/baselines/chg-062-header-review.json
-new file mode 100644
-index 0000000..8643ca7
---- /dev/null
-+++ b/docs/design/baselines/chg-062-header-review.json
-@@ -0,0 +1,16 @@
-+{
-+  "change": "CHG-062",
-+  "status": "Candidate; screenshots and complete acceptance pending",
-+  "expandedCSSSha256": "94921884e1702e5066805936899a24b85108194be69835a5183b46772cb31d8a",
-+  "approval": "About, Contact, Settings; @; consistent accessible icons; proceed with a plan",
-+  "baseline": {
-+    "tests": 1077,
-+    "suites": 156
-+  },
-+  "preserved": [
-+    "schema4",
-+    "saved data and capture/draft guards",
-+    "original performance limits",
-+    "existing original GIF bytes"
-+  ]
-+}

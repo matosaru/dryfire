@@ -1,4 +1,4 @@
-name: Collect CHG-062 shared-header review images for approval
+name: Collect CHG-062 guide export evidence
 on:
   push:
     branches: [b]
@@ -27,18 +27,13 @@ jobs:
           cache: npm
       - run: git apply docs/design/review-inputs/chg-062-header.patch
       - run: npm ci --no-audit --no-fund
-      - name: Collect separate candidate images without accepting references
+      - name: Regenerate cropped guide examples in the pinned renderer
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('visual-tests/screens.spec.js');s=p.read_text().replace("import { readFileSync } from 'node:fs';", "import { readFileSync, mkdirSync } from 'node:fs';")
-          s=s.replace("await expect(page).toHaveScreenshot(baselineName(item).split('/'));", "const path=`docs/design/review-candidates/chg-062/${testInfo.project.name}/${baselineName(item)}`;mkdirSync(path.slice(0,path.lastIndexOf('/')),{recursive:true});await page.screenshot({path,fullPage:false,animations:'disabled',caret:'hide',scale:'css'});")
-          p.write_text(s)
-          PY
+          apt-get update -qq
+          apt-get install -y -qq python3-pil
           APP_EDITION=public npm run build
-          APP_EDITION=public VISUAL_EDITION=public npx playwright test screens.spec.js --grep '\.light'
-          APP_EDITION=preview npm run build
-          APP_EDITION=preview VISUAL_EDITION=preview npx playwright test screens.spec.js --grep '\.light'
+          node tools/export-guide-examples.mjs --output /tmp/chg062-guide-frames
+          python3 tools/encode-guide-examples.py /tmp/chg062-guide-frames docs/design/review-candidates/chg-062/examples
       - name: Publish only review images
         run: |
           git config user.name 'github-actions[bot]'
