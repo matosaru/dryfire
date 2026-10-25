@@ -680,3 +680,17 @@ CHG-060 follow-up: owner also reports favicon.ico404 and asks to fix it. Generat
 ## CHG-061 — flat app routes and retained marketing About (2026-10-24)
 
 Owner reported the app homepage was replaced by marketing, requested removing `/app`, and reported all sequence URLs opening the same page. Approved the proposed flat lowercase hyphenated names: “ok, works for me, proceed.” Explicitly instructed “don't delete permanently marketing homepage, make it part of about page,” then “ok, proceed.” Restore the real app at `/`, unique preset setups/manual URLs, compatible redirects and reusable marketing content within About. Existing instruction permits a checked b→main PR after all gates pass; dev untouched. Approval is not evidence of implementation, test success or deployment.
+
+
+## CHG-062 — Plan shared header information icons (2026-10-25)
+
+Owner requests adding work to the plan: move bottom About/Contact text links to top-right icon navigation beside Settings, with specified order “About, Help, Settings”. This authorizes recording the change in the follow-up plan; Help versus Contact destination/placement is explicitly unresolved and clarification requested. No application implementation or screenshot update is claimed. Preserve existing routes/email, shared shell, guarded navigation and complete acceptance.
+
+
+CHG-062 clarification (2026-10-25): owner confirms “About, Contact, Settings, we do not have help, you are correct”. This resolves the pending destination/order: information, envelope, existing gear; relocate both footer links while preserving routes/email. Plan updated; implementation not started.
+
+
+CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon, use "@"”. Plan now specifies visible @ with accessible name Contact, superseding the proposed envelope. Documentation only; no UI/screenshots changed.
+
+
+CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have the same style/size and good accessibility data. H1 specifies shared 24px optical styling (including drawn @), ≥44px targets, accessible native link names/destinations/current-page state, decorative SVG semantics, logical keyboard order, visible focus/tooltips, theme contrast and responsive/zoom acceptance. Automated and manual checks remain distinct. Planning only; no application change.

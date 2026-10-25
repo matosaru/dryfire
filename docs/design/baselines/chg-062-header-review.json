@@ -1,0 +1,158 @@
+{
+  "change": "CHG-062",
+  "status": "Pinned captures reviewed; complete candidate acceptance pending",
+  "expandedCSSSha256": "b524ac8e59bad667e9ab17a21ece0a6275162f27923671728642d2ef080e970b",
+  "approval": "About, Contact, Settings; @; consistent accessible icons; proceed with a plan",
+  "baseline": {
+    "tests": 1077,
+    "suites": 156
+  },
+  "preserved": [
+    "schema4",
+    "saved data and capture/draft guards",
+    "original performance limits",
+    "existing original GIF bytes"
+  ],
+  "collectors": [
+    40177270313,
+    40177853387
+  ],
+  "unit": {
+    "tests": 1081,
+    "suites": 156,
+    "coverageRatchet": "Passed, unchanged thresholds"
+  },
+  "audit": {
+    "findings": [],
+    "mode": "strict",
+    "projectRoot": "/workspace/dryfire",
+    "schemaVersion": 1,
+    "summary": {
+      "errors": 0,
+      "total": 0,
+      "unresolved": 0,
+      "violations": 0,
+      "warnings": 0
+    }
+  },
+  "cleanup": "Removed obsolete icon-button and hidden status styling plus overridden old hero heading rules; original JS/CSS payload limits retained.",
+  "captures": {
+    "baselines": 450,
+    "current": 94,
+    "collectors": [
+      40177270313,
+      40177853387
+    ],
+    "review": "Inspected pinned Dark320 About and Light390 Contact; corrected inactive Light icon contrast before accepting. Complete pinned comparisons against final cleaned CSS still required."
+  },
+  "guideExport": {
+    "run": 40178228592,
+    "sameGIFs": [],
+    "changedGIFs": [
+      "sequence-rack-trigger.gif",
+      "par.gif",
+      "single-early.gif",
+      "repeated.gif",
+      "sequence-custom.gif",
+      "sequence-mag-trigger.gif",
+      "control.gif",
+      "single.gif",
+      "sequence-trigger-only.gif",
+      "sequence-draw-mag-trigger.gif"
+    ],
+    "note": "Pinned regenerated crops; original byte hashes compared before copying; source fingerprints current.",
+    "timelineComparison": [
+      {
+        "file": "control.gif",
+        "oldDurationMs": 7200,
+        "newDurationMs": 7200,
+        "size": [
+          358,
+          949
+        ]
+      },
+      {
+        "file": "par.gif",
+        "oldDurationMs": 13600,
+        "newDurationMs": 13600,
+        "size": [
+          358,
+          1004
+        ]
+      },
+      {
+        "file": "repeated.gif",
+        "oldDurationMs": 7200,
+        "newDurationMs": 7200,
+        "size": [
+          358,
+          949
+        ]
+      },
+      {
+        "file": "sequence-custom.gif",
+        "oldDurationMs": 14400,
+        "newDurationMs": 14400,
+        "size": [
+          358,
+          750
+        ]
+      },
+      {
+        "file": "sequence-draw-mag-trigger.gif",
+        "oldDurationMs": 14400,
+        "newDurationMs": 14400,
+        "size": [
+          358,
+          750
+        ]
+      },
+      {
+        "file": "sequence-mag-trigger.gif",
+        "oldDurationMs": 12800,
+        "newDurationMs": 12800,
+        "size": [
+          358,
+          750
+        ]
+      },
+      {
+        "file": "sequence-rack-trigger.gif",
+        "oldDurationMs": 12800,
+        "newDurationMs": 12800,
+        "size": [
+          358,
+          750
+        ]
+      },
+      {
+        "file": "sequence-trigger-only.gif",
+        "oldDurationMs": 11200,
+        "newDurationMs": 11200,
+        "size": [
+          358,
+          750
+        ]
+      },
+      {
+        "file": "single-early.gif",
+        "oldDurationMs": 8400,
+        "newDurationMs": 8400,
+        "size": [
+          358,
+          1004
+        ]
+      },
+      {
+        "file": "single.gif",
+        "oldDurationMs": 9400,
+        "newDurationMs": 9400,
+        "size": [
+          358,
+          1004
+        ]
+      }
+    ],
+    "review": "Source frame counts unchanged for all10 examples; dimensions unchanged; inspected Single first frames show matching content. Encoded frames/palettes coalesce differently; report changed hashes honestly. Timeline durations compared below; complete example/frame contract tests still required."
+  }
+}
