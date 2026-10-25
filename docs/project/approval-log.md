@@ -688,3 +688,6 @@ Owner requests adding work to the plan: move bottom About/Contact text links to 
 
 
 CHG-062 clarification (2026-10-25): owner confirms “About, Contact, Settings, we do not have help, you are correct”. This resolves the pending destination/order: information, envelope, existing gear; relocate both footer links while preserving routes/email. Plan updated; implementation not started.
+
+
+CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon, use "@"”. Plan now specifies visible @ with accessible name Contact, superseding the proposed envelope. Documentation only; no UI/screenshots changed.

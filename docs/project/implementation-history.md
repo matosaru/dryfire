@@ -976,3 +976,6 @@ CHG-062 planning (2026-10-25): added H1 shared header icon navigation to the fol
 
 
 CHG-062 clarification (2026-10-25): confirmed About → Contact → Settings header icon order. Updated H1 and working context, removed pending Help/Contact decision; both informational footer links will relocate, existing routes/email remain. Documentation-only update; no application/screenshots changed.
+
+
+CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon, use "@"”. Plan now specifies visible @ with accessible name Contact, superseding the proposed envelope. Documentation only; no UI/screenshots changed.
