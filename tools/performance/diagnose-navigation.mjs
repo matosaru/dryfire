@@ -19,7 +19,7 @@ const servers=await Promise.all([arg('baseline'),arg('candidate')||'dist'].map(a
  }catch{res.writeHead(404).end();}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));return{server,url:`http://127.0.0.1:${server.address().port}`};
 }));
-const variants=['baseline','candidate','candidateNoNativeTitle','candidateAlwaysScroll','candidateFooterSpace','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons','candidateButtons','candidateNoHref'];
+const variants=['baseline','candidate','candidateNoNativeTitle','candidateFooterParagraph','candidateFooterContainment','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons','candidateButtons','candidateNoHref'];
 const browserName=arg('browser')||'webkit';
 const browser=await ({webkit,chromium}[browserName]).launch(),samples=variants.map(()=>[]),geometries={};
 try{for(let run=0;run<8;run++)for(const index of [0,1,3,4].map((_,i,a)=>a[(i+run)%a.length])){
@@ -30,8 +30,8 @@ try{for(let run=0;run<8;run++)for(const index of [0,1,3,4].map((_,i,a)=>a[(i+run
   const page=await context.newPage();let cdp;
   if(browserName==='chromium'){cdp=await context.newCDPSession(page);await cdp.send('Performance.enable');await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});await cdp.send('Network.enable');await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:40,downloadThroughput:200000,uploadThroughput:100000});}
   await page.goto(servers[index===0?0:1].url);await page.waitForFunction(()=>Number.isFinite(window.__performanceReview?.ready));
-  if(index===3)await page.addStyleTag({content:'html{overflow-y:scroll}'});
-  if(index===4)await page.addStyleTag({content:'footer{padding-top:75px!important}'});
+  if(index===3)await page.evaluate(()=>{const footer=document.querySelector('footer'),text=[...footer.childNodes].find(node=>node.nodeType===3&&node.textContent.trim()),p=document.createElement('p');p.style.margin='0';text.replaceWith(p);p.append(text);});
+  if(index===4)await page.addStyleTag({content:'footer{contain:layout style}'});
   await page.evaluate(()=>{window.__navigationPhases=new Promise((resolve,reject)=>{
    const times={},button=document.getElementById('settingsShortcut');let start;
    const mark=key=>{if(start!==undefined)times[key]=performance.now()-start;};
