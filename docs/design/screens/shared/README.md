@@ -35,3 +35,8 @@ Functional specifications: [core](../../../requirements/core.md) · [practice-im
 Captured from the current local production build in Chromium at a 390 px mobile viewport. QA gun names, sample counts, audio levels and timing statistics are illustrative fixtures. Captures are actual UI rather than generated concepts; they do not establish Cloudflare deployment, real iPhone recognition accuracy or legal clearance. Additional transient/error states use this same layout and the linked requirements.
 
 For a visible change, update the affected captures, this Markdown and the [screen registry](../../../architecture/screen-map.json); run the [maintenance checks](../../../architecture/README.md). Earlier reviewed revisions remain in the [archive](../../archive/README.md) and immutable Git history.
+
+
+## CHG-062 — information navigation in the header
+
+Supersedes historical footer links: top-right About (information circle), Contact (@ SVG), Settings (gear), in that order on every app page. Shared 24px outlined icons and 44px targets; matching optical weight, baseline and theme treatment. Accessible names, real hrefs, current-page indicator, focus ring and keyboard/hover tooltips. Narrow screens may wrap the Beta badge within brand copy; icons never overlap the brand or overflow. Footer retains disclosure/copyright and divider only. Update every affected current screen reference and both-edition/browser baselines; do not alter unrelated content or guide animation frames. See H1 and LAYOUT-01/05.

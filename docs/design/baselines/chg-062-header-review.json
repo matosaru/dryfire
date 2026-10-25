@@ -1,0 +1,48 @@
+{
+  "change": "CHG-062",
+  "status": "Pinned captures reviewed; complete candidate acceptance pending",
+  "expandedCSSSha256": "b524ac8e59bad667e9ab17a21ece0a6275162f27923671728642d2ef080e970b",
+  "approval": "About, Contact, Settings; @; consistent accessible icons; proceed with a plan",
+  "baseline": {
+    "tests": 1077,
+    "suites": 156
+  },
+  "preserved": [
+    "schema4",
+    "saved data and capture/draft guards",
+    "original performance limits",
+    "existing original GIF bytes"
+  ],
+  "collectors": [
+    40177270313,
+    40177853387
+  ],
+  "unit": {
+    "tests": 1081,
+    "suites": 156,
+    "coverageRatchet": "Passed, unchanged thresholds"
+  },
+  "audit": {
+    "findings": [],
+    "mode": "strict",
+    "projectRoot": "/workspace/dryfire",
+    "schemaVersion": 1,
+    "summary": {
+      "errors": 0,
+      "total": 0,
+      "unresolved": 0,
+      "violations": 0,
+      "warnings": 0
+    }
+  },
+  "cleanup": "Removed obsolete icon-button and hidden status styling plus overridden old hero heading rules; original JS/CSS payload limits retained.",
+  "captures": {
+    "baselines": 450,
+    "current": 94,
+    "collectors": [
+      40177270313,
+      40177853387
+    ],
+    "review": "Inspected pinned Dark320 About and Light390 Contact; corrected inactive Light icon contrast before accepting. Complete pinned comparisons against final cleaned CSS still required."
+  }
+}
