@@ -1,23 +1,10 @@
 # Working context
 
-Updated 2026-10-25. [History](../implementation-history.md) · [CHG-061 proof](../../design/baselines/chg-061-route-review.json) · [URL inventory](../../seo/routes.md).
+Updated2026-10-25. [Investigation/next steps](slowdown-investigation.md) · [plan](follow-up-plan.md).
 
-## CHG-061 release
-
-Approved trainer at `/`, flat URLs, distinct reloadable sequence setups/manuals, marketing retained inside About. Dev untouched. Optimized b commit eff9ac2 passed all eight jobs in push40130237075 and PR40130238059; Cloudflare preview builda1fca6f5-6806-4a45-a469-95a3bcaa4981 succeeded. Candidate40129243422 also passed all eight gates (1077 tests/156 suites, original coverage, both editions, pinned Chromium/WebKit screenshots/integration and unchanged performance controls).450 visual baselines;382 unrelated PNGs and10 original GIFs preserved. See proof/history for earlier failed candidates and optimization evidence.
-
-PR#27 merged normally with exact tested SHA into main c4e751c61fc93bb2d8ce960b6e252f7661fc5cfd. Git tree81dc47afd7a08fdf429e419ec5ac6bbe306590a7 matches tested b exactly. Post-merge main run40176142886 is in progress. Cloudflare production buildfcda447e-3f45-41e6-a2e2-2e31ded2583f succeeded.
-
-## Next
-
-Observe main post-merge checks and deployment; close history/context with actual results. Status-only documentation may publish to b after release; no direct main push. No source changes or unchanged retry fishing. Retain b and leave dev untouched.
-
-## Invariants / deferred
-
-Preserve ADR001 progressive startup, schema4/user data/backups, capture/safety/save/draft/owner guards, Free/Full boundaries, exact visual references and original performance limits. SW cache87. No unauthorized subagents or commercial/native scope. Future application changes require complete candidate acceptance before b publication. Curate this context after completed increments; detailed evidence belongs in history/proof.
-
-Workspace policy blocks external .com/.app reads before origin; b read403. No live-content/indexing/real-device microphone verification is claimed. Owner configured .app permanent redirect and suspected browser caching. F1–F7 and commercial/cloud/native plans remain separate.
-
-CHG-062: owner requests plan addition for shared top-right About/Contact/Settings icons replacing bottom informational text links. H1 documented in follow-up-plan.md; Owner confirmed Contact as the middle icon, displayed as @ rather than an envelope; relocate both footer links, no Help icon. Planning only; no UI/screenshots changed.
-
-CHG-062 refinement: shared 24px icon styling/weight/alignment, ≥44px targets, responsive/zoom checks, named native links, decorative SVG semantics, focus/tooltips/current-page state and contrast requirements are explicit in H1. Plan only.
+- Latest owner direction: investigate slowdown, prepare/proceed with next steps. Original timing gate unchanged; no10ms exception approved. Work b; no assistant main/dev edits. User merged PR28 to main71ae074.
+- Production application source equals c4e751c. Main40204833714 passes all4performance jobs but docs validation fails because review-only assets/fingerprints reached main before H1source. Canonical references are now locally restored to c4e751c; proposed104screens/GIFs preserved under docs/design/proposals/chg-062. docs:check passes. Shipping-source1077tests/156suites, docs:check and450baseline fingerprints pass. Ready to push b reference correction.
+- Unpublished H1 exact source: b84ceb4 + docs/design/review-inputs/chg-062-complete.patch. Local backup stash2d7adb5ee2108d1423afa6c144ab0018b31e39d3 and /tmp/dryfire-chg062-unpublished.patch. Working tree no longer contains that runtime; do not lose recovery copies. Its complete40204682532 passes validate/bothscreens/bothWebKit; bothChromium fail. Local1096tests+coverage/8browserflows passed. Canonical shipping source tests have not yet been rerun after restoration.
+- Controlled investigation: added read-only compare_production mode to existing diagnostic workflow and investigate-first-settings.mjs. Build main71, candidateb84+patch and only-original-scroll-order counterfactual, same pinned runner. No app implementation/gate edits. Syntax/YAML and local identical-artifact smoke passed (diagnostic only). Publish investigation with reference repair and dispatch. Follow evidence before a minimal fix.
+- Grid/masks/wordmark/frozen-header/original-Settings/footer/scrollbar probes did not resolve timing; none applied. Details in report/history; do not repeat blindly. Candidate native dispatch faster but layout slower. Exact cause not identified.
+- Preserve ADR001, schema4/backups, owner/capture/safety/draft/save guards and edition separation. H1 @icons24px/targets44px approved; source pending acceptance. H2automatic resource caching planned, not implemented; never clear user data. F2–F7 remain pending. No agents/native/commercial scope. Live domain fetch blocked; no physical microphone/live-content claim.

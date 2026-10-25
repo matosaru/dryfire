@@ -982,3 +982,11 @@ CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon
 
 
 CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have the same style/size and good accessibility data. H1 specifies shared 24px optical styling (including drawn @), ≥44px targets, accessible native link names/destinations/current-page state, decorative SVG semantics, logical keyboard order, visible focus/tooltips, theme contrast and responsive/zoom acceptance. Automated and manual checks remain distinct. Planning only; no application change.
+
+### CHG-064 — source/reference repair and bounded slowdown investigation
+
+Observed owner PR28 merge to main71ae074. Application/config/package source matches c4e751c. Cloudflare Worker check succeeded; main40204833714 passes all4performance jobs, but fails docs:check. Reproduced stale GIF source fingerprints on a clean b checkout whose tree matches main. Review assets had been promoted before H1application source; responsibility is the split review publication workflow, not a new live header regression.
+
+Preserved unpublished H1 working state in stash2d7adb5ee2108d1423afa6c144ab0018b31e39d3 and /tmp/dryfire-chg062-unpublished.patch; complete GitHub candidate patch/base remain intact. Preserved104newscreen/GIF proposals separately and restored canonical references/manifests to the actual shipped c4e751c source. docs:check passes. No application or timing-policy change. Added slowdown-investigation.md with prioritized steps and a read-only three-artifact production/scroll-order comparison. User's latest investigation direction does not approve the proposed10ms exception. Unit/media verification and controlled comparison remain next.
+
+Reference repair verification: docs:check, visual:review (225cases×2engines) and1077shipping-source tests/156suites pass. New advisory script passed an identical-artifact system-Chromium smoke (2samples per label, not acceptance); workflow YAML parsed. Original timing policy/harness untouched. Controlled mode will compare immutable production71ae074, H1b84+complete.patch and only-original-scroll-order variant on the same pinned runner.

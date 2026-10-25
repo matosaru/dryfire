@@ -1,7 +1,7 @@
 {
   "change": "CHG-062",
-  "status": "Pinned captures reviewed; complete candidate acceptance pending",
-  "expandedCSSSha256": "b524ac8e59bad667e9ab17a21ece0a6275162f27923671728642d2ef080e970b",
+  "status": "Unpublished candidate; no timing exception approved; current canonical references restored to shipped source",
+  "expandedCSSSha256": "8fcd88fb5d9eb0ab02e089caefd6a60299617c3f4b6d4d0381e88e56de7f50c1",
   "approval": "About, Contact, Settings; @; consistent accessible icons; proceed with a plan",
   "baseline": {
     "tests": 1077,
@@ -10,17 +10,16 @@
   "preserved": [
     "schema4",
     "saved data and capture/draft guards",
-    "original performance limits",
-    "existing original GIF bytes"
+    "original performance limits"
   ],
   "collectors": [
     40177270313,
     40177853387
   ],
   "unit": {
-    "tests": 1081,
-    "suites": 156,
-    "coverageRatchet": "Passed, unchanged thresholds"
+    "tests": 1096,
+    "suites": 157,
+    "coverageRatchet": "Passed unchanged58module and typed-package thresholds"
   },
   "audit": {
     "findings": [],
@@ -35,7 +34,7 @@
       "warnings": 0
     }
   },
-  "cleanup": "Removed obsolete icon-button and hidden status styling plus overridden old hero heading rules; original JS/CSS payload limits retained.",
+  "cleanup": "Temporary diagnostic workflow, scripts, duplicate candidate images and obsolete review patches removed; canonical450baselines/94screens/10GIFexports retained.",
   "captures": {
     "baselines": 450,
     "current": 94,
@@ -154,5 +153,43 @@
       }
     ],
     "review": "Source frame counts unchanged for all10 examples; dimensions unchanged; inspected Single first frames show matching content. Encoded frames/palettes coalesce differently; report changed hashes honestly. Timeline durations compared below; complete example/frame contract tests still required."
-  }
+  },
+  "firstCandidate": {
+    "run": 40178581864,
+    "validate": "success",
+    "screenshots": {
+      "public": "success",
+      "preview": "success"
+    },
+    "performance": "All4 failed; not accepted"
+  },
+  "diagnostics": {
+    "nativeButton": 40179285008,
+    "scrollBatch": 40179717980,
+    "phases": 40180149032,
+    "dismissal": 40180480839,
+    "containment": 40180837333,
+    "iconTitleURL": 40181196093,
+    "settledViews": 40181898381,
+    "svgNodes": 40182163600,
+    "selectiveWrites": 40182507983,
+    "currentOriginalGate": 40183074477
+  },
+  "gifCollector": 40204237747,
+  "startupCorrection": "Trusted build-owned JSON DOM tuples defer inactive About parsing; public About route remains prerendered. Native header controls retain explicit widget reset; Escape dismissal persists while focused.",
+  "localBrowser": "Seven layout/accessibility workflows pass after removal of redundant body-state header styling; pinned full acceptance still required.",
+  "previousCompleteCandidate": {
+    "run": 40198168109,
+    "validation": "passed",
+    "screenshotsPublic": "passed",
+    "screenshotsPreview": "passed",
+    "publicWebkit": "passed",
+    "previewWebkit": "passed",
+    "publicChromium": "firstAction36.5\u219241.4ms failed",
+    "previewChromium": "page.goto30s timeout; identical-build control passed"
+  },
+  "isolatedChromiumPending": 40200510473,
+  "serializer": "Build-only serializer inlined in existing tracked renderer; exact output equality verified.",
+  "candidateBase": "b84ceb4a26c5cb0afb33cadf1ca45ed9eedd06ff",
+  "candidatePatch": "docs/design/review-inputs/chg-062-complete.patch"
 }
