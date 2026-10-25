@@ -19,17 +19,18 @@ const servers=await Promise.all([arg('baseline'),arg('candidate')||'dist'].map(a
  }catch{res.writeHead(404).end();}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));return{server,url:`http://127.0.0.1:${server.address().port}`};
 }));
-const variants=['baseline','candidate','candidateNoNativeTitle','candidateGridHeader','candidateMaskedIcons','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons','candidateButtons','candidateNoHref'];
+const variants=['baseline','candidate','candidateNoNativeTitle','candidateNoWrap','candidateMaxContent','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons','candidateButtons','candidateNoHref'];
 const browserName=arg('browser')||'webkit';
 const browser=await ({webkit,chromium}[browserName]).launch(),samples=variants.map(()=>[]),geometries={};
-try{for(let run=0;run<8;run++)for(const index of [0,1,4].map((_,i,a)=>a[(i+run)%a.length])){
+try{for(let run=0;run<8;run++)for(const index of [0,1,3,4].map((_,i,a)=>a[(i+run)%a.length])){
  const context=await browser.newContext({viewport:environment.viewport,locale:environment.locale,timezoneId:environment.timezoneId,reducedMotion:'reduce',serviceWorkers:'block'});
  try{
   await context.addInitScript(installSyntheticMedia);await context.addInitScript({content:`window.__performanceUsableScreen=(${usableInitialScreen.toString()});`});await context.addInitScript(observeReadiness);
   const page=await context.newPage();let cdp;
   if(browserName==='chromium'){cdp=await context.newCDPSession(page);await cdp.send('Performance.enable');await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});await cdp.send('Network.enable');await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:40,downloadThroughput:200000,uploadThroughput:100000});}
   await page.goto(servers[index===0?0:1].url);await page.waitForFunction(()=>Number.isFinite(window.__performanceReview?.ready));
-  if(index===4)await page.evaluate(()=>{for(const svg of document.querySelectorAll('.header-link>svg')){const icon=document.createElement('span'),data=new XMLSerializer().serializeToString(svg);icon.setAttribute('aria-hidden','true');Object.assign(icon.style,{display:'block',width:'24px',height:'24px',background:'currentColor',mask:`url("data:image/svg+xml,${encodeURIComponent(data)}") center/contain no-repeat`});svg.replaceWith(icon);}});
+  if(index===3)await page.addStyleTag({content:'.hero .brand-heading{flex-wrap:nowrap}'});
+  if(index===4)await page.addStyleTag({content:'.hero .brand-heading{width:max-content;max-width:100%}'});
   await page.evaluate(()=>{window.__navigationPhases=new Promise((resolve,reject)=>{
    const times={},button=document.getElementById('settingsShortcut');let start;
    const mark=key=>{if(start!==undefined)times[key]=performance.now()-start;};
