@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "4beeb9092756d462deea3c0a435419223337d718",
+  "sourceCommit": "8eca7c48b6709be7ecd5a3487621b5480362f435",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
@@ -36,7 +36,7 @@
     "apps/web/src/styles/legacy-before-drills.css": "6e926f2b9df5705eddcab67b68d4b7118556e3582e2572a08262467e3e41c89d",
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
-    "apps/web/src/styles/legacy-after-drill-cards.css": "04b9aa34100b3ed7075e28d03b708cca007635ae6e598e7afb8d49fcb0ccae4f",
+    "apps/web/src/styles/legacy-after-drill-cards.css": "a998971008ffe9edb6dd0a19c1e5b5fd13b1264ba7892b646f4f744c2157eac8",
     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
     "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
@@ -81,7 +81,7 @@
     "apps/web/src/features/sessions/phasePresentation.ts": "5c788b0f902338a4ec81352b69d8d3d1f1270203e23d0d29510098f583ad9836",
     "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
-    "src/main.js": "8729547c372a18e62cd33ecbe1966285c5d2396a7c8fb859ac7bbfd0bbbc95f6",
+    "src/main.js": "97bec0d116f108d7a39bcf5635db6043f9faa8295fc2c3067143166201768c14",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
@@ -130,7 +130,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "d3b88df2614720ecebf055fcda33aafb1154b62fc368be9a638d0953cb6852c8",
+      "sha256": "c8b22bb0d2caf3d141fd15af96c290418c81e9ca735fc9a1f1ece122f04655e8",
       "width": 358,
       "height": 1004
     },
@@ -139,7 +139,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "1443ee51583fd6d50f79b303dde7a8236ca1edda8c025d6ac5e414a532c393d7",
+      "sha256": "97b8a7a5757f12804ac34e82de6b475f9a1192ac75cabe2164397dcde37809cf",
       "width": 358,
       "height": 1004
     },
@@ -202,7 +202,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "92a6e45bd4da50f5fe7a47270cfd080671194149b75bea79c4e225e5c9a388ee",
+      "sha256": "28a70703770ca5c2a759fb8a82ef9e630706bf45746f74333d7cbc22e26a87d9",
       "width": 358,
       "height": 750
     },
