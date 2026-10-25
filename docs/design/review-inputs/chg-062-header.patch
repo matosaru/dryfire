@@ -12,10 +12,10 @@ index 5c6cd9a..0636b73 100644
 +
 +The app header owns About, @ Contact, Settings in this order. BrandHeader owns the shared 24px outlined SVGs (1.8 stroke), 44px controls, focus/tooltips/current state and responsive geometry. All share theme text, existing orange current/focus accent and a theme-aware hover surface. No font glyph for @; no duplicate footer links. Footer disclosure/copyright/divider and fixed bottom navigation stay. Runtime values live in BrandHeader.css; no independent page overrides.
 diff --git a/apps/web/src/app/chromeBridge.test.ts b/apps/web/src/app/chromeBridge.test.ts
-index f3ba052..e3e8eff 100644
+index f3ba052..a270ece 100644
 --- a/apps/web/src/app/chromeBridge.test.ts
 +++ b/apps/web/src/app/chromeBridge.test.ts
-@@ -80,3 +80,15 @@ test('repeated identical snapshots do not rewrite native chrome or schedule rend
+@@ -80,3 +80,33 @@ test('repeated identical snapshots do not rewrite native chrome or schedule rend
    expect(renderer.update).toHaveBeenCalledWith({view:'learn',status:'Listening',navigationDisabled:true});
    observer.disconnect();bridge.dispose();
  });
@@ -30,6 +30,24 @@ index f3ba052..e3e8eff 100644
 + expect(navigate).not.toHaveBeenCalled();
 + const event=new MouseEvent('click',{bubbles:true,cancelable:true});link.querySelector('path')!.dispatchEvent(event);
 + expect(event.defaultPrevented).toBe(true);expect(navigate.mock.calls).toEqual([['contact']]);bridge.dispose();
++});
++
++test('native tooltip dismissal handles nested icons, focus changes and unrelated header events',()=>{
++ const bridge=createChromeBridge(document,jest.fn()),link=document.querySelector<HTMLAnchorElement>('#aboutBtn')!;
++ const icon=link.querySelector('svg')!;
++ document.querySelector('h1')!.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
++ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
++ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:link}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
++ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:document.querySelector('#contactBtn')}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++ link.dataset.tooltipDismissed='true';link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:null}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++ bridge.dispose();icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++});
++
++test('unrelated native header controls retain their classes and do not acquire a route',()=>{
++ const extra=document.createElement('button');extra.className='unrelated';document.querySelector('header.hero')!.append(extra);
++ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate);extra.click();bridge.view('about');
++ expect(navigate).not.toHaveBeenCalled();expect(extra.className).toBe('unrelated');expect(extra).not.toHaveAttribute('aria-current');bridge.dispose();
 +});
 diff --git a/apps/web/src/app/chromeBridge.ts b/apps/web/src/app/chromeBridge.ts
 index 590ab15..164f6e5 100644
@@ -179,6 +197,13 @@ index 4ecbb40..31e6c45 100644
          if (viewChanged || disabledChanged) navigation();
        });
      },
+diff --git a/apps/web/src/public-site/PublicPage/PublicPage.css b/apps/web/src/public-site/PublicPage/PublicPage.css
+index ec52137..b4b369a 100644
+--- a/apps/web/src/public-site/PublicPage/PublicPage.css
++++ b/apps/web/src/public-site/PublicPage/PublicPage.css
+@@ -1 +1 @@
+-.public-site .app-shell{margin:0 auto}.public-site .brand-name{margin:0}.public-site .icon-button{display:grid;place-items:center;text-decoration:none}.public-site .tab{text-decoration:none}.public-top-links,.public-related{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 24px;font-size:.8rem}.public-site a{color:var(--session-text);cursor:pointer}.public-site a:hover{color:#ffad62}.public-site a:focus-visible{outline:3px solid #ffad62;outline-offset:4px}.public-kicker{font-size:.68rem;letter-spacing:.1em;color:var(--session-muted);margin:0 0 10px}.public-article>h1{font-size:1.85rem;line-height:1.15;letter-spacing:-.03em;margin:0 0 16px}.public-intro{font-size:1rem;line-height:1.65;margin:0 0 22px}.public-panel{border:1px solid var(--session-border);border-radius:14px;background:var(--session-surface);padding:16px;margin:20px 0}.public-panel h2{font-size:1rem;margin:0 0 12px}.public-panel p,.public-panel li{font-size:.85rem;line-height:1.65}.public-panel ol,.public-panel ul{padding-left:22px}.public-panel li+li{margin-top:10px}.public-start{display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:46px}.public-site .about-email{overflow-wrap:anywhere}.public-site .footer-page-link{display:inline-block}.public-related{padding-top:12px}.public-site footer{margin-top:20px}.public-site .public-start:hover{color:#16100b;filter:brightness(1.06)}.public-site .public-start:active{filter:brightness(.95)}
++.public-site .app-shell{margin:0 auto}.public-site .brand-name{margin:0}.public-site .tab{text-decoration:none}.public-top-links,.public-related{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 24px;font-size:.8rem}.public-site a{color:var(--session-text);cursor:pointer}.public-site a:hover{color:#ffad62}.public-site a:focus-visible{outline:3px solid #ffad62;outline-offset:4px}.public-kicker{font-size:.68rem;letter-spacing:.1em;color:var(--session-muted);margin:0 0 10px}.public-article>h1{font-size:1.85rem;line-height:1.15;letter-spacing:-.03em;margin:0 0 16px}.public-intro{font-size:1rem;line-height:1.65;margin:0 0 22px}.public-panel{border:1px solid var(--session-border);border-radius:14px;background:var(--session-surface);padding:16px;margin:20px 0}.public-panel h2{font-size:1rem;margin:0 0 12px}.public-panel p,.public-panel li{font-size:.85rem;line-height:1.65}.public-panel ol,.public-panel ul{padding-left:22px}.public-panel li+li{margin-top:10px}.public-start{display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:46px}.public-site .about-email{overflow-wrap:anywhere}.public-related{padding-top:12px}.public-site footer{margin-top:20px}.public-site .public-start:hover{color:#16100b;filter:brightness(1.06)}.public-site .public-start:active{filter:brightness(.95)}
 diff --git a/apps/web/src/public-site/PublicPage/PublicPage.test.tsx b/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
 index 217f61c..f41eaa8 100644
 --- a/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
@@ -189,6 +214,27 @@ index 217f61c..f41eaa8 100644
  afterEach(cleanup);
 -test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Open settings'})).toHaveAttribute('href','/settings/');expect(v.container.querySelector('script')).toBeNull();});
 +test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Settings'})).toHaveAttribute('href','/settings/');expect(v.container.querySelector('script')).toBeNull();});
+diff --git a/apps/web/src/styles/legacy-after-drill-cards.css b/apps/web/src/styles/legacy-after-drill-cards.css
+index 102bc2f..157e476 100644
+--- a/apps/web/src/styles/legacy-after-drill-cards.css
++++ b/apps/web/src/styles/legacy-after-drill-cards.css
+@@ -2,14 +2,14 @@
+ .home-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .home-actions .button{font-size:.87rem;min-width:0}
+ @media(max-width:680px){.class-grid{grid-template-columns:1fr}.home-actions{grid-template-columns:1fr}.class-preview{min-width:110px}}
+-@media(max-width:380px){.app-shell{padding-left:11px;padding-right:11px}.status-pill{display:none}.class-preview{width:36%;min-width:93px}.class-card{padding:10px}.class-actions .button{padding:10px}.tab{font-size:.68rem}}
++@media(max-width:380px){.app-shell{padding-left:11px;padding-right:11px}.class-preview{width:36%;min-width:93px}.class-card{padding:10px}.class-actions .button{padding:10px}.tab{font-size:.68rem}}
+ 
+ /* Reference design: compact mobile panels and persistent bottom navigation. */
+ :root{--accent-orange:#ff8126}
+ body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
+ .app-shell{max-width:480px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:max(22px,env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom))}
+ .page-content{flex:1;min-width:0}
+-.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}.brand-eyebrow{font-size:1.22rem;letter-spacing:.18em}.hero h1{font-size:.55rem;letter-spacing:.34em}.icon-button{background:none;border:0;color:var(--primary-text,#96a2b0);font-size:26px}.status-pill{display:none}
++.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}.brand-eyebrow{font-size:1.22rem;letter-spacing:.18em}
+ .hero .brand-name{margin:0;color:var(--primary-text,#f5f7fa);font-size:inherit;font-weight:900;letter-spacing:normal;line-height:1.2}
+ .brand-name .brand-eyebrow{display:block;font-size:clamp(1rem,4.9vw,1.22rem);letter-spacing:.14em;white-space:nowrap}
+ .brand-tagline{display:block;margin-top:4px;font-size:.75rem;font-weight:750;letter-spacing:.24em;color:#c3ced9;white-space:nowrap}
 diff --git a/apps/web/src/styles/legacy-after-gun-setup.css b/apps/web/src/styles/legacy-after-gun-setup.css
 index b7c5c0b..0029d2b 100644
 --- a/apps/web/src/styles/legacy-after-gun-setup.css
@@ -200,9 +246,20 @@ index b7c5c0b..0029d2b 100644
 -.footer-links { display:flex; justify-content:center; align-items:center; gap:28px; padding-bottom:12px; margin-bottom:16px; border-bottom:1px solid #253139; }
 -.footer-page-link { color:var(--primary-text,inherit); text-decoration:underline; text-underline-offset:3px; }
 diff --git a/apps/web/src/styles/legacy-after-saved-sessions.css b/apps/web/src/styles/legacy-after-saved-sessions.css
-index 83335fc..e14b23c 100644
+index 83335fc..184915a 100644
 --- a/apps/web/src/styles/legacy-after-saved-sessions.css
 +++ b/apps/web/src/styles/legacy-after-saved-sessions.css
+@@ -36,8 +36,8 @@ html[data-theme="light"] :is(.welcome-card p,.dashboard-card small,.gun-switcher
+ html[data-theme="light"] .hero .brand-name { color:#182936; }
+ html[data-theme="light"] .brand-tagline { color:#486074; }
+ html[data-theme="light"] .brand-logo { background:#17212a; border-radius:9px; padding:3px; }
+-html[data-theme="light"] .icon-button { color:#49657a; }
+-html[data-theme="light"] .icon-button.active { color:#ac4500; background:#fff0e5; }
++
++
+ html[data-theme="light"] .tabs { background:rgba(247,250,252,.97); border-color:#c5d2de; }
+ html[data-theme="light"] .tab { color:#526a7d; }
+ html[data-theme="light"] .tab.active { color:#ac4500; }
 @@ -63,8 +63,6 @@ html[data-theme="light"] :is(.eval-stats span,.confusion-wrap th,.history-item .
  html[data-theme="light"] :is(.progress-label,.class-info .progress-label) { color:#4a6276!important; }
  html[data-theme="light"] :is(.progress-track,.meter-track,.bar) { background:#d9e4ec; }
@@ -212,6 +269,69 @@ index 83335fc..e14b23c 100644
  html[data-theme="light"] .chevron { color:#526a7d; }
  html[data-theme="light"] .dashboard-icon.orange { background:#ffe9d8; color:#b54900; }
  html[data-theme="light"] .dashboard-icon.blue { background:#d9eefb; color:#15668d; }
+diff --git a/apps/web/src/styles/legacy-before-drills.css b/apps/web/src/styles/legacy-before-drills.css
+index ba58caf..cb4940e 100644
+--- a/apps/web/src/styles/legacy-before-drills.css
++++ b/apps/web/src/styles/legacy-before-drills.css
+@@ -28,13 +28,13 @@
+ .hero{padding:5px 0 10px;display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+ .brand-logo{width:43px;height:43px;border-radius:12px;flex:none}
+ .hero-copy{min-width:0;flex:1}
+-.hero h1{font-size:.64rem;font-weight:800;letter-spacing:.27em;color:#9aaab5;margin:0;line-height:1.3}
++
+ .brand-eyebrow{margin:0;font-size:1.12rem;letter-spacing:.15em;font-weight:900;line-height:1.2}
+ .brand-eyebrow span{color:var(--accent-orange)}
+ .header-actions{display:flex;align-items:center;gap:7px;flex:none}
+-.status-pill{font-size:.69rem;padding:5px 8px;margin:0;max-width:110px;overflow-wrap:anywhere}
+-.icon-button{border:1px solid #37454d;background:#172027;color:var(--primary-text,#e5eef4);width:44px;height:44px;border-radius:11px;font-size:1.15rem;cursor:pointer}
+-.icon-button.active{border-color:#ff9141;color:#ff9141;background:#2d211b}
++
++
++
+ .safety-card{padding:10px 12px;margin-bottom:12px;border-radius:12px;gap:9px}
+ .safety-icon{width:26px;height:26px;border-radius:8px}
+ .safety-card h2{font-size:.86rem;margin:0 0 3px}
+diff --git a/apps/web/src/styles/legacy-before-evaluation.css b/apps/web/src/styles/legacy-before-evaluation.css
+index 3c538a6..9d08051 100644
+--- a/apps/web/src/styles/legacy-before-evaluation.css
++++ b/apps/web/src/styles/legacy-before-evaluation.css
+@@ -3,8 +3,8 @@ html[data-theme="light"] .about-card { background:#fff; border-color:#c5d2de; }
+ html[data-theme="light"] :is(.about-intro>p:last-child,.about-card p,.about-card ol) { color:#4a6276; }
+ html[data-theme="light"] .about-email { color:#a34706; }
+ button:focus-visible,input:focus-visible { outline:3px solid #ffb77f; outline-offset:3px; }
+-@media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; } .status-pill { margin-left:77px; } }
+-@media(max-width:420px){ .hero { gap:12px; } .brand-mark { height:47px; width:47px; } .hero-copy { min-width:0; width:calc(100% - 62px); } .status-pill { margin-left:0; } .settings-row { align-items:flex-start; flex-direction:column; } }
++@media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; }  }
++@media(max-width:420px){ .hero { gap:12px; } .brand-mark { height:47px; width:47px; } .hero-copy { min-width:0; width:calc(100% - 62px); }  .settings-row { align-items:flex-start; flex-direction:column; } }
+ 
+ /* Live listening and manual evaluation */
+ .listener-control { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+diff --git a/apps/web/src/styles/legacy-before-live-listen.css b/apps/web/src/styles/legacy-before-live-listen.css
+index 3192c9d..347b7cc 100644
+--- a/apps/web/src/styles/legacy-before-live-listen.css
++++ b/apps/web/src/styles/legacy-before-live-listen.css
+@@ -4,7 +4,7 @@
+   .hero h1 { font-size:1.52rem; letter-spacing:-.04em; }
+   .hero .subhead { font-size:.8rem; }
+   .brand-mark { width:46px; height:46px; border-radius:13px; }
+-  .status-pill { font-size:.75rem; }
++  
+   .safety-card { gap:9px; padding:13px; }
+   .safety-card p { font-size:.8rem; }
+   .nav-glyph { font-size:1.25rem; }
+diff --git a/apps/web/src/styles/legacy-card-foundation.css b/apps/web/src/styles/legacy-card-foundation.css
+index 51a2703..6bedfd2 100644
+--- a/apps/web/src/styles/legacy-card-foundation.css
++++ b/apps/web/src/styles/legacy-card-foundation.css
+@@ -3,7 +3,7 @@ h2,h3,p { margin-top:0; }
+ .subhead,.muted,footer,.class-card p,.history-item p { color:#a8b5bd; }
+ .subhead { margin-bottom:0; max-width:550px; line-height:1.5; }
+ .eyebrow { color:#fa974d; margin:0 0 7px; font-size:.72rem; font-weight:800; letter-spacing:.13em; }
+-.status-pill { border:1px solid #364148; background:#172126; border-radius:20px; padding:9px 13px; color:#d5e0e7; font-size:.8rem; max-width:100%; }
++
+ .brand-mark { height:60px; width:60px; display:flex; justify-content:center; align-items:center; gap:3px; border-radius:17px; border:1px solid #543421; background:#2c1c13; }
+ .brand-mark span { display:block; height:12px; width:3px; border-radius:5px; background:#ff9141; }
+ .brand-mark span:nth-child(2),.brand-mark span:nth-child(6) { height:23px; }
 diff --git a/docs/architecture/application-sitemap.md b/docs/architecture/application-sitemap.md
 index d5e8fb3..9d0426d 100644
 --- a/docs/architecture/application-sitemap.md
@@ -236,6 +356,26 @@ index d5e8fb3..9d0426d 100644
  
  ## Main flows
  
+diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
+index e60695d..d5a7454 100644
+--- a/docs/architecture/application-structure.md
++++ b/docs/architecture/application-structure.md
+@@ -36,7 +36,7 @@ apps/web/src/
+     *Page.tsx / *Contents.tsx       client ownership adapters
+     profilePages/index.ts          shared lazy Home / My Guns / Gun Setup entry
+     informationBridge.ts           lazy About/Contact and shared chrome bridge
+-    chromeBridge.ts                header/footer/tab ownership
++    chromeBridge.ts                header icon/tab ownership
+     retainedPage.tsx               shared parent transfer and rollback
+   pages/<Page>/                    one typed screen component, CSS, tests, export
+   features/
+@@ -132,3 +132,6 @@ CHG-060: apps/web/src/public-site/PublicPage is the four-file public template, c
+ `src/main.js` remains the progressive application entry; `src/appPaths.js` supplies flat mode/preset/guide identities. `workers/publicSite.js` maps canonical and compatible legacy HTTP routes. `site/routes.js` owns public metadata/XML/robots; build-only `tools/app-document.mjs` prerenders actual About/Contact/PracticeGuide screens, avoiding a second manual implementation in public output. Root `/` is the real app. `MarketingOverview` is a separate tested/CSS-isolated package reused inside About and the static mode directory; original marketing design is archived. Native/lazy React page ownership, capture, schema and performance contracts remain unchanged.
+ 
+ Startup optimization: `gunPreferenceReads.js` overlaps independent read-only requests for the explicit active gun while consumers retain validation/error order. The root document keeps trusted compiled About content inert; `informationBridge.ts` moves those exact nodes into the existing host synchronously on first About entry, before optional React enhancement. The build expands them for public `/about/` so its initial HTML remains readable without JavaScript. Shared components/styles/final DOM remain unchanged; no new network dependency or data mutation.
++
++
++CHG-062: BrandHeader owns the About/@Contact/Settings native links, outlined icons and accessible tooltip/current states. ChromeBridge delegates guarded native header/tab actions and hands those two regions to lazy ChromePages; InfoFooter no longer has links or a React ownership region. Footer disclosure/copyright/private notice remain stable.
 diff --git a/docs/architecture/page-templates.md b/docs/architecture/page-templates.md
 index 9a6f4cd..7eb2b9f 100644
 --- a/docs/architecture/page-templates.md
@@ -258,7 +398,7 @@ index 9a6f4cd..7eb2b9f 100644
  ```
  
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index e079785..d2762bf 100644
+index e079785..9ea5bd2 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -84,7 +84,7 @@
@@ -267,6 +407,15 @@ index e079785..d2762bf 100644
        ],
 -      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. Separate centered About and Contact footer links open their independent pages.",
 +      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. Shared About, @ Contact and Settings header icon links open their independent pages.",
+       "states": [
+         {
+           "key": "overview.dark",
+@@ -654,7 +654,7 @@
+         "docs/requirements/about.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. Device capability status stays in Settings; About is reached independently from the shared app footer. CHG-035 private preview adds Test as Free/Full, a mode indicator, Free default/private remembered preference and activity/data guards; public output omits them.",
++      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. Device capability status stays in Settings; About is reached independently from the shared About header icon. CHG-035 private preview adds Test as Free/Full, a mode indicator, Free default/private remembered preference and activity/data guards; public output omits them.",
        "states": [
          {
            "key": "overview.dark",
@@ -356,6 +505,43 @@ index dc34000..460e670 100644
 +
 +
 +CHG-062 implementation started (2026-10-25): baseline npm ci, smoke,1077tests/156suites, build and artifact verification passed. Added failing header contract test before source edits. Shared header now owns real About/@Contact/Settings links with decorative24px SVGs,44px targets, focus/current states and dismissible tooltips. Removed footer link rendering/React root and obsolete footer styles; retained disclosure/copyright/private notice/bottom tabs. Native and React delegation preserve ordinary guarded navigation and modified-click semantics. Focused17tests/types/lint and12local Chromium workflows passed; additional keyboard/zoom tests and complete coverage/pinned acceptance running. Docker daemon available, pinned image pull denied Forbidden; use authorized CI review collector without bypass. Main postmerge40176142886 later failed public Chromium firstAction and WebKit warm timing; functional/screenshots passed. Prior b/PR all8success and production deployment remain recorded, no unchanged retries or relaxed limits.
+diff --git a/docs/project/react-refactor/context.md b/docs/project/react-refactor/context.md
+index ff32f9a..bf97637 100644
+--- a/docs/project/react-refactor/context.md
++++ b/docs/project/react-refactor/context.md
+@@ -1,23 +1,19 @@
+ # Working context
+ 
+-Updated 2026-10-25. [History](../implementation-history.md) · [CHG-061 proof](../../design/baselines/chg-061-route-review.json) · [URL inventory](../../seo/routes.md).
++Updated 2026-10-25. [History](../implementation-history.md) · [Follow-up plan](follow-up-plan.md) · [Current routes](../../seo/routes.md).
+ 
+-## CHG-061 release
++## Active CHG-062 — shared header icons
+ 
+-Approved trainer at `/`, flat URLs, distinct reloadable sequence setups/manuals, marketing retained inside About. Dev untouched. Optimized b commit eff9ac2 passed all eight jobs in push40130237075 and PR40130238059; Cloudflare preview builda1fca6f5-6806-4a45-a469-95a3bcaa4981 succeeded. Candidate40129243422 also passed all eight gates (1077 tests/156 suites, original coverage, both editions, pinned Chromium/WebKit screenshots/integration and unchanged performance controls).450 visual baselines;382 unrelated PNGs and10 original GIFs preserved. See proof/history for earlier failed candidates and optimization evidence.
++Owner approved About → Contact → Settings at top right, Contact drawn as @, same style/size/accessibility, then “proceed with a plan”. H1 implementation local only: common BrandHeader links with24px SVGs/44px targets, accessible names/current state, keyboard/hover/Escape tooltips, native/React guarded delegation + modified-click semantics. Footer link component/root/styles removed; disclosure/copyright/private notice/bottom tabs preserved. SW88. Main/dev unchanged by this work; all application publication requires complete candidate acceptance, no direct main pushes.
+ 
+-PR#27 merged normally with exact tested SHA into main c4e751c61fc93bb2d8ce960b6e252f7661fc5cfd. Git tree81dc47afd7a08fdf429e419ec5ac6bbe306590a7 matches tested b exactly. Post-merge main run40176142886 is in progress. Cloudflare production buildfcda447e-3f45-41e6-a2e2-2e31ded2583f succeeded.
++Baseline npm ci/smoke/1077tests156suites/build/verify passed. Focused17tests, types/lint/architecture, both builds/artifacts, strict UI audit and initial12 local Chromium workflows pass. Full1078tests passed but coverage ratchet caught new tooltip branches; tests added, rerun in progress. Pinned Docker image pull denied Forbidden; no bypass. Collector40177270313 applies review-only patch from b47d29f2 and writes separate candidate images; no app code published. Redundant unchanged-source push CI40177270293 cancelled to save credits; not acceptance. Update captures/proof/source fingerprints only after review, then full eight-job candidate CI before publishing runtime.
+ 
+-## Next
++## Prior CHG-061 release / timing debt
+ 
+-Observe main post-merge checks and deployment; close history/context with actual results. Status-only documentation may publish to b after release; no direct main push. No source changes or unchanged retry fishing. Retain b and leave dev untouched.
++b eff9ac2 and PR27 each passed all8 jobs40130237075/40130238059; exact tested tree merged normally into mainc4e751c, tree81dc47afd7a08fdf429e419ec5ac6bbe306590a7. Cloudflare production buildfcda447e-3f45-41e6-a2e2-2e31ded2583f succeeded. Subsequent main40176142886 passed validation/screenshots/preview timings but failed public Chromium firstAction (~36.3→38.3ms,32/40pairs) and WebKit warm (~39→44ms,32/40pairs). Preserve original gates and fix confirmed regressions; never rerun unchanged candidates or label aggregate green. Earlier detailed evidence in history/CHG061 proof.
+ 
+-## Invariants / deferred
++## Next / invariants
+ 
+-Preserve ADR001 progressive startup, schema4/user data/backups, capture/safety/save/draft/owner guards, Free/Full boundaries, exact visual references and original performance limits. SW cache87. No unauthorized subagents or commercial/native scope. Future application changes require complete candidate acceptance before b publication. Curate this context after completed increments; detailed evidence belongs in history/proof.
++Review collector images; close coverage gaps; full pinned both-edition/browser workflows/screenshots and original performance gates/controls. Publish accepted source to b only, observe push results. F2–F7 remain separate structural steps; no commercial/native scope or unauthorized subagents. Preserve ADR001, schema4/user data/backups, owner/capture/safety/draft/save guards, edition boundaries and original performance limits. Curate context after increments.
+ 
+-Workspace policy blocks external .com/.app reads before origin; b read403. No live-content/indexing/real-device microphone verification is claimed. Owner configured .app permanent redirect and suspected browser caching. F1–F7 and commercial/cloud/native plans remain separate.
+-
+-CHG-062: owner requests plan addition for shared top-right About/Contact/Settings icons replacing bottom informational text links. H1 documented in follow-up-plan.md; Owner confirmed Contact as the middle icon, displayed as @ rather than an envelope; relocate both footer links, no Help icon. Planning only; no UI/screenshots changed.
+-
+-CHG-062 refinement: shared 24px icon styling/weight/alignment, ≥44px targets, responsive/zoom checks, named native links, decorative SVG semantics, focus/tooltips/current-page state and contrast requirements are explicit in H1. Plan only.
++External .com/.app reads are workspace-policy denied; b read403. No live content, Google indexing or real-device mic claim. Owner configured .app redirect. Original GIFs remain unchanged because header is outside their run/example artwork; screen PNGs require refresh.
 diff --git a/docs/project/react-refactor/follow-up-plan.md b/docs/project/react-refactor/follow-up-plan.md
 index 6e2f43f..c0a9abe 100644
 --- a/docs/project/react-refactor/follow-up-plan.md
@@ -481,24 +667,24 @@ index 10f8ba0..8d5cbd3 100644
    </div>;
  }
 diff --git a/packages/ui/src/BrandHeader/BrandHeader.css b/packages/ui/src/BrandHeader/BrandHeader.css
-index 144d16f..0a96cf1 100644
+index 144d16f..d6ccc7f 100644
 --- a/packages/ui/src/BrandHeader/BrandHeader.css
 +++ b/packages/ui/src/BrandHeader/BrandHeader.css
-@@ -1,2 +1,25 @@
- .hero { display:flex; align-items:center; gap:18px; padding:24px 0; flex-wrap:wrap; }
- .hero-copy { flex:1; min-width:220px; }
+@@ -1,2 +1,23 @@
+-.hero { display:flex; align-items:center; gap:18px; padding:24px 0; flex-wrap:wrap; }
+-.hero-copy { flex:1; min-width:220px; }
++.status-pill { display:none; }
 +
-+.hero .header-links { display:flex; align-items:center; gap:0; }
-+.hero .header-link { display:grid; place-items:center; position:relative; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:11px; color:var(--primary-text,#fff); background:transparent; text-decoration:none; cursor:pointer; }
-+.hero .header-link svg { width:24px; height:24px; flex:none; }
-+.hero .header-link:hover { background:var(--header-hover,#263844); }
-+.hero .header-link.active { color:var(--accent-orange,#ff9141); background:var(--header-hover,#263844); box-shadow:inset 0 -2px currentColor; }
++.hero .header-links { display:flex; align-items:center; }
++.hero .header-link { display:grid; place-items:center; position:relative; flex:none; width:44px; height:44px; border-radius:11px; color:var(--primary-text,#fff); background:transparent; text-decoration:none; cursor:pointer; }
++.hero .header-link:is(:hover,.active) { background:var(--header-hover,#263844); }
++.hero .header-link.active { color:var(--accent-orange,#ff9141); box-shadow:inset 0 -2px currentColor; }
 +.hero .header-link:focus-visible { outline:2px solid var(--accent-orange,#ff9141); outline-offset:2px; }
-+.hero .header-tooltip { position:absolute; top:calc(100% + 5px); right:0; z-index:20; padding:5px 8px; border-radius:6px; color:var(--primary-text,#fff); background:var(--header-hover,#263844); font-size:.75rem; line-height:1.4; white-space:nowrap; visibility:hidden; pointer-events:none; }
++.header-tooltip { position:absolute; top:calc(100% + 5px); right:0; z-index:20; padding:5px 8px; border-radius:6px; color:var(--primary-text,#fff); background:var(--header-hover,#263844); font-size:.75rem; line-height:1.4; white-space:nowrap; visibility:hidden; pointer-events:none; }
 +.hero .header-link:focus-visible .header-tooltip { visibility:visible; }
 +@media(hover:hover) { .hero .header-link:hover .header-tooltip { visibility:visible; } }
 +.hero .header-link[data-tooltip-dismissed] .header-tooltip { visibility:hidden; }
-+html[data-theme="light"] .hero { --header-hover:#d9e4ec; }
++html[data-theme="light"] .hero { --header-hover:#d9e4ec; --primary-text:#243d51; }
 +html[data-theme="light"] .hero .header-link.active { color:#ac4500; }
 +@media(max-width:420px) {
 +  .hero { gap:6px; }
@@ -511,10 +697,10 @@ index 144d16f..0a96cf1 100644
 +}
 +@media(forced-colors:active) { .hero .header-link.active { outline:1px solid LinkText; } }
 diff --git a/packages/ui/src/BrandHeader/BrandHeader.test.tsx b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
-index 16fb4b8..18745d6 100644
+index 16fb4b8..bcaf8a6 100644
 --- a/packages/ui/src/BrandHeader/BrandHeader.test.tsx
 +++ b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
-@@ -7,21 +7,34 @@ import { BrandHeader } from './BrandHeader.tsx';
+@@ -7,21 +7,47 @@ import { BrandHeader } from './BrandHeader.tsx';
  
  test('branding, beta disclosure, live status and settings retain their native semantics', async () => {
    const onSettings = jest.fn();
@@ -553,6 +739,19 @@ index 16fb4b8..18745d6 100644
 +  await userEvent.setup().click(links[0]);expect(onNavigate).toHaveBeenCalledWith('about');
 +  rerender(<BrandHeader view="contact" onNavigate={onNavigate}/>);
 +  expect(links[1]).toHaveAttribute('aria-current','page');expect(links[0]).not.toHaveAttribute('aria-current');
++});
++
++test('header keyboard and pointer tooltips dismiss without hijacking modified links',async()=>{
++ const navigate=jest.fn(),user=userEvent.setup();
++ render(<BrandHeader onNavigate={navigate} links={{about:'/about/?source=header',contact:'/contact/',settings:'/settings/'}}/>);
++ const about=screen.getByRole('link',{name:'About'}),contact=screen.getByRole('link',{name:'Contact'});
++ await user.tab();expect(about).toHaveFocus();await user.keyboard('{ArrowRight}{Escape}');expect(about).toHaveAttribute('data-tooltip-dismissed','true');
++ await user.tab();expect(contact).toHaveFocus();expect(about).not.toHaveAttribute('data-tooltip-dismissed');
++ await user.hover(about);await user.unhover(about);expect(about).not.toHaveAttribute('data-tooltip-dismissed');
++ for(const options of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
++  const event=new MouseEvent('click',{bubbles:true,cancelable:true,...options});about.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);
++ }
++ expect(navigate).not.toHaveBeenCalled();expect(about).toHaveAttribute('href','/about/?source=header');
 +});
 diff --git a/packages/ui/src/BrandHeader/BrandHeader.tsx b/packages/ui/src/BrandHeader/BrandHeader.tsx
 index eb1bea7..48cf10c 100644
@@ -783,10 +982,10 @@ index 249822a..203c225 100644
  ## Screen directory
  
 diff --git a/visual-tests/page-layout.spec.js b/visual-tests/page-layout.spec.js
-index e9f20ca..23c5a2e 100644
+index e9f20ca..a723592 100644
 --- a/visual-tests/page-layout.spec.js
 +++ b/visual-tests/page-layout.spec.js
-@@ -20,21 +20,30 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+@@ -20,21 +20,31 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
        const beta = page.getByRole('banner').getByLabel('Beta version', { exact: true });
        await expect(beta).toBeVisible();
        await expect(beta).toHaveText('BETA');
@@ -797,6 +996,7 @@ index e9f20ca..23c5a2e 100644
 +      for(const link of await information.getByRole('link').all()){
 +        const box=await link.boundingBox();expect(box.width).toBeGreaterThanOrEqual(44);expect(box.height).toBeGreaterThanOrEqual(44);
 +        await expect(link.locator('svg')).toHaveAttribute('aria-hidden','true');
++        if(!(await link.getAttribute('aria-current')))await expect(link).toHaveCSS('color',theme==='light'?'rgb(36, 61, 81)':'rgb(255, 255, 255)');
 +      }
 +      await expect(page.getByRole('contentinfo').getByRole('link')).toHaveCount(0);
        const header = await page.evaluate(() => ({
@@ -820,7 +1020,7 @@ index e9f20ca..23c5a2e 100644
        const bounds = await page.evaluate(() => ({
          footerBottom: document.querySelector('footer').getBoundingClientRect().bottom,
          navigationTop: document.querySelector('.tabs').getBoundingClientRect().top,
-@@ -73,3 +82,19 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+@@ -73,3 +83,19 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
      await expect(page.locator('#gunName')).toHaveValue('QA Handgun');
    });
  }
@@ -835,8 +1035,8 @@ index e9f20ca..23c5a2e 100644
 + await page.keyboard.press('Enter');await expect(page).toHaveURL(/\/contact\/$/);
 + await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true})).toHaveAttribute('aria-current','page');
 + await page.goBack();await expect(page.locator('#gunSetupView')).toBeVisible();
-+ await page.setViewportSize({width:320,height:844});await page.evaluate(()=>document.documentElement.style.zoom='2');
-+ const box=await page.locator('header.hero').boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);
++ await page.setViewportSize({width:640,height:844});await page.evaluate(()=>document.documentElement.style.zoom='2');
++ const box=await page.locator('header.hero').boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(640);
 + // Text zoom must not remove names or destinations; physical 200% device checks are tracked separately.
 + for(const label of ['About','Contact','Settings'])await expect(page.getByRole('banner').getByRole('link',{name:label,exact:true})).toBeVisible();
 +});

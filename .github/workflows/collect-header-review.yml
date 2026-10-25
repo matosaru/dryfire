@@ -36,9 +36,9 @@ jobs:
           p.write_text(s)
           PY
           APP_EDITION=public npm run build
-          APP_EDITION=public VISUAL_EDITION=public npx playwright test screens.spec.js 
+          APP_EDITION=public VISUAL_EDITION=public npx playwright test screens.spec.js --grep '\.light'
           APP_EDITION=preview npm run build
-          APP_EDITION=preview VISUAL_EDITION=preview npx playwright test screens.spec.js 
+          APP_EDITION=preview VISUAL_EDITION=preview npx playwright test screens.spec.js --grep '\.light'
       - name: Publish only review images
         run: |
           git config user.name 'github-actions[bot]'
