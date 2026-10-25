@@ -685,3 +685,6 @@ Owner reported the app homepage was replaced by marketing, requested removing `/
 ## CHG-062 — Plan shared header information icons (2026-10-25)
 
 Owner requests adding work to the plan: move bottom About/Contact text links to top-right icon navigation beside Settings, with specified order “About, Help, Settings”. This authorizes recording the change in the follow-up plan; Help versus Contact destination/placement is explicitly unresolved and clarification requested. No application implementation or screenshot update is claimed. Preserve existing routes/email, shared shell, guarded navigation and complete acceptance.
+
+
+CHG-062 clarification (2026-10-25): owner confirms “About, Contact, Settings, we do not have help, you are correct”. This resolves the pending destination/order: information, envelope, existing gear; relocate both footer links while preserving routes/email. Plan updated; implementation not started.

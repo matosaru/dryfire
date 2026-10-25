@@ -18,4 +18,4 @@ Preserve ADR001 progressive startup, schema4/user data/backups, capture/safety/s
 
 Workspace policy blocks external .com/.app reads before origin; b read403. No live-content/indexing/real-device microphone verification is claimed. Owner configured .app permanent redirect and suspected browser caching. F1–F7 and commercial/cloud/native plans remain separate.
 
-CHG-062: owner requests plan addition for shared top-right About/Help/Settings icons replacing bottom informational text links. H1 documented in follow-up-plan.md; Contact-versus-Help wording clarification pending. Planning only; no UI/screenshots changed.
+CHG-062: owner requests plan addition for shared top-right About/Contact/Settings icons replacing bottom informational text links. H1 documented in follow-up-plan.md; Owner confirmed Contact as the middle icon; relocate both footer links, no Help icon. Planning only; no UI/screenshots changed.
