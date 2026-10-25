@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-      - run: git apply docs/design/review-inputs/chg-062-header.patch
+      - run: git apply docs/design/review-inputs/chg-062-static-tree.patch
       - run: npm ci --no-audit --no-fund
       - name: Regenerate cropped guide examples in the pinned renderer
         run: |

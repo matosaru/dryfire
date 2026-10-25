@@ -975,6 +975,30 @@ index 8d14f1f..b92d3f4 100644
 +
 +
 +CHG-062 performance correction under review: the in-app Settings control retains its existing native button action (with shared icon styling, accessible name/current state and guarded route callback); About and Contact are real links. Static editorial/public link-mode shells retain a real Settings href. This preserves the released Settings keyboard/action contract rather than requiring identical HTML tags for different control purposes. Visual references remain unchanged; complete acceptance is still required.
+diff --git a/package-lock.json b/package-lock.json
+index b8e92bc..746f2d8 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -41,6 +41,7 @@
+         "html-minifier-terser": "7.2.0",
+         "jest": "^30.2.0",
+         "jest-environment-jsdom": "30.5.2",
++        "parse5": "7.3.0",
+         "tsx": "4.23.15",
+         "typescript": "6.0.2",
+         "typescript-eslint": "8.71.2",
+diff --git a/package.json b/package.json
+index f0bfd72..2dabf8d 100644
+--- a/package.json
++++ b/package.json
+@@ -72,6 +72,7 @@
+     "html-minifier-terser": "7.2.0",
+     "jest": "^30.2.0",
+     "jest-environment-jsdom": "30.5.2",
++    "parse5": "7.3.0",
+     "tsx": "4.23.15",
+     "typescript": "6.0.2",
+     "typescript-eslint": "8.71.2",
 diff --git a/packages/ui/src/AppShell/AppShell.test.tsx b/packages/ui/src/AppShell/AppShell.test.tsx
 index 7e3aa6a..c6c99db 100644
 --- a/packages/ui/src/AppShell/AppShell.test.tsx
@@ -1437,18 +1461,15 @@ index 0000000..7289b4c
 +export function serializeStaticPage(html: string): string;
 diff --git a/tools/serialize-static-page.mjs b/tools/serialize-static-page.mjs
 new file mode 100644
-index 0000000..7a0d6a9
+index 0000000..1bd6361
 --- /dev/null
 +++ b/tools/serialize-static-page.mjs
-@@ -0,0 +1,9 @@
-+import {JSDOM} from 'jsdom';
-+/** Build-only DOM serialization of our typed page, never user or stored markup. */
+@@ -0,0 +1,6 @@
++import {parseFragment} from 'parse5';
++/** Build-only serialization of our typed page, never user or stored markup. */
 +export function serializeStaticPage(html) {
-+ const dom=new JSDOM(`<body>${html}</body>`);
-+ try {
-+  const encode=node=>node.nodeType===3?node.textContent:[node.localName,Array.from(node.attributes,a=>[a.name,a.value]),Array.from(node.childNodes,encode)];
-+  return JSON.stringify(Array.from(dom.window.document.body.childNodes,encode)).replaceAll('<','\\u003c');
-+ } finally {dom.window.close();}
++ const encode=node=>node.nodeName==='#text'?node.value:[node.tagName,node.attrs.map(a=>[a.name,a.value]),node.childNodes.map(encode)];
++ return JSON.stringify(parseFragment(html).childNodes.map(encode)).replaceAll('<','\\u003c');
 +}
 diff --git a/tools/verify-docs.mjs b/tools/verify-docs.mjs
 index 249822a..68c88f1 100644
