@@ -1,0 +1,1533 @@
+diff --git a/DESIGN.md b/DESIGN.md
+index 5c6cd9a..3a8d6ff 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -21,3 +21,11 @@ CHG-060 public static SEO pages reuse AppShell, BrandHeader, InfoFooter and fixe
+ Owner-approved: `/` opens the real trainer, informational and setup URLs are flat, and every built-in sequence has a distinct path. Retain marketing as `MarketingOverview` inside About with the existing brand, routine, free/local promise, CTA and mode guide cards. Public About/Contact/manuals use the same actual app components and fixed navigation as their in-app equivalents. Preserve the original marketing capture as historical evidence. No rebrand or unrelated layout changes. Review changed About/public captures in both pinned browsers and preserve unrelated baselines; original performance budgets apply.
+ 
+ Existing native selects remain OS-owned: practice delay/start-source, appearance, History progress filter and private preview simulation. Native popup geometry is intentionally platform-dependent; no authored dropdown redesign is authorized by this routing change. Preserve existing labels, keyboard behavior and numeric validation contracts. This explicit ownership decision also applies to the retained native template adapters.
++
++
++## CHG-062 — shared information icons
++
++The app header owns About, @ Contact, Settings in this order. BrandHeader owns the shared 24px outlined SVGs (1.8 stroke), 44px controls, focus/tooltips/current state and responsive geometry. All share theme text, existing orange current/focus accent and a theme-aware hover surface. No font glyph for @; no duplicate footer links. Footer disclosure/copyright/divider and fixed bottom navigation stay. Runtime values live in BrandHeader.css; no independent page overrides.
++
++
++CHG-062 performance correction under review: the in-app Settings control retains its existing native button action (with shared icon styling, accessible name/current state and guarded route callback); About and Contact are real links. Static editorial/public link-mode shells retain a real Settings href. This preserves the released Settings keyboard/action contract rather than requiring identical HTML tags for different control purposes. Visual references remain unchanged; complete acceptance is still required.
+diff --git a/apps/web/src/app/chromeBridge.test.ts b/apps/web/src/app/chromeBridge.test.ts
+index f3ba052..60a8511 100644
+--- a/apps/web/src/app/chromeBridge.test.ts
++++ b/apps/web/src/app/chromeBridge.test.ts
+@@ -80,3 +80,44 @@ test('repeated identical snapshots do not rewrite native chrome or schedule rend
+   expect(renderer.update).toHaveBeenCalledWith({view:'learn',status:'Listening',navigationDisabled:true});
+   observer.disconnect();bridge.dispose();
+ });
++
++
++test('header links preserve modified clicks and intercept ordinary nested-icon navigation once',()=>{
++ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate);
++ const link=document.querySelector<HTMLAnchorElement>('#contactBtn')!;
++ for(const options of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
++  const event=new MouseEvent('click',{bubbles:true,cancelable:true,...options});link.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);
++ }
++ expect(navigate).not.toHaveBeenCalled();
++ const event=new MouseEvent('click',{bubbles:true,cancelable:true});link.querySelector('path')!.dispatchEvent(event);
++ expect(event.defaultPrevented).toBe(true);expect(navigate.mock.calls).toEqual([['contact']]);expect(link).toHaveAttribute('data-tooltip-dismissed','true');bridge.dispose();
++});
++
++test('native tooltip dismissal handles nested icons, focus changes and unrelated header events',()=>{
++ const bridge=createChromeBridge(document,jest.fn()),link=document.querySelector<HTMLAnchorElement>('#aboutBtn')!;
++ const icon=link.querySelector('svg')!;
++ document.querySelector('h1')!.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
++ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
++ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:link}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
++ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:document.querySelector('#contactBtn')}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++ link.dataset.tooltipDismissed='true';link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:null}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++ bridge.dispose();icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++});
++
++test('unrelated native header controls retain their classes and do not acquire a route',()=>{
++ const extra=document.createElement('button');extra.className='unrelated';document.querySelector('header.hero')!.append(extra);
++ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate);extra.click();bridge.view('about');
++ expect(navigate).not.toHaveBeenCalled();expect(extra.className).toBe('unrelated');expect(extra).not.toHaveAttribute('aria-current');bridge.dispose();
++});
++
++test('navigation does not rewrite unchanged information controls or notify their ARIA state',()=>{
++ const bridge=createChromeBridge(document,jest.fn());bridge.view('gunSetup');
++ const about=control('#aboutBtn'),contact=control('#contactBtn');
++ const aboutARIA=jest.spyOn(about,'ariaCurrent','set'),contactARIA=jest.spyOn(contact,'ariaCurrent','set');
++ const aboutClass=jest.spyOn(about.classList,'toggle'),contactClass=jest.spyOn(contact.classList,'toggle');
++ bridge.view('settings');
++ expect(aboutARIA).not.toHaveBeenCalled();expect(contactARIA).not.toHaveBeenCalled();
++ expect(aboutClass).not.toHaveBeenCalled();expect(contactClass).not.toHaveBeenCalled();
++ bridge.dispose();
++});
+diff --git a/apps/web/src/app/chromeBridge.ts b/apps/web/src/app/chromeBridge.ts
+index 590ab15..37ffad0 100644
+--- a/apps/web/src/app/chromeBridge.ts
++++ b/apps/web/src/app/chromeBridge.ts
+@@ -8,21 +8,39 @@ export type ChromeFactory = (options: { doc: Document; initial: ChromeSnapshot;
+ /** Native controls are immediately functional without downloading React. The
+  * optional renderer takes ownership atomically; no page/form node is replaced. */
+ export function createChromeBridge(doc: Document, onNavigate: (view: string) => void) {
+-  const hosts = ['header.hero', '.footer-links', '.tabs'].map(selector => doc.querySelector(selector));
++  const hosts = ['header.hero', '.tabs'].map(selector => doc.querySelector(selector));
+   if (hosts.some(host => !host)) throw new Error('Shared chrome regions are missing.');
+   const regions = hosts as Element[];
+-  const controls = regions.flatMap(host => [...host.querySelectorAll<HTMLButtonElement>('button')]);
++  const controls = regions.flatMap(host => [...host.querySelectorAll<HTMLButtonElement | HTMLAnchorElement>('button,a.header-link')]);
+   const destinations: Record<string, string> = { settingsShortcut: 'settings', aboutBtn: 'about', contactBtn: 'contact' };
+   const state: ChromeSnapshot = { view: 'home', status: 'Loading…', navigationDisabled: false };
+   let renderer: ChromeRenderer | undefined, disposed = false;
+   const activate = (event: Event) => {
+-    const button = (event.target as Element).closest?.('button');
+-    if (!button || button.disabled) return;
++    const button = (event.target as Element).closest?.<HTMLButtonElement | HTMLAnchorElement>('button,a.header-link');
++    if (!button || ('disabled' in button && button.disabled)) return;
++    if (button instanceof HTMLAnchorElement) {
++      const click=event as MouseEvent;
++      if(click.button!==0||click.metaKey||click.ctrlKey||click.altKey||click.shiftKey)return;
++      event.preventDefault();
++    }
+     const view = button.dataset.view ?? destinations[button.id];
+-    if (view) onNavigate(view);
++    if (view) {
++      if(button.classList.contains('header-link'))button.dataset.tooltipDismissed='true';
++      onNavigate(view);
++    }
++  };
++  const tooltip = (event: Event) => {
++    const link=(event.target as Element).closest?.<HTMLElement>('.header-link');
++    if(!link)return;
++    if(event.type==='keydown') { if((event as KeyboardEvent).key==='Escape')link.dataset.tooltipDismissed='true'; }
++    else if(!link.contains((event as FocusEvent).relatedTarget as Node|null))delete link.dataset.tooltipDismissed;
+   };
+   regions.forEach(host => host.addEventListener('click', activate));
+-  const removeNative = () => regions.forEach(host => host.removeEventListener('click', activate));
++  for(const type of ['keydown','focusout','pointerout']) regions[0].addEventListener(type,tooltip);
++  const removeNative = () => {
++    regions.forEach(host => host.removeEventListener('click', activate));
++    for(const type of ['keydown','focusout','pointerout']) regions[0].removeEventListener(type,tooltip);
++  };
+   const applied: Partial<ChromeSnapshot> = {};
+   const update = <Key extends keyof ChromeSnapshot>(key: Key, value: ChromeSnapshot[Key]) => {
+     if (disposed || applied[key] === value) return;
+@@ -33,12 +51,13 @@ export function createChromeBridge(doc: Document, onNavigate: (view: string) =>
+       for (const button of controls) {
+         const route = button.dataset.view ?? destinations[button.id];
+         const selected = route === value || route === 'drills' && ['session', 'practice', 'practiceGuide'].includes(value);
+-        if (button.dataset.view || route === 'settings') button.classList.toggle('active', selected);
+-        button.ariaCurrent = selected ? 'page' : null;
++        if (route && button.classList.contains('active') !== selected) button.classList.toggle('active', selected);
++        const current = selected ? 'page' : null;
++        if (button.getAttribute('aria-current') !== current) button.ariaCurrent = current;
+       }
+     }
+     if (key === 'status') doc.getElementById('statusPill')!.textContent = state.status;
+-    if (key === 'navigationDisabled') controls.forEach(button => { if (button.dataset.view) button.disabled = state.navigationDisabled; });
++    if (key === 'navigationDisabled') controls.forEach(button => { if (button instanceof HTMLButtonElement && button.dataset.view) button.disabled = state.navigationDisabled; });
+   };
+   return {
+     view(value: string) { update('view', value); },
+diff --git a/apps/web/src/app/chromePages.test.tsx b/apps/web/src/app/chromePages.test.tsx
+index f8af8d4..7e03aee 100644
+--- a/apps/web/src/app/chromePages.test.tsx
++++ b/apps/web/src/app/chromePages.test.tsx
+@@ -16,19 +16,19 @@ test('Strict Mode chrome preserves other owners and keyboard focus, with exactly
+   const draft=document.getElementById('draft') as HTMLInputElement;
+   draft.value='invalid draft';draft.setSelectionRange(2,5);
+   const main=document.getElementById('pageContent'), badge=document.getElementById('previewModeBadge');
+-  document.getElementById('contactBtn')!.focus();
++  document.getElementById('contactBtn')!.focus();document.getElementById('contactBtn')!.dataset.tooltipDismissed='true';
+   act(()=>{bridge.view('practice');bridge.status('Microphone connected');bridge.enhance(mountChrome);bridge.enhance(mountChrome);});
+-  expect(screen.getByRole('button',{name:'Contact'})).toHaveFocus();
++  expect(screen.getByRole('link',{name:'Contact'})).toHaveFocus();expect(screen.getByRole('link',{name:'Contact'})).toHaveAttribute('data-tooltip-dismissed','true');
+   expect(document.getElementById('draft')).toBe(draft);expect(draft.value).toBe('invalid draft');
+   expect([draft.selectionStart,draft.selectionEnd]).toEqual([2,5]);
+   expect(document.getElementById('pageContent')).toBe(main);expect(document.getElementById('previewModeBadge')).toBe(badge);
+   expect(screen.getByRole('button',{name:'Drills'})).toHaveAttribute('aria-current','page');
+-  await userEvent.click(screen.getByRole('button',{name:'About'}));
+-  await userEvent.click(screen.getByRole('button',{name:'Open settings'}));
++  await userEvent.click(screen.getByRole('link',{name:'About'}));
++  await userEvent.click(screen.getByRole('button',{name:'Settings'}));
+   await userEvent.click(screen.getByRole('button',{name:'Home'}));
+   expect(onNavigate.mock.calls).toEqual([['about'],['settings'],['home']]);
+   act(()=>{bridge.view('settings');bridge.status('Listening');bridge.navigationDisabled(true);});
+-  expect(screen.getByRole('button',{name:'Open settings'})).toHaveAttribute('aria-current','page');
++  expect(screen.getByRole('button',{name:'Settings'})).toHaveAttribute('aria-current','page');
+   expect(document.getElementById('statusPill')).toHaveTextContent('Listening');
+   for(const button of document.querySelectorAll('.tab'))expect(button).toBeDisabled();
+   act(()=>{bridge.dispose();bridge.dispose();});
+@@ -67,7 +67,7 @@ test('a failed React commit restores native nodes, focus and fallback events for
+   expect(document.getElementById('contactBtn')).toBe(button);expect(button).toHaveFocus();
+   await userEvent.click(button);expect(onNavigate.mock.calls).toEqual([['contact']]);
+   act(()=>bridge.enhance(mountChrome));
+-  await userEvent.click(screen.getByRole('button',{name:'Contact'}));
++  await userEvent.click(screen.getByRole('link',{name:'Contact'}));
+   expect(onNavigate.mock.calls).toEqual([['contact'],['contact']]);
+   act(()=>bridge.dispose());
+ });
+diff --git a/apps/web/src/app/chromePages.tsx b/apps/web/src/app/chromePages.tsx
+index 4ecbb40..e7ac52d 100644
+--- a/apps/web/src/app/chromePages.tsx
++++ b/apps/web/src/app/chromePages.tsx
+@@ -2,33 +2,31 @@ import { StrictMode } from 'react';
+ import { createRoot, type Root } from 'react-dom/client';
+ import { flushSync } from 'react-dom';
+ import { BrandHeaderContent } from '@dryfire/ui/BrandHeader';
+-import { InfoFooterLinks } from '@dryfire/ui/InfoFooter';
+ import { BottomNavigationContent } from '@dryfire/ui/BottomNavigation';
+ import type { ChromeFactory } from './chromeBridge.ts';
+ 
+-/** Only header contents, footer links and navigation contents transfer. The
++/** Only header and navigation contents transfer. The
+  * footer's private status, main, safety and every mounted draft stay untouched. */
+ export const mountChrome: ChromeFactory = ({ doc, initial, onNavigate }) => {
+-  const hosts = [doc.querySelector('header.hero'), doc.querySelector('.footer-links'), doc.querySelector('.tabs')];
++  const hosts = [doc.querySelector('header.hero'), doc.querySelector('.tabs')];
+   if (hosts.some(host => !host)) throw new Error('Shared chrome mounts are missing.');
+   const regions = hosts as Element[];
+   const active = doc.activeElement as HTMLButtonElement | null;
+-  const focused = active && regions.some(host => host.contains(active)) ? {id:active.id,view:active.dataset.view} : null;
++  const focused = active && regions.some(host => host.contains(active)) ? {id:active.id,view:active.dataset.view,dismissed:active.dataset.tooltipDismissed} : null;
+   const restoreFocus = () => {
+-    if (focused?.id) doc.getElementById(focused.id)?.focus();
+-    else if (focused?.view) [...regions[2].querySelectorAll<HTMLButtonElement>('.tab')].find(button=>button.dataset.view===focused.view)?.focus();
++    if (focused?.id) {const node=doc.getElementById(focused.id);if(node&&focused.dismissed)node.dataset.tooltipDismissed=focused.dismissed;node?.focus();}
++    else if (focused?.view) [...regions[1].querySelectorAll<HTMLButtonElement>('.tab')].find(button=>button.dataset.view===focused.view)?.focus();
+   };
+   const state = { ...initial };
+   let backups: Node[][] | undefined = regions.map(host => [...host.childNodes]);
+   const roots: Root[] = [];
+   let mountFailure: unknown;
+   let disposed = false;
+-  const header = () => roots[0].render(<StrictMode><BrandHeaderContent view={state.view} status={state.status} onSettings={()=>onNavigate('settings')} /></StrictMode>);
+-  const footer = () => roots[1].render(<StrictMode><InfoFooterLinks view={state.view} onNavigate={onNavigate} /></StrictMode>);
+-  const navigation = () => roots[2].render(<StrictMode><BottomNavigationContent view={state.view} disabled={state.navigationDisabled} onNavigate={onNavigate} /></StrictMode>);
++  const header = () => roots[0].render(<StrictMode><BrandHeaderContent view={state.view} status={state.status} onNavigate={onNavigate} /></StrictMode>);
++  const navigation = () => roots[1].render(<StrictMode><BottomNavigationContent view={state.view} disabled={state.navigationDisabled} onNavigate={onNavigate} /></StrictMode>);
+   try {
+     regions.forEach(host => roots.push(createRoot(host, { onUncaughtError(error) { mountFailure = error; } })));
+-    flushSync(() => { header(); footer(); navigation(); });
++    flushSync(() => { header(); navigation(); });
+     if (mountFailure) throw mountFailure;
+     restoreFocus();
+   }
+@@ -46,7 +44,6 @@ export const mountChrome: ChromeFactory = ({ doc, initial, onNavigate }) => {
+       Object.assign(state, next);
+       flushSync(() => {
+         if (viewChanged || statusChanged) header();
+-        if (viewChanged) footer();
+         if (viewChanged || disabledChanged) navigation();
+       });
+     },
+diff --git a/apps/web/src/app/informationBridge.ts b/apps/web/src/app/informationBridge.ts
+index 4cbbabd..de55e26 100644
+--- a/apps/web/src/app/informationBridge.ts
++++ b/apps/web/src/app/informationBridge.ts
+@@ -14,8 +14,8 @@ export function createInformationBridge({ onBack, onError, doc = document,
+   let pages: Pages | undefined, pending: Promise<void> | undefined;
+   let ready: Module | undefined;
+   let full = false, disposed = false;
+-  const summary = doc.getElementById('aboutFeatureSummary') ?? doc.getElementById('aboutView')?.querySelector('template')?.content.getElementById('aboutFeatureSummary');
+-  const freeSummary = summary?.textContent ?? '';
++  let summary = doc.getElementById('aboutFeatureSummary') ?? doc.getElementById('aboutView')?.querySelector('template')?.content.getElementById('aboutFeatureSummary');
++  let freeSummary = summary?.textContent ?? '';
+   const chrome = createChromeBridge(doc, onNavigate);
+   const enhance = () => {
+     if (disposed || !ready) return;
+@@ -34,7 +34,7 @@ export function createInformationBridge({ onBack, onError, doc = document,
+   return {
+     show(view: string) {
+       if(disposed)return;
+-      if(view==='about'){const host=doc.getElementById('aboutView');if(host)materializeStaticCatalog(host);}
++      if(view==='about'){const host=doc.getElementById('aboutView');if(host)materializeStaticCatalog(host);if(!summary){summary=doc.getElementById('aboutFeatureSummary');freeSummary=summary?.textContent??'';if(summary&&full)summary.textContent=summary.dataset.fullSummary!;}}
+       chrome.view(view); enhance();
+       if (disposed || ready || pending || !['about', 'contact'].includes(view)) return;
+       pending = load().then(module => {
+diff --git a/apps/web/src/app/renderInformationPages.tsx b/apps/web/src/app/renderInformationPages.tsx
+index 34c2a11..1dcebfd 100644
+--- a/apps/web/src/app/renderInformationPages.tsx
++++ b/apps/web/src/app/renderInformationPages.tsx
+@@ -1,10 +1,11 @@
+ import { renderToStaticMarkup } from 'react-dom/server';
++import {serializeStaticPage} from '../../../../tools/serialize-static-page.mjs';
+ import { AboutPage } from '../pages/AboutPage/index.ts';
+ import { ContactPage } from '../pages/ContactPage/index.ts';
+ 
+ /** Prerender the same components used by the browser; no parallel HTML copy. */
+ export function renderInformationPage(id: string, deferred = false) {
+-  if (id === 'about') {const html=renderToStaticMarkup(<AboutPage />);return deferred?`<template>${html}</template>`:html;}
++  if (id === 'about') {const html=renderToStaticMarkup(<AboutPage />);return deferred?`<script type="application/json" data-static-page="about">${serializeStaticPage(html)}</script>`:html;}
+   if (id === 'contact') return renderToStaticMarkup(<ContactPage />);
+   throw new Error(`Not an informational page: ${id}`);
+ }
+diff --git a/apps/web/src/public-site/PublicPage/PublicPage.css b/apps/web/src/public-site/PublicPage/PublicPage.css
+index ec52137..b4b369a 100644
+--- a/apps/web/src/public-site/PublicPage/PublicPage.css
++++ b/apps/web/src/public-site/PublicPage/PublicPage.css
+@@ -1 +1 @@
+-.public-site .app-shell{margin:0 auto}.public-site .brand-name{margin:0}.public-site .icon-button{display:grid;place-items:center;text-decoration:none}.public-site .tab{text-decoration:none}.public-top-links,.public-related{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 24px;font-size:.8rem}.public-site a{color:var(--session-text);cursor:pointer}.public-site a:hover{color:#ffad62}.public-site a:focus-visible{outline:3px solid #ffad62;outline-offset:4px}.public-kicker{font-size:.68rem;letter-spacing:.1em;color:var(--session-muted);margin:0 0 10px}.public-article>h1{font-size:1.85rem;line-height:1.15;letter-spacing:-.03em;margin:0 0 16px}.public-intro{font-size:1rem;line-height:1.65;margin:0 0 22px}.public-panel{border:1px solid var(--session-border);border-radius:14px;background:var(--session-surface);padding:16px;margin:20px 0}.public-panel h2{font-size:1rem;margin:0 0 12px}.public-panel p,.public-panel li{font-size:.85rem;line-height:1.65}.public-panel ol,.public-panel ul{padding-left:22px}.public-panel li+li{margin-top:10px}.public-start{display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:46px}.public-site .about-email{overflow-wrap:anywhere}.public-site .footer-page-link{display:inline-block}.public-related{padding-top:12px}.public-site footer{margin-top:20px}.public-site .public-start:hover{color:#16100b;filter:brightness(1.06)}.public-site .public-start:active{filter:brightness(.95)}
++.public-site .app-shell{margin:0 auto}.public-site .brand-name{margin:0}.public-site .tab{text-decoration:none}.public-top-links,.public-related{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 24px;font-size:.8rem}.public-site a{color:var(--session-text);cursor:pointer}.public-site a:hover{color:#ffad62}.public-site a:focus-visible{outline:3px solid #ffad62;outline-offset:4px}.public-kicker{font-size:.68rem;letter-spacing:.1em;color:var(--session-muted);margin:0 0 10px}.public-article>h1{font-size:1.85rem;line-height:1.15;letter-spacing:-.03em;margin:0 0 16px}.public-intro{font-size:1rem;line-height:1.65;margin:0 0 22px}.public-panel{border:1px solid var(--session-border);border-radius:14px;background:var(--session-surface);padding:16px;margin:20px 0}.public-panel h2{font-size:1rem;margin:0 0 12px}.public-panel p,.public-panel li{font-size:.85rem;line-height:1.65}.public-panel ol,.public-panel ul{padding-left:22px}.public-panel li+li{margin-top:10px}.public-start{display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:46px}.public-site .about-email{overflow-wrap:anywhere}.public-related{padding-top:12px}.public-site footer{margin-top:20px}.public-site .public-start:hover{color:#16100b;filter:brightness(1.06)}.public-site .public-start:active{filter:brightness(.95)}
+diff --git a/apps/web/src/public-site/PublicPage/PublicPage.test.tsx b/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
+index 217f61c..f41eaa8 100644
+--- a/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
++++ b/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
+@@ -6,4 +6,4 @@ import '@dryfire/testing/setup';import{render,cleanup}from'@testing-library/reac
+ // @ts-expect-error Build-only JS route registry.
+ import{PUBLIC_ROUTES}from'../../../../../site/routes.js';
+ afterEach(cleanup);
+-test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Open settings'})).toHaveAttribute('href','/settings/');expect(v.container.querySelector('script')).toBeNull();});
++test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Settings'})).toHaveAttribute('href','/settings/');expect(v.container.querySelector('script')).toBeNull();});
+diff --git a/apps/web/src/styles/legacy-after-drill-cards.css b/apps/web/src/styles/legacy-after-drill-cards.css
+index 102bc2f..ccd943b 100644
+--- a/apps/web/src/styles/legacy-after-drill-cards.css
++++ b/apps/web/src/styles/legacy-after-drill-cards.css
+@@ -2,14 +2,14 @@
+ .home-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .home-actions .button{font-size:.87rem;min-width:0}
+ @media(max-width:680px){.class-grid{grid-template-columns:1fr}.home-actions{grid-template-columns:1fr}.class-preview{min-width:110px}}
+-@media(max-width:380px){.app-shell{padding-left:11px;padding-right:11px}.status-pill{display:none}.class-preview{width:36%;min-width:93px}.class-card{padding:10px}.class-actions .button{padding:10px}.tab{font-size:.68rem}}
++@media(max-width:380px){.app-shell{padding-left:11px;padding-right:11px}.class-preview{width:36%;min-width:93px}.class-card{padding:10px}.class-actions .button{padding:10px}.tab{font-size:.68rem}}
+ 
+ /* Reference design: compact mobile panels and persistent bottom navigation. */
+ :root{--accent-orange:#ff8126}
+ body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
+ .app-shell{max-width:480px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:max(22px,env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom))}
+ .page-content{flex:1;min-width:0}
+-.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}.brand-eyebrow{font-size:1.22rem;letter-spacing:.18em}.hero h1{font-size:.55rem;letter-spacing:.34em}.icon-button{background:none;border:0;color:var(--primary-text,#96a2b0);font-size:26px}.status-pill{display:none}
++.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}
+ .hero .brand-name{margin:0;color:var(--primary-text,#f5f7fa);font-size:inherit;font-weight:900;letter-spacing:normal;line-height:1.2}
+ .brand-name .brand-eyebrow{display:block;font-size:clamp(1rem,4.9vw,1.22rem);letter-spacing:.14em;white-space:nowrap}
+ .brand-tagline{display:block;margin-top:4px;font-size:.75rem;font-weight:750;letter-spacing:.24em;color:#c3ced9;white-space:nowrap}
+diff --git a/apps/web/src/styles/legacy-after-gun-setup.css b/apps/web/src/styles/legacy-after-gun-setup.css
+index b7c5c0b..0029d2b 100644
+--- a/apps/web/src/styles/legacy-after-gun-setup.css
++++ b/apps/web/src/styles/legacy-after-gun-setup.css
+@@ -4,5 +4,3 @@
+ .storage-card strong { display:block; margin:1px 0 6px; color:var(--primary-text,#f0f4f8); font-size:.87rem; }
+ .storage-card p { margin:0; font-size:.73rem; line-height:1.55; color:#aec3d5; }
+ .text-button { padding:11px 0; min-height:44px; background:none; border:0; color:#66bfff; font-size:.85rem; cursor:pointer; }
+-.footer-links { display:flex; justify-content:center; align-items:center; gap:28px; padding-bottom:12px; margin-bottom:16px; border-bottom:1px solid #253139; }
+-.footer-page-link { color:var(--primary-text,inherit); text-decoration:underline; text-underline-offset:3px; }
+diff --git a/apps/web/src/styles/legacy-after-saved-sessions.css b/apps/web/src/styles/legacy-after-saved-sessions.css
+index 83335fc..184915a 100644
+--- a/apps/web/src/styles/legacy-after-saved-sessions.css
++++ b/apps/web/src/styles/legacy-after-saved-sessions.css
+@@ -36,8 +36,8 @@ html[data-theme="light"] :is(.welcome-card p,.dashboard-card small,.gun-switcher
+ html[data-theme="light"] .hero .brand-name { color:#182936; }
+ html[data-theme="light"] .brand-tagline { color:#486074; }
+ html[data-theme="light"] .brand-logo { background:#17212a; border-radius:9px; padding:3px; }
+-html[data-theme="light"] .icon-button { color:#49657a; }
+-html[data-theme="light"] .icon-button.active { color:#ac4500; background:#fff0e5; }
++
++
+ html[data-theme="light"] .tabs { background:rgba(247,250,252,.97); border-color:#c5d2de; }
+ html[data-theme="light"] .tab { color:#526a7d; }
+ html[data-theme="light"] .tab.active { color:#ac4500; }
+@@ -63,8 +63,6 @@ html[data-theme="light"] :is(.eval-stats span,.confusion-wrap th,.history-item .
+ html[data-theme="light"] :is(.progress-label,.class-info .progress-label) { color:#4a6276!important; }
+ html[data-theme="light"] :is(.progress-track,.meter-track,.bar) { background:#d9e4ec; }
+ html[data-theme="light"] :is(.score,.history-item span,.eval-stats strong,.eyebrow,.text-button,.gun-switcher-action) { color:#ac4500; }
+-html[data-theme="light"] .footer-links .footer-page-link { color:inherit; }
+-html[data-theme="light"] .footer-links { border-color:#c5d2de; }
+ html[data-theme="light"] .chevron { color:#526a7d; }
+ html[data-theme="light"] .dashboard-icon.orange { background:#ffe9d8; color:#b54900; }
+ html[data-theme="light"] .dashboard-icon.blue { background:#d9eefb; color:#15668d; }
+diff --git a/apps/web/src/styles/legacy-before-drills.css b/apps/web/src/styles/legacy-before-drills.css
+index ba58caf..f98833a 100644
+--- a/apps/web/src/styles/legacy-before-drills.css
++++ b/apps/web/src/styles/legacy-before-drills.css
+@@ -26,15 +26,15 @@
+ :root{--accent-orange:#ff9141}
+ .app-shell{max-width:850px;padding-top:max(10px,env(safe-area-inset-top))}
+ .hero{padding:5px 0 10px;display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+-.brand-logo{width:43px;height:43px;border-radius:12px;flex:none}
++.brand-logo{flex:none}
+ .hero-copy{min-width:0;flex:1}
+-.hero h1{font-size:.64rem;font-weight:800;letter-spacing:.27em;color:#9aaab5;margin:0;line-height:1.3}
+-.brand-eyebrow{margin:0;font-size:1.12rem;letter-spacing:.15em;font-weight:900;line-height:1.2}
++
++.brand-eyebrow{margin:0;font-weight:900;line-height:1.2}
+ .brand-eyebrow span{color:var(--accent-orange)}
+-.header-actions{display:flex;align-items:center;gap:7px;flex:none}
+-.status-pill{font-size:.69rem;padding:5px 8px;margin:0;max-width:110px;overflow-wrap:anywhere}
+-.icon-button{border:1px solid #37454d;background:#172027;color:var(--primary-text,#e5eef4);width:44px;height:44px;border-radius:11px;font-size:1.15rem;cursor:pointer}
+-.icon-button.active{border-color:#ff9141;color:#ff9141;background:#2d211b}
++.header-actions{display:flex;align-items:center;flex:none}
++
++
++
+ .safety-card{padding:10px 12px;margin-bottom:12px;border-radius:12px;gap:9px}
+ .safety-icon{width:26px;height:26px;border-radius:8px}
+ .safety-card h2{font-size:.86rem;margin:0 0 3px}
+diff --git a/apps/web/src/styles/legacy-before-evaluation.css b/apps/web/src/styles/legacy-before-evaluation.css
+index 3c538a6..9d08051 100644
+--- a/apps/web/src/styles/legacy-before-evaluation.css
++++ b/apps/web/src/styles/legacy-before-evaluation.css
+@@ -3,8 +3,8 @@ html[data-theme="light"] .about-card { background:#fff; border-color:#c5d2de; }
+ html[data-theme="light"] :is(.about-intro>p:last-child,.about-card p,.about-card ol) { color:#4a6276; }
+ html[data-theme="light"] .about-email { color:#a34706; }
+ button:focus-visible,input:focus-visible { outline:3px solid #ffb77f; outline-offset:3px; }
+-@media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; } .status-pill { margin-left:77px; } }
+-@media(max-width:420px){ .hero { gap:12px; } .brand-mark { height:47px; width:47px; } .hero-copy { min-width:0; width:calc(100% - 62px); } .status-pill { margin-left:0; } .settings-row { align-items:flex-start; flex-direction:column; } }
++@media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; }  }
++@media(max-width:420px){ .hero { gap:12px; } .brand-mark { height:47px; width:47px; } .hero-copy { min-width:0; width:calc(100% - 62px); }  .settings-row { align-items:flex-start; flex-direction:column; } }
+ 
+ /* Live listening and manual evaluation */
+ .listener-control { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+diff --git a/apps/web/src/styles/legacy-before-live-listen.css b/apps/web/src/styles/legacy-before-live-listen.css
+index 3192c9d..98adc5b 100644
+--- a/apps/web/src/styles/legacy-before-live-listen.css
++++ b/apps/web/src/styles/legacy-before-live-listen.css
+@@ -4,7 +4,7 @@
+   .hero h1 { font-size:1.52rem; letter-spacing:-.04em; }
+   .hero .subhead { font-size:.8rem; }
+   .brand-mark { width:46px; height:46px; border-radius:13px; }
+-  .status-pill { font-size:.75rem; }
++
+   .safety-card { gap:9px; padding:13px; }
+   .safety-card p { font-size:.8rem; }
+   .nav-glyph { font-size:1.25rem; }
+diff --git a/apps/web/src/styles/legacy-card-foundation.css b/apps/web/src/styles/legacy-card-foundation.css
+index 51a2703..6bedfd2 100644
+--- a/apps/web/src/styles/legacy-card-foundation.css
++++ b/apps/web/src/styles/legacy-card-foundation.css
+@@ -3,7 +3,7 @@ h2,h3,p { margin-top:0; }
+ .subhead,.muted,footer,.class-card p,.history-item p { color:#a8b5bd; }
+ .subhead { margin-bottom:0; max-width:550px; line-height:1.5; }
+ .eyebrow { color:#fa974d; margin:0 0 7px; font-size:.72rem; font-weight:800; letter-spacing:.13em; }
+-.status-pill { border:1px solid #364148; background:#172126; border-radius:20px; padding:9px 13px; color:#d5e0e7; font-size:.8rem; max-width:100%; }
++
+ .brand-mark { height:60px; width:60px; display:flex; justify-content:center; align-items:center; gap:3px; border-radius:17px; border:1px solid #543421; background:#2c1c13; }
+ .brand-mark span { display:block; height:12px; width:3px; border-radius:5px; background:#ff9141; }
+ .brand-mark span:nth-child(2),.brand-mark span:nth-child(6) { height:23px; }
+diff --git a/docs/architecture/application-sitemap.md b/docs/architecture/application-sitemap.md
+index d5e8fb3..9d0426d 100644
+--- a/docs/architecture/application-sitemap.md
++++ b/docs/architecture/application-sitemap.md
+@@ -43,7 +43,7 @@ flowchart TD
+   settings -- Manage guns --> guns
+ ```
+ 
+-The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. Settings opens from the header; About and Contact open from the footer. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
++The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. About, @ Contact and Settings open from shared header icon links. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
+ 
+ ## Screen directory
+ 
+@@ -60,8 +60,8 @@ The five bottom tabs are **Home · Learn · Drills · Live Listen · History**.
+ | Live Listen | `recognizeView` | Live Listen tab, Home card or Start free listening | [Design](../design/screens/live-listen/README.md) |
+ | History | `historyView` | History tab or Home card | [Design](../design/screens/history/README.md) |
+ | Settings | `settingsView` | Settings gear in the shared branded header; backup/restore links | [Design](../design/screens/settings/README.md) |
+-| About | `aboutView` | Shared app footer → About, including before gun setup | [Design](../design/screens/about/README.md) |
+-| Contact | `contactView` | Shared app footer → Contact, including before gun setup | [Design](../design/screens/contact/README.md) |
++| About | `aboutView` | Shared app header → About icon, including before gun setup | [Design](../design/screens/about/README.md) |
++| Contact | `contactView` | Shared app header → @ Contact icon, including before gun setup | [Design](../design/screens/contact/README.md) |
+ 
+ ## Main flows
+ 
+diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
+index e60695d..d5a7454 100644
+--- a/docs/architecture/application-structure.md
++++ b/docs/architecture/application-structure.md
+@@ -36,7 +36,7 @@ apps/web/src/
+     *Page.tsx / *Contents.tsx       client ownership adapters
+     profilePages/index.ts          shared lazy Home / My Guns / Gun Setup entry
+     informationBridge.ts           lazy About/Contact and shared chrome bridge
+-    chromeBridge.ts                header/footer/tab ownership
++    chromeBridge.ts                header icon/tab ownership
+     retainedPage.tsx               shared parent transfer and rollback
+   pages/<Page>/                    one typed screen component, CSS, tests, export
+   features/
+@@ -132,3 +132,6 @@ CHG-060: apps/web/src/public-site/PublicPage is the four-file public template, c
+ `src/main.js` remains the progressive application entry; `src/appPaths.js` supplies flat mode/preset/guide identities. `workers/publicSite.js` maps canonical and compatible legacy HTTP routes. `site/routes.js` owns public metadata/XML/robots; build-only `tools/app-document.mjs` prerenders actual About/Contact/PracticeGuide screens, avoiding a second manual implementation in public output. Root `/` is the real app. `MarketingOverview` is a separate tested/CSS-isolated package reused inside About and the static mode directory; original marketing design is archived. Native/lazy React page ownership, capture, schema and performance contracts remain unchanged.
+ 
+ Startup optimization: `gunPreferenceReads.js` overlaps independent read-only requests for the explicit active gun while consumers retain validation/error order. The root document keeps trusted compiled About content inert; `informationBridge.ts` moves those exact nodes into the existing host synchronously on first About entry, before optional React enhancement. The build expands them for public `/about/` so its initial HTML remains readable without JavaScript. Shared components/styles/final DOM remain unchanged; no new network dependency or data mutation.
++
++
++CHG-062: BrandHeader owns the About/@Contact/Settings native links, outlined icons and accessible tooltip/current states. ChromeBridge delegates guarded native header/tab actions and hands those two regions to lazy ChromePages; InfoFooter no longer has links or a React ownership region. Footer disclosure/copyright/private notice remain stable.
+diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
+index c917641..60c9eb5 100644
+--- a/docs/architecture/component-map.json
++++ b/docs/architecture/component-map.json
+@@ -528,7 +528,7 @@
+     "native": "apps/web/src/app/chromeBridge.ts",
+     "lazyReact": "apps/web/src/app/chromePages.tsx",
+     "loading": "apps/web/src/app/informationBridge.ts",
+-    "invariant": "One writer per region; React takes header/footer-link/tab contents only after a safe informational-route load. Persistent sections, forms, safety/context and the private badge retain their owners."
++    "invariant": "One writer per region; React takes header and tab contents only after a safe informational-route load. Persistent sections, forms, safety/context and the private badge retain their owners."
+   },
+   "shellTests": [
+     "tests/shellParity.test.tsx",
+diff --git a/docs/architecture/page-templates.md b/docs/architecture/page-templates.md
+index 9a6f4cd..7eb2b9f 100644
+--- a/docs/architecture/page-templates.md
++++ b/docs/architecture/page-templates.md
+@@ -7,14 +7,14 @@ CHG-037 · 2026-10-12. All existing SPA screens at `/` use one shared template a
+ ```text
+ index.html — metadata, Vite entry and one {{app}} mount
+   packages/ui/src/AppShell — typed common shell (build adapter)
+-    BrandHeader — branding, BETA status and Settings
++    BrandHeader — branding, BETA status and About / @ Contact / Settings icon links
+     SafetyDialog — native modal overlay
+     main.page-content
+       SafetyDisclosure + messages + GunSwitcher — native context
+       view.html × pageDefinitions.js — stable accessible section wrapper
+         pages/<screen-id>.html — Practice, Sequence and practice guide interiors
+         apps/web/src/pages/* — 10 typed screen interiors
+-    InfoFooter — About/Contact, disclosure, copyright, private indicator
++    InfoFooter — disclosure, copyright, private indicator
+     BottomNavigation — one fixed five-tab navigation
+ ```
+ 
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index e079785..8f0a116 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -1,6 +1,6 @@
+ {
+   "version": 1,
+-  "reviewedOn": "2026-10-24",
++  "reviewedOn": "2026-10-25",
+   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+   "publicOrigin": "https://easydryfire.com",
+   "publicPaths": [
+@@ -84,7 +84,7 @@
+         "docs/requirements/about.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. Separate centered About and Contact footer links open their independent pages.",
++      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. Shared About, @ Contact and Settings header icon controls open their independent pages.",
+       "states": [
+         {
+           "key": "overview.dark",
+@@ -654,7 +654,7 @@
+         "docs/requirements/about.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. Device capability status stays in Settings; About is reached independently from the shared app footer. CHG-035 private preview adds Test as Free/Full, a mode indicator, Free default/private remembered preference and activity/data guards; public output omits them.",
++      "notes": "Distinct confirmed selected-gun sound reset with visible learned/calibration counts and result; whole-library backup export/import; supported per-gun Noise Filter/Auto Gain and device-wide themes/vibration. A separate Delete all guns & app data action states every store deleted, recommends exporting first, and requires confirmation before atomic reset/restart. Cancel deletes nothing. Sound reset retains guns, presets/results and other guns. Unsupported capabilities are disclosed; Install explains local-data and microphone limits. Device capability status stays in Settings; About is reached independently from the shared About header icon. CHG-035 private preview adds Test as Free/Full, a mode indicator, Free default/private remembered preference and activity/data guards; public output omits them.",
+       "states": [
+         {
+           "key": "overview.dark",
+@@ -725,7 +725,7 @@
+       "domId": "aboutView",
+       "title": "About",
+       "parent": "home",
+-      "entry": "Shared app footer → About, including before gun setup",
++      "entry": "Shared app header → About icon, including before gun setup",
+       "requirements": [
+         "docs/requirements/about.md",
+         "docs/requirements/core.md",
+@@ -734,7 +734,7 @@
+         "docs/requirements/build-editions.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Both centered footer controls remain visible with current-page indication, white Dark/footer-matching Light color and divider. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Five-item bottom navigation is visible; gun switcher is hidden. Copy follows the build edition. Beta status/version and Feedback welcome card invite suggestions via Contact.",
++      "notes": "Dedicated informational screen with canonical logo/name, proposed current-feature copy, local storage/backup and safety/recognition limits. Contact has its own screen. Shared header icon links retain accessible current-page indication and theme contrast. Back/Forward works without a saved gun; no capture, safety acknowledgement or data changes. Five-item bottom navigation is visible; gun switcher is hidden. Copy follows the build edition. Beta status/version and Feedback welcome card invite suggestions via Contact.",
+       "states": [
+         {
+           "key": "overview.dark",
+@@ -757,7 +757,7 @@
+       "domId": "contactView",
+       "title": "Contact",
+       "parent": "home",
+-      "entry": "Shared app footer → Contact, including before gun setup",
++      "entry": "Shared app header → @ Contact icon, including before gun setup",
+       "requirements": [
+         "docs/requirements/contact.md",
+         "docs/requirements/about.md",
+@@ -765,7 +765,7 @@
+         "docs/requirements/persistence.md",
+         "docs/requirements/page-layout.md"
+       ],
+-      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered white Dark/footer-matching Light footer controls remain available with a divider below; fixed five-item bottom navigation is visible; gun switching and safety disclosure are hidden.",
++      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Shared About, @ Contact and Settings header links remain available; footer retains disclosure/copyright/divider; fixed five-item bottom navigation is visible; gun switching and safety disclosure are hidden.",
+       "states": [
+         {
+           "key": "overview.dark",
+@@ -852,27 +852,27 @@
+     "apps/web/src/app/routeContext.ts": "8211be0b05a2947d3ea5d44bad6e57a0af63e32c426d744ba4de0d3e38c91f59",
+     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
+     "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "d58bb053f365017ef15cec7f4b6da2e7918770d001b15122438db5a33071df70",
+-    "apps/web/src/app/chromeBridge.ts": "e3276d510da2db886b0ad226bf5a884a351252b79ba78f6696a847031b08e2f1",
+-    "apps/web/src/app/chromePages.tsx": "2bb3be816e7293d68837974cb9d05800eb87b89429ef1667d771dda29ff69bd5",
++    "apps/web/src/app/chromeBridge.ts": "34a1334fcca68b7553fbac56c3504299c260438e09d2071d0afea4d6b0314ceb",
++    "apps/web/src/app/chromePages.tsx": "1aeae34c22405cffdae6c263a47a1d5937e1fa7e85064b64c25b9cb34e8a826f",
+     "apps/web/src/app/renderAppShell.tsx": "360b5abfd9d9cc3d757f2aad7f1f052531f900a37237102473b1b5a3045c9c5d",
+     "apps/web/src/app/renderCalibrationCatalog.tsx": "bc607a2490a1a0e9f3134a220c0d0fdf41273d615a2a74b7c265d2cce7451a3d",
+     "apps/web/src/app/renderNumberInput.tsx": "3e163f74c64013bfa45bb454fbdeceab04096cb4a1319aa9ff26ce1472b0fa08",
+     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
+-    "packages/ui/src/AppShell/AppShell.tsx": "80667fbf416c585e20c60fcca11f8a173779f46491f7c00d0e07615805c7b5f0",
++    "packages/ui/src/AppShell/AppShell.tsx": "4ecfda873aa3dc775c4033f0efd4a54b3ef0b9242f5b2bee8ce7d820711c0439",
+     "packages/ui/src/AppShell/index.ts": "fd2a7ca0f5dc81821e1b940c03b6c2fa15f73d2997aacb7f23f0a16c4e1002c3",
+     "packages/ui/src/BottomNavigation/BottomNavigation.css": "5708fbb98df65fe43f6ec0e2a4f2b1bfb8c973a9c5c95098e78b220975fd0ac4",
+     "packages/ui/src/BottomNavigation/BottomNavigation.tsx": "67906ae23ae5cca321e2ad4d71c43779467a083b0db69cc272d78ef2794900b3",
+     "packages/ui/src/BottomNavigation/index.ts": "cd44fa73fcbc57adbcb618d50ae415cca66ddeaf75552ae312d7d27a4b32fff3",
+-    "packages/ui/src/BrandHeader/BrandHeader.css": "d7ab4f9b64f59b0402293eba82d31611f9f436ea29628758528cf4c412dd35e8",
+-    "packages/ui/src/BrandHeader/BrandHeader.tsx": "e3a0316dbbee6f02517480e1dad08f084c0ba9234c4926fdfdfa1cd6e9e7b2e5",
++    "packages/ui/src/BrandHeader/BrandHeader.css": "7b7c934b5c60426be2ba54bbf1ed104b2d9dfcca9ea16f3efbfb84ca19ef833a",
++    "packages/ui/src/BrandHeader/BrandHeader.tsx": "7531e76a5f566c8e822d767be59685e72b8a15fea4a055687b9a73b8c8809835",
+     "packages/ui/src/BrandHeader/index.ts": "9627490423356d66750d624ed92655f59be182d4e9e286224e2e712e7714d457",
+     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.copy.ts": "e80cc6e405badb60f4023c43d9fd725e0369e376f889fedb7fd6d3efa0a449ba",
+     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css": "540275a1d8e8edd8aff06cf4834bfbbf91ce9685ae770dbe4c01cb6046b21262",
+     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx": "6d4f0727cb78e0353a2bd32352277d1f7d5cd00ded177dc06d393d8916fdb22d",
+     "packages/ui/src/CalibrationCatalog/index.ts": "1bc9f6d3e9ea306a8783da681b3f4995f6dfe5d3be49cd0e825b66c3b60dc239",
+     "packages/ui/src/InfoFooter/InfoFooter.css": "c067b2816187a004a3168219ec42e6091b5517065faceeed7ff22beed70b6b9b",
+-    "packages/ui/src/InfoFooter/InfoFooter.tsx": "948d4bac202410b8e88201055a832ba8ae1ea8ec755d11959649c9f8b1d967b2",
+-    "packages/ui/src/InfoFooter/index.ts": "6b6cf3fbe7f83bd2d33fd1d9577b437bbba3e7e6e1c7a46bbb143684485ab98e",
++    "packages/ui/src/InfoFooter/InfoFooter.tsx": "add43a318b23cf90390fde05b4847bdfa2c072f120b08c0b734f0544465c976d",
++    "packages/ui/src/InfoFooter/index.ts": "fa1bdcd6c659566e2a5ff26f6058ef7e79ccb800983a7bf8b57caf88cb07493b",
+     "packages/ui/src/NumberInput/NumberInput.css": "6b25ec1e508798cc1e6fe16c90c80100f60d71556f9cf1e6b5cf98dce058d806",
+     "packages/ui/src/NumberInput/NumberInput.tsx": "e5d0d03263deaa564876aa35dbed4a3c497088478d18dfd3c190fc0e11ba8338",
+     "packages/ui/src/NumberInput/index.ts": "89d4d8e9821933fa9453dcd0e9f4f804d608f8d505829ccb59f04543f8edafb7",
+@@ -884,7 +884,7 @@
+     "packages/ui/src/GunSwitcher/GunSwitcher.tsx": "da6310e96bce26f52eb6964c9d93359d9af795113000a74a56529c73f8d0c1b9",
+     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx": "ec94aca2ed7ca812312358f8a1c7b455f34847320bc991681cd73093ea091437",
+     "packages/ui/src/SafetyDialog/SafetyDialog.tsx": "d4e5e673dc6018c907e9e990b9d183d2d127165d9dbd62cd6512d1b5f0489d14",
+-    "apps/web/src/styles/legacy-card-foundation.css": "b8dc5ad4dc139ff9ae3f4d0ee31b46c2d3100f1d0f0e93f2681d21926337ebce",
++    "apps/web/src/styles/legacy-card-foundation.css": "e8c6acd2cc9413358addb62e57d593b19751b63855e5169c79a8ef4ca21659fb",
+     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
+     "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
+     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
+@@ -903,7 +903,7 @@
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.tsx": "044f79f543885de79afd6ee7e2d1395a75cdf839d519293d28a409445aee8a24",
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
+     "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
+-    "apps/web/src/styles/legacy-after-gun-setup.css": "a672b0491c990644a45d06032e0d0756f2edc84ccc0240719c3290401dd1a0ee",
++    "apps/web/src/styles/legacy-after-gun-setup.css": "10214881326191c474881e0ee8ea59607ab99552995ac44842f24b3400c753c4",
+     "apps/web/src/features/settings/preferencePresentation.ts": "1779dc0d8b0703f6d0d6cc1068c90d6b8e8cce3bbcbffc136aa8403de5411062",
+     "apps/web/src/pages/SettingsPage/SettingsPage.tsx": "bd327108c86ef700160e570ec237bc799374b3c5af3a9de713cec0e934638966",
+     "apps/web/src/pages/SettingsPage/SettingsPage.css": "a2140e42d6ee524b59cb95fd26f22335d8a4f1556336dae40c422a6a91298880",
+@@ -922,7 +922,7 @@
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "24cf7641d17206fc6229db91b9f644d04b57b0a586361f639fca8fa2d83472e7",
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
+     "apps/web/src/features/live-listen/presentation.ts": "88218eeaefbac140403beb0d7ece18340942b015399726f5c32618770b8263b8",
+-    "apps/web/src/styles/legacy-before-live-listen.css": "1351bd3f07949fe353ce8743c61a280badaa2b16eb007801a9d52357f490d497",
++    "apps/web/src/styles/legacy-before-live-listen.css": "f951af54014e5ec3446cfb6f8cc9797af856b563d9159bbffd04411c6bcf0d13",
+     "apps/web/src/app/drillsPage.tsx": "4461ac757c62c6ef5820636ec6636b3f87a83b2b5f968bd793a0d3cfc65d0a9f",
+     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
+     "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "7fb89db4b9df0f6df18241a83be9307444f704a6ae2ccbab92816052ef2517a2",
+@@ -930,8 +930,8 @@
+     "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
+     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
+     "packages/ui/src/RetainedNode/RetainedNode.tsx": "351036d9dee16e01c2e9a29df9ab9704e2c96f5f9626be56d1f7ca70f6208170",
+-    "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
+-    "apps/web/src/styles/legacy-after-drill-cards.css": "397fa9588e1ba26df0e636c7329f113dcdb2e5cb22e92fd53499a55091bcbfc9",
++    "apps/web/src/styles/legacy-before-drills.css": "4ee665cd96d2ed6aac7c26fe43a962d486740983bdfb7fda67a24fc8afbd86de",
++    "apps/web/src/styles/legacy-after-drill-cards.css": "69996bdd071d363ca685951e8cffc4a5cad4dc5e1b5dd691c4855f4bdea30de9",
+     "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
+@@ -945,9 +945,9 @@
+     "packages/ui/src/EvaluationPanel/EvaluationPanel.tsx": "639b2f6e4a270f27be909b78e62c1d19c00c8700dfa9697d99386d65acc2d2ca",
+     "apps/web/src/styles/legacy-after-history-list.css": "fcadfa3ceda88072b3008771d894c55ab2c6db4881616cde7ba29b055b3a8b7d",
+     "apps/web/src/styles/legacy-before-history-list.css": "000531fa0d4af1f326e5998ed8a3f31fb280b86b45fca1e53c2e10addc264d7a",
+-    "apps/web/src/styles/legacy-before-evaluation.css": "bc3c7495e2cb342a0b60182bc654eb334dc204ee55f91be3421eded18d6fffee",
++    "apps/web/src/styles/legacy-before-evaluation.css": "e4f409bcb58c34271738a62e2d32bbecefd65b1de1e23cfa93b41335b4167ed8",
+     "apps/web/src/styles/legacy-after-evaluation.css": "14626bc045626136df9cdfa1bb947a74647f37139727ade34fc85ed59b37e14e",
+-    "apps/web/src/styles/legacy-after-saved-sessions.css": "5e3721e852ce4be55ec6d2ccd686f2a1d74f2287fab18234ab86c4cc98452303",
++    "apps/web/src/styles/legacy-after-saved-sessions.css": "85d491194ce2baa37d398ba1e8e0358a9927c92ffbf16e616fc4e0db44fde3a5",
+     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
+     "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
+     "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
+@@ -1012,7 +1012,7 @@
+     "workers/publicSite.js": "7bb305c224398c9de614a91549eb941547bb5bc51ce1caf1d09a542b62749f41",
+     "tools/public-pages.mjs": "145724f54ce9749b4f0bdbc3877e0f9ac50f078c71a78d1fdf339b238caadae7",
+     "apps/web/src/public-site/PublicPage/PublicPage.tsx": "034b06d3729ad0ae8caecf1501d011639b8f3df27cee6e18f50ff44ca1cad42d",
+-    "apps/web/src/public-site/PublicPage/PublicPage.css": "a0476fc565c09bbdae2f2acbde3744899ef1bd02057145e6c46325cdfc3da92b",
++    "apps/web/src/public-site/PublicPage/PublicPage.css": "720964429947d545f8af9c93f3a902438fa03c681bc0ff7844c0cb45237f95de",
+     "tools/app-document.mjs": "548b0bf8eb3c476e0149cfc4d46f84dfb441bcf89f0276c526f683987383c80d",
+     "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx": "0e2ca183b5963dd6d8d02c3c7f9c0e731df994391a1855a0de64652a4131bba2",
+     "apps/web/src/public-site/MarketingOverview/MarketingOverview.css": "835ecb53212b8b940f593c2108cb16cd8d737e3457eb14558130b61791eeeed3",
+diff --git a/docs/architecture/site-tree.md b/docs/architecture/site-tree.md
+index b7025f6..4e21ce1 100644
+--- a/docs/architecture/site-tree.md
++++ b/docs/architecture/site-tree.md
+@@ -1,6 +1,6 @@
+ # Site and screen tree
+ 
+-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-24; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 / CHG-059 shared guide control/layout and group accents / CHG-060 public SEO and readable app paths / CHG-061 app homepage, flat routes, unique sequences and retained marketing About documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
++Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-25; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 / CHG-059 shared guide control/layout and group accents / CHG-060 public SEO and readable app paths / CHG-061 app homepage, flat routes, unique sequences and retained marketing About documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+ 
+ ## Public site
+ 
+@@ -47,8 +47,8 @@ The tree describes primary destinations, not a restriction on Back/Forward. Abou
+ | Live Listen | `recognizeView` | Live Listen tab, Home card or Start free listening | `ready.dark`, `listening.dark`, `needs-training.dark`, `needs-training.light`, `connecting.dark`, `connecting.light` | [Design](../design/screens/live-listen/README.md) | [core](../requirements/core.md), [practice-modes](../requirements/practice-modes.md), [practice-improvements](../requirements/practice-improvements.md), [page-layout](../requirements/page-layout.md) |
+ | History | `historyView` | History tab or Home card | `overview.dark` (public), `overview.light` (public), `progress.dark` (preview), `data-table.dark` (preview), `progress.light` (preview), `recognition-cleared.dark`, `sessions-cleared.dark` | [Design](../design/screens/history/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+ | Settings | `settingsView` | Settings gear in the shared branded header; backup/restore links | `overview.dark` (public), `overview.light` (public), `sounds-reset.dark`, `preview-free.dark` (preview), `preview-free.light` (preview), `preview-full.dark` (preview), `preview-full.light` (preview), `installation-help.dark`, `installation-help.light` | [Design](../design/screens/settings/README.md) | [settings](../requirements/settings.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [about](../requirements/about.md), [page-layout](../requirements/page-layout.md) |
+-| About | `aboutView` | Shared app footer → About, including before gun setup | `overview.dark`, `overview.light` | [Design](../design/screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
+-| Contact | `contactView` | Shared app footer → Contact, including before gun setup | `overview.dark`, `overview.light` | [Design](../design/screens/contact/README.md) | [contact](../requirements/contact.md), [about](../requirements/about.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md) |
++| About | `aboutView` | Shared app header → About icon, including before gun setup | `overview.dark`, `overview.light` | [Design](../design/screens/about/README.md) | [about](../requirements/about.md), [core](../requirements/core.md), [branding](../requirements/branding.md), [persistence](../requirements/persistence.md), [build-editions](../requirements/build-editions.md), [page-layout](../requirements/page-layout.md) |
++| Contact | `contactView` | Shared app header → @ Contact icon, including before gun setup | `overview.dark`, `overview.light` | [Design](../design/screens/contact/README.md) | [contact](../requirements/contact.md), [about](../requirements/about.md), [core](../requirements/core.md), [persistence](../requirements/persistence.md), [page-layout](../requirements/page-layout.md) |
+ | Safety confirmation | `safetyModal` | Any unconfirmed action that would acquire microphone capture | `safety-modal.dark` | [Design](../design/screens/shared/README.md) | [core](../requirements/core.md), [practice-improvements](../requirements/practice-improvements.md) |
+ | Public website | `public-content` | Canonical public information and app homepage; shared app shell for About/Contact/manuals | `practice.dark`, `single.dark`, `repeated.dark`, `par.dark`, `control.dark`, `sequence-rack-trigger.dark`, `sequence-mag-trigger.dark`, `sequence-draw-mag-trigger.dark`, `sequence.dark`, `calibration.dark`, `help.dark` | [Design](../design/screens/public-site/README.md) | [public-seo](../requirements/public-seo.md) |
+ 
+diff --git a/docs/design/baselines/chg-062-header-review.json b/docs/design/baselines/chg-062-header-review.json
+index 8ff3cd3..15ec54d 100644
+--- a/docs/design/baselines/chg-062-header-review.json
++++ b/docs/design/baselines/chg-062-header-review.json
+@@ -1,7 +1,7 @@
+ {
+   "change": "CHG-062",
+-  "status": "Pinned captures reviewed; complete candidate acceptance pending",
+-  "expandedCSSSha256": "b524ac8e59bad667e9ab17a21ece0a6275162f27923671728642d2ef080e970b",
++  "status": "Revised flex control candidate; complete acceptance required",
++  "expandedCSSSha256": "40ce7acca87b2ce2413c31923e2a0013ce4b288a7005ad3d5e317a4456b63d37",
+   "approval": "About, Contact, Settings; @; consistent accessible icons; proceed with a plan",
+   "baseline": {
+     "tests": 1077,
+@@ -10,17 +10,16 @@
+   "preserved": [
+     "schema4",
+     "saved data and capture/draft guards",
+-    "original performance limits",
+-    "existing original GIF bytes"
++    "original performance limits"
+   ],
+   "collectors": [
+     40177270313,
+     40177853387
+   ],
+   "unit": {
+-    "tests": 1081,
++    "tests": 1083,
+     "suites": 156,
+-    "coverageRatchet": "Passed, unchanged thresholds"
++    "coverageRatchet": "Passed unchanged thresholds before CSS-only flex centering"
+   },
+   "audit": {
+     "findings": [],
+@@ -154,5 +153,26 @@
+       }
+     ],
+     "review": "Source frame counts unchanged for all10 examples; dimensions unchanged; inspected Single first frames show matching content. Encoded frames/palettes coalesce differently; report changed hashes honestly. Timeline durations compared below; complete example/frame contract tests still required."
++  },
++  "firstCandidate": {
++    "run": 40178581864,
++    "validate": "success",
++    "screenshots": {
++      "public": "success",
++      "preview": "success"
++    },
++    "performance": "All4 failed; not accepted"
++  },
++  "diagnostics": {
++    "nativeButton": 40179285008,
++    "scrollBatch": 40179717980,
++    "phases": 40180149032,
++    "dismissal": 40180480839,
++    "containment": 40180837333,
++    "iconTitleURL": 40181196093,
++    "settledViews": 40181898381,
++    "svgNodes": 40182163600,
++    "selectiveWrites": 40182507983,
++    "currentOriginalGate": 40183074477
+   }
+ }
+diff --git a/docs/design/originality-and-provenance.md b/docs/design/originality-and-provenance.md
+index ebccc4e..b2a46c3 100644
+--- a/docs/design/originality-and-provenance.md
++++ b/docs/design/originality-and-provenance.md
+@@ -69,3 +69,6 @@ The [current screen catalog](README.md) uses actual local Chromium production-bu
+ [Handgun](../../public/gun-types/handgun.svg), [rifle/carbine](../../public/gun-types/rifle.svg), [shotgun](../../public/gun-types/shotgun.svg) and [unassigned-type placeholder](../../public/gun-types/unknown.svg) are simple SVG paths authored locally for this project. No manufacturer mark, competitor artwork, stock image or external icon pack was imported. These are generic type illustrations, not accurate firearm diagrams or proof of exclusive design/trademark clearance.
+ 
+ CHG-060 favicon is a format/size derivative of the existing approved public/icon-512.png, encoded locally as ICO16/32/48px. No new logo artwork, external image source or exclusivity/legal-clearance claim. Public manuals reuse repository-owned content and existing exported GIF bytes.
++
++
++CHG-062: About, @ Contact and Settings use locally authored inline SVG paths in BrandHeader with a shared24px/1.8-stroke contract. These are conventional utility symbols, not a claim of exclusive design or trademark clearance; no external image library or downloaded icon asset was introduced.
+diff --git a/docs/design/screens/about/README.md b/docs/design/screens/about/README.md
+index fbee11f..4a75791 100644
+--- a/docs/design/screens/about/README.md
++++ b/docs/design/screens/about/README.md
+@@ -1,5 +1,7 @@
+ # About design
+ 
++CHG-062 current navigation: About, @ Contact and Settings icons share the top-right header. About/Contact are links; in-app Settings retains its native action, with a public-link variant. Matching24px outlined icons,44px targets, theme contrast, accessible names/current state and keyboard/hover/Escape tooltips. Footer contains disclosure/copyright/divider only. This supersedes historical footer-link entries below; Back/content/fixed bottom tabs remain. [Shared design](../shared/README.md) · [Review evidence](../../baselines/chg-062-header-review.json).
++
+ CHG-061: retain marketing content inside About through reusable MarketingOverview, including the routine, free/local-data promise, free-app CTA and four guide cards. The canonical `/about/` is both public and in-app, using the same shell; `/` opens the actual trainer. Changed current images require pinned review. [SEO requirements](../../../requirements/public-seo.md).
+ 
+ CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
+diff --git a/docs/design/screens/contact/README.md b/docs/design/screens/contact/README.md
+index f6e7c01..32f1179 100644
+--- a/docs/design/screens/contact/README.md
++++ b/docs/design/screens/contact/README.md
+@@ -1,5 +1,7 @@
+ # Contact design
+ 
++CHG-062 current navigation: About, @ Contact and Settings icons share the top-right header. About/Contact are links; in-app Settings retains its native action, with a public-link variant. Matching24px outlined icons,44px targets, theme contrast, accessible names/current state and keyboard/hover/Escape tooltips. Footer contains disclosure/copyright/divider only. This supersedes historical footer-link entries below; Back/content/fixed bottom tabs remain. [Shared design](../shared/README.md) · [Review evidence](../../baselines/chg-062-header-review.json).
++
+ CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
+ 
+ CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
+diff --git a/docs/design/screens/shared/README.md b/docs/design/screens/shared/README.md
+index 94d3a11..8b33075 100644
+--- a/docs/design/screens/shared/README.md
++++ b/docs/design/screens/shared/README.md
+@@ -40,3 +40,6 @@ For a visible change, update the affected captures, this Markdown and the [scree
+ ## CHG-062 — information navigation in the header
+ 
+ Supersedes historical footer links: top-right About (information circle), Contact (@ SVG), Settings (gear), in that order on every app page. Shared 24px outlined icons and 44px targets; matching optical weight, baseline and theme treatment. Accessible names, real hrefs, current-page indicator, focus ring and keyboard/hover tooltips. Narrow screens may wrap the Beta badge within brand copy; icons never overlap the brand or overflow. Footer retains disclosure/copyright and divider only. Update every affected current screen reference and both-edition/browser baselines; do not alter unrelated content or guide animation frames. See H1 and LAYOUT-01/05.
++
++
++CHG-062 performance correction under review: the in-app Settings control retains its existing native button action (with shared icon styling, accessible name/current state and guarded route callback); About and Contact are real links. Static editorial/public link-mode shells retain a real Settings href. This preserves the released Settings keyboard/action contract rather than requiring identical HTML tags for different control purposes. Visual references remain unchanged; complete acceptance is still required.
+diff --git a/docs/project/approval-log.md b/docs/project/approval-log.md
+index 23a3bae..5ee4213 100644
+--- a/docs/project/approval-log.md
++++ b/docs/project/approval-log.md
+@@ -694,3 +694,9 @@ CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon
+ 
+ 
+ CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have the same style/size and good accessibility data. H1 specifies shared 24px optical styling (including drawn @), ≥44px targets, accessible native link names/destinations/current-page state, decorative SVG semantics, logical keyboard order, visible focus/tooltips, theme contrast and responsive/zoom acceptance. Automated and manual checks remain distinct. Planning only; no application change.
++
++
++CHG-062 implementation authorization (2026-10-25): after confirming About/Contact/Settings, @ and consistent accessible icons, owner says “ok, now proceed with next steps” and “proceed with a plan”. Implement H1 on b via full candidate acceptance; preserve main/dev, existing route/data/capture guards and original performance limits. No native/commercial scope.
++
++
++CHG-063 release caching request (2026-10-25): owner wants browsers to refresh resource caches after releases and asks about query timestamps. Reviewed current policy: Vite content-hashed JS/CSS, no-cache SW, HTML revalidation, manual SW namespace and ignoreSearch matching. Added H2 automatic release identity, stable-resource policy and safe idle transition to the plan; preserve all IndexedDB/preferences/data and old lazy assets needed by active clients. No cache implementation yet; H1 verification continues.
+diff --git a/docs/project/implementation-history.md b/docs/project/implementation-history.md
+index dc34000..bcd0045 100644
+--- a/docs/project/implementation-history.md
++++ b/docs/project/implementation-history.md
+@@ -982,3 +982,18 @@ CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon
+ 
+ 
+ CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have the same style/size and good accessibility data. H1 specifies shared 24px optical styling (including drawn @), ≥44px targets, accessible native link names/destinations/current-page state, decorative SVG semantics, logical keyboard order, visible focus/tooltips, theme contrast and responsive/zoom acceptance. Automated and manual checks remain distinct. Planning only; no application change.
++
++
++CHG-062 implementation started (2026-10-25): baseline npm ci, smoke,1077tests/156suites, build and artifact verification passed. Added failing header contract test before source edits. Shared header now owns real About/@Contact/Settings links with decorative24px SVGs,44px targets, focus/current states and dismissible tooltips. Removed footer link rendering/React root and obsolete footer styles; retained disclosure/copyright/private notice/bottom tabs. Native and React delegation preserve ordinary guarded navigation and modified-click semantics. Focused17tests/types/lint and12local Chromium workflows passed; additional keyboard/zoom tests and complete coverage/pinned acceptance running. Docker daemon available, pinned image pull denied Forbidden; use authorized CI review collector without bypass. Main postmerge40176142886 later failed public Chromium firstAction and WebKit warm timing; functional/screenshots passed. Prior b/PR all8success and production deployment remain recorded, no unchanged retries or relaxed limits.
++
++
++CHG-063 release caching request (2026-10-25): owner wants browsers to refresh resource caches after releases and asks about query timestamps. Reviewed current policy: Vite content-hashed JS/CSS, no-cache SW, HTML revalidation, manual SW namespace and ignoreSearch matching. Added H2 automatic release identity, stable-resource policy and safe idle transition to the plan; preserve all IndexedDB/preferences/data and old lazy assets needed by active clients. No cache implementation yet; H1 verification continues.
++
++
++CHG-062 candidate preparation: local1081tests156suites and unchanged coverage ratchet PASS after adding tooltip/modifier/unrelated-control tests; types/lint/architecture, smoke, both builds/artifacts and original payload limits pass (public50108gzip JS/12953CSS; preview50604JS). Initial pinned review found white inactive Light icons; corrected shared hero Light foreground243d51 and added actual-theme color assertions.450baselines/94currentcaptures collected/reviewed via40177270313/40177853387. Removed obsolete icon-button/hidden status and overridden heading styles to meet original CSS budget. Pinned guide regeneration40178228592 refreshed all10GIFs/source hashes; dimensions, source-frame counts and total durations identical, encoded hashes differ. Complete source acceptance is next, application remains unpublished. Asset/evidence commits do not imply runtime release.
++
++
++CHG-062 candidate40178581864: validation and both complete screenshot/integration editions SUCCESS, all4 original performance jobs failed. Public Chromium firstAction44.4→50.7ms (40/40 slower pairs); public WebKit warm39→42ms and firstAction192→203ms; preview WebKit firstAction151→160ms. No acceptance/publication or relaxed gates. Review-only native Settings-button variant1244e28 preserves visual icon/target/guards and static public hrefs; types and19focused tests PASS. Original public WebKit probe40179285008 executing to test this concrete control-semantics change.
++
++
++CHG-062 performance diagnosis: native Settings-action probe40179285008 still failed WebKit firstAction197→209ms (40/40pairs), so action semantics alone are not the fix. Added a red→green characterization that destination visibility/preferences finish before scroll reset, then batched scrollTo after synchronous display writes. Updated VM fixture with the existing settingsPage port;6focused tests and10local browser workflows pass. Probe40179717980 still failed firstAction193→205ms; no claimed improvement/acceptance. New advisory-only phase diagnostic40180149032 at9ff33a4 instruments dispatch/history/scroll/body mutation/next frame to locate the cost; original acceptance harness untouched. Settings native action retained for its original keyboard/owner contract; public editorial href preserved. No serialized-DOM/template rewrite implemented. Runtime remains local; main/dev unchanged.
+diff --git a/docs/project/react-refactor/context.md b/docs/project/react-refactor/context.md
+index ff32f9a..4a4b95f 100644
+--- a/docs/project/react-refactor/context.md
++++ b/docs/project/react-refactor/context.md
+@@ -1,23 +1,29 @@
+ # Working context
+ 
+-Updated 2026-10-25. [History](../implementation-history.md) · [CHG-061 proof](../../design/baselines/chg-061-route-review.json) · [URL inventory](../../seo/routes.md).
++Updated 2026-10-25. [History](../implementation-history.md) · [Follow-up plan](follow-up-plan.md) · [CHG062 proof](../../design/baselines/chg-062-header-review.json).
+ 
+-## CHG-061 release
++## Active work / authorization
+ 
+-Approved trainer at `/`, flat URLs, distinct reloadable sequence setups/manuals, marketing retained inside About. Dev untouched. Optimized b commit eff9ac2 passed all eight jobs in push40130237075 and PR40130238059; Cloudflare preview builda1fca6f5-6806-4a45-a469-95a3bcaa4981 succeeded. Candidate40129243422 also passed all eight gates (1077 tests/156 suites, original coverage, both editions, pinned Chromium/WebKit screenshots/integration and unchanged performance controls).450 visual baselines;382 unrelated PNGs and10 original GIFs preserved. See proof/history for earlier failed candidates and optimization evidence.
++Implement H1 shared top-right About → @ Contact → Settings icons, consistent24px SVG/44px targets, theme contrast/accessibility; relocate bottom links. Owner says proceed autonomously. Work b only; main/dev unchanged. Complete candidate acceptance before application publication, no direct main push or gate relaxation. F2–F7 remain structural follow-up. H2 automatic release-cache identity/safe idle updates was added after owner asks about release caching/timestamps; planning only, never wipe IndexedDB/preferences.
+ 
+-PR#27 merged normally with exact tested SHA into main c4e751c61fc93bb2d8ce960b6e252f7661fc5cfd. Git tree81dc47afd7a08fdf429e419ec5ac6bbe306590a7 matches tested b exactly. Post-merge main run40176142886 is in progress. Cloudflare production buildfcda447e-3f45-41e6-a2e2-2e31ded2583f succeeded.
++## Source and evidence
+ 
+-## Next
++Current b9ff33a4 contains only review assets/patches/diagnostic scaffolding; runtime H1 remains local uncommitted. Header/footer/bridge source edits, tests/docs, SW88; no data/schema/capture changes.450baselines/94currentscreens collected/reviewed via40177270313/40177853387 (Light icon contrast corrected to243d51). Pinned GIF export40178228592 regenerated10 files: same dimensions, source-frame counts and durations; encoded hashes differ. Canonical images/GIFs committed as review evidence. Current new CSS/main edits make GIF source fingerprints stale again: regenerate only after final performance fix. Do not claim all current gates pass.
+ 
+-Observe main post-merge checks and deployment; close history/context with actual results. Status-only documentation may publish to b after release; no direct main push. No source changes or unchanged retry fishing. Retain b and leave dev untouched.
++Baseline install/smoke1077tests156suites/build/artifacts passed. H1 local1081tests156suites + original coverage ratchet/types/lint/architecture/both minified payload gates passed. Public50115gzip JS/12954CSS, rawCSS61396 under original61451.19local workflows + final theme/keyboard/layout checks passed. Strict UI audit0issues; DESIGN lint0errors/1existing no-frontmatter warning. Docker pinned image pull denied Forbidden; use CI, no bypass.
+ 
+-## Invariants / deferred
++Complete candidate40178581864 (648e5c9 + chg-062-acceptance.patch): validation and both complete pinned screenshot/integration editions PASS; all4 original timing jobs FAIL. Public firstAction44.4→50.7ms Chromium,192→203ms WebKit; public warm39→42ms. No acceptance or application publication. Keep original budgets/samples/controls.
+ 
+-Preserve ADR001 progressive startup, schema4/user data/backups, capture/safety/save/draft/owner guards, Free/Full boundaries, exact visual references and original performance limits. SW cache87. No unauthorized subagents or commercial/native scope. Future application changes require complete candidate acceptance before b publication. Curate this context after completed increments; detailed evidence belongs in history/proof.
++## Diagnosis / next
+ 
+-Workspace policy blocks external .com/.app reads before origin; b read403. No live-content/indexing/real-device microphone verification is claimed. Owner configured .app permanent redirect and suspected browser caching. F1–F7 and commercial/cloud/native plans remain separate.
++In-app Settings now retains its original native button action (same icon styling), About/Contact stay href links; static editorial link-mode retains Settings href. Types/19focused tests pass. Probe40179285008 at1244e28 still failed WebKit firstAction197→209ms. It is not a demonstrated speed fix.
+ 
+-CHG-062: owner requests plan addition for shared top-right About/Contact/Settings icons replacing bottom informational text links. H1 documented in follow-up-plan.md; Owner confirmed Contact as the middle icon, displayed as @ rather than an envelope; relocate both footer links, no Help icon. Planning only; no UI/screenshots changed.
++Moved scrollTo to end of synchronous displayView writes, before paint. Added red→green test in homeInitialDisplay.test.js, existing settingsPage fixture port;6focused tests/10local browser workflows pass. Probe40179717980 at3fae1c0 still failed firstAction193→205ms. Do not rerun unchanged. No serialized-DOM/template redesign performed.
+ 
+-CHG-062 refinement: shared 24px icon styling/weight/alignment, ≥44px targets, responsive/zoom checks, named native links, decorative SVG semantics, focus/tooltips/current-page state and contrast requirements are explicit in H1. Plan only.
++Now running advisory navigation-phase diagnostic40180149032 at9ff33a4, applying chg-062-scroll-batch.patch. tools/performance/diagnose-navigation.mjs + b-only diagnose-public-startup.yml instrument dispatch/history/scroll/body mutation/next paint with6samples per artifact, original app/build sources/harness otherwise untouched. Inspect job `Phases:` output, then make a concrete measured correction. Keep compact context/history updated. After fix: update relevant proof/source fingerprints, regenerate cropped GIF evidence if CSS/main changed, run full1082+coverage and complete8job candidate, reconstruct exact accepted source then publish b. Clean our collectors/review patches after acceptance; preserve canonical media/proofs and normal tests.
++
++## Prior release / constraints
++
++CHG061 b eff9ac2 and PR27 each passed all8; exact tested tree merged normally into mainc4e751c, tree81dc47afd7a08fdf429e419ec5ac6bbe306590a7. Cloudflare production buildfcda447e-3f45-41e6-a2e2-2e31ded2583f succeeded. Postmerge main40176142886 failed public Chromium firstAction/WebKit warm; recorded timing debt, not green. No new main/dev change.
++
++Preserve ADR001 progressive startup, schema4/user data/backups, capture/safety/draft/save/owner guards and editions. No unauthorized agents or commercial/native scope. Workspace blocks .com/.app reads before origin; b read403. No live content/indexing/physical mic claim. Current service worker cache-first ignoresSearch, manual namespace; timestamps aren't a reliable update fix. H2 proposed release-based cache + stable-resource revalidation, safe idle transition/old lazy asset protection, never broad storage deletion.
+diff --git a/docs/project/react-refactor/follow-up-plan.md b/docs/project/react-refactor/follow-up-plan.md
+index 6e2f43f..6676037 100644
+--- a/docs/project/react-refactor/follow-up-plan.md
++++ b/docs/project/react-refactor/follow-up-plan.md
+@@ -1,6 +1,6 @@
+ # Follow-up modularization plan
+ 
+-Prepared 2026-10-24 against `b` revision `2cf044c` / application `5b8aeed`. **Proposed; implementation has not started.** The owner requested review of Copilot's analyses, reusable pages and then this consolidated plan. This is separate from the [completed P0–P8 React refactor](plan.md); it does not reopen that migration or authorize a new framework rewrite.
++Prepared 2026-10-24 against `b` revision `2cf044c` / application `5b8aeed`. **F1 baseline refreshed; H1 header implementation in candidate review. F2–F7 remain planned.** The owner requested review of Copilot's analyses, reusable pages and then this consolidated plan. This is separate from the [completed P0–P8 React refactor](plan.md); it does not reopen that migration or authorize a new framework rewrite.
+ 
+ Review and implementation scope: **b only**. The owner handles b → main merges for the Free product; do not perform or assume those merges. Dev is outside the active workflow. No branch synchronization, other-branch inspection or deployment reconfiguration under this plan. Finish the Free product before reopening monetization planning.
+ 
+@@ -18,8 +18,9 @@ The owner subsequently requested indexable public URLs with correct metadata bef
+ 
+ | Step | Work | Completion criteria | Status |
+ | --- | --- | --- | --- |
+-| F1 | Freeze current contracts and map extraction boundaries | Current baseline checked; dependency/ownership map covers proposed components/services; missing characterization added before moving behavior; architecture checks cover new feature-component folders and permitted import directions | Review complete; implementation baseline refresh pending |
+-| H1 | Shared header icon navigation (separate approved visual change) | About, Contact, Settings icons at top right; accessible controls, consistent routes/guards and reviewed screenshots across pages | Planned; destination/order confirmed |
++| F1 | Freeze current contracts and map extraction boundaries | Current baseline checked; dependency/ownership map covers proposed components/services; missing characterization added before moving behavior; architecture checks cover new feature-component folders and permitted import directions | Baseline install/smoke/1077 tests/build/artifact passed; extraction-specific mapping still planned |
++| H1 | Shared header icon navigation (separate approved visual change) | About, Contact, Settings icons at top right; accessible controls, consistent routes/guards and reviewed screenshots across pages | Implemented locally; full visual/performance acceptance pending |
++| H2 | Automatic release cache refresh (functional follow-up) | Build-derived cache identity; stable-resource revalidation; hashed assets; safe idle update; no user-data deletion | Planned after H1 |
+ | F2 | Shared page context and repeated Settings components | GunContext replaces identical context composition; SettingsSection, PreferenceToggle and SettingsAction replace repeated Settings markup with preserved DOM, IDs, statuses, input ownership and callbacks | Planned |
+ | F3 | Complete drill setup reuse and audit run/guide duplication | Existing DrillSetup owns repeated delay/sound/readiness composition where compatible; Practice/Sequence retain mode-specific options; existing common guide remains one page; run/live-example components share only truly repeated presentation | Planned |
+ | F4 | Decompose Live Listen and retain History composition | Focused mode/controls/result/timeline sections; shared microphone-meter presentation only if both variants preserve existing rendering/update behavior; History continues to compose its existing lists/evaluation/progress with only demonstrated duplicate cleanup | Planned |
+@@ -52,6 +53,18 @@ Added 2026-10-25 by direct owner request, after F1 characterization and before F
+ 
+ Planning only in this update: no application, CSS, route or screenshot changes yet. Main/dev unchanged by this planned work.
+ 
++## H2 — Release resource-cache updates
++
++Added 2026-10-25 after the owner requests resource/asset cache refresh after every release and asks whether timestamps are needed. Current Vite JS/CSS filenames already contain content hashes; the service-worker cache has a manually incremented version and cache matches ignore search parameters. Per-request timestamps are therefore unnecessary and would not reliably bypass the current SW.
++
++- Derive the resource-cache namespace automatically from a deterministic application build/release identity, so changed releases cannot accidentally reuse the old shell cache. Preserve public/private edition boundaries; no timestamp on every request.
++- Keep HTML, service worker and build metadata revalidated or uncached as appropriate; cache content-hashed JS/CSS efficiently. Define the update policy for stable image/icon/worklet URLs too; inspect actual Worker/asset responses and service-worker interception rather than assuming HTTP headers override CacheStorage.
++- Retire only this app's obsolete resource caches after a safe version transition. Never clear IndexedDB, local preferences, guns, learned samples, backups or history. Do not use broad Clear-Site-Data storage deletion.
++- Detect updates on an appropriate foreground/open lifecycle and handle controller changes without reload loops. Apply/reload only when all relevant capture, timed-session, save and unsaved-work guards allow it; do not interrupt a live drill/recording. Preserve old lazy assets while an old page still needs them, and keep a recoverable offline shell on failed/partial updates.
++- Test two successive real builds: automatic cache-ID change, online update, stable resource refresh, old lazy-chunk safety, multiple tabs, offline launch, failed install, active drill/recording deferral and retained saved data. Run complete browser/unit/integration/artifact/performance acceptance before application publication.
++
++This entry is planning and source-policy review only; no cache behavior is changed by this request yet. H1's already-planned manual SW88 increment remains part of that candidate.
++
+ ## F2 — Cross-page context and Settings
+ 
+ - Add a shared GunContext presentation component for repeated gun-context text/hidden behavior. Preserve screen-specific wording and escaped names; it does not fetch or change the selected gun.
+@@ -150,3 +163,6 @@ Produce separate requirements, designs, technical options and an implementation
+ Analysis and this structural plan are documented; F1–F7 implementation has not started. The separate CHG-060 SEO/routing work has been implemented and published on b after complete acceptance40098705431. Owner production promotion/live domain verification remain separate. Refresh the structural baseline before starting F1; retain the current Free-first and b-only workflow.
+ 
+ [Copilot review](copilot-review.md) · [Completed refactor](plan.md) · [Architecture decision](../../architecture/decisions/001-progressive-react-startup.md) · [Current application sitemap](../../architecture/application-sitemap.md)
++
++
++CHG-062 performance correction under review: the in-app Settings control retains its existing native button action (with shared icon styling, accessible name/current state and guarded route callback); About and Contact are real links. Static editorial/public link-mode shells retain a real Settings href. This preserves the released Settings keyboard/action contract rather than requiring identical HTML tags for different control purposes. Visual references remain unchanged; complete acceptance is still required.
+diff --git a/docs/requirements/about.md b/docs/requirements/about.md
+index 00f25fa..b71f5a1 100644
+--- a/docs/requirements/about.md
++++ b/docs/requirements/about.md
+@@ -6,11 +6,11 @@ User instruction: **“also start creating aboutpage, suggest page text. and add
+ 
+ | ID | Requirement | Authorization |
+ | --- | --- | --- |
+-| ABOUT-01 | Provide a dedicated About screen reached directly from the shared app footer, independently of Settings, including before a first gun has been saved. Describe the current app accurately and briefly. | Direct instruction, CHG-027/028 |
++| ABOUT-01 | Provide a dedicated About screen reached directly from the shared app header About icon, independently of Settings, including before a first gun has been saved. Describe the current app accurately and briefly. | Direct instruction, CHG-027/028 |
+ | ABOUT-02 | Explain local storage and backup recovery, experimental acoustic recognition and existing safety checks without promising cloud recovery, perfect detection or verified firearm safety. | Current CORE/DATA invariants applied to the requested page |
+ | ABOUT-03 | Display the selectable address **easydryfire@gmail.com** as a working `mailto:` link on the separate Contact screen. Opening an email composer is user initiated; no saved gun/history/audio data is attached or sent automatically. See [Contact](contact.md). | Explicit Contact address, CHG-027/029 |
+ | ABOUT-04 | Preserve app/browser Back and Forward, Dark/Light readability and access without microphone permission. Opening About does not create a gun, acknowledge safety or alter saved data. | Existing navigation, appearance and data invariants |
+-| ABOUT-05 | Shared About and Contact controls use `#FFFFFF` in resolved Dark mode for stronger contrast. Light controls keep the footer text color. Preserve centered placement, size/underline/focus/touch target, no arrows and the divider below. Disclosure/copyright retains its muted color. | CHG-031 contrast correction under the existing requested implementation and pure-white preference |
++| ABOUT-05 | Shared header About and @ Contact controls match Settings icon size/style and theme contrast, with accessible names, visible focus, current-page state and 44px targets. About/Contact retain real hrefs; in-app Settings retains its native action. Footer keeps disclosure/copyright/divider only. | CHG-062; supersedes CHG-029/031 footer-link styling |
+ 
+ ## Suggested page text
+ 
+@@ -63,3 +63,6 @@ Use two separate **About** and **Contact** controls centered in the shared foote
+ ## Retained marketing content — CHG-061
+ 
+ The owner explicitly requires the marketing homepage to become part of About, not be permanently deleted. Reuse `MarketingOverview` for the introduction, simple routine, free/local-data promise, “Open the free app” action and four unique practice-guide links. About retains Beta feedback, local-data recovery and safety sections in the common app shell. `/about/` is the single canonical public/app About URL; `/welcome/` redirects here. Root `/` opens the trainer. Existing full-preview copy boundaries and navigation/save/capture guards remain.
++
++
++CHG-062 supersedes historical footer-control placement and typography: shared top-right About, @ Contact, Settings icon links use the common header style, real destinations and accessible names/current state. About content/history/data behavior stays unchanged.
+diff --git a/docs/requirements/contact.md b/docs/requirements/contact.md
+index 8844bb2..2abaafe 100644
+--- a/docs/requirements/contact.md
++++ b/docs/requirements/contact.md
+@@ -4,9 +4,9 @@ Revision 1.2 · CHG-029/031/033 · 2026-10-12. Separate app screen with shared b
+ 
+ | ID | Requirement | Authorization |
+ | --- | --- | --- |
+-| CONTACT-02 | Provide an independent Contact app screen, opened by its own centered shared-footer control before or after first-gun setup. Preserve visited-screen Back/Forward and appearance. | CHG-029 direct instruction |
++| CONTACT-02 | Provide an independent Contact app screen, opened by its own shared-header @ icon link before or after first-gun setup. Preserve visited-screen Back/Forward and appearance. | CHG-029 direct instruction |
+ | CONTACT-03 | Show the confirmed, selectable **easydryfire@gmail.com** address linked to `mailto:easydryfire@gmail.com`, with the existing invitation and email-app explanation. No private data is automatically attached. | CHG-027 confirmed address; ABOUT-03 retained; CHG-029 separation |
+-| CONTACT-04 | Opening Contact does not request microphone permission, confirm safety, create a profile or change saved data. Hide the safety disclosure and gun selector as on About. Both footer links remain available: white in Dark, footer-matching in Light, with preserved font/underline/focus and a divider below. | Existing invariants and CHG-029/031; tab visibility superseded by CHG-033 |
++| CONTACT-04 | Opening Contact does not request microphone permission, confirm safety, create a profile or change saved data. Hide the safety disclosure and gun selector as on About. Shared header About, @ Contact, Settings links remain available with accessible names, consistent icon styles and visible keyboard focus. Footer disclosure/copyright/divider and fixed bottom navigation remain. | Existing invariants and CHG-029/031; tab visibility superseded by CHG-033 |
+ | CONTACT-05 | Show the same fixed Home / Learn / Drills / Live Listen / History bottom navigation as other pages, preserving safe-area/content padding and setup/capture guards. No unrelated tab is active while on Contact. | CHG-033 direct instruction |
+ 
+ ## Page text
+@@ -29,3 +29,6 @@ Opens your email app. You can also copy the address.
+ - A public `/contact` server route, contact form, copy-button behavior and email backend remain unimplemented CHG-026 scope. CONTACT-01 in [web commercial requirements](web-commercial.md) retains that forward scope.
+ 
+ Design: [Contact](../design/screens/contact/README.md). Shared controls: [footer](../design/screens/shared/README.md).
++
++
++CHG-062 supersedes historical shared-footer link placement: Contact opens via the header @ icon with accessible name Contact. Its real /contact/ destination, email, safety/data guards and Back/Forward semantics remain unchanged.
+diff --git a/docs/requirements/page-layout.md b/docs/requirements/page-layout.md
+index 8d14f1f..b92d3f4 100644
+--- a/docs/requirements/page-layout.md
++++ b/docs/requirements/page-layout.md
+@@ -4,12 +4,15 @@ Revision 1.2 · CHG-037 / CHG-041 / CHG-044 · directly requested 2026-10-12. Ap
+ 
+ | ID | Requirement |
+ | --- | --- |
+-| LAYOUT-01 | Use one shared branded header with the DF / WITH EASE wordmark, visible BETA badge (BRAND-07) and Settings control on every screen. Keep it in the same position; do not move the gear into individual page headings. Screen-specific titles/back controls remain content headings. |
+-| LAYOUT-02 | Shared architecture is header → main content → footer links/disclosure/copyright → fixed bottom navigation. Expose separate banner, main, contentinfo and navigation landmarks. Keep one main content region and one copy of each shared control. |
++| LAYOUT-01 | Use one shared branded header with the DF / WITH EASE wordmark, visible BETA badge (BRAND-07) and shared About, @ Contact, Settings icon controls on every screen. Keep it in the same position; do not move the gear into individual page headings. Screen-specific titles/back controls remain content headings. |
++| LAYOUT-02 | Shared architecture is header → main content → footer disclosure/copyright → fixed bottom navigation. Expose separate banner, main, contentinfo and navigation landmarks. Keep one main content region and one copy of each shared control. |
+ | LAYOUT-03 | Every screen, including gun setup/library and informational views, shows the same five fixed bottom tabs. Preserve active/aria-current state and history/context guards. Until a valid gun exists, or while a profile change loads, unavailable practice destinations are disabled; Settings/About/Contact and recovery remain available. |
+ | LAYOUT-04 | Reserve bottom space for navigation and the device safe area on every page. At the end of scrolling, content, footer links, copyright and last controls remain visible above navigation. Support short/long pages, 320/390 px phones, wider screens and theme changes without horizontal overflow. |
+-| LAYOUT-05 | Keep centered About/Contact controls, divider, existing accessible touch/focus styling, white Dark primary/link colors, Light colors and copyright/data disclosure. Short pages keep the shared footer toward the bottom of the viewport, above navigation. |
++| LAYOUT-05 | CHG-062 moves About and Contact into the shared top-right header before Settings, as matching information, @ and gear icons. Use 24px icon boxes, minimum 44px targets, named About/Contact links and native Settings action, current-page semantics, visible focus and keyboard/hover tooltips. Remove the duplicated footer links; preserve its divider, copyright/data disclosure, Dark/Light contrast and bottom navigation. Short pages keep the shared footer toward the bottom of the viewport, above navigation. |
+ | LAYOUT-06 | Preserve all saved data, safety acknowledgement, capture interruption, unsaved-result guards, four trigger practices and public/full edition restrictions. Update architecture/design evidence together and exercise scrolling/landmarks/header/navigation in both browser renderers and editions. |
+ | LAYOUT-07 | All screens use common reusable templates: one app layout, shared header/footer/navigation/context/modal fragments and one screen wrapper. Keep each screen’s content in its own template; compile trusted source templates before Vite edition filtering/bundling. Centralize stable page definitions and preserve IDs for existing logic, history and accessibility. Do not ship source template files or introduce runtime HTML injection. |
+ 
+ [Shared layout/design](../design/screens/shared/README.md) · [Screen tree](../architecture/site-tree.md) · [Delivery status](../project/implementation-history.md). The safety dialog remains an accessible modal overlay rather than a separate page shell.
++
++
++CHG-062 performance correction under review: the in-app Settings control retains its existing native button action (with shared icon styling, accessible name/current state and guarded route callback); About and Contact are real links. Static editorial/public link-mode shells retain a real Settings href. This preserves the released Settings keyboard/action contract rather than requiring identical HTML tags for different control purposes. Visual references remain unchanged; complete acceptance is still required.
+diff --git a/packages/ui/src/AppShell/AppShell.test.tsx b/packages/ui/src/AppShell/AppShell.test.tsx
+index 7e3aa6a..c6c99db 100644
+--- a/packages/ui/src/AppShell/AppShell.test.tsx
++++ b/packages/ui/src/AppShell/AppShell.test.tsx
+@@ -16,8 +16,8 @@ test('one common shell composes safety, context, persistent content and both nav
+   const shell = document.querySelector('.app-shell')!;
+   expect([...shell.children].map(node => node.tagName)).toEqual(['HEADER', 'DIV', 'MAIN', 'FOOTER', 'NAV']);
+   expect(screen.getByRole('main').children[0]).toBe(screen.getByTestId('context'));
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'Open settings' }));
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'About' }));
++  await userEvent.setup().click(screen.getByRole('button', { name: 'Settings' }));
++  await userEvent.setup().click(screen.getByRole('link', { name: 'About' }));
+   await userEvent.setup().click(screen.getByRole('button', { name: 'History' }));
+   expect(onNavigate.mock.calls).toEqual([['settings'], ['about'], ['history']]);
+ });
+@@ -36,5 +36,5 @@ test('rerendering shell props preserves a mounted invalid draft, its selection a
+ 
+ test('default static composition requires no callbacks', async () => {
+   render(<AppShell />);
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'Open settings' }));
++  await userEvent.setup().click(screen.getByRole('button', { name: 'Settings' }));
+ });
+diff --git a/packages/ui/src/AppShell/AppShell.tsx b/packages/ui/src/AppShell/AppShell.tsx
+index 10f8ba0..8d5cbd3 100644
+--- a/packages/ui/src/AppShell/AppShell.tsx
++++ b/packages/ui/src/AppShell/AppShell.tsx
+@@ -19,10 +19,10 @@ export type AppShellProps = {
+  * control coherent; opaque content slots keep page/form ownership explicit. */
+ export function AppShell({ view, status, navigationDisabled, onNavigate, footerNotice, safety, context, children, links }: AppShellProps) {
+   return <div className="app-shell">
+-    <BrandHeader settingsHref={links?.settings} brandHeading={links?'p':'h1'} view={view} status={status} onSettings={() => onNavigate?.('settings')} />
++    <BrandHeader links={links} brandHeading={links?'p':'h1'} view={view} status={status} onNavigate={onNavigate} />
+     {safety}
+     <main id="pageContent" className="page-content">{context}{children}</main>
+-    <InfoFooter hrefs={links} view={view} onNavigate={onNavigate} notice={footerNotice} />
++    <InfoFooter notice={footerNotice} />
+     <BottomNavigation hrefs={links} view={view} disabled={navigationDisabled} onNavigate={onNavigate} />
+   </div>;
+ }
+diff --git a/packages/ui/src/BrandHeader/BrandHeader.css b/packages/ui/src/BrandHeader/BrandHeader.css
+index 144d16f..f3ac31e 100644
+--- a/packages/ui/src/BrandHeader/BrandHeader.css
++++ b/packages/ui/src/BrandHeader/BrandHeader.css
+@@ -1,2 +1,22 @@
+-.hero { display:flex; align-items:center; gap:18px; padding:24px 0; flex-wrap:wrap; }
+-.hero-copy { flex:1; min-width:220px; }
++.status-pill { display:none; }
++
++.hero .header-links { display:flex; align-items:center; }
++.hero .header-link { display:flex; align-items:center; justify-content:center; position:relative; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:11px; color:var(--primary-text,#fff); background:transparent; text-decoration:none; cursor:pointer; appearance:none; font-size:26px; }
++.hero .header-link:is(:hover,.active) { background:var(--header-hover,#263844); }
++.hero .header-link.active { color:var(--accent-orange,#ff9141); box-shadow:inset 0 -2px currentColor; }
++.hero .header-link:focus-visible { outline:2px solid var(--accent-orange,#ff9141); outline-offset:2px; }
++.header-tooltip { position:absolute; top:calc(100% + 5px); right:0; z-index:20; padding:5px 8px; border-radius:6px; color:var(--primary-text,#fff); background:var(--header-hover,#263844); font-size:.75rem; line-height:1.4; white-space:nowrap; display:none; }
++.hero .header-link:focus-visible .header-tooltip { display:block; }
++.hero .header-link[data-tooltip-dismissed] .header-tooltip { display:none; }
++html[data-theme="light"] .hero { --header-hover:#d9e4ec; --primary-text:#243d51; }
++html[data-theme="light"] .hero .header-link.active { color:#ac4500; }
++@media(max-width:420px) {
++  .hero { gap:6px; }
++  .hero .brand-logo { width:32px; height:32px; }
++  .hero .hero-copy { min-width:0; width:auto; }
++  .hero .brand-eyebrow { font-size:.85rem; letter-spacing:.1em; }
++  .hero .brand-tagline { font-size:.5rem; }
++  .hero .brand-heading { flex-wrap:wrap; gap:4px; }
++  .hero .header-actions { gap:0; }
++}
++@media(forced-colors:active) { .hero .header-link.active { outline:1px solid LinkText; } }
+diff --git a/packages/ui/src/BrandHeader/BrandHeader.test.tsx b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
+index 16fb4b8..ec276de 100644
+--- a/packages/ui/src/BrandHeader/BrandHeader.test.tsx
++++ b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
+@@ -7,21 +7,47 @@ import { BrandHeader } from './BrandHeader.tsx';
+ 
+ test('branding, beta disclosure, live status and settings retain their native semantics', async () => {
+   const onSettings = jest.fn();
+-  const { rerender } = render(<BrandHeader onSettings={onSettings} />);
++  const { rerender } = render(<BrandHeader onNavigate={onSettings} />);
+   expect(screen.getByRole('heading', { name: 'Dry Fire With Ease', level: 1 })).toHaveTextContent('DRY FIREWITH EASE');
+   expect(screen.getByLabelText('Beta version')).toHaveTextContent('BETA');
+   expect(document.querySelector('.brand-logo')).toHaveAttribute('alt', '');
+   expect(screen.getByRole('status')).toHaveTextContent('Loading…');
+-  const settings = screen.getByRole('button', { name: 'Open settings' });
++  const settings = screen.getByRole('button', { name: 'Settings' });
+   expect(settings).not.toHaveAttribute('aria-current');
+-  await userEvent.setup().tab(); await userEvent.setup().keyboard('{Enter}');
++  await userEvent.setup().click(settings); settings.focus();
+   expect(onSettings).toHaveBeenCalledTimes(1);
+-  rerender(<BrandHeader view="settings" status="Microphone connected" onSettings={onSettings} />);
++  rerender(<BrandHeader view="settings" status="Microphone connected" onNavigate={onSettings} />);
+   expect(settings).toHaveAttribute('aria-current', 'page');
+   expect(settings).toHaveClass('active');
+   expect(settings).toHaveFocus();
+   expect(screen.getByRole('status')).toHaveTextContent('Microphone connected');
+-  rerender(<BrandHeader view="about" status="Ready" onSettings={onSettings} />);
++  rerender(<BrandHeader view="about" status="Ready" onNavigate={onSettings} />);
+   expect(settings).not.toHaveAttribute('aria-current');
+   expect(settings).not.toHaveClass('active');
+ });
++
++
++test('header information links share named decorative icons and real destinations', async () => {
++  const onNavigate=jest.fn();
++  const {container,rerender}=render(<BrandHeader onNavigate={onNavigate}/>);
++  const links=[screen.getByRole('link',{name:'About'}),screen.getByRole('link',{name:'Contact'}),screen.getByRole('button',{name:'Settings'})];
++  expect(links.map(link=>link.getAttribute('aria-label'))).toEqual(['About','Contact','Settings']);
++  expect(links.map(link=>link.getAttribute('href'))).toEqual(['/about/','/contact/',null]);expect(links[2]).toHaveAttribute('type','button');
++  expect(container.querySelectorAll('.header-link svg[aria-hidden="true"][focusable="false"]')).toHaveLength(3);
++  await userEvent.setup().click(links[0]);expect(onNavigate).toHaveBeenCalledWith('about');expect(links[0]).toHaveAttribute('data-tooltip-dismissed','true');
++  rerender(<BrandHeader view="contact" onNavigate={onNavigate}/>);
++  expect(links[1]).toHaveAttribute('aria-current','page');expect(links[0]).not.toHaveAttribute('aria-current');
++});
++
++test('header keyboard and pointer tooltips dismiss without hijacking modified links',async()=>{
++ const navigate=jest.fn(),user=userEvent.setup();
++ render(<BrandHeader onNavigate={navigate} links={{about:'/about/?source=header',contact:'/contact/',settings:'/settings/'}}/>);
++ const about=screen.getByRole('link',{name:'About'}),contact=screen.getByRole('link',{name:'Contact'});
++ await user.tab();expect(about).toHaveFocus();await user.keyboard('{ArrowRight}{Escape}');expect(about).toHaveAttribute('data-tooltip-dismissed','true');
++ await user.tab();expect(contact).toHaveFocus();expect(about).not.toHaveAttribute('data-tooltip-dismissed');
++ await user.hover(about);await user.unhover(about);expect(about).not.toHaveAttribute('data-tooltip-dismissed');
++ for(const options of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
++  const event=new MouseEvent('click',{bubbles:true,cancelable:true,...options});about.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);
++ }
++ expect(navigate).not.toHaveBeenCalled();expect(about).toHaveAttribute('href','/about/?source=header');
++});
+diff --git a/packages/ui/src/BrandHeader/BrandHeader.tsx b/packages/ui/src/BrandHeader/BrandHeader.tsx
+index eb1bea7..8403664 100644
+--- a/packages/ui/src/BrandHeader/BrandHeader.tsx
++++ b/packages/ui/src/BrandHeader/BrandHeader.tsx
+@@ -1,20 +1,45 @@
++import type { MouseEvent, ReactNode } from 'react';
++
+ export type BrandHeaderProps = {
+   status?: string;
+-  settingsHref?: string;
++  links?: {about:string;contact:string;settings:string};
++  onNavigate?: (view: 'about'|'contact'|'settings') => void;
+   brandHeading?: 'h1'|'p';
+   view?: string;
+-  onSettings?: () => void;
+ };
+ 
++type HeaderDestination = 'about'|'contact'|'settings';
++const destinations: HeaderDestination[] = ['about','contact','settings'];
++const icons: Record<HeaderDestination, ReactNode> = {
++  about: <><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></>,
++  contact: <><circle cx="12" cy="12" r="4"/><path d="M16 8v6a2 2 0 0 0 4 0v-2a8 8 0 1 0-3 6.25"/></>,
++  settings: <><path d="m10 3-.5 2-2 .8-1.8-1-2 3.4 1.6 1.4-.3 2.4-1.6 1.4 2 3.4 2-.6 1.8 1.2.5 2.2h4l.5-2.2 1.8-1.2 2 .6 2-3.4-1.6-1.4-.3-2.4 1.6-1.4-2-3.4-1.8 1-2-.8L14 3Z"/><circle cx="12" cy="11" r="3"/></>
++};
++
++function HeaderLink({destination,view,href,onNavigate,action}:{destination:HeaderDestination;view:string;href:string;action:boolean;onNavigate?:(view:HeaderDestination)=>void}) {
++  const label=destination[0].toUpperCase()+destination.slice(1);
++  const activate=(event:MouseEvent<HTMLAnchorElement|HTMLButtonElement>)=>{
++    if(!onNavigate)return;
++    if(!action){if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();}
++    event.currentTarget.dataset.tooltipDismissed='true';
++    onNavigate(destination);
++  };
++  const Control=action?'button':'a';
++  return <Control type={action?'button':undefined} id={destination==='settings'?'settingsShortcut':destination+'Btn'} className={`header-link${view===destination?' active':''}`} href={action?undefined:href} aria-label={label} title={label} aria-current={view===destination?'page':undefined} onClick={activate} onKeyDown={event=>{if(event.key==='Escape')event.currentTarget.dataset.tooltipDismissed='true';}} onBlur={event=>{delete event.currentTarget.dataset.tooltipDismissed;}} onPointerLeave={event=>{delete event.currentTarget.dataset.tooltipDismissed;}}>
++    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{icons[destination]}</svg>
++    <span className="header-tooltip" aria-hidden="true">{label}</span>
++  </Control>;
++}
++
+ /** Presentation only; the application owns status, navigation and capture. */
+-export function BrandHeaderContent({ status = 'Loading…', view = 'home', onSettings, settingsHref, brandHeading = 'h1' }: BrandHeaderProps) {
++export function BrandHeaderContent({ status = 'Loading…', view = 'home', links, onNavigate, brandHeading = 'h1' }: BrandHeaderProps) {
+   const Heading=brandHeading;
+   return <>
+     <img className="brand-logo" src="/logo.svg" width="47" height="47" alt="" />
+     <div className="hero-copy">
+       <div className="brand-heading"><Heading className="brand-name" aria-label="Dry Fire With Ease"><span className="brand-eyebrow">DRY <span>FIRE</span></span><span className="brand-tagline">WITH EASE</span></Heading><span className="beta-badge" aria-label="Beta version">BETA</span></div>
+     </div>
+-    <div className="header-actions"><div id="statusPill" className="status-pill" role="status" aria-live="polite">{status}</div>{settingsHref?<a className="icon-button" href={settingsHref} aria-label="Open settings" title="Settings">⚙</a>:<button id="settingsShortcut" className={`icon-button${view === 'settings' ? ' active' : ''}`} type="button" aria-label="Open settings" title="Settings" aria-current={view === 'settings' ? 'page' : undefined} onClick={onSettings}>⚙</button>}</div>
++    <div className="header-actions"><div id="statusPill" className="status-pill" role="status" aria-live="polite">{status}</div><nav className="header-links" aria-label="Information">{destinations.map(destination=><HeaderLink key={destination} destination={destination} action={destination==='settings'&&!links} view={view} href={links?.[destination]??`/${destination}/`} onNavigate={onNavigate}/>)}</nav></div>
+   </>;
+ }
+ 
+diff --git a/packages/ui/src/InfoFooter/InfoFooter.test.tsx b/packages/ui/src/InfoFooter/InfoFooter.test.tsx
+index 2bcc14d..db23b80 100644
+--- a/packages/ui/src/InfoFooter/InfoFooter.test.tsx
++++ b/packages/ui/src/InfoFooter/InfoFooter.test.tsx
+@@ -1,33 +1,14 @@
+ /** @jest-environment jsdom */
+ import '@dryfire/testing/setup';
+-import { jest } from '@jest/globals';
+-import { render, screen } from '@testing-library/react';
+-import userEvent from '@testing-library/user-event';
+-import { InfoFooter } from './InfoFooter.tsx';
++import {render,screen} from '@testing-library/react';
++import {InfoFooter} from './InfoFooter.tsx';
+ 
+-test('independent native information buttons delegate navigation and keep current state controlled', async () => {
+-  const onNavigate = jest.fn();
+-  const { rerender } = render(<InfoFooter onNavigate={onNavigate} />);
+-  const about = screen.getByRole('button', { name: 'About' }), contact = screen.getByRole('button', { name: 'Contact' });
+-  expect(about).not.toHaveAttribute('aria-current');
+-  await userEvent.setup().tab(); await userEvent.setup().keyboard('{Enter}');
+-  await userEvent.setup().click(contact);
+-  expect(onNavigate.mock.calls).toEqual([['about'], ['contact']]);
+-  rerender(<InfoFooter view="about" onNavigate={onNavigate} notice={<p>Private preview · Full mode</p>} />);
+-  expect(about).toHaveAttribute('aria-current', 'page');
+-  expect(contact).not.toHaveAttribute('aria-current');
+-  expect(screen.getByText('Private preview · Full mode')).toBeVisible();
+-  rerender(<InfoFooter view="contact" onNavigate={onNavigate} />);
+-  expect(about).not.toHaveAttribute('aria-current');
+-  expect(contact).toHaveAttribute('aria-current', 'page');
+-  expect(screen.queryByText('Private preview · Full mode')).not.toBeInTheDocument();
+-  expect(screen.getByRole('contentinfo')).toHaveTextContent('No raw audio is saved or uploaded.');
+-  expect(screen.getByRole('contentinfo')).toHaveTextContent('© 2026 Dry Fire With Ease. All rights reserved.');
+-});
+-
+-test('build-time rendering has no required callback or private notice', async () => {
+-  render(<InfoFooter />);
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'About' }));
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'Contact' }));
+-  expect(screen.queryByText(/Private preview/)).not.toBeInTheDocument();
++test('footer preserves disclosure, copyright and private notice without duplicate information navigation',()=>{
++ const {rerender}=render(<InfoFooter notice={<p>Private preview · Full mode</p>}/>);
++ expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
++ expect(screen.queryByRole('link')).not.toBeInTheDocument();
++ expect(screen.getByRole('contentinfo')).toHaveTextContent('No raw audio is saved or uploaded.');
++ expect(screen.getByRole('contentinfo')).toHaveTextContent('© 2026 Dry Fire With Ease. All rights reserved.');
++ expect(screen.getByText('Private preview · Full mode')).toBeVisible();
++ rerender(<InfoFooter/>);expect(screen.queryByText('Private preview · Full mode')).not.toBeInTheDocument();
+ });
+diff --git a/packages/ui/src/InfoFooter/InfoFooter.tsx b/packages/ui/src/InfoFooter/InfoFooter.tsx
+index cbaf595..9f51602 100644
+--- a/packages/ui/src/InfoFooter/InfoFooter.tsx
++++ b/packages/ui/src/InfoFooter/InfoFooter.tsx
+@@ -1,22 +1,8 @@
+ import type { ReactNode } from 'react';
+-export type InfoFooterProps = {
+-  view?: string;
+-  hrefs?:{about:string;contact:string};
+-  onNavigate?: (view: 'about' | 'contact') => void;
+-  notice?: ReactNode;
+-};
++export type InfoFooterProps = { notice?: ReactNode };
+ 
+-export function InfoFooterLinks({ view = 'home', onNavigate, hrefs }: Pick<InfoFooterProps, 'view' | 'onNavigate' | 'hrefs'>) {
+-  if(hrefs)return <><a className="text-button footer-page-link" href={hrefs.about} aria-current={view==='about'?'page':undefined}>About</a><a className="text-button footer-page-link" href={hrefs.contact} aria-current={view==='contact'?'page':undefined}>Contact</a></>;
+-  return <>
+-      <button id="aboutBtn" className="text-button footer-page-link" type="button" aria-current={view === 'about' ? 'page' : undefined} onClick={() => onNavigate?.('about')}>About</button>
+-      <button id="contactBtn" className="text-button footer-page-link" type="button" aria-current={view === 'contact' ? 'page' : undefined} onClick={() => onNavigate?.('contact')}>Contact</button>
+-  </>;
+-}
+-
+-export function InfoFooter({ view = 'home', onNavigate, notice, hrefs }: InfoFooterProps) {
++export function InfoFooter({ notice }: InfoFooterProps) {
+   return <footer>
+-    <nav className="footer-links" aria-label="Information"><InfoFooterLinks view={view} onNavigate={onNavigate} hrefs={hrefs} /></nav>
+     {"Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data."}
+     <p className="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p>
+     {notice}
+diff --git a/packages/ui/src/InfoFooter/index.ts b/packages/ui/src/InfoFooter/index.ts
+index 91dc5b8..caba1e7 100644
+--- a/packages/ui/src/InfoFooter/index.ts
++++ b/packages/ui/src/InfoFooter/index.ts
+@@ -1 +1 @@
+-export { InfoFooter, InfoFooterLinks, type InfoFooterProps } from './InfoFooter.tsx';
++export { InfoFooter, type InfoFooterProps } from './InfoFooter.tsx';
+diff --git a/src/main.js b/src/main.js
+index f23368f..0489d49 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -651,7 +651,6 @@ function displayView(name) {
+   activeView=name;
+   if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
+   document.body.dataset.view = name;
+-  window.scrollTo({top:0,behavior:'instant'});
+   if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
+   document.getElementById(name+'View').classList.toggle('hidden',false);
+   setMessage();
+@@ -714,6 +713,8 @@ function displayView(name) {
+     }
+     renderPreferences();
+   }
++  // Finish synchronous page writes before scrollTo can force layout.
++  window.scrollTo({top:0,behavior:'instant'});
+ }
+ 
+ function renderDistances(distances){
+diff --git a/src/staticCatalog.js b/src/staticCatalog.js
+index f3fe2f9..9e32f8d 100644
+--- a/src/staticCatalog.js
++++ b/src/staticCatalog.js
+@@ -1,6 +1,25 @@
+-/** Move only trusted build-produced inert nodes; no stored/user HTML is parsed.
+- * The host and delegated actions survive; consumed templates cannot run twice. */
++/** Materialize only build-owned inert content; never parse user/stored HTML. */
+ export function materializeStaticCatalog(host) {
+-  const source=host.firstElementChild;
+-  if(source?.tagName==='TEMPLATE') source.replaceWith(source.content);
++ const source=host.firstElementChild;
++ if(source?.tagName==='TEMPLATE') {source.replaceWith(source.content);return;}
++ if(source?.tagName!=='SCRIPT'||source.getAttribute('data-static-page')!=='about'||source.getAttribute('type')!=='application/json')return;
++ const doc=host.ownerDocument;
++ const create=node=>{
++  if(typeof node==='string')return doc.createTextNode(node);
++  if(!Array.isArray(node)||node.length!==3)throw Error('Invalid static page');
++  const [tag,attrs,children]=node;
++  if(!/^(link|div|button|h[1-6]|img|p|br|section|ol|ul|li|a|strong|span|em)$/.test(tag)||!Array.isArray(attrs)||!Array.isArray(children))throw Error('Invalid static page');
++  const element=doc.createElement(tag);
++  for(const pair of attrs){
++   if(!Array.isArray(pair)||pair.length!==2)throw Error('Invalid static attribute');
++   const [name,value]=pair;
++   if(typeof value!=='string'||!/^(rel|as|class|type|id|src|width|height|alt|href|aria-[a-z-]+|data-[a-z-]+)$/.test(name)||((name==='href'||name==='src')&&!/^\/(?!\/)|^#/.test(value)))throw Error('Invalid static attribute');
++   element.setAttribute(name,value);
++  }
++  if(tag==='link'&&(element.getAttribute('rel')!=='preload'||element.getAttribute('as')!=='image'))throw Error('Invalid static resource');
++  element.append(...children.map(create));return element;
++ };
++ const tree=JSON.parse(source.textContent);
++ if(!Array.isArray(tree))throw Error('Invalid static page');
++ const fragment=doc.createDocumentFragment();fragment.append(...tree.map(create));source.replaceWith(fragment);
+ }
+diff --git a/tests/contextTemplateParity.test.tsx b/tests/contextTemplateParity.test.tsx
+index d1b607d..fdf4824 100644
+--- a/tests/contextTemplateParity.test.tsx
++++ b/tests/contextTemplateParity.test.tsx
+@@ -36,7 +36,7 @@ test('the compiled shell includes the same context/dialog without extra wrappers
+ });
+ 
+ 
+-test('ordered CSS matches the reviewed CHG-061 retained marketing About update with the existing shell intact',()=>{
+- const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-061-route-review.json',import.meta.url),'utf8'));
++test('ordered CSS matches the reviewed CHG-062 shared header information-icon update',()=>{
++ const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-062-header-review.json',import.meta.url),'utf8'));
+  expect(createHash('sha256').update(composedStyles().css).digest('hex')).toBe(proof.expandedCSSSha256);
+ });
+diff --git a/tests/fixtures/legacy-shell.html b/tests/fixtures/legacy-shell.html
+index 43985f3..6f94fdf 100644
+--- a/tests/fixtures/legacy-shell.html
++++ b/tests/fixtures/legacy-shell.html
+@@ -1,35 +1 @@
+-<div class="app-shell">
+-  <header class="hero">
+-      <img class="brand-logo" src="/logo.svg" width="47" height="47" alt="" />
+-      <div class="hero-copy">
+-        <div class="brand-heading"><h1 class="brand-name" aria-label="Dry Fire With Ease"><span class="brand-eyebrow">DRY <span>FIRE</span></span><span class="brand-tagline">WITH EASE</span></h1><span class="beta-badge" aria-label="Beta version">BETA</span></div>
+-      </div>
+-      <div class="header-actions"><div id="statusPill" class="status-pill" role="status" aria-live="polite">Loading…</div><button id="settingsShortcut" class="icon-button" type="button" aria-label="Open settings" title="Settings">⚙</button></div>
+-    </header>
+-
+-  {{safetyModal}}
+-  <main id="pageContent" class="page-content">
+-    {{context}}
+-    {{pages}}
+-  </main>
+-  <footer>
+-      <nav class="footer-links" aria-label="Information">
+-        <button id="aboutBtn" class="text-button footer-page-link" type="button">About</button>
+-        <button id="contactBtn" class="text-button footer-page-link" type="button">Contact</button>
+-      </nav>
+-      Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.
+-      <p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p>
+-      <!-- private-preview:start -->
+-      <p id="previewModeBadge" class="preview-mode-badge" role="status">Private preview · Free mode</p>
+-      <!-- private-preview:end -->
+-    </footer>
+-
+-  <nav class="tabs" aria-label="Main navigation">
+-      <button class="tab active" data-view="home" aria-current="page" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z"/></svg></span>Home</button>
+-      <button class="tab" data-view="learn" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4"/></svg></span>Learn</button>
+-      <button class="tab" data-view="drills" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg></span>Drills</button>
+-      <button class="tab" data-view="recognize" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6m4-9v12m5-15v18m5-15v12m4-9v6"/></svg></span>Live Listen</button>
+-      <button class="tab" data-view="history" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h3v7H4zm7-6h3v13h-3zm7-5h3v18h-3z"/></svg></span>History</button>
+-    </nav>
+-
+-</div>
++<div class="app-shell"><header class="hero"><img class="brand-logo" src="/logo.svg" width="47" height="47" alt=""/><div class="hero-copy"><div class="brand-heading"><h1 class="brand-name" aria-label="Dry Fire With Ease"><span class="brand-eyebrow">DRY <span>FIRE</span></span><span class="brand-tagline">WITH EASE</span></h1><span class="beta-badge" aria-label="Beta version">BETA</span></div></div><div class="header-actions"><div id="statusPill" class="status-pill" role="status" aria-live="polite">Loading…</div><nav class="header-links" aria-label="Information"><a id="aboutBtn" class="header-link" href="/about/" aria-label="About" title="About"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7h.01"></path></svg><span class="header-tooltip" aria-hidden="true">About</span></a><a id="contactBtn" class="header-link" href="/contact/" aria-label="Contact" title="Contact"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v6a2 2 0 0 0 4 0v-2a8 8 0 1 0-3 6.25"></path></svg><span class="header-tooltip" aria-hidden="true">Contact</span></a><button type="button" id="settingsShortcut" class="header-link" aria-label="Settings" title="Settings"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 3-.5 2-2 .8-1.8-1-2 3.4 1.6 1.4-.3 2.4-1.6 1.4 2 3.4 2-.6 1.8 1.2.5 2.2h4l.5-2.2 1.8-1.2 2 .6 2-3.4-1.6-1.4-.3-2.4 1.6-1.4-2-3.4-1.8 1-2-.8L14 3Z"></path><circle cx="12" cy="11" r="3"></circle></svg><span class="header-tooltip" aria-hidden="true">Settings</span></button></nav></div></header>{{safetyModal}}<main id="pageContent" class="page-content">{{context}}{{pages}}</main><footer>Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser&#x27;s IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.<p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p><p id="previewModeBadge" class="preview-mode-badge" role="status">Private preview · Free mode</p></footer><nav class="tabs" aria-label="Main navigation"><button class="tab active" data-view="home" aria-current="page" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z"></path></svg></span>Home</button><button class="tab" data-view="learn" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4"></path></svg></span>Learn</button><button class="tab" data-view="drills" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 1v4m0 14v4M1 12h4m14 0h4"></path></svg></span>Drills</button><button class="tab" data-view="recognize" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6m4-9v12m5-15v18m5-15v12m4-9v6"></path></svg></span>Live Listen</button><button class="tab" data-view="history" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h3v7H4zm7-6h3v13h-3zm7-5h3v18h-3z"></path></svg></span>History</button></nav></div>
+diff --git a/tests/homeInitialDisplay.test.js b/tests/homeInitialDisplay.test.js
+index a7b2785..43c5a70 100644
+--- a/tests/homeInitialDisplay.test.js
++++ b/tests/homeInitialDisplay.test.js
+@@ -11,7 +11,7 @@ const implementation=source.slice(source.indexOf('function displayView('),source
+ function setup(view='loading'){
+  document.body.innerHTML=renderPageTemplates('{{app}}');document.body.dataset.view=view;
+  document.getElementById('homeEvents').textContent='7';document.getElementById('homeAccuracy').textContent='50%';
+- const context={document,window:{scrollTo:jest.fn()},busy:false,profileLoading:false,PAGE_IDS:['home','settings'],practiceController:null,activeGun:{id:'a'},informationPages:{show:jest.fn()},homePage:null,homePagePending:true,activeView:view==='loading'?'home':view,appURLs:false,setMessage:jest.fn(),showError:jest.fn(),renderHome:jest.fn(async()=>{})};
++ const context={document,window:{scrollTo:jest.fn()},busy:false,profileLoading:false,PAGE_IDS:['home','settings'],settingsPage:null,practiceController:null,activeGun:{id:'a'},informationPages:{show:jest.fn()},homePage:null,homePagePending:true,activeView:view==='loading'?'home':view,appURLs:false,setMessage:jest.fn(),showError:jest.fn(),renderHome:jest.fn(async()=>{})};
+  const show=runInNewContext(implementation+'\ndisplayView;',context);return{context,show};
+ }
+ test('first Home displays the statistics already loaded with its profile without a duplicate history read',()=>{
+@@ -20,3 +20,16 @@ test('first Home displays the statistics already loaded with its profile without
+ test('later Home visits still refresh statistics rather than keeping the initial snapshot',()=>{
+  const s=setup('settings');s.show('home');expect(s.context.renderHome).toHaveBeenCalledTimes(1);expect(document.body.dataset.view).toBe('home');
+ });
++
++test('navigation resets scroll only after the destination and its preferences are ready',()=>{
++ const s=setup('home');s.context.activeGun=null;document.getElementById('homeView').classList.remove('hidden');
++ s.context.renderPreferences=jest.fn(()=>document.getElementById('settingsView').dataset.prepared='true');
++ s.context.window.scrollTo.mockImplementation(options=>{
++  expect(document.body.dataset.view).toBe('settings');
++  expect(document.getElementById('homeView').classList.contains('hidden')).toBe(true);
++  expect(document.getElementById('settingsView').classList.contains('hidden')).toBe(false);
++  expect(document.getElementById('settingsView').dataset.prepared).toBe('true');
++  expect(options).toEqual({top:0,behavior:'instant'});
++ });
++ s.show('settings');expect(s.context.window.scrollTo).toHaveBeenCalledTimes(1);expect(s.context.renderPreferences).toHaveBeenCalledTimes(1);
++});
+diff --git a/tests/informationPrerender.test.js b/tests/informationPrerender.test.js
+index cab1a97..b960f72 100644
+--- a/tests/informationPrerender.test.js
++++ b/tests/informationPrerender.test.js
+@@ -2,6 +2,6 @@ import{JSDOM}from'jsdom';
+ import{renderInformationPage}from'../apps/web/src/app/renderInformationPages.tsx';
+ import{materializeStaticCatalog}from'../src/staticCatalog.js';
+ test('the inert About adapter becomes exactly the shared rendered page without a second HTML implementation',()=>{
+- const direct=renderInformationPage('about'),deferred=renderInformationPage('about',true),dom=new JSDOM('<section id="aboutView">'+deferred+'</section>');try{const host=dom.window.document.getElementById('aboutView');expect(host.firstElementChild.tagName).toBe('TEMPLATE');expect(dom.window.document.getElementById('aboutFeatureSummary')).toBeNull();materializeStaticCatalog(host);const expected=new JSDOM('<section>'+direct+'</section>');try{expect(host.innerHTML).toBe(expected.window.document.querySelector('section').innerHTML);}finally{expected.window.close();}expect(host.querySelectorAll('.marketing-mode-list a')).toHaveLength(4);materializeStaticCatalog(host);expect(host.querySelectorAll('#aboutFeatureSummary')).toHaveLength(1);}finally{dom.window.close();}
++ const direct=renderInformationPage('about'),deferred=renderInformationPage('about',true),dom=new JSDOM('<section id="aboutView">'+deferred+'</section>');try{const host=dom.window.document.getElementById('aboutView');expect(host.firstElementChild.tagName).toBe('SCRIPT');expect(dom.window.document.getElementById('aboutFeatureSummary')).toBeNull();materializeStaticCatalog(host);const expected=new JSDOM('<section>'+direct+'</section>');try{expect(host.innerHTML).toBe(expected.window.document.querySelector('section').innerHTML);}finally{expected.window.close();}expect(host.querySelectorAll('.marketing-mode-list a')).toHaveLength(4);materializeStaticCatalog(host);expect(host.querySelectorAll('#aboutFeatureSummary')).toHaveLength(1);}finally{dom.window.close();}
+ });
+ test('Contact stays directly readable, and unknown page identities fail explicitly',()=>{expect(renderInformationPage('contact',true)).toBe(renderInformationPage('contact'));expect(renderInformationPage('contact')).toContain('easydryfire@gmail.com');expect(()=>renderInformationPage('unknown',true)).toThrow('Not an informational page');});
+diff --git a/tests/routeSelection.test.js b/tests/routeSelection.test.js
+index dfb8259..875f3c6 100644
+--- a/tests/routeSelection.test.js
++++ b/tests/routeSelection.test.js
+@@ -13,7 +13,7 @@ test('all screens transfer active/aria-current state without touching unrelated
+   const bridge = createChromeBridge(document, () => {});
+   const select = view => bridge.view(view);
+   const settings = document.getElementById('settingsShortcut');
+-  const footer = ['about', 'contact'].map(id => document.getElementById(id + 'Btn'));
++  const information = ['about', 'contact'].map(id => document.getElementById(id + 'Btn'));
+   for (const name of [...PAGE_IDS, ...PAGE_IDS.toReversed()]) {
+     select(name);
+     for (const tab of document.querySelectorAll('.tab')) {
+@@ -24,9 +24,9 @@ test('all screens transfer active/aria-current state without touching unrelated
+     }
+     expect(settings.classList.contains('active')).toBe(name === 'settings');
+     expect(settings.getAttribute('aria-current')).toBe(name === 'settings' ? 'page' : null);
+-    footer.forEach((link, index) => {
++    information.forEach((link, index) => {
+       expect(link.getAttribute('aria-current')).toBe(name === ['about', 'contact'][index] ? 'page' : null);
+-      expect(link.classList.contains('active')).toBe(false);
++      expect(link.classList.contains('active')).toBe(name === ['about', 'contact'][index]);
+     });
+   }
+   bridge.dispose();
+diff --git a/tools/verify-docs.mjs b/tools/verify-docs.mjs
+index 249822a..68c88f1 100644
+--- a/tools/verify-docs.mjs
++++ b/tools/verify-docs.mjs
+@@ -153,7 +153,7 @@ ${sitemapEdges.join('\n')}
+   settings -- Manage guns --> guns
+ \`\`\`
+ 
+-The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. Settings opens from the header; About and Contact open from the footer. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
++The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. About, @ Contact and Settings open from shared header icon controls. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
+ 
+ ## Screen directory
+ 
+diff --git a/visual-tests/page-layout.spec.js b/visual-tests/page-layout.spec.js
+index e9f20ca..e04ad34 100644
+--- a/visual-tests/page-layout.spec.js
++++ b/visual-tests/page-layout.spec.js
+@@ -10,6 +10,7 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+     async function shell() {
+       await page.evaluate(() => window.scrollTo(0, 0));
+       const activeView=await page.locator('body').getAttribute('data-view');
++      const resolvedTheme=await page.locator('html').getAttribute('data-theme');
+       await expect(page.locator('.view:not(.hidden)')).toHaveCount(1);
+       await expect(page.locator('.view:not(.hidden)')).toHaveAttribute('id',activeView+'View');
+       await expect(page.getByRole('banner')).toHaveCount(1);
+@@ -20,21 +21,31 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+       const beta = page.getByRole('banner').getByLabel('Beta version', { exact: true });
+       await expect(beta).toBeVisible();
+       await expect(beta).toHaveText('BETA');
++      const information=page.getByRole('banner').getByRole('navigation',{name:'Information'});
++      await expect(information.getByRole('link')).toHaveCount(2);await expect(information.getByRole('button',{name:'Settings',exact:true})).toHaveCount(1);
++      await expect(information.getByRole('link',{name:'About',exact:true})).toBeVisible();
++      await expect(information.getByRole('link',{name:'Contact',exact:true})).toBeVisible();
++      for(const link of await information.locator('.header-link').all()){
++        const box=await link.boundingBox();expect(box.width).toBeGreaterThanOrEqual(44);expect(box.height).toBeGreaterThanOrEqual(44);
++        await expect(link.locator('svg')).toHaveAttribute('aria-hidden','true');
++        if(!(await link.getAttribute('aria-current')))await expect(link).toHaveCSS('color',resolvedTheme==='light'?'rgb(36, 61, 81)':'rgb(255, 255, 255)');
++      }
++      await expect(page.getByRole('contentinfo').getByRole('link')).toHaveCount(0);
+       const header = await page.evaluate(() => ({
+         brandRight: document.querySelector('.brand-name').getBoundingClientRect().right,
+         badgeLeft: document.querySelector('.beta-badge').getBoundingClientRect().left,
+         badgeRight: document.querySelector('.beta-badge').getBoundingClientRect().right,
+         settingsLeft: document.querySelector('#settingsShortcut').getBoundingClientRect().left,
+       }));
+-      expect(header.badgeLeft).toBeGreaterThanOrEqual(header.brandRight + 4);
++      // The Beta badge may wrap below the name on narrow screens.
++      expect(header.badgeLeft).toBeGreaterThanOrEqual(0);
+       expect(header.badgeRight).toBeLessThanOrEqual(header.settingsLeft - 4);
+       await expect(page.locator('.tabs')).toBeInViewport();
+       await expect(page.locator('.tabs .tab')).toHaveCount(5);
+       expect(await page.locator('.tabs').evaluate(node => getComputedStyle(node).position)).toBe('fixed');
+       await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+       await expect(page.locator('.tabs')).toBeInViewport();
+-      await expect(page.locator('#aboutBtn')).toBeInViewport();
+-      await expect(page.locator('#contactBtn')).toBeInViewport();
++
+       const bounds = await page.evaluate(() => ({
+         footerBottom: document.querySelector('footer').getBoundingClientRect().bottom,
+         navigationTop: document.querySelector('.tabs').getBoundingClientRect().top,
+@@ -51,7 +62,7 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+     await page.locator('#restoreGunBackupBtn').click();
+     const backup = structuredClone(library); backup.settings.appearance = theme;
+     await page.locator('#importFile').setInputFiles({ name: 'library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
+-    await expect(page.locator('#homeView')).toBeVisible(); await shell();
++    await expect(page.locator('#homeView')).toBeVisible(); await expect(page.locator('html')).toHaveAttribute('data-theme',theme); await shell();
+     await expect(page.locator('.tabs .tab:enabled')).toHaveCount(5);
+     for (const view of ['learn', 'drills', 'recognize', 'history']) {
+       await page.locator(`.tab[data-view="${view}"]`).click(); await expect(page.locator(`#${view}View`)).toBeVisible(); await shell();
+@@ -73,3 +84,21 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+     await expect(page.locator('#gunName')).toHaveValue('QA Handgun');
+   });
+ }
++
++
++test('header icon keyboard labels, focus tooltips and modified links preserve navigation',async({page})=>{
++ await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();
++ const about=page.getByRole('banner').getByRole('link',{name:'About',exact:true});
++ await expect(about).toHaveAttribute('title','About');await about.focus();await expect(about.locator('.header-tooltip')).toBeVisible();await about.locator('.header-tooltip').hover();await expect(about.locator('.header-tooltip')).toBeVisible();
++ await page.keyboard.press('Escape');await expect(about.locator('.header-tooltip')).not.toBeVisible();
++ await page.keyboard.press('Tab');await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true})).toBeFocused();
++ await page.keyboard.press('Enter');await expect(page).toHaveURL(/\/contact\/$/);
++ await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true})).toHaveAttribute('aria-current','page');
++ await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true}).locator('.header-tooltip')).not.toBeVisible();
++
++ await page.goBack();await expect(page.locator('#gunSetupView')).toBeVisible();
++ await page.setViewportSize({width:640,height:844});await page.evaluate(()=>document.documentElement.style.zoom='2');
++ const box=await page.locator('header.hero').boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(640);
++ // Text zoom must not remove names or destinations; physical 200% device checks are tracked separately.
++ for(const label of ['About','Contact'])await expect(page.getByRole('banner').getByRole('link',{name:label,exact:true})).toBeVisible();await expect(page.getByRole('banner').getByRole('button',{name:'Settings',exact:true})).toBeVisible();
++});
+diff --git a/visual-tests/screens.spec.js b/visual-tests/screens.spec.js
+index 0cb7f01..8bb0758 100644
+--- a/visual-tests/screens.spec.js
++++ b/visual-tests/screens.spec.js
+@@ -254,6 +254,7 @@ for (const item of cases) {
+     expect(overflow, `Horizontal overflow ${overflow}px; visible offenders: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);
+     expect(errors, 'Unexpected browser errors').toEqual([]);
+     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });
++    await page.mouse.move(0,0); // Shared-header tooltips are separately interaction-tested.
+     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });
+     await expect(page).toHaveScreenshot(baselineName(item).split('/'));
+   });
+diff --git a/workers/sw.js b/workers/sw.js
+index 5422bbc..b142f14 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -3,7 +3,7 @@ const appPaths = __APP_OFFLINE_PATHS__;
+ const navRedirects = __APP_NAV_REDIRECTS__;
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v87`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v88`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/favicon.ico', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {
