@@ -1,5 +1,7 @@
 # About design
 
+CHG-061: retain marketing content inside About through reusable MarketingOverview, including the routine, free/local-data promise, free-app CTA and four guide cards. The canonical `/about/` is both public and in-app, using the same shell; `/` opens the actual trainer. Changed current images require pinned review. [SEO requirements](../../../requirements/public-seo.md).
+
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
 
 About also shows **Sound trainer · Beta · v0.8.0** and a **Feedback welcome** card: “This app is in beta. All feedback and suggestions are welcome. Visit Contact to share an idea or report a problem.” Contact remains a separate page. See [ABOUT-07](../../../requirements/about.md#beta-and-feedback--chg-041).
@@ -16,7 +18,7 @@ CHG-029 revises the footer and separates Contact from About. Current captures ar
 
 CHG-027 · Initial copy/layout proposal implemented for review on `feature/about-contact-page`; direct page/contact request authorizes this slice. Exact copy has not received word-for-word user approval.
 
-Entry: shared app footer → About, independently of Settings and also before saving a first gun. App anchor: `aboutView`. This is a history-backed state of `/`, not a separate indexable route.
+Entry: shared app footer → About, independently of Settings and also before saving a first gun. App anchor: `aboutView`. This is a history-backed canonical `/about/` route.
 
 ## Layout and interaction
 

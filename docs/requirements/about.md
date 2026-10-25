@@ -59,3 +59,7 @@ Use two separate **About** and **Contact** controls centered in the shared foote
 ## Beta and feedback — CHG-041
 
 **ABOUT-07:** the user directly requests **“In about page mention, tht beta version, and all the suggestions are welcom”**. Display Beta beside the current version and add a short **Feedback welcome** card: **“This app is in beta. All feedback and suggestions are welcome. Visit Contact to share an idea or report a problem.”** Keep the existing Contact destination/email; no new form, email backend or automatic data sharing. Apply to both editions and both themes, preserving independent About/Contact pages and navigation. Refresh actual About and shared-header screenshots; this is a direct implementation instruction, not a new approval request.
+
+## Retained marketing content — CHG-061
+
+The owner explicitly requires the marketing homepage to become part of About, not be permanently deleted. Reuse `MarketingOverview` for the introduction, simple routine, free/local-data promise, “Open the free app” action and four unique practice-guide links. About retains Beta feedback, local-data recovery and safety sections in the common app shell. `/about/` is the single canonical public/app About URL; `/welcome/` redirects here. Root `/` opens the trainer. Existing full-preview copy boundaries and navigation/save/capture guards remain.

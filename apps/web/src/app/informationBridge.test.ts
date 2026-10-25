@@ -109,3 +109,17 @@ test('failed enhancement retains native actions and retries without mounting dup
   expect(load).toHaveBeenCalledTimes(2);expect(mount).toHaveBeenCalledTimes(1);expect(chrome).toHaveBeenCalledTimes(2);
   bridge.dispose();
 });
+
+test('inert compiled About content stays outside startup DOM and opens synchronously before its chunk',()=>{
+ setContent('<section id="aboutView"><template><button data-react-back>Back</button><p id="aboutFeatureSummary" data-full-summary="Full">Free</p><a href="/single-trigger-press-guide/">Guide</a></template></section><section id="contactView"></section>');
+ const onBack=jest.fn(),load=jest.fn(()=>new Promise<never>(()=>{}));const bridge=createInformationBridge({onNavigate:jest.fn(),onBack,onError:jest.fn(),load});
+ bridge.setFull(true);bridge.show('home');expect(document.getElementById('aboutFeatureSummary')).toBeNull();expect(load).not.toHaveBeenCalled();bridge.show('about');expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Full');expect(document.querySelector('#aboutView template')).toBeNull();document.querySelector<HTMLButtonElement>('#aboutView button')!.click();expect(onBack).toHaveBeenCalledTimes(1);bridge.show('about');expect(document.querySelectorAll('#aboutFeatureSummary')).toHaveLength(1);bridge.dispose();
+});
+
+test('a disposed information owner cannot materialize a deferred page or load its runtime',()=>{
+ setContent('<section id="aboutView"><template><p id="aboutFeatureSummary">Free</p></template></section><section id="contactView"></section>');const load=jest.fn(()=>new Promise<never>(()=>{}));const bridge=createInformationBridge({onNavigate:jest.fn(),onBack:jest.fn(),onError:jest.fn(),load});bridge.dispose();bridge.show('about');expect(document.querySelector('#aboutView template')).not.toBeNull();expect(document.getElementById('aboutFeatureSummary')).toBeNull();expect(load).not.toHaveBeenCalled();
+});
+
+test('missing About host remains safe for fallback calls without mutating another page',()=>{
+ setContent('<section id="contactView"></section>');const load=jest.fn(()=>new Promise<never>(()=>{}));const bridge=createInformationBridge({onNavigate:jest.fn(),onBack:jest.fn(),onError:jest.fn(),load});bridge.setFull(true);bridge.show('about');expect(document.getElementById('aboutFeatureSummary')).toBeNull();expect(document.getElementById('contactView')?.childNodes).toHaveLength(0);bridge.dispose();
+});

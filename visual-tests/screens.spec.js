@@ -41,7 +41,7 @@ async function emit(page, label = 'trigger') {
 }
 
 async function prepare(page, item) {
-  if(item.screen==='publicSite'){const route=PUBLIC_ROUTES.find(row=>row.id===item.state.split('.')[0]);await page.goto(route.path==='/'?'/welcome/':route.path);await expect(page.locator('h1')).toHaveText(route.heading);return;}
+  if(item.screen==='publicSite'){const route=PUBLIC_ROUTES.find(row=>row.id===item.state.split('.')[0]);await page.goto(route.path);if(route.appView)await expect(page.locator('#statusPill')).toHaveText('Ready');if(route.id==='home')await visible(page,'gunSetupView');else if(route.appView){await visible(page,route.appView+'View');await expect(page.locator('#'+route.appView+'View')).toContainText(route.heading);}else await expect(page.locator('h1')).toHaveText(route.heading);return;}
 
   page.on('dialog', dialog => dialog.accept());
   await page.addInitScript(installSyntheticMedia);

@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
+import {startGunPreferenceReads} from '../src/gunPreferenceReads.js';
 import {setNodeText,setNodeDisabled} from '../src/domUpdates.js';
 
 import {jest} from '@jest/globals';
@@ -16,7 +17,7 @@ const extract=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end
 const deferred=()=>{let resolve;const promise=new Promise(yes=>{resolve=yes;});return{promise,resolve};};
 function setup(gun={id:'a',name:'Test',type:'Handguns'}){
  document.body.innerHTML=renderPageTemplates('{{app}}');
- const context={getLibraryOverview:jest.fn(async()=>({activeGun:gun,guns:gun?[gun]:[],devicePreferences:{appearance:'light',vibrationFeedback:true}})),setNodeText,setNodeDisabled,initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
+ const context={startGunPreferenceReads,getLibraryOverview:jest.fn(async()=>({activeGun:gun,guns:gun?[gun]:[],devicePreferences:{appearance:'light',vibrationFeedback:true}})),setNodeText,setNodeDisabled,initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
   activeGun:null,guns:[],examples:[],customDrills:[],audioPreferences:{},calibration:[],enabledSoundLabels:[],
   processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',vibrationFeedback:false,vibrationRejected:true,
   getActiveGun:jest.fn(async()=>gun),getGuns:jest.fn(async()=>gun?[gun]:[]),
@@ -70,16 +71,17 @@ test('snapshot read failure preserves the current profile and prevents partial p
  const {context:c,load}=setup();c.getLibraryOverview.mockRejectedValue(new Error('read blocked'));await expect(load()).rejects.toThrow('read blocked');expect(c.activeGun).toBeNull();expect(c.applyAppearance).not.toHaveBeenCalled();expect(c.renderGunControls).not.toHaveBeenCalled();
 });
 
-test('saved-preset validation still fails before later settings and profile presentation',async()=>{
+test('saved-preset validation still fails before applying prefetched settings or profile presentation',async()=>{
  const {context:c,load}=setup();c.currentDrill.mockImplementation(()=>{throw new Error('invalid saved preset');});
  await expect(load()).rejects.toThrow('invalid saved preset');
  expect(c.getGunSetting).toHaveBeenCalledWith('selectedDrill','','a');
- expect(c.getGunSetting).not.toHaveBeenCalledWith('audioPreferences',{},'a');
+ expect(c.getGunSetting).toHaveBeenCalledWith('audioPreferences',{},'a');
+ expect(c.audioPreferences).toEqual({});expect(c.calibration).toEqual([]);
  expect(c.renderHome).not.toHaveBeenCalled();expect(c.renderGunControls).not.toHaveBeenCalled();
 });
-test('saved-preset read failure remains observable before validation and later settings',async()=>{
+test('saved-preset read failure takes precedence over validation and later prefetched failures',async()=>{
  const {context:c,load}=setup(),read=c.getGunSetting.getMockImplementation();
- c.getGunSetting.mockImplementation((...args)=>args[0]==='selectedDrill'?Promise.reject(new Error('preset read failed')):read(...args));
+ c.getGunSetting.mockImplementation((...args)=>args[0]==='selectedDrill'?Promise.reject(new Error('preset read failed')):args[0]==='audioPreferences'?Promise.reject(new Error('later read failed')):read(...args));
  await expect(load()).rejects.toThrow('preset read failed');
  expect(c.currentDrill).not.toHaveBeenCalled();expect(c.renderHome).not.toHaveBeenCalled();
 });

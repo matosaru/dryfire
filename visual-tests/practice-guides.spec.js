@@ -53,7 +53,7 @@ test('browser Back/Forward restores the same setup and guide; refresh does not r
   await expect(page.locator('#practiceGuideView')).toBeVisible(); await page.goBack();
   await expect(page.locator('#practiceConfigure')).toBeVisible(); await expect(page.locator('#practiceRepetitions')).toHaveValue('23');
   await page.goForward(); await expect(page.locator('#practiceGuideView')).toBeVisible();
-  await page.reload(); await expect(page.locator('#homeView')).toBeVisible();
+  await page.reload(); await expect(page.locator('#practiceGuideView')).toBeVisible();
   expect(await page.evaluate(() => window.__guideMicRequests)).toBe(0);
 });
 

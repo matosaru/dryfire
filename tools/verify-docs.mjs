@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { styleSources } from './style-sources.mjs';
 import {PUBLIC_ROUTES,CANONICAL_ORIGIN} from '../site/routes.js';
 import {renderPublicHTML} from './public-pages.mjs';
-import {offlineAppPaths,parseAppPath,appTitleFor} from '../src/appPaths.js';
+import {offlineAppPaths,parseAppPath,appTitleFor,isIndexableAppPath} from '../src/appPaths.js';
 import publicSite from '../workers/publicSite.js';
 import { PRACTICE_MODES } from '../src/practiceSession.js';
 import { renderPageTemplates } from './page-templates.mjs';
@@ -17,7 +17,7 @@ const digest = path => createHash('sha256').update(readFileSync(resolve(root, pa
 const registry = JSON.parse(read(mapPath));
 const screens = registry.screens;
 const entries = [...screens, ...registry.shared, ...(registry.publicScreens??[])];
-const publicIds=new Set([...renderPublicHTML(PUBLIC_ROUTES[0],[]).matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
+const publicIds=new Set([...renderPublicHTML(PUBLIC_ROUTES.find(route=>!route.appView),[]).matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
 const args = process.argv.slice(2);
 const errors = [];
 const check = (condition, message) => { if (!condition) errors.push(message); };
@@ -45,6 +45,7 @@ if (existsSync(resolve(root, exampleManifest))) {
 
 const html = renderPageTemplates(read('index.html'));
 const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]));
+for(const id of ids)publicIds.add(id);
 const views = [...html.matchAll(/<section\b[^>]*\bid="([^"]+View)"[^>]*\bclass="[^"]*\bview\b/g)].map(m => m[1]);
 check(same(views, screens.map(s => s.domId)), 'HTML functional views differ from the screen registry; update architecture/design coverage.');
 check(new Set(entries.map(s => s.id)).size === entries.length, 'Duplicate screen/shared IDs in registry.');
@@ -117,7 +118,7 @@ const append = (screen, prefix, last) => {
 append(screens.find(s => s.id === 'home'), '', false);
 treeLines.push('└── Shared capture gate', '    └── Safety confirmation dialog', '```');
 const rows = entries.map(s => `| ${s.title} | \`${s.domId}\` | ${s.entry} | ${s.states.map(st => `\`${st.key}\`${st.edition ? ` (${st.edition})` : ""}`).join(', ')} | ${link('Design', s.design)} | ${s.requirements.map(p => link(p.split('/').at(-1).replace('.md',''),p)).join(', ')} |`);
-const tree = `# Site and screen tree\n\nGenerated from [screen-map.json](screen-map.json). Reviewed ${registry.reviewedOn}; application source baseline \`${registry.sourceBaseline.slice(0,7)}\`, with ${(registry.implementationChanges ?? []).join(" / ")} documented changes and exact reviewed-source fingerprints in the registry. Regenerate with \`npm run docs:generate\`.\n\n## Public site\n\nCanonical production origin: \`${registry.publicOrigin}/\`. **${PUBLIC_ROUTES.length} implemented public routes**, generated with initial HTML/metadata, sitemap and robots from site/routes.js. Operational screens have readable /app/ paths and noindex; personal records are not public sitemap entries. Workers/nonproduction root retains the legacy app entry. [SEO routing](../seo/indexable-routes-plan.md) records implementation and production acceptance separately.\n\n## App hierarchy\n\n${treeLines.join('\n')}\n\nRegistry edition labels identify public-only and full-preview-only states; shared current images use public, and browser references test both editions. About and Contact retain the shared five-item bottom navigation.\n\nThe tree describes primary destinations, not a restriction on Back/Forward. About and Contact open separate screens from centered shared-footer controls, including before gun setup; Back returns to the visited screen. Settings is accessible from the common branded header on every screen; My Guns links to the shared add/edit form and backup/restore. History opens Practice or Drill Session review. Missing required sounds link to Learn. Gun Setup can also be reached from My Guns after first use.\n\n## Functional screens and states\n\n| Screen / shared gate | App anchor | Entry path | Captured states | Visual layout | Functional specifications |\n| --- | --- | --- | --- | --- | --- |\n${rows.join('\n')}\n\n## Shared templates\n\nEvery screen uses the [reusable app layout and view wrapper](page-templates.md), one branded header, main content, informational footer and fixed five-item bottom navigation. Installation/help is existing Settings content. Keep this shell consistent when adding screens.\n\n## State transitions\n\n\`Practice/Sequence Configure → About this practice → Same Configure\`; preserve source/gun context and invalid/unsaved draft values, with no microphone/safety prompt. Guides use controlled synthetic examples and pause on navigation/background.\n\n\`First visit → Gun setup → Home\`; returning visits restore a valid selected gun.\n\n\`Drills → Practice Configure → Safety if needed → Connecting → Countdown or external cue → Listening → Review\`. Single saves its first accepted click then automatically repeats fresh countdown/signal/listening until the target; Par offers Next; repeated/control remain continuous. Pause releases capture; Resume restarts appropriately. STOP/End saves partial results.\n\n\`Drills → Sequence Configure → Safety if needed → Countdown/GO → Ordered sounds → Saved repetition → Fresh countdown → Review\`. Pause/Resume and interruption preserve durable results.\n\n\`History → Saved Practice/Sequence Review\`; Back returns to the visited screen. Native/browser Back/Forward cleanly end active capture and validate gun/context ownership. Refresh preserves local data but never automatically acquires a microphone.\n\n\`My Guns → Delete one gun → Confirm → Remaining gun library or first-gun setup\`; atomically delete all records owned by that gun, preserving other guns/device preferences. Cancel keeps all data.\n\n\`History → Clear recognition history or Clear saved sessions → Confirm → Refreshed corresponding log/statistics\`; separate scopes preserve other data and guns. Deleted Review contexts resolve to Drills.\n\n\`Any capture action → Safety modal if unconfirmed → Confirm & continue original action or Cancel\`. Page-session safety acknowledgement resets on refresh or gun change.\n\n[Maintenance and data architecture](README.md) · [Current design catalog](../design/README.md) · [Implementation plan](../project/implementation-history.md)\n`;
+const tree = `# Site and screen tree\n\nGenerated from [screen-map.json](screen-map.json). Reviewed ${registry.reviewedOn}; application source baseline \`${registry.sourceBaseline.slice(0,7)}\`, with ${(registry.implementationChanges ?? []).join(" / ")} documented changes and exact reviewed-source fingerprints in the registry. Regenerate with \`npm run docs:generate\`.\n\n## Public site\n\nCanonical production origin: \`${registry.publicOrigin}/\`. **${PUBLIC_ROUTES.length} implemented public routes**, generated with initial HTML/metadata, sitemap and robots from site/routes.js. The app opens at / on every host. Operational screens have flat paths and noindex; About, Contact and seven public manuals reuse the app shell with readable initial HTML. Personal records are not public sitemap entries. [SEO routing](../seo/indexable-routes-plan.md) records implementation and production acceptance separately.\n\n## App hierarchy\n\n${treeLines.join('\n')}\n\nRegistry edition labels identify public-only and full-preview-only states; shared current images use public, and browser references test both editions. About and Contact retain the shared five-item bottom navigation.\n\nThe tree describes primary destinations, not a restriction on Back/Forward. About and Contact open separate screens from centered shared-footer controls, including before gun setup; Back returns to the visited screen. Settings is accessible from the common branded header on every screen; My Guns links to the shared add/edit form and backup/restore. History opens Practice or Drill Session review. Missing required sounds link to Learn. Gun Setup can also be reached from My Guns after first use.\n\n## Functional screens and states\n\n| Screen / shared gate | App anchor | Entry path | Captured states | Visual layout | Functional specifications |\n| --- | --- | --- | --- | --- | --- |\n${rows.join('\n')}\n\n## Shared templates\n\nEvery screen uses the [reusable app layout and view wrapper](page-templates.md), one branded header, main content, informational footer and fixed five-item bottom navigation. Installation/help is existing Settings content. Keep this shell consistent when adding screens.\n\n## State transitions\n\n\`Practice/Sequence Configure → About this practice → Same Configure\`; preserve source/gun context and invalid/unsaved draft values, with no microphone/safety prompt. Guides use controlled synthetic examples and pause on navigation/background.\n\n\`First visit → Gun setup → Home\`; returning visits restore a valid selected gun.\n\n\`Drills → Practice Configure → Safety if needed → Connecting → Countdown or external cue → Listening → Review\`. Single saves its first accepted click then automatically repeats fresh countdown/signal/listening until the target; Par offers Next; repeated/control remain continuous. Pause releases capture; Resume restarts appropriately. STOP/End saves partial results.\n\n\`Drills → Sequence Configure → Safety if needed → Countdown/GO → Ordered sounds → Saved repetition → Fresh countdown → Review\`. Pause/Resume and interruption preserve durable results.\n\n\`History → Saved Practice/Sequence Review\`; Back returns to the visited screen. Native/browser Back/Forward cleanly end active capture and validate gun/context ownership. Refresh preserves local data but never automatically acquires a microphone.\n\n\`My Guns → Delete one gun → Confirm → Remaining gun library or first-gun setup\`; atomically delete all records owned by that gun, preserving other guns/device preferences. Cancel keeps all data.\n\n\`History → Clear recognition history or Clear saved sessions → Confirm → Refreshed corresponding log/statistics\`; separate scopes preserve other data and guns. Deleted Review contexts resolve to Drills.\n\n\`Any capture action → Safety modal if unconfirmed → Confirm & continue original action or Cancel\`. Page-session safety acknowledgement resets on refresh or gun change.\n\n[Maintenance and data architecture](README.md) · [Current design catalog](../design/README.md) · [Implementation plan](../project/implementation-history.md)\n`;
 const coverage = `| Screen / shared gate | Current layout and captures | Requirements |\n| --- | --- | --- |\n${entries.map(s => `| ${s.title} | [${s.states.length} state/theme references](${relative(resolve(root,'docs/design'),resolve(root,s.design)).split(sep).join('/')}) | ${s.requirements.map(p => `[${p.split('/').at(-1).replace('.md','')}](${relative(resolve(root,'docs/design'),resolve(root,p)).split(sep).join('/')})`).join(', ')} |`).join('\n')}\n`;
 // The application sitemap is generated from the same reviewed screen inventory.
 const appSitemapPath = 'docs/architecture/application-sitemap.md';
@@ -176,16 +177,16 @@ The public edition permits creation of up to two guns and retains existing saved
 
 ## Public URLs and indexing
 
-The implemented public path inventory is ${registry.publicPaths.map(path => `\`${registry.publicOrigin}${path}\``).join(', ')}. Public routes have prerendered HTML/metadata. Operational screens are noindex /app/ paths with history-backed state; personal records are not public pages. This application map does not invent indexable URLs for Settings, sessions or guides. The generated [SEO XML sitemap](../seo/templates/sitemap.xml) and [SEO routing documentation](../seo/README.md) describe indexing; production deployment and crawler decisions remain separate outcomes.
+The implemented public path inventory is ${registry.publicPaths.map(path => `\`${registry.publicOrigin}${path}\``).join(', ')}. Public routes have prerendered HTML/metadata. Operational screens use flat noindex paths with history-backed state; personal records are not public pages. This application map does not invent indexable URLs for Settings, sessions or guides. The generated [SEO XML sitemap](../seo/templates/sitemap.xml) and [SEO routing documentation](../seo/README.md) describe indexing; production deployment and crawler decisions remain separate outcomes.
 
 [Complete URL catalog](../seo/routes.md) · [Detailed generated screen/state tree](site-tree.md) · [Architecture and entry point](application-structure.md) · [Maintenance](README.md)
 `;
 // Publish a complete URL inventory from the runtime route registries.
 const routeInventoryPath = 'docs/seo/routes.md';
 const publicRows = PUBLIC_ROUTES.map(route => `| [${route.path}](${CANONICAL_ORIGIN}${route.path}) | ${route.title} | Yes |`);
-const appRows = offlineAppPaths().filter(path => path.endsWith('/')).map(path => {
+const appRows = offlineAppPaths().filter(path => path.endsWith('/')&&!isIndexableAppPath(path)).map(path => {
   const route = parseAppPath(path);
-  const title = route.mode ? PUBLIC_ROUTES.find(item => item.id === route.mode)?.heading : appTitleFor(route).split(' — ')[0];
+  const title = appTitleFor(route).split(' — ')[0];
   return `| \`${path}\` | ${title} | No; noindex |`;
 });
 const copiedAssetPaths = (dir => {
@@ -203,7 +204,7 @@ The deployed XML endpoint is **[https://easydryfire.com/sitemap.xml](https://eas
 
 ## Indexable public pages
 
-Canonical origin: **${CANONICAL_ORIGIN}**. Each page has useful prerendered content, its own initial title/description/canonical/social metadata and factual JSON-LD. No JavaScript, gun profile or microphone is needed to read it. Only production public pages are indexable; previews remain noindex.
+Canonical origin: **${CANONICAL_ORIGIN}**. Each page has useful prerendered content, its own initial title/description/canonical/social metadata and factual JSON-LD. No gun profile or microphone is needed to read informational pages; they are readable without JavaScript. The app homepage requires JavaScript and discloses that requirement. Only production public pages are indexable; previews remain noindex.
 
 | Canonical path | Page title | In XML sitemap |
 | --- | --- | --- |
@@ -217,7 +218,7 @@ These ${appRows.length} paths open the app with explicit noindex and stay out of
 | --- | --- | --- |
 ${appRows.join('\n')}
 
-Public /about/ and /contact/ are distinct from app /app/about/ and /app/contact/; the latter retain the active app context and remain noindex. Installation instructions live in Settings; there is no separate /app/help/ route. Practice setup/run/review share their mode path; saved records do not get public URLs.
+About, Contact and public manuals use one shared app screen at each canonical URL. Installation instructions are in Settings and the public /help/ page. Practice setup/run/review share their mode path; saved records do not get public URLs.
 
 ## Aliases, redirects and errors
 
@@ -225,11 +226,11 @@ Public /about/ and /contact/ are distinct from app /app/about/ and /app/contact/
 | --- | --- |
 | easydryfire.app with any path/query | Owner-configured permanent301 to matching easydryfire.com path/query; independently unverified here |
 | www.easydryfire.com when attached to this Worker, or HTTP .com |308 to HTTPS canonical .com, preserving path/query |
-| /app or a known public/app path without its trailing slash |308 to matching trailing-slash path |
-| /index.html | Legacy noindex app entry |
-| /welcome/ on production .com |308 to / |
-| /welcome/ on preview/nonproduction | Public landing preview, noindex |
-| / on nonproduction/Workers hosts | Legacy app entry, noindex |
+| Known legacy /app/* or nested guide URL |308 to matching flat URL, preserving query |
+| Known path without its trailing slash |308 to matching trailing-slash path |
+| /index.html |308 to / |
+| /welcome/ |308 to /about/; marketing content remains there |
+| / on nonproduction/Workers hosts | Same app homepage, noindex |
 | /site/*, /src/*, source maps and unknown paths |404; internal output paths are not public pages |
 | Unsupported methods |405 with GET/HEAD allowed |
 

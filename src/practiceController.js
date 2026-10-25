@@ -1,3 +1,4 @@
+import {guidePathFor} from './appPaths.js';
 import { textElement as node } from './textElement.js';
 import { startContinuousListening } from './audio.js';
 import { recognitionFeatures, recognizeRecording, selectRecognition } from './recognition.js';
@@ -117,8 +118,8 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   function render() {
     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
     const running = pending || state && state.phase !== 'review';
-    const parent={guideHidden:!!running||!!record,title:practiceDefinition(record?.practiceMode||mode)?.title||'Practice'};
-    if(page)page.update(parent);else{$('practiceGuideLink').classList.toggle('hidden',parent.guideHidden);$('practice-title').textContent=parent.title;}
+    const parent={guideHref:guidePathFor(mode),guideHidden:!!running||!!record,title:practiceDefinition(record?.practiceMode||mode)?.title||'Practice'};
+    if(page)page.update(parent);else{$('practiceGuideLink').setAttribute('href',parent.guideHref);$('practiceGuideLink').classList.toggle('hidden',parent.guideHidden);$('practice-title').textContent=parent.title;}
     $('practiceConfigure').classList.toggle('hidden', !!running || !!record);
     $('practiceRun').classList.toggle('hidden', !running); $('practiceReview').classList.toggle('hidden', !!running || !record);
     $('practiceConfigFields').disabled = !!running;

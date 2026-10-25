@@ -1,8 +1,9 @@
 // Injected at build time: keep this classic worker free of module dependencies.
 const appPaths = __APP_OFFLINE_PATHS__;
+const navRedirects = __APP_NAV_REDIRECTS__;
 // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
 const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
-const CACHE = `dryfire-sound-trainer-${EDITION}-v85`;
+const CACHE = `dryfire-sound-trainer-${EDITION}-v87`;
 const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/favicon.ico', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
 
 if (EDITION === 'preview') {
@@ -43,6 +44,7 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+  if (request.mode === 'navigate' && navRedirects[url.pathname]) { event.respondWith(Promise.resolve(Response.redirect(new URL(navRedirects[url.pathname] + url.search, url.origin), 308))); return; }
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
     const cached = await cache.match(request, { ignoreSearch: true });

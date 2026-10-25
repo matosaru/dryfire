@@ -5,3 +5,5 @@ export function isGuideContextCurrent(
   gunId: string | number,
   sourceKey?: string | null,
 ): boolean;
+
+export function isPublicGuideContextCurrent(guide: {gunId:string|number;sourceKey:string;id?:string;publicEntry?:boolean}|null|undefined,gunId:string|number|null|undefined):boolean;
