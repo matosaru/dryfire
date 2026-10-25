@@ -1415,6 +1415,41 @@ index dfb8259..875f3c6 100644
      });
    }
    bridge.dispose();
+diff --git a/tests/staticPageTree.test.js b/tests/staticPageTree.test.js
+new file mode 100644
+index 0000000..e5d4f18
+--- /dev/null
++++ b/tests/staticPageTree.test.js
+@@ -0,0 +1,7 @@
++import {JSDOM} from 'jsdom';
++import {materializeStaticCatalog} from '../src/staticCatalog.js';
++const hostFor = tree => new JSDOM(`<section><script type="application/json" data-static-page="about">${JSON.stringify(tree).replaceAll('<','\\u003c')}</script></section>`);
++test('trusted serialized page creates text literally and materializes once',()=>{const dom=hostFor([['p',[['id','safe']],['<script>literal</script>']]]);try{const host=dom.window.document.querySelector('section');materializeStaticCatalog(host);expect(host.querySelector('#safe').textContent).toBe('<script>literal</script>');expect(host.querySelector('script')).toBeNull();materializeStaticCatalog(host);expect(host.children).toHaveLength(1);}finally{dom.window.close();}});
++test.each([[['script',[],[]]],[['p',[['onclick','alert(1)']],[]]],[['a',[['href','javascript:alert(1)']],[]]],[['img',[['src','//evil.test/image']],[]]],[['p',[],[42]]]])('invalid trees fail atomically: %j',(...tree)=>{const dom=hostFor(tree);try{const host=dom.window.document.querySelector('section'),before=host.innerHTML;expect(()=>materializeStaticCatalog(host)).toThrow();expect(host.innerHTML).toBe(before);}finally{dom.window.close();}});
++test('unrelated JSON is not a static page',()=>{const dom=new JSDOM('<section><script type="application/json">{}</script></section>');try{const host=dom.window.document.querySelector('section');materializeStaticCatalog(host);expect(host.firstElementChild.tagName).toBe('SCRIPT');}finally{dom.window.close();}});
++test('malformed JSON and malformed attributes leave the inert source intact',()=>{for(const payload of ['{','{}',JSON.stringify([['p',[['id']],[]]]),JSON.stringify([['link',[['rel','stylesheet'],['as','image'],['href','/x']],[]]])]){const dom=new JSDOM(`<section><script type="application/json" data-static-page="about">${payload}</script></section>`);try{const host=dom.window.document.querySelector('section'),before=host.innerHTML;expect(()=>materializeStaticCatalog(host)).toThrow();expect(host.innerHTML).toBe(before);}finally{dom.window.close();}}});
+diff --git a/tools/serialize-static-page.d.mts b/tools/serialize-static-page.d.mts
+new file mode 100644
+index 0000000..7289b4c
+--- /dev/null
++++ b/tools/serialize-static-page.d.mts
+@@ -0,0 +1 @@
++export function serializeStaticPage(html: string): string;
+diff --git a/tools/serialize-static-page.mjs b/tools/serialize-static-page.mjs
+new file mode 100644
+index 0000000..7a0d6a9
+--- /dev/null
++++ b/tools/serialize-static-page.mjs
+@@ -0,0 +1,9 @@
++import {JSDOM} from 'jsdom';
++/** Build-only DOM serialization of our typed page, never user or stored markup. */
++export function serializeStaticPage(html) {
++ const dom=new JSDOM(`<body>${html}</body>`);
++ try {
++  const encode=node=>node.nodeType===3?node.textContent:[node.localName,Array.from(node.attributes,a=>[a.name,a.value]),Array.from(node.childNodes,encode)];
++  return JSON.stringify(Array.from(dom.window.document.body.childNodes,encode)).replaceAll('<','\\u003c');
++ } finally {dom.window.close();}
++}
 diff --git a/tools/verify-docs.mjs b/tools/verify-docs.mjs
 index 249822a..68c88f1 100644
 --- a/tools/verify-docs.mjs
