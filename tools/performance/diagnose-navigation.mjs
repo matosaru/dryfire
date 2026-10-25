@@ -19,9 +19,9 @@ const servers=await Promise.all([arg('baseline'),arg('candidate')||'dist'].map(a
  }catch{res.writeHead(404).end();}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));return{server,url:`http://127.0.0.1:${server.address().port}`};
 }));
-const variants=['baseline','candidate','candidateNoIcons','candidateNoTitle','candidateNoURL','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons'];
+const variants=['baseline','candidate','candidateNoIcons','candidateNoTitle','candidateNoURL','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons','candidateButtons','candidateNoHref'];
 const browser=await webkit.launch(),samples=variants.map(()=>[]),geometries={};
-try{for(let run=0;run<6;run++)for(const index of [0,1,6].map((_,i,a)=>a[(i+run)%a.length])){
+try{for(let run=0;run<6;run++)for(const index of [0,1,6,9,10].map((_,i,a)=>a[(i+run)%a.length])){
  const context=await browser.newContext({viewport:environment.viewport,locale:environment.locale,timezoneId:environment.timezoneId,reducedMotion:'reduce',serviceWorkers:'block'});
  try{
   await context.addInitScript(installSyntheticMedia);await context.addInitScript({content:`window.__performanceUsableScreen=(${usableInitialScreen.toString()});`});await context.addInitScript(observeReadiness);
@@ -35,6 +35,8 @@ try{for(let run=0;run<6;run++)for(const index of [0,1,6].map((_,i,a)=>a[(i+run)%
   if(index===6)await page.evaluate(()=>{for(const id of ['aboutBtn','contactBtn'])document.getElementById(id).style.display='none';const gear=document.getElementById('settingsShortcut');gear.replaceChildren(document.createTextNode('⚙'));gear.style.fontSize='26px';});
   if(index===7)await page.evaluate(()=>document.querySelectorAll('.header-link svg').forEach(node=>node.remove()));
   if(index===8)await page.evaluate(()=>{for(const[id,glyph]of[['aboutBtn','ⓘ'],['contactBtn','@'],['settingsShortcut','⚙']]){const node=document.getElementById(id);node.querySelector('svg')?.replaceWith(document.createTextNode(glyph));node.style.fontSize='24px';}});
+  if(index===9)await page.evaluate(()=>{for(const id of ['aboutBtn','contactBtn']){const old=document.getElementById(id),node=document.createElement('button');for(const a of old.attributes)if(a.name!=='href')node.setAttribute(a.name,a.value);node.type='button';node.replaceChildren(...old.childNodes);old.replaceWith(node);}});
+  if(index===10)await page.evaluate(()=>{for(const id of ['aboutBtn','contactBtn'])document.getElementById(id).removeAttribute('href');});
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await page.evaluate(()=>{window.__navigationPhases=new Promise((resolve,reject)=>{
    const times={},button=document.getElementById('settingsShortcut');let start;
