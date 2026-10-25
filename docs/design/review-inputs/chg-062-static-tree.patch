@@ -15,10 +15,10 @@ index 5c6cd9a..3a8d6ff 100644
 +
 +CHG-062 performance correction under review: the in-app Settings control retains its existing native button action (with shared icon styling, accessible name/current state and guarded route callback); About and Contact are real links. Static editorial/public link-mode shells retain a real Settings href. This preserves the released Settings keyboard/action contract rather than requiring identical HTML tags for different control purposes. Visual references remain unchanged; complete acceptance is still required.
 diff --git a/apps/web/src/app/chromeBridge.test.ts b/apps/web/src/app/chromeBridge.test.ts
-index f3ba052..882ecff 100644
+index f3ba052..ce5a97d 100644
 --- a/apps/web/src/app/chromeBridge.test.ts
 +++ b/apps/web/src/app/chromeBridge.test.ts
-@@ -80,3 +80,53 @@ test('repeated identical snapshots do not rewrite native chrome or schedule rend
+@@ -80,3 +80,59 @@ test('repeated identical snapshots do not rewrite native chrome or schedule rend
    expect(renderer.update).toHaveBeenCalledWith({view:'learn',status:'Listening',navigationDisabled:true});
    observer.disconnect();bridge.dispose();
  });
@@ -72,8 +72,14 @@ index f3ba052..882ecff 100644
 + expect(link.dataset.tooltipDismissed).toBe('true');
 + link.blur();expect(link.dataset.tooltipDismissed).toBeUndefined();bridge.dispose();
 +});
++
++test('pointer activation navigates without writing keyboard-only tooltip state',()=>{
++ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate),button=control('#settingsShortcut');
++ button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:1}));expect(navigate).toHaveBeenCalledWith('settings');expect(button.dataset.tooltipDismissed).toBeUndefined();
++ button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:0}));expect(button.dataset.tooltipDismissed).toBe('true');bridge.dispose();
++});
 diff --git a/apps/web/src/app/chromeBridge.ts b/apps/web/src/app/chromeBridge.ts
-index 590ab15..d81bb3c 100644
+index 590ab15..fee5f79 100644
 --- a/apps/web/src/app/chromeBridge.ts
 +++ b/apps/web/src/app/chromeBridge.ts
 @@ -8,21 +8,39 @@ export type ChromeFactory = (options: { doc: Document; initial: ChromeSnapshot;
@@ -102,7 +108,7 @@ index 590ab15..d81bb3c 100644
      const view = button.dataset.view ?? destinations[button.id];
 -    if (view) onNavigate(view);
 +    if (view) {
-+      if(button.classList.contains('header-link'))button.dataset.tooltipDismissed='true';
++      if((event as MouseEvent).detail===0&&button.classList.contains('header-link'))button.dataset.tooltipDismissed='true';
 +      onNavigate(view);
 +    }
 +  };
@@ -306,7 +312,7 @@ index 217f61c..f41eaa8 100644
 -test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Open settings'})).toHaveAttribute('href','/settings/');expect(v.container.querySelector('script')).toBeNull();});
 +test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Settings'})).toHaveAttribute('href','/settings/');expect(v.container.querySelector('script')).toBeNull();});
 diff --git a/apps/web/src/styles/legacy-after-drill-cards.css b/apps/web/src/styles/legacy-after-drill-cards.css
-index 102bc2f..ccd943b 100644
+index 102bc2f..f3f212a 100644
 --- a/apps/web/src/styles/legacy-after-drill-cards.css
 +++ b/apps/web/src/styles/legacy-after-drill-cards.css
 @@ -2,14 +2,14 @@
@@ -326,6 +332,13 @@ index 102bc2f..ccd943b 100644
  .hero .brand-name{margin:0;color:var(--primary-text,#f5f7fa);font-size:inherit;font-weight:900;letter-spacing:normal;line-height:1.2}
  .brand-name .brand-eyebrow{display:block;font-size:clamp(1rem,4.9vw,1.22rem);letter-spacing:.14em;white-space:nowrap}
  .brand-tagline{display:block;margin-top:4px;font-size:.75rem;font-weight:750;letter-spacing:.24em;color:#c3ced9;white-space:nowrap}
+@@ -44,6 +44,3 @@ body[data-view="guns"] .safety-disclosure,
+ body[data-view="guns"] .gun-switcher,
+ body[data-view="gunSetup"] .safety-disclosure,
+ body[data-view="gunSetup"] .gun-switcher { display:none; }
+-body[data-view="loading"] .hero,
+-body[data-view="guns"] .hero,
+-body[data-view="gunSetup"] .hero { display:flex; }
 diff --git a/apps/web/src/styles/legacy-after-gun-setup.css b/apps/web/src/styles/legacy-after-gun-setup.css
 index b7c5c0b..0029d2b 100644
 --- a/apps/web/src/styles/legacy-after-gun-setup.css
@@ -507,7 +520,7 @@ index 9a6f4cd..7eb2b9f 100644
  ```
  
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index e079785..d4c130d 100644
+index e079785..a64c727 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -1,6 +1,6 @@
@@ -577,7 +590,7 @@ index e079785..d4c130d 100644
    "reviewedSources": {
      "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
 -    "src/main.js": "cf92168d1f51b14d2549140ad8d53f89fd6589db2ef6a3cd8c3febb10f4bdaf9",
-+    "src/main.js": "5d72b2ae9766a4c0b06cc0a42dcfa56966e1ea0c35c4c92ed3e13da03928be93",
++    "src/main.js": "8729547c372a18e62cd33ecbe1966285c5d2396a7c8fb859ac7bbfd0bbbc95f6",
      "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
      "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
      "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
@@ -719,7 +732,7 @@ index b7025f6..4e21ce1 100644
  | Public website | `public-content` | Canonical public information and app homepage; shared app shell for About/Contact/manuals | `practice.dark`, `single.dark`, `repeated.dark`, `par.dark`, `control.dark`, `sequence-rack-trigger.dark`, `sequence-mag-trigger.dark`, `sequence-draw-mag-trigger.dark`, `sequence.dark`, `calibration.dark`, `help.dark` | [Design](../design/screens/public-site/README.md) | [public-seo](../requirements/public-seo.md) |
  
 diff --git a/docs/design/baselines/chg-062-header-review.json b/docs/design/baselines/chg-062-header-review.json
-index 8ff3cd3..fa306d4 100644
+index 8ff3cd3..e65a724 100644
 --- a/docs/design/baselines/chg-062-header-review.json
 +++ b/docs/design/baselines/chg-062-header-review.json
 @@ -1,7 +1,7 @@
@@ -727,8 +740,8 @@ index 8ff3cd3..fa306d4 100644
    "change": "CHG-062",
 -  "status": "Pinned captures reviewed; complete candidate acceptance pending",
 -  "expandedCSSSha256": "b524ac8e59bad667e9ab17a21ece0a6275162f27923671728642d2ef080e970b",
-+  "status": "Final deferred About / focus dismissal candidate; full acceptance pending",
-+  "expandedCSSSha256": "40ce7acca87b2ce2413c31923e2a0013ce4b288a7005ad3d5e317a4456b63d37",
++  "status": "Original Chromium firstAction gate blocked; final complete candidate being prepared; no exception approved",
++  "expandedCSSSha256": "8fcd88fb5d9eb0ab02e089caefd6a60299617c3f4b6d4d0381e88e56de7f50c1",
    "approval": "About, Contact, Settings; @; consistent accessible icons; proceed with a plan",
    "baseline": {
      "tests": 1077,
@@ -748,13 +761,13 @@ index 8ff3cd3..fa306d4 100644
 -    "tests": 1081,
 -    "suites": 156,
 -    "coverageRatchet": "Passed, unchanged thresholds"
-+    "tests": 1093,
++    "tests": 1096,
 +    "suites": 157,
-+    "coverageRatchet": "Passed unchanged thresholds for58runtime modules and typed packages"
++    "coverageRatchet": "Passed unchanged58module and typed-package thresholds"
    },
    "audit": {
      "findings": [],
-@@ -154,5 +153,29 @@
+@@ -154,5 +153,40 @@
        }
      ],
      "review": "Source frame counts unchanged for all10 examples; dimensions unchanged; inspected Single first frames show matching content. Encoded frames/palettes coalesce differently; report changed hashes honestly. Timeline durations compared below; complete example/frame contract tests still required."
@@ -781,9 +794,20 @@ index 8ff3cd3..fa306d4 100644
 +    "selectiveWrites": 40182507983,
 +    "currentOriginalGate": 40183074477
 +  },
-+  "gifCollector": 40197850856,
++  "gifCollector": 40199053182,
 +  "startupCorrection": "Trusted build-owned JSON DOM tuples defer inactive About parsing; public About route remains prerendered. Native header controls retain explicit widget reset; Escape dismissal persists while focused.",
-+  "localBrowser": "Seven system Chromium layout/accessibility workflows passed; pinned suites required."
++  "localBrowser": "Seven layout/accessibility workflows pass after removal of redundant body-state header styling; pinned full acceptance still required.",
++  "previousCompleteCandidate": {
++    "run": 40198168109,
++    "validation": "passed",
++    "screenshotsPublic": "passed",
++    "screenshotsPreview": "passed",
++    "publicWebkit": "passed",
++    "previewWebkit": "passed",
++    "publicChromium": "firstAction36.5\u219241.4ms failed",
++    "previewChromium": "page.goto30s timeout; identical-build control passed"
++  },
++  "isolatedChromiumPending": 40200510473
  }
 diff --git a/docs/design/originality-and-provenance.md b/docs/design/originality-and-provenance.md
 index ebccc4e..b2a46c3 100644
@@ -846,10 +870,10 @@ index 23a3bae..5ee4213 100644
 +
 +CHG-063 release caching request (2026-10-25): owner wants browsers to refresh resource caches after releases and asks about query timestamps. Reviewed current policy: Vite content-hashed JS/CSS, no-cache SW, HTML revalidation, manual SW namespace and ignoreSearch matching. Added H2 automatic release identity, stable-resource policy and safe idle transition to the plan; preserve all IndexedDB/preferences/data and old lazy assets needed by active clients. No cache implementation yet; H1 verification continues.
 diff --git a/docs/project/implementation-history.md b/docs/project/implementation-history.md
-index dc34000..f51bd8d 100644
+index dc34000..a20e731 100644
 --- a/docs/project/implementation-history.md
 +++ b/docs/project/implementation-history.md
-@@ -982,3 +982,30 @@ CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon
+@@ -982,3 +982,50 @@ CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon
  
  
  CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have the same style/size and good accessibility data. H1 specifies shared 24px optical styling (including drawn @), ≥44px targets, accessible native link names/destinations/current-page state, decorative SVG semantics, logical keyboard order, visible focus/tooltips, theme contrast and responsive/zoom acceptance. Automated and manual checks remain distinct. Planning only; no application change.
@@ -880,8 +904,28 @@ index dc34000..f51bd8d 100644
 +Final local acceptance:1093tests/157suites pass; original coverage ratchet58modules/typed packages passes. Types, both lints, architecture41packages/13ownership mappings, smoke, both minified builds/artifact checks and payload limits pass. Seven local browser layout/accessibility workflows pass after Escape correction. Pinned GIF collector40197850856 succeeded, refreshed canonical exports committed d85810c; reviewed Single preparation frame, retained all10dimensions and durations. docs:review/generate/check pass. Complete pinned candidate remains the publication gate.
 +
 +Complete candidate40198168109: validation and both WebKit performance jobs passed. Public Chromium failed original firstAction36.5→41.4ms (38/40slower pairs); preview Chromium encountered page.goto30s load timeout, identical-build control passed. Screenshots still running. No application publication. Local advisory CPU4 trace identified the unconditional post-write scrollTo causing a forced layout (candidate scroll span~51ms versus baseline~9ms); containment variants did not improve this. Added failing no-op-scroll regression, then capture old scroll position before writes and reset only if nonzero. Scrolled navigation still resets after preferences/destination are ready. Focused tests pass; follow-up diagnostic no longer performs forced scroll and shows dispatch13.4ms versus baseline19.4ms (advisory only, not acceptance).
++
++No-op-scroll candidate:1094tests/157suites and unchanged coverage ratchet pass. Types/runtime lint/public build/artifact verification/payload pass (public50,586gzipJS/12,906CSS). Collector40199053182 regenerated guide exports from the current main source; canonical media committed6687396, docs source audit/generation/check pass. Full previous candidate40198168109 ultimately passed both screenshot/integration editions, validation and both WebKit performance jobs; Chromium failures remain recorded, aggregate failed. Corrected isolated Chromium40199055249 is pending; no application publication or main/dev changes.
++
++Further Chromium diagnosis: isolated40199055249 still failed firstAction37.9→44.1ms after no-op scroll removal. Idempotent Settings preference setters added with failing-then-passing property-spy regression; public50,623gzipJS remains within cap. Isolated40199656128 still failed firstAction43.2→51.1ms, so neither optimization is claimed to resolve timing. Local compact-icon/fixed-geometry advisory alternatives showed no reliable win and were discarded (no icon/geometry source change). Startup catalog work was investigated but does not run in the empty-library measured case; no catalog scheduling change retained.
++
++Removed redundant `body[data-view=loading/guns/gunSetup] .hero {display:flex}` overrides; the generic header rule already provides that display, so page state need not invalidate the header. Seven local layout/accessibility workflows pass unchanged after removal. Isolated original Chromium run40200510473 atf566aba applies chg-062-header-invalidation.patch. Complete acceptance remains pending; no app source published and no main/dev edits.
++
++Current invalidation-cleanup local result:1095tests/157suites and original coverage ratchet pass. Seven layout/accessibility workflows pass. Guide/source fingerprints must be regenerated before final complete acceptance because main/CSS changed; current local passes are not publication acceptance. Original isolated Chromium40200510473 remains pending.
++
++Pinned Chromium40200510473 still failed firstAction37.5→43.1ms after removal of redundant header state selectors. Added pointer-versus-keyboard activation regression, then avoid keyboard-only tooltip-dismissal writes for pointer clicks in native and React headers. Focus/Enter/Escape behavior remains;1096tests/157suites, unchanged coverage, types/lints and8local browser workflows pass. Pinned Chromium40201179821 still failed firstAction45.4→52.3ms,39/40slower pairs. Thus no application acceptance/publication.
++
++New diagnostic40201901424 at5394dca applies the same runtime candidate and uses pinned Chromium, CPU4/network40ms, first-interaction dispatch/style/layout phases and native-title ablation. It is advisory only; original performance baseline/harness/gate unchanged. Earlier local phase traces were not accepted as pinned evidence. No unmeasured compact-icon, fixed-geometry, URL suppression or catalog scheduling alternatives were applied to app source. Final guide source fingerprints remain stale after current main/CSS fixes and need regeneration before full acceptance.
++
++Pinned advisory40201901424 succeeded. Median native dispatch baseline8.2ms/candidate4.4ms; layout19.621→22.678ms; style6.300→6.643ms; script2.190→2.472ms; next frame30→34ms. Native-title removal did not help (frame35.6/layout23.016). This is advisory direction, not original-gate acceptance. New advisory40202183008 atbfe30b4 compares an injected equivalent grid header with fixed44px controls/24px icons and current flex header; no grid change applied to app source yet. It records geometry and layout costs before deciding on a correction.
++
++Advisory-only eliminations (none applied):40202183008 grid header preserved geometry but layout24.404→24.005ms was insufficient;40202501396 cached identical icon masks did not improve layout40.150→40.275ms;40202785931 wordmark nowrap/max-content did not improve layout29.115→29.037/30.107ms;40203151300 frozen header likewise24.481→24.190ms and original Settings markup25.365ms. Settings geometry baseline/current is the same358×1408.469, shifted5px upward by the approved smaller header. Hence header/icon changes are not demonstrated as the source of the whole-page layout gap. All experiments remain diagnostic injections only.
++
++New advisory40203603902 at718d43d measures initial document size with ResizeObserver and tests stable root scrolling / restored footer space. It compares baseline/current with unchanged runtime candidate, no app CSS changes applied. Unit/browser results remain1096/157+ratchet and8local browser workflows; original full acceptance remains blocked by Chromium timing. Current guide source fingerprints remain stale and must be regenerated before a final candidate. Main/dev unchanged.
++
++Further advisory eliminations:40203603902 confirms both initial pages already scroll (baseline document1241.063px/current1163.063px); forced scrolling did not improve timing, extra footer padding insufficient.40203852616 explicit footer paragraph/layout containment also insufficient. None applied. Stop accumulating isolated experiments; prepare one fresh complete candidate with current1096tests/source/media and unchanged gates. A narrowly scoped10ms Chromium firstAction allowance is documented in performance-decision.md as a proposal only, not approved/applied. Any requirement change needs owner approval; publication still requires complete acceptance afterward.
 diff --git a/docs/project/react-refactor/context.md b/docs/project/react-refactor/context.md
-index ff32f9a..52aeeae 100644
+index ff32f9a..a8d9855 100644
 --- a/docs/project/react-refactor/context.md
 +++ b/docs/project/react-refactor/context.md
 @@ -1,23 +1,23 @@
@@ -900,19 +944,19 @@ index ff32f9a..52aeeae 100644
 +## Current source/evidence
  
 -## Next
-+b8538e96 contains review-only patches/assets/diagnostic workflow, not application changes. Runtime source remains dirty locally.450 canonical baselines/94 screen images and10 guide GIFs collected/reviewed earlier. First complete candidate40178581864 passed validation and both screenshot/integration editions but failed four timing jobs. Never accepted/published H1. Previous diagnostic detail is in history/review patches.
++b718d43d contains review-only patches/assets/diagnostic workflow; runtime remains dirty locally and unpublished.450 canonical baselines/94 screen images and10 guide GIFs reviewed. Complete candidate40198168109 passed validation, both complete screenshot/integration editions and both WebKit performance jobs. Public Chromium failed firstAction36.5→41.4ms (38/40slower); preview Chromium page.goto30s timeout (identical-build control passed). Thus no acceptance/publication. Original gates unchanged.
  
 -Observe main post-merge checks and deployment; close history/context with actual results. Status-only documentation may publish to b after release; no direct main push. No source changes or unchanged retry fishing. Retain b and leave dev untouched.
-+Native Settings button metrics (`appearance:none;font-size:26px`) cleared original isolated WebKit first-action gate40183917359; warm37→42ms still failed. Current local fix: defer inactive About DOM as trusted build-only JSON tuples; synchronous restricted-node materializer, exact shared typed-page parity, no user HTML/network dependency. `/about/` remains fully prerendered. parse5 declared build dependency avoids jsdom TextEncoder in browser-environment tests. Local full coverage rerunning after added new-branch tests; previous ratchet flagged informationBridge branches (not waived). Escape dismissal pointer-out regression fixed, seven local layout/accessibility browser workflows now pass. Payload original limits pass public50555gzipJS/12906CSS, preview51040JS/12906CSS before final tooltip guard. Types/lints passed before that final guard.
++Current fixes: native widget reset, flex icon alignment, keyboard Escape dismissal retained while focused; inactive About encoded as build-owned JSON DOM tuples with restricted synchronous materializer, same typed page and full `/about/` prerender. parse5 declared build dependency. Local Chromium advisory traced post-write unconditional scrollTo forcing~51ms layout. Capture pre-write old scroll offset and skip a no-op reset; scrolled navigation still resets after destination/preferences ready. Added red→green regression. No containment/mask alternatives retained.
  
 -## Invariants / deferred
-+## Active CI / next
++Current local1096tests/157suites, unchanged coverage ratchet58modules/typed packages, types/lints/architecture/smoke/both builds/artifacts/payload pass. Public50586gzipJS/12906CSS, preview log `/tmp/chg062-scroll-preview.log`. Seven local layout/accessibility workflows passed before no-op correction; no visible style change since. Final GIF collector40199053182 succeeded; canonical media6687396, reviewed source fingerprints/docs generated/checked after current main edit. Original450screens passed both pinned editions on the prior candidate.
  
 -Preserve ADR001 progressive startup, schema4/user data/backups, capture/safety/save/draft/owner guards, Free/Full boundaries, exact visual references and original performance limits. SW cache87. No unauthorized subagents or commercial/native scope. Future application changes require complete candidate acceptance before b publication. Curate this context after completed increments; detailed evidence belongs in history/proof.
-+40197785453 isolated original public WebKit timing uses static-tree patch at8afc7d8 (older jsdom serializer, runtime equivalent).40197850856 pinned guide collector uses8538e96/updated parse5 patch; fetch its review-only media commit once finished. Source manifest includes CSS/main/staticCatalog and must match current exports. Canonical screenshots should remain pixel-identical after nonvisual corrections; do not overwrite unexpected differences.
++## Active CI / next
  
 -Workspace policy blocks external .com/.app reads before origin; b read403. No live-content/indexing/real-device microphone verification is claimed. Owner configured .app permanent redirect and suspected browser caching. F1–F7 and commercial/cloud/native plans remain separate.
-+Finish local full coverage/ratchet/types/lints/builds/artifact gates. Copy/review final GIF evidence; docs:review/generate/check and proof. Create exact final review patch, run all8 candidate jobs. Only after passing, apply identical candidate source and publish b; cleanup only our temporary collector/diagnostic/review candidates, retain canonical media/proofs. Observe actual push checks separately. No unchanged retry fishing.
++Original Chromium40199055249 failed37.9→44.1ms after no-op scroll fix;40199656128 failed43.2→51.1ms after idempotent native preference updates. Those quality improvements are retained, not claimed to fix timing. New candidate removes redundant body[data-view] .hero display:flex overrides (global .hero already flex), avoiding header invalidation on navigation. Eight local layout/chrome/accessibility workflows pass after pointer-versus-keyboard tooltip state separation. Original Chromium40200510473 failed37.5→43.1ms; pointer/keyboard-only marker optimization40201179821 failed45.4→52.3ms (39/40slower). Pinned advisory40201901424 shows faster dispatch but extra layout (19.621→22.678ms). Grid/mask/nowrap/max-content/frozen-header/original-Settings-markup variants did not fix it; none applied (details in history). New advisory40203603902 at718d43d measures initial document height via ResizeObserver and stable scrolling/restored footer-space variants. Inspect Phases output; no app CSS change applied for these probes. Original gate unchanged. Current main/CSS edits make guide fingerprints stale again: regenerate final exports only after a demonstrated fix. No unchanged retry fishing. On pass: finish final proof/history, create final exact source patch (1094tests), dispatch complete8job candidate. On failure: use evidence and fix, do not suppress. Only after all8 pass publish matching b source and cleanup our temporary collectors/diagnostic/review candidates (retain canonical media/proofs), then observe push checks. H2/F2–F7 remain pending. Temporary local diagnostic scripts were removed; no compact-icon/geometry/catalog scheduling alternatives retained.
  
 -CHG-062: owner requests plan addition for shared top-right About/Contact/Settings icons replacing bottom informational text links. H1 documented in follow-up-plan.md; Owner confirmed Contact as the middle icon, displayed as @ rather than an envelope; relocate both footer links, no Help icon. Planning only; no UI/screenshots changed.
 +## Constraints
@@ -969,6 +1013,29 @@ index 6e2f43f..6676037 100644
 +
 +
 +CHG-062 performance correction under review: the in-app Settings control retains its existing native button action (with shared icon styling, accessible name/current state and guarded route callback); About and Contact are real links. Static editorial/public link-mode shells retain a real Settings href. This preserves the released Settings keyboard/action contract rather than requiring identical HTML tags for different control purposes. Visual references remain unchanged; complete acceptance is still required.
+diff --git a/docs/project/react-refactor/performance-decision.md b/docs/project/react-refactor/performance-decision.md
+new file mode 100644
+index 0000000..89ab970
+--- /dev/null
++++ b/docs/project/react-refactor/performance-decision.md
+@@ -0,0 +1,17 @@
++# CHG-062 performance decision — proposal, not approved
++
++The shared About → @ Contact → Settings header is implemented locally. Application publication remains blocked by the original Chromium first-Settings-interaction timing gate. No exception has been applied.
++
++## Measured evidence
++
++Original Chromium run40201179821: firstAction median45.4ms versus52.3ms, p9548.8ms versus55ms,39/40slower paired samples under4×CPU throttling. Original baseline, sample counts, bootstrap confidence and all other acceptance rules were unchanged. Current local1096tests/157suites, original coverage ratchet and8layout/chrome/accessibility workflows pass. Both pinned screenshot/integration editions and both WebKit performance jobs passed on preceding complete candidate40198168109. A final fresh complete candidate is required; preceding passes are not current acceptance.
++
++Pinned phase diagnostics show faster native navigation dispatch but more overall layout time. Grid, masks, wordmark wrapping, frozen-header, original Settings markup, forced scrolling and footer-formatting experiments did not demonstrate a sufficient improvement. They were diagnostic injections only and were not applied to the app. The exact cause remains unresolved; these results do not establish that the slowdown is unavoidable.
++
++## Narrow proposed exception
++
++Only if the owner explicitly approves: permit Chromium's first Settings interaction, in public and private-preview editions, to add at most10ms to both the paired baseline median and p95 under the existing4×CPU test. Continue reporting the historical difference and confidence evidence. Keep the immutable baseline, sample counts and runner controls. No allowance for WebKit or other metrics; preserve cold/warm startup, subsequent navigation/input, capture feedback, cleanup/memory and original raw/gzip payload limits. Deliberate slowdowns must still be rejected.
++
++This is an explicit change to the original no-regression requirement, not a bug fix or an already-approved policy. The alternative is retaining the original requirement and continuing targeted optimization. Approval of a budget change would not itself approve publication: regenerate matching media/docs and require complete acceptance of the exact candidate before publishing b. Main/dev remain frozen.
++
++Automatic release-cache refresh remains a separate planned task; no timestamps or broad storage clearing have been introduced.
 diff --git a/docs/requirements/about.md b/docs/requirements/about.md
 index 00f25fa..b71f5a1 100644
 --- a/docs/requirements/about.md
@@ -1133,10 +1200,10 @@ index 144d16f..f3ac31e 100644
 +}
 +@media(forced-colors:active) { .hero .header-link.active { outline:1px solid LinkText; } }
 diff --git a/packages/ui/src/BrandHeader/BrandHeader.test.tsx b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
-index 16fb4b8..e9a6a22 100644
+index 16fb4b8..e51d696 100644
 --- a/packages/ui/src/BrandHeader/BrandHeader.test.tsx
 +++ b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
-@@ -7,21 +7,48 @@ import { BrandHeader } from './BrandHeader.tsx';
+@@ -7,21 +7,49 @@ import { BrandHeader } from './BrandHeader.tsx';
  
  test('branding, beta disclosure, live status and settings retain their native semantics', async () => {
    const onSettings = jest.fn();
@@ -1172,7 +1239,7 @@ index 16fb4b8..e9a6a22 100644
 +  expect(links.map(link=>link.getAttribute('aria-label'))).toEqual(['About','Contact','Settings']);
 +  expect(links.map(link=>link.getAttribute('href'))).toEqual(['/about/','/contact/',null]);expect(links[2]).toHaveAttribute('type','button');
 +  expect(container.querySelectorAll('.header-link svg[aria-hidden="true"][focusable="false"]')).toHaveLength(3);
-+  await userEvent.setup().click(links[0]);expect(onNavigate).toHaveBeenCalledWith('about');expect(links[0]).toHaveAttribute('data-tooltip-dismissed','true');
++  await userEvent.setup().click(links[0]);expect(onNavigate).toHaveBeenCalledWith('about');expect(links[0]).not.toHaveAttribute('data-tooltip-dismissed');
 +  rerender(<BrandHeader view="contact" onNavigate={onNavigate}/>);
 +  expect(links[1]).toHaveAttribute('aria-current','page');expect(links[0]).not.toHaveAttribute('aria-current');
 +});
@@ -1189,9 +1256,10 @@ index 16fb4b8..e9a6a22 100644
 +  const event=new MouseEvent('click',{bubbles:true,cancelable:true,...options});about.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);
 + }
 + expect(navigate).not.toHaveBeenCalled();expect(about).toHaveAttribute('href','/about/?source=header');
++ await user.keyboard('{Enter}');expect(navigate).toHaveBeenCalledWith('contact');expect(contact).toHaveAttribute('data-tooltip-dismissed','true');
 +});
 diff --git a/packages/ui/src/BrandHeader/BrandHeader.tsx b/packages/ui/src/BrandHeader/BrandHeader.tsx
-index eb1bea7..d69908d 100644
+index eb1bea7..d1f72fa 100644
 --- a/packages/ui/src/BrandHeader/BrandHeader.tsx
 +++ b/packages/ui/src/BrandHeader/BrandHeader.tsx
 @@ -1,20 +1,45 @@
@@ -1220,7 +1288,7 @@ index eb1bea7..d69908d 100644
 +  const activate=(event:MouseEvent<HTMLAnchorElement|HTMLButtonElement>)=>{
 +    if(!onNavigate)return;
 +    if(!action){if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();}
-+    event.currentTarget.dataset.tooltipDismissed='true';
++    if(event.detail===0)event.currentTarget.dataset.tooltipDismissed='true';
 +    onNavigate(destination);
 +  };
 +  const Control=action?'button':'a';
@@ -1329,10 +1397,25 @@ index 91dc5b8..caba1e7 100644
 -export { InfoFooter, InfoFooterLinks, type InfoFooterProps } from './InfoFooter.tsx';
 +export { InfoFooter, type InfoFooterProps } from './InfoFooter.tsx';
 diff --git a/src/main.js b/src/main.js
-index f23368f..ea0d1af 100644
+index f23368f..f9fd7e4 100644
 --- a/src/main.js
 +++ b/src/main.js
-@@ -641,6 +641,7 @@ function displayView(name) {
+@@ -185,10 +185,11 @@ function renderPreferences() {
+     vibrationFeedback,vibrationSupported:getVibrationCapability(),vibrationRejected});
+   if(settingsPage){settingsPage.update({preferences:view});return;}
+   for(const item of view.audio){
+-    const input=$('#'+item.inputId);input.checked=item.checked;input.disabled=item.disabled;setNodeText($('#'+item.statusId),item.status);
++    const input=$('#'+item.inputId);if(input.checked!==item.checked)input.checked=item.checked;setNodeDisabled(input,item.disabled);setNodeText($('#'+item.statusId),item.status);
+   }
+-  $('#appearance').value=view.appearance.value;$('#appearance').disabled=view.appearance.disabled;
+-  $('#vibrationFeedback').checked=view.vibration.checked;$('#vibrationFeedback').disabled=view.vibration.disabled;
++  const appearanceInput=$('#appearance'),vibrationInput=$('#vibrationFeedback');
++  if(appearanceInput.value!==view.appearance.value)appearanceInput.value=view.appearance.value;setNodeDisabled(appearanceInput,view.appearance.disabled);
++  if(vibrationInput.checked!==view.vibration.checked)vibrationInput.checked=view.vibration.checked;setNodeDisabled(vibrationInput,view.vibration.disabled);
+   setNodeText($('#vibrationStatus'),view.vibration.status);
+ }
+ function reportAudioProcessing(report) { processingReport = report; renderPreferences(); }
+@@ -641,6 +642,7 @@ function displayView(name) {
    }
    if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
    if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
@@ -1340,7 +1423,7 @@ index f23368f..ea0d1af 100644
    const initialDisplay = document.body.dataset.view === 'loading';
    informationPages.show(name);
    if(name==='home' && document.body.dataset.view!=='loading' && !homePage && !homePagePending){
-@@ -651,7 +652,6 @@ function displayView(name) {
+@@ -651,7 +653,6 @@ function displayView(name) {
    activeView=name;
    if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
    document.body.dataset.view = name;
@@ -1348,7 +1431,7 @@ index f23368f..ea0d1af 100644
    if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
    document.getElementById(name+'View').classList.toggle('hidden',false);
    setMessage();
-@@ -714,6 +714,8 @@ function displayView(name) {
+@@ -714,6 +715,8 @@ function displayView(name) {
      }
      renderPreferences();
    }
@@ -1519,6 +1602,38 @@ index dfb8259..875f3c6 100644
      });
    }
    bridge.dispose();
+diff --git a/tests/settingsPreferencesPresentation.test.js b/tests/settingsPreferencesPresentation.test.js
+index 1091a61..5bdeabf 100644
+--- a/tests/settingsPreferencesPresentation.test.js
++++ b/tests/settingsPreferencesPresentation.test.js
+@@ -3,7 +3,7 @@
+  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
+  */
+ import '@dryfire/testing/setup';
+-import {setNodeText} from '../src/domUpdates.js';
++import {setNodeText,setNodeDisabled} from '../src/domUpdates.js';
+ import {jest} from '@jest/globals';
+ import {readFileSync} from 'node:fs';
+ import vm from 'node:vm';
+@@ -13,7 +13,7 @@ const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
+ const body=source.slice(source.indexOf('function renderPreferences()'),source.indexOf('function reportAudioProcessing('));
+ function setup(){
+  document.body.innerHTML=renderPageTemplates('{{app}}');
+- const context={setNodeText,settingsPage:null,preferencePresentation,$:selector=>document.querySelector(selector),previewTesting:{render:jest.fn()},getAudioCapabilities:()=>({noiseFilter:true,autoGain:true}),
++ const context={setNodeText,setNodeDisabled,settingsPage:null,preferencePresentation,$:selector=>document.querySelector(selector),previewTesting:{render:jest.fn()},getAudioCapabilities:()=>({noiseFilter:true,autoGain:true}),
+   activeGun:{id:'a'},profileLocked:()=>false,audioPreferences:{noiseFilter:true,autoGain:false},processingReport:null,appearance:'light',busy:false,profileLoading:false,preferencePending:false,vibrationFeedback:true,vibrationRejected:false,getVibrationCapability:()=>true};
+  const render=vm.runInNewContext(body+'\nrenderPreferences;',context);return{context,render};
+ }
+@@ -40,3 +40,9 @@ test('capture/profile/preference locks and rejected vibration retain their separ
+ test('mounted Settings receives the preference model without competing native writes',()=>{
+  const {context,render}=setup();context.settingsPage={update:jest.fn()};render();expect(context.settingsPage.update).toHaveBeenCalledWith({preferences:preferencePresentation({capabilities:context.getAudioCapabilities(),audioPreferences:context.audioPreferences,processingReport:null,appearance:'light',gunAvailable:true,locked:false,deviceLocked:false,vibrationFeedback:true,vibrationSupported:true,vibrationRejected:false})});expect(document.querySelector('#noiseFilterStatus')).toHaveTextContent('Checking browser support');
+ });
++
++test('unchanged native preferences avoid property setters and style invalidation',()=>{
++ const {render}=setup();render();
++ const spies=[[HTMLInputElement.prototype,'checked'],[HTMLInputElement.prototype,'disabled'],[HTMLSelectElement.prototype,'value'],[HTMLSelectElement.prototype,'disabled']].map(([prototype,key])=>jest.spyOn(prototype,key,'set'));
++ try{render();for(const spy of spies)expect(spy).not.toHaveBeenCalled();}finally{for(const spy of spies)spy.mockRestore();}
++});
 diff --git a/tests/staticPageTree.test.js b/tests/staticPageTree.test.js
 new file mode 100644
 index 0000000..e5d4f18
