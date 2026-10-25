@@ -10,6 +10,14 @@ on:
         type: boolean
         required: false
         default: false
+      root_flex:
+        type: boolean
+        required: false
+        default: false
+      trace_layout:
+        type: boolean
+        required: false
+        default: false
       compare_production:
         type: boolean
         required: false
@@ -87,6 +95,8 @@ jobs:
           persist-credentials: false
       - name: Build exact production and unpublished candidate
         if: inputs.compare_production
+        env:
+          ROOT_FLEX: ${{ inputs.root_flex }}
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE/.investigation-production"
           git config --global --add safe.directory "$GITHUB_WORKSPACE/.investigation-candidate"
@@ -100,18 +110,24 @@ jobs:
           cp -a dist ../.investigation-candidate-dist
           node --input-type=module <<'NODE'
           import {readFileSync,writeFileSync} from 'node:fs';
-          const file='src/main.js';let source=readFileSync(file,'utf8');
-          const snapshot='  const resetScroll = window.scrollX !== 0 || window.scrollY !== 0;\n';
-          const reset="  // Avoid forcing layout for a no-op reset; measure the old position before page writes.\n  if(resetScroll)window.scrollTo({top:0,behavior:'instant'});\n";
-          const position='  document.body.dataset.view = name;\n';
-          if(!source.includes(snapshot)||!source.includes(reset)||!source.includes(position))throw Error('Counterfactual source contract changed');
-          source=source.replace(snapshot,'').replace(reset,'').replace(position,position+"  window.scrollTo({top:0,behavior:'instant'});\n");
-          writeFileSync(file,source);
+          if(process.env.ROOT_FLEX==='true'){
+            const file='apps/web/src/styles/legacy-after-drill-cards.css',from='.page-content{flex:1;min-width:0}';let css=readFileSync(file,'utf8');
+            if(css.split(from).length!==2)throw Error('Root-flex source contract changed');
+            writeFileSync(file,css.replace(from,'.page-content{flex:1 0 auto;min-width:0;min-height:0}'));
+          }else{
+            const file='src/main.js';let source=readFileSync(file,'utf8');
+            const snapshot='  const resetScroll = window.scrollX !== 0 || window.scrollY !== 0;\n';
+            const reset="  // Avoid forcing layout for a no-op reset; measure the old position before page writes.\n  if(resetScroll)window.scrollTo({top:0,behavior:'instant'});\n";
+            const position='  document.body.dataset.view = name;\n';
+            if(!source.includes(snapshot)||!source.includes(reset)||!source.includes(position))throw Error('Counterfactual source contract changed');
+            source=source.replace(snapshot,'').replace(reset,'').replace(position,position+"  window.scrollTo({top:0,behavior:'instant'});\n");
+            writeFileSync(file,source);
+          }
           NODE
           npm run build:public
-      - name: Compare production, candidate and original scroll ordering
+      - name: Compare production, candidate and isolated layout variant
         if: inputs.compare_production
-        run: node tools/performance/investigate-first-settings.mjs --production=.investigation-production/dist --candidate=.investigation-candidate-dist --baselineScroll=.investigation-candidate/dist
+        run: node tools/performance/investigate-first-settings.mjs --production=.investigation-production/dist --candidate=.investigation-candidate-dist --baselineScroll=.investigation-candidate/dist --trace=${{ inputs.trace_layout }} --variant-name=${{ inputs.root_flex && 'rootFlex' || 'baselineScroll' }}
       - name: Expose diagnostic results
         id: results
         if: always()
