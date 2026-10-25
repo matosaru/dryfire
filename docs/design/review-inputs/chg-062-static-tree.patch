@@ -15,10 +15,10 @@ index 5c6cd9a..3a8d6ff 100644
 +
 +CHG-062 performance correction under review: the in-app Settings control retains its existing native button action (with shared icon styling, accessible name/current state and guarded route callback); About and Contact are real links. Static editorial/public link-mode shells retain a real Settings href. This preserves the released Settings keyboard/action contract rather than requiring identical HTML tags for different control purposes. Visual references remain unchanged; complete acceptance is still required.
 diff --git a/apps/web/src/app/chromeBridge.test.ts b/apps/web/src/app/chromeBridge.test.ts
-index f3ba052..60a8511 100644
+index f3ba052..882ecff 100644
 --- a/apps/web/src/app/chromeBridge.test.ts
 +++ b/apps/web/src/app/chromeBridge.test.ts
-@@ -80,3 +80,44 @@ test('repeated identical snapshots do not rewrite native chrome or schedule rend
+@@ -80,3 +80,53 @@ test('repeated identical snapshots do not rewrite native chrome or schedule rend
    expect(renderer.update).toHaveBeenCalledWith({view:'learn',status:'Listening',navigationDisabled:true});
    observer.disconnect();bridge.dispose();
  });
@@ -63,8 +63,17 @@ index f3ba052..60a8511 100644
 + expect(aboutClass).not.toHaveBeenCalled();expect(contactClass).not.toHaveBeenCalled();
 + bridge.dispose();
 +});
++
++test('Escape dismissal survives pointer exit caused by hiding a focused tooltip',()=>{
++ document.body.innerHTML=fixture;
++ const bridge=createChromeBridge(document,jest.fn()),link=document.getElementById('aboutBtn')!;
++ link.focus();link.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
++ link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:document.body}));
++ expect(link.dataset.tooltipDismissed).toBe('true');
++ link.blur();expect(link.dataset.tooltipDismissed).toBeUndefined();bridge.dispose();
++});
 diff --git a/apps/web/src/app/chromeBridge.ts b/apps/web/src/app/chromeBridge.ts
-index 590ab15..37ffad0 100644
+index 590ab15..d81bb3c 100644
 --- a/apps/web/src/app/chromeBridge.ts
 +++ b/apps/web/src/app/chromeBridge.ts
 @@ -8,21 +8,39 @@ export type ChromeFactory = (options: { doc: Document; initial: ChromeSnapshot;
@@ -101,7 +110,7 @@ index 590ab15..37ffad0 100644
 +    const link=(event.target as Element).closest?.<HTMLElement>('.header-link');
 +    if(!link)return;
 +    if(event.type==='keydown') { if((event as KeyboardEvent).key==='Escape')link.dataset.tooltipDismissed='true'; }
-+    else if(!link.contains((event as FocusEvent).relatedTarget as Node|null))delete link.dataset.tooltipDismissed;
++    else if((event.type!=='pointerout'||doc.activeElement!==link)&&!link.contains((event as FocusEvent).relatedTarget as Node|null))delete link.dataset.tooltipDismissed;
    };
    regions.forEach(host => host.addEventListener('click', activate));
 -  const removeNative = () => regions.forEach(host => host.removeEventListener('click', activate));
@@ -222,6 +231,22 @@ index 4ecbb40..e7ac52d 100644
          if (viewChanged || disabledChanged) navigation();
        });
      },
+diff --git a/apps/web/src/app/informationBridge.test.ts b/apps/web/src/app/informationBridge.test.ts
+index 03df637..2395693 100644
+--- a/apps/web/src/app/informationBridge.test.ts
++++ b/apps/web/src/app/informationBridge.test.ts
+@@ -123,3 +123,11 @@ test('a disposed information owner cannot materialize a deferred page or load it
+ test('missing About host remains safe for fallback calls without mutating another page',()=>{
+  setContent('<section id="contactView"></section>');const load=jest.fn(()=>new Promise<never>(()=>{}));const bridge=createInformationBridge({onNavigate:jest.fn(),onBack:jest.fn(),onError:jest.fn(),load});bridge.setFull(true);bridge.show('about');expect(document.getElementById('aboutFeatureSummary')).toBeNull();expect(document.getElementById('contactView')?.childNodes).toHaveLength(0);bridge.dispose();
+ });
++
++test('serialized About applies the latest Full state synchronously and restores public copy',()=>{
++ const tree=[['p',[['id','aboutFeatureSummary'],['data-full-summary','Full copy']],['Public copy']]];
++ setContent(`<section id="aboutView"><script type="application/json" data-static-page="about">${JSON.stringify(tree)}</script></section><section id="contactView"></section>`);
++ const bridge=createInformationBridge({onNavigate:jest.fn(),onBack(){},onError:jest.fn(),load:()=>new Promise(()=>{})});
++ bridge.setFull(true);bridge.show('about');expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Full copy');
++ bridge.setFull(false);expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Public copy');bridge.show('about');bridge.dispose();
++});
 diff --git a/apps/web/src/app/informationBridge.ts b/apps/web/src/app/informationBridge.ts
 index 4cbbabd..de55e26 100644
 --- a/apps/web/src/app/informationBridge.ts
@@ -404,7 +429,7 @@ index 51a2703..6bedfd2 100644
  .brand-mark span { display:block; height:12px; width:3px; border-radius:5px; background:#ff9141; }
  .brand-mark span:nth-child(2),.brand-mark span:nth-child(6) { height:23px; }
 diff --git a/docs/architecture/application-sitemap.md b/docs/architecture/application-sitemap.md
-index d5e8fb3..9d0426d 100644
+index d5e8fb3..4eaa4aa 100644
 --- a/docs/architecture/application-sitemap.md
 +++ b/docs/architecture/application-sitemap.md
 @@ -43,7 +43,7 @@ flowchart TD
@@ -412,7 +437,7 @@ index d5e8fb3..9d0426d 100644
  ```
  
 -The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. Settings opens from the header; About and Contact open from the footer. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
-+The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. About, @ Contact and Settings open from shared header icon links. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
++The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. About, @ Contact and Settings open from shared header icon controls. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
  
  ## Screen directory
  
@@ -482,7 +507,7 @@ index 9a6f4cd..7eb2b9f 100644
  ```
  
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index e079785..8f0a116 100644
+index e079785..d4c130d 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -1,6 +1,6 @@
@@ -547,14 +572,34 @@ index e079785..8f0a116 100644
        "states": [
          {
            "key": "overview.dark",
+@@ -808,7 +808,7 @@
+   ],
+   "reviewedSources": {
+     "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
+-    "src/main.js": "cf92168d1f51b14d2549140ad8d53f89fd6589db2ef6a3cd8c3febb10f4bdaf9",
++    "src/main.js": "5d72b2ae9766a4c0b06cc0a42dcfa56966e1ea0c35c4c92ed3e13da03928be93",
+     "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
+     "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
+     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
+@@ -833,8 +833,8 @@
+     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
+     "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
+     "apps/web/src/app/informationPages.tsx": "442185805bb7faf789afcdf2f636e9e6d195e32d0be0a9b281a470880531f48d",
+-    "apps/web/src/app/informationBridge.ts": "1d3d84ecf6e70fb1bd14363b697ea0523eed1b8c617f73e58b1893261b692076",
+-    "apps/web/src/app/renderInformationPages.tsx": "413001c67e48594cc59e60861abdeb6bd1a40eda2ebde7bdb959ca0e458230f4",
++    "apps/web/src/app/informationBridge.ts": "0a73cc2630c6d444000bb3f936147315bd0d9baafcc3cd8fbd9b55a7ee839bf6",
++    "apps/web/src/app/renderInformationPages.tsx": "29095a13a02355d1c3bf8f0efa2648cdf4aef2b8c0ebb2e85f9a25361afb636e",
+     "apps/web/src/pages/AboutPage/AboutPage.tsx": "68fec4cae9f2b6aab65b74c6c2b42251116b5094cd8e7e7e18d127da666e0168",
+     "apps/web/src/pages/AboutPage/index.ts": "a336de4df893b66990d2dc8b062a79ab26cba13d0a0b9fa3ed96d3e82f6b5298",
+     "apps/web/src/pages/AboutPage/AboutPage.css": "f461cfe293e1fec12d7a8bbbca835abd9a7495db77e1a5effa56241150b900b5",
 @@ -852,27 +852,27 @@
      "apps/web/src/app/routeContext.ts": "8211be0b05a2947d3ea5d44bad6e57a0af63e32c426d744ba4de0d3e38c91f59",
      "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
      "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx": "d58bb053f365017ef15cec7f4b6da2e7918770d001b15122438db5a33071df70",
 -    "apps/web/src/app/chromeBridge.ts": "e3276d510da2db886b0ad226bf5a884a351252b79ba78f6696a847031b08e2f1",
 -    "apps/web/src/app/chromePages.tsx": "2bb3be816e7293d68837974cb9d05800eb87b89429ef1667d771dda29ff69bd5",
-+    "apps/web/src/app/chromeBridge.ts": "34a1334fcca68b7553fbac56c3504299c260438e09d2071d0afea4d6b0314ceb",
-+    "apps/web/src/app/chromePages.tsx": "1aeae34c22405cffdae6c263a47a1d5937e1fa7e85064b64c25b9cb34e8a826f",
++    "apps/web/src/app/chromeBridge.ts": "aecc9b54689aaf7685944017fe0de7b103aebbbd1eb4ddef2971f15d89692f06",
++    "apps/web/src/app/chromePages.tsx": "7b6559258a18135a106ab16bc565d1275b76a5f4ee1da4502f76cc86d65cec34",
      "apps/web/src/app/renderAppShell.tsx": "360b5abfd9d9cc3d757f2aad7f1f052531f900a37237102473b1b5a3045c9c5d",
      "apps/web/src/app/renderCalibrationCatalog.tsx": "bc607a2490a1a0e9f3134a220c0d0fdf41273d615a2a74b7c265d2cce7451a3d",
      "apps/web/src/app/renderNumberInput.tsx": "3e163f74c64013bfa45bb454fbdeceab04096cb4a1319aa9ff26ce1472b0fa08",
@@ -567,8 +612,8 @@ index e079785..8f0a116 100644
      "packages/ui/src/BottomNavigation/index.ts": "cd44fa73fcbc57adbcb618d50ae415cca66ddeaf75552ae312d7d27a4b32fff3",
 -    "packages/ui/src/BrandHeader/BrandHeader.css": "d7ab4f9b64f59b0402293eba82d31611f9f436ea29628758528cf4c412dd35e8",
 -    "packages/ui/src/BrandHeader/BrandHeader.tsx": "e3a0316dbbee6f02517480e1dad08f084c0ba9234c4926fdfdfa1cd6e9e7b2e5",
-+    "packages/ui/src/BrandHeader/BrandHeader.css": "7b7c934b5c60426be2ba54bbf1ed104b2d9dfcca9ea16f3efbfb84ca19ef833a",
-+    "packages/ui/src/BrandHeader/BrandHeader.tsx": "7531e76a5f566c8e822d767be59685e72b8a15fea4a055687b9a73b8c8809835",
++    "packages/ui/src/BrandHeader/BrandHeader.css": "5613f0d97dc1ba72f2feba1cbf430b0a6108e51b05004444a7f2573e8940877c",
++    "packages/ui/src/BrandHeader/BrandHeader.tsx": "422cfdec3e414ad7d584d0fb295d7bff73cc26607cd514a956472753021724ab",
      "packages/ui/src/BrandHeader/index.ts": "9627490423356d66750d624ed92655f59be182d4e9e286224e2e712e7714d457",
      "packages/ui/src/CalibrationCatalog/CalibrationCatalog.copy.ts": "e80cc6e405badb60f4023c43d9fd725e0369e376f889fedb7fd6d3efa0a449ba",
      "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css": "540275a1d8e8edd8aff06cf4834bfbbf91ce9685ae770dbe4c01cb6046b21262",
@@ -615,8 +660,8 @@ index e079785..8f0a116 100644
      "packages/ui/src/RetainedNode/RetainedNode.tsx": "351036d9dee16e01c2e9a29df9ab9704e2c96f5f9626be56d1f7ca70f6208170",
 -    "apps/web/src/styles/legacy-before-drills.css": "a78bfe94294c53b181b1f0d62e7c8de67172af0a0e8d31a29502f8e8ecbd4f35",
 -    "apps/web/src/styles/legacy-after-drill-cards.css": "397fa9588e1ba26df0e636c7329f113dcdb2e5cb22e92fd53499a55091bcbfc9",
-+    "apps/web/src/styles/legacy-before-drills.css": "4ee665cd96d2ed6aac7c26fe43a962d486740983bdfb7fda67a24fc8afbd86de",
-+    "apps/web/src/styles/legacy-after-drill-cards.css": "69996bdd071d363ca685951e8cffc4a5cad4dc5e1b5dd691c4855f4bdea30de9",
++    "apps/web/src/styles/legacy-before-drills.css": "6e926f2b9df5705eddcab67b68d4b7118556e3582e2572a08262467e3e41c89d",
++    "apps/web/src/styles/legacy-after-drill-cards.css": "04b9aa34100b3ed7075e28d03b708cca007635ae6e598e7afb8d49fcb0ccae4f",
      "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
      "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
      "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
@@ -632,6 +677,15 @@ index e079785..8f0a116 100644
      "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
      "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
      "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
+@@ -1002,7 +1002,7 @@
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+     "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
+-    "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
++    "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "packages/ui/src/DrillSetup/DrillSetup.tsx": "8de68317ae17cbd015bcbca5c7c52bbe38bf01a92545ad7be672be0dabd2a288",
+     "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
 @@ -1012,7 +1012,7 @@
      "workers/publicSite.js": "7bb305c224398c9de614a91549eb941547bb5bc51ce1caf1d09a542b62749f41",
      "tools/public-pages.mjs": "145724f54ce9749b4f0bdbc3877e0f9ac50f078c71a78d1fdf339b238caadae7",
@@ -665,7 +719,7 @@ index b7025f6..4e21ce1 100644
  | Public website | `public-content` | Canonical public information and app homepage; shared app shell for About/Contact/manuals | `practice.dark`, `single.dark`, `repeated.dark`, `par.dark`, `control.dark`, `sequence-rack-trigger.dark`, `sequence-mag-trigger.dark`, `sequence-draw-mag-trigger.dark`, `sequence.dark`, `calibration.dark`, `help.dark` | [Design](../design/screens/public-site/README.md) | [public-seo](../requirements/public-seo.md) |
  
 diff --git a/docs/design/baselines/chg-062-header-review.json b/docs/design/baselines/chg-062-header-review.json
-index 8ff3cd3..15ec54d 100644
+index 8ff3cd3..fa306d4 100644
 --- a/docs/design/baselines/chg-062-header-review.json
 +++ b/docs/design/baselines/chg-062-header-review.json
 @@ -1,7 +1,7 @@
@@ -673,7 +727,7 @@ index 8ff3cd3..15ec54d 100644
    "change": "CHG-062",
 -  "status": "Pinned captures reviewed; complete candidate acceptance pending",
 -  "expandedCSSSha256": "b524ac8e59bad667e9ab17a21ece0a6275162f27923671728642d2ef080e970b",
-+  "status": "Revised flex control candidate; complete acceptance required",
++  "status": "Final deferred About / focus dismissal candidate; full acceptance pending",
 +  "expandedCSSSha256": "40ce7acca87b2ce2413c31923e2a0013ce4b288a7005ad3d5e317a4456b63d37",
    "approval": "About, Contact, Settings; @; consistent accessible icons; proceed with a plan",
    "baseline": {
@@ -692,17 +746,19 @@ index 8ff3cd3..15ec54d 100644
    ],
    "unit": {
 -    "tests": 1081,
-+    "tests": 1083,
-     "suites": 156,
+-    "suites": 156,
 -    "coverageRatchet": "Passed, unchanged thresholds"
-+    "coverageRatchet": "Passed unchanged thresholds before CSS-only flex centering"
++    "tests": 1093,
++    "suites": 157,
++    "coverageRatchet": "Passed unchanged thresholds for58runtime modules and typed packages"
    },
    "audit": {
      "findings": [],
-@@ -154,5 +153,26 @@
+@@ -154,5 +153,29 @@
        }
      ],
      "review": "Source frame counts unchanged for all10 examples; dimensions unchanged; inspected Single first frames show matching content. Encoded frames/palettes coalesce differently; report changed hashes honestly. Timeline durations compared below; complete example/frame contract tests still required."
+-  }
 +  },
 +  "firstCandidate": {
 +    "run": 40178581864,
@@ -724,7 +780,10 @@ index 8ff3cd3..15ec54d 100644
 +    "svgNodes": 40182163600,
 +    "selectiveWrites": 40182507983,
 +    "currentOriginalGate": 40183074477
-   }
++  },
++  "gifCollector": 40197850856,
++  "startupCorrection": "Trusted build-owned JSON DOM tuples defer inactive About parsing; public About route remains prerendered. Native header controls retain explicit widget reset; Escape dismissal persists while focused.",
++  "localBrowser": "Seven system Chromium layout/accessibility workflows passed; pinned suites required."
  }
 diff --git a/docs/design/originality-and-provenance.md b/docs/design/originality-and-provenance.md
 index ebccc4e..b2a46c3 100644
@@ -787,10 +846,10 @@ index 23a3bae..5ee4213 100644
 +
 +CHG-063 release caching request (2026-10-25): owner wants browsers to refresh resource caches after releases and asks about query timestamps. Reviewed current policy: Vite content-hashed JS/CSS, no-cache SW, HTML revalidation, manual SW namespace and ignoreSearch matching. Added H2 automatic release identity, stable-resource policy and safe idle transition to the plan; preserve all IndexedDB/preferences/data and old lazy assets needed by active clients. No cache implementation yet; H1 verification continues.
 diff --git a/docs/project/implementation-history.md b/docs/project/implementation-history.md
-index dc34000..bcd0045 100644
+index dc34000..f51bd8d 100644
 --- a/docs/project/implementation-history.md
 +++ b/docs/project/implementation-history.md
-@@ -982,3 +982,18 @@ CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon
+@@ -982,3 +982,30 @@ CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon
  
  
  CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have the same style/size and good accessibility data. H1 specifies shared 24px optical styling (including drawn @), ≥44px targets, accessible native link names/destinations/current-page state, decorative SVG semantics, logical keyboard order, visible focus/tooltips, theme contrast and responsive/zoom acceptance. Automated and manual checks remain distinct. Planning only; no application change.
@@ -809,51 +868,57 @@ index dc34000..bcd0045 100644
 +
 +
 +CHG-062 performance diagnosis: native Settings-action probe40179285008 still failed WebKit firstAction197→209ms (40/40pairs), so action semantics alone are not the fix. Added a red→green characterization that destination visibility/preferences finish before scroll reset, then batched scrollTo after synchronous display writes. Updated VM fixture with the existing settingsPage port;6focused tests and10local browser workflows pass. Probe40179717980 still failed firstAction193→205ms; no claimed improvement/acceptance. New advisory-only phase diagnostic40180149032 at9ff33a4 instruments dispatch/history/scroll/body mutation/next frame to locate the cost; original acceptance harness untouched. Settings native action retained for its original keyboard/owner contract; public editorial href preserved. No serialized-DOM/template rewrite implemented. Runtime remains local; main/dev unchanged.
++
++### CHG-062 resumed candidate — 2026-10-25
++
++Native widget reset cleared the isolated public WebKit first-action failure in run 40183917359; warm startup remained 37→42 ms (original gate unchanged). Subsequent local correction replaces inactive About's parsed template with build-produced JSON DOM tuples, materialized synchronously with text nodes and restricted attributes/elements. `/about/` still expands the shared typed page at build time. No user HTML parsing, network dependency, storage/schema change or metadata delay. Tests first failed against the old adapter; parity/invalid tree/once-only and pending Full-copy coverage added. Build-only parser is a declared parse5 dependency.
++
++Initial coverage exposed jsdom's TextEncoder dependency when the build renderer is imported in browser-environment tests; replaced the build serializer's jsdom dependency with parse5. A local keyboard workflow found Escape dismissal could be undone by the pointer-out event caused by hiding its label; preserve dismissal while the control stays focused. All seven local layout/accessibility workflows now pass. Public JS50,555 gzip/CSS12,906; preview JS51,040/CSS12,906 before final tooltip guard, original payload caps unchanged. Coverage ratchet initially flagged new informationBridge branches; added serialized Free/Full regression coverage rather than lowering thresholds.
++
++Review patches only published; application source remains unpromoted. Isolated timing run40197785453 and final pinned GIF collector40197850856 are pending. First malformed diagnostic40197756641 was cancelled before acceptance after discovering untracked serializer files were missing from its review patch. No main/dev edits.
++
++Final local acceptance:1093tests/157suites pass; original coverage ratchet58modules/typed packages passes. Types, both lints, architecture41packages/13ownership mappings, smoke, both minified builds/artifact checks and payload limits pass. Seven local browser layout/accessibility workflows pass after Escape correction. Pinned GIF collector40197850856 succeeded, refreshed canonical exports committed d85810c; reviewed Single preparation frame, retained all10dimensions and durations. docs:review/generate/check pass. Complete pinned candidate remains the publication gate.
++
++Complete candidate40198168109: validation and both WebKit performance jobs passed. Public Chromium failed original firstAction36.5→41.4ms (38/40slower pairs); preview Chromium encountered page.goto30s load timeout, identical-build control passed. Screenshots still running. No application publication. Local advisory CPU4 trace identified the unconditional post-write scrollTo causing a forced layout (candidate scroll span~51ms versus baseline~9ms); containment variants did not improve this. Added failing no-op-scroll regression, then capture old scroll position before writes and reset only if nonzero. Scrolled navigation still resets after preferences/destination are ready. Focused tests pass; follow-up diagnostic no longer performs forced scroll and shows dispatch13.4ms versus baseline19.4ms (advisory only, not acceptance).
 diff --git a/docs/project/react-refactor/context.md b/docs/project/react-refactor/context.md
-index ff32f9a..4a4b95f 100644
+index ff32f9a..52aeeae 100644
 --- a/docs/project/react-refactor/context.md
 +++ b/docs/project/react-refactor/context.md
-@@ -1,23 +1,29 @@
+@@ -1,23 +1,23 @@
  # Working context
  
 -Updated 2026-10-25. [History](../implementation-history.md) · [CHG-061 proof](../../design/baselines/chg-061-route-review.json) · [URL inventory](../../seo/routes.md).
 +Updated 2026-10-25. [History](../implementation-history.md) · [Follow-up plan](follow-up-plan.md) · [CHG062 proof](../../design/baselines/chg-062-header-review.json).
  
 -## CHG-061 release
-+## Active work / authorization
++## Authorization
  
 -Approved trainer at `/`, flat URLs, distinct reloadable sequence setups/manuals, marketing retained inside About. Dev untouched. Optimized b commit eff9ac2 passed all eight jobs in push40130237075 and PR40130238059; Cloudflare preview builda1fca6f5-6806-4a45-a469-95a3bcaa4981 succeeded. Candidate40129243422 also passed all eight gates (1077 tests/156 suites, original coverage, both editions, pinned Chromium/WebKit screenshots/integration and unchanged performance controls).450 visual baselines;382 unrelated PNGs and10 original GIFs preserved. See proof/history for earlier failed candidates and optimization evidence.
-+Implement H1 shared top-right About → @ Contact → Settings icons, consistent24px SVG/44px targets, theme contrast/accessibility; relocate bottom links. Owner says proceed autonomously. Work b only; main/dev unchanged. Complete candidate acceptance before application publication, no direct main push or gate relaxation. F2–F7 remain structural follow-up. H2 automatic release-cache identity/safe idle updates was added after owner asks about release caching/timestamps; planning only, never wipe IndexedDB/preferences.
++H1: shared top-right About → @ Contact → Settings icons,24px SVG/44px targets, strong theme contrast/accessibility; remove footer links. Autonomous b-only work, main/dev frozen. Complete candidate acceptance before application publication; no threshold/sample/baseline weakening. F2–F7 remain follow-up. H2 automatic release cache identity/safe idle updates is planned after user's cache question; never clear IndexedDB/preferences.
  
 -PR#27 merged normally with exact tested SHA into main c4e751c61fc93bb2d8ce960b6e252f7661fc5cfd. Git tree81dc47afd7a08fdf429e419ec5ac6bbe306590a7 matches tested b exactly. Post-merge main run40176142886 is in progress. Cloudflare production buildfcda447e-3f45-41e6-a2e2-2e31ded2583f succeeded.
-+## Source and evidence
++## Current source/evidence
  
 -## Next
-+Current b9ff33a4 contains only review assets/patches/diagnostic scaffolding; runtime H1 remains local uncommitted. Header/footer/bridge source edits, tests/docs, SW88; no data/schema/capture changes.450baselines/94currentscreens collected/reviewed via40177270313/40177853387 (Light icon contrast corrected to243d51). Pinned GIF export40178228592 regenerated10 files: same dimensions, source-frame counts and durations; encoded hashes differ. Canonical images/GIFs committed as review evidence. Current new CSS/main edits make GIF source fingerprints stale again: regenerate only after final performance fix. Do not claim all current gates pass.
++b8538e96 contains review-only patches/assets/diagnostic workflow, not application changes. Runtime source remains dirty locally.450 canonical baselines/94 screen images and10 guide GIFs collected/reviewed earlier. First complete candidate40178581864 passed validation and both screenshot/integration editions but failed four timing jobs. Never accepted/published H1. Previous diagnostic detail is in history/review patches.
  
 -Observe main post-merge checks and deployment; close history/context with actual results. Status-only documentation may publish to b after release; no direct main push. No source changes or unchanged retry fishing. Retain b and leave dev untouched.
-+Baseline install/smoke1077tests156suites/build/artifacts passed. H1 local1081tests156suites + original coverage ratchet/types/lint/architecture/both minified payload gates passed. Public50115gzip JS/12954CSS, rawCSS61396 under original61451.19local workflows + final theme/keyboard/layout checks passed. Strict UI audit0issues; DESIGN lint0errors/1existing no-frontmatter warning. Docker pinned image pull denied Forbidden; use CI, no bypass.
++Native Settings button metrics (`appearance:none;font-size:26px`) cleared original isolated WebKit first-action gate40183917359; warm37→42ms still failed. Current local fix: defer inactive About DOM as trusted build-only JSON tuples; synchronous restricted-node materializer, exact shared typed-page parity, no user HTML/network dependency. `/about/` remains fully prerendered. parse5 declared build dependency avoids jsdom TextEncoder in browser-environment tests. Local full coverage rerunning after added new-branch tests; previous ratchet flagged informationBridge branches (not waived). Escape dismissal pointer-out regression fixed, seven local layout/accessibility browser workflows now pass. Payload original limits pass public50555gzipJS/12906CSS, preview51040JS/12906CSS before final tooltip guard. Types/lints passed before that final guard.
  
 -## Invariants / deferred
-+Complete candidate40178581864 (648e5c9 + chg-062-acceptance.patch): validation and both complete pinned screenshot/integration editions PASS; all4 original timing jobs FAIL. Public firstAction44.4→50.7ms Chromium,192→203ms WebKit; public warm39→42ms. No acceptance or application publication. Keep original budgets/samples/controls.
++## Active CI / next
  
 -Preserve ADR001 progressive startup, schema4/user data/backups, capture/safety/save/draft/owner guards, Free/Full boundaries, exact visual references and original performance limits. SW cache87. No unauthorized subagents or commercial/native scope. Future application changes require complete candidate acceptance before b publication. Curate this context after completed increments; detailed evidence belongs in history/proof.
-+## Diagnosis / next
++40197785453 isolated original public WebKit timing uses static-tree patch at8afc7d8 (older jsdom serializer, runtime equivalent).40197850856 pinned guide collector uses8538e96/updated parse5 patch; fetch its review-only media commit once finished. Source manifest includes CSS/main/staticCatalog and must match current exports. Canonical screenshots should remain pixel-identical after nonvisual corrections; do not overwrite unexpected differences.
  
 -Workspace policy blocks external .com/.app reads before origin; b read403. No live-content/indexing/real-device microphone verification is claimed. Owner configured .app permanent redirect and suspected browser caching. F1–F7 and commercial/cloud/native plans remain separate.
-+In-app Settings now retains its original native button action (same icon styling), About/Contact stay href links; static editorial link-mode retains Settings href. Types/19focused tests pass. Probe40179285008 at1244e28 still failed WebKit firstAction197→209ms. It is not a demonstrated speed fix.
++Finish local full coverage/ratchet/types/lints/builds/artifact gates. Copy/review final GIF evidence; docs:review/generate/check and proof. Create exact final review patch, run all8 candidate jobs. Only after passing, apply identical candidate source and publish b; cleanup only our temporary collector/diagnostic/review candidates, retain canonical media/proofs. Observe actual push checks separately. No unchanged retry fishing.
  
 -CHG-062: owner requests plan addition for shared top-right About/Contact/Settings icons replacing bottom informational text links. H1 documented in follow-up-plan.md; Owner confirmed Contact as the middle icon, displayed as @ rather than an envelope; relocate both footer links, no Help icon. Planning only; no UI/screenshots changed.
-+Moved scrollTo to end of synchronous displayView writes, before paint. Added red→green test in homeInitialDisplay.test.js, existing settingsPage fixture port;6focused tests/10local browser workflows pass. Probe40179717980 at3fae1c0 still failed firstAction193→205ms. Do not rerun unchanged. No serialized-DOM/template redesign performed.
++## Constraints
  
 -CHG-062 refinement: shared 24px icon styling/weight/alignment, ≥44px targets, responsive/zoom checks, named native links, decorative SVG semantics, focus/tooltips/current-page state and contrast requirements are explicit in H1. Plan only.
-+Now running advisory navigation-phase diagnostic40180149032 at9ff33a4, applying chg-062-scroll-batch.patch. tools/performance/diagnose-navigation.mjs + b-only diagnose-public-startup.yml instrument dispatch/history/scroll/body mutation/next paint with6samples per artifact, original app/build sources/harness otherwise untouched. Inspect job `Phases:` output, then make a concrete measured correction. Keep compact context/history updated. After fix: update relevant proof/source fingerprints, regenerate cropped GIF evidence if CSS/main changed, run full1082+coverage and complete8job candidate, reconstruct exact accepted source then publish b. Clean our collectors/review patches after acceptance; preserve canonical media/proofs and normal tests.
-+
-+## Prior release / constraints
-+
-+CHG061 b eff9ac2 and PR27 each passed all8; exact tested tree merged normally into mainc4e751c, tree81dc47afd7a08fdf429e419ec5ac6bbe306590a7. Cloudflare production buildfcda447e-3f45-41e6-a2e2-2e31ded2583f succeeded. Postmerge main40176142886 failed public Chromium firstAction/WebKit warm; recorded timing debt, not green. No new main/dev change.
-+
-+Preserve ADR001 progressive startup, schema4/user data/backups, capture/safety/draft/save/owner guards and editions. No unauthorized agents or commercial/native scope. Workspace blocks .com/.app reads before origin; b read403. No live content/indexing/physical mic claim. Current service worker cache-first ignoresSearch, manual namespace; timestamps aren't a reliable update fix. H2 proposed release-based cache + stable-resource revalidation, safe idle transition/old lazy asset protection, never broad storage deletion.
++CHG061 b eff9ac2/PR27 originally passed all8 and merged normally to mainc4e751c; production CFfcda447e succeeded. Postmerge main40176142886 timing failed, separate recorded debt; do not claim main green. Preserve ADR001 progressive startup, schema4/data/backups, capture/safety/draft/save/owner guards and editions. Pinned Docker pull denied; CI supplies Chromium/WebKit. Live .com/.app reads blocked, b403; no live UI/device claims. No subagents. Cache currently manual SW88/cache-first ignoreSearch; H2 pending, timestamp query strings alone are insufficient.
 diff --git a/docs/project/react-refactor/follow-up-plan.md b/docs/project/react-refactor/follow-up-plan.md
 index 6e2f43f..6676037 100644
 --- a/docs/project/react-refactor/follow-up-plan.md
@@ -1068,10 +1133,10 @@ index 144d16f..f3ac31e 100644
 +}
 +@media(forced-colors:active) { .hero .header-link.active { outline:1px solid LinkText; } }
 diff --git a/packages/ui/src/BrandHeader/BrandHeader.test.tsx b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
-index 16fb4b8..ec276de 100644
+index 16fb4b8..e9a6a22 100644
 --- a/packages/ui/src/BrandHeader/BrandHeader.test.tsx
 +++ b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
-@@ -7,21 +7,47 @@ import { BrandHeader } from './BrandHeader.tsx';
+@@ -7,21 +7,48 @@ import { BrandHeader } from './BrandHeader.tsx';
  
  test('branding, beta disclosure, live status and settings retain their native semantics', async () => {
    const onSettings = jest.fn();
@@ -1117,6 +1182,7 @@ index 16fb4b8..ec276de 100644
 + render(<BrandHeader onNavigate={navigate} links={{about:'/about/?source=header',contact:'/contact/',settings:'/settings/'}}/>);
 + const about=screen.getByRole('link',{name:'About'}),contact=screen.getByRole('link',{name:'Contact'});
 + await user.tab();expect(about).toHaveFocus();await user.keyboard('{ArrowRight}{Escape}');expect(about).toHaveAttribute('data-tooltip-dismissed','true');
++ await user.hover(about);await user.unhover(about);expect(about).toHaveAttribute('data-tooltip-dismissed','true');
 + await user.tab();expect(contact).toHaveFocus();expect(about).not.toHaveAttribute('data-tooltip-dismissed');
 + await user.hover(about);await user.unhover(about);expect(about).not.toHaveAttribute('data-tooltip-dismissed');
 + for(const options of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
@@ -1125,7 +1191,7 @@ index 16fb4b8..ec276de 100644
 + expect(navigate).not.toHaveBeenCalled();expect(about).toHaveAttribute('href','/about/?source=header');
 +});
 diff --git a/packages/ui/src/BrandHeader/BrandHeader.tsx b/packages/ui/src/BrandHeader/BrandHeader.tsx
-index eb1bea7..8403664 100644
+index eb1bea7..d69908d 100644
 --- a/packages/ui/src/BrandHeader/BrandHeader.tsx
 +++ b/packages/ui/src/BrandHeader/BrandHeader.tsx
 @@ -1,20 +1,45 @@
@@ -1158,7 +1224,7 @@ index eb1bea7..8403664 100644
 +    onNavigate(destination);
 +  };
 +  const Control=action?'button':'a';
-+  return <Control type={action?'button':undefined} id={destination==='settings'?'settingsShortcut':destination+'Btn'} className={`header-link${view===destination?' active':''}`} href={action?undefined:href} aria-label={label} title={label} aria-current={view===destination?'page':undefined} onClick={activate} onKeyDown={event=>{if(event.key==='Escape')event.currentTarget.dataset.tooltipDismissed='true';}} onBlur={event=>{delete event.currentTarget.dataset.tooltipDismissed;}} onPointerLeave={event=>{delete event.currentTarget.dataset.tooltipDismissed;}}>
++  return <Control type={action?'button':undefined} id={destination==='settings'?'settingsShortcut':destination+'Btn'} className={`header-link${view===destination?' active':''}`} href={action?undefined:href} aria-label={label} title={label} aria-current={view===destination?'page':undefined} onClick={activate} onKeyDown={event=>{if(event.key==='Escape')event.currentTarget.dataset.tooltipDismissed='true';}} onBlur={event=>{delete event.currentTarget.dataset.tooltipDismissed;}} onPointerLeave={event=>{if(event.currentTarget.ownerDocument.activeElement!==event.currentTarget)delete event.currentTarget.dataset.tooltipDismissed;}}>
 +    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{icons[destination]}</svg>
 +    <span className="header-tooltip" aria-hidden="true">{label}</span>
 +  </Control>;
@@ -1263,10 +1329,18 @@ index 91dc5b8..caba1e7 100644
 -export { InfoFooter, InfoFooterLinks, type InfoFooterProps } from './InfoFooter.tsx';
 +export { InfoFooter, type InfoFooterProps } from './InfoFooter.tsx';
 diff --git a/src/main.js b/src/main.js
-index f23368f..0489d49 100644
+index f23368f..ea0d1af 100644
 --- a/src/main.js
 +++ b/src/main.js
-@@ -651,7 +651,6 @@ function displayView(name) {
+@@ -641,6 +641,7 @@ function displayView(name) {
+   }
+   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
+   if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
++  const resetScroll = window.scrollX !== 0 || window.scrollY !== 0;
+   const initialDisplay = document.body.dataset.view === 'loading';
+   informationPages.show(name);
+   if(name==='home' && document.body.dataset.view!=='loading' && !homePage && !homePagePending){
+@@ -651,7 +652,6 @@ function displayView(name) {
    activeView=name;
    if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
    document.body.dataset.view = name;
@@ -1274,12 +1348,12 @@ index f23368f..0489d49 100644
    if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
    document.getElementById(name+'View').classList.toggle('hidden',false);
    setMessage();
-@@ -714,6 +713,8 @@ function displayView(name) {
+@@ -714,6 +714,8 @@ function displayView(name) {
      }
      renderPreferences();
    }
-+  // Finish synchronous page writes before scrollTo can force layout.
-+  window.scrollTo({top:0,behavior:'instant'});
++  // Avoid forcing layout for a no-op reset; measure the old position before page writes.
++  if(resetScroll)window.scrollTo({top:0,behavior:'instant'});
  }
  
  function renderDistances(distances){
@@ -1373,7 +1447,7 @@ index 43985f3..6f94fdf 100644
 -</div>
 +<div class="app-shell"><header class="hero"><img class="brand-logo" src="/logo.svg" width="47" height="47" alt=""/><div class="hero-copy"><div class="brand-heading"><h1 class="brand-name" aria-label="Dry Fire With Ease"><span class="brand-eyebrow">DRY <span>FIRE</span></span><span class="brand-tagline">WITH EASE</span></h1><span class="beta-badge" aria-label="Beta version">BETA</span></div></div><div class="header-actions"><div id="statusPill" class="status-pill" role="status" aria-live="polite">Loading…</div><nav class="header-links" aria-label="Information"><a id="aboutBtn" class="header-link" href="/about/" aria-label="About" title="About"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7h.01"></path></svg><span class="header-tooltip" aria-hidden="true">About</span></a><a id="contactBtn" class="header-link" href="/contact/" aria-label="Contact" title="Contact"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v6a2 2 0 0 0 4 0v-2a8 8 0 1 0-3 6.25"></path></svg><span class="header-tooltip" aria-hidden="true">Contact</span></a><button type="button" id="settingsShortcut" class="header-link" aria-label="Settings" title="Settings"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 3-.5 2-2 .8-1.8-1-2 3.4 1.6 1.4-.3 2.4-1.6 1.4 2 3.4 2-.6 1.8 1.2.5 2.2h4l.5-2.2 1.8-1.2 2 .6 2-3.4-1.6-1.4-.3-2.4 1.6-1.4-2-3.4-1.8 1-2-.8L14 3Z"></path><circle cx="12" cy="11" r="3"></circle></svg><span class="header-tooltip" aria-hidden="true">Settings</span></button></nav></div></header>{{safetyModal}}<main id="pageContent" class="page-content">{{context}}{{pages}}</main><footer>Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser&#x27;s IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.<p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p><p id="previewModeBadge" class="preview-mode-badge" role="status">Private preview · Free mode</p></footer><nav class="tabs" aria-label="Main navigation"><button class="tab active" data-view="home" aria-current="page" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z"></path></svg></span>Home</button><button class="tab" data-view="learn" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4"></path></svg></span>Learn</button><button class="tab" data-view="drills" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 1v4m0 14v4M1 12h4m14 0h4"></path></svg></span>Drills</button><button class="tab" data-view="recognize" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6m4-9v12m5-15v18m5-15v12m4-9v6"></path></svg></span>Live Listen</button><button class="tab" data-view="history" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h3v7H4zm7-6h3v13h-3zm7-5h3v18h-3z"></path></svg></span>History</button></nav></div>
 diff --git a/tests/homeInitialDisplay.test.js b/tests/homeInitialDisplay.test.js
-index a7b2785..43c5a70 100644
+index a7b2785..3565fc9 100644
 --- a/tests/homeInitialDisplay.test.js
 +++ b/tests/homeInitialDisplay.test.js
 @@ -11,7 +11,7 @@ const implementation=source.slice(source.indexOf('function displayView('),source
@@ -1381,17 +1455,17 @@ index a7b2785..43c5a70 100644
   document.body.innerHTML=renderPageTemplates('{{app}}');document.body.dataset.view=view;
   document.getElementById('homeEvents').textContent='7';document.getElementById('homeAccuracy').textContent='50%';
 - const context={document,window:{scrollTo:jest.fn()},busy:false,profileLoading:false,PAGE_IDS:['home','settings'],practiceController:null,activeGun:{id:'a'},informationPages:{show:jest.fn()},homePage:null,homePagePending:true,activeView:view==='loading'?'home':view,appURLs:false,setMessage:jest.fn(),showError:jest.fn(),renderHome:jest.fn(async()=>{})};
-+ const context={document,window:{scrollTo:jest.fn()},busy:false,profileLoading:false,PAGE_IDS:['home','settings'],settingsPage:null,practiceController:null,activeGun:{id:'a'},informationPages:{show:jest.fn()},homePage:null,homePagePending:true,activeView:view==='loading'?'home':view,appURLs:false,setMessage:jest.fn(),showError:jest.fn(),renderHome:jest.fn(async()=>{})};
++ const context={document,window:{scrollX:0,scrollY:0,scrollTo:jest.fn()},busy:false,profileLoading:false,PAGE_IDS:['home','settings'],settingsPage:null,practiceController:null,activeGun:{id:'a'},informationPages:{show:jest.fn()},homePage:null,homePagePending:true,activeView:view==='loading'?'home':view,appURLs:false,setMessage:jest.fn(),showError:jest.fn(),renderHome:jest.fn(async()=>{})};
   const show=runInNewContext(implementation+'\ndisplayView;',context);return{context,show};
  }
  test('first Home displays the statistics already loaded with its profile without a duplicate history read',()=>{
-@@ -20,3 +20,16 @@ test('first Home displays the statistics already loaded with its profile without
+@@ -20,3 +20,22 @@ test('first Home displays the statistics already loaded with its profile without
  test('later Home visits still refresh statistics rather than keeping the initial snapshot',()=>{
   const s=setup('settings');s.show('home');expect(s.context.renderHome).toHaveBeenCalledTimes(1);expect(document.body.dataset.view).toBe('home');
  });
 +
 +test('navigation resets scroll only after the destination and its preferences are ready',()=>{
-+ const s=setup('home');s.context.activeGun=null;document.getElementById('homeView').classList.remove('hidden');
++ const s=setup('home');s.context.window.scrollY=200;s.context.activeGun=null;document.getElementById('homeView').classList.remove('hidden');
 + s.context.renderPreferences=jest.fn(()=>document.getElementById('settingsView').dataset.prepared='true');
 + s.context.window.scrollTo.mockImplementation(options=>{
 +  expect(document.body.dataset.view).toBe('settings');
@@ -1401,6 +1475,12 @@ index a7b2785..43c5a70 100644
 +  expect(options).toEqual({top:0,behavior:'instant'});
 + });
 + s.show('settings');expect(s.context.window.scrollTo).toHaveBeenCalledTimes(1);expect(s.context.renderPreferences).toHaveBeenCalledTimes(1);
++});
++
++test('navigation at the top avoids a redundant forced-layout scroll',()=>{
++ const s=setup('home');s.context.window.scrollX=0;s.context.window.scrollY=0;
++ s.context.renderPreferences=jest.fn();s.context.preparePageModule=()=>null;
++ s.show('settings');expect(s.context.window.scrollTo).not.toHaveBeenCalled();
 +});
 diff --git a/tests/informationPrerender.test.js b/tests/informationPrerender.test.js
 index cab1a97..b960f72 100644
