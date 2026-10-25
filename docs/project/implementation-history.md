@@ -979,3 +979,6 @@ CHG-062 clarification (2026-10-25): confirmed About → Contact → Settings hea
 
 
 CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon, use "@"”. Plan now specifies visible @ with accessible name Contact, superseding the proposed envelope. Documentation only; no UI/screenshots changed.
+
+
+CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have the same style/size and good accessibility data. H1 specifies shared 24px optical styling (including drawn @), ≥44px targets, accessible native link names/destinations/current-page state, decorative SVG semantics, logical keyboard order, visible focus/tooltips, theme contrast and responsive/zoom acceptance. Automated and manual checks remain distinct. Planning only; no application change.
