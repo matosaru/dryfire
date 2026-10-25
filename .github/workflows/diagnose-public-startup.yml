@@ -52,9 +52,9 @@ jobs:
       - run: npm run build
         working-directory: .performance-baseline
       - run: npm run build
-      - name: Instrument Settings navigation phases, never acceptance
+      - name: Crossed WebKit HTML/module diagnostic, never acceptance
         if: ${{ !inputs.measure_webkit_gate }}
-        run: node --experimental-vm-modules tools/performance/diagnose-navigation.mjs --baseline=.performance-baseline/dist --candidate=dist --browser=${{ inputs.browser }}
+        run: node --experimental-vm-modules tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
       - name: Measure the original public browser gate in isolation
         if: inputs.measure_webkit_gate
         run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist --browser=${{ inputs.browser }}
