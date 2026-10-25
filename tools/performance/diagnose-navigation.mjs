@@ -19,7 +19,7 @@ const servers=await Promise.all([arg('baseline'),arg('candidate')||'dist'].map(a
  }catch{res.writeHead(404).end();}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));return{server,url:`http://127.0.0.1:${server.address().port}`};
 }));
-const variants=['baseline','candidate','candidateNoIcons','candidateNoTitle','candidateNoURL','candidateNoUnusedViews','candidateTextHeader'];
+const variants=['baseline','candidate','candidateNoIcons','candidateNoTitle','candidateNoURL','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons'];
 const browser=await webkit.launch(),samples=variants.map(()=>[]);
 try{for(let run=0;run<6;run++)for(const index of variants.map((_,i)=>(i+run)%variants.length)){
  const context=await browser.newContext({viewport:environment.viewport,locale:environment.locale,timezoneId:environment.timezoneId,reducedMotion:'reduce',serviceWorkers:'block'});
@@ -33,6 +33,8 @@ try{for(let run=0;run<6;run++)for(const index of variants.map((_,i)=>(i+run)%var
   const page=await context.newPage();await page.goto(servers[index===0?0:1].url);await page.waitForFunction(()=>Number.isFinite(window.__performanceReview?.ready));
   if(index===5)await page.evaluate(()=>document.querySelectorAll('.view').forEach(node=>{if(!['gunSetupView','settingsView'].includes(node.id))node.remove();}));
   if(index===6)await page.evaluate(()=>{for(const id of ['aboutBtn','contactBtn'])document.getElementById(id).style.display='none';const gear=document.getElementById('settingsShortcut');gear.replaceChildren(document.createTextNode('⚙'));gear.style.fontSize='26px';});
+  if(index===7)await page.evaluate(()=>document.querySelectorAll('.header-link svg').forEach(node=>node.remove()));
+  if(index===8)await page.evaluate(()=>{for(const[id,glyph]of[['aboutBtn','ⓘ'],['contactBtn','@'],['settingsShortcut','⚙']]){const node=document.getElementById(id);node.querySelector('svg')?.replaceWith(document.createTextNode(glyph));node.style.fontSize='24px';}});
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await page.evaluate(()=>{window.__navigationPhases=new Promise((resolve,reject)=>{
    const times={},button=document.getElementById('settingsShortcut');let start;
