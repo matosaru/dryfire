@@ -19,6 +19,7 @@ The owner subsequently requested indexable public URLs with correct metadata bef
 | Step | Work | Completion criteria | Status |
 | --- | --- | --- | --- |
 | F1 | Freeze current contracts and map extraction boundaries | Current baseline checked; dependency/ownership map covers proposed components/services; missing characterization added before moving behavior; architecture checks cover new feature-component folders and permitted import directions | Review complete; implementation baseline refresh pending |
+| H1 | Shared header icon navigation (separate approved visual change) | About, Help, Settings icons at top right; resolve Contact destination; accessible controls, consistent routes/guards and reviewed screenshots across pages | Planned; Contact/Help clarification pending |
 | F2 | Shared page context and repeated Settings components | GunContext replaces identical context composition; SettingsSection, PreferenceToggle and SettingsAction replace repeated Settings markup with preserved DOM, IDs, statuses, input ownership and callbacks | Planned |
 | F3 | Complete drill setup reuse and audit run/guide duplication | Existing DrillSetup owns repeated delay/sound/readiness composition where compatible; Practice/Sequence retain mode-specific options; existing common guide remains one page; run/live-example components share only truly repeated presentation | Planned |
 | F4 | Decompose Live Listen and retain History composition | Focused mode/controls/result/timeline sections; shared microphone-meter presentation only if both variants preserve existing rendering/update behavior; History continues to compose its existing lists/evaluation/progress with only demonstrated duplicate cleanup | Planned |
@@ -35,6 +36,19 @@ Each row consists of small, independently verified slices. The complete acceptan
 - Characterize planned seams: component markup/semantics, controlled/uncontrolled values, callbacks and errors, focus, retained native elements, capture/save cancellation and storage ownership.
 - Extend existing architecture verification to the actual feature-component folders introduced below: source, CSS, tests, export and clear dependencies. Add targeted layer/cycle checks based on inspected imports, not a blanket prohibition on currently intentional adapters.
 - Pure models/engines do not import React/DOM/persistence. Shared UI does not acquire capture/storage. Feature controllers coordinate effects; rendering ports remain exclusive. Define these rules before extracting modules.
+
+## H1 — Shared header icon navigation
+
+Added 2026-10-25 by direct owner request, after F1 characterization and before F2. This is an intentional navigation/design change, separate from the appearance-preserving F1–F7 extractions; establish and accept its new visual references independently.
+
+- Move informational navigation from bottom text links into the shared header, top right beside Settings, consistently across app pages. Requested left-to-right order: **About, Help, Settings**.
+- Suggested icons: outlined information circle for About, question-mark circle for Help, existing gear for Settings. Use the existing icon system, matching stroke, size, theme contrast and spacing; retain the logo/Beta badge and avoid narrow-screen collisions.
+- Icon-only visible controls need accessible names, keyboard focus, sufficiently large touch targets and discoverable labels/tooltips. Use real route links for informational pages and preserve existing history, capture/safety and unsaved-work guards. No duplicate shell or page-specific header copies.
+- **Unresolved wording:** owner refers to moving current About/Contact links but specifies About/Help/Settings order. Confirm whether Help replaces Contact in the header or the middle icon should be Contact (envelope). Do not silently relabel Contact as Help, remove the contact route/email, or invent a new Help page. Final Contact placement and the existing Help destination must be specified before implementation.
+- Update shared layout and affected About/Contact/help requirements, shared design, screen/component map and navigation documentation when the destination is resolved. Preserve footer disclosure/copyright and fixed bottom navigation; remove only links actually relocated.
+- Characterize and test header markup, accessible names/routes, keyboard/touch behavior, narrow layouts, active navigation and guarded transitions. Update reviewed screenshots for every affected page/state in both themes/editions and pinned Chromium/WebKit; review help/animation exports if the shared header is present. Run the complete unit/coverage/integration/build/artifact/performance acceptance before publishing application code to b.
+
+Planning only in this update: no application, CSS, route or screenshot changes yet. Main/dev unchanged by this planned work.
 
 ## F2 — Cross-page context and Settings
 

@@ -680,3 +680,8 @@ CHG-060 follow-up: owner also reports favicon.ico404 and asks to fix it. Generat
 ## CHG-061 — flat app routes and retained marketing About (2026-10-24)
 
 Owner reported the app homepage was replaced by marketing, requested removing `/app`, and reported all sequence URLs opening the same page. Approved the proposed flat lowercase hyphenated names: “ok, works for me, proceed.” Explicitly instructed “don't delete permanently marketing homepage, make it part of about page,” then “ok, proceed.” Restore the real app at `/`, unique preset setups/manual URLs, compatible redirects and reusable marketing content within About. Existing instruction permits a checked b→main PR after all gates pass; dev untouched. Approval is not evidence of implementation, test success or deployment.
+
+
+## CHG-062 — Plan shared header information icons (2026-10-25)
+
+Owner requests adding work to the plan: move bottom About/Contact text links to top-right icon navigation beside Settings, with specified order “About, Help, Settings”. This authorizes recording the change in the follow-up plan; Help versus Contact destination/placement is explicitly unresolved and clarification requested. No application implementation or screenshot update is claimed. Preserve existing routes/email, shared shell, guarded navigation and complete acceptance.
