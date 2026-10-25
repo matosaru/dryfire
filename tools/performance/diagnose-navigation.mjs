@@ -3,6 +3,7 @@ import {createServer} from 'node:http';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {resolve,relative,extname} from 'node:path';
 import {gzipSync} from 'node:zlib';
+import {JSDOM} from 'jsdom';
 import {webkit,chromium} from '@playwright/test';
 import {installSyntheticMedia} from '../../visual-tests/media.js';
 import {usableInitialScreen} from './readiness.mjs';
@@ -19,7 +20,7 @@ const servers=await Promise.all([arg('baseline'),arg('candidate')||'dist'].map(a
  }catch{res.writeHead(404).end();}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));return{server,url:`http://127.0.0.1:${server.address().port}`};
 }));
-const variants=['baseline','candidate','candidateNoNativeTitle','candidateNoWrap','candidateMaxContent','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons','candidateButtons','candidateNoHref'];
+const variants=['baseline','candidate','candidateNoNativeTitle','candidateFrozenHeader','candidateOriginalSettings','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons','candidateButtons','candidateNoHref'];
 const browserName=arg('browser')||'webkit';
 const browser=await ({webkit,chromium}[browserName]).launch(),samples=variants.map(()=>[]),geometries={};
 try{for(let run=0;run<8;run++)for(const index of [0,1,3,4].map((_,i,a)=>a[(i+run)%a.length])){
@@ -29,8 +30,8 @@ try{for(let run=0;run<8;run++)for(const index of [0,1,3,4].map((_,i,a)=>a[(i+run
   const page=await context.newPage();let cdp;
   if(browserName==='chromium'){cdp=await context.newCDPSession(page);await cdp.send('Performance.enable');await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});await cdp.send('Network.enable');await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:40,downloadThroughput:200000,uploadThroughput:100000});}
   await page.goto(servers[index===0?0:1].url);await page.waitForFunction(()=>Number.isFinite(window.__performanceReview?.ready));
-  if(index===3)await page.addStyleTag({content:'.hero .brand-heading{flex-wrap:nowrap}'});
-  if(index===4)await page.addStyleTag({content:'.hero .brand-heading{width:max-content;max-width:100%}'});
+  if(index===3)await page.evaluate(()=>{const hero=document.querySelector('header.hero'),button=document.getElementById('settingsShortcut');hero.replaceChildren(button);Object.assign(hero.style,{display:'block',position:'relative',height:'59px',minHeight:'59px',padding:'0'});Object.assign(button.style,{position:'absolute',left:'314px',top:'5px'});});
+  if(index===4){const dom=new JSDOM(readFileSync(resolve(arg('baseline'),'index.html'),'utf8'));try{await page.evaluate(html=>document.getElementById('settingsView').innerHTML=html,dom.window.document.getElementById('settingsView').innerHTML);}finally{dom.window.close();}}
   await page.evaluate(()=>{window.__navigationPhases=new Promise((resolve,reject)=>{
    const times={},button=document.getElementById('settingsShortcut');let start;
    const mark=key=>{if(start!==undefined)times[key]=performance.now()-start;};
@@ -44,7 +45,7 @@ try{for(let run=0;run<8;run++)for(const index of [0,1,3,4].map((_,i,a)=>a[(i+run
   const before=cdp?await cdp.send('Performance.getMetrics'):null;await page.locator('#settingsShortcut').click();const phases=await page.evaluate(()=>window.__navigationPhases);if(cdp){const after=await cdp.send('Performance.getMetrics');for(const key of ['ScriptDuration','LayoutDuration','RecalcStyleDuration','TaskDuration'])phases[key]=1000*(after.metrics.find(m=>m.name===key).value-before.metrics.find(m=>m.name===key).value);}samples[index].push(phases);
   if(!geometries[variants[index]])geometries[variants[index]]=await page.evaluate(()=>{
    const rect=selector=>{const e=document.querySelector(selector),r=e?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height,font:getComputedStyle(e).fontSize}:null;};
-   return{width:innerWidth,hero:rect('header.hero'),brand:rect('.brand-name'),copy:rect('.hero-copy'),badge:rect('.beta-badge'),settings:rect('#settingsShortcut'),status:rect('#statusPill')};
+   return{width:innerWidth,hero:rect('header.hero'),brand:rect('.brand-name'),copy:rect('.hero-copy'),badge:rect('.beta-badge'),settings:rect('#settingsShortcut'),settingsContent:rect('#settingsView'),status:rect('#statusPill')};
   });
  }finally{await context.close();}
 }}finally{await browser.close();await Promise.all(servers.map(({server})=>new Promise(r=>server.close(r))));}
