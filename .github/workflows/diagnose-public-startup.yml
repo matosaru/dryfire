@@ -54,7 +54,7 @@ jobs:
       - run: npm run build
       - name: Instrument Settings navigation phases, never acceptance
         if: ${{ !inputs.measure_webkit_gate }}
-        run: node --experimental-vm-modules tools/performance/diagnose-navigation.mjs --baseline=.performance-baseline/dist --candidate=dist
+        run: node --experimental-vm-modules tools/performance/diagnose-navigation.mjs --baseline=.performance-baseline/dist --candidate=dist --browser=${{ inputs.browser }}
       - name: Measure the original public browser gate in isolation
         if: inputs.measure_webkit_gate
         run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist --browser=${{ inputs.browser }}
