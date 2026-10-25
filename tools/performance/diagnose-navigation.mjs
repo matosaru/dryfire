@@ -19,17 +19,17 @@ const servers=await Promise.all([arg('baseline'),arg('candidate')||'dist'].map(a
  }catch{res.writeHead(404).end();}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));return{server,url:`http://127.0.0.1:${server.address().port}`};
 }));
-const variants=['baseline','candidate','candidateNoNativeTitle','candidateNoTitle','candidateNoURL','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons','candidateButtons','candidateNoHref'];
+const variants=['baseline','candidate','candidateNoNativeTitle','candidateGridHeader','candidateNoURL','candidateNoUnusedViews','candidateTextHeader','candidateNoSVGNodes','candidateTextIcons','candidateButtons','candidateNoHref'];
 const browserName=arg('browser')||'webkit';
 const browser=await ({webkit,chromium}[browserName]).launch(),samples=variants.map(()=>[]),geometries={};
-try{for(let run=0;run<8;run++)for(const index of [0,1,2].map((_,i,a)=>a[(i+run)%a.length])){
+try{for(let run=0;run<8;run++)for(const index of [0,1,3].map((_,i,a)=>a[(i+run)%a.length])){
  const context=await browser.newContext({viewport:environment.viewport,locale:environment.locale,timezoneId:environment.timezoneId,reducedMotion:'reduce',serviceWorkers:'block'});
  try{
   await context.addInitScript(installSyntheticMedia);await context.addInitScript({content:`window.__performanceUsableScreen=(${usableInitialScreen.toString()});`});await context.addInitScript(observeReadiness);
   const page=await context.newPage();let cdp;
   if(browserName==='chromium'){cdp=await context.newCDPSession(page);await cdp.send('Performance.enable');await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});await cdp.send('Network.enable');await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:40,downloadThroughput:200000,uploadThroughput:100000});}
   await page.goto(servers[index===0?0:1].url);await page.waitForFunction(()=>Number.isFinite(window.__performanceReview?.ready));
-  if(index===2)await page.evaluate(()=>document.querySelectorAll('.header-link').forEach(node=>node.removeAttribute('title')));
+  if(index===3)await page.addStyleTag({content:'.hero.hero{display:grid;grid-template-columns:auto minmax(0,1fr) 132px}.hero .header-actions{display:contents}.hero .header-links{display:grid;grid-template-columns:repeat(3,44px)}.hero .header-link{display:block}.hero .header-link>svg{position:absolute;top:10px;left:10px}'});
   await page.evaluate(()=>{window.__navigationPhases=new Promise((resolve,reject)=>{
    const times={},button=document.getElementById('settingsShortcut');let start;
    const mark=key=>{if(start!==undefined)times[key]=performance.now()-start;};
