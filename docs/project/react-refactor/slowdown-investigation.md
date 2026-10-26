@@ -53,3 +53,9 @@ Pinned CSS-only ablation40390922132: production/H1/production-CSS H1 frame35.9/3
 Pinned shell ablation40391247825 reports production/H1/production-shell H1 frame46.1/51.9/45.3ms (p9550.8/76.9/50.4). Restoring production header/footer markup with its stylesheet removes the measured extra frame cost in this advisory comparison. This narrows the boundary to shared shell presentation, not unrelated runtime optimizations. Next split header versus footer; these deliberately different pictures are diagnosis, never release references or accepted implementation.
 
 Refreshed unchanged shipping-source coverage:1077tests/156suites pass; coverage ratchet passes58runtime modules and typed packages. No baseline, threshold or application source changed.
+
+Header-only pinned ablation40391607392: production/H1/old-header H1 frame48.5/51.5/44.3ms; layout31.907/34.906/29.480ms. The footer stays in the new design, narrowing the presentation cost to the header boundary.
+
+Prepared a runtime-only flat-header review patch: remove the redundant header-actions layout box with display:contents on its generic div, retain nav semantics and flex:none sizing. No application working-tree change. Local four-sample system-Chromium check preserves identical Settings pixels; frame90.7→79.5ms, layout55.887→52.002ms. No local acceptance claim; one unchanged original pinned gate is next.
+
+Added Settings characterization for retained import/preference node identity, native unfinished values on page updates, and disabled action dispatch during profile changes. Refreshed1079tests/156suites, typecheck and original coverage ratchet pass before any extraction.

@@ -15,3 +15,5 @@ Updated2026-10-26. [Investigation/next steps](slowdown-investigation.md) · [pla
 - Branch sync checked2026-10-26: main-only four commits were PR merge ancestry; application code matches b. Merged main→b with identical pre/post tree, clearing behind count. Keep PR29 draft until acceptance; ahead diagnostic/reference commits remain intentional. Obsolete local dev fetch refspec removed.
 
 - Presentation evidence: CSS-only40390922132 did not help (35.9/38/38.8ms); shell40391247825 reports46.1/51.9/45.3ms production/H1/old-shell H1. Split header/footer next; changed diagnostic pictures are not visual acceptance. Refreshed1077tests/156suites+coverage ratchet passed.
+
+- Header-only40391607392 frame48.5/51.5/44.3ms (production/H1/old-header H1) narrows cost to header boundary. Flat-header runtime-only patch prepared: generic header-actions display:contents, nav flex:none; local Settings pixels identical and frame90.7→79.5ms (diagnostic). Original pinned gate next. New Settings characterization passes with1079tests/156suites, typecheck and coverage ratchet.
