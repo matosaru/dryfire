@@ -33,3 +33,13 @@ The existing Advisory startup diagnosis workflow has a separate compare_producti
 - Full repair run40206628358 passes validation, both pinned screenshot/integration editions, both WebKit performance jobs and preview Chromium. Public Chromium reports returning184.7→188.4ms and firstAction27.8→29.1ms. Application source still matches main71ae074, whose earlier four performance jobs passed. This is an existing timing signal/variation, not an application-code regression introduced by reference restoration; do not rerun unchanged builds merely to obtain green.
 - Controlled run40206453744 succeeded: production frame median/p9539.4/43.9ms, candidate42.3/53.5ms, original-scroll variant44.8/51.9ms. Layout medians24.839/27.987/30.020ms respectively. Candidate/scroll-variant screenshots are byte-identical. Restoring original scroll order is rejected as a fix.
 - Next: collect one separately traced context per artifact, excluded from the10sample diagnostic statistics, and map layout roots/invalidation reasons to DOM nodes. Compare production/current candidate with an isolated root flex-sizing variant. This targets the shared column's automatic minimum-size calculation; it is a hypothesis, not an identified cause or an application change. The local protocol smoke produced identical Settings pixels. Full visual/function/performance acceptance remains mandatory before applying any fix.
+
+## 2026-10-26 — rejected sizing fix and next isolation
+
+Pinned original-gate run [40208976187](https://github.com/matosaru/dryfire/actions/runs/40208976187) rejects the root-flex variant: Chromium first Settings median47.3→53.8ms, p9550.9→56.8ms,39/40slower pairs. No application fix or timing allowance was applied. Earlier diagnostic improvement did not establish acceptance.
+
+A local system-Chromium four-sample block-shell counterfactual preserved Settings pixels but did not improve candidate frame timing (64.4→66.7ms; layout42.683→42.548ms). This is diagnostic evidence only; do not publish it or spend a pinned gate run on it.
+
+Next isolate the candidate's unrelated main.js optimizations from its header presentation: the advisory workflow can restore the exact production src/main.js only inside the third isolated checkout. Compare production, complete H1 and production-main H1 on the same runner. This is an ablation to identify responsibility, not a proposed release. Original acceptance is unchanged.
+
+Latest owner instruction: keep b and main up to date. This supersedes the assistant main freeze: promote tested b releases through PRs after complete acceptance; dev remains outside scope. Current failed checks still prevent promotion.

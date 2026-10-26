@@ -1,5 +1,7 @@
 # Repository instructions
 
+Latest release direction (2026-10-26): the owner asks to keep b and main up to date. Develop on b and promote fully accepted releases through b → main pull requests automatically; this supersedes the earlier assistant main freeze. Complete acceptance below still applies before promotion. Dev remains outside scope.
+
 Before merging or promoting application changes into any branch, require complete candidate acceptance: unit/coverage, integration, both-edition builds/verification, pinned Chromium/WebKit screenshot suites and the unchanged performance gate. Focused tests alone are insufficient. Use a review-only candidate patch in CI if the local environment lacks the pinned browsers; do not substitute local Chromium for WebKit or label cancelled/pending checks as passed. Fix failures and complete the gate before applying the application candidate. The owner reinforced this with “try fixing all tests, then merge. Add this directive to your context” (2026-10-22); keep b-only/main-dev freeze constraints below.
 
 Maintain [refactor working context](docs/project/react-refactor/context.md) after each completed task/increment. Keep only current authorization, source/task, verified evidence, open debt and the next action; link to the spec/plan/history instead of duplicating them. Offload detailed decisions/results to their authoritative documents, remove superseded status from the handoff, and preserve user constraints, approval evidence and unresolved failures. Do not claim unobserved CI/deployment or background progress.

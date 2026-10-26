@@ -994,3 +994,9 @@ Reference repair verification: docs:check, visual:review (225cases×2engines) an
 Controlled run40206453744: production39.4/43.9ms median/p95, H142.3/53.5, original-scroll44.8/51.9; candidate/counterfactual pixels identical. Original-scroll reversal rejected. Repair full run40206628358 passes validate/bothscreens/bothWebKit/previewChromium but publicChromium returning+3.7ms and firstAction+1.3ms fail on unchanged shipping source. PR29 remains draft; do not retry unchanged code to obtain green.
 
 Prepared read-only trace mode, one extra traced context per artifact excluded from10normal samples, raw compressed trace artifacts and bounded DOM invalidation summaries. Added an isolated root-flex-sizing counterfactual, not an app change. Workflow YAML/shell and script syntax pass; local system-Chromium protocol smoke passes with identical candidate/variant Settings pixels. Original acceptance harness/policy remains unchanged.
+
+### 2026-10-26 — bounded slowdown isolation and release authorization
+
+Confirmed root-flex original gate40208976187 fails (firstAction47.3→53.8ms). Rejected the variant. Local four-sample block-shell diagnosis also gives no frame improvement; no app code/designs changed. Added a read-only production-main ablation to the existing advisory workflow; next run isolates unrelated main.js optimizations from H1 presentation. Preserve full acceptance requirements and the H1 recovery patch/stash.
+
+Owner now requests b and main kept up to date; interpret m as main. Supersedes prior main freeze for fully checked PR promotion; dev remains excluded. Do not merge current failed candidate or claim deployment.
