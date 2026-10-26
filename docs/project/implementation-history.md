@@ -1002,3 +1002,9 @@ Confirmed root-flex original gate40208976187 fails (firstAction47.3→53.8ms). R
 Owner now requests b and main kept up to date; interpret m as main. Supersedes prior main freeze for fully checked PR promotion; dev remains excluded. Do not merge current failed candidate or claim deployment.
 
 Pinned advisory40271470299 completes: production/H1/production-main H1 frame37/41/42ms, layout23.890/27.470/28.062ms, identical H1/counterfactual pixels. Runtime rollback rejected; next source ablation targets presentation. docs:check and diagnostic script/YAML checks passed. No app release, all-tests-green claim or main promotion.
+
+### 2026-10-26 — b/main ancestry synchronization
+
+Verified remote main71ae074 versus b63d1082: four main-only commits were PR merge commits, six b-only commits were reference repair/diagnostics/documentation. Application source/configuration/package files match. Conflict-free main→b merge produced exactly the existing b tree (da1b1bc46e85effd6c70ff3c6ddcb731ccef0d49); no runtime or reference change. Main is now an ancestor of b. Removed the obsolete local dev fetch refspec because that deleted branch made ordinary fetch fail. No branch recreation or deletion.
+
+This clears b's behind count, not its intentional ahead count. Remaining b→main promotion stays in draft PR29 pending complete acceptance; no failing performance gate was bypassed. Future accepted releases should use a merge PR followed by main→b synchronization, avoiding squash/rebase divergence.

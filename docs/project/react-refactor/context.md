@@ -11,3 +11,5 @@ Updated2026-10-26. [Investigation/next steps](slowdown-investigation.md) · [pla
 - Preserve ADR001, schema4/backups, owner/capture/safety/draft/save guards and edition separation. H1 @icons24px/targets44px approved; source pending acceptance. H2automatic resource caching planned, not implemented; never clear user data. F2–F7 remain pending. No agents/native/commercial scope. Live domain fetch blocked; no physical microphone/live-content claim.
 
 - Advisory40271470299 completed: production/H1/production-main H1 frame37/41/42ms, layout23.890/27.470/28.062ms; candidate/variant pixels identical. Reject runtime rollback. Next isolate header/footer presentation from other candidate presentation/build changes. Diagnostic success is not acceptance. Follow-up plan reflects H1 blocked status and checked-main promotion authorization.
+
+- Branch sync checked2026-10-26: main-only four commits were PR merge ancestry; application code matches b. Merged main→b with identical pre/post tree, clearing behind count. Keep PR29 draft until acceptance; ahead diagnostic/reference commits remain intentional. Obsolete local dev fetch refspec removed.
