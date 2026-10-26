@@ -59,3 +59,7 @@ Header-only pinned ablation40391607392: production/H1/old-header H1 frame48.5/51
 Prepared a runtime-only flat-header review patch: remove the redundant header-actions layout box with display:contents on its generic div, retain nav semantics and flex:none sizing. No application working-tree change. Local four-sample system-Chromium check preserves identical Settings pixels; frame90.7→79.5ms, layout55.887→52.002ms. No local acceptance claim; one unchanged original pinned gate is next.
 
 Added Settings characterization for retained import/preference node identity, native unfinished values on page updates, and disabled action dispatch during profile changes. Refreshed1079tests/156suites, typecheck and original coverage ratchet pass before any extraction.
+
+Flat-box original gate40392249158 failed34.1→38.5ms (35/40slower); fixed-menu advisory40393289420 reports44.1/48.4/47.6ms production/H1/fixed-menu (variant p9578.1ms), insufficient. Both header tweaks were removed from the source candidate. Stop speculative header probes.
+
+F2 source is now prepared separately: reusable context/Settings/actions/toggles with native identity preserved.1103tests/161suites+coverage pass;32local full-page pixel cases identical across eight pages. Settings group layout containment is the only intentional computed-style change and still needs timing verification. Both builds/artifacts and original payload caps pass (public50630gzipJS, preview51114; CSS12902). Details/reproduction in f2-checkpoint.md. No application release or timing success claimed.
