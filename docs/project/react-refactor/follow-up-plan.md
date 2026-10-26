@@ -1,8 +1,8 @@
 # Follow-up modularization plan
 
-Prepared 2026-10-24 against `b` revision `2cf044c` / application `5b8aeed`. **Proposed; implementation has not started.** The owner requested review of Copilot's analyses, reusable pages and then this consolidated plan. This is separate from the [completed P0–P8 React refactor](plan.md); it does not reopen that migration or authorize a new framework rewrite.
+Prepared 2026-10-24 against `b` revision `2cf044c` / application `5b8aeed`. **In progress: H1 candidate awaits performance acceptance; F2–F7 have not started.** The owner requested review of Copilot's analyses, reusable pages and then this consolidated plan. This is separate from the [completed P0–P8 React refactor](plan.md); it does not reopen that migration or authorize a new framework rewrite.
 
-Review and implementation scope: **b only**. The owner handles b → main merges for the Free product; do not perform or assume those merges. Dev is outside the active workflow. No branch synchronization, other-branch inspection or deployment reconfiguration under this plan. Finish the Free product before reopening monetization planning.
+Implementation starts on **b**. Latest owner direction (2026-10-26) authorizes automatic b → main PR promotion after complete acceptance, keeping both branches current. Dev is outside the active workflow. Cloudflare configuration remains owner-managed. Finish the Free product before reopening monetization planning.
 
 ## Result to achieve
 
@@ -18,8 +18,8 @@ The owner subsequently requested indexable public URLs with correct metadata bef
 
 | Step | Work | Completion criteria | Status |
 | --- | --- | --- | --- |
-| F1 | Freeze current contracts and map extraction boundaries | Current baseline checked; dependency/ownership map covers proposed components/services; missing characterization added before moving behavior; architecture checks cover new feature-component folders and permitted import directions | Review complete; implementation baseline refresh pending |
-| H1 | Shared header icon navigation (separate approved visual change) | About, Contact, Settings icons at top right; accessible controls, consistent routes/guards and reviewed screenshots across pages | Planned; destination/order confirmed |
+| F1 | Freeze current contracts and map extraction boundaries | Current baseline checked; dependency/ownership map covers proposed components/services; missing characterization added before moving behavior; architecture checks cover new feature-component folders and permitted import directions | Contracts reviewed; source/reference repair verified; original timing acceptance unresolved |
+| H1 | Shared header icon navigation (separate approved visual change) | About, Contact, Settings icons at top right; accessible controls, consistent routes/guards and reviewed screenshots across pages | Implemented review candidate; validation/screenshots pass, Chromium timing blocks publication |
 | F2 | Shared page context and repeated Settings components | GunContext replaces identical context composition; SettingsSection, PreferenceToggle and SettingsAction replace repeated Settings markup with preserved DOM, IDs, statuses, input ownership and callbacks | Planned |
 | F3 | Complete drill setup reuse and audit run/guide duplication | Existing DrillSetup owns repeated delay/sound/readiness composition where compatible; Practice/Sequence retain mode-specific options; existing common guide remains one page; run/live-example components share only truly repeated presentation | Planned |
 | F4 | Decompose Live Listen and retain History composition | Focused mode/controls/result/timeline sections; shared microphone-meter presentation only if both variants preserve existing rendering/update behavior; History continues to compose its existing lists/evaluation/progress with only demonstrated duplicate cleanup | Planned |
@@ -50,7 +50,7 @@ Added 2026-10-25 by direct owner request, after F1 characterization and before F
 - Update shared layout and affected About/Contact requirements, shared design, screen/component map and navigation documentation for the confirmed destinations. Preserve footer disclosure/copyright and fixed bottom navigation; remove only links actually relocated.
 - Characterize and test header markup, accessible names/routes, keyboard/touch behavior, narrow layouts, active navigation and guarded transitions. Update reviewed screenshots for every affected page/state in both themes/editions and pinned Chromium/WebKit; review help/animation exports if the shared header is present. Run the complete unit/coverage/integration/build/artifact/performance acceptance before publishing application code to b.
 
-Planning only in this update: no application, CSS, route or screenshot changes yet. Main/dev unchanged by this planned work.
+Current H1 evidence and rejected experiments are recorded in [the slowdown investigation](slowdown-investigation.md). The application candidate and proposed media remain separate from the shipping source until full acceptance; diagnostic commits are not an application release.
 
 ## F2 — Cross-page context and Settings
 
