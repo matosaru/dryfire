@@ -1000,3 +1000,5 @@ Prepared read-only trace mode, one extra traced context per artifact excluded fr
 Confirmed root-flex original gate40208976187 fails (firstAction47.3→53.8ms). Rejected the variant. Local four-sample block-shell diagnosis also gives no frame improvement; no app code/designs changed. Added a read-only production-main ablation to the existing advisory workflow; next run isolates unrelated main.js optimizations from H1 presentation. Preserve full acceptance requirements and the H1 recovery patch/stash.
 
 Owner now requests b and main kept up to date; interpret m as main. Supersedes prior main freeze for fully checked PR promotion; dev remains excluded. Do not merge current failed candidate or claim deployment.
+
+Pinned advisory40271470299 completes: production/H1/production-main H1 frame37/41/42ms, layout23.890/27.470/28.062ms, identical H1/counterfactual pixels. Runtime rollback rejected; next source ablation targets presentation. docs:check and diagnostic script/YAML checks passed. No app release, all-tests-green claim or main promotion.
