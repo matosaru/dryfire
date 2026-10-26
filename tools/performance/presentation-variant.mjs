@@ -2,10 +2,11 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 export function presentationVariant(production,candidate,mode){
- if(!['css','shell','header','footer'].includes(mode))throw Error('Unknown presentation variant');
+ if(!['css','shell','header','footer','contained-menu'].includes(mode))throw Error('Unknown presentation variant');
  const css=html=>{const matches=[...html.matchAll(/<link\b[^>]*href="(\/assets\/[^"?]+\.css)"[^>]*>/g)];if(matches.length!==1)throw Error('Expected one application stylesheet');return matches[0][1];};
  const a=readFileSync(resolve(production,'index.html'),'utf8');let b=readFileSync(resolve(candidate,'index.html'),'utf8');
  const from=css(a),to=css(b);
+ if(mode==='contained-menu'){const file=resolve(candidate,'.'+to);writeFileSync(file,readFileSync(file,'utf8')+'\n.hero .header-actions{display:contents}.hero .header-links{flex:none;width:132px;height:44px;contain:size layout}\n');return;}
  writeFileSync(resolve(candidate,'.'+to),readFileSync(resolve(production,'.'+from)));
  for(const tag of mode==='shell'?['header','footer']:mode==='css'?[]:[mode]){
   const pattern=new RegExp(`<${tag}\\b[\\s\\S]*?</${tag}>`,'g'),sources=[...a.matchAll(pattern)],targets=[...b.matchAll(pattern)];

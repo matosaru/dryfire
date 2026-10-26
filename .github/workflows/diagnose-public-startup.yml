@@ -12,7 +12,7 @@ on:
         default: false
       presentation_variant:
         type: choice
-        options: [none, css, shell, header, footer]
+        options: [none, css, shell, header, footer, contained-menu]
         required: false
         default: none
       production_main:
