@@ -45,3 +45,11 @@ Next isolate the candidate's unrelated main.js optimizations from its header pre
 Latest owner instruction: keep b and main up to date. This supersedes the assistant main freeze: promote tested b releases through PRs after complete acceptance; dev remains outside scope. Current failed checks still prevent promotion.
 
 Controlled pinned run [40271470299](https://github.com/matosaru/dryfire/actions/runs/40271470299) completed successfully as a diagnostic, not acceptance. Production/H1/production-main H1 first-frame medians were37/41/42ms; layout23.890/27.470/28.062ms. H1 and production-main H1 pixels were identical. Restoring production main.js does not resolve the cost; retain candidate runtime optimizations. Next isolate header/footer presentation changes from remaining candidate presentation/build changes, using a source ablation rather than more speculative layout fixes. H1 remains unpublished and original timing acceptance remains blocked.
+
+## Presentation isolation — 2026-10-26
+
+Pinned CSS-only ablation40390922132: production/H1/production-CSS H1 frame35.9/38.0/38.8ms. The local CSS improvement was not reproduced; reject stylesheet-only rollback.
+
+Pinned shell ablation40391247825 reports production/H1/production-shell H1 frame46.1/51.9/45.3ms (p9550.8/76.9/50.4). Restoring production header/footer markup with its stylesheet removes the measured extra frame cost in this advisory comparison. This narrows the boundary to shared shell presentation, not unrelated runtime optimizations. Next split header versus footer; these deliberately different pictures are diagnosis, never release references or accepted implementation.
+
+Refreshed unchanged shipping-source coverage:1077tests/156suites pass; coverage ratchet passes58runtime modules and typed packages. No baseline, threshold or application source changed.

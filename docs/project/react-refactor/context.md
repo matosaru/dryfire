@@ -13,3 +13,5 @@ Updated2026-10-26. [Investigation/next steps](slowdown-investigation.md) · [pla
 - Advisory40271470299 completed: production/H1/production-main H1 frame37/41/42ms, layout23.890/27.470/28.062ms; candidate/variant pixels identical. Reject runtime rollback. Next isolate header/footer presentation from other candidate presentation/build changes. Diagnostic success is not acceptance. Follow-up plan reflects H1 blocked status and checked-main promotion authorization.
 
 - Branch sync checked2026-10-26: main-only four commits were PR merge ancestry; application code matches b. Merged main→b with identical pre/post tree, clearing behind count. Keep PR29 draft until acceptance; ahead diagnostic/reference commits remain intentional. Obsolete local dev fetch refspec removed.
+
+- Presentation evidence: CSS-only40390922132 did not help (35.9/38/38.8ms); shell40391247825 reports46.1/51.9/45.3ms production/H1/old-shell H1. Split header/footer next; changed diagnostic pictures are not visual acceptance. Refreshed1077tests/156suites+coverage ratchet passed.

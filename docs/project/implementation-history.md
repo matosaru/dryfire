@@ -1008,3 +1008,7 @@ Pinned advisory40271470299 completes: production/H1/production-main H1 frame37/4
 Verified remote main71ae074 versus b63d1082: four main-only commits were PR merge commits, six b-only commits were reference repair/diagnostics/documentation. Application source/configuration/package files match. Conflict-free main→b merge produced exactly the existing b tree (da1b1bc46e85effd6c70ff3c6ddcb731ccef0d49); no runtime or reference change. Main is now an ancestor of b. Removed the obsolete local dev fetch refspec because that deleted branch made ordinary fetch fail. No branch recreation or deletion.
 
 This clears b's behind count, not its intentional ahead count. Remaining b→main promotion stays in draft PR29 pending complete acceptance; no failing performance gate was bypassed. Future accepted releases should use a merge PR followed by main→b synchronization, avoiding squash/rebase divergence.
+
+### 2026-10-26 — continued all-task execution and presentation boundary
+
+Owner requests all remaining tasks executed. Retain unchanged gates and tested b→main promotion; dev excluded. Added read-only compiled CSS/shell ablations; script syntax/YAML and JS/document-preservation checks pass. Pinned CSS-only40390922132 does not reproduce local improvement. Shell40391247825 reports46.1ms production,51.9H1,45.3restored shell, narrowing the boundary to header/footer presentation; split these next. No runtime release or relaxed gate. Refreshed1077tests/156suites pass with original coverage ratchet. H2/F2–F7 remain pending.
