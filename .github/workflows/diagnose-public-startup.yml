@@ -10,6 +10,11 @@ on:
         type: boolean
         required: false
         default: false
+      presentation_variant:
+        type: choice
+        options: [none, css, shell]
+        required: false
+        default: none
       production_main:
         type: boolean
         required: false
@@ -102,6 +107,7 @@ jobs:
         env:
           ROOT_FLEX: ${{ inputs.root_flex }}
           PRODUCTION_MAIN: ${{ inputs.production_main }}
+          PRESENTATION_VARIANT: ${{ inputs.presentation_variant }}
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE/.investigation-production"
           git config --global --add safe.directory "$GITHUB_WORKSPACE/.investigation-candidate"
@@ -115,7 +121,9 @@ jobs:
           cp -a dist ../.investigation-candidate-dist
           node --input-type=module <<'NODE'
           import {readFileSync,writeFileSync} from 'node:fs';
-          if(process.env.PRODUCTION_MAIN==='true'){
+          if(process.env.PRESENTATION_VARIANT&&process.env.PRESENTATION_VARIANT!=='none'){
+            // Presentation ablation happens in the compiled artifact below.
+          }else if(process.env.PRODUCTION_MAIN==='true'){
             writeFileSync('src/main.js',readFileSync('../.investigation-production/src/main.js','utf8'));
           }else if(process.env.ROOT_FLEX==='true'){
             const file='apps/web/src/styles/legacy-after-drill-cards.css',from='.page-content{flex:1;min-width:0}';let css=readFileSync(file,'utf8');
@@ -132,9 +140,12 @@ jobs:
           }
           NODE
           npm run build:public
+          if [ "$PRESENTATION_VARIANT" != "none" ]; then
+            node ../tools/performance/presentation-variant.mjs ../.investigation-production/dist dist "$PRESENTATION_VARIANT"
+          fi
       - name: Compare production, candidate and isolated layout variant
         if: inputs.compare_production
-        run: node tools/performance/investigate-first-settings.mjs --production=.investigation-production/dist --candidate=.investigation-candidate-dist --baselineScroll=.investigation-candidate/dist --trace=${{ inputs.trace_layout }} --variant-name=${{ inputs.production_main && 'productionMain' || inputs.root_flex && 'rootFlex' || 'baselineScroll' }}
+        run: node tools/performance/investigate-first-settings.mjs --production=.investigation-production/dist --candidate=.investigation-candidate-dist --baselineScroll=.investigation-candidate/dist --trace=${{ inputs.trace_layout }} --variant-name=${{ inputs.presentation_variant != 'none' && format('presentation-{0}', inputs.presentation_variant) || inputs.production_main && 'productionMain' || inputs.root_flex && 'rootFlex' || 'baselineScroll' }}
       - name: Expose diagnostic results
         id: results
         if: always()
