@@ -63,3 +63,9 @@ Added Settings characterization for retained import/preference node identity, na
 Flat-box original gate40392249158 failed34.1→38.5ms (35/40slower); fixed-menu advisory40393289420 reports44.1/48.4/47.6ms production/H1/fixed-menu (variant p9578.1ms), insufficient. Both header tweaks were removed from the source candidate. Stop speculative header probes.
 
 F2 source is now prepared separately: reusable context/Settings/actions/toggles with native identity preserved.1103tests/161suites+coverage pass;32local full-page pixel cases identical across eight pages. Settings group layout containment is the only intentional computed-style change and still needs timing verification. Both builds/artifacts and original payload caps pass (public50630gzipJS, preview51114; CSS12902). Details/reproduction in f2-checkpoint.md. No application release or timing success claimed.
+
+## 2026-10-27 — complete structural candidate and release separation
+
+Complete candidate40472109100 passes validation, both pinned screenshot editions and both WebKit performance jobs. Chromium still fails firstAction: public35.3→40ms (40/40slower), preview36.9→43.2ms (39/40slower). Header absolute-toolbar geometry preserves actual compiled pixels but does not establish timing acceptance. Local no-SVG/inline-size-containment ablations do not establish a sufficient fix; neither is application source.
+
+Separate F2–F6/H2 from H1 rather than hold every independent task. The structural/cache candidate retains shipping chrome/scroll/About representation, restores matching b-repaired media and removes unproven Settings containment. See structural-cache-checkpoint.md. H1 stays preserved and blocked, with all original limits unchanged. This is not an approval to skip any structural release gate.
