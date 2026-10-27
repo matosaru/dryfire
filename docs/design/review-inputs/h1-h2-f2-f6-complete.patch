@@ -1343,7 +1343,7 @@ index 9a6f4cd..7eb2b9f 100644
  ```
  
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index e079785..771837c 100644
+index e079785..1225eee 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -1,6 +1,6 @@
@@ -1465,7 +1465,7 @@ index e079785..771837c 100644
      "packages/ui/src/BottomNavigation/index.ts": "cd44fa73fcbc57adbcb618d50ae415cca66ddeaf75552ae312d7d27a4b32fff3",
 -    "packages/ui/src/BrandHeader/BrandHeader.css": "d7ab4f9b64f59b0402293eba82d31611f9f436ea29628758528cf4c412dd35e8",
 -    "packages/ui/src/BrandHeader/BrandHeader.tsx": "e3a0316dbbee6f02517480e1dad08f084c0ba9234c4926fdfdfa1cd6e9e7b2e5",
-+    "packages/ui/src/BrandHeader/BrandHeader.css": "3cb82d946dc6b49406fbe8cc63bbdaf53690fffa30fc44ebf9c7465603d0d75d",
++    "packages/ui/src/BrandHeader/BrandHeader.css": "d2385547ffd05fd1259b01fcadec275fb0025d37123ed1bd6205061d01b91bda",
 +    "packages/ui/src/BrandHeader/BrandHeader.tsx": "d617c3268ab3b3d64f8466eb6f118792b4129bf2032a8a79d2e85ce2231e3766",
      "packages/ui/src/BrandHeader/index.ts": "9627490423356d66750d624ed92655f59be182d4e9e286224e2e712e7714d457",
      "packages/ui/src/CalibrationCatalog/CalibrationCatalog.copy.ts": "e80cc6e405badb60f4023c43d9fd725e0369e376f889fedb7fd6d3efa0a449ba",
@@ -1641,14 +1641,14 @@ index b7025f6..e86596b 100644
  
 diff --git a/docs/design/baselines/chg-062-header-review.json b/docs/design/baselines/chg-062-header-review.json
 new file mode 100644
-index 0000000..32d93f9
+index 0000000..487f82b
 --- /dev/null
 +++ b/docs/design/baselines/chg-062-header-review.json
 @@ -0,0 +1,199 @@
 +{
 +  "change": "CHG-062",
 +  "status": "Fresh complete candidate under original gates; Chromium allowance proposal unapproved",
-+  "expandedCSSSha256": "63164e06d82e64114726635cdf1db2c2f702e7d4f288e853cf9b778fd36de3a8",
++  "expandedCSSSha256": "dd53883da0baacb3ae10f0b943883ae60883d402d930d53665e3f3782b10c42a",
 +  "approval": "About, Contact, Settings; @; consistent accessible icons; proceed with a plan",
 +  "baseline": {
 +    "tests": 1077,
@@ -5015,7 +5015,7 @@ index f6e7c01..32f1179 100644
  
  CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
 diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
-index 1e3a46f..fbeae0d 100644
+index 1e3a46f..cf65eeb 100644
 --- a/docs/design/screens/practice-guide/examples/manifest.json
 +++ b/docs/design/screens/practice-guide/examples/manifest.json
 @@ -1,129 +1,134 @@
@@ -5047,7 +5047,7 @@ index 1e3a46f..fbeae0d 100644
 +    "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
      "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
 -    "packages/ui/src/BrandHeader/BrandHeader.css": "d7ab4f9b64f59b0402293eba82d31611f9f436ea29628758528cf4c412dd35e8",
-+    "packages/ui/src/BrandHeader/BrandHeader.css": "3cb82d946dc6b49406fbe8cc63bbdaf53690fffa30fc44ebf9c7465603d0d75d",
++    "packages/ui/src/BrandHeader/BrandHeader.css": "d2385547ffd05fd1259b01fcadec275fb0025d37123ed1bd6205061d01b91bda",
 +    "apps/web/src/styles/legacy-card-foundation.css": "e8c6acd2cc9413358addb62e57d593b19751b63855e5169c79a8ef4ca21659fb",
 +    "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
 +    "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
@@ -5515,6 +5515,13 @@ index 0000000..715a890
 +++ b/docs/project/react-refactor/f3-f6-equivalence.json
 @@ -0,0 +1 @@
 +{"purpose":"Local CSS equivalence only; pinned screenshots and timing still required","cases":32,"elements":1872,"elementAndPseudoStylesIdenticalExceptContain":true,"fullPagePixelsIdentical":true,"expectedPropertyChange":"Settings groups gain layout containment"}
+diff --git a/docs/project/react-refactor/header-compiled-equivalence.json b/docs/project/react-refactor/header-compiled-equivalence.json
+new file mode 100644
+index 0000000..0d759f0
+--- /dev/null
++++ b/docs/project/react-refactor/header-compiled-equivalence.json
+@@ -0,0 +1 @@
++{"cases":14,"compiledArtifacts":true,"exactMarkup":true,"exactGeometry":true,"exactPixels":true,"pinnedAcceptanceStillRequired":true}
 diff --git a/docs/project/react-refactor/performance-decision.md b/docs/project/react-refactor/performance-decision.md
 new file mode 100644
 index 0000000..89ab970
@@ -5734,7 +5741,7 @@ index 10f8ba0..8d5cbd3 100644
    </div>;
  }
 diff --git a/packages/ui/src/BrandHeader/BrandHeader.css b/packages/ui/src/BrandHeader/BrandHeader.css
-index 144d16f..7ec5d97 100644
+index 144d16f..7380f67 100644
 --- a/packages/ui/src/BrandHeader/BrandHeader.css
 +++ b/packages/ui/src/BrandHeader/BrandHeader.css
 @@ -1,2 +1,26 @@
@@ -5764,7 +5771,7 @@ index 144d16f..7ec5d97 100644
 +@media(forced-colors:active) { .hero .header-link.active { outline:1px solid LinkText; } }
 +
 +/* Keep the information toolbar out of intrinsic flex sizing; reserve its exact space. */
-+.hero { position:relative; min-height:59px; padding-right:142px; }
++header.hero { position:relative; min-height:59px; padding-right:142px; }
 +.hero .header-actions { position:absolute; right:0; top:calc(50% - 2.5px); transform:translateY(-50%); }
 diff --git a/packages/ui/src/BrandHeader/BrandHeader.test.tsx b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
 index 16fb4b8..e51d696 100644
@@ -9487,6 +9494,25 @@ index 2154238..1c13405 100644
    for (const [path, value] of Object.entries(entries)) {
      if (!policy.files[path] && policy.newRuntimeRoots.some(prefix => path.startsWith(prefix))) {
        check(path, value, policy.newRuntimeMinimum);
+diff --git a/tools/performance/check-header-layout.mjs b/tools/performance/check-header-layout.mjs
+new file mode 100644
+index 0000000..a32515a
+--- /dev/null
++++ b/tools/performance/check-header-layout.mjs
+@@ -0,0 +1,13 @@
++import {chromium,webkit} from '@playwright/test';
++import {readFileSync} from 'node:fs';
++import {createHash} from 'node:crypto';
++import {resolve} from 'node:path';
++const option=name=>process.argv.find(value=>value.startsWith('--'+name+'='))?.split('=').slice(1).join('=');
++const roots=[option('baseline'),option('candidate')];if(roots.some(root=>!root))throw Error('Provide --baseline=<built approved H1> --candidate=<built candidate>.');
++const artifacts=roots.map(root=>{root=resolve(root);const html=readFileSync(root+'/index.html','utf8'),path=html.match(/href="(\/assets\/[^"?]+\.css)"/)?.[1],header=html.match(/<header class="hero"[\s\S]*?<\/header>/)?.[0];if(!path||!header)throw Error('Missing compiled stylesheet/header.');return{css:readFileSync(root+path,'utf8'),header};});
++if(artifacts[0].header!==artifacts[1].header)throw Error('Header markup changed.');
++const engine=option('browser')==='webkit'?webkit:chromium,browser=await engine.launch(option('executable')?{executablePath:option('executable')}:{});let cases=0;
++try{for(const width of[320,360,390,440,480,768,1280])for(const theme of['light','dark']){
++ const samples=[];for(const {css,header}of artifacts){const page=await browser.newPage({viewport:{width,height:844},reducedMotion:'reduce'});await page.setContent(`<html data-theme="${theme}"><style>${css}</style><body><div class="app-shell">${header}<p>After header</p></div></body></html>`);samples.push({pixels:createHash('sha256').update(await page.screenshot()).digest('hex'),rects:await page.locator('.hero,.hero-copy,.header-actions,.brand-logo,.brand-heading,.header-link').evaluateAll(elements=>elements.map(element=>{const r=element.getBoundingClientRect();return[element.className,r.x,r.y,r.width,r.height];}))});await page.close();}
++ if(JSON.stringify(samples[0])!==JSON.stringify(samples[1]))throw Error(`Compiled header geometry/pixels changed at ${width}/${theme}.`);cases++;
++}console.log(JSON.stringify({cases,compiledArtifacts:true,exactMarkup:true,exactGeometry:true,exactPixels:true,pinnedAcceptanceStillRequired:true}));}finally{await browser.close();}
 diff --git a/tools/performance/presentation-variant.mjs b/tools/performance/presentation-variant.mjs
 index b7d685a..e4178f6 100644
 --- a/tools/performance/presentation-variant.mjs
