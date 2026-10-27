@@ -1,0 +1,318 @@
+{
+  "kind": "System Chromium diagnostic captures; not pinned acceptance or canonical baselines",
+  "browser": "system Chromium",
+  "screens": [
+    {
+      "name": "gun-setup",
+      "theme": "dark",
+      "width": 320,
+      "path": "/gun-setup/"
+    },
+    {
+      "name": "home",
+      "theme": "dark",
+      "width": 320,
+      "path": "/"
+    },
+    {
+      "name": "learn",
+      "theme": "dark",
+      "width": 320,
+      "path": "/learn/"
+    },
+    {
+      "name": "drills",
+      "theme": "dark",
+      "width": 320,
+      "path": "/drills/"
+    },
+    {
+      "name": "live-listen",
+      "theme": "dark",
+      "width": 320,
+      "path": "/live-listen/"
+    },
+    {
+      "name": "history",
+      "theme": "dark",
+      "width": 320,
+      "path": "/history/"
+    },
+    {
+      "name": "settings",
+      "theme": "dark",
+      "width": 320,
+      "path": "/settings/"
+    },
+    {
+      "name": "about",
+      "theme": "dark",
+      "width": 320,
+      "path": "/about/"
+    },
+    {
+      "name": "contact",
+      "theme": "dark",
+      "width": 320,
+      "path": "/contact/"
+    },
+    {
+      "name": "guns",
+      "theme": "dark",
+      "width": 320,
+      "path": "/guns/"
+    },
+    {
+      "name": "practice",
+      "theme": "dark",
+      "width": 320,
+      "path": "/single-trigger-press/"
+    },
+    {
+      "name": "sequence",
+      "theme": "dark",
+      "width": 320,
+      "path": "/rack-slide-trigger-pull/"
+    },
+    {
+      "name": "practice-guide",
+      "theme": "dark",
+      "width": 320,
+      "path": "/single-trigger-press-guide/"
+    },
+    {
+      "name": "gun-setup",
+      "theme": "dark",
+      "width": 390,
+      "path": "/gun-setup/"
+    },
+    {
+      "name": "home",
+      "theme": "dark",
+      "width": 390,
+      "path": "/"
+    },
+    {
+      "name": "learn",
+      "theme": "dark",
+      "width": 390,
+      "path": "/learn/"
+    },
+    {
+      "name": "drills",
+      "theme": "dark",
+      "width": 390,
+      "path": "/drills/"
+    },
+    {
+      "name": "live-listen",
+      "theme": "dark",
+      "width": 390,
+      "path": "/live-listen/"
+    },
+    {
+      "name": "history",
+      "theme": "dark",
+      "width": 390,
+      "path": "/history/"
+    },
+    {
+      "name": "settings",
+      "theme": "dark",
+      "width": 390,
+      "path": "/settings/"
+    },
+    {
+      "name": "about",
+      "theme": "dark",
+      "width": 390,
+      "path": "/about/"
+    },
+    {
+      "name": "contact",
+      "theme": "dark",
+      "width": 390,
+      "path": "/contact/"
+    },
+    {
+      "name": "guns",
+      "theme": "dark",
+      "width": 390,
+      "path": "/guns/"
+    },
+    {
+      "name": "practice",
+      "theme": "dark",
+      "width": 390,
+      "path": "/single-trigger-press/"
+    },
+    {
+      "name": "sequence",
+      "theme": "dark",
+      "width": 390,
+      "path": "/rack-slide-trigger-pull/"
+    },
+    {
+      "name": "practice-guide",
+      "theme": "dark",
+      "width": 390,
+      "path": "/single-trigger-press-guide/"
+    },
+    {
+      "name": "gun-setup",
+      "theme": "light",
+      "width": 320,
+      "path": "/gun-setup/"
+    },
+    {
+      "name": "home",
+      "theme": "light",
+      "width": 320,
+      "path": "/"
+    },
+    {
+      "name": "learn",
+      "theme": "light",
+      "width": 320,
+      "path": "/learn/"
+    },
+    {
+      "name": "drills",
+      "theme": "light",
+      "width": 320,
+      "path": "/drills/"
+    },
+    {
+      "name": "live-listen",
+      "theme": "light",
+      "width": 320,
+      "path": "/live-listen/"
+    },
+    {
+      "name": "history",
+      "theme": "light",
+      "width": 320,
+      "path": "/history/"
+    },
+    {
+      "name": "settings",
+      "theme": "light",
+      "width": 320,
+      "path": "/settings/"
+    },
+    {
+      "name": "about",
+      "theme": "light",
+      "width": 320,
+      "path": "/about/"
+    },
+    {
+      "name": "contact",
+      "theme": "light",
+      "width": 320,
+      "path": "/contact/"
+    },
+    {
+      "name": "guns",
+      "theme": "light",
+      "width": 320,
+      "path": "/guns/"
+    },
+    {
+      "name": "practice",
+      "theme": "light",
+      "width": 320,
+      "path": "/single-trigger-press/"
+    },
+    {
+      "name": "sequence",
+      "theme": "light",
+      "width": 320,
+      "path": "/rack-slide-trigger-pull/"
+    },
+    {
+      "name": "practice-guide",
+      "theme": "light",
+      "width": 320,
+      "path": "/single-trigger-press-guide/"
+    },
+    {
+      "name": "gun-setup",
+      "theme": "light",
+      "width": 390,
+      "path": "/gun-setup/"
+    },
+    {
+      "name": "home",
+      "theme": "light",
+      "width": 390,
+      "path": "/"
+    },
+    {
+      "name": "learn",
+      "theme": "light",
+      "width": 390,
+      "path": "/learn/"
+    },
+    {
+      "name": "drills",
+      "theme": "light",
+      "width": 390,
+      "path": "/drills/"
+    },
+    {
+      "name": "live-listen",
+      "theme": "light",
+      "width": 390,
+      "path": "/live-listen/"
+    },
+    {
+      "name": "history",
+      "theme": "light",
+      "width": 390,
+      "path": "/history/"
+    },
+    {
+      "name": "settings",
+      "theme": "light",
+      "width": 390,
+      "path": "/settings/"
+    },
+    {
+      "name": "about",
+      "theme": "light",
+      "width": 390,
+      "path": "/about/"
+    },
+    {
+      "name": "contact",
+      "theme": "light",
+      "width": 390,
+      "path": "/contact/"
+    },
+    {
+      "name": "guns",
+      "theme": "light",
+      "width": 390,
+      "path": "/guns/"
+    },
+    {
+      "name": "practice",
+      "theme": "light",
+      "width": 390,
+      "path": "/single-trigger-press/"
+    },
+    {
+      "name": "sequence",
+      "theme": "light",
+      "width": 390,
+      "path": "/rack-slide-trigger-pull/"
+    },
+    {
+      "name": "practice-guide",
+      "theme": "light",
+      "width": 390,
+      "path": "/single-trigger-press-guide/"
+    }
+  ]
+}

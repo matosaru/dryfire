@@ -1,0 +1,212 @@
+{
+  "date": "2026-10-27",
+  "kind": "Local system Chromium / Lighthouse13.5 / 4x devtools CPU; diagnostic only, not live .com or pinned acceptance",
+  "before": {
+    "performanceScore": 0.99,
+    "metrics": {
+      "first-contentful-paint": 1417.222,
+      "largest-contentful-paint": 1791.988,
+      "total-blocking-time": 27.363999999761745,
+      "cumulative-layout-shift": 0
+    },
+    "forcedReflow": {
+      "type": "list",
+      "items": [
+        {
+          "type": "table",
+          "headings": [
+            {
+              "key": "source",
+              "valueType": "source-location",
+              "label": "Source"
+            },
+            {
+              "key": "reflowTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Total reflow time"
+            }
+          ],
+          "items": [
+            {
+              "source": {
+                "type": "text",
+                "value": "[unattributed]"
+              },
+              "reflowTime": 47.95
+            },
+            {
+              "source": {
+                "type": "source-location",
+                "url": "http://127.0.0.1:4176/assets/index-Dj14nnK-.js",
+                "urlProvider": "network",
+                "line": 1,
+                "column": 3896
+              },
+              "reflowTime": 1.8
+            },
+            {
+              "source": {
+                "type": "source-location",
+                "url": "http://127.0.0.1:4176/assets/index-Dj14nnK-.js",
+                "urlProvider": "network",
+                "line": 1,
+                "column": 138465
+              },
+              "reflowTime": 41.155
+            }
+          ]
+        }
+      ]
+    },
+    "renderBlocking": {
+      "type": "table",
+      "headings": [
+        {
+          "key": "url",
+          "valueType": "url",
+          "label": "URL"
+        },
+        {
+          "key": "totalBytes",
+          "valueType": "bytes",
+          "label": "Transfer Size"
+        },
+        {
+          "key": "wastedMs",
+          "valueType": "timespanMs",
+          "label": "Duration"
+        }
+      ],
+      "items": [
+        {
+          "url": "http://127.0.0.1:4176/assets/index--_3RgjRO.css",
+          "totalBytes": 13252,
+          "wastedMs": 721
+        }
+      ]
+    }
+  },
+  "after": {
+    "performanceScore": 0.99,
+    "metrics": {
+      "first-contentful-paint": 1408.27,
+      "largest-contentful-paint": 1761.069,
+      "total-blocking-time": 57.3900000000001,
+      "cumulative-layout-shift": 0
+    },
+    "forcedReflow": {
+      "type": "list",
+      "items": [
+        {
+          "type": "table",
+          "headings": [
+            {
+              "key": "source",
+              "valueType": "source-location",
+              "label": "Source"
+            },
+            {
+              "key": "reflowTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Total reflow time"
+            }
+          ],
+          "items": [
+            {
+              "source": {
+                "type": "text",
+                "value": "[unattributed]"
+              },
+              "reflowTime": 45.685
+            }
+          ]
+        }
+      ]
+    },
+    "renderBlocking": {
+      "type": "table",
+      "headings": [
+        {
+          "key": "url",
+          "valueType": "url",
+          "label": "URL"
+        },
+        {
+          "key": "totalBytes",
+          "valueType": "bytes",
+          "label": "Transfer Size"
+        },
+        {
+          "key": "wastedMs",
+          "valueType": "timespanMs",
+          "label": "Duration"
+        }
+      ],
+      "items": [
+        {
+          "url": "http://127.0.0.1:4176/assets/index--_3RgjRO.css",
+          "totalBytes": 13252,
+          "wastedMs": 721
+        }
+      ]
+    }
+  },
+  "interpretation": "App-attributed scrollTo reflow41.155ms is absent after batching fix. Normal unattributed layout remains. One-run total blocking time increased27.364→57.39ms; no overall speedup is established by these isolated audits. CSS remains render-blocking; unsafe async CSS/whole-sheet inlining were not applied.",
+  "originalHarnessDiagnostic": {
+    "kind": "System Chromium only; not pinned CI or WebKit acceptance",
+    "baselineSource": "6c38bff81662d30279d94d41ca5c949bdbbe1c6e (archived source; local build metadata uses workspace Git HEAD)",
+    "errors": [],
+    "metrics": {
+      "cold": {
+        "baselineMedian": 668.9000000003725,
+        "candidateMedian": 606,
+        "baselineP95": 712.5,
+        "candidateP95": 628.7999999998137,
+        "pairs": 20,
+        "regression": false
+      },
+      "warm": {
+        "baselineMedian": 207.59999999962747,
+        "candidateMedian": 179.3000000002794,
+        "baselineP95": 235.70000000018626,
+        "candidateP95": 216.20000000018626,
+        "pairs": 20,
+        "regression": false
+      },
+      "returning": {
+        "baselineMedian": 264.8000000002794,
+        "candidateMedian": 226.79999999981374,
+        "baselineP95": 285.70000000018626,
+        "candidateP95": 249.10000000009313,
+        "pairs": 20,
+        "regression": false
+      },
+      "firstAction": {
+        "baselineMedian": 54.5,
+        "candidateMedian": 62.3000000002794,
+        "baselineP95": 65.60000000009313,
+        "candidateP95": 71.79999999981374,
+        "pairs": 20,
+        "regression": false
+      },
+      "navigation": {
+        "baselineMedian": 60.40000000037253,
+        "candidateMedian": 57.1999999997206,
+        "baselineP95": 74.6999999997206,
+        "candidateP95": 70.5,
+        "pairs": 20,
+        "regression": false
+      },
+      "clickFeedback": {
+        "baselineMedian": 109.5,
+        "candidateMedian": 99.70000000018626,
+        "baselineP95": 125.1999999997206,
+        "candidateP95": 121.70000000018626,
+        "pairs": 20,
+        "regression": false
+      }
+    }
+  }
+}
