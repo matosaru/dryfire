@@ -1343,7 +1343,7 @@ index 9a6f4cd..7eb2b9f 100644
  ```
  
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index e079785..523c0b3 100644
+index e079785..771837c 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -1,6 +1,6 @@
@@ -1595,7 +1595,7 @@ index e079785..523c0b3 100644
      "site/routes.js": "3a9808b5fe8f6b3fb63358dabea45f02c056c47bbedc50e791646971465732d5",
 -    "workers/publicSite.js": "7bb305c224398c9de614a91549eb941547bb5bc51ce1caf1d09a542b62749f41",
 -    "tools/public-pages.mjs": "145724f54ce9749b4f0bdbc3877e0f9ac50f078c71a78d1fdf339b238caadae7",
-+    "workers/publicSite.js": "3518da6568b8c0592b75d4c04faad8f1b0b011708d50effda77f3fa7337d3ad8",
++    "workers/publicSite.js": "b6f0422cf90199e3af353c23496fba3aff62699eab12dd0c063b576136ed4127",
 +    "tools/public-pages.mjs": "f27f71b21b077a54e69762c810c42ccc256e0f22bdc87586080d25bc80e7b5c9",
      "apps/web/src/public-site/PublicPage/PublicPage.tsx": "034b06d3729ad0ae8caecf1501d011639b8f3df27cee6e18f50ff44ca1cad42d",
 -    "apps/web/src/public-site/PublicPage/PublicPage.css": "a0476fc565c09bbdae2f2acbde3744899ef1bd02057145e6c46325cdfc3da92b",
@@ -9124,14 +9124,15 @@ index c0ce2e9..5c57d3e 100644
   return{context,...load};
  }
 diff --git a/tests/publicSite.test.js b/tests/publicSite.test.js
-index 03990ce..c383d12 100644
+index 03990ce..2c05d04 100644
 --- a/tests/publicSite.test.js
 +++ b/tests/publicSite.test.js
-@@ -22,3 +22,4 @@ test('unknown/internal paths are real404s, canonical variants redirect once, HEA
+@@ -22,3 +22,5 @@ test('unknown/internal paths are real404s, canonical variants redirect once, HEA
  test('sitemap contains canonical public content, including the app homepage and unique manuals, without private setup URLs',()=>{
   const xml=sitemapXML();expect(PUBLIC_ROUTES).toHaveLength(14);for(const route of PUBLIC_ROUTES)expect(xml).toContain(CANONICAL_ORIGIN+route.path);for(const path of ['/app/','/settings/','/history/','/rack-slide-trigger-pull/'])expect(xml).not.toContain('<loc>'+CANONICAL_ORIGIN+path+'</loc>');expect(new Set(PUBLIC_ROUTES.map(r=>r.title)).size).toBe(PUBLIC_ROUTES.length);
  });
 +test('content-hashed bundles are immutable while documents and stable release resources revalidate',async()=>{for(const path of ['/assets/entry-Abc123.js','/assets/theme-Abc123.css'])expect((await site.fetch(new Request(CANONICAL_ORIGIN+path),env())).headers.get('Cache-Control')).toBe('public, max-age=31536000, immutable');for(const path of ['/','/settings/','/about/','/sw.js','/edition.json','/pcm-capture.worklet.js','/logo.svg','/favicon.ico'])expect((await site.fetch(new Request(CANONICAL_ORIGIN+path),env())).headers.get('Cache-Control')).toBe('public, max-age=0, must-revalidate');});
++test('a missing hashed bundle never receives immutable caching',async()=>{const response=await site.fetch(new Request(CANONICAL_ORIGIN+'/assets/missing-Abc123.js'),{ASSETS:{fetch:async()=>new Response('Missing',{status:404})}});expect(response.status).toBe(404);expect(response.headers.get('Cache-Control')).not.toContain('immutable');});
 diff --git a/tests/releaseIdentity.test.js b/tests/releaseIdentity.test.js
 new file mode 100644
 index 0000000..bb7ac25
@@ -9444,24 +9445,6 @@ index e6c0c75..78a4ba3 100644
   const render=vm.runInNewContext(source.slice(source.indexOf('function renderLiveButton('),source.indexOf('async function stopLive()'))+'\nrenderLiveButton;',context);
   render(false);expect(context.practiceController.refresh).not.toHaveBeenCalled();expect(context.renderGunControls).toHaveBeenCalledTimes(1);expect(context.renderPreferences).toHaveBeenCalledTimes(1);render();expect(context.practiceController.refresh).toHaveBeenCalledTimes(1);
  });
-diff --git a/tools/apply-review-candidate.mjs b/tools/apply-review-candidate.mjs
-deleted file mode 100644
-index 6cc0428..0000000
---- a/tools/apply-review-candidate.mjs
-+++ /dev/null
-@@ -1,12 +0,0 @@
--import {execFileSync} from 'node:child_process';
--import {existsSync} from 'node:fs';
--const patch=process.env.CANDIDATE_PATCH,ref=process.env.CANDIDATE_DESIGN_REF;
--if(!patch||!/^docs\/design\/review-inputs\/[a-zA-Z0-9_.-]+\.patch$/.test(patch)||!existsSync(patch))throw Error('Expected an existing review-input patch.');
--if(ref){
-- if(!/^[a-f0-9]{40}$/.test(ref))throw Error('Design reference must be an immutable full commit.');
-- execFileSync('git',['fetch','--no-tags','origin',ref],{stdio:'inherit'});
-- const media=execFileSync('git',['ls-tree','-r','--name-only',ref,'--','docs/design/screens','docs/design/baselines'],{encoding:'utf8'}).trim().split('\n').filter(path=>/\.(png|gif)$/.test(path));
-- if(!media.length)throw Error('Design reference contains no canonical media.');
-- execFileSync('git',['restore','--source='+ref,'--worktree','--',...media],{stdio:'inherit'});
--}
--execFileSync('git',['apply','--',patch],{stdio:'inherit'});
 diff --git a/tools/build-identity.mjs b/tools/build-identity.mjs
 new file mode 100644
 index 0000000..5023ea5
@@ -9582,6 +9565,16 @@ index ab09a83..e0b7f1c 100644
  const inventory = JSON.parse(read('docs/architecture/component-map.json'));
  require(inventory.screens.length === PAGE_DEFINITIONS.length, 'Component inventory does not cover all screens');
  for (const {id} of PAGE_DEFINITIONS) {
+diff --git a/tools/verify-coverage.mjs b/tools/verify-coverage.mjs
+index 4ca82fa..56d9c54 100644
+--- a/tools/verify-coverage.mjs
++++ b/tools/verify-coverage.mjs
+@@ -4,4 +4,4 @@ const policy = JSON.parse(readFileSync('docs/architecture/coverage-baseline.json
+ const summary = JSON.parse(readFileSync('coverage/coverage-summary.json', 'utf8'));
+ const errors = coverageViolations(summary, policy);
+ if (errors.length) throw new Error(`Coverage regression:\n${errors.join('\n')}`);
+-console.log(`Coverage ratchet verified for ${Object.keys(policy.files).length} runtime modules and new typed packages.`);
++console.log(`Coverage ratchet verified for ${Object.keys(policy.files).length+Object.keys(policy.groups??{}).length} runtime modules and new typed packages.`);
 diff --git a/tools/verify-dist.mjs b/tools/verify-dist.mjs
 index f1bc9dc..a40198b 100644
 --- a/tools/verify-dist.mjs
@@ -9809,7 +9802,7 @@ index 5cedcaf..33f48ff 100644
            ['sw', 'pcm-capture.worklet'].includes(chunk.name)
              ? `${chunk.name}.js`
 diff --git a/workers/publicSite.js b/workers/publicSite.js
-index e0fa210..5eff651 100644
+index e0fa210..b64318b 100644
 --- a/workers/publicSite.js
 +++ b/workers/publicSite.js
 @@ -32,6 +32,7 @@ export default {async fetch(request,env){
@@ -9817,7 +9810,7 @@ index e0fa210..5eff651 100644
    headers.delete('Content-Length');headers.delete('ETag');
   }
 - if(route||app)headers.set('Cache-Control','public, max-age=0, must-revalidate');
-+ if(/^\/assets\/[^/]+-[A-Za-z0-9_-]+\.(?:js|css)$/.test(path))headers.set('Cache-Control','public, max-age=31536000, immutable');
++ if(response.status===200&&/^\/assets\/[^/]+-[A-Za-z0-9_-]+\.(?:js|css)$/.test(path))headers.set('Cache-Control','public, max-age=31536000, immutable');
 + else if(route||app||/\.(?:js|css|json|webmanifest|svg|png|gif|ico)$/.test(path))headers.set('Cache-Control','public, max-age=0, must-revalidate');
   return new Response(body,{status:response.status,headers});
  }};

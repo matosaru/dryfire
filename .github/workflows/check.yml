@@ -24,6 +24,8 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
+      - name: Trust the candidate checkout before reading immutable design references
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Apply candidate for pre-merge acceptance
         if: github.event_name == 'workflow_dispatch' && inputs.candidate_patch != ''
         env:
@@ -147,6 +149,8 @@ jobs:
       APP_EDITION: ${{ matrix.edition }}
     steps:
       - uses: actions/checkout@v4
+      - name: Trust the candidate checkout before reading immutable design references
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Apply candidate for pre-merge acceptance
         if: github.event_name == 'workflow_dispatch' && inputs.candidate_patch != ''
         env:
