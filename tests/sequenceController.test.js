@@ -13,7 +13,7 @@ const audio=await import('../src/audio.js');
 const capture=jest.fn(),save=jest.fn(),get=jest.fn(),set=jest.fn(),getSessions=jest.fn();
 const cue={prepare:jest.fn(),play:jest.fn(),close:jest.fn()};
 jest.unstable_mockModule('../src/audio.js',()=>({...audio,startContinuousListening:capture}));
-jest.unstable_mockModule('../src/storage.js',()=>({getGunSetting:get,setGunSetting:set,saveSession:save,getSessions}));
+jest.unstable_mockModule('../src/storage/library.js',()=>({getGunSetting:get,setGunSetting:set,saveSession:save,getSessions}));
 jest.unstable_mockModule('../src/feedback.js',()=>({createStartCuePlayer:()=>cue,requestFeedbackVibration:()=>({supported:true,accepted:true})}));
 const {createSessionController}=await import('../src/sessionController.js');
 const library=JSON.parse(readFileSync(new URL('../visual-tests/fixtures/library.json',import.meta.url),'utf8'));

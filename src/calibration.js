@@ -1,4 +1,4 @@
-import { FEATURE_VERSION } from './audio.js';
+import { FEATURE_VERSION } from './featureFormat.js';
 import { labels, isFeatureVector, trainingCounts, MIN_EXAMPLES_PER_CLASS } from './classifier.js';
 export const CALIBRATION_KINDS = Object.freeze(['reset', 'noise', 'cue']);
 export function normalizeCalibration(value) {

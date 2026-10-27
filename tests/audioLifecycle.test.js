@@ -275,3 +275,5 @@ test('cue suppression retains an in-flight early onset and the first 200 ms clic
   expect(found.map(x => Math.round(x.onsetMs))).toEqual([1170, 1400]);
   await session.stop();
 });
+
+test('continuous permission denial reports an actionable error and closes audio resources',async()=>{mediaDevices.getUserMedia.mockRejectedValue(Object.assign(new Error('denied'),{name:'NotAllowedError'}));await expect(startContinuousListening({onEvent(){}})).rejects.toThrow('Microphone permission was denied.');expect(contexts.every(context=>context.close.mock.calls.length===1)).toBe(true);});

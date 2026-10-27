@@ -219,12 +219,6 @@
       "functions": 60,
       "lines": 49.1
     },
-    "src/storage.js": {
-      "statements": 90.11,
-      "branches": 84.72,
-      "functions": 96.27,
-      "lines": 95.32
-    },
     "src/uiComponents.js": {
       "statements": 87.17,
       "branches": 69.69,
@@ -373,5 +367,24 @@
     "branches": 80,
     "functions": 90,
     "lines": 90
+  },
+  "groups": {
+    "storage-persistence": {
+      "files": [
+        "src/storage/database.js",
+        "src/storage/library.js",
+        "src/storage/restoreBackup.js",
+        "src/storage/validation.js",
+        "src/storage/backupValidation.js",
+        "src/storage/sessionValidation.js",
+        "src/storage/constants.js"
+      ],
+      "minimum": {
+        "statements": 90.11,
+        "branches": 84.72,
+        "functions": 96.27,
+        "lines": 95.32
+      }
+    }
   }
 }

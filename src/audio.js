@@ -4,7 +4,7 @@
  */
 import { normalizeAudioPreferences, getAudioCapabilities, buildAudioConstraints, inspectAudioProcessing } from './audioPreferences.js';
 
-export const FEATURE_VERSION = 2;
+export {FEATURE_VERSION} from './featureFormat.js';
 export const RECORD_MS = 2000;
 const PREP_SECONDS = 2;
 const MIN_PEAK = 0.012;

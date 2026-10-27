@@ -11,6 +11,11 @@ on:
         type: string
         required: false
         default: ''
+      candidate_design_ref:
+        description: 'Optional immutable commit supplying candidate PNG/GIF references only'
+        type: string
+        required: false
+        default: ''
 permissions:
   contents: read
 jobs:
@@ -19,11 +24,14 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
+      - name: Trust the candidate checkout before reading immutable design references
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Apply candidate for pre-merge acceptance
         if: github.event_name == 'workflow_dispatch' && inputs.candidate_patch != ''
         env:
           CANDIDATE_PATCH: ${{ inputs.candidate_patch }}
-        run: git apply -- "$CANDIDATE_PATCH"
+          CANDIDATE_DESIGN_REF: ${{ inputs.candidate_design_ref }}
+        run: node tools/apply-review-candidate.mjs
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -87,7 +95,8 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.candidate_patch != ''
         env:
           CANDIDATE_PATCH: ${{ inputs.candidate_patch }}
-        run: git apply -- "$CANDIDATE_PATCH"
+          CANDIDATE_DESIGN_REF: ${{ inputs.candidate_design_ref }}
+        run: node tools/apply-review-candidate.mjs
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -140,11 +149,14 @@ jobs:
       APP_EDITION: ${{ matrix.edition }}
     steps:
       - uses: actions/checkout@v4
+      - name: Trust the candidate checkout before reading immutable design references
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Apply candidate for pre-merge acceptance
         if: github.event_name == 'workflow_dispatch' && inputs.candidate_patch != ''
         env:
           CANDIDATE_PATCH: ${{ inputs.candidate_patch }}
-        run: git apply -- "$CANDIDATE_PATCH"
+          CANDIDATE_DESIGN_REF: ${{ inputs.candidate_design_ref }}
+        run: node tools/apply-review-candidate.mjs
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

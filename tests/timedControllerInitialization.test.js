@@ -1,3 +1,4 @@
+import {bindPreferenceContext} from './helpers/preferenceContext.js';
 import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
@@ -6,6 +7,7 @@ function setup(){
  const practice={showRecord:jest.fn()},session={};
  const context={practiceController:null,sessionController:null,createPracticeController:jest.fn(()=>practice),createSessionController:jest.fn(()=>session),
   practiceContext:jest.fn(),titleFor:jest.fn(),ensureSafe:jest.fn(),switchView:jest.fn(),goBack:jest.fn(),showError:jest.fn(),setStatus:jest.fn(),renderLiveButton:jest.fn(),renderClassCards:jest.fn(),reportAudioProcessing:jest.fn(),reportVibration:jest.fn(),vibrationFeedback:true,vibrationRejected:false,drillsPage:null};
+ bindPreferenceContext(context);
  const initialize=vm.runInNewContext(source.slice(source.indexOf('function initializeTimedControllers()'),source.indexOf('async function loadActiveGun('))+'\ninitializeTimedControllers;',context);return{context,practice,session,initialize};
 }
 test('timing owners are not constructed until requested and are created only once',()=>{
@@ -17,6 +19,7 @@ test('deferred owners retain context, action, feedback, catalog locks and saved-
 
 test('practice feedback does not recursively refresh its already rendered run/review; external changes still refresh it',()=>{
  const context={liveSession:null,sessionController:null,practiceController:{locked:()=>false,refresh:jest.fn()},profileLoading:false,busy:false,livePendingStart:false,drillsPage:{update:jest.fn()},liveText:jest.fn(),liveClass:jest.fn(),liveDisabled:jest.fn(),settingsDisabled:jest.fn(),historyDisabled:jest.fn(),renderLearningLocks:jest.fn(),renderGunControls:jest.fn(),renderPreferences:jest.fn(),profileLocked:()=>false};
+ bindPreferenceContext(context);
  const render=vm.runInNewContext(source.slice(source.indexOf('function renderLiveButton('),source.indexOf('async function stopLive()'))+'\nrenderLiveButton;',context);
  render(false);expect(context.practiceController.refresh).not.toHaveBeenCalled();expect(context.renderGunControls).toHaveBeenCalledTimes(1);expect(context.renderPreferences).toHaveBeenCalledTimes(1);render();expect(context.practiceController.refresh).toHaveBeenCalledTimes(1);
 });

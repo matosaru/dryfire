@@ -1,0 +1,7 @@
+.prediction-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.prediction-row h3 { margin:0 0 5px; font-size:1.65rem; }
+.score { color:#ff9b56; font-size:2rem; font-weight:900; white-space:nowrap; }
+.distance-list { display:grid; gap:12px; margin:18px 0; }
+.distance-label { display:flex; justify-content:space-between; gap:10px; color:#b8c3c9; font-size:.85rem; margin-bottom:6px; }
+.bar { height:8px; background:#28343a; border-radius:10px; overflow:hidden; }
+.bar span { display:block; background:#ff9141; height:100%; border-radius:10px; }

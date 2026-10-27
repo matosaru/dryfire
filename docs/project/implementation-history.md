@@ -982,3 +982,83 @@ CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon
 
 
 CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have the same style/size and good accessibility data. H1 specifies shared 24px optical styling (including drawn @), ≥44px targets, accessible native link names/destinations/current-page state, decorative SVG semantics, logical keyboard order, visible focus/tooltips, theme contrast and responsive/zoom acceptance. Automated and manual checks remain distinct. Planning only; no application change.
+
+### CHG-064 — source/reference repair and bounded slowdown investigation
+
+Observed owner PR28 merge to main71ae074. Application/config/package source matches c4e751c. Cloudflare Worker check succeeded; main40204833714 passes all4performance jobs, but fails docs:check. Reproduced stale GIF source fingerprints on a clean b checkout whose tree matches main. Review assets had been promoted before H1application source; responsibility is the split review publication workflow, not a new live header regression.
+
+Preserved unpublished H1 working state in stash2d7adb5ee2108d1423afa6c144ab0018b31e39d3 and /tmp/dryfire-chg062-unpublished.patch; complete GitHub candidate patch/base remain intact. Preserved104newscreen/GIF proposals separately and restored canonical references/manifests to the actual shipped c4e751c source. docs:check passes. No application or timing-policy change. Added slowdown-investigation.md with prioritized steps and a read-only three-artifact production/scroll-order comparison. User's latest investigation direction does not approve the proposed10ms exception. Unit/media verification and controlled comparison remain next.
+
+Reference repair verification: docs:check, visual:review (225cases×2engines) and1077shipping-source tests/156suites pass. New advisory script passed an identical-artifact system-Chromium smoke (2samples per label, not acceptance); workflow YAML parsed. Original timing policy/harness untouched. Controlled mode will compare immutable production71ae074, H1b84+complete.patch and only-original-scroll-order variant on the same pinned runner.
+
+Controlled run40206453744: production39.4/43.9ms median/p95, H142.3/53.5, original-scroll44.8/51.9; candidate/counterfactual pixels identical. Original-scroll reversal rejected. Repair full run40206628358 passes validate/bothscreens/bothWebKit/previewChromium but publicChromium returning+3.7ms and firstAction+1.3ms fail on unchanged shipping source. PR29 remains draft; do not retry unchanged code to obtain green.
+
+Prepared read-only trace mode, one extra traced context per artifact excluded from10normal samples, raw compressed trace artifacts and bounded DOM invalidation summaries. Added an isolated root-flex-sizing counterfactual, not an app change. Workflow YAML/shell and script syntax pass; local system-Chromium protocol smoke passes with identical candidate/variant Settings pixels. Original acceptance harness/policy remains unchanged.
+
+### 2026-10-26 — bounded slowdown isolation and release authorization
+
+Confirmed root-flex original gate40208976187 fails (firstAction47.3→53.8ms). Rejected the variant. Local four-sample block-shell diagnosis also gives no frame improvement; no app code/designs changed. Added a read-only production-main ablation to the existing advisory workflow; next run isolates unrelated main.js optimizations from H1 presentation. Preserve full acceptance requirements and the H1 recovery patch/stash.
+
+Owner now requests b and main kept up to date; interpret m as main. Supersedes prior main freeze for fully checked PR promotion; dev remains excluded. Do not merge current failed candidate or claim deployment.
+
+Pinned advisory40271470299 completes: production/H1/production-main H1 frame37/41/42ms, layout23.890/27.470/28.062ms, identical H1/counterfactual pixels. Runtime rollback rejected; next source ablation targets presentation. docs:check and diagnostic script/YAML checks passed. No app release, all-tests-green claim or main promotion.
+
+### 2026-10-26 — b/main ancestry synchronization
+
+Verified remote main71ae074 versus b63d1082: four main-only commits were PR merge commits, six b-only commits were reference repair/diagnostics/documentation. Application source/configuration/package files match. Conflict-free main→b merge produced exactly the existing b tree (da1b1bc46e85effd6c70ff3c6ddcb731ccef0d49); no runtime or reference change. Main is now an ancestor of b. Removed the obsolete local dev fetch refspec because that deleted branch made ordinary fetch fail. No branch recreation or deletion.
+
+This clears b's behind count, not its intentional ahead count. Remaining b→main promotion stays in draft PR29 pending complete acceptance; no failing performance gate was bypassed. Future accepted releases should use a merge PR followed by main→b synchronization, avoiding squash/rebase divergence.
+
+### 2026-10-26 — continued all-task execution and presentation boundary
+
+Owner requests all remaining tasks executed. Retain unchanged gates and tested b→main promotion; dev excluded. Added read-only compiled CSS/shell ablations; script syntax/YAML and JS/document-preservation checks pass. Pinned CSS-only40390922132 does not reproduce local improvement. Shell40391247825 reports46.1ms production,51.9H1,45.3restored shell, narrowing the boundary to header/footer presentation; split these next. No runtime release or relaxed gate. Refreshed1077tests/156suites pass with original coverage ratchet. H2/F2–F7 remain pending.
+
+Header-only40391607392 isolates the remaining boundary (48.5/51.5/44.3ms production/H1/old-header H1). Prepared a flat-header runtime review patch preserving nav semantics; local Settings pixels identical, timing diagnostic only. Added pre-extraction Settings tests for native import/control identity, unfinished preference values and disabled dispatch. Full1079tests/156suites, typecheck and original coverage ratchet pass. No application candidate merged or deployed; original pinned flat-header gate remains next.
+
+Specified H2 release-cache requirements in docs/requirements/release-cache-updates.md and added it to the functional index/follow-up plan. Preserve deterministic build identities, atomic release caches, multi-tab safe activation, no reload during capture/save/drafts, offline fallback, private-preview isolation and all IndexedDB data. Requirements are implementation preparation, not a shipped cache coordinator. docs:check passes. Flat-header original gate40392249158 is running; no timing outcome yet.
+
+### 2026-10-26 — F2 source checkpoint, no application release
+
+Prepared four reusable components and consumed them across eight pages/Settings/drill sound controls. Added native state/disabled/description tests and feature-component package verification. Removed an empty legacy CSS file. Coalesced tiny lazy page primitives after a preview payload overage of21gzipbytes; both original edition budgets now pass without changing limits.1103tests/161suites and coverage pass; type/lint/architecture/docs/smoke pass. Eight page HTML documents and32local full-page pixel cases identical. Settings layout containment is timing-unverified; both experimental header variants rejected/removed. Portable source checkpoints preserve matching code/design metadata without changing shipping application source on b. Full pinned acceptance and H2/F3–F7 remain pending.
+
+### 2026-10-27 — structural and cache-update candidate prepared
+
+Continued the authorized follow-up in the isolated candidate, without publishing application source to b/main. F3 shares drill setup fields/delay controls; F4 separates three Live Listen panels; F5 separates pure validation/platform transactions behind the unchanged persistence API; F6 extracts preference/library coordination. Added undefined-runtime-name lint and pure dependency/cycle guards. Restores still validate synchronously before one atomic replacement transaction; schema4/formats1–4 and capture/draft ownership remain unchanged.
+
+H2 uses deterministic release identities, asset integrity verification and normal worker activation, with no forced tab reload. A local Chromium two-release test passed open-tab retention, fresh-load adoption, failed-install recovery, offline shell and unchanged IndexedDB. Public fixed resources revalidate; hashed bundles remain immutable. This is local evidence, not pinned browser or live-edge acceptance.
+
+Full intermediate runs reached1127tests/168suites; latest storage import seam changes require refreshed full acceptance. Eight page documents and32local styles/pixel cases remain identical. The header sizing candidate separately matched14width/theme pixel cases. Both edition payload limits pass locally: public50274gzipJS, preview50706gzipJS, CSS12942gzip. Earlier H1+F2 timing40397627531 failed; no budget was relaxed. Complete candidate CI, final cleanup/architecture documentation and checked production PR promotion remain pending. Dev excluded.
+
+Candidate40470835926 passes its complete validation job; pinned screenshots are still running. Performance jobs failed during candidate setup before measurement: repository trust was configured after the new immutable-media fetch. Moved trust before preparation and added bounded Git failure annotations. The helper now successfully applies source plus matching PNG/GIF references in a fresh local worktree. Local full built-app offline and two-release tests both pass. Preserved38public persistence exports. A final404cache regression test ensures missing hashed bundles never receive immutable caching. Updated candidate requires a fresh complete run; no application source/main promotion yet.
+
+Final cascade audit found the header optimization's reserved padding was overridden by a later legacy shorthand. The earlier14case probe appended its override and therefore did not prove the actual compiled candidate. Cancelled40470835926/40471461735 rather than spend more CI time on that known visual mismatch; neither cancelled run is acceptance. Corrected selector specificity and added a portable compiled-artifact checker. Actual built baseline/candidate headers now match exact markup, geometry and pixels across14width/theme cases. Source/media fingerprints refreshed; restart complete acceptance on this corrected candidate.
+
+### 2026-10-27 — separate the header regression from the structural release
+
+Corrected complete candidate40472109100 passes validation, both pinned public/preview screenshot suites and both WebKit performance jobs. Both Chromium comparisons fail original firstAction limits: public35.3→40.0ms,40/40slower; preview36.9→43.2ms,39/40slower. No application/main release. Local no-SVG and inline-size-containment ablations do not establish a sufficient fix and are not source changes.
+
+To avoid coupling every completed task to H1, prepare a separate F2–F6/H2 release retaining the shipping header/footer, scroll contract and canonical images. H1 source/references remain preserved in its complete checkpoint. This is release sequencing, not abandonment of the approved header request. New isolated worktree dryfire-structural-release retains the shared components/storage/coordinators/cache policy. Initial public payload49588gzipJS/12898CSS passes; type/lint and32local page/style/pixel comparisons pass. Its complete acceptance is still required before any application publication; no failed H1 gate will be bypassed.
+
+Independent candidate40477061834 passes validation and all four complete original performance jobs, including controls (public/preview × Chromium/WebKit). Screenshot jobs stopped before rendering on an inherited H1 manifest. Restored the existing shipping manifest without modifying any baseline image. The corrected portable patch and immutable media were applied in a fresh worktree: visual:review validates all450images, docs:check and48package architecture checks pass. A fresh complete run is required for pinned screenshots and final release acceptance; no application source has been published yet.
+
+### 2026-10-27 — accepted structural/cache source publication
+
+Complete candidate40478835224 at review commit7d09e0d is green in every job: validation/coverage/integration, public/preview pinned Chromium+WebKit screenshots/diff probes, and all four original performance comparisons/controls. Accepted patch SHA256760bdf0018161cddf9696f44f14c709ffd84f83f9f85b1bb0ec34b345aea8184 with matching b2e26f2 current media. Applied that exact source/current-design candidate to b; local post-application architecture/docs/diff checks pass. No canonical PNG/GIF or performance threshold changes.
+
+Delivered F2–F7 and H2: reusable page/Settings/setup/Live Listen components,38export persistence facade with focused pure/platform owners, preference/library coordinators, safe deterministic release caching,48package generated source/CSS/test/entry inventory, cleanup and entry-point handoff. IndexedDB schema4/formats1–4, native startup ownership, data/capture/safety/draft guards, Free/Full compatibility and minification remain intact. H1 new header icons stay deferred on their separate confirmed Chromium regression; current chrome is retained. b push checks and production promotion follow PR29; consult live PR/check status. Dev excluded; no live Cloudflare/device claim.
+
+### 2026-10-27 — post-publication warm-load follow-up before main promotion
+
+b sourcea770637 passes complete push run40480936112, including Cloudflare Workers build. PR run40480945151 reports a public WebKit warm slowdown35→39ms (32/40slower); phase medians responseEnd2→4ms, domInteractive14→21ms. Main promotion remains blocked; no gate rerun/allowance is substituted for that failure.
+
+Prepared an isolated About-startup optimization in about-warm-parse.patch: defer its48hidden native elements as one build-owned inert data block until About opens. Materialized About HTML is byte-identical; public readable prerendered About remains unchanged and legacy template catalogs keep their path. Native Back/Full-summary behavior and strict known-markup validation have direct tests.1122tests/168suites plus coverage,24focused tests, type/lint/architecture/smoke/public artifact checks pass locally; public50033gzipJS remains below50807. Canonical images/CSS are unchanged. Complete follow-up acceptance is required before publishing this optimization; main still waits in PR29.
+
+### 2026-10-27 — accepted warm-load follow-up
+
+Complete About candidate40485033506 is green in all8jobs: validation, both pinned screenshot editions/diff probes, all four original timing comparisons and controls. Applied exact about-warm-parse.patch SHA25674f33dbf4521bd812de44638492a07459e6d826bd5b65a077517e7559a1d881b to b; post-application docs/architecture/diff checks pass. Hidden About data constructs48elements only on page entry; resulting markup/public readable HTML and all canonical images remain unchanged.1122tests/168suites and original coverage/type/lint/artifact/payload requirements pass. Pushed source/PR checks must complete before normal PR29 production merge. H1 remains separately deferred; dev unchanged.
+
+### 2026-10-27 — fix failing b→main checks: warm CSS-loading candidate
+
+Fetched current remote bddaa93 and inspected the public GitHub job annotations: push40486819679 and PR40486827398 remain blocked by public WebKit warm-startup regression, not unit/build compilation failures. Existing1122unit tests pass. Prepared review-only warm-style-preload.patch, preserving original module/style order and prefetching CSS rather than moving blocking styles before JavaScript. Added resource-order, attribute, idempotence and duplicate-ID/handler regression coverage. No runtime/CSS/data/PNG/GIF or timing-limit change.
+
+Candidate1123tests/168suites, unchanged coverage ratchet, smoke, type/lint, architecture/docs, both-edition builds/artifact/minification/payload and450-image reference inventory checks pass locally. Pinned browser execution and CI dispatch are blocked by active environment egress policy; saved network draft includes the needed hosts but is not applied. Publication is review patch/documentation only; application patch remains unaccepted and main unchanged. See [candidate evidence and next action](react-refactor/warm-startup-candidate.md). Do not claim a fixed/green release until the full candidate, push and PR checks succeed.

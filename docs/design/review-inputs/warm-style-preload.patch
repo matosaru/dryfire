@@ -1,0 +1,126 @@
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index 6cbc653..1074681 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -1000,7 +1000,7 @@
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+-    "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
++    "tools/minify-html.mjs": "9848497d6d02704bed16d5561b0f95b1d8861836fa9be309bdfdea00277d443b",
+     "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "packages/ui/src/DrillSetup/DrillSetup.tsx": "edcb8e569d71e9ab694c136053874ee5311062d84dfd93a749463f441eaf8658",
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index 9f29c90..dc66ada 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -115,7 +115,7 @@
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+     "vite.config.js": "7c5e167d6d91394541c2c01e55f4bc939ad8489011789c625a7881ef40c36ccd",
+-    "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
++    "tools/minify-html.mjs": "9848497d6d02704bed16d5561b0f95b1d8861836fa9be309bdfdea00277d443b",
+     "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
+@@ -309,5 +309,9 @@
+     "scope": "Same shared Practice/Sequence presentation loads before configuration/review, outside initial startup. Inert catalogs move compiler-owned template nodes; no runtime stored/user HTML parsing. Full987/140 suite and20 public guide/layout/session/offline workflows pass. Frame models, compiled CSS and encoded GIF bytes unchanged; no media rebaseline."
+   },
+   "reviewNote": "CHG061 changes flat routing/public ownership, parent guide hrefs and About-only marketing styling. Shared example/run/review markup, animation engines, media CSS and ten encoded GIF bytes remain unchanged. Pinned guide poster/playback/parity suites remain required. Trial re-encoding was not accepted: dimensions and scenario durations matched, but animation sampling/merged-frame bytes differed; retain the original approved exports.",
+-  "chg058Review": "Sequence setup styles relocated byte-for-byte; only #practiceSteps-specific legacy margin removed. Setup-only template changes; shared run/review/help fragments and ten encoded GIF files unchanged. Full guide-frame/visual acceptance required."
++  "chg058Review": "Sequence setup styles relocated byte-for-byte; only #practiceSteps-specific legacy margin removed. Setup-only template changes; shared run/review/help fragments and ten encoded GIF files unchanged. Full guide-frame/visual acceptance required.",
++  "warmStylesheetReview": {
++    "reviewedOn": "2026-10-27",
++    "note": "Build-only head preload candidate. Body markup and actual stylesheet order/attributes are retained; guide components, CSS, scenario engines and encoded GIF bytes are unchanged. HTML resource-order/idempotence tests cover this change. Pinned browser acceptance is pending, not claimed."
++  }
+ }
+diff --git a/tests/htmlMinification.test.js b/tests/htmlMinification.test.js
+index 6ff7402..9b7edaa 100644
+--- a/tests/htmlMinification.test.js
++++ b/tests/htmlMinification.test.js
+@@ -27,16 +27,30 @@ test('normal layout whitespace compacts while inline word boundaries and preform
+  const host=document.createElement('template');host.innerHTML=result;expect(host.content.querySelector('pre').textContent).toBe('  a\n    b');expect(host.content.querySelector('textarea').textContent).toBe('  keep\n    draft');expect(host.content.querySelectorAll('p')[1].textContent).toBe('Second word');
+ });
+ 
+-test('critical app styles are discovered after viewport and before module loading without changing resources or body',()=>{
++test('critical app styles are preloaded before module loading while blocking styles retain their original order',()=>{
+  const html='<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>App</title><script type="module" crossorigin src="/app.js"></script><link rel="stylesheet" crossorigin href="/one.css"><link rel="stylesheet" href="/two.css"><link rel="manifest" href="/manifest.json"></head><body><p>Unchanged</p></body></html>';
+  const result=prioritizeAppStyles(html);const page=new JSDOM(result);const head=page.window.document.head;
+  expect([...head.querySelectorAll('link[rel=stylesheet]')].map(node=>node.getAttribute('href'))).toEqual(['/one.css','/two.css']);
+  expect(head.querySelector('link[rel=stylesheet]').hasAttribute('crossorigin')).toBe(true);
+  expect(result.indexOf('name="viewport"')).toBeLessThan(result.indexOf('href="/one.css"'));
+- expect(result.indexOf('href="/two.css"')).toBeLessThan(result.indexOf('type="module"'));
++ expect([...head.querySelectorAll('link[rel=preload][as=style]')].map(node=>node.getAttribute('href'))).toEqual(['/one.css','/two.css']);
++ expect(head.querySelector('link[rel=preload]').hasAttribute('crossorigin')).toBe(true);
++ expect(result.indexOf('rel="preload"')).toBeLessThan(result.indexOf('type="module"'));
++ expect(result.indexOf('type="module"')).toBeLessThan(result.indexOf('rel="stylesheet"'));
+  expect(head.querySelector('script').getAttribute('src')).toBe('/app.js');
+  expect(head.querySelector('link[rel=manifest]').getAttribute('href')).toBe('/manifest.json');
+  expect(result.slice(result.indexOf('<body>'))).toBe(html.slice(html.indexOf('<body>')));page.window.close();
++ expect(prioritizeAppStyles(result)).toBe(result);
++});
++test('style preload preserves request attributes and does not duplicate existing hints',()=>{
++ const html='<head><link rel="preload" as="style" href="/one.css"><script type="module" src="/app.js"></script><link rel="stylesheet" href="/one.css"><link id="app-style" onload="window.stylesReady=true" rel="stylesheet" crossorigin="use-credentials" integrity="sha256-example" referrerpolicy="no-referrer" media="screen" href="/two.css"></head>';
++ const page=new JSDOM(prioritizeAppStyles(html));
++ const hints=page.window.document.querySelectorAll('link[rel=preload]');
++ expect(hints).toHaveLength(2);
++ const hint=page.window.document.querySelector('link[rel=preload][href="/two.css"]');
++ expect(hint.hasAttribute('id')).toBe(false);expect(hint.hasAttribute('onload')).toBe(false);
++ for(const attribute of ['href','crossorigin','integrity','referrerpolicy','media'])expect(hint.getAttribute(attribute)).toBe(page.window.document.querySelectorAll('link[rel=stylesheet]')[1].getAttribute(attribute));
++ page.window.close();
+ });
+ test('public documents without modules and documents without styles stay unchanged',()=>{
+  for(const html of ['<html><head><link rel="stylesheet" href="/public.css"></head><body>Public</body></html>','<head><script type="module" src="/app.js"></script></head>','<body>Fragment</body>'])expect(prioritizeAppStyles(html)).toBe(html);
+diff --git a/tools/minify-html.mjs b/tools/minify-html.mjs
+index 00bfad8..c6034ed 100644
+--- a/tools/minify-html.mjs
++++ b/tools/minify-html.mjs
+@@ -1,4 +1,5 @@
+ import { minify } from 'html-minifier-terser';
++import { parseFragment, serializeOuter } from 'parse5';
+ 
+ /** Build-only syntax compression. Keep the asset-bearing head intact; normal layout
+  * whitespace compacts while native values, SVG and preformatted/raw text stay intact. */
+@@ -12,18 +13,35 @@ export async function minifyProductionHtml(html) {
+   return html.slice(0, start) + await minify(body[2], options) + html.slice(start + body[2].length);
+ }
+ 
+-/** Discover the app's critical CSS before module fetching. Keep resource attributes,
+- * stylesheet order and the viewport declaration; this changes no body markup. */
++/** Fetch critical CSS early without moving blocking styles ahead of the module.
++ * Cached WebKit styles can otherwise delay module discovery. Preserve the actual
++ * stylesheet order and request attributes; hints do not change the cascade. */
+ export function prioritizeAppStyles(html) {
+   return html.replace(/<head\b[^>]*>[\s\S]*?<\/head>/i, head => {
+     if (!/<script\b[^>]*\btype=["']module["']/i.test(head)) return head;
+     const stylesheet = /<link\b(?=[^>]*\brel=["']stylesheet["'])[^>]*>/gi;
+     const styles = head.match(stylesheet);
+     if (!styles?.length) return head;
+-    const remaining = head.replace(stylesheet, '');
++    const attribute = (node, name) => node.attrs.find(row => row.name === name)?.value;
++    const requestKey = node => JSON.stringify(['href', 'crossorigin', 'integrity', 'referrerpolicy', 'media'].map(name => attribute(node, name) ?? null));
++    const existing = new Set((head.match(/<link\b[^>]*>/gi) || []).map(tag => parseFragment(tag).childNodes[0])
++      .filter(node => attribute(node, 'rel') === 'preload' && attribute(node, 'as') === 'style').map(requestKey));
++    const hints = [];
++    for (const tag of styles) {
++      const node = parseFragment(tag).childNodes[0];
++      const key = requestKey(node);
++      if (existing.has(key)) continue;
++      existing.add(key);
++      // A hint shares the request, not element IDs or stylesheet event handlers.
++      node.attrs = node.attrs.filter(row => ['rel', 'href', 'crossorigin', 'integrity', 'referrerpolicy', 'media', 'type', 'fetchpriority'].includes(row.name));
++      node.attrs.find(row => row.name === 'rel').value = 'preload';
++      node.attrs.push({name: 'as', value: 'style'});
++      hints.push(serializeOuter(node));
++    }
++    if (!hints.length) return head;
+     const anchor = /<meta\b[^>]*\bname=["']viewport["'][^>]*>/i;
+-    return anchor.test(remaining)
+-      ? remaining.replace(anchor, tag => tag + '\n' + styles.join('\n'))
+-      : remaining.replace(/<head\b[^>]*>/i, tag => tag + '\n' + styles.join('\n'));
++    return anchor.test(head)
++      ? head.replace(anchor, tag => tag + '\n' + hints.join('\n'))
++      : head.replace(/<head\b[^>]*>/i, tag => tag + '\n' + hints.join('\n'));
+   });
+ }

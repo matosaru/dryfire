@@ -694,3 +694,5 @@ CHG-062 icon choice (2026-10-25): owner explicitly requests “as a contact icon
 
 
 CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have the same style/size and good accessibility data. H1 specifies shared 24px optical styling (including drawn @), ≥44px targets, accessible native link names/destinations/current-page state, decorative SVG semantics, logical keyboard order, visible focus/tooltips, theme contrast and responsive/zoom acceptance. Automated and manual checks remain distinct. Planning only; no application change.
+
+CHG-064 investigation direction (2026-10-25): after the timing question, owner reports “I merged b to main”, then requests “investigate a slowdown”, “and prepare next steps” and “proceed with next steps from the plan”. Retain the original timing gate; no explicit10ms exception was selected or implemented. Proceed with source/reference repair and controlled production/candidate diagnosis on b. User's main merge is observed separately; no assistant main/dev modification.

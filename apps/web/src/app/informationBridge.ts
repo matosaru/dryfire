@@ -14,8 +14,8 @@ export function createInformationBridge({ onBack, onError, doc = document,
   let pages: Pages | undefined, pending: Promise<void> | undefined;
   let ready: Module | undefined;
   let full = false, disposed = false;
-  const summary = doc.getElementById('aboutFeatureSummary') ?? doc.getElementById('aboutView')?.querySelector('template')?.content.getElementById('aboutFeatureSummary');
-  const freeSummary = summary?.textContent ?? '';
+  let summary = doc.getElementById('aboutFeatureSummary') ?? doc.getElementById('aboutView')?.querySelector('template')?.content.getElementById('aboutFeatureSummary');
+  let freeSummary = summary?.textContent ?? '';
   const chrome = createChromeBridge(doc, onNavigate);
   const enhance = () => {
     if (disposed || !ready) return;
@@ -34,7 +34,7 @@ export function createInformationBridge({ onBack, onError, doc = document,
   return {
     show(view: string) {
       if(disposed)return;
-      if(view==='about'){const host=doc.getElementById('aboutView');if(host)materializeStaticCatalog(host);}
+      if(view==='about'){const host=doc.getElementById('aboutView');if(host)materializeStaticCatalog(host);if(!summary){summary=doc.getElementById('aboutFeatureSummary');freeSummary=summary?.textContent??'';if(summary&&full)summary.textContent=summary.dataset.fullSummary!;}}
       chrome.view(view); enhance();
       if (disposed || ready || pending || !['about', 'contact'].includes(view)) return;
       pending = load().then(module => {

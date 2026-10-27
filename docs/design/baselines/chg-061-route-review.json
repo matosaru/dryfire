@@ -1,7 +1,7 @@
 {
   "change": "CHG-061",
   "status": "Optimized complete acceptance all8 success; publishing b, normal PR checks pending",
-  "expandedCSSSha256": "665e4a05242f1e15a5f3ef15feadc7be78ef377e0b4c54d44baeb32e53895df6",
+  "expandedCSSSha256": "fb791857b4abd23d03c8c43f06560ec78bbd29406b307a1775d7d4a83f1e348d",
   "scope": "App root and flat routes; actual shared app informational screens; retained marketing About. Only About/public captures may change; original performance budgets and unrelated references retained.",
   "audit": {
     "ownership": {
@@ -114,5 +114,9 @@
     40126563124,
     40127617015,
     40127962620
-  ]
+  ],
+  "structuralEquivalence": {
+    "scope": "Shipping header/footer retained; eight SSR documents,32page/style/pixel cases and14actual compiled header cases match locally; pinned acceptance required",
+    "mediaChanged": false
+  }
 }

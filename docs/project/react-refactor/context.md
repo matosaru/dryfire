@@ -1,23 +1,11 @@
 # Working context
 
-Updated 2026-10-25. [History](../implementation-history.md) · [CHG-061 proof](../../design/baselines/chg-061-route-review.json) · [URL inventory](../../seo/routes.md).
+Updated 2026-10-27. [Plan](follow-up-plan.md) · [Release checkpoint](structural-cache-checkpoint.md) · [Current startup candidate](warm-startup-candidate.md).
 
-## CHG-061 release
-
-Approved trainer at `/`, flat URLs, distinct reloadable sequence setups/manuals, marketing retained inside About. Dev untouched. Optimized b commit eff9ac2 passed all eight jobs in push40130237075 and PR40130238059; Cloudflare preview builda1fca6f5-6806-4a45-a469-95a3bcaa4981 succeeded. Candidate40129243422 also passed all eight gates (1077 tests/156 suites, original coverage, both editions, pinned Chromium/WebKit screenshots/integration and unchanged performance controls).450 visual baselines;382 unrelated PNGs and10 original GIFs preserved. See proof/history for earlier failed candidates and optimization evidence.
-
-PR#27 merged normally with exact tested SHA into main c4e751c61fc93bb2d8ce960b6e252f7661fc5cfd. Git tree81dc47afd7a08fdf429e419ec5ac6bbe306590a7 matches tested b exactly. Post-merge main run40176142886 is in progress. Cloudflare production buildfcda447e-3f45-41e6-a2e2-2e31ded2583f succeeded.
-
-## Next
-
-Observe main post-merge checks and deployment; close history/context with actual results. Status-only documentation may publish to b after release; no direct main push. No source changes or unchanged retry fishing. Retain b and leave dev untouched.
-
-## Invariants / deferred
-
-Preserve ADR001 progressive startup, schema4/user data/backups, capture/safety/save/draft/owner guards, Free/Full boundaries, exact visual references and original performance limits. SW cache87. No unauthorized subagents or commercial/native scope. Future application changes require complete candidate acceptance before b publication. Curate this context after completed increments; detailed evidence belongs in history/proof.
-
-Workspace policy blocks external .com/.app reads before origin; b read403. No live-content/indexing/real-device microphone verification is claimed. Owner configured .app permanent redirect and suspected browser caching. F1–F7 and commercial/cloud/native plans remain separate.
-
-CHG-062: owner requests plan addition for shared top-right About/Contact/Settings icons replacing bottom informational text links. H1 documented in follow-up-plan.md; Owner confirmed Contact as the middle icon, displayed as @ rather than an envelope; relocate both footer links, no Help icon. Planning only; no UI/screenshots changed.
-
-CHG-062 refinement: shared 24px icon styling/weight/alignment, ≥44px targets, responsive/zoom checks, named native links, decorative SVG semantics, focus/tooltips/current-page state and contrast requirements are explicit in H1. Plan only.
+- Authorized: fix failing checks autonomously on b; checked b→main promotion through PR29 only. Dev excluded. No gate relaxation or direct main push. Preserve schema4/backup formats1–4, ADR001 native/lazy startup, data/capture/safety/draft/edition invariants and minification. No subagents.
+- Remote application b is bddaa93; main remains71ae074. Structural F2–F7/cache H2 and About deferred parsing were individually accepted before publication, but current push40486819679 and PR40486827398 fail public WebKit warm startup. Earlier green runs do not authorize merging the current failed PR.
+- Current failure: public WebKit warm36→40ms,34/40slower; navigation responseEnd2→5ms/domInteractive14→22ms. Exact observed failure and source are linked in the candidate document. Main remains blocked.
+- Prepared warm-style-preload.patch: early CSS preload while real styles remain after the module. Tests preserve body, resource attributes/order, idempotence and no duplicate IDs/handlers. This is an unproven performance candidate, not a verified fix. No CSS, runtime behavior, PNG/GIF bytes or budgets changed. Patch SHA25691dfabaa5446f439355110584413c008e89b5f012948fa521cac5310eb824910.
+- Local candidate:1123tests/168suites, coverage ratchet, smoke, type/lint, architecture/docs, both builds/artifacts/payload limits and reference inventory pass. Full pinned browser screenshot/integration/performance execution remains unverified. No production/live-device claim.
+- Environment: Git fetch and public GitHub HTML work. api.github.com and pinned-image layer download are denied. Saved environment draft already includes api.github.com/westcentralus.data.mcr.microsoft.com, but active policy lacks them. Owner must apply/publish draft and refresh environment. Do not bypass proxy. Then dispatch full Test and build on b with candidate_patch=docs/design/review-inputs/warm-style-preload.patch, no candidate_design_ref; publish exact application patch only after all gates pass. Push/PR checks must also pass before normal merge and ancestry sync.
+- H1 header icons remain deferred on confirmed Chromium first-Settings regression. Original portable checkpoints are preserved in review-inputs and prior investigation/history. Never overwrite current application with the old complete H1 tree or promote its media without accepted source.

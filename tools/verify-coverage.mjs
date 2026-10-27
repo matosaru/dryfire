@@ -4,4 +4,4 @@ const policy = JSON.parse(readFileSync('docs/architecture/coverage-baseline.json
 const summary = JSON.parse(readFileSync('coverage/coverage-summary.json', 'utf8'));
 const errors = coverageViolations(summary, policy);
 if (errors.length) throw new Error(`Coverage regression:\n${errors.join('\n')}`);
-console.log(`Coverage ratchet verified for ${Object.keys(policy.files).length} runtime modules and new typed packages.`);
+console.log(`Coverage ratchet verified for ${Object.keys(policy.files).length+Object.keys(policy.groups??{}).length} runtime modules and new typed packages.`);

@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
+import {bindPreferenceContext} from './helpers/preferenceContext.js';
 import {setNodeText,setNodeDisabled} from '../src/domUpdates.js';
 
 import '@dryfire/testing/setup';
@@ -24,6 +25,7 @@ function setup() {
     profileLocked:()=>context.busy,busy:false,livePendingStart:false,liveSession:null,sessionController:null,practiceController:null,
     calibration:[],recordCalibration:jest.fn(),resetCalibration:jest.fn(),enabledSoundLabels:['trigger','draw'],recordExample:record,resetSoundProfile:reset,toggleOptionalSound:jest.fn(),renderCalibrationCards:calibration,
   };
+  bindPreferenceContext(context);
   const {renderClassCards,renderLearningLocks}=vm.runInNewContext(metadata+'\n'+source.slice(source.indexOf('function liveText('),source.indexOf('function bindSettings('))+'\n'+source.slice(source.indexOf('function renderListeningReadiness('),source.indexOf('function renderGunControls('))+'\n'+rendering+'\n;({renderClassCards,renderLearningLocks});',context);
   return{context,counts,record,reset,calibration,render:renderClassCards,locks:renderLearningLocks};
 }

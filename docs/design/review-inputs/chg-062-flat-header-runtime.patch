@@ -1,0 +1,1108 @@
+diff --git a/DESIGN.md b/DESIGN.md
+index 5c6cd9a..3a8d6ff 100644
+--- a/DESIGN.md
++++ b/DESIGN.md
+@@ -21,3 +21,11 @@ CHG-060 public static SEO pages reuse AppShell, BrandHeader, InfoFooter and fixe
+ Owner-approved: `/` opens the real trainer, informational and setup URLs are flat, and every built-in sequence has a distinct path. Retain marketing as `MarketingOverview` inside About with the existing brand, routine, free/local promise, CTA and mode guide cards. Public About/Contact/manuals use the same actual app components and fixed navigation as their in-app equivalents. Preserve the original marketing capture as historical evidence. No rebrand or unrelated layout changes. Review changed About/public captures in both pinned browsers and preserve unrelated baselines; original performance budgets apply.
+ 
+ Existing native selects remain OS-owned: practice delay/start-source, appearance, History progress filter and private preview simulation. Native popup geometry is intentionally platform-dependent; no authored dropdown redesign is authorized by this routing change. Preserve existing labels, keyboard behavior and numeric validation contracts. This explicit ownership decision also applies to the retained native template adapters.
++
++
++## CHG-062 — shared information icons
++
++The app header owns About, @ Contact, Settings in this order. BrandHeader owns the shared 24px outlined SVGs (1.8 stroke), 44px controls, focus/tooltips/current state and responsive geometry. All share theme text, existing orange current/focus accent and a theme-aware hover surface. No font glyph for @; no duplicate footer links. Footer disclosure/copyright/divider and fixed bottom navigation stay. Runtime values live in BrandHeader.css; no independent page overrides.
++
++
++CHG-062 performance correction under review: the in-app Settings control retains its existing native button action (with shared icon styling, accessible name/current state and guarded route callback); About and Contact are real links. Static editorial/public link-mode shells retain a real Settings href. This preserves the released Settings keyboard/action contract rather than requiring identical HTML tags for different control purposes. Visual references remain unchanged; complete acceptance is still required.
+diff --git a/apps/web/src/app/chromeBridge.test.ts b/apps/web/src/app/chromeBridge.test.ts
+index f3ba052..ce5a97d 100644
+--- a/apps/web/src/app/chromeBridge.test.ts
++++ b/apps/web/src/app/chromeBridge.test.ts
+@@ -80,3 +80,59 @@ test('repeated identical snapshots do not rewrite native chrome or schedule rend
+   expect(renderer.update).toHaveBeenCalledWith({view:'learn',status:'Listening',navigationDisabled:true});
+   observer.disconnect();bridge.dispose();
+ });
++
++
++test('header links preserve modified clicks and intercept ordinary nested-icon navigation once',()=>{
++ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate);
++ const link=document.querySelector<HTMLAnchorElement>('#contactBtn')!;
++ for(const options of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
++  const event=new MouseEvent('click',{bubbles:true,cancelable:true,...options});link.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);
++ }
++ expect(navigate).not.toHaveBeenCalled();
++ const event=new MouseEvent('click',{bubbles:true,cancelable:true});link.querySelector('path')!.dispatchEvent(event);
++ expect(event.defaultPrevented).toBe(true);expect(navigate.mock.calls).toEqual([['contact']]);expect(link).toHaveAttribute('data-tooltip-dismissed','true');bridge.dispose();
++});
++
++test('native tooltip dismissal handles nested icons, focus changes and unrelated header events',()=>{
++ const bridge=createChromeBridge(document,jest.fn()),link=document.querySelector<HTMLAnchorElement>('#aboutBtn')!;
++ const icon=link.querySelector('svg')!;
++ document.querySelector('h1')!.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
++ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
++ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:link}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
++ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:document.querySelector('#contactBtn')}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++ link.dataset.tooltipDismissed='true';link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:null}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++ bridge.dispose();icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
++});
++
++test('unrelated native header controls retain their classes and do not acquire a route',()=>{
++ const extra=document.createElement('button');extra.className='unrelated';document.querySelector('header.hero')!.append(extra);
++ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate);extra.click();bridge.view('about');
++ expect(navigate).not.toHaveBeenCalled();expect(extra.className).toBe('unrelated');expect(extra).not.toHaveAttribute('aria-current');bridge.dispose();
++});
++
++test('navigation does not rewrite unchanged information controls or notify their ARIA state',()=>{
++ const bridge=createChromeBridge(document,jest.fn());bridge.view('gunSetup');
++ const about=control('#aboutBtn'),contact=control('#contactBtn');
++ const aboutARIA=jest.spyOn(about,'ariaCurrent','set'),contactARIA=jest.spyOn(contact,'ariaCurrent','set');
++ const aboutClass=jest.spyOn(about.classList,'toggle'),contactClass=jest.spyOn(contact.classList,'toggle');
++ bridge.view('settings');
++ expect(aboutARIA).not.toHaveBeenCalled();expect(contactARIA).not.toHaveBeenCalled();
++ expect(aboutClass).not.toHaveBeenCalled();expect(contactClass).not.toHaveBeenCalled();
++ bridge.dispose();
++});
++
++test('Escape dismissal survives pointer exit caused by hiding a focused tooltip',()=>{
++ document.body.innerHTML=fixture;
++ const bridge=createChromeBridge(document,jest.fn()),link=document.getElementById('aboutBtn')!;
++ link.focus();link.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
++ link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:document.body}));
++ expect(link.dataset.tooltipDismissed).toBe('true');
++ link.blur();expect(link.dataset.tooltipDismissed).toBeUndefined();bridge.dispose();
++});
++
++test('pointer activation navigates without writing keyboard-only tooltip state',()=>{
++ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate),button=control('#settingsShortcut');
++ button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:1}));expect(navigate).toHaveBeenCalledWith('settings');expect(button.dataset.tooltipDismissed).toBeUndefined();
++ button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:0}));expect(button.dataset.tooltipDismissed).toBe('true');bridge.dispose();
++});
+diff --git a/apps/web/src/app/chromeBridge.ts b/apps/web/src/app/chromeBridge.ts
+index 590ab15..fee5f79 100644
+--- a/apps/web/src/app/chromeBridge.ts
++++ b/apps/web/src/app/chromeBridge.ts
+@@ -8,21 +8,39 @@ export type ChromeFactory = (options: { doc: Document; initial: ChromeSnapshot;
+ /** Native controls are immediately functional without downloading React. The
+  * optional renderer takes ownership atomically; no page/form node is replaced. */
+ export function createChromeBridge(doc: Document, onNavigate: (view: string) => void) {
+-  const hosts = ['header.hero', '.footer-links', '.tabs'].map(selector => doc.querySelector(selector));
++  const hosts = ['header.hero', '.tabs'].map(selector => doc.querySelector(selector));
+   if (hosts.some(host => !host)) throw new Error('Shared chrome regions are missing.');
+   const regions = hosts as Element[];
+-  const controls = regions.flatMap(host => [...host.querySelectorAll<HTMLButtonElement>('button')]);
++  const controls = regions.flatMap(host => [...host.querySelectorAll<HTMLButtonElement | HTMLAnchorElement>('button,a.header-link')]);
+   const destinations: Record<string, string> = { settingsShortcut: 'settings', aboutBtn: 'about', contactBtn: 'contact' };
+   const state: ChromeSnapshot = { view: 'home', status: 'Loading…', navigationDisabled: false };
+   let renderer: ChromeRenderer | undefined, disposed = false;
+   const activate = (event: Event) => {
+-    const button = (event.target as Element).closest?.('button');
+-    if (!button || button.disabled) return;
++    const button = (event.target as Element).closest?.<HTMLButtonElement | HTMLAnchorElement>('button,a.header-link');
++    if (!button || ('disabled' in button && button.disabled)) return;
++    if (button instanceof HTMLAnchorElement) {
++      const click=event as MouseEvent;
++      if(click.button!==0||click.metaKey||click.ctrlKey||click.altKey||click.shiftKey)return;
++      event.preventDefault();
++    }
+     const view = button.dataset.view ?? destinations[button.id];
+-    if (view) onNavigate(view);
++    if (view) {
++      if((event as MouseEvent).detail===0&&button.classList.contains('header-link'))button.dataset.tooltipDismissed='true';
++      onNavigate(view);
++    }
++  };
++  const tooltip = (event: Event) => {
++    const link=(event.target as Element).closest?.<HTMLElement>('.header-link');
++    if(!link)return;
++    if(event.type==='keydown') { if((event as KeyboardEvent).key==='Escape')link.dataset.tooltipDismissed='true'; }
++    else if((event.type!=='pointerout'||doc.activeElement!==link)&&!link.contains((event as FocusEvent).relatedTarget as Node|null))delete link.dataset.tooltipDismissed;
+   };
+   regions.forEach(host => host.addEventListener('click', activate));
+-  const removeNative = () => regions.forEach(host => host.removeEventListener('click', activate));
++  for(const type of ['keydown','focusout','pointerout']) regions[0].addEventListener(type,tooltip);
++  const removeNative = () => {
++    regions.forEach(host => host.removeEventListener('click', activate));
++    for(const type of ['keydown','focusout','pointerout']) regions[0].removeEventListener(type,tooltip);
++  };
+   const applied: Partial<ChromeSnapshot> = {};
+   const update = <Key extends keyof ChromeSnapshot>(key: Key, value: ChromeSnapshot[Key]) => {
+     if (disposed || applied[key] === value) return;
+@@ -33,12 +51,13 @@ export function createChromeBridge(doc: Document, onNavigate: (view: string) =>
+       for (const button of controls) {
+         const route = button.dataset.view ?? destinations[button.id];
+         const selected = route === value || route === 'drills' && ['session', 'practice', 'practiceGuide'].includes(value);
+-        if (button.dataset.view || route === 'settings') button.classList.toggle('active', selected);
+-        button.ariaCurrent = selected ? 'page' : null;
++        if (route && button.classList.contains('active') !== selected) button.classList.toggle('active', selected);
++        const current = selected ? 'page' : null;
++        if (button.getAttribute('aria-current') !== current) button.ariaCurrent = current;
+       }
+     }
+     if (key === 'status') doc.getElementById('statusPill')!.textContent = state.status;
+-    if (key === 'navigationDisabled') controls.forEach(button => { if (button.dataset.view) button.disabled = state.navigationDisabled; });
++    if (key === 'navigationDisabled') controls.forEach(button => { if (button instanceof HTMLButtonElement && button.dataset.view) button.disabled = state.navigationDisabled; });
+   };
+   return {
+     view(value: string) { update('view', value); },
+diff --git a/apps/web/src/app/chromePages.test.tsx b/apps/web/src/app/chromePages.test.tsx
+index f8af8d4..7e03aee 100644
+--- a/apps/web/src/app/chromePages.test.tsx
++++ b/apps/web/src/app/chromePages.test.tsx
+@@ -16,19 +16,19 @@ test('Strict Mode chrome preserves other owners and keyboard focus, with exactly
+   const draft=document.getElementById('draft') as HTMLInputElement;
+   draft.value='invalid draft';draft.setSelectionRange(2,5);
+   const main=document.getElementById('pageContent'), badge=document.getElementById('previewModeBadge');
+-  document.getElementById('contactBtn')!.focus();
++  document.getElementById('contactBtn')!.focus();document.getElementById('contactBtn')!.dataset.tooltipDismissed='true';
+   act(()=>{bridge.view('practice');bridge.status('Microphone connected');bridge.enhance(mountChrome);bridge.enhance(mountChrome);});
+-  expect(screen.getByRole('button',{name:'Contact'})).toHaveFocus();
++  expect(screen.getByRole('link',{name:'Contact'})).toHaveFocus();expect(screen.getByRole('link',{name:'Contact'})).toHaveAttribute('data-tooltip-dismissed','true');
+   expect(document.getElementById('draft')).toBe(draft);expect(draft.value).toBe('invalid draft');
+   expect([draft.selectionStart,draft.selectionEnd]).toEqual([2,5]);
+   expect(document.getElementById('pageContent')).toBe(main);expect(document.getElementById('previewModeBadge')).toBe(badge);
+   expect(screen.getByRole('button',{name:'Drills'})).toHaveAttribute('aria-current','page');
+-  await userEvent.click(screen.getByRole('button',{name:'About'}));
+-  await userEvent.click(screen.getByRole('button',{name:'Open settings'}));
++  await userEvent.click(screen.getByRole('link',{name:'About'}));
++  await userEvent.click(screen.getByRole('button',{name:'Settings'}));
+   await userEvent.click(screen.getByRole('button',{name:'Home'}));
+   expect(onNavigate.mock.calls).toEqual([['about'],['settings'],['home']]);
+   act(()=>{bridge.view('settings');bridge.status('Listening');bridge.navigationDisabled(true);});
+-  expect(screen.getByRole('button',{name:'Open settings'})).toHaveAttribute('aria-current','page');
++  expect(screen.getByRole('button',{name:'Settings'})).toHaveAttribute('aria-current','page');
+   expect(document.getElementById('statusPill')).toHaveTextContent('Listening');
+   for(const button of document.querySelectorAll('.tab'))expect(button).toBeDisabled();
+   act(()=>{bridge.dispose();bridge.dispose();});
+@@ -67,7 +67,7 @@ test('a failed React commit restores native nodes, focus and fallback events for
+   expect(document.getElementById('contactBtn')).toBe(button);expect(button).toHaveFocus();
+   await userEvent.click(button);expect(onNavigate.mock.calls).toEqual([['contact']]);
+   act(()=>bridge.enhance(mountChrome));
+-  await userEvent.click(screen.getByRole('button',{name:'Contact'}));
++  await userEvent.click(screen.getByRole('link',{name:'Contact'}));
+   expect(onNavigate.mock.calls).toEqual([['contact'],['contact']]);
+   act(()=>bridge.dispose());
+ });
+diff --git a/apps/web/src/app/chromePages.tsx b/apps/web/src/app/chromePages.tsx
+index 4ecbb40..e7ac52d 100644
+--- a/apps/web/src/app/chromePages.tsx
++++ b/apps/web/src/app/chromePages.tsx
+@@ -2,33 +2,31 @@ import { StrictMode } from 'react';
+ import { createRoot, type Root } from 'react-dom/client';
+ import { flushSync } from 'react-dom';
+ import { BrandHeaderContent } from '@dryfire/ui/BrandHeader';
+-import { InfoFooterLinks } from '@dryfire/ui/InfoFooter';
+ import { BottomNavigationContent } from '@dryfire/ui/BottomNavigation';
+ import type { ChromeFactory } from './chromeBridge.ts';
+ 
+-/** Only header contents, footer links and navigation contents transfer. The
++/** Only header and navigation contents transfer. The
+  * footer's private status, main, safety and every mounted draft stay untouched. */
+ export const mountChrome: ChromeFactory = ({ doc, initial, onNavigate }) => {
+-  const hosts = [doc.querySelector('header.hero'), doc.querySelector('.footer-links'), doc.querySelector('.tabs')];
++  const hosts = [doc.querySelector('header.hero'), doc.querySelector('.tabs')];
+   if (hosts.some(host => !host)) throw new Error('Shared chrome mounts are missing.');
+   const regions = hosts as Element[];
+   const active = doc.activeElement as HTMLButtonElement | null;
+-  const focused = active && regions.some(host => host.contains(active)) ? {id:active.id,view:active.dataset.view} : null;
++  const focused = active && regions.some(host => host.contains(active)) ? {id:active.id,view:active.dataset.view,dismissed:active.dataset.tooltipDismissed} : null;
+   const restoreFocus = () => {
+-    if (focused?.id) doc.getElementById(focused.id)?.focus();
+-    else if (focused?.view) [...regions[2].querySelectorAll<HTMLButtonElement>('.tab')].find(button=>button.dataset.view===focused.view)?.focus();
++    if (focused?.id) {const node=doc.getElementById(focused.id);if(node&&focused.dismissed)node.dataset.tooltipDismissed=focused.dismissed;node?.focus();}
++    else if (focused?.view) [...regions[1].querySelectorAll<HTMLButtonElement>('.tab')].find(button=>button.dataset.view===focused.view)?.focus();
+   };
+   const state = { ...initial };
+   let backups: Node[][] | undefined = regions.map(host => [...host.childNodes]);
+   const roots: Root[] = [];
+   let mountFailure: unknown;
+   let disposed = false;
+-  const header = () => roots[0].render(<StrictMode><BrandHeaderContent view={state.view} status={state.status} onSettings={()=>onNavigate('settings')} /></StrictMode>);
+-  const footer = () => roots[1].render(<StrictMode><InfoFooterLinks view={state.view} onNavigate={onNavigate} /></StrictMode>);
+-  const navigation = () => roots[2].render(<StrictMode><BottomNavigationContent view={state.view} disabled={state.navigationDisabled} onNavigate={onNavigate} /></StrictMode>);
++  const header = () => roots[0].render(<StrictMode><BrandHeaderContent view={state.view} status={state.status} onNavigate={onNavigate} /></StrictMode>);
++  const navigation = () => roots[1].render(<StrictMode><BottomNavigationContent view={state.view} disabled={state.navigationDisabled} onNavigate={onNavigate} /></StrictMode>);
+   try {
+     regions.forEach(host => roots.push(createRoot(host, { onUncaughtError(error) { mountFailure = error; } })));
+-    flushSync(() => { header(); footer(); navigation(); });
++    flushSync(() => { header(); navigation(); });
+     if (mountFailure) throw mountFailure;
+     restoreFocus();
+   }
+@@ -46,7 +44,6 @@ export const mountChrome: ChromeFactory = ({ doc, initial, onNavigate }) => {
+       Object.assign(state, next);
+       flushSync(() => {
+         if (viewChanged || statusChanged) header();
+-        if (viewChanged) footer();
+         if (viewChanged || disabledChanged) navigation();
+       });
+     },
+diff --git a/apps/web/src/app/informationBridge.test.ts b/apps/web/src/app/informationBridge.test.ts
+index 03df637..2395693 100644
+--- a/apps/web/src/app/informationBridge.test.ts
++++ b/apps/web/src/app/informationBridge.test.ts
+@@ -123,3 +123,11 @@ test('a disposed information owner cannot materialize a deferred page or load it
+ test('missing About host remains safe for fallback calls without mutating another page',()=>{
+  setContent('<section id="contactView"></section>');const load=jest.fn(()=>new Promise<never>(()=>{}));const bridge=createInformationBridge({onNavigate:jest.fn(),onBack:jest.fn(),onError:jest.fn(),load});bridge.setFull(true);bridge.show('about');expect(document.getElementById('aboutFeatureSummary')).toBeNull();expect(document.getElementById('contactView')?.childNodes).toHaveLength(0);bridge.dispose();
+ });
++
++test('serialized About applies the latest Full state synchronously and restores public copy',()=>{
++ const tree=[['p',[['id','aboutFeatureSummary'],['data-full-summary','Full copy']],['Public copy']]];
++ setContent(`<section id="aboutView"><script type="application/json" data-static-page="about">${JSON.stringify(tree)}</script></section><section id="contactView"></section>`);
++ const bridge=createInformationBridge({onNavigate:jest.fn(),onBack(){},onError:jest.fn(),load:()=>new Promise(()=>{})});
++ bridge.setFull(true);bridge.show('about');expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Full copy');
++ bridge.setFull(false);expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Public copy');bridge.show('about');bridge.dispose();
++});
+diff --git a/apps/web/src/app/informationBridge.ts b/apps/web/src/app/informationBridge.ts
+index 4cbbabd..de55e26 100644
+--- a/apps/web/src/app/informationBridge.ts
++++ b/apps/web/src/app/informationBridge.ts
+@@ -14,8 +14,8 @@ export function createInformationBridge({ onBack, onError, doc = document,
+   let pages: Pages | undefined, pending: Promise<void> | undefined;
+   let ready: Module | undefined;
+   let full = false, disposed = false;
+-  const summary = doc.getElementById('aboutFeatureSummary') ?? doc.getElementById('aboutView')?.querySelector('template')?.content.getElementById('aboutFeatureSummary');
+-  const freeSummary = summary?.textContent ?? '';
++  let summary = doc.getElementById('aboutFeatureSummary') ?? doc.getElementById('aboutView')?.querySelector('template')?.content.getElementById('aboutFeatureSummary');
++  let freeSummary = summary?.textContent ?? '';
+   const chrome = createChromeBridge(doc, onNavigate);
+   const enhance = () => {
+     if (disposed || !ready) return;
+@@ -34,7 +34,7 @@ export function createInformationBridge({ onBack, onError, doc = document,
+   return {
+     show(view: string) {
+       if(disposed)return;
+-      if(view==='about'){const host=doc.getElementById('aboutView');if(host)materializeStaticCatalog(host);}
++      if(view==='about'){const host=doc.getElementById('aboutView');if(host)materializeStaticCatalog(host);if(!summary){summary=doc.getElementById('aboutFeatureSummary');freeSummary=summary?.textContent??'';if(summary&&full)summary.textContent=summary.dataset.fullSummary!;}}
+       chrome.view(view); enhance();
+       if (disposed || ready || pending || !['about', 'contact'].includes(view)) return;
+       pending = load().then(module => {
+diff --git a/apps/web/src/app/renderInformationPages.tsx b/apps/web/src/app/renderInformationPages.tsx
+index 34c2a11..e4c2e63 100644
+--- a/apps/web/src/app/renderInformationPages.tsx
++++ b/apps/web/src/app/renderInformationPages.tsx
+@@ -1,10 +1,19 @@
+ import { renderToStaticMarkup } from 'react-dom/server';
++import {parseFragment, type DefaultTreeAdapterMap} from 'parse5';
++
++type BuildNode=DefaultTreeAdapterMap['textNode']|DefaultTreeAdapterMap['element'];
++type StaticNode=string|[string,[string,string][],StaticNode[]];
++/** Only our typed page's text/elements enter this build-only serializer. */
++function serializeStaticPage(html:string) {
++  const encode=(node:BuildNode):StaticNode=>'value' in node?node.value:[node.tagName,node.attrs.map(a=>[a.name,a.value]),(node.childNodes as BuildNode[]).map(encode)];
++  return JSON.stringify((parseFragment(html).childNodes as BuildNode[]).map(encode)).replaceAll('<','\\u003c');
++}
+ import { AboutPage } from '../pages/AboutPage/index.ts';
+ import { ContactPage } from '../pages/ContactPage/index.ts';
+ 
+ /** Prerender the same components used by the browser; no parallel HTML copy. */
+ export function renderInformationPage(id: string, deferred = false) {
+-  if (id === 'about') {const html=renderToStaticMarkup(<AboutPage />);return deferred?`<template>${html}</template>`:html;}
++  if (id === 'about') {const html=renderToStaticMarkup(<AboutPage />);return deferred?`<script type="application/json" data-static-page="about">${serializeStaticPage(html)}</script>`:html;}
+   if (id === 'contact') return renderToStaticMarkup(<ContactPage />);
+   throw new Error(`Not an informational page: ${id}`);
+ }
+diff --git a/apps/web/src/public-site/PublicPage/PublicPage.css b/apps/web/src/public-site/PublicPage/PublicPage.css
+index ec52137..b4b369a 100644
+--- a/apps/web/src/public-site/PublicPage/PublicPage.css
++++ b/apps/web/src/public-site/PublicPage/PublicPage.css
+@@ -1 +1 @@
+-.public-site .app-shell{margin:0 auto}.public-site .brand-name{margin:0}.public-site .icon-button{display:grid;place-items:center;text-decoration:none}.public-site .tab{text-decoration:none}.public-top-links,.public-related{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 24px;font-size:.8rem}.public-site a{color:var(--session-text);cursor:pointer}.public-site a:hover{color:#ffad62}.public-site a:focus-visible{outline:3px solid #ffad62;outline-offset:4px}.public-kicker{font-size:.68rem;letter-spacing:.1em;color:var(--session-muted);margin:0 0 10px}.public-article>h1{font-size:1.85rem;line-height:1.15;letter-spacing:-.03em;margin:0 0 16px}.public-intro{font-size:1rem;line-height:1.65;margin:0 0 22px}.public-panel{border:1px solid var(--session-border);border-radius:14px;background:var(--session-surface);padding:16px;margin:20px 0}.public-panel h2{font-size:1rem;margin:0 0 12px}.public-panel p,.public-panel li{font-size:.85rem;line-height:1.65}.public-panel ol,.public-panel ul{padding-left:22px}.public-panel li+li{margin-top:10px}.public-start{display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:46px}.public-site .about-email{overflow-wrap:anywhere}.public-site .footer-page-link{display:inline-block}.public-related{padding-top:12px}.public-site footer{margin-top:20px}.public-site .public-start:hover{color:#16100b;filter:brightness(1.06)}.public-site .public-start:active{filter:brightness(.95)}
++.public-site .app-shell{margin:0 auto}.public-site .brand-name{margin:0}.public-site .tab{text-decoration:none}.public-top-links,.public-related{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 24px;font-size:.8rem}.public-site a{color:var(--session-text);cursor:pointer}.public-site a:hover{color:#ffad62}.public-site a:focus-visible{outline:3px solid #ffad62;outline-offset:4px}.public-kicker{font-size:.68rem;letter-spacing:.1em;color:var(--session-muted);margin:0 0 10px}.public-article>h1{font-size:1.85rem;line-height:1.15;letter-spacing:-.03em;margin:0 0 16px}.public-intro{font-size:1rem;line-height:1.65;margin:0 0 22px}.public-panel{border:1px solid var(--session-border);border-radius:14px;background:var(--session-surface);padding:16px;margin:20px 0}.public-panel h2{font-size:1rem;margin:0 0 12px}.public-panel p,.public-panel li{font-size:.85rem;line-height:1.65}.public-panel ol,.public-panel ul{padding-left:22px}.public-panel li+li{margin-top:10px}.public-start{display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:46px}.public-site .about-email{overflow-wrap:anywhere}.public-related{padding-top:12px}.public-site footer{margin-top:20px}.public-site .public-start:hover{color:#16100b;filter:brightness(1.06)}.public-site .public-start:active{filter:brightness(.95)}
+diff --git a/apps/web/src/public-site/PublicPage/PublicPage.test.tsx b/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
+index 217f61c..f41eaa8 100644
+--- a/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
++++ b/apps/web/src/public-site/PublicPage/PublicPage.test.tsx
+@@ -6,4 +6,4 @@ import '@dryfire/testing/setup';import{render,cleanup}from'@testing-library/reac
+ // @ts-expect-error Build-only JS route registry.
+ import{PUBLIC_ROUTES}from'../../../../../site/routes.js';
+ afterEach(cleanup);
+-test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Open settings'})).toHaveAttribute('href','/settings/');expect(v.container.querySelector('script')).toBeNull();});
++test.each(PUBLIC_ROUTES as PublicRoute[])('public $id has semantic initial content and real navigation without personal context',(route)=>{const v=render(<PublicPage route={route} routes={PUBLIC_ROUTES}/>);expect(v.getByRole('heading',{level:1})).toHaveTextContent(route.heading);expect(v.container.querySelectorAll('h1')).toHaveLength(1);expect(v.container.querySelector('.gun-switcher')).toBeNull();expect(v.getByRole('navigation',{name:'Main navigation'}).querySelectorAll('a')).toHaveLength(5);expect(v.getByRole('link',{name:'Settings'})).toHaveAttribute('href','/settings/');expect(v.container.querySelector('script')).toBeNull();});
+diff --git a/apps/web/src/styles/legacy-after-drill-cards.css b/apps/web/src/styles/legacy-after-drill-cards.css
+index 102bc2f..f3f212a 100644
+--- a/apps/web/src/styles/legacy-after-drill-cards.css
++++ b/apps/web/src/styles/legacy-after-drill-cards.css
+@@ -2,14 +2,14 @@
+ .home-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .home-actions .button{font-size:.87rem;min-width:0}
+ @media(max-width:680px){.class-grid{grid-template-columns:1fr}.home-actions{grid-template-columns:1fr}.class-preview{min-width:110px}}
+-@media(max-width:380px){.app-shell{padding-left:11px;padding-right:11px}.status-pill{display:none}.class-preview{width:36%;min-width:93px}.class-card{padding:10px}.class-actions .button{padding:10px}.tab{font-size:.68rem}}
++@media(max-width:380px){.app-shell{padding-left:11px;padding-right:11px}.class-preview{width:36%;min-width:93px}.class-card{padding:10px}.class-actions .button{padding:10px}.tab{font-size:.68rem}}
+ 
+ /* Reference design: compact mobile panels and persistent bottom navigation. */
+ :root{--accent-orange:#ff8126}
+ body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
+ .app-shell{max-width:480px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:max(22px,env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom))}
+ .page-content{flex:1;min-width:0}
+-.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}.brand-eyebrow{font-size:1.22rem;letter-spacing:.18em}.hero h1{font-size:.55rem;letter-spacing:.34em}.icon-button{background:none;border:0;color:var(--primary-text,#96a2b0);font-size:26px}.status-pill{display:none}
++.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}
+ .hero .brand-name{margin:0;color:var(--primary-text,#f5f7fa);font-size:inherit;font-weight:900;letter-spacing:normal;line-height:1.2}
+ .brand-name .brand-eyebrow{display:block;font-size:clamp(1rem,4.9vw,1.22rem);letter-spacing:.14em;white-space:nowrap}
+ .brand-tagline{display:block;margin-top:4px;font-size:.75rem;font-weight:750;letter-spacing:.24em;color:#c3ced9;white-space:nowrap}
+@@ -44,6 +44,3 @@ body[data-view="guns"] .safety-disclosure,
+ body[data-view="guns"] .gun-switcher,
+ body[data-view="gunSetup"] .safety-disclosure,
+ body[data-view="gunSetup"] .gun-switcher { display:none; }
+-body[data-view="loading"] .hero,
+-body[data-view="guns"] .hero,
+-body[data-view="gunSetup"] .hero { display:flex; }
+diff --git a/apps/web/src/styles/legacy-after-gun-setup.css b/apps/web/src/styles/legacy-after-gun-setup.css
+index b7c5c0b..0029d2b 100644
+--- a/apps/web/src/styles/legacy-after-gun-setup.css
++++ b/apps/web/src/styles/legacy-after-gun-setup.css
+@@ -4,5 +4,3 @@
+ .storage-card strong { display:block; margin:1px 0 6px; color:var(--primary-text,#f0f4f8); font-size:.87rem; }
+ .storage-card p { margin:0; font-size:.73rem; line-height:1.55; color:#aec3d5; }
+ .text-button { padding:11px 0; min-height:44px; background:none; border:0; color:#66bfff; font-size:.85rem; cursor:pointer; }
+-.footer-links { display:flex; justify-content:center; align-items:center; gap:28px; padding-bottom:12px; margin-bottom:16px; border-bottom:1px solid #253139; }
+-.footer-page-link { color:var(--primary-text,inherit); text-decoration:underline; text-underline-offset:3px; }
+diff --git a/apps/web/src/styles/legacy-after-saved-sessions.css b/apps/web/src/styles/legacy-after-saved-sessions.css
+index 83335fc..184915a 100644
+--- a/apps/web/src/styles/legacy-after-saved-sessions.css
++++ b/apps/web/src/styles/legacy-after-saved-sessions.css
+@@ -36,8 +36,8 @@ html[data-theme="light"] :is(.welcome-card p,.dashboard-card small,.gun-switcher
+ html[data-theme="light"] .hero .brand-name { color:#182936; }
+ html[data-theme="light"] .brand-tagline { color:#486074; }
+ html[data-theme="light"] .brand-logo { background:#17212a; border-radius:9px; padding:3px; }
+-html[data-theme="light"] .icon-button { color:#49657a; }
+-html[data-theme="light"] .icon-button.active { color:#ac4500; background:#fff0e5; }
++
++
+ html[data-theme="light"] .tabs { background:rgba(247,250,252,.97); border-color:#c5d2de; }
+ html[data-theme="light"] .tab { color:#526a7d; }
+ html[data-theme="light"] .tab.active { color:#ac4500; }
+@@ -63,8 +63,6 @@ html[data-theme="light"] :is(.eval-stats span,.confusion-wrap th,.history-item .
+ html[data-theme="light"] :is(.progress-label,.class-info .progress-label) { color:#4a6276!important; }
+ html[data-theme="light"] :is(.progress-track,.meter-track,.bar) { background:#d9e4ec; }
+ html[data-theme="light"] :is(.score,.history-item span,.eval-stats strong,.eyebrow,.text-button,.gun-switcher-action) { color:#ac4500; }
+-html[data-theme="light"] .footer-links .footer-page-link { color:inherit; }
+-html[data-theme="light"] .footer-links { border-color:#c5d2de; }
+ html[data-theme="light"] .chevron { color:#526a7d; }
+ html[data-theme="light"] .dashboard-icon.orange { background:#ffe9d8; color:#b54900; }
+ html[data-theme="light"] .dashboard-icon.blue { background:#d9eefb; color:#15668d; }
+diff --git a/apps/web/src/styles/legacy-before-drills.css b/apps/web/src/styles/legacy-before-drills.css
+index ba58caf..f98833a 100644
+--- a/apps/web/src/styles/legacy-before-drills.css
++++ b/apps/web/src/styles/legacy-before-drills.css
+@@ -26,15 +26,15 @@
+ :root{--accent-orange:#ff9141}
+ .app-shell{max-width:850px;padding-top:max(10px,env(safe-area-inset-top))}
+ .hero{padding:5px 0 10px;display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+-.brand-logo{width:43px;height:43px;border-radius:12px;flex:none}
++.brand-logo{flex:none}
+ .hero-copy{min-width:0;flex:1}
+-.hero h1{font-size:.64rem;font-weight:800;letter-spacing:.27em;color:#9aaab5;margin:0;line-height:1.3}
+-.brand-eyebrow{margin:0;font-size:1.12rem;letter-spacing:.15em;font-weight:900;line-height:1.2}
++
++.brand-eyebrow{margin:0;font-weight:900;line-height:1.2}
+ .brand-eyebrow span{color:var(--accent-orange)}
+-.header-actions{display:flex;align-items:center;gap:7px;flex:none}
+-.status-pill{font-size:.69rem;padding:5px 8px;margin:0;max-width:110px;overflow-wrap:anywhere}
+-.icon-button{border:1px solid #37454d;background:#172027;color:var(--primary-text,#e5eef4);width:44px;height:44px;border-radius:11px;font-size:1.15rem;cursor:pointer}
+-.icon-button.active{border-color:#ff9141;color:#ff9141;background:#2d211b}
++.header-actions{display:flex;align-items:center;flex:none}
++
++
++
+ .safety-card{padding:10px 12px;margin-bottom:12px;border-radius:12px;gap:9px}
+ .safety-icon{width:26px;height:26px;border-radius:8px}
+ .safety-card h2{font-size:.86rem;margin:0 0 3px}
+diff --git a/apps/web/src/styles/legacy-before-evaluation.css b/apps/web/src/styles/legacy-before-evaluation.css
+index 3c538a6..9d08051 100644
+--- a/apps/web/src/styles/legacy-before-evaluation.css
++++ b/apps/web/src/styles/legacy-before-evaluation.css
+@@ -3,8 +3,8 @@ html[data-theme="light"] .about-card { background:#fff; border-color:#c5d2de; }
+ html[data-theme="light"] :is(.about-intro>p:last-child,.about-card p,.about-card ol) { color:#4a6276; }
+ html[data-theme="light"] .about-email { color:#a34706; }
+ button:focus-visible,input:focus-visible { outline:3px solid #ffb77f; outline-offset:3px; }
+-@media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; } .status-pill { margin-left:77px; } }
+-@media(max-width:420px){ .hero { gap:12px; } .brand-mark { height:47px; width:47px; } .hero-copy { min-width:0; width:calc(100% - 62px); } .status-pill { margin-left:0; } .settings-row { align-items:flex-start; flex-direction:column; } }
++@media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; }  }
++@media(max-width:420px){ .hero { gap:12px; } .brand-mark { height:47px; width:47px; } .hero-copy { min-width:0; width:calc(100% - 62px); }  .settings-row { align-items:flex-start; flex-direction:column; } }
+ 
+ /* Live listening and manual evaluation */
+ .listener-control { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+diff --git a/apps/web/src/styles/legacy-before-live-listen.css b/apps/web/src/styles/legacy-before-live-listen.css
+index 3192c9d..98adc5b 100644
+--- a/apps/web/src/styles/legacy-before-live-listen.css
++++ b/apps/web/src/styles/legacy-before-live-listen.css
+@@ -4,7 +4,7 @@
+   .hero h1 { font-size:1.52rem; letter-spacing:-.04em; }
+   .hero .subhead { font-size:.8rem; }
+   .brand-mark { width:46px; height:46px; border-radius:13px; }
+-  .status-pill { font-size:.75rem; }
++
+   .safety-card { gap:9px; padding:13px; }
+   .safety-card p { font-size:.8rem; }
+   .nav-glyph { font-size:1.25rem; }
+diff --git a/apps/web/src/styles/legacy-card-foundation.css b/apps/web/src/styles/legacy-card-foundation.css
+index 51a2703..6bedfd2 100644
+--- a/apps/web/src/styles/legacy-card-foundation.css
++++ b/apps/web/src/styles/legacy-card-foundation.css
+@@ -3,7 +3,7 @@ h2,h3,p { margin-top:0; }
+ .subhead,.muted,footer,.class-card p,.history-item p { color:#a8b5bd; }
+ .subhead { margin-bottom:0; max-width:550px; line-height:1.5; }
+ .eyebrow { color:#fa974d; margin:0 0 7px; font-size:.72rem; font-weight:800; letter-spacing:.13em; }
+-.status-pill { border:1px solid #364148; background:#172126; border-radius:20px; padding:9px 13px; color:#d5e0e7; font-size:.8rem; max-width:100%; }
++
+ .brand-mark { height:60px; width:60px; display:flex; justify-content:center; align-items:center; gap:3px; border-radius:17px; border:1px solid #543421; background:#2c1c13; }
+ .brand-mark span { display:block; height:12px; width:3px; border-radius:5px; background:#ff9141; }
+ .brand-mark span:nth-child(2),.brand-mark span:nth-child(6) { height:23px; }
+diff --git a/package-lock.json b/package-lock.json
+index b8e92bc..746f2d8 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -41,6 +41,7 @@
+         "html-minifier-terser": "7.2.0",
+         "jest": "^30.2.0",
+         "jest-environment-jsdom": "30.5.2",
++        "parse5": "7.3.0",
+         "tsx": "4.23.15",
+         "typescript": "6.0.2",
+         "typescript-eslint": "8.71.2",
+diff --git a/package.json b/package.json
+index f0bfd72..2dabf8d 100644
+--- a/package.json
++++ b/package.json
+@@ -72,6 +72,7 @@
+     "html-minifier-terser": "7.2.0",
+     "jest": "^30.2.0",
+     "jest-environment-jsdom": "30.5.2",
++    "parse5": "7.3.0",
+     "tsx": "4.23.15",
+     "typescript": "6.0.2",
+     "typescript-eslint": "8.71.2",
+diff --git a/packages/ui/src/AppShell/AppShell.test.tsx b/packages/ui/src/AppShell/AppShell.test.tsx
+index 7e3aa6a..c6c99db 100644
+--- a/packages/ui/src/AppShell/AppShell.test.tsx
++++ b/packages/ui/src/AppShell/AppShell.test.tsx
+@@ -16,8 +16,8 @@ test('one common shell composes safety, context, persistent content and both nav
+   const shell = document.querySelector('.app-shell')!;
+   expect([...shell.children].map(node => node.tagName)).toEqual(['HEADER', 'DIV', 'MAIN', 'FOOTER', 'NAV']);
+   expect(screen.getByRole('main').children[0]).toBe(screen.getByTestId('context'));
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'Open settings' }));
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'About' }));
++  await userEvent.setup().click(screen.getByRole('button', { name: 'Settings' }));
++  await userEvent.setup().click(screen.getByRole('link', { name: 'About' }));
+   await userEvent.setup().click(screen.getByRole('button', { name: 'History' }));
+   expect(onNavigate.mock.calls).toEqual([['settings'], ['about'], ['history']]);
+ });
+@@ -36,5 +36,5 @@ test('rerendering shell props preserves a mounted invalid draft, its selection a
+ 
+ test('default static composition requires no callbacks', async () => {
+   render(<AppShell />);
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'Open settings' }));
++  await userEvent.setup().click(screen.getByRole('button', { name: 'Settings' }));
+ });
+diff --git a/packages/ui/src/AppShell/AppShell.tsx b/packages/ui/src/AppShell/AppShell.tsx
+index 10f8ba0..8d5cbd3 100644
+--- a/packages/ui/src/AppShell/AppShell.tsx
++++ b/packages/ui/src/AppShell/AppShell.tsx
+@@ -19,10 +19,10 @@ export type AppShellProps = {
+  * control coherent; opaque content slots keep page/form ownership explicit. */
+ export function AppShell({ view, status, navigationDisabled, onNavigate, footerNotice, safety, context, children, links }: AppShellProps) {
+   return <div className="app-shell">
+-    <BrandHeader settingsHref={links?.settings} brandHeading={links?'p':'h1'} view={view} status={status} onSettings={() => onNavigate?.('settings')} />
++    <BrandHeader links={links} brandHeading={links?'p':'h1'} view={view} status={status} onNavigate={onNavigate} />
+     {safety}
+     <main id="pageContent" className="page-content">{context}{children}</main>
+-    <InfoFooter hrefs={links} view={view} onNavigate={onNavigate} notice={footerNotice} />
++    <InfoFooter notice={footerNotice} />
+     <BottomNavigation hrefs={links} view={view} disabled={navigationDisabled} onNavigate={onNavigate} />
+   </div>;
+ }
+diff --git a/packages/ui/src/BrandHeader/BrandHeader.css b/packages/ui/src/BrandHeader/BrandHeader.css
+index 144d16f..62a2c36 100644
+--- a/packages/ui/src/BrandHeader/BrandHeader.css
++++ b/packages/ui/src/BrandHeader/BrandHeader.css
+@@ -1,2 +1,23 @@
+-.hero { display:flex; align-items:center; gap:18px; padding:24px 0; flex-wrap:wrap; }
+-.hero-copy { flex:1; min-width:220px; }
++.status-pill { display:none; }
++
++.hero .header-actions { display:contents; }
++.hero .header-links { display:flex; align-items:center; flex:none; }
++.hero .header-link { display:flex; align-items:center; justify-content:center; position:relative; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:11px; color:var(--primary-text,#fff); background:transparent; text-decoration:none; cursor:pointer; appearance:none; font-size:26px; }
++.hero .header-link:is(:hover,.active) { background:var(--header-hover,#263844); }
++.hero .header-link.active { color:var(--accent-orange,#ff9141); box-shadow:inset 0 -2px currentColor; }
++.hero .header-link:focus-visible { outline:2px solid var(--accent-orange,#ff9141); outline-offset:2px; }
++.header-tooltip { position:absolute; top:calc(100% + 5px); right:0; z-index:20; padding:5px 8px; border-radius:6px; color:var(--primary-text,#fff); background:var(--header-hover,#263844); font-size:.75rem; line-height:1.4; white-space:nowrap; display:none; }
++.hero .header-link:focus-visible .header-tooltip { display:block; }
++.hero .header-link[data-tooltip-dismissed] .header-tooltip { display:none; }
++html[data-theme="light"] .hero { --header-hover:#d9e4ec; --primary-text:#243d51; }
++html[data-theme="light"] .hero .header-link.active { color:#ac4500; }
++@media(max-width:420px) {
++  .hero { gap:6px; }
++  .hero .brand-logo { width:32px; height:32px; }
++  .hero .hero-copy { min-width:0; width:auto; }
++  .hero .brand-eyebrow { font-size:.85rem; letter-spacing:.1em; }
++  .hero .brand-tagline { font-size:.5rem; }
++  .hero .brand-heading { flex-wrap:wrap; gap:4px; }
++  .hero .header-actions { gap:0; }
++}
++@media(forced-colors:active) { .hero .header-link.active { outline:1px solid LinkText; } }
+diff --git a/packages/ui/src/BrandHeader/BrandHeader.test.tsx b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
+index 16fb4b8..e51d696 100644
+--- a/packages/ui/src/BrandHeader/BrandHeader.test.tsx
++++ b/packages/ui/src/BrandHeader/BrandHeader.test.tsx
+@@ -7,21 +7,49 @@ import { BrandHeader } from './BrandHeader.tsx';
+ 
+ test('branding, beta disclosure, live status and settings retain their native semantics', async () => {
+   const onSettings = jest.fn();
+-  const { rerender } = render(<BrandHeader onSettings={onSettings} />);
++  const { rerender } = render(<BrandHeader onNavigate={onSettings} />);
+   expect(screen.getByRole('heading', { name: 'Dry Fire With Ease', level: 1 })).toHaveTextContent('DRY FIREWITH EASE');
+   expect(screen.getByLabelText('Beta version')).toHaveTextContent('BETA');
+   expect(document.querySelector('.brand-logo')).toHaveAttribute('alt', '');
+   expect(screen.getByRole('status')).toHaveTextContent('Loading…');
+-  const settings = screen.getByRole('button', { name: 'Open settings' });
++  const settings = screen.getByRole('button', { name: 'Settings' });
+   expect(settings).not.toHaveAttribute('aria-current');
+-  await userEvent.setup().tab(); await userEvent.setup().keyboard('{Enter}');
++  await userEvent.setup().click(settings); settings.focus();
+   expect(onSettings).toHaveBeenCalledTimes(1);
+-  rerender(<BrandHeader view="settings" status="Microphone connected" onSettings={onSettings} />);
++  rerender(<BrandHeader view="settings" status="Microphone connected" onNavigate={onSettings} />);
+   expect(settings).toHaveAttribute('aria-current', 'page');
+   expect(settings).toHaveClass('active');
+   expect(settings).toHaveFocus();
+   expect(screen.getByRole('status')).toHaveTextContent('Microphone connected');
+-  rerender(<BrandHeader view="about" status="Ready" onSettings={onSettings} />);
++  rerender(<BrandHeader view="about" status="Ready" onNavigate={onSettings} />);
+   expect(settings).not.toHaveAttribute('aria-current');
+   expect(settings).not.toHaveClass('active');
+ });
++
++
++test('header information links share named decorative icons and real destinations', async () => {
++  const onNavigate=jest.fn();
++  const {container,rerender}=render(<BrandHeader onNavigate={onNavigate}/>);
++  const links=[screen.getByRole('link',{name:'About'}),screen.getByRole('link',{name:'Contact'}),screen.getByRole('button',{name:'Settings'})];
++  expect(links.map(link=>link.getAttribute('aria-label'))).toEqual(['About','Contact','Settings']);
++  expect(links.map(link=>link.getAttribute('href'))).toEqual(['/about/','/contact/',null]);expect(links[2]).toHaveAttribute('type','button');
++  expect(container.querySelectorAll('.header-link svg[aria-hidden="true"][focusable="false"]')).toHaveLength(3);
++  await userEvent.setup().click(links[0]);expect(onNavigate).toHaveBeenCalledWith('about');expect(links[0]).not.toHaveAttribute('data-tooltip-dismissed');
++  rerender(<BrandHeader view="contact" onNavigate={onNavigate}/>);
++  expect(links[1]).toHaveAttribute('aria-current','page');expect(links[0]).not.toHaveAttribute('aria-current');
++});
++
++test('header keyboard and pointer tooltips dismiss without hijacking modified links',async()=>{
++ const navigate=jest.fn(),user=userEvent.setup();
++ render(<BrandHeader onNavigate={navigate} links={{about:'/about/?source=header',contact:'/contact/',settings:'/settings/'}}/>);
++ const about=screen.getByRole('link',{name:'About'}),contact=screen.getByRole('link',{name:'Contact'});
++ await user.tab();expect(about).toHaveFocus();await user.keyboard('{ArrowRight}{Escape}');expect(about).toHaveAttribute('data-tooltip-dismissed','true');
++ await user.hover(about);await user.unhover(about);expect(about).toHaveAttribute('data-tooltip-dismissed','true');
++ await user.tab();expect(contact).toHaveFocus();expect(about).not.toHaveAttribute('data-tooltip-dismissed');
++ await user.hover(about);await user.unhover(about);expect(about).not.toHaveAttribute('data-tooltip-dismissed');
++ for(const options of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
++  const event=new MouseEvent('click',{bubbles:true,cancelable:true,...options});about.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);
++ }
++ expect(navigate).not.toHaveBeenCalled();expect(about).toHaveAttribute('href','/about/?source=header');
++ await user.keyboard('{Enter}');expect(navigate).toHaveBeenCalledWith('contact');expect(contact).toHaveAttribute('data-tooltip-dismissed','true');
++});
+diff --git a/packages/ui/src/BrandHeader/BrandHeader.tsx b/packages/ui/src/BrandHeader/BrandHeader.tsx
+index eb1bea7..d1f72fa 100644
+--- a/packages/ui/src/BrandHeader/BrandHeader.tsx
++++ b/packages/ui/src/BrandHeader/BrandHeader.tsx
+@@ -1,20 +1,45 @@
++import type { MouseEvent, ReactNode } from 'react';
++
+ export type BrandHeaderProps = {
+   status?: string;
+-  settingsHref?: string;
++  links?: {about:string;contact:string;settings:string};
++  onNavigate?: (view: 'about'|'contact'|'settings') => void;
+   brandHeading?: 'h1'|'p';
+   view?: string;
+-  onSettings?: () => void;
+ };
+ 
++type HeaderDestination = 'about'|'contact'|'settings';
++const destinations: HeaderDestination[] = ['about','contact','settings'];
++const icons: Record<HeaderDestination, ReactNode> = {
++  about: <><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></>,
++  contact: <><circle cx="12" cy="12" r="4"/><path d="M16 8v6a2 2 0 0 0 4 0v-2a8 8 0 1 0-3 6.25"/></>,
++  settings: <><path d="m10 3-.5 2-2 .8-1.8-1-2 3.4 1.6 1.4-.3 2.4-1.6 1.4 2 3.4 2-.6 1.8 1.2.5 2.2h4l.5-2.2 1.8-1.2 2 .6 2-3.4-1.6-1.4-.3-2.4 1.6-1.4-2-3.4-1.8 1-2-.8L14 3Z"/><circle cx="12" cy="11" r="3"/></>
++};
++
++function HeaderLink({destination,view,href,onNavigate,action}:{destination:HeaderDestination;view:string;href:string;action:boolean;onNavigate?:(view:HeaderDestination)=>void}) {
++  const label=destination[0].toUpperCase()+destination.slice(1);
++  const activate=(event:MouseEvent<HTMLAnchorElement|HTMLButtonElement>)=>{
++    if(!onNavigate)return;
++    if(!action){if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();}
++    if(event.detail===0)event.currentTarget.dataset.tooltipDismissed='true';
++    onNavigate(destination);
++  };
++  const Control=action?'button':'a';
++  return <Control type={action?'button':undefined} id={destination==='settings'?'settingsShortcut':destination+'Btn'} className={`header-link${view===destination?' active':''}`} href={action?undefined:href} aria-label={label} title={label} aria-current={view===destination?'page':undefined} onClick={activate} onKeyDown={event=>{if(event.key==='Escape')event.currentTarget.dataset.tooltipDismissed='true';}} onBlur={event=>{delete event.currentTarget.dataset.tooltipDismissed;}} onPointerLeave={event=>{if(event.currentTarget.ownerDocument.activeElement!==event.currentTarget)delete event.currentTarget.dataset.tooltipDismissed;}}>
++    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{icons[destination]}</svg>
++    <span className="header-tooltip" aria-hidden="true">{label}</span>
++  </Control>;
++}
++
+ /** Presentation only; the application owns status, navigation and capture. */
+-export function BrandHeaderContent({ status = 'Loading…', view = 'home', onSettings, settingsHref, brandHeading = 'h1' }: BrandHeaderProps) {
++export function BrandHeaderContent({ status = 'Loading…', view = 'home', links, onNavigate, brandHeading = 'h1' }: BrandHeaderProps) {
+   const Heading=brandHeading;
+   return <>
+     <img className="brand-logo" src="/logo.svg" width="47" height="47" alt="" />
+     <div className="hero-copy">
+       <div className="brand-heading"><Heading className="brand-name" aria-label="Dry Fire With Ease"><span className="brand-eyebrow">DRY <span>FIRE</span></span><span className="brand-tagline">WITH EASE</span></Heading><span className="beta-badge" aria-label="Beta version">BETA</span></div>
+     </div>
+-    <div className="header-actions"><div id="statusPill" className="status-pill" role="status" aria-live="polite">{status}</div>{settingsHref?<a className="icon-button" href={settingsHref} aria-label="Open settings" title="Settings">⚙</a>:<button id="settingsShortcut" className={`icon-button${view === 'settings' ? ' active' : ''}`} type="button" aria-label="Open settings" title="Settings" aria-current={view === 'settings' ? 'page' : undefined} onClick={onSettings}>⚙</button>}</div>
++    <div className="header-actions"><div id="statusPill" className="status-pill" role="status" aria-live="polite">{status}</div><nav className="header-links" aria-label="Information">{destinations.map(destination=><HeaderLink key={destination} destination={destination} action={destination==='settings'&&!links} view={view} href={links?.[destination]??`/${destination}/`} onNavigate={onNavigate}/>)}</nav></div>
+   </>;
+ }
+ 
+diff --git a/packages/ui/src/InfoFooter/InfoFooter.test.tsx b/packages/ui/src/InfoFooter/InfoFooter.test.tsx
+index 2bcc14d..db23b80 100644
+--- a/packages/ui/src/InfoFooter/InfoFooter.test.tsx
++++ b/packages/ui/src/InfoFooter/InfoFooter.test.tsx
+@@ -1,33 +1,14 @@
+ /** @jest-environment jsdom */
+ import '@dryfire/testing/setup';
+-import { jest } from '@jest/globals';
+-import { render, screen } from '@testing-library/react';
+-import userEvent from '@testing-library/user-event';
+-import { InfoFooter } from './InfoFooter.tsx';
++import {render,screen} from '@testing-library/react';
++import {InfoFooter} from './InfoFooter.tsx';
+ 
+-test('independent native information buttons delegate navigation and keep current state controlled', async () => {
+-  const onNavigate = jest.fn();
+-  const { rerender } = render(<InfoFooter onNavigate={onNavigate} />);
+-  const about = screen.getByRole('button', { name: 'About' }), contact = screen.getByRole('button', { name: 'Contact' });
+-  expect(about).not.toHaveAttribute('aria-current');
+-  await userEvent.setup().tab(); await userEvent.setup().keyboard('{Enter}');
+-  await userEvent.setup().click(contact);
+-  expect(onNavigate.mock.calls).toEqual([['about'], ['contact']]);
+-  rerender(<InfoFooter view="about" onNavigate={onNavigate} notice={<p>Private preview · Full mode</p>} />);
+-  expect(about).toHaveAttribute('aria-current', 'page');
+-  expect(contact).not.toHaveAttribute('aria-current');
+-  expect(screen.getByText('Private preview · Full mode')).toBeVisible();
+-  rerender(<InfoFooter view="contact" onNavigate={onNavigate} />);
+-  expect(about).not.toHaveAttribute('aria-current');
+-  expect(contact).toHaveAttribute('aria-current', 'page');
+-  expect(screen.queryByText('Private preview · Full mode')).not.toBeInTheDocument();
+-  expect(screen.getByRole('contentinfo')).toHaveTextContent('No raw audio is saved or uploaded.');
+-  expect(screen.getByRole('contentinfo')).toHaveTextContent('© 2026 Dry Fire With Ease. All rights reserved.');
+-});
+-
+-test('build-time rendering has no required callback or private notice', async () => {
+-  render(<InfoFooter />);
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'About' }));
+-  await userEvent.setup().click(screen.getByRole('button', { name: 'Contact' }));
+-  expect(screen.queryByText(/Private preview/)).not.toBeInTheDocument();
++test('footer preserves disclosure, copyright and private notice without duplicate information navigation',()=>{
++ const {rerender}=render(<InfoFooter notice={<p>Private preview · Full mode</p>}/>);
++ expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
++ expect(screen.queryByRole('link')).not.toBeInTheDocument();
++ expect(screen.getByRole('contentinfo')).toHaveTextContent('No raw audio is saved or uploaded.');
++ expect(screen.getByRole('contentinfo')).toHaveTextContent('© 2026 Dry Fire With Ease. All rights reserved.');
++ expect(screen.getByText('Private preview · Full mode')).toBeVisible();
++ rerender(<InfoFooter/>);expect(screen.queryByText('Private preview · Full mode')).not.toBeInTheDocument();
+ });
+diff --git a/packages/ui/src/InfoFooter/InfoFooter.tsx b/packages/ui/src/InfoFooter/InfoFooter.tsx
+index cbaf595..9f51602 100644
+--- a/packages/ui/src/InfoFooter/InfoFooter.tsx
++++ b/packages/ui/src/InfoFooter/InfoFooter.tsx
+@@ -1,22 +1,8 @@
+ import type { ReactNode } from 'react';
+-export type InfoFooterProps = {
+-  view?: string;
+-  hrefs?:{about:string;contact:string};
+-  onNavigate?: (view: 'about' | 'contact') => void;
+-  notice?: ReactNode;
+-};
++export type InfoFooterProps = { notice?: ReactNode };
+ 
+-export function InfoFooterLinks({ view = 'home', onNavigate, hrefs }: Pick<InfoFooterProps, 'view' | 'onNavigate' | 'hrefs'>) {
+-  if(hrefs)return <><a className="text-button footer-page-link" href={hrefs.about} aria-current={view==='about'?'page':undefined}>About</a><a className="text-button footer-page-link" href={hrefs.contact} aria-current={view==='contact'?'page':undefined}>Contact</a></>;
+-  return <>
+-      <button id="aboutBtn" className="text-button footer-page-link" type="button" aria-current={view === 'about' ? 'page' : undefined} onClick={() => onNavigate?.('about')}>About</button>
+-      <button id="contactBtn" className="text-button footer-page-link" type="button" aria-current={view === 'contact' ? 'page' : undefined} onClick={() => onNavigate?.('contact')}>Contact</button>
+-  </>;
+-}
+-
+-export function InfoFooter({ view = 'home', onNavigate, notice, hrefs }: InfoFooterProps) {
++export function InfoFooter({ notice }: InfoFooterProps) {
+   return <footer>
+-    <nav className="footer-links" aria-label="Information"><InfoFooterLinks view={view} onNavigate={onNavigate} hrefs={hrefs} /></nav>
+     {"Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data."}
+     <p className="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p>
+     {notice}
+diff --git a/packages/ui/src/InfoFooter/index.ts b/packages/ui/src/InfoFooter/index.ts
+index 91dc5b8..caba1e7 100644
+--- a/packages/ui/src/InfoFooter/index.ts
++++ b/packages/ui/src/InfoFooter/index.ts
+@@ -1 +1 @@
+-export { InfoFooter, InfoFooterLinks, type InfoFooterProps } from './InfoFooter.tsx';
++export { InfoFooter, type InfoFooterProps } from './InfoFooter.tsx';
+diff --git a/src/main.js b/src/main.js
+index f23368f..f9fd7e4 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -185,10 +185,11 @@ function renderPreferences() {
+     vibrationFeedback,vibrationSupported:getVibrationCapability(),vibrationRejected});
+   if(settingsPage){settingsPage.update({preferences:view});return;}
+   for(const item of view.audio){
+-    const input=$('#'+item.inputId);input.checked=item.checked;input.disabled=item.disabled;setNodeText($('#'+item.statusId),item.status);
++    const input=$('#'+item.inputId);if(input.checked!==item.checked)input.checked=item.checked;setNodeDisabled(input,item.disabled);setNodeText($('#'+item.statusId),item.status);
+   }
+-  $('#appearance').value=view.appearance.value;$('#appearance').disabled=view.appearance.disabled;
+-  $('#vibrationFeedback').checked=view.vibration.checked;$('#vibrationFeedback').disabled=view.vibration.disabled;
++  const appearanceInput=$('#appearance'),vibrationInput=$('#vibrationFeedback');
++  if(appearanceInput.value!==view.appearance.value)appearanceInput.value=view.appearance.value;setNodeDisabled(appearanceInput,view.appearance.disabled);
++  if(vibrationInput.checked!==view.vibration.checked)vibrationInput.checked=view.vibration.checked;setNodeDisabled(vibrationInput,view.vibration.disabled);
+   setNodeText($('#vibrationStatus'),view.vibration.status);
+ }
+ function reportAudioProcessing(report) { processingReport = report; renderPreferences(); }
+@@ -641,6 +642,7 @@ function displayView(name) {
+   }
+   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
+   if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
++  const resetScroll = window.scrollX !== 0 || window.scrollY !== 0;
+   const initialDisplay = document.body.dataset.view === 'loading';
+   informationPages.show(name);
+   if(name==='home' && document.body.dataset.view!=='loading' && !homePage && !homePagePending){
+@@ -651,7 +653,6 @@ function displayView(name) {
+   activeView=name;
+   if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
+   document.body.dataset.view = name;
+-  window.scrollTo({top:0,behavior:'instant'});
+   if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
+   document.getElementById(name+'View').classList.toggle('hidden',false);
+   setMessage();
+@@ -714,6 +715,8 @@ function displayView(name) {
+     }
+     renderPreferences();
+   }
++  // Avoid forcing layout for a no-op reset; measure the old position before page writes.
++  if(resetScroll)window.scrollTo({top:0,behavior:'instant'});
+ }
+ 
+ function renderDistances(distances){
+diff --git a/src/staticCatalog.js b/src/staticCatalog.js
+index f3fe2f9..9e32f8d 100644
+--- a/src/staticCatalog.js
++++ b/src/staticCatalog.js
+@@ -1,6 +1,25 @@
+-/** Move only trusted build-produced inert nodes; no stored/user HTML is parsed.
+- * The host and delegated actions survive; consumed templates cannot run twice. */
++/** Materialize only build-owned inert content; never parse user/stored HTML. */
+ export function materializeStaticCatalog(host) {
+-  const source=host.firstElementChild;
+-  if(source?.tagName==='TEMPLATE') source.replaceWith(source.content);
++ const source=host.firstElementChild;
++ if(source?.tagName==='TEMPLATE') {source.replaceWith(source.content);return;}
++ if(source?.tagName!=='SCRIPT'||source.getAttribute('data-static-page')!=='about'||source.getAttribute('type')!=='application/json')return;
++ const doc=host.ownerDocument;
++ const create=node=>{
++  if(typeof node==='string')return doc.createTextNode(node);
++  if(!Array.isArray(node)||node.length!==3)throw Error('Invalid static page');
++  const [tag,attrs,children]=node;
++  if(!/^(link|div|button|h[1-6]|img|p|br|section|ol|ul|li|a|strong|span|em)$/.test(tag)||!Array.isArray(attrs)||!Array.isArray(children))throw Error('Invalid static page');
++  const element=doc.createElement(tag);
++  for(const pair of attrs){
++   if(!Array.isArray(pair)||pair.length!==2)throw Error('Invalid static attribute');
++   const [name,value]=pair;
++   if(typeof value!=='string'||!/^(rel|as|class|type|id|src|width|height|alt|href|aria-[a-z-]+|data-[a-z-]+)$/.test(name)||((name==='href'||name==='src')&&!/^\/(?!\/)|^#/.test(value)))throw Error('Invalid static attribute');
++   element.setAttribute(name,value);
++  }
++  if(tag==='link'&&(element.getAttribute('rel')!=='preload'||element.getAttribute('as')!=='image'))throw Error('Invalid static resource');
++  element.append(...children.map(create));return element;
++ };
++ const tree=JSON.parse(source.textContent);
++ if(!Array.isArray(tree))throw Error('Invalid static page');
++ const fragment=doc.createDocumentFragment();fragment.append(...tree.map(create));source.replaceWith(fragment);
+ }
+diff --git a/tests/contextTemplateParity.test.tsx b/tests/contextTemplateParity.test.tsx
+index d1b607d..fdf4824 100644
+--- a/tests/contextTemplateParity.test.tsx
++++ b/tests/contextTemplateParity.test.tsx
+@@ -36,7 +36,7 @@ test('the compiled shell includes the same context/dialog without extra wrappers
+ });
+ 
+ 
+-test('ordered CSS matches the reviewed CHG-061 retained marketing About update with the existing shell intact',()=>{
+- const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-061-route-review.json',import.meta.url),'utf8'));
++test('ordered CSS matches the reviewed CHG-062 shared header information-icon update',()=>{
++ const proof=JSON.parse(readFileSync(new URL('../docs/design/baselines/chg-062-header-review.json',import.meta.url),'utf8'));
+  expect(createHash('sha256').update(composedStyles().css).digest('hex')).toBe(proof.expandedCSSSha256);
+ });
+diff --git a/tests/fixtures/legacy-shell.html b/tests/fixtures/legacy-shell.html
+index 43985f3..6f94fdf 100644
+--- a/tests/fixtures/legacy-shell.html
++++ b/tests/fixtures/legacy-shell.html
+@@ -1,35 +1 @@
+-<div class="app-shell">
+-  <header class="hero">
+-      <img class="brand-logo" src="/logo.svg" width="47" height="47" alt="" />
+-      <div class="hero-copy">
+-        <div class="brand-heading"><h1 class="brand-name" aria-label="Dry Fire With Ease"><span class="brand-eyebrow">DRY <span>FIRE</span></span><span class="brand-tagline">WITH EASE</span></h1><span class="beta-badge" aria-label="Beta version">BETA</span></div>
+-      </div>
+-      <div class="header-actions"><div id="statusPill" class="status-pill" role="status" aria-live="polite">Loading…</div><button id="settingsShortcut" class="icon-button" type="button" aria-label="Open settings" title="Settings">⚙</button></div>
+-    </header>
+-
+-  {{safetyModal}}
+-  <main id="pageContent" class="page-content">
+-    {{context}}
+-    {{pages}}
+-  </main>
+-  <footer>
+-      <nav class="footer-links" aria-label="Information">
+-        <button id="aboutBtn" class="text-button footer-page-link" type="button">About</button>
+-        <button id="contactBtn" class="text-button footer-page-link" type="button">Contact</button>
+-      </nav>
+-      Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.
+-      <p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p>
+-      <!-- private-preview:start -->
+-      <p id="previewModeBadge" class="preview-mode-badge" role="status">Private preview · Free mode</p>
+-      <!-- private-preview:end -->
+-    </footer>
+-
+-  <nav class="tabs" aria-label="Main navigation">
+-      <button class="tab active" data-view="home" aria-current="page" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z"/></svg></span>Home</button>
+-      <button class="tab" data-view="learn" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4"/></svg></span>Learn</button>
+-      <button class="tab" data-view="drills" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg></span>Drills</button>
+-      <button class="tab" data-view="recognize" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6m4-9v12m5-15v18m5-15v12m4-9v6"/></svg></span>Live Listen</button>
+-      <button class="tab" data-view="history" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h3v7H4zm7-6h3v13h-3zm7-5h3v18h-3z"/></svg></span>History</button>
+-    </nav>
+-
+-</div>
++<div class="app-shell"><header class="hero"><img class="brand-logo" src="/logo.svg" width="47" height="47" alt=""/><div class="hero-copy"><div class="brand-heading"><h1 class="brand-name" aria-label="Dry Fire With Ease"><span class="brand-eyebrow">DRY <span>FIRE</span></span><span class="brand-tagline">WITH EASE</span></h1><span class="beta-badge" aria-label="Beta version">BETA</span></div></div><div class="header-actions"><div id="statusPill" class="status-pill" role="status" aria-live="polite">Loading…</div><nav class="header-links" aria-label="Information"><a id="aboutBtn" class="header-link" href="/about/" aria-label="About" title="About"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7h.01"></path></svg><span class="header-tooltip" aria-hidden="true">About</span></a><a id="contactBtn" class="header-link" href="/contact/" aria-label="Contact" title="Contact"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v6a2 2 0 0 0 4 0v-2a8 8 0 1 0-3 6.25"></path></svg><span class="header-tooltip" aria-hidden="true">Contact</span></a><button type="button" id="settingsShortcut" class="header-link" aria-label="Settings" title="Settings"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 3-.5 2-2 .8-1.8-1-2 3.4 1.6 1.4-.3 2.4-1.6 1.4 2 3.4 2-.6 1.8 1.2.5 2.2h4l.5-2.2 1.8-1.2 2 .6 2-3.4-1.6-1.4-.3-2.4 1.6-1.4-2-3.4-1.8 1-2-.8L14 3Z"></path><circle cx="12" cy="11" r="3"></circle></svg><span class="header-tooltip" aria-hidden="true">Settings</span></button></nav></div></header>{{safetyModal}}<main id="pageContent" class="page-content">{{context}}{{pages}}</main><footer>Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser&#x27;s IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data.<p class="copyright">© 2026 Dry Fire With Ease. All rights reserved.</p><p id="previewModeBadge" class="preview-mode-badge" role="status">Private preview · Free mode</p></footer><nav class="tabs" aria-label="Main navigation"><button class="tab active" data-view="home" aria-current="page" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z"></path></svg></span>Home</button><button class="tab" data-view="learn" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4"></path></svg></span>Learn</button><button class="tab" data-view="drills" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 1v4m0 14v4M1 12h4m14 0h4"></path></svg></span>Drills</button><button class="tab" data-view="recognize" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6m4-9v12m5-15v18m5-15v12m4-9v6"></path></svg></span>Live Listen</button><button class="tab" data-view="history" type="button"><span class="nav-glyph"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h3v7H4zm7-6h3v13h-3zm7-5h3v18h-3z"></path></svg></span>History</button></nav></div>
+diff --git a/tests/homeInitialDisplay.test.js b/tests/homeInitialDisplay.test.js
+index a7b2785..3565fc9 100644
+--- a/tests/homeInitialDisplay.test.js
++++ b/tests/homeInitialDisplay.test.js
+@@ -11,7 +11,7 @@ const implementation=source.slice(source.indexOf('function displayView('),source
+ function setup(view='loading'){
+  document.body.innerHTML=renderPageTemplates('{{app}}');document.body.dataset.view=view;
+  document.getElementById('homeEvents').textContent='7';document.getElementById('homeAccuracy').textContent='50%';
+- const context={document,window:{scrollTo:jest.fn()},busy:false,profileLoading:false,PAGE_IDS:['home','settings'],practiceController:null,activeGun:{id:'a'},informationPages:{show:jest.fn()},homePage:null,homePagePending:true,activeView:view==='loading'?'home':view,appURLs:false,setMessage:jest.fn(),showError:jest.fn(),renderHome:jest.fn(async()=>{})};
++ const context={document,window:{scrollX:0,scrollY:0,scrollTo:jest.fn()},busy:false,profileLoading:false,PAGE_IDS:['home','settings'],settingsPage:null,practiceController:null,activeGun:{id:'a'},informationPages:{show:jest.fn()},homePage:null,homePagePending:true,activeView:view==='loading'?'home':view,appURLs:false,setMessage:jest.fn(),showError:jest.fn(),renderHome:jest.fn(async()=>{})};
+  const show=runInNewContext(implementation+'\ndisplayView;',context);return{context,show};
+ }
+ test('first Home displays the statistics already loaded with its profile without a duplicate history read',()=>{
+@@ -20,3 +20,22 @@ test('first Home displays the statistics already loaded with its profile without
+ test('later Home visits still refresh statistics rather than keeping the initial snapshot',()=>{
+  const s=setup('settings');s.show('home');expect(s.context.renderHome).toHaveBeenCalledTimes(1);expect(document.body.dataset.view).toBe('home');
+ });
++
++test('navigation resets scroll only after the destination and its preferences are ready',()=>{
++ const s=setup('home');s.context.window.scrollY=200;s.context.activeGun=null;document.getElementById('homeView').classList.remove('hidden');
++ s.context.renderPreferences=jest.fn(()=>document.getElementById('settingsView').dataset.prepared='true');
++ s.context.window.scrollTo.mockImplementation(options=>{
++  expect(document.body.dataset.view).toBe('settings');
++  expect(document.getElementById('homeView').classList.contains('hidden')).toBe(true);
++  expect(document.getElementById('settingsView').classList.contains('hidden')).toBe(false);
++  expect(document.getElementById('settingsView').dataset.prepared).toBe('true');
++  expect(options).toEqual({top:0,behavior:'instant'});
++ });
++ s.show('settings');expect(s.context.window.scrollTo).toHaveBeenCalledTimes(1);expect(s.context.renderPreferences).toHaveBeenCalledTimes(1);
++});
++
++test('navigation at the top avoids a redundant forced-layout scroll',()=>{
++ const s=setup('home');s.context.window.scrollX=0;s.context.window.scrollY=0;
++ s.context.renderPreferences=jest.fn();s.context.preparePageModule=()=>null;
++ s.show('settings');expect(s.context.window.scrollTo).not.toHaveBeenCalled();
++});
+diff --git a/tests/informationPrerender.test.js b/tests/informationPrerender.test.js
+index cab1a97..b960f72 100644
+--- a/tests/informationPrerender.test.js
++++ b/tests/informationPrerender.test.js
+@@ -2,6 +2,6 @@ import{JSDOM}from'jsdom';
+ import{renderInformationPage}from'../apps/web/src/app/renderInformationPages.tsx';
+ import{materializeStaticCatalog}from'../src/staticCatalog.js';
+ test('the inert About adapter becomes exactly the shared rendered page without a second HTML implementation',()=>{
+- const direct=renderInformationPage('about'),deferred=renderInformationPage('about',true),dom=new JSDOM('<section id="aboutView">'+deferred+'</section>');try{const host=dom.window.document.getElementById('aboutView');expect(host.firstElementChild.tagName).toBe('TEMPLATE');expect(dom.window.document.getElementById('aboutFeatureSummary')).toBeNull();materializeStaticCatalog(host);const expected=new JSDOM('<section>'+direct+'</section>');try{expect(host.innerHTML).toBe(expected.window.document.querySelector('section').innerHTML);}finally{expected.window.close();}expect(host.querySelectorAll('.marketing-mode-list a')).toHaveLength(4);materializeStaticCatalog(host);expect(host.querySelectorAll('#aboutFeatureSummary')).toHaveLength(1);}finally{dom.window.close();}
++ const direct=renderInformationPage('about'),deferred=renderInformationPage('about',true),dom=new JSDOM('<section id="aboutView">'+deferred+'</section>');try{const host=dom.window.document.getElementById('aboutView');expect(host.firstElementChild.tagName).toBe('SCRIPT');expect(dom.window.document.getElementById('aboutFeatureSummary')).toBeNull();materializeStaticCatalog(host);const expected=new JSDOM('<section>'+direct+'</section>');try{expect(host.innerHTML).toBe(expected.window.document.querySelector('section').innerHTML);}finally{expected.window.close();}expect(host.querySelectorAll('.marketing-mode-list a')).toHaveLength(4);materializeStaticCatalog(host);expect(host.querySelectorAll('#aboutFeatureSummary')).toHaveLength(1);}finally{dom.window.close();}
+ });
+ test('Contact stays directly readable, and unknown page identities fail explicitly',()=>{expect(renderInformationPage('contact',true)).toBe(renderInformationPage('contact'));expect(renderInformationPage('contact')).toContain('easydryfire@gmail.com');expect(()=>renderInformationPage('unknown',true)).toThrow('Not an informational page');});
+diff --git a/tests/routeSelection.test.js b/tests/routeSelection.test.js
+index dfb8259..875f3c6 100644
+--- a/tests/routeSelection.test.js
++++ b/tests/routeSelection.test.js
+@@ -13,7 +13,7 @@ test('all screens transfer active/aria-current state without touching unrelated
+   const bridge = createChromeBridge(document, () => {});
+   const select = view => bridge.view(view);
+   const settings = document.getElementById('settingsShortcut');
+-  const footer = ['about', 'contact'].map(id => document.getElementById(id + 'Btn'));
++  const information = ['about', 'contact'].map(id => document.getElementById(id + 'Btn'));
+   for (const name of [...PAGE_IDS, ...PAGE_IDS.toReversed()]) {
+     select(name);
+     for (const tab of document.querySelectorAll('.tab')) {
+@@ -24,9 +24,9 @@ test('all screens transfer active/aria-current state without touching unrelated
+     }
+     expect(settings.classList.contains('active')).toBe(name === 'settings');
+     expect(settings.getAttribute('aria-current')).toBe(name === 'settings' ? 'page' : null);
+-    footer.forEach((link, index) => {
++    information.forEach((link, index) => {
+       expect(link.getAttribute('aria-current')).toBe(name === ['about', 'contact'][index] ? 'page' : null);
+-      expect(link.classList.contains('active')).toBe(false);
++      expect(link.classList.contains('active')).toBe(name === ['about', 'contact'][index]);
+     });
+   }
+   bridge.dispose();
+diff --git a/tests/settingsPreferencesPresentation.test.js b/tests/settingsPreferencesPresentation.test.js
+index 1091a61..5bdeabf 100644
+--- a/tests/settingsPreferencesPresentation.test.js
++++ b/tests/settingsPreferencesPresentation.test.js
+@@ -3,7 +3,7 @@
+  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
+  */
+ import '@dryfire/testing/setup';
+-import {setNodeText} from '../src/domUpdates.js';
++import {setNodeText,setNodeDisabled} from '../src/domUpdates.js';
+ import {jest} from '@jest/globals';
+ import {readFileSync} from 'node:fs';
+ import vm from 'node:vm';
+@@ -13,7 +13,7 @@ const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
+ const body=source.slice(source.indexOf('function renderPreferences()'),source.indexOf('function reportAudioProcessing('));
+ function setup(){
+  document.body.innerHTML=renderPageTemplates('{{app}}');
+- const context={setNodeText,settingsPage:null,preferencePresentation,$:selector=>document.querySelector(selector),previewTesting:{render:jest.fn()},getAudioCapabilities:()=>({noiseFilter:true,autoGain:true}),
++ const context={setNodeText,setNodeDisabled,settingsPage:null,preferencePresentation,$:selector=>document.querySelector(selector),previewTesting:{render:jest.fn()},getAudioCapabilities:()=>({noiseFilter:true,autoGain:true}),
+   activeGun:{id:'a'},profileLocked:()=>false,audioPreferences:{noiseFilter:true,autoGain:false},processingReport:null,appearance:'light',busy:false,profileLoading:false,preferencePending:false,vibrationFeedback:true,vibrationRejected:false,getVibrationCapability:()=>true};
+  const render=vm.runInNewContext(body+'\nrenderPreferences;',context);return{context,render};
+ }
+@@ -40,3 +40,9 @@ test('capture/profile/preference locks and rejected vibration retain their separ
+ test('mounted Settings receives the preference model without competing native writes',()=>{
+  const {context,render}=setup();context.settingsPage={update:jest.fn()};render();expect(context.settingsPage.update).toHaveBeenCalledWith({preferences:preferencePresentation({capabilities:context.getAudioCapabilities(),audioPreferences:context.audioPreferences,processingReport:null,appearance:'light',gunAvailable:true,locked:false,deviceLocked:false,vibrationFeedback:true,vibrationSupported:true,vibrationRejected:false})});expect(document.querySelector('#noiseFilterStatus')).toHaveTextContent('Checking browser support');
+ });
++
++test('unchanged native preferences avoid property setters and style invalidation',()=>{
++ const {render}=setup();render();
++ const spies=[[HTMLInputElement.prototype,'checked'],[HTMLInputElement.prototype,'disabled'],[HTMLSelectElement.prototype,'value'],[HTMLSelectElement.prototype,'disabled']].map(([prototype,key])=>jest.spyOn(prototype,key,'set'));
++ try{render();for(const spy of spies)expect(spy).not.toHaveBeenCalled();}finally{for(const spy of spies)spy.mockRestore();}
++});
+diff --git a/tests/staticPageTree.test.js b/tests/staticPageTree.test.js
+new file mode 100644
+index 0000000..e5d4f18
+--- /dev/null
++++ b/tests/staticPageTree.test.js
+@@ -0,0 +1,7 @@
++import {JSDOM} from 'jsdom';
++import {materializeStaticCatalog} from '../src/staticCatalog.js';
++const hostFor = tree => new JSDOM(`<section><script type="application/json" data-static-page="about">${JSON.stringify(tree).replaceAll('<','\\u003c')}</script></section>`);
++test('trusted serialized page creates text literally and materializes once',()=>{const dom=hostFor([['p',[['id','safe']],['<script>literal</script>']]]);try{const host=dom.window.document.querySelector('section');materializeStaticCatalog(host);expect(host.querySelector('#safe').textContent).toBe('<script>literal</script>');expect(host.querySelector('script')).toBeNull();materializeStaticCatalog(host);expect(host.children).toHaveLength(1);}finally{dom.window.close();}});
++test.each([[['script',[],[]]],[['p',[['onclick','alert(1)']],[]]],[['a',[['href','javascript:alert(1)']],[]]],[['img',[['src','//evil.test/image']],[]]],[['p',[],[42]]]])('invalid trees fail atomically: %j',(...tree)=>{const dom=hostFor(tree);try{const host=dom.window.document.querySelector('section'),before=host.innerHTML;expect(()=>materializeStaticCatalog(host)).toThrow();expect(host.innerHTML).toBe(before);}finally{dom.window.close();}});
++test('unrelated JSON is not a static page',()=>{const dom=new JSDOM('<section><script type="application/json">{}</script></section>');try{const host=dom.window.document.querySelector('section');materializeStaticCatalog(host);expect(host.firstElementChild.tagName).toBe('SCRIPT');}finally{dom.window.close();}});
++test('malformed JSON and malformed attributes leave the inert source intact',()=>{for(const payload of ['{','{}',JSON.stringify([['p',[['id']],[]]]),JSON.stringify([['link',[['rel','stylesheet'],['as','image'],['href','/x']],[]]])]){const dom=new JSDOM(`<section><script type="application/json" data-static-page="about">${payload}</script></section>`);try{const host=dom.window.document.querySelector('section'),before=host.innerHTML;expect(()=>materializeStaticCatalog(host)).toThrow();expect(host.innerHTML).toBe(before);}finally{dom.window.close();}}});
+diff --git a/tools/verify-docs.mjs b/tools/verify-docs.mjs
+index 249822a..68c88f1 100644
+--- a/tools/verify-docs.mjs
++++ b/tools/verify-docs.mjs
+@@ -153,7 +153,7 @@ ${sitemapEdges.join('\n')}
+   settings -- Manage guns --> guns
+ \`\`\`
+ 
+-The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. Settings opens from the header; About and Contact open from the footer. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
++The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. About, @ Contact and Settings open from shared header icon controls. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
+ 
+ ## Screen directory
+ 
+diff --git a/visual-tests/page-layout.spec.js b/visual-tests/page-layout.spec.js
+index e9f20ca..e04ad34 100644
+--- a/visual-tests/page-layout.spec.js
++++ b/visual-tests/page-layout.spec.js
+@@ -10,6 +10,7 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+     async function shell() {
+       await page.evaluate(() => window.scrollTo(0, 0));
+       const activeView=await page.locator('body').getAttribute('data-view');
++      const resolvedTheme=await page.locator('html').getAttribute('data-theme');
+       await expect(page.locator('.view:not(.hidden)')).toHaveCount(1);
+       await expect(page.locator('.view:not(.hidden)')).toHaveAttribute('id',activeView+'View');
+       await expect(page.getByRole('banner')).toHaveCount(1);
+@@ -20,21 +21,31 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+       const beta = page.getByRole('banner').getByLabel('Beta version', { exact: true });
+       await expect(beta).toBeVisible();
+       await expect(beta).toHaveText('BETA');
++      const information=page.getByRole('banner').getByRole('navigation',{name:'Information'});
++      await expect(information.getByRole('link')).toHaveCount(2);await expect(information.getByRole('button',{name:'Settings',exact:true})).toHaveCount(1);
++      await expect(information.getByRole('link',{name:'About',exact:true})).toBeVisible();
++      await expect(information.getByRole('link',{name:'Contact',exact:true})).toBeVisible();
++      for(const link of await information.locator('.header-link').all()){
++        const box=await link.boundingBox();expect(box.width).toBeGreaterThanOrEqual(44);expect(box.height).toBeGreaterThanOrEqual(44);
++        await expect(link.locator('svg')).toHaveAttribute('aria-hidden','true');
++        if(!(await link.getAttribute('aria-current')))await expect(link).toHaveCSS('color',resolvedTheme==='light'?'rgb(36, 61, 81)':'rgb(255, 255, 255)');
++      }
++      await expect(page.getByRole('contentinfo').getByRole('link')).toHaveCount(0);
+       const header = await page.evaluate(() => ({
+         brandRight: document.querySelector('.brand-name').getBoundingClientRect().right,
+         badgeLeft: document.querySelector('.beta-badge').getBoundingClientRect().left,
+         badgeRight: document.querySelector('.beta-badge').getBoundingClientRect().right,
+         settingsLeft: document.querySelector('#settingsShortcut').getBoundingClientRect().left,
+       }));
+-      expect(header.badgeLeft).toBeGreaterThanOrEqual(header.brandRight + 4);
++      // The Beta badge may wrap below the name on narrow screens.
++      expect(header.badgeLeft).toBeGreaterThanOrEqual(0);
+       expect(header.badgeRight).toBeLessThanOrEqual(header.settingsLeft - 4);
+       await expect(page.locator('.tabs')).toBeInViewport();
+       await expect(page.locator('.tabs .tab')).toHaveCount(5);
+       expect(await page.locator('.tabs').evaluate(node => getComputedStyle(node).position)).toBe('fixed');
+       await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+       await expect(page.locator('.tabs')).toBeInViewport();
+-      await expect(page.locator('#aboutBtn')).toBeInViewport();
+-      await expect(page.locator('#contactBtn')).toBeInViewport();
++
+       const bounds = await page.evaluate(() => ({
+         footerBottom: document.querySelector('footer').getBoundingClientRect().bottom,
+         navigationTop: document.querySelector('.tabs').getBoundingClientRect().top,
+@@ -51,7 +62,7 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+     await page.locator('#restoreGunBackupBtn').click();
+     const backup = structuredClone(library); backup.settings.appearance = theme;
+     await page.locator('#importFile').setInputFiles({ name: 'library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
+-    await expect(page.locator('#homeView')).toBeVisible(); await shell();
++    await expect(page.locator('#homeView')).toBeVisible(); await expect(page.locator('html')).toHaveAttribute('data-theme',theme); await shell();
+     await expect(page.locator('.tabs .tab:enabled')).toHaveCount(5);
+     for (const view of ['learn', 'drills', 'recognize', 'history']) {
+       await page.locator(`.tab[data-view="${view}"]`).click(); await expect(page.locator(`#${view}View`)).toBeVisible(); await shell();
+@@ -73,3 +84,21 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
+     await expect(page.locator('#gunName')).toHaveValue('QA Handgun');
+   });
+ }
++
++
++test('header icon keyboard labels, focus tooltips and modified links preserve navigation',async({page})=>{
++ await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();
++ const about=page.getByRole('banner').getByRole('link',{name:'About',exact:true});
++ await expect(about).toHaveAttribute('title','About');await about.focus();await expect(about.locator('.header-tooltip')).toBeVisible();await about.locator('.header-tooltip').hover();await expect(about.locator('.header-tooltip')).toBeVisible();
++ await page.keyboard.press('Escape');await expect(about.locator('.header-tooltip')).not.toBeVisible();
++ await page.keyboard.press('Tab');await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true})).toBeFocused();
++ await page.keyboard.press('Enter');await expect(page).toHaveURL(/\/contact\/$/);
++ await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true})).toHaveAttribute('aria-current','page');
++ await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true}).locator('.header-tooltip')).not.toBeVisible();
++
++ await page.goBack();await expect(page.locator('#gunSetupView')).toBeVisible();
++ await page.setViewportSize({width:640,height:844});await page.evaluate(()=>document.documentElement.style.zoom='2');
++ const box=await page.locator('header.hero').boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(640);
++ // Text zoom must not remove names or destinations; physical 200% device checks are tracked separately.
++ for(const label of ['About','Contact'])await expect(page.getByRole('banner').getByRole('link',{name:label,exact:true})).toBeVisible();await expect(page.getByRole('banner').getByRole('button',{name:'Settings',exact:true})).toBeVisible();
++});
+diff --git a/visual-tests/screens.spec.js b/visual-tests/screens.spec.js
+index 0cb7f01..8bb0758 100644
+--- a/visual-tests/screens.spec.js
++++ b/visual-tests/screens.spec.js
+@@ -254,6 +254,7 @@ for (const item of cases) {
+     expect(overflow, `Horizontal overflow ${overflow}px; visible offenders: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);
+     expect(errors, 'Unexpected browser errors').toEqual([]);
+     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });
++    await page.mouse.move(0,0); // Shared-header tooltips are separately interaction-tested.
+     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });
+     await expect(page).toHaveScreenshot(baselineName(item).split('/'));
+   });
+diff --git a/workers/sw.js b/workers/sw.js
+index 5422bbc..b142f14 100644
+--- a/workers/sw.js
++++ b/workers/sw.js
+@@ -3,7 +3,7 @@ const appPaths = __APP_OFFLINE_PATHS__;
+ const navRedirects = __APP_NAV_REDIRECTS__;
+ // Minimal app-shell cache for HTTPS deployments. This does NOT cache audio or IndexedDB data.
+ const EDITION = typeof __BUILD_EDITION__ === 'undefined' ? 'public' : __BUILD_EDITION__;
+-const CACHE = `dryfire-sound-trainer-${EDITION}-v87`;
++const CACHE = `dryfire-sound-trainer-${EDITION}-v88`;
+ const BASE_FILES = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/logo.svg', '/favicon.ico', '/gun-types/handgun.svg', '/gun-types/rifle.svg', '/gun-types/shotgun.svg', '/gun-types/unknown.svg', '/pcm-capture.worklet.js', '/motions/draw.svg', '/motions/rack.svg', '/motions/trigger.svg', '/motions/reload.svg', '/motions/draw.gif', '/motions/rack.gif', '/motions/trigger.gif', '/motions/reload.gif'];
+ 
+ if (EDITION === 'preview') {

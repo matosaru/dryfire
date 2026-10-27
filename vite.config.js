@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
+import { buildIdentity } from './tools/build-identity.mjs';
 import { defineConfig } from 'vite';
 import { readBuildProfile, resolveBuildEdition } from './tools/build-profile.mjs';
 import { renderPageTemplates } from './tools/page-templates.mjs';
@@ -14,12 +14,9 @@ import { minifyProductionHtml, prioritizeAppStyles } from './tools/minify-html.m
 // Worker entries also pass through Oxc, unlike files copied from public/.
 export default defineConfig(({ mode }) => {
   const edition = resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.env.APP_EDITION, mode });
-  const sourceFiles = dir => readdirSync(dir, { withFileTypes: true }).flatMap(item => item.isDirectory() ? sourceFiles(`${dir}/${item.name}`) : /\.(js|html|ts|tsx|css)$/.test(item.name) ? [`${dir}/${item.name}`] : []);
-  const trackedSources = ['index.html', 'src/styles.css', 'vite.config.js', 'build-profile.json', 'tools/build-profile.mjs', 'tools/page-templates.mjs', 'tools/minify-html.mjs', 'tools/static-catalog.mjs', 'tools/public-pages.mjs', 'tools/app-document.mjs', ...sourceFiles('site'), ...sourceFiles('src'), ...sourceFiles('workers'), ...sourceFiles('apps'), ...sourceFiles('packages')].sort();
-  const sourceDigest = createHash('sha256');
-  for (const path of trackedSources) sourceDigest.update(path).update(readFileSync(path));
+  const identity=buildIdentity();
   return {
-  define: { __APP_NAV_REDIRECTS__: JSON.stringify(legacyRedirects()), __APP_OFFLINE_PATHS__: JSON.stringify(offlineAppPaths()), __BUILD_SOURCE_DIGEST__: JSON.stringify(sourceDigest.copy().digest('hex')), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
+  define: { __BUILD_RELEASE_ID__: JSON.stringify(identity.release), __APP_NAV_REDIRECTS__: JSON.stringify(legacyRedirects()), __APP_OFFLINE_PATHS__: JSON.stringify(offlineAppPaths()), __BUILD_SOURCE_DIGEST__: JSON.stringify(identity.sourceDigest), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
   server: { host: '127.0.0.1' },
   // The optimized preview serves same-origin assets, like the production Worker.
   // Avoid development CORS Vary headers invalidating preloaded offline assets.
@@ -40,12 +37,13 @@ export default defineConfig(({ mode }) => {
       });
     },
   }, { name: 'build-edition', transformIndexHtml(html) {
-    html = html.replace(/<html\b/, `<html data-build-edition="${edition}" data-feature-edition="public"`);
+    html = html.replace(/<html\b/, `<html data-release-id="${identity.release}" data-build-edition="${edition}" data-feature-edition="public"`);
     html = html.replace(/<!-- private-preview:start -->([\s\S]*?)<!-- private-preview:end -->/g, (_, content) => edition === 'preview' ? content : '');
     return html;
   }, generateBundle: { order:'post', handler(options, bundle) {
     this.emitFile({ type: 'asset', fileName: 'edition.json', source: JSON.stringify({ version: 1, edition,
-      sourceRevision: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), sourceDigest: sourceDigest.digest('hex'),
+      sourceRevision: identity.sourceRevision, sourceDigest: identity.sourceDigest, release: identity.release,
+      assetDigests: {...identity.assetDigests,...Object.fromEntries(Object.entries(bundle).filter(([path])=>/\.(?:js|css|gif|svg|png|ico)$/.test(path)).map(([path,item])=>['/'+path,createHash('sha256').update(item.type==='chunk'?item.code:item.source).digest('hex')]))},
       assets: Object.keys(bundle).filter(path => /\.(js|css)$/.test(path)).sort().map(path => `/${path}`) }, null, 2) + '\n' });
   } } }, { name: 'compact-production-html', generateBundle: { order: 'post', async handler(_options, bundle) {
     const html = bundle['index.html'];
@@ -66,6 +64,8 @@ export default defineConfig(({ mode }) => {
         'pcm-capture.worklet': resolve(import.meta.dirname, 'workers/pcm-capture.worklet.js'),
       },
       output: {
+        // Keep tiny shared page primitives together without pulling React into startup.
+        codeSplitting: { groups: [{ name: 'pageFields', test: /\/packages\/ui\/src\/(?:PageHeading|GunContext|PreferenceToggle)\//, includeDependenciesRecursively: false }] },
         entryFileNames: chunk =>
           ['sw', 'pcm-capture.worklet'].includes(chunk.name)
             ? `${chunk.name}.js`

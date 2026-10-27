@@ -6,7 +6,8 @@ import hooks from 'eslint-plugin-react-hooks';
 // also rejects unused declarations; rest-sibling omissions define saved schemas.
 export default [{
   files: ['src/**/*.js', 'workers/**/*.js'],
-  rules: { 'no-unused-vars': ['error', { ignoreRestSiblings: true }] },
+  languageOptions: { globals: Object.fromEntries(['AbortController', 'AudioWorkletNode', 'AudioWorkletProcessor', 'Blob', 'Event', 'Headers', 'IDBKeyRange', 'Option', 'Request', 'Response', 'URL', 'caches', 'cancelAnimationFrame', 'clearInterval', 'clearTimeout', 'confirm', 'console', 'crypto', 'currentFrame', 'document', 'fetch', 'indexedDB', 'location', 'navigator', 'performance', 'registerProcessor', 'requestAnimationFrame', 'self', 'setInterval', 'setTimeout', 'structuredClone', 'window', '__APP_NAV_REDIRECTS__', '__APP_OFFLINE_PATHS__', '__BUILD_EDITION__', '__BUILD_RELEASE_ID__', '__BUILD_SOURCE_DIGEST__', '__FULL_PREVIEW__'].map(name=>[name,'readonly'])) },
+  rules: { 'no-undef': 'error', 'no-unused-vars': ['error', { ignoreRestSiblings: true }] },
 }, {
   files: ['apps/**/*.ts', 'apps/**/*.tsx', 'packages/**/*.ts', 'packages/**/*.tsx'],
   languageOptions: { parser: ts.parser, parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },

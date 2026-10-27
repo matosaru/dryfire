@@ -1,0 +1,4 @@
+import type {InputHTMLAttributes} from 'react';
+export type PreferenceToggleProps=Omit<InputHTMLAttributes<HTMLInputElement>,'id'|'type'|'role'|'className'> & {id:string;label:string;description:string;descriptionId?:string;descriptionRole?:'status';className?:string};
+/** Uncontrolled native switch; parent adapters retain preference/capture ownership. */
+export function PreferenceToggle({id,label,description,descriptionId,descriptionRole,className,'aria-describedby':describedBy,...input}:PreferenceToggleProps){return <label className={'preference-toggle'+(className?' '+className:'')} htmlFor={id}><span><strong>{label}</strong><small id={descriptionId} role={descriptionRole}>{description}</small></span><input id={id} {...input} type="checkbox" role="switch" aria-describedby={describedBy??descriptionId}/></label>;}

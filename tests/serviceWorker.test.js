@@ -1,98 +1,31 @@
-import { jest } from '@jest/globals';
-import { offlineAppPaths, legacyRedirects } from '../src/appPaths.js';
-
-let handlers, cache, platform, metadata;
-beforeEach(() => {
-  jest.resetModules();
-  globalThis.__APP_OFFLINE_PATHS__ = offlineAppPaths();
-  globalThis.__APP_NAV_REDIRECTS__ = legacyRedirects();
-  handlers = {};
-  cache = { addAll: jest.fn(async () => {}), match: jest.fn(async () => undefined), put: jest.fn(async () => {}) };
-  platform = { skipWaiting: jest.fn(async () => {}), clients: { claim: jest.fn(async () => {}) },
-    registration: { unregister: jest.fn(async () => {}) }, location: { origin: 'https://practice.test' },
-    addEventListener: (name, callback) => { handlers[name] = callback; } };
-  globalThis.self = platform;
-  globalThis.caches = { open: jest.fn(async () => cache), keys: jest.fn(async () => ['dryfire-sound-trainer-public-v1','unrelated-cache']), delete: jest.fn(async () => true) };
-  metadata = { edition: 'public', assets: ['/assets/entry.js','/assets/informationPages.js','/assets/app.css'] };
-  globalThis.fetch = jest.fn(async input => input === '/edition.json'
-    ? Response.json(metadata) : new Response('<script type="module" src="/assets/entry.js"></script>'));
+import {jest} from '@jest/globals';
+import {webcrypto,createHash} from 'node:crypto';
+import {offlineAppPaths,legacyRedirects} from '../src/appPaths.js';
+const originalFetch=globalThis.fetch, originalCrypto=globalThis.crypto;
+const release='a'.repeat(64), prefix='dryfire-sound-trainer-public-';
+let handlers, stores, platform, metadata, assets;
+const hash=text=>createHash('sha256').update(text).digest('hex');
+function store(name){if(!stores.has(name)){const entries=new Map();stores.set(name,{entries,put:jest.fn(async(key,value)=>entries.set(typeof key==='string'?key:key.url,value.clone())),match:jest.fn(async key=>entries.get(typeof key==='string'?key:key.url)?.clone())});}return stores.get(name);}
+beforeEach(()=>{
+ jest.resetModules();handlers={};stores=new Map();assets=['/assets/entry-abc.js','/assets/lazy-def.js','/assets/app-ghi.css'];
+ globalThis.__APP_OFFLINE_PATHS__=offlineAppPaths();globalThis.__APP_NAV_REDIRECTS__=legacyRedirects();globalThis.__BUILD_RELEASE_ID__=release;
+ Object.defineProperty(globalThis,'crypto',{value:webcrypto,configurable:true});
+ metadata={edition:'public',release,assets,assetDigests:new Proxy({},{get:()=>hash('asset')})};
+ platform={skipWaiting:jest.fn(),clients:{claim:jest.fn(),matchAll:jest.fn(async()=>[])},registration:{unregister:jest.fn()},location:{origin:'https://practice.test'},addEventListener:(name,callback)=>{handlers[name]=callback;}};
+ globalThis.self=platform;globalThis.caches={open:jest.fn(async name=>store(name)),keys:jest.fn(async()=>[...stores.keys()]),delete:jest.fn(async name=>stores.delete(name))};
+ globalThis.fetch=jest.fn(async input=>input==='/edition.json'?new Response(JSON.stringify({...metadata,assetDigests:Object.fromEntries([...assets,...['/manifest.webmanifest','/icon-192.png','/icon-512.png','/apple-touch-icon.png','/logo.svg','/favicon.ico','/gun-types/handgun.svg','/gun-types/rifle.svg','/gun-types/shotgun.svg','/gun-types/unknown.svg','/pcm-capture.worklet.js',...['draw','rack','trigger','reload'].flatMap(name=>[`/motions/${name}.svg`,`/motions/${name}.gif`])]].map(path=>[path,metadata.assetDigests[path]]))})):new Response(input==='/index.html'?`<html data-release-id="${release}"></html>`:'asset'));
 });
-const originalFetch = globalThis.fetch;
-afterEach(() => { globalThis.fetch = originalFetch; delete globalThis.self; delete globalThis.caches; delete globalThis.__BUILD_EDITION__; delete globalThis.__APP_OFFLINE_PATHS__; delete globalThis.__APP_NAV_REDIRECTS__; });
+afterEach(()=>{globalThis.fetch=originalFetch;Object.defineProperty(globalThis,'crypto',{value:originalCrypto,configurable:true});for(const key of ['self','caches','__BUILD_EDITION__','__BUILD_RELEASE_ID__','__APP_OFFLINE_PATHS__','__APP_NAV_REDIRECTS__'])delete globalThis[key];});
+async function install(edition='public'){globalThis.__BUILD_EDITION__=edition;await import('../workers/sw.js');}
+function fire(type,request){let pending;handlers[type]({request,waitUntil:value=>{pending=value;},respondWith:value=>{pending=value;}});return pending;}
+const request=(path='/assets/entry-abc.js',extra={})=>({url:'https://practice.test'+path,method:'GET',destination:'script',...extra});
 
-async function install(edition = 'public') { globalThis.__BUILD_EDITION__ = edition; await import('../workers/sw.js'); }
-function fire(type, request) {
-  let pending;
-  handlers[type]({ request, waitUntil: value => { pending = value; }, respondWith: value => { pending = value; } });
-  return pending;
-}
-const request = (path = '/assets/entry.js', extra = {}) => ({ url: 'https://practice.test'+path, method: 'GET', destination: 'script', ...extra });
-
-test('public installation precaches every declared lazy bundle and waits before activation', async () => {
-  await install(); await fire('install');
-  expect(cache.addAll).toHaveBeenCalledTimes(1);
-  expect(cache.addAll.mock.calls[0][0]).toEqual(expect.arrayContaining(metadata.assets));
-  expect(cache.addAll.mock.calls[0][0]).toContain('/edition.json');
-  expect(platform.skipWaiting).toHaveBeenCalledTimes(1);
-});
-
-test.each(['wrong-edition','missing-assets','unsafe-path','missing-html','missing-metadata'])('invalid %s cannot establish a public offline shell', async kind => {
-  if (kind === 'wrong-edition') metadata.edition = 'preview';
-  if (kind === 'missing-assets') metadata.assets = null;
-  if (kind === 'unsafe-path') metadata.assets = ['/assets/../private.js'];
-  if (kind === 'missing-html') fetch.mockResolvedValue(new Response('unavailable', { status: 503 }));
-  if (kind === 'missing-metadata') fetch.mockImplementation(async input => input === '/edition.json' ? new Response('missing',{status:404}) : new Response('shell'));
-  await install(); await expect(fire('install')).rejects.toThrow();
-  expect(cache.addAll).not.toHaveBeenCalled(); expect(platform.skipWaiting).not.toHaveBeenCalled();
-});
-
-test('activation removes only superseded app caches and claims clients', async () => {
-  await install(); await fire('activate');
-  expect(caches.delete).toHaveBeenCalledWith('dryfire-sound-trainer-public-v1');
-  expect(caches.delete).not.toHaveBeenCalledWith('unrelated-cache');
-  expect(platform.clients.claim).toHaveBeenCalledTimes(1);
-});
-
-test('same-origin cache hits are served without network access', async () => {
-  await install(); cache.match.mockResolvedValue(new Response('cached'));
-  expect(await (await fire('fetch',request())).text()).toBe('cached');
-  expect(fetch).not.toHaveBeenCalled();
-});
-
-test('successful asset responses are cached, while failed responses and data requests are not', async () => {
-  await install(); fetch.mockResolvedValueOnce(new Response('asset'));
-  expect(await (await fire('fetch',request())).text()).toBe('asset'); expect(cache.put).toHaveBeenCalledTimes(1);
-  cache.put.mockClear(); fetch.mockResolvedValueOnce(new Response('missing',{status:404}));
-  expect((await fire('fetch',request())).status).toBe(404); expect(cache.put).not.toHaveBeenCalled();
-  fetch.mockResolvedValueOnce(new Response('data'));
-  await fire('fetch',request('/data.json',{destination:''})); expect(cache.put).not.toHaveBeenCalled();
-});
-
-test('non-GET and cross-origin requests bypass the shell cache entirely', async () => {
-  await install();
-  expect(fire('fetch',request('/api',{method:'POST'}))).toBeUndefined();
-  expect(fire('fetch',request('/asset',{url:'https://other.test/asset'}))).toBeUndefined();
-  expect(caches.open).not.toHaveBeenCalled(); expect(fetch).not.toHaveBeenCalled();
-});
-
-test('offline navigation falls back to the shell; unavailable scripts still reject', async () => {
-  await install(); fetch.mockRejectedValue(new Error('offline'));
-  cache.match.mockImplementation(async input => input === '/index.html' ? new Response('offline shell') : undefined);
-  expect(await (await fire('fetch',request('/history/',{mode:'navigate',destination:'document'}))).text()).toBe('offline shell');
-  await expect(fire('fetch',request())).rejects.toThrow('offline');
-});
-
-test('private preview retires shell caches and unregisters without installing an offline fetch handler', async () => {
-  await install('preview'); await fire('install'); await fire('activate');
-  expect(handlers.fetch).toBeUndefined(); expect(cache.addAll).not.toHaveBeenCalled();
-  expect(caches.delete).toHaveBeenCalledWith('dryfire-sound-trainer-public-v1');
-  expect(caches.delete).not.toHaveBeenCalledWith('unrelated-cache');
-  expect(platform.registration.unregister).toHaveBeenCalledTimes(1);
-  expect(fetch).not.toHaveBeenCalled();
-});
-
-test('offline public/unknown URLs never become an app shell with a misleading200',async()=>{await install();fetch.mockRejectedValue(new Error('offline'));cache.match.mockImplementation(async input=>input==='/index.html'?new Response('offline shell'):undefined);await expect(fire('fetch',request('/help/',{mode:'navigate',destination:'document'}))).rejects.toThrow('offline');});
-
-test('installed clients redirect old navigation URLs before consulting cached obsolete pages',async()=>{
- await install();cache.match.mockResolvedValue(new Response('obsolete page'));const response=await fire('fetch',request('/app/learn/?keep=1',{mode:'navigate',destination:'document'}));expect(response.status).toBe(308);expect(response.headers.get('Location')).toBe('https://practice.test/learn/?keep=1');expect(cache.match).not.toHaveBeenCalled();
-});
+test('complete verified release installs lazy bundles without forcing activation or claiming tabs',async()=>{await install();await fire('install');const cache=store(prefix+release);expect(await cache.match('/__release_complete__')).toBeDefined();for(const path of assets)expect(await cache.match(path)).toBeDefined();expect(platform.skipWaiting).not.toHaveBeenCalled();await fire('activate');expect(platform.clients.claim).not.toHaveBeenCalled();});
+test.each(['edition','release','path','digest','missing'])('invalid %s leaves previous complete release untouched',async kind=>{const old=store(prefix+'old');await old.put('/index.html',new Response('old'));if(kind==='edition')metadata.edition='preview';if(kind==='release')metadata.release='b'.repeat(64);if(kind==='path')metadata.assets=['/assets/../private.js'];if(kind==='digest')metadata.assetDigests={};if(kind==='missing')fetch.mockResolvedValue(new Response('missing',{status:503}));await install();await expect(fire('install')).rejects.toThrow();expect(stores.has(prefix+release)).toBe(false);expect(await(await old.match('/index.html')).text()).toBe('old');});
+test('activation preserves old bundles while any tab or worker is waiting',async()=>{store(prefix+'old');store('unrelated');await install();platform.clients.matchAll.mockResolvedValue([{}]);await fire('activate');expect(caches.delete).not.toHaveBeenCalled();platform.clients.matchAll.mockResolvedValue([]);platform.registration.waiting={};await fire('activate');expect(caches.delete).not.toHaveBeenCalled();platform.registration.waiting=null;await fire('activate');expect(caches.delete).toHaveBeenCalledWith(prefix+'old');expect(stores.has('unrelated')).toBe(true);});
+test('navigation revalidates online and falls back only to a complete offline app shell',async()=>{await install();await fire('install');fetch.mockResolvedValue(new Response('new online'));expect(await(await fire('fetch',request('/history/',{mode:'navigate'}))).text()).toBe('new online');fetch.mockRejectedValue(new Error('offline'));expect(await(await fire('fetch',request('/history/',{mode:'navigate'}))).text()).toContain(release);await expect(fire('fetch',request('/unknown/',{mode:'navigate'}))).rejects.toThrow('offline');});
+test('immutable bundles use exact keys; stable resources revalidate; failed responses never poison cache',async()=>{await install();await fire('install');const cache=store(prefix+release);await cache.put('https://practice.test/assets/entry-abc.js',new Response('cached'));fetch.mockClear();expect(await(await fire('fetch',request())).text()).toBe('cached');expect(fetch).not.toHaveBeenCalled();fetch.mockImplementation(async()=>new Response('fresh'));expect(await(await fire('fetch',request('/assets/entry-abc.js?different=1'))).text()).toBe('fresh');expect(await(await fire('fetch',request('/logo.svg'))).text()).toBe('fresh');fetch.mockResolvedValue(new Response('missing',{status:404}));expect((await fire('fetch',request('/missing.js'))).status).toBe(404);expect(await cache.match('https://practice.test/missing.js')).toBeUndefined();});
+test('non-GET and foreign requests bypass worker; old app routes redirect before cache lookup',async()=>{await install();expect(fire('fetch',request('/api',{method:'POST'}))).toBeUndefined();expect(fire('fetch',request('/x',{url:'https://other.test/x'}))).toBeUndefined();const response=await fire('fetch',request('/app/learn/?keep=1',{mode:'navigate'}));expect(response.status).toBe(308);expect(response.headers.get('Location')).toBe('https://practice.test/learn/?keep=1');expect(caches.open).not.toHaveBeenCalled();});
+test('private preview retires owned offline caches without a fetch handler',async()=>{store(prefix+'old');store('unrelated');await install('preview');await fire('install');await fire('activate');expect(handlers.fetch).toBeUndefined();expect(platform.registration.unregister).toHaveBeenCalled();expect(stores.has('unrelated')).toBe(true);expect(fetch).not.toHaveBeenCalled();});
+test('offline assets use only complete exact cache entries; absent and query variants reject',async()=>{await install();await fire('install');const cache=store(prefix+release);await cache.put('https://practice.test/logo.svg',new Response('offline logo'));fetch.mockRejectedValue(new Error('offline'));expect(await(await fire('fetch',request('/logo.svg'))).text()).toBe('offline logo');await expect(fire('fetch',request('/logo.svg?other=1'))).rejects.toThrow('offline');await expect(fire('fetch',request('/missing.js'))).rejects.toThrow('offline');cache.entries.delete('/__release_complete__');await expect(fire('fetch',request('/logo.svg'))).rejects.toThrow('offline');await expect(fire('fetch',request('/history/',{mode:'navigate'}))).rejects.toThrow('offline');});
+test('shell identity and individual asset corruption fail before cache writes',async()=>{const real=fetch.getMockImplementation();fetch.mockImplementation(async input=>input==='/index.html'?new Response('<html>old shell</html>'):real(input));await install();await expect(fire('install')).rejects.toThrow('metadata mismatch');expect(caches.open).not.toHaveBeenCalled();fetch.mockImplementation(async input=>input===assets[0]?new Response('corrupt'):real(input));await expect(fire('install')).rejects.toThrow('Incomplete release asset');expect(caches.open).not.toHaveBeenCalled();});

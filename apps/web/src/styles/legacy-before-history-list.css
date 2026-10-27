@@ -16,12 +16,5 @@
 .listen-panel .small { margin-top:15px; margin-bottom:0; }
 .prediction { margin-top:17px; padding:18px; }
 .prediction.empty,.empty-state { color:#9aa9b0; text-align:center; padding:28px 16px; }
-.prediction-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
-.prediction-row h3 { margin:0 0 5px; font-size:1.65rem; }
-.score { color:#ff9b56; font-size:2rem; font-weight:900; white-space:nowrap; }
-.distance-list { display:grid; gap:12px; margin:18px 0; }
-.distance-label { display:flex; justify-content:space-between; gap:10px; color:#b8c3c9; font-size:.85rem; margin-bottom:6px; }
-.bar { height:8px; background:#28343a; border-radius:10px; overflow:hidden; }
-.bar span { display:block; background:#ff9141; height:100%; border-radius:10px; }
 .settings-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:16px; font-size:.9rem; }
 .settings-row input { width:88px; min-height:44px; border:1px solid #394852; border-radius:10px; padding:7px; background:#0e1418; color:white; }

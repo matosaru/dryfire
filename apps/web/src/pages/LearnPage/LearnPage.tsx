@@ -1,3 +1,4 @@
+import {GunContext} from '@dryfire/ui/GunContext';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import type {ReactNode} from 'react';
 import {SoundCard,type SoundCardProps} from '@dryfire/ui/SoundCard';
@@ -5,7 +6,7 @@ export type LearnPageProps={cards?:SoundCardProps[];locked?:boolean;calibration?
 /** Learning presentation; recording, safety, limits and saved features stay feature-owned. */
 export function LearnPage({cards=[],locked,calibration,gunName,contextHidden=false,notice,noticeHidden=true,optionalOpen,calibrationOpen,onBack}:LearnPageProps){return <>
 <PageHeading id="learn-title" title="Learn Sounds" eyebrow="01 / SOUND PROFILES" reactBack={false} onBack={onBack}/>
-      <p className={contextHidden?"gun-context hidden":"gun-context"}>Learned sounds for <strong className="gun-context-name">{gunName}</strong>.</p>
+      <GunContext name={gunName} hidden={contextHidden} prefix="Learned sounds for " suffix="."/>
       <p className="muted">Start with <strong>3 Trigger pull samples</strong> (8–10 recommended). Other sound types are optional. Each capture gives you a two-second countdown followed by a two-second recording window.</p>
       <div id="modelNotice" className={noticeHidden?"info-note hidden":"info-note"} role="status">{notice}</div>
       <div id="classCards" className="class-grid">{cards.filter(card=>!card.optional).map(card=><SoundCard key={card.label} {...card} locked={locked??card.locked}/>)}</div>

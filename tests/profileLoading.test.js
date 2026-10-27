@@ -2,6 +2,8 @@
  * @jest-environment jsdom
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
+import {bindPreferenceContext} from './helpers/preferenceContext.js';
+
 import {startGunPreferenceReads} from '../src/gunPreferenceReads.js';
 import {setNodeText,setNodeDisabled} from '../src/domUpdates.js';
 
@@ -17,7 +19,7 @@ const extract=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end
 const deferred=()=>{let resolve;const promise=new Promise(yes=>{resolve=yes;});return{promise,resolve};};
 function setup(gun={id:'a',name:'Test',type:'Handguns'}){
  document.body.innerHTML=renderPageTemplates('{{app}}');
- const context={startGunPreferenceReads,getLibraryOverview:jest.fn(async()=>({activeGun:gun,guns:gun?[gun]:[],devicePreferences:{appearance:'light',vibrationFeedback:true}})),setNodeText,setNodeDisabled,initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
+ const context={gunLibraryCoordinator:{invalidate:jest.fn()},startGunPreferenceReads,getLibraryOverview:jest.fn(async()=>({activeGun:gun,guns:gun?[gun]:[],devicePreferences:{appearance:'light',vibrationFeedback:true}})),setNodeText,setNodeDisabled,initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
   activeGun:null,guns:[],examples:[],customDrills:[],audioPreferences:{},calibration:[],enabledSoundLabels:[],
   processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',vibrationFeedback:false,vibrationRejected:true,
   getActiveGun:jest.fn(async()=>gun),getGuns:jest.fn(async()=>gun?[gun]:[]),
@@ -29,6 +31,7 @@ function setup(gun={id:'a',name:'Test',type:'Handguns'}){
   applyAppearance:jest.fn(),selectDrillCollection:jest.fn(),renderGunControls:jest.fn(),renderClassCards:jest.fn(),renderDrillCatalog:jest.fn(),
   renderCustomCatalog:jest.fn(),resetDrill:jest.fn(),renderPreferences:jest.fn(),renderHome:jest.fn(async()=>{}),
  };
+ bindPreferenceContext(context);
  const load=vm.runInNewContext(extract('function historyDisabled(', 'const liveHandlers')+'\n'+extract('function liveText(', 'function bindSettings(')+'\n'+extract('async function loadDevicePreferences()','function renderPreferences()')+'\n'+extract('function renderModelNotice(', 'function learningProps(')+'\n'+extract('async function loadActiveGun(','function openGunSetup(')+'\n({load:loadActiveGun,loadPreferences:loadDevicePreferences});',context);
  return{context,...load};
 }

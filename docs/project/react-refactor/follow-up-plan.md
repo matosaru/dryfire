@@ -1,8 +1,8 @@
 # Follow-up modularization plan
 
-Prepared 2026-10-24 against `b` revision `2cf044c` / application `5b8aeed`. **Proposed; implementation has not started.** The owner requested review of Copilot's analyses, reusable pages and then this consolidated plan. This is separate from the [completed P0–P8 React refactor](plan.md); it does not reopen that migration or authorize a new framework rewrite.
+Prepared 2026-10-24 against `b` revision `2cf044c` / application `5b8aeed`. **F2–F7 and H2 accepted2026-10-27; H1 header icons remain separately deferred.** The owner requested review of Copilot's analyses, reusable pages and then this consolidated plan. This is separate from the [completed P0–P8 React refactor](plan.md); it does not reopen that migration or authorize a new framework rewrite.
 
-Review and implementation scope: **b only**. The owner handles b → main merges for the Free product; do not perform or assume those merges. Dev is outside the active workflow. No branch synchronization, other-branch inspection or deployment reconfiguration under this plan. Finish the Free product before reopening monetization planning.
+Implementation starts on **b**. Latest owner direction (2026-10-26) authorizes automatic b → main PR promotion after complete acceptance, keeping both branches current. Dev is outside the active workflow. Cloudflare configuration remains owner-managed. Finish the Free product before reopening monetization planning.
 
 ## Result to achieve
 
@@ -18,14 +18,17 @@ The owner subsequently requested indexable public URLs with correct metadata bef
 
 | Step | Work | Completion criteria | Status |
 | --- | --- | --- | --- |
-| F1 | Freeze current contracts and map extraction boundaries | Current baseline checked; dependency/ownership map covers proposed components/services; missing characterization added before moving behavior; architecture checks cover new feature-component folders and permitted import directions | Review complete; implementation baseline refresh pending |
-| H1 | Shared header icon navigation (separate approved visual change) | About, Contact, Settings icons at top right; accessible controls, consistent routes/guards and reviewed screenshots across pages | Planned; destination/order confirmed |
-| F2 | Shared page context and repeated Settings components | GunContext replaces identical context composition; SettingsSection, PreferenceToggle and SettingsAction replace repeated Settings markup with preserved DOM, IDs, statuses, input ownership and callbacks | Planned |
-| F3 | Complete drill setup reuse and audit run/guide duplication | Existing DrillSetup owns repeated delay/sound/readiness composition where compatible; Practice/Sequence retain mode-specific options; existing common guide remains one page; run/live-example components share only truly repeated presentation | Planned |
-| F4 | Decompose Live Listen and retain History composition | Focused mode/controls/result/timeline sections; shared microphone-meter presentation only if both variants preserve existing rendering/update behavior; History continues to compose its existing lists/evaluation/progress with only demonstrated duplicate cleanup | Planned |
-| F5 | Extract persistence validation behind the existing facade | Pure backup/session validation isolated and directly tested; storage.js public API, schema4, formats, migration policy, atomic multi-store operations and startup snapshot semantics unchanged | Planned |
-| F6 | Extract cohesive orchestration from main/controllers | Preferences and gun-library coordination isolated first; main is a composition root with smaller startup adapters; controllers retain one owner for capture, timing, queueing and durable saves; no new competing store/engine | Planned |
-| F7 | Remove obsolete code/CSS and finalize architecture handoff | Removed old consumers/styles proven unused; all complete acceptance gates pass; component map, entry points, sitemap, docs and concise context match final code | Planned |
+| F1 | Freeze current contracts and map extraction boundaries | Current baseline checked; dependency/ownership map covers proposed components/services; missing characterization added before moving behavior; architecture checks cover new feature-component folders and permitted import directions | Complete for the structural release; original baseline/contracts and all exit gates verified |
+| H1 | Shared header icon navigation (separate approved visual change) | About, Contact, Settings icons at top right; accessible controls, consistent routes/guards and reviewed screenshots across pages | Deferred: isolated icon-header candidate fails original Chromium firstAction limits; shipping chrome retained |
+| H2 | Safe automatic release-asset refresh | Deterministic identity, complete release caches, normal activation without forced tab reload, offline recovery and unchanged saved data; [requirements](../../requirements/release-cache-updates.md) | Complete: deterministic verified release caches, normal activation and data-preservation tests; accepted40478835224 |
+| F2 | Shared page context and repeated Settings components | GunContext replaces identical context composition; SettingsSection, PreferenceToggle and SettingsAction replace repeated Settings markup with preserved DOM, IDs, statuses, input ownership and callbacks | Complete: shared context/Settings components; exact markup/styles and pinned browser acceptance pass |
+| F3 | Complete drill setup reuse and audit run/guide duplication | Existing DrillSetup owns repeated delay/sound/readiness composition where compatible; Practice/Sequence retain mode-specific options; existing common guide remains one page; run/live-example components share only truly repeated presentation | Complete: shared setup fields/delays; existing run/guide owners retained; all workflow tests pass |
+| F4 | Decompose Live Listen and retain History composition | Focused mode/controls/result/timeline sections; shared microphone-meter presentation only if both variants preserve existing rendering/update behavior; History continues to compose its existing lists/evaluation/progress with only demonstrated duplicate cleanup | Complete: three Live Listen panels; existing History composition retained; both-edition screenshots pass |
+| F5 | Extract persistence validation behind the existing facade | Pure backup/session validation isolated and directly tested; storage.js public API, schema4, formats, migration policy, atomic multi-store operations and startup snapshot semantics unchanged | Complete: pure validation/platform/library/restore owners behind unchanged38export facade; compatibility and atomicity checks pass |
+| F6 | Extract cohesive orchestration from main/controllers | Preferences and gun-library coordination isolated first; main is a composition root with smaller startup adapters; controllers retain one owner for capture, timing, queueing and durable saves; no new competing store/engine | Complete: preference/library coordinators and guarded optional library view; ownership/failure tests pass |
+| F7 | Remove obsolete code/CSS and finalize architecture handoff | Removed old consumers/styles proven unused; all complete acceptance gates pass; component map, entry points, sitemap, docs and concise context match final code | Complete:48component inventory/generated maintenance, cleanup and handoff; all original acceptance gates pass |
+
+H2 is an intentional infrastructure change, separate from the behavior-preserving F2–F7 extractions. Do not fold its worker lifecycle changes into a component refactor.
 
 Each row consists of small, independently verified slices. The complete acceptance gate below applies before each application publication to b, not only at F7. Fix a failing slice before continuing; keep commits reversible and do not accumulate several unverified extractions.
 
@@ -50,7 +53,7 @@ Added 2026-10-25 by direct owner request, after F1 characterization and before F
 - Update shared layout and affected About/Contact requirements, shared design, screen/component map and navigation documentation for the confirmed destinations. Preserve footer disclosure/copyright and fixed bottom navigation; remove only links actually relocated.
 - Characterize and test header markup, accessible names/routes, keyboard/touch behavior, narrow layouts, active navigation and guarded transitions. Update reviewed screenshots for every affected page/state in both themes/editions and pinned Chromium/WebKit; review help/animation exports if the shared header is present. Run the complete unit/coverage/integration/build/artifact/performance acceptance before publishing application code to b.
 
-Planning only in this update: no application, CSS, route or screenshot changes yet. Main/dev unchanged by this planned work.
+Current H1 evidence and rejected experiments are recorded in [the slowdown investigation](slowdown-investigation.md). The application candidate and proposed media remain separate from the shipping source until full acceptance; diagnostic commits are not an application release.
 
 ## F2 — Cross-page context and Settings
 
@@ -130,7 +133,7 @@ Where pinned browser tooling is unavailable locally, use the existing review-onl
 
 Update component/ownership maps and relevant documentation after every slice. Keep the generated application sitemap/tree synchronized; update entry-point documentation if responsibilities move. Preserve approved requirements/designs and mark scope changes as proposals until explicitly authorized. Keep implementation history append-only and context concise.
 
-At F7: report final component map, entry point and service boundaries; list removed duplication/unused files, test/visual/performance evidence and any intentionally retained adapters. Keep main/dev unchanged. Accounts, monetization, native apps, new public pages and functional redesign are outside this follow-up.
+At F7: report final component map, entry point and service boundaries; list removed duplication/unused files, test/visual/performance evidence and any intentionally retained adapters. Keep dev unchanged; main promotion uses the fully checked b→main PR. Accounts, monetization, native apps, new public pages and functional redesign are outside this follow-up.
 
 ## After the Free product is finished
 
@@ -147,6 +150,6 @@ Produce separate requirements, designs, technical options and an implementation 
 
 ## Current status
 
-Analysis and this structural plan are documented; F1–F7 implementation has not started. The separate CHG-060 SEO/routing work has been implemented and published on b after complete acceptance40098705431. Owner production promotion/live domain verification remain separate. Refresh the structural baseline before starting F1; retain the current Free-first and b-only workflow.
+F2–F7 and H2 are complete and accepted in [run40478835224](https://github.com/matosaru/dryfire/actions/runs/40478835224): validation, both pinned screenshot editions and all four original timing jobs pass. Source publication follows b → [PR29](https://github.com/matosaru/dryfire/pull/29) → main; consult those live checks for promotion status. Shipping chrome and all canonical images stay unchanged. H1 remains separately deferred on its recorded Chromium timing regression, with its source/designs preserved. Dev and commercial/native work remain outside scope. Cloudflare live deployment is separate from Git publication.
 
 [Copilot review](copilot-review.md) · [Completed refactor](plan.md) · [Architecture decision](../../architecture/decisions/001-progressive-react-startup.md) · [Current application sitemap](../../architecture/application-sitemap.md)

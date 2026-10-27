@@ -2,7 +2,7 @@ import test from 'node:test';
 import { composedStyles } from '../tools/style-sources.mjs';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { restoreBackup } from '../src/storage.js';
+import { restoreBackup, clearExamplesForLabel } from '../src/storage.js';
 import { renderPageTemplates } from '../tools/page-templates.mjs';
 
 const html = renderPageTemplates(await readFile(new URL('../index.html', import.meta.url), 'utf8'));
@@ -38,12 +38,11 @@ test('four labels and repeated-event timeline are present', () => {
 
 test('compact navigation, per-class reset and animated previews are wired', async()=>{
   const main=await readFile(new URL('../src/main.js',import.meta.url),'utf8');
-  const storage=await readFile(new URL('../src/storage.js',import.meta.url),'utf8');
   const { css: styles }=composedStyles();
   for(const id of ['settingsShortcut','drillCatalog','homeDrillsBtn','changeDrillBtn','freeListenBtn'])assert.match(html,new RegExp('id="'+id+'"'));
   assert.match(html,/data-view="drills"/);
   assert.match(main,/resetSoundProfile\(label\)/);
-  assert.match(storage,/export async function clearExamplesForLabel/);
+  assert.equal(typeof clearExamplesForLabel,'function');
   assert.match(styles,/\.class-preview/);
   for(const label of ['draw','rack','trigger','reload']){
     const asset=await readFile(new URL('../public/motions/'+label+'.svg',import.meta.url),'utf8');

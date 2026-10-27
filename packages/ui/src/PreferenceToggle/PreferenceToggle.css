@@ -1,0 +1,9 @@
+.preference-toggle { display:flex; align-items:center; justify-content:space-between; gap:14px; min-height:64px; padding:14px; color:var(--session-text); cursor:pointer; }
+.preference-toggle>span { display:grid; gap:5px; min-width:0; }
+.preference-toggle strong { font-weight:650; font-size:.85rem; }
+.preference-toggle small { color:var(--session-muted); font-size:.71rem; line-height:1.5; overflow-wrap:anywhere; }
+.preference-toggle input { appearance:none; position:relative; width:48px; height:28px; margin:8px 0; padding:0; flex:none; border:1px solid #627587; border-radius:99px; background:#344654; cursor:pointer; }
+.preference-toggle input::before { content:""; position:absolute; width:22px; height:22px; left:2px; top:2px; background:#f5f7fa; border-radius:50%; box-shadow:0 1px 3px #0003; transition:transform .15s ease; }
+.preference-toggle input:checked { background:#ff8126; border-color:#ff8126; }
+.preference-toggle input:checked::before { transform:translateX(20px); }
+.preference-toggle input:disabled { cursor:not-allowed; opacity:.55; }

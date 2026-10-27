@@ -1,0 +1,831 @@
+diff --git a/apps/web/src/features/settings/components/SettingsAction/SettingsAction.css b/apps/web/src/features/settings/components/SettingsAction/SettingsAction.css
+new file mode 100644
+index 0000000..872a5bd
+--- /dev/null
++++ b/apps/web/src/features/settings/components/SettingsAction/SettingsAction.css
+@@ -0,0 +1 @@
++.settings-group>.button,.settings-actions .button{display:flex;align-items:center;gap:13px}.settings-action-icon{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:#303b46;font-size:24px;font-weight:500;flex:none}.danger .settings-action-icon{color:#ff735e;background:#492a29}.settings-chevron{margin-left:auto;color:#a6b4c2;font-size:26px;font-weight:400}
+diff --git a/apps/web/src/features/settings/components/SettingsAction/SettingsAction.test.tsx b/apps/web/src/features/settings/components/SettingsAction/SettingsAction.test.tsx
+new file mode 100644
+index 0000000..56eb70b
+--- /dev/null
++++ b/apps/web/src/features/settings/components/SettingsAction/SettingsAction.test.tsx
+@@ -0,0 +1,11 @@
++/** @jest-environment jsdom */
++import '@dryfire/testing/setup';
++import {cleanup,fireEvent,render,screen} from '@testing-library/react';
++import {jest} from '@jest/globals';
++import {SettingsAction} from './SettingsAction.tsx';
++afterEach(cleanup);
++test('an action exposes its own name and dispatches its ID only when enabled',()=>{
++ const onAction=jest.fn();const props={id:'exportBtn',label:'Export backup',icon:'↑',className:'button secondary',onAction};
++ const {rerender}=render(<SettingsAction {...props}/>);fireEvent.click(screen.getByRole('button',{name:'Export backup'}));expect(onAction).toHaveBeenCalledWith('exportBtn');
++ rerender(<SettingsAction {...props} disabled/>);fireEvent.click(screen.getByRole('button',{name:'Export backup'}));expect(onAction).toHaveBeenCalledTimes(1);
++});
+diff --git a/apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx b/apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx
+new file mode 100644
+index 0000000..1e4644c
+--- /dev/null
++++ b/apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx
+@@ -0,0 +1,2 @@
++export type SettingsActionProps={id:string;label:string;icon:string;className:string;disabled?:boolean;onAction?:(id:string)=>void};
++export function SettingsAction({id,label,icon,className,disabled,onAction}:SettingsActionProps){return <button id={id} disabled={disabled} onClick={()=>onAction?.(id)} className={className} type="button"><span className="settings-action-icon" aria-hidden="true">{icon}</span><span>{label}</span><span className="settings-chevron" aria-hidden="true">›</span></button>;}
+diff --git a/apps/web/src/features/settings/components/SettingsAction/index.ts b/apps/web/src/features/settings/components/SettingsAction/index.ts
+new file mode 100644
+index 0000000..d85904e
+--- /dev/null
++++ b/apps/web/src/features/settings/components/SettingsAction/index.ts
+@@ -0,0 +1 @@
++export {SettingsAction,type SettingsActionProps} from './SettingsAction.tsx';
+diff --git a/apps/web/src/features/settings/components/SettingsSection/SettingsSection.css b/apps/web/src/features/settings/components/SettingsSection/SettingsSection.css
+new file mode 100644
+index 0000000..7780777
+--- /dev/null
++++ b/apps/web/src/features/settings/components/SettingsSection/SettingsSection.css
+@@ -0,0 +1,2 @@
++.settings-group { background:#10171b; border:1px solid #29353c; border-radius:17px; padding:19px; margin:15px 0; contain:layout; }
++.settings-group h3 { margin-bottom:8px; }
+diff --git a/apps/web/src/features/settings/components/SettingsSection/SettingsSection.test.tsx b/apps/web/src/features/settings/components/SettingsSection/SettingsSection.test.tsx
+new file mode 100644
+index 0000000..5d4bfe9
+--- /dev/null
++++ b/apps/web/src/features/settings/components/SettingsSection/SettingsSection.test.tsx
+@@ -0,0 +1,13 @@
++/** @jest-environment jsdom */
++import '@dryfire/testing/setup';
++import {cleanup,fireEvent,render,screen} from '@testing-library/react';
++import {SettingsSection} from './SettingsSection.tsx';
++afterEach(cleanup);
++test('section title and native children retain semantics and unfinished values on updates',()=>{
++ const {rerender}=render(<SettingsSection title="Audio"><label>Name<input aria-label="Name" defaultValue="Original"/></label></SettingsSection>);
++ const input=screen.getByRole('textbox',{name:'Name'});fireEvent.change(input,{target:{value:'Unfinished'}});
++ rerender(<SettingsSection title="Preferences" className="preference-group"><label>Name<input aria-label="Name" defaultValue="Original"/></label></SettingsSection>);
++ expect(screen.getByRole('heading',{level:3,name:'Preferences'})).toBeVisible();
++ expect(screen.getByRole('textbox',{name:'Name'})).toBe(input);expect(input).toHaveValue('Unfinished');
++ expect(input.closest('.settings-group')).toHaveClass('preference-group');
++});
+diff --git a/apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx b/apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx
+new file mode 100644
+index 0000000..3ed61bf
+--- /dev/null
++++ b/apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx
+@@ -0,0 +1,4 @@
++import type {ReactNode} from 'react';
++export type SettingsSectionProps={title:ReactNode;className?:string;children:ReactNode};
++/** Presentation only; native children retain their identity and service ownership. */
++export function SettingsSection({title,className,children}:SettingsSectionProps){return <div className={'settings-group'+(className?' '+className:'')}><h3>{title}</h3>{children}</div>;}
+diff --git a/apps/web/src/features/settings/components/SettingsSection/index.ts b/apps/web/src/features/settings/components/SettingsSection/index.ts
+new file mode 100644
+index 0000000..27d2f29
+--- /dev/null
++++ b/apps/web/src/features/settings/components/SettingsSection/index.ts
+@@ -0,0 +1 @@
++export {SettingsSection,type SettingsSectionProps} from './SettingsSection.tsx';
+diff --git a/apps/web/src/pages/DrillsPage/DrillsPage.tsx b/apps/web/src/pages/DrillsPage/DrillsPage.tsx
+index b5560ec..cf169a5 100644
+--- a/apps/web/src/pages/DrillsPage/DrillsPage.tsx
++++ b/apps/web/src/pages/DrillsPage/DrillsPage.tsx
+@@ -1,10 +1,11 @@
++import {GunContext} from '@dryfire/ui/GunContext';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import type {ReactNode} from 'react';
+ import {DrillCard,type DrillCardProps} from '@dryfire/ui/DrillCard';
+ export type DrillsPageProps={practice?:ReactNode;editor?:ReactNode;builtIns?:DrillCardProps[];customs?:DrillCardProps[];sequenceDescription?:string;emptyCustom?:boolean;gunName?:string;contextHidden?:boolean;collectionHidden?:boolean;customTabHidden?:boolean;customSelected?:boolean;createHidden?:boolean;freeListenDisabled?:boolean;onBack?:()=>void;onCollection?:(custom:boolean)=>void;onCreate?:()=>void;onFree?:()=>void};
+ export function DrillsPage({practice,editor,builtIns=[],customs=[],sequenceDescription,emptyCustom=false,gunName,contextHidden=false,collectionHidden=false,customTabHidden=false,customSelected=false,createHidden=true,freeListenDisabled=false,onBack,onCollection,onCreate,onFree}:DrillsPageProps){return <>
+ <PageHeading id="drills-title" title="Drills" eyebrow="02 / PRACTICE PRESETS" reactBack={false} onBack={onBack}/>
+-      <p className={contextHidden?"gun-context hidden":"gun-context"}>Saved presets for <strong className="gun-context-name">{gunName}</strong>.</p>
++      <GunContext name={gunName} hidden={contextHidden} prefix="Saved presets for " suffix="."/>
+       <h3>Trigger Press Group</h3><p className="muted">Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.</p>
+       {practice}
+       <h3 className="practice-section-title">Sequence drills</h3><p id="sequenceDescription" className="muted small">{sequenceDescription??'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.'}</p>
+diff --git a/apps/web/src/pages/HistoryPage/HistoryPage.tsx b/apps/web/src/pages/HistoryPage/HistoryPage.tsx
+index 3aba2f1..562eb1b 100644
+--- a/apps/web/src/pages/HistoryPage/HistoryPage.tsx
++++ b/apps/web/src/pages/HistoryPage/HistoryPage.tsx
+@@ -1,3 +1,4 @@
++import {GunContext} from '@dryfire/ui/GunContext';
+ import type {ReactNode} from 'react';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import {SavedSessionList,type SavedSessionSummary} from '@dryfire/ui/SavedSessionList';
+@@ -7,7 +8,7 @@ export type HistoryState={gunName?:string;contextHidden?:boolean;sessions?:Saved
+ export type HistoryPageProps={state?:HistoryState;limit?:ReactNode;progress?:ReactNode;onBack?:()=>void;onAction?:(id:string)=>void;onOpen?:(record:SavedSessionSummary)=>void;onVerify?:(id:string,value:string)=>void};
+ export function HistoryPage({state,limit,progress,onBack,onAction,onOpen,onVerify}:HistoryPageProps){return <>
+ <PageHeading id="history-title" title="History" eyebrow="04 / LOCAL DATA" reactBack={false} onBack={onBack}/>
+-<p className={'gun-context'+(state?.contextHidden?' hidden':'')}>Saved results for <strong className="gun-context-name">{state?.gunName}</strong>.</p>
++<GunContext name={state?.gunName} hidden={state?.contextHidden} prefix="Saved results for " suffix="."/>
+ {progress}
+ <section className="saved-sessions-section" aria-labelledby="savedSessionsTitle"><h3 id="savedSessionsTitle">Drill sessions</h3><p className="muted small">Open a session to review completed and interrupted repetitions. Clear saved sessions removes this gun’s practice and sequence results and progress statistics; learned sounds and recognition history stay saved.</p><button id="clearSessionsBtn" disabled={state?.disabled?.clearSessionsBtn} className="button danger" type="button" onClick={()=>onAction?.('clearSessionsBtn')}>Clear saved sessions</button><p id="sessionsClearOutcome" className="muted small" role="status">{state?.texts?.sessionsClearOutcome}</p><div id="savedSessions" className="session-result-list">{state?.sessions&&<SavedSessionList records={state.sessions} onOpen={record=>onOpen?.(record)}/>}</div></section>
+ <h3 className="recognition-history-heading">Recent recognition results</h3>
+diff --git a/apps/web/src/pages/HomePage/HomePage.tsx b/apps/web/src/pages/HomePage/HomePage.tsx
+index 2b68352..4fa001d 100644
+--- a/apps/web/src/pages/HomePage/HomePage.tsx
++++ b/apps/web/src/pages/HomePage/HomePage.tsx
+@@ -1,7 +1,8 @@
++import {GunContext} from '@dryfire/ui/GunContext';
+ export type HomePageProps={gunName?:string;contextHidden?:boolean;training?:string;events?:number;accuracy?:string;listenDisabled?:boolean;onNavigate?:(view:string)=>void};
+ /** Stateless presentation; the existing feature retains gun-scoped reads and recognition readiness. */
+ export function HomePage({gunName='',contextHidden=false,training='0 / 32',events=0,accuracy='—',listenDisabled=false,onNavigate}:HomePageProps){return <><article className="welcome-card"><h2 id="home-title">Train by sound.</h2><p>Build faster, more consistent<br/>mechanical skills.</p><span className="orange-rule"></span></article>
+-      <p className={`gun-context${contextHidden?' hidden':''}`}>Showing data for <strong className="gun-context-name">{gunName}</strong> only.</p>
++      <GunContext name={gunName} hidden={contextHidden} prefix="Showing data for " suffix=" only."/>
+       <div className="home-actions">
+         <button id="homeLearnBtn" onClick={()=>onNavigate?.('learn')} className="dashboard-card" type="button"><span className="dashboard-icon orange"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4"/></svg></span><span><strong>Learn Sounds</strong><small>Learn and recognize<br/>each core action sound.</small></span><span className="chevron">›</span></button>
+         <button id="homeDrillsBtn" onClick={()=>onNavigate?.('drills')} className="dashboard-card" type="button"><span className="dashboard-icon blue"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></svg></span><span><strong>Drills</strong><small>Combine sounds into<br/>realistic sequences.</small></span><span className="chevron">›</span></button>
+diff --git a/apps/web/src/pages/LearnPage/LearnPage.tsx b/apps/web/src/pages/LearnPage/LearnPage.tsx
+index 52d6c36..318e592 100644
+--- a/apps/web/src/pages/LearnPage/LearnPage.tsx
++++ b/apps/web/src/pages/LearnPage/LearnPage.tsx
+@@ -1,3 +1,4 @@
++import {GunContext} from '@dryfire/ui/GunContext';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import type {ReactNode} from 'react';
+ import {SoundCard,type SoundCardProps} from '@dryfire/ui/SoundCard';
+@@ -5,7 +6,7 @@ export type LearnPageProps={cards?:SoundCardProps[];locked?:boolean;calibration?
+ /** Learning presentation; recording, safety, limits and saved features stay feature-owned. */
+ export function LearnPage({cards=[],locked,calibration,gunName,contextHidden=false,notice,noticeHidden=true,optionalOpen,calibrationOpen,onBack}:LearnPageProps){return <>
+ <PageHeading id="learn-title" title="Learn Sounds" eyebrow="01 / SOUND PROFILES" reactBack={false} onBack={onBack}/>
+-      <p className={contextHidden?"gun-context hidden":"gun-context"}>Learned sounds for <strong className="gun-context-name">{gunName}</strong>.</p>
++      <GunContext name={gunName} hidden={contextHidden} prefix="Learned sounds for " suffix="."/>
+       <p className="muted">Start with <strong>3 Trigger pull samples</strong> (8–10 recommended). Other sound types are optional. Each capture gives you a two-second countdown followed by a two-second recording window.</p>
+       <div id="modelNotice" className={noticeHidden?"info-note hidden":"info-note"} role="status">{notice}</div>
+       <div id="classCards" className="class-grid">{cards.filter(card=>!card.optional).map(card=><SoundCard key={card.label} {...card} locked={locked??card.locked}/>)}</div>
+diff --git a/apps/web/src/pages/LiveListenPage/LiveListenPage.tsx b/apps/web/src/pages/LiveListenPage/LiveListenPage.tsx
+index 7278dc0..d828255 100644
+--- a/apps/web/src/pages/LiveListenPage/LiveListenPage.tsx
++++ b/apps/web/src/pages/LiveListenPage/LiveListenPage.tsx
+@@ -1,10 +1,11 @@
++import {GunContext} from '@dryfire/ui/GunContext';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ export type LiveListenState={gunName?:string;contextHidden?:boolean;texts?:Record<string,string>;disabled?:Record<string,boolean>;hidden?:Record<string,boolean>;selects?:Record<string,string>;listening?:boolean;options?:{value:string;title:string}[];steps?:{className:string;number:string;title:string}[];distances?:{title:string;value:string;width:string}[];timeline?:{name:string;detail:string}[]};
+ export type LiveListenPageProps={state?:LiveListenState;onBack?:()=>void;onAction?:(id:string)=>void;onChange?:(id:string)=>void};
+ /** Live presentation only: microphone, recognition, persistence and timing remain feature-owned. */
+ export function LiveListenPage({state,onBack,onAction,onChange}:LiveListenPageProps){return <>
+ <PageHeading id="recognize-title" title="Live Listen" eyebrow="03 / REAL-TIME DETECTION" reactBack={false} onBack={onBack}/>
+-      <p className={state?.contextHidden?"gun-context hidden":"gun-context"}>Listening uses the learned sounds of <strong className="gun-context-name">{state?.gunName}</strong>.</p>
++      <GunContext name={state?.gunName} hidden={state?.contextHidden} prefix="Listening uses the learned sounds of " suffix="."/>
+       <section className="drill-panel" aria-labelledby="drill-heading">
+         <div className="drill-panel-head">
+           <div><p className="eyebrow">CURRENT MODE</p><h3 id="drill-heading">{state?.texts?.['drill-heading']??'Free listening'}</h3></div>
+diff --git a/apps/web/src/pages/PracticePage/PracticePage.tsx b/apps/web/src/pages/PracticePage/PracticePage.tsx
+index 0df7383..c3782f8 100644
+--- a/apps/web/src/pages/PracticePage/PracticePage.tsx
++++ b/apps/web/src/pages/PracticePage/PracticePage.tsx
+@@ -1,3 +1,5 @@
++import {PreferenceToggle} from '@dryfire/ui/PreferenceToggle';
++import {GunContext} from '@dryfire/ui/GunContext';
+ import {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
+ import type {ReactNode} from 'react';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+@@ -8,7 +10,7 @@ export type PracticePageProps={title?:string;gunName?:string;contextHidden?:bool
+ export function PracticePage({title,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,onBack,onGuide,onAction}:PracticePageProps){return <>
+ <PageHeading id="practice-title" title={title??'Practice'} backId="practiceBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
+ 
+-      <p className={contextHidden?'gun-context hidden':'gun-context'}>Practice for <strong className="gun-context-name">{gunName}</strong>.</p>
++      <GunContext name={gunName} hidden={contextHidden} prefix="Practice for " suffix="."/>
+       <DrillSetupSteps id="practiceSteps" label="Required sounds">{steps}</DrillSetupSteps>
+       <DrillGuideLink id="practiceGuideLink" href={guideHref} hidden={guideHidden} onClick={onGuide}/>
+       {configure??<>
+@@ -21,7 +23,7 @@ export function PracticePage({title,gunName,contextHidden=false,guideHidden=fals
+             <label id="practiceFixedRow" className="session-field hidden" htmlFor="practiceFixedDelay"><span>Delay in seconds</span>{'{{practiceFixedDelayInput}}'}</label>
+             <div id="practiceRandomFields" className="session-delay-range"><label className="session-field" htmlFor="practiceMinDelay"><span>Minimum seconds</span>{'{{practiceMinDelayInput}}'}</label><label className="session-field" htmlFor="practiceMaxDelay"><span>Maximum seconds</span>{'{{practiceMaxDelayInput}}'}</label></div>
+           </div>
+-            <label className="preference-toggle session-sound-toggle" htmlFor="practiceStartSound"><span><strong>Sound at start</strong><small>Play a beep at each repetition start.</small></span><input id="practiceStartSound" type="checkbox" role="switch" defaultChecked /></label>
++            <PreferenceToggle id="practiceStartSound" label="Sound at start" description="Play a beep at each repetition start." className="session-sound-toggle" defaultChecked/>
+           </div>
+         </DrillSetup>
+       </div>
+diff --git a/apps/web/src/pages/SequencePage/SequencePage.tsx b/apps/web/src/pages/SequencePage/SequencePage.tsx
+index 9085e31..e49add7 100644
+--- a/apps/web/src/pages/SequencePage/SequencePage.tsx
++++ b/apps/web/src/pages/SequencePage/SequencePage.tsx
+@@ -1,3 +1,5 @@
++import {PreferenceToggle} from '@dryfire/ui/PreferenceToggle';
++import {GunContext} from '@dryfire/ui/GunContext';
+ import {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
+ import type {ReactNode} from 'react';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+@@ -8,7 +10,7 @@ export type SequencePageProps={title?:string;gunName?:string;contextHidden?:bool
+ export function SequencePage({title,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){return <>
+ <PageHeading id="session-title" title={title??'Drill Session'} backId="sessionBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
+ 
+-      <p className={contextHidden?'gun-context hidden':'gun-context'}>Session for <strong className="gun-context-name">{gunName}</strong>.</p>
++      <GunContext name={gunName} hidden={contextHidden} prefix="Session for " suffix="."/>
+       <p id="sessionPresetName" className="session-preset-name">{presetName}</p>
+       <DrillSetupSteps id="sessionSteps" label="Ordered sound sequence">{steps}</DrillSetupSteps>
+       <DrillGuideLink id="sessionGuideLink" href={guideHref} hidden={guideHidden} onClick={onGuide}/>
+@@ -28,7 +30,7 @@ export function SequencePage({title,gunName,contextHidden=false,guideHidden=fals
+               </div>
+               <p className="muted small">A fresh delay before every repetition.</p>
+             </div>
+-            <label className="preference-toggle session-sound-toggle" htmlFor="sessionStartSound"><span><strong>Sound at start</strong><small>Play a beep when GO appears.</small></span><input id="sessionStartSound" name="startSound" type="checkbox" role="switch" aria-describedby="sessionCueGuardNote" /></label>
++            <PreferenceToggle id="sessionStartSound" label="Sound at start" description="Play a beep when GO appears." className="session-sound-toggle" name="startSound" aria-describedby="sessionCueGuardNote"/>
+             <p id="sessionCueGuardNote" className="muted small hidden">With the beep on, detection waits 0.3 seconds after GO to exclude the cue. Very fast sounds in that window may be missed.</p>
+         </DrillSetup>
+         <p className="muted small session-timing-note">Timings describe detected sounds, not verified physical actions.</p>
+diff --git a/apps/web/src/pages/SettingsPage/SettingsPage.css b/apps/web/src/pages/SettingsPage/SettingsPage.css
+index 8e552bf..f4e6e3c 100644
+--- a/apps/web/src/pages/SettingsPage/SettingsPage.css
++++ b/apps/web/src/pages/SettingsPage/SettingsPage.css
+@@ -1,4 +1,2 @@
+-.settings-group { background:#10171b; border:1px solid #29353c; border-radius:17px; padding:19px; margin:15px 0; }
+-.settings-group h3 { margin-bottom:8px; }
+ .settings-actions { display:flex; flex-wrap:wrap; gap:10px; }
+ .settings-actions .button { flex:1 1 140px; }
+diff --git a/apps/web/src/pages/SettingsPage/SettingsPage.test.tsx b/apps/web/src/pages/SettingsPage/SettingsPage.test.tsx
+index 8209f3c..0d18605 100644
+--- a/apps/web/src/pages/SettingsPage/SettingsPage.test.tsx
++++ b/apps/web/src/pages/SettingsPage/SettingsPage.test.tsx
+@@ -19,3 +19,24 @@ test('native controls remain usable without callbacks and preserve installation
+  const {rerender}=render(<SettingsPage/>);const details=document.querySelector<HTMLDetailsElement>('details')!;details.open=true;
+  for(const id of ['resetModelBtn','exportBtn','importBtn','resetLibraryBtn','noiseFilter','autoGainControl','vibrationFeedback'])fireEvent.click(document.getElementById(id)!);fireEvent.change(screen.getByLabelText('Appearance'),{target:{value:'light'}});rerender(<SettingsPage preview={<p>Private island</p>}/>);expect(document.querySelector('details')).toBe(details);expect(details.open).toBe(true);expect(screen.getByText('Private island')).toBeVisible();
+ });
++
++test('page updates preserve the import island and in-progress native preference values',()=>{
++ const fileInput=<input id="importFile" type="file" data-native-island="import"/>;
++ const {rerender}=render(<SettingsPage fileInput={fileInput} state={{gunName:'First gun'}}/>);
++ const file=document.getElementById('importFile'),noise=screen.getByRole('switch',{name:/^Noise Filter/}),appearance=screen.getByLabelText('Appearance');
++ fireEvent.click(noise);fireEvent.change(appearance,{target:{value:'system'}});
++ rerender(<SettingsPage fileInput={fileInput} preview={<p>Preview controls</p>} state={{gunName:'Second gun'}}/>);
++ expect(document.getElementById('importFile')).toBe(file);
++ expect(screen.getByRole('switch',{name:/^Noise Filter/})).toBe(noise);
++ expect(noise).toBeChecked();expect(appearance).toHaveValue('system');
++ expect(screen.getByText('Second gun')).toBeVisible();
++});
++
++test('unavailable actions retain their identity and cannot dispatch during profile changes',()=>{
++ const onAction=jest.fn();const ids=['resetModelBtn','exportBtn','importBtn','resetLibraryBtn'];
++ render(<SettingsPage onAction={onAction} state={{contextHidden:true,disabled:Object.fromEntries(ids.map(id=>[id,true])),texts:{soundResetSummary:'Choose a gun before resetting.'}}}/>);
++ for(const id of ids){const action=document.getElementById(id)!;expect(action).toBeDisabled();fireEvent.click(action);}
++ expect(onAction).not.toHaveBeenCalled();
++ expect(document.querySelector('.gun-context')).toHaveClass('hidden');
++ expect(document.getElementById('soundResetSummary')).toHaveTextContent('Choose a gun before resetting.');
++});
+diff --git a/apps/web/src/pages/SettingsPage/SettingsPage.tsx b/apps/web/src/pages/SettingsPage/SettingsPage.tsx
+index 7dc55ea..66bbf89 100644
+--- a/apps/web/src/pages/SettingsPage/SettingsPage.tsx
++++ b/apps/web/src/pages/SettingsPage/SettingsPage.tsx
+@@ -1,3 +1,7 @@
++import {PreferenceToggle} from '@dryfire/ui/PreferenceToggle';
++import {SettingsAction} from '../../features/settings/components/SettingsAction/index.ts';
++import {GunContext} from '@dryfire/ui/GunContext';
++import {SettingsSection} from '../../features/settings/components/SettingsSection/index.ts';
+ import {PageHeading} from '@dryfire/ui/PageHeading';
+ import type {ReactNode,ChangeEventHandler} from 'react';
+ export type SettingsState={gunName?:string;contextHidden?:boolean;installationOpen?:boolean;texts?:Record<string,string>;disabled?:Record<string,boolean>};
+@@ -5,7 +9,7 @@ export type SettingsPageProps={state?:SettingsState;fileInput?:ReactNode;preview
+ /** Shared source for Settings; persistence/capabilities/preview lifetimes remain feature-owned. */
+ export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreference,onImport}:SettingsPageProps){return <><PageHeading id="settings-title" title="Settings" eyebrow="05 / DEVICE & PRIVACY" reactBack={false} onBack={onBack}/>
+       {preview}
+-      <p className={state?.contextHidden?"gun-context hidden":"gun-context"}>Sound resets affect <strong className="gun-context-name">{state?.gunName}</strong> only.</p>
++      <GunContext name={state?.gunName} hidden={state?.contextHidden} prefix="Sound resets affect " suffix=" only."/>
+       <details className="install-details" open={state?.installationOpen}><summary>Install on your iPhone <span>›</span></summary><div className="install-card">
+         <div className="install-badge">iOS · HOME SCREEN</div>
+         <h3>Install on your iPhone</h3>
+@@ -13,31 +17,27 @@ export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreferen
+         <ol><li>Open your deployed HTTPS address in <strong>Safari</strong>.</li><li>Tap the <strong>Share</strong> button.</li><li>Choose <strong>Add to Home Screen</strong>.</li><li>Enable <strong>Open as Web App</strong> (if shown), then tap <strong>Add</strong>.</li></ol>
+         <p className="small muted">This installs a web app icon and standalone experience, not an App Store IPA. The microphone runs only when the app is open.</p>
+       </div>
+-      </details><div className="settings-group">
+-        <h3>Learned Sounds</h3>
++      </details><SettingsSection title="Learned Sounds">
+         <p className="muted small">For one sound, use Reset on its card in Learn. Full reset erases this gun's learned sounds and reset/noise/beep calibration. Its saved results and other guns' data stay intact.</p>
+         <p id="soundResetSummary" className="muted small" role="status">{state?.texts?.soundResetSummary}</p>
+-        <button id="resetModelBtn" disabled={state?.disabled?.resetModelBtn} onClick={()=>onAction?.('resetModelBtn')} className="button danger" type="button"><span className="settings-action-icon" aria-hidden="true">⏻</span><span>Reset all sounds for this gun</span><span className="settings-chevron" aria-hidden="true">›</span></button>
++        <SettingsAction id="resetModelBtn" label="Reset all sounds for this gun" icon="⏻" disabled={state?.disabled?.resetModelBtn} onAction={onAction} className="button danger"/>
+         <p id="soundResetOutcome" className="small" role="status">{state?.texts?.soundResetOutcome}</p>
+-      </div>
+-      <div className="settings-group">
+-        <h3>Backup &amp; Data</h3>
++      </SettingsSection>
++      <SettingsSection title="Backup & Data">
+         <p className="muted small">Export all gun profiles, learned numeric sound features, drill presets, recognition history, saved sessions and preferences. The backup contains no raw recordings. Keep this file private.</p>
+-        <div className="settings-actions"><button id="exportBtn" disabled={state?.disabled?.exportBtn} onClick={()=>onAction?.('exportBtn')} className="button secondary" type="button"><span className="settings-action-icon" aria-hidden="true">↑</span><span>Export backup</span><span className="settings-chevron" aria-hidden="true">›</span></button><button id="importBtn" disabled={state?.disabled?.importBtn} onClick={()=>onAction?.('importBtn')} className="button secondary" type="button"><span className="settings-action-icon" aria-hidden="true">↓</span><span>Import backup</span><span className="settings-chevron" aria-hidden="true">›</span></button>{fileInput??<input id="importFile" onChange={onImport} type="file" accept="application/json,.json" className="hidden" />}</div>
++        <div className="settings-actions"><SettingsAction id="exportBtn" label="Export backup" icon="↑" disabled={state?.disabled?.exportBtn} onAction={onAction} className="button secondary"/><SettingsAction id="importBtn" label="Import backup" icon="↓" disabled={state?.disabled?.importBtn} onAction={onAction} className="button secondary"/>{fileInput??<input id="importFile" onChange={onImport} type="file" accept="application/json,.json" className="hidden" />}</div>
+         <p className="small muted">Import replaces saved guns, sounds, history, presets, sessions and preferences on this device. Older backups contain no saved sessions. Files from another device may perform differently.</p>
+-      </div>
+-      <div className="settings-group preference-group">
+-        <h3>Audio processing · this gun</h3>
+-        <label className="preference-toggle" htmlFor="noiseFilter"><span><strong>Noise Filter</strong><small id="noiseFilterStatus" role="status">Checking browser support…</small></span><input id="noiseFilter" onChange={event=>onPreference?.('noiseFilter',event.currentTarget.checked)} type="checkbox" role="switch" aria-describedby="noiseFilterStatus" /></label>
+-        <label className="preference-toggle" htmlFor="autoGainControl"><span><strong>Auto Gain</strong><small id="autoGainStatus" role="status">Checking browser support…</small></span><input id="autoGainControl" onChange={event=>onPreference?.('autoGainControl',event.currentTarget.checked)} type="checkbox" role="switch" aria-describedby="autoGainStatus" /></label>
++      </SettingsSection>
++      <SettingsSection title="Audio processing · this gun" className="preference-group">
++        <PreferenceToggle id="noiseFilter" label="Noise Filter" description="Checking browser support…" descriptionId="noiseFilterStatus" descriptionRole="status" onChange={event=>onPreference?.('noiseFilter',event.currentTarget.checked)}/>
++        <PreferenceToggle id="autoGainControl" label="Auto Gain" description="Checking browser support…" descriptionId="autoGainStatus" descriptionRole="status" onChange={event=>onPreference?.('autoGainControl',event.currentTarget.checked)}/>
+         <p className="muted small">Changes apply to the next capture. Audio processing may affect recognition and require fresh examples; it never deletes your learned sounds.</p>
+-      </div>
+-      <div className="settings-group preference-group">
+-        <h3>Appearance &amp; feedback · this device</h3>
++      </SettingsSection>
++      <SettingsSection title="Appearance & feedback · this device" className="preference-group">
+         <label className="preference-select" htmlFor="appearance"><span>Appearance</span><select id="appearance" onChange={event=>onPreference?.('appearance',event.currentTarget.value)}><option value="dark">Dark</option><option value="light">Light</option><option value="system">System</option></select></label>
+-        <label className="preference-toggle" htmlFor="vibrationFeedback"><span><strong>Vibration Feedback</strong><small id="vibrationStatus" role="status">Checking browser support…</small></span><input id="vibrationFeedback" onChange={event=>onPreference?.('vibrationFeedback',event.currentTarget.checked)} type="checkbox" role="switch" aria-describedby="vibrationStatus" /></label>
++        <PreferenceToggle id="vibrationFeedback" label="Vibration Feedback" description="Checking browser support…" descriptionId="vibrationStatus" descriptionRole="status" onChange={event=>onPreference?.('vibrationFeedback',event.currentTarget.checked)}/>
+         <p className="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
+-      </div>
+-      <div className="settings-group"><h3>Delete local app data</h3><p className="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" disabled={state?.disabled?.resetLibraryBtn} onClick={()=>onAction?.('resetLibraryBtn')} className="button danger wide-action" type="button">Delete all guns &amp; app data</button></div>
+-      <div className="settings-group"><h3>Device information</h3><p id="deviceCheck" className="small muted">{state?.texts?.deviceCheck}</p></div>
++      </SettingsSection>
++      <SettingsSection title="Delete local app data"><p className="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" disabled={state?.disabled?.resetLibraryBtn} onClick={()=>onAction?.('resetLibraryBtn')} className="button danger wide-action" type="button">Delete all guns &amp; app data</button></SettingsSection>
++      <SettingsSection title="Device information"><p id="deviceCheck" className="small muted">{state?.texts?.deviceCheck}</p></SettingsSection>
+ </>;}
+diff --git a/apps/web/src/styles/legacy-after-drill-cards.css b/apps/web/src/styles/legacy-after-drill-cards.css
+index f3f212a..836376c 100644
+--- a/apps/web/src/styles/legacy-after-drill-cards.css
++++ b/apps/web/src/styles/legacy-after-drill-cards.css
+@@ -30,7 +30,6 @@ footer{font-size:.68rem;line-height:1.55;margin-top:20px;color:#8594a4}.tip,.inf
+ @media(min-width:700px){.app-shell{padding-top:30px}.welcome-card{margin-top:8px}}
+ @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+ .nav-glyph svg{width:24px;height:24px;display:block;margin:auto}.dashboard-icon svg{width:52px;height:52px;stroke-width:1.8}.class-actions .primary,.preset-card .primary{font-variant-emoji:text}.class-preview picture{display:block;height:100%}.class-info .progress-label{line-height:1.3}
+-.settings-group>.button,.settings-actions .button{display:flex;align-items:center;gap:13px}.settings-action-icon{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:#303b46;font-size:24px;font-weight:500;flex:none}.danger .settings-action-icon{color:#ff735e;background:#492a29}.settings-chevron{margin-left:auto;color:#a6b4c2;font-size:26px;font-weight:400}
+ 
+ /* Gun profiles use the approved first-visit, library and selected-gun flow. */
+ .startup-message { display:none; padding:30px 0; color:#b4c4d2; text-align:center; }
+diff --git a/apps/web/src/styles/legacy-after-sequence-page.css b/apps/web/src/styles/legacy-after-sequence-page.css
+index c191d01..9498c56 100644
+--- a/apps/web/src/styles/legacy-after-sequence-page.css
++++ b/apps/web/src/styles/legacy-after-sequence-page.css
+@@ -1,13 +1,4 @@
+ .session-delay-range { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+-.preference-toggle { display:flex; align-items:center; justify-content:space-between; gap:14px; min-height:64px; padding:14px; color:var(--session-text); cursor:pointer; }
+-.preference-toggle>span { display:grid; gap:5px; min-width:0; }
+-.preference-toggle strong { font-weight:650; font-size:.85rem; }
+-.preference-toggle small { color:var(--session-muted); font-size:.71rem; line-height:1.5; overflow-wrap:anywhere; }
+-.preference-toggle input { appearance:none; position:relative; width:48px; height:28px; margin:8px 0; padding:0; flex:none; border:1px solid #627587; border-radius:99px; background:#344654; cursor:pointer; }
+-.preference-toggle input::before { content:""; position:absolute; width:22px; height:22px; left:2px; top:2px; background:#f5f7fa; border-radius:50%; box-shadow:0 1px 3px #0003; transition:transform .15s ease; }
+-.preference-toggle input:checked { background:#ff8126; border-color:#ff8126; }
+-.preference-toggle input:checked::before { transform:translateX(20px); }
+-.preference-toggle input:disabled { cursor:not-allowed; opacity:.55; }
+ .session-sound-toggle { border:1px solid var(--session-border); border-radius:12px; background:var(--session-surface); }
+ #sessionCueGuardNote { margin:0; padding:0 3px; color:var(--session-muted); }
+ .session-readiness { margin:0; padding:11px 12px; border:1px solid var(--session-border); border-radius:10px; color:var(--session-muted); background:var(--session-surface); font-size:.75rem; line-height:1.5; }
+diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
+index d5a7454..d3a1f75 100644
+--- a/docs/architecture/application-structure.md
++++ b/docs/architecture/application-structure.md
+@@ -25,7 +25,7 @@ flowchart TD
+ 
+ ## Component structure
+ 
+-The authoritative screen/source/controller/test mapping is [component-map.json](component-map.json). Every page/shared UI folder contains its component `.tsx`, colocated `.css`, `.test.tsx` and public `index.ts`. These are isolated source packages within the private `@dryfire/web` and `@dryfire/ui` workspaces, not 40 separately published npm dependencies. `verify:architecture` checks all 40 packages and all 13 screen mappings.
++The authoritative screen/source/controller/test mapping is [component-map.json](component-map.json). Every page/shared UI folder contains its component `.tsx`, colocated `.css`, `.test.tsx` and public `index.ts`. These are isolated source packages within the private `@dryfire/web` and `@dryfire/ui` workspaces, not 40 separately published npm dependencies. `verify:architecture` checks all 45 packages and all 13 screen mappings.
+ 
+ ```text
+ index.html                         HTML/build entry
+@@ -135,3 +135,9 @@ Startup optimization: `gunPreferenceReads.js` overlaps independent read-only req
+ 
+ 
+ CHG-062: BrandHeader owns the About/@Contact/Settings native links, outlined icons and accessible tooltip/current states. ChromeBridge delegates guarded native header/tab actions and hands those two regions to lazy ChromePages; InfoFooter no longer has links or a React ownership region. Footer disclosure/copyright/private notice remain stable.
++
++## F2 reusable presentation candidate
++
++GunContext owns the identical contextual paragraph across eight pages. PreferenceToggle owns native switches used by Settings and both drill setup pages. SettingsSection and SettingsAction live in apps/web/src/features/settings/components with colocated CSS, tests and public entries. Feature component packages join the architecture verification; no component acquires persistence or capture.
++
++Page/native adapters retain all existing IDs, file input/preview islands, native unfinished values and service callbacks. Tiny shared page primitives are grouped into one lazy pageFields chunk, without pulling React into initial startup. These are review-candidate changes; full pinned acceptance and publication are tracked separately.
+diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
+index 60c9eb5..a0f85c0 100644
+--- a/docs/architecture/component-map.json
++++ b/docs/architecture/component-map.json
+@@ -570,6 +570,30 @@
+       "css": "packages/ui/src/DrillSetup/DrillSetup.css",
+       "tests": "packages/ui/src/DrillSetup/DrillSetup.test.tsx",
+       "runtimeOwner": "Shared Sequence/Practice configuration markup; native controller owns retained form, validation and capture. Shared ordered steps serve setup and guides through existing parent ports; shared outlined guide navigation follows context/sounds before setup."
++    },
++    {
++      "source": "packages/ui/src/GunContext/GunContext.tsx",
++      "css": "packages/ui/src/GunContext/GunContext.css",
++      "tests": "packages/ui/src/GunContext/GunContext.test.tsx",
++      "runtimeOwner": "Eight page presentations; selection and context stay application-owned"
++    },
++    {
++      "source": "packages/ui/src/PreferenceToggle/PreferenceToggle.tsx",
++      "css": "packages/ui/src/PreferenceToggle/PreferenceToggle.css",
++      "tests": "packages/ui/src/PreferenceToggle/PreferenceToggle.test.tsx",
++      "runtimeOwner": "Settings and Practice/Sequence native switches; retained input state stays adapter/controller-owned"
++    },
++    {
++      "source": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx",
++      "css": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.css",
++      "tests": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.test.tsx",
++      "runtimeOwner": "Settings presentation groups; native children retained"
++    },
++    {
++      "source": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx",
++      "css": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.css",
++      "tests": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.test.tsx",
++      "runtimeOwner": "Settings action identity and callbacks; persistence/confirmation remain main-owned"
+     }
+   ],
+   "retainedSubtreeBoundary": {
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index a3e15a3..8c43f08 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -1,6 +1,6 @@
+ {
+   "version": 1,
+-  "reviewedOn": "2026-10-25",
++  "reviewedOn": "2026-10-26",
+   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+   "publicOrigin": "https://easydryfire.com",
+   "publicPaths": [
+@@ -809,7 +809,7 @@
+   "reviewedSources": {
+     "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
+     "src/main.js": "97bec0d116f108d7a39bcf5635db6043f9faa8295fc2c3067143166201768c14",
+-    "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
++    "src/styles.css": "58efe4a712af0bf0d53a0000a6dc0a416dd37aacbf232f0c213835077e3a99d9",
+     "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
+     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
+     "src/practiceController.js": "a7cf652a0ebbb91fecdb5796d1922d309bb172f8a8dbd4089a58523e086140dd",
+@@ -820,7 +820,7 @@
+     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
+     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
+     "src/storage.js": "c16080ebe834e7aff8d31ca4d8277df735827041cab6ddf3dcc43ae2d90de03f",
+-    "vite.config.js": "c08e425fc7305e585097d6f953b1e3635e211bf15e6ed1a677b8de80b992a729",
++    "vite.config.js": "2ffb0d1eab1ac30931f401f3ff5fd0507507d7b466263a5532694a76e6f497ca",
+     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
+     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
+     "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
+@@ -898,20 +898,19 @@
+     "apps/web/src/app/profilePages/index.ts": "f17312ec88f6ba98d0b563cbc5951d5af90d3a9bd4582d41facac415675c9d4d",
+     "apps/web/src/app/renderHomePage.tsx": "e2abdf6d1ca99a2915075e1093aea5cf5cfc408724aac8093335131075951fa7",
+     "apps/web/src/app/renderGunSetupPage.tsx": "646a4ca39fbb103b31b7e7e6f5472e6cfcb3778a2a2ba0bcf62746add61cea36",
+-    "apps/web/src/pages/HomePage/HomePage.tsx": "4301f59ef22df31edb6613c7c455c4b03f41052311150eb927d7701a5e4182d5",
++    "apps/web/src/pages/HomePage/HomePage.tsx": "ba38b765a212724fcb717212755d64ed88c903022d61d8a4a7e1f717424628ec",
+     "apps/web/src/pages/HomePage/HomePage.css": "70924e9e2f91e0402c65174ca01817b5e594a79ac95c0b2e37de487c513d7a59",
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.tsx": "044f79f543885de79afd6ee7e2d1395a75cdf839d519293d28a409445aee8a24",
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
+-    "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
+     "apps/web/src/styles/legacy-after-gun-setup.css": "10214881326191c474881e0ee8ea59607ab99552995ac44842f24b3400c753c4",
+     "apps/web/src/features/settings/preferencePresentation.ts": "1779dc0d8b0703f6d0d6cc1068c90d6b8e8cce3bbcbffc136aa8403de5411062",
+-    "apps/web/src/pages/SettingsPage/SettingsPage.tsx": "bd327108c86ef700160e570ec237bc799374b3c5af3a9de713cec0e934638966",
+-    "apps/web/src/pages/SettingsPage/SettingsPage.css": "a2140e42d6ee524b59cb95fd26f22335d8a4f1556336dae40c422a6a91298880",
++    "apps/web/src/pages/SettingsPage/SettingsPage.tsx": "632da864165a824bf2a77fcd18a8fa71ac1a46ddad969024f7aeb794a1e3a510",
++    "apps/web/src/pages/SettingsPage/SettingsPage.css": "9e3d21fcc81ecbfb94d1b2bddb69f885534b9813311787b81dd2fc9d053f6330",
+     "apps/web/src/app/renderSettingsPage.tsx": "143a39d906358453254ee1fb6fb4b25718be1949199e4b72b637c523f6dd86e9",
+     "src/templates/shared/preview-testing.html": "dfe2d0060997b3e67c4aa51097e921ed39b131bc4e7583ec0fb479315e2d801b",
+     "apps/web/src/styles/legacy-before-settings.css": "7dc974973ff4720c2075a21ce2229b2e91e03c14044e0ef8d907e81db6615d11",
+     "apps/web/src/app/settingsPage.tsx": "86bfd9d34d26b74de231df749ba46cce7da940c699bdb89be8ba88ead13093b5",
+-    "apps/web/src/pages/LearnPage/LearnPage.tsx": "167fde006a5b81ec7237a0ab5456bb8047769456d4f5b7fd0802d994c7d4d7f5",
++    "apps/web/src/pages/LearnPage/LearnPage.tsx": "24f2344766814f1a68f7e54c0a11ba15088c68f0fcf1a87a36da758bdc936412",
+     "apps/web/src/pages/LearnPage/LearnPage.css": "1be7874e8228e2159550a7d8f41ef0c0e6cd6bfe73b481eeffc8afdd3cb8da2d",
+     "packages/ui/src/SoundCard/SoundCard.tsx": "6ef9dd3a206ba68546e33dcb07d6f583384af2256d5860151392aea3600d7d26",
+     "packages/ui/src/SoundCard/SoundCard.css": "eb3a52e26d1d1ea910e0c1002b852982ac16a2424b3a8781b280b7ffbb57a18d",
+@@ -919,19 +918,19 @@
+     "apps/web/src/app/learnPage.tsx": "81c0401a017f3d210327bc622fa43662a4bbcc29df4064f546a15990cc7bb81b",
+     "apps/web/src/app/liveListenPage.tsx": "c538704e32add37632cf3885ccb4778d536ac9a32dc010d9a67336e06ae4ac28",
+     "apps/web/src/app/renderLiveListenPage.tsx": "b94a079090eee2558540829a3d9508155a58bbb2f94b03073e00a74cf759b579",
+-    "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "24cf7641d17206fc6229db91b9f644d04b57b0a586361f639fca8fa2d83472e7",
++    "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "df56790704ee440bc042fd28a31e7b577cf8dbc2c3b4a2bbac879bb31152bb70",
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
+     "apps/web/src/features/live-listen/presentation.ts": "88218eeaefbac140403beb0d7ece18340942b015399726f5c32618770b8263b8",
+     "apps/web/src/styles/legacy-before-live-listen.css": "f951af54014e5ec3446cfb6f8cc9797af856b563d9159bbffd04411c6bcf0d13",
+     "apps/web/src/app/drillsPage.tsx": "4461ac757c62c6ef5820636ec6636b3f87a83b2b5f968bd793a0d3cfc65d0a9f",
+     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
+-    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "7fb89db4b9df0f6df18241a83be9307444f704a6ae2ccbab92816052ef2517a2",
++    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "325c6c6c5bc68c5494d015a11f8714d9ae1b3aec12bde0b1c50d7a7030ade4af",
+     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+     "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
+     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
+     "packages/ui/src/RetainedNode/RetainedNode.tsx": "351036d9dee16e01c2e9a29df9ab9704e2c96f5f9626be56d1f7ca70f6208170",
+     "apps/web/src/styles/legacy-before-drills.css": "6e926f2b9df5705eddcab67b68d4b7118556e3582e2572a08262467e3e41c89d",
+-    "apps/web/src/styles/legacy-after-drill-cards.css": "a998971008ffe9edb6dd0a19c1e5b5fd13b1264ba7892b646f4f744c2157eac8",
++    "apps/web/src/styles/legacy-after-drill-cards.css": "da52ec826c8de0ec23c53b8069481b8a233ea2470c9c9ed4d852810c1a5b28d1",
+     "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
+@@ -939,7 +938,7 @@
+     "apps/web/src/app/historyPage.tsx": "c1539ae19dfdef5af6790b5cd123780154205eba9e0475c4ed71ff742a89e89a",
+     "apps/web/src/app/renderHistoryPage.tsx": "c27fb519b66c739ebba98bbe80861330f204bee014654d4ac988d5fb0f1238ea",
+     "apps/web/src/features/history/presentation.ts": "f88e17f61df5cfa3600f824a991cdb12a5a5ca492c3d69485410ca585625b8ff",
+-    "apps/web/src/pages/HistoryPage/HistoryPage.tsx": "b5394af2fe8f591e0d5289aa8a4733ea75c2c9e54430308ac302620245fe9b98",
++    "apps/web/src/pages/HistoryPage/HistoryPage.tsx": "8347c25c9c4178d57d224216055efb858093c152bd68378e6e3691a6edd6f1cf",
+     "src/templates/shared/history-progress.html": "215a5522b5e83509bd1e4e9c5e212fc057c6a31ce0e03400f235d600acc803ef",
+     "packages/ui/src/RecognitionList/RecognitionList.tsx": "55de94df37a7d3bdfa187841bc99fd776f2f352bdef21b3a31c6101e4c237196",
+     "packages/ui/src/EvaluationPanel/EvaluationPanel.tsx": "639b2f6e4a270f27be909b78e62c1d19c00c8700dfa9697d99386d65acc2d2ca",
+@@ -982,15 +981,15 @@
+     "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
+     "apps/web/src/app/guideContents.tsx": "52da80bafebfe6213fb93dd34f75792998ed70d1bccadbc9331b3190eabb9209",
+     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
+-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "7254db8dd57e5481cd4ab390852037a7b7b6a30a3dd7fa19886773cee7b67381",
+-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "c7963318041bbcbe1ea386c7f0563ad6b52373fc1c68769bb421d46b07085c0f",
++    "apps/web/src/pages/PracticePage/PracticePage.tsx": "6232f7732ba8ea8120c6231df0ad130d18b251a5bad932c271c7c43d3cc0a5a9",
++    "apps/web/src/pages/SequencePage/SequencePage.tsx": "8d78e4ba615976152e82ff993dc366ed22d99794c0d93500622f5688e049da3f",
+     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "39e68450b650292de4523e345ba76388cfe50a5cb418a9704fac9ae7d2f570b8",
+     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
+     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "23ea6107bb58f6fa46fb2fa82421ad63ddac3e49fe9e97540382e384d5b37fba",
+     "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
+     "apps/web/src/styles/legacy-before-sequence-page.css": "687daa485d1e63a71364d3c8b9c64ab66d7038f687607a88ff9ef76c92a6d3f5",
+     "apps/web/src/pages/SequencePage/SequencePage.css": "3395c37a1d09c0a6f3001ce2308d75ad58789892847dba6e317bc50c3500acf4",
+-    "apps/web/src/styles/legacy-after-sequence-page.css": "c90ccd88154cfa632538ba68db076cd939bc8333b511348ea9e2b25057f64d09",
++    "apps/web/src/styles/legacy-after-sequence-page.css": "4f0592d13f3818b1a915015affb7e2430a795cf1deb424ac593654e96386169f",
+     "packages/ui/src/SavedSessionList/SavedSessionList.css": "f9a0c565ff87a62a2488e41cff9a05a0ef23a953cf1f153163d2cc6740ae67b1",
+     "apps/web/src/pages/PracticePage/PracticePage.css": "a5e506b9c7278668b081191fd049b58d0b0a0b2b879adf6c20060246e476d7c3",
+     "apps/web/src/app/practicePage.tsx": "31df92bc14158bab94b873a011f1b92b93936cfbc46ebac5db032f0c774b1025",
+@@ -1016,7 +1015,15 @@
+     "tools/app-document.mjs": "548b0bf8eb3c476e0149cfc4d46f84dfb441bcf89f0276c526f683987383c80d",
+     "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx": "0e2ca183b5963dd6d8d02c3c7f9c0e731df994391a1855a0de64652a4131bba2",
+     "apps/web/src/public-site/MarketingOverview/MarketingOverview.css": "835ecb53212b8b940f593c2108cb16cd8d737e3457eb14558130b61791eeeed3",
+-    "src/gunPreferenceReads.js": "612ee5623de87e64b917624124c08cebd4011215722ae9886b072b3fa973f892"
++    "src/gunPreferenceReads.js": "612ee5623de87e64b917624124c08cebd4011215722ae9886b072b3fa973f892",
++    "packages/ui/src/GunContext/GunContext.tsx": "14651a05fba5120f4342c7596c089bb0ff7f3721be61e94723e77e83614fdebc",
++    "packages/ui/src/GunContext/GunContext.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
++    "packages/ui/src/PreferenceToggle/PreferenceToggle.tsx": "2f76dd27b3fd42247a4342c3124dcbb7475b8a16ed430a77eefb7100b934a934",
++    "packages/ui/src/PreferenceToggle/PreferenceToggle.css": "f872c4528cc3a79449476a89b0c330ea1d8dd14a39fa27ed5d826c575d210214",
++    "apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx": "3e8a5cee943f911a5ff51f706cb8fb2fb0e8ef335f29310855fff9b29defe318",
++    "apps/web/src/features/settings/components/SettingsSection/SettingsSection.css": "1cf17454f9b48ad7371b46aaba3567365426095605a0f09a02857e6bc20ff774",
++    "apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx": "c9ed116bd419be71ba9222acd09a52432009cccea2711e449f702c6fff02eb9d",
++    "apps/web/src/features/settings/components/SettingsAction/SettingsAction.css": "cb71cc3f6a2be6e4a61c0b7b678abb557323520d16d0ec884bd98c6ae62b1e84"
+   },
+   "implementationChanges": [
+     "CHG-017",
+diff --git a/docs/design/baselines/chg-062-header-review.json b/docs/design/baselines/chg-062-header-review.json
+index 20f9465..6723279 100644
+--- a/docs/design/baselines/chg-062-header-review.json
++++ b/docs/design/baselines/chg-062-header-review.json
+@@ -1,7 +1,7 @@
+ {
+   "change": "CHG-062",
+   "status": "Fresh complete candidate under original gates; Chromium allowance proposal unapproved",
+-  "expandedCSSSha256": "8fcd88fb5d9eb0ab02e089caefd6a60299617c3f4b6d4d0381e88e56de7f50c1",
++  "expandedCSSSha256": "ba5a6e0b7356421e4915c87b4e87bec8ab040f6dee46c3853d5a95252300863b",
+   "approval": "About, Contact, Settings; @; consistent accessible icons; proceed with a plan",
+   "baseline": {
+     "tests": 1077,
+@@ -185,9 +185,10 @@
+     "screenshotsPreview": "passed",
+     "publicWebkit": "passed",
+     "previewWebkit": "passed",
+-    "publicChromium": "firstAction36.5\u219241.4ms failed",
++    "publicChromium": "firstAction36.5→41.4ms failed",
+     "previewChromium": "page.goto30s timeout; identical-build control passed"
+   },
+   "isolatedChromiumPending": 40200510473,
+-  "serializer": "Build-only serializer inlined in existing tracked renderer; exact output equality verified."
++  "serializer": "Build-only serializer inlined in existing tracked renderer; exact output equality verified.",
++  "structuralExtraction": "F2 candidate only; unchanged eight-page HTML and32local style cases; complete pinned acceptance remains pending"
+ }
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index de4dfec..b1191ad 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -2,7 +2,7 @@
+   "sourceCommit": "8eca7c48b6709be7ecd5a3487621b5480362f435",
+   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+   "sources": {
+-    "src/styles.css": "940ee343d9f386d3695185d71d9ed7aa556ce5a0cca1e352557f3d09aee53bdf",
++    "src/styles.css": "58efe4a712af0bf0d53a0000a6dc0a416dd37aacbf232f0c213835077e3a99d9",
+     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
+     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "23ea6107bb58f6fa46fb2fa82421ad63ddac3e49fe9e97540382e384d5b37fba",
+     "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
+@@ -30,15 +30,14 @@
+     "apps/web/src/styles/legacy-after-evaluation.css": "14626bc045626136df9cdfa1bb947a74647f37139727ade34fc85ed59b37e14e",
+     "apps/web/src/pages/HomePage/HomePage.css": "70924e9e2f91e0402c65174ca01817b5e594a79ac95c0b2e37de487c513d7a59",
+     "apps/web/src/styles/legacy-before-settings.css": "7dc974973ff4720c2075a21ce2229b2e91e03c14044e0ef8d907e81db6615d11",
+-    "apps/web/src/pages/SettingsPage/SettingsPage.css": "a2140e42d6ee524b59cb95fd26f22335d8a4f1556336dae40c422a6a91298880",
++    "apps/web/src/pages/SettingsPage/SettingsPage.css": "9e3d21fcc81ecbfb94d1b2bddb69f885534b9813311787b81dd2fc9d053f6330",
+     "apps/web/src/styles/legacy-before-live-listen.css": "f951af54014e5ec3446cfb6f8cc9797af856b563d9159bbffd04411c6bcf0d13",
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "b2710c830140877fd7578d210bfdc908c8a989a6f6ea7454b97e710241b5d4fe",
+     "apps/web/src/styles/legacy-before-drills.css": "6e926f2b9df5705eddcab67b68d4b7118556e3582e2572a08262467e3e41c89d",
+     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
+-    "apps/web/src/styles/legacy-after-drill-cards.css": "a998971008ffe9edb6dd0a19c1e5b5fd13b1264ba7892b646f4f744c2157eac8",
++    "apps/web/src/styles/legacy-after-drill-cards.css": "da52ec826c8de0ec23c53b8069481b8a233ea2470c9c9ed4d852810c1a5b28d1",
+     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
+-    "apps/web/src/styles/legacy-before-gun-setup.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
+     "apps/web/src/styles/legacy-after-gun-setup.css": "10214881326191c474881e0ee8ea59607ab99552995ac44842f24b3400c753c4",
+     "apps/web/src/pages/GunsPage/GunsPage.css": "0ca384aca93f0ca6da65a103ad75c156804cac9514d764397e1c387874061718",
+@@ -47,7 +46,7 @@
+     "apps/web/src/styles/legacy-before-sequence-page.css": "687daa485d1e63a71364d3c8b9c64ab66d7038f687607a88ff9ef76c92a6d3f5",
+     "apps/web/src/pages/SequencePage/SequencePage.css": "3395c37a1d09c0a6f3001ce2308d75ad58789892847dba6e317bc50c3500acf4",
+     "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
+-    "apps/web/src/styles/legacy-after-sequence-page.css": "c90ccd88154cfa632538ba68db076cd939bc8333b511348ea9e2b25057f64d09",
++    "apps/web/src/styles/legacy-after-sequence-page.css": "4f0592d13f3818b1a915015affb7e2430a795cf1deb424ac593654e96386169f",
+     "packages/ui/src/SequenceRun/SequenceRun.css": "949ad9dd299acd94b1563bf6c1107c8d6ebefa487531ed40dd117c8c90ee0ab2",
+     "apps/web/src/styles/legacy-session-section-headings.css": "1bbd376c87ae14eb275e22f6b9943f64fe1a89d8687f85588933cd09fe6a8230",
+     "packages/ui/src/RepetitionResult/RepetitionResult.css": "103745e188f46e5712152e774d0eb60a8563f751fa917f7d18bef91b59c2b0c6",
+@@ -71,7 +70,7 @@
+     "packages/ui/src/ProgressContent/ProgressContent.css": "51d807fae23db615339543ed09d3659468b282bdcfa42e0a24d73a1b4807afbd",
+     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
+     "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
+-    "vite.config.js": "c08e425fc7305e585097d6f953b1e3635e211bf15e6ed1a677b8de80b992a729",
++    "vite.config.js": "2ffb0d1eab1ac30931f401f3ff5fd0507507d7b466263a5532694a76e6f497ca",
+     "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
+@@ -91,9 +90,9 @@
+     "src/practiceModes.js": "52eefe470cf0dd67582596a38662f9b7690865f8976a32a3122f07de87195fe7",
+     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
+     "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c",
+-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "7254db8dd57e5481cd4ab390852037a7b7b6a30a3dd7fa19886773cee7b67381",
++    "apps/web/src/pages/PracticePage/PracticePage.tsx": "6232f7732ba8ea8120c6231df0ad130d18b251a5bad932c271c7c43d3cc0a5a9",
+     "apps/web/src/pages/PracticePage/index.ts": "5b5b81bf639048fdae1497102f8195e6f3e88390603e112e39e0ec56f5ae5876",
+-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "c7963318041bbcbe1ea386c7f0563ad6b52373fc1c68769bb421d46b07085c0f",
++    "apps/web/src/pages/SequencePage/SequencePage.tsx": "8d78e4ba615976152e82ff993dc366ed22d99794c0d93500622f5688e049da3f",
+     "apps/web/src/pages/SequencePage/index.ts": "35d27d3e9d6ca4e0b66385e97fb718a7aebe519045baa635d7d0cb77dc0465ec",
+     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "39e68450b650292de4523e345ba76388cfe50a5cb418a9704fac9ae7d2f570b8",
+     "apps/web/src/pages/PracticeGuidePage/index.ts": "cbaa34b0c350d037b794d8112a741d5e4d191d0f19cf941e3a0a457d74665f52",
+@@ -122,7 +121,11 @@
+     "packages/ui/src/SequenceRun/SequenceRun.tsx": "20423e2f4c7a57e48961b9cc56fdda30c5d0716911db70bee8237080327c80df",
+     "packages/ui/src/SequenceRun/index.ts": "f320c4332689a07ed20a7a3b9223a65e5dc6a6149bba1758c14166f319b95701",
+     "packages/ui/src/SequenceReview/SequenceReview.tsx": "b6723e2fe002859120cb4f0bbf2bf3e1f8282fbac4bb4b83e3aae2812a0dc874",
+-    "packages/ui/src/SequenceReview/index.ts": "8a778eaff0f4799346ba6dc47b85bd0f04cf04079e49fa427fa3059af7332184"
++    "packages/ui/src/SequenceReview/index.ts": "8a778eaff0f4799346ba6dc47b85bd0f04cf04079e49fa427fa3059af7332184",
++    "apps/web/src/features/settings/components/SettingsSection/SettingsSection.css": "1cf17454f9b48ad7371b46aaba3567365426095605a0f09a02857e6bc20ff774",
++    "apps/web/src/features/settings/components/SettingsAction/SettingsAction.css": "cb71cc3f6a2be6e4a61c0b7b678abb557323520d16d0ec884bd98c6ae62b1e84",
++    "packages/ui/src/GunContext/GunContext.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
++    "packages/ui/src/PreferenceToggle/PreferenceToggle.css": "f872c4528cc3a79449476a89b0c330ea1d8dd14a39fa27ed5d826c575d210214"
+   },
+   "exports": [
+     {
+@@ -215,5 +218,11 @@
+       "width": 358,
+       "height": 750
+     }
+-  ]
++  ],
++  "equivalentSourceReview": {
++    "date": "2026-10-26",
++    "scope": "F2 source extraction; existing media retained without pixel-baseline changes",
++    "evidence": "docs/project/react-refactor/f2-equivalence.json",
++    "pinnedAcceptance": "pending"
++  }
+ }
+diff --git a/docs/project/react-refactor/f2-equivalence.json b/docs/project/react-refactor/f2-equivalence.json
+new file mode 100644
+index 0000000..0f6e6bf
+--- /dev/null
++++ b/docs/project/react-refactor/f2-equivalence.json
+@@ -0,0 +1,10 @@
++{
++  "purpose": "Local CSS equivalence only; pinned screenshots and timing still required",
++  "cases": 32,
++  "elements": 1872,
++  "elementAndPseudoStylesIdenticalExceptContain": true,
++  "fullPagePixelsIdentical": true,
++  "expectedPropertyChange": "Settings groups gain layout containment",
++  "pageMarkupByteIdentical": 8,
++  "publication": "Unpublished; complete pinned acceptance and original timing remain pending"
++}
+diff --git a/apps/web/src/styles/legacy-before-gun-setup.css b/packages/ui/src/GunContext/GunContext.css
+similarity index 100%
+rename from apps/web/src/styles/legacy-before-gun-setup.css
+rename to packages/ui/src/GunContext/GunContext.css
+diff --git a/packages/ui/src/GunContext/GunContext.test.tsx b/packages/ui/src/GunContext/GunContext.test.tsx
+new file mode 100644
+index 0000000..0d1a032
+--- /dev/null
++++ b/packages/ui/src/GunContext/GunContext.test.tsx
+@@ -0,0 +1,12 @@
++/** @jest-environment jsdom */
++import '@dryfire/testing/setup';
++import {cleanup,render,screen} from '@testing-library/react';
++import {GunContext} from './GunContext.tsx';
++afterEach(cleanup);
++test('context wording and escaped gun names preserve a single named child across updates',()=>{
++ const {rerender,container}=render(<GunContext prefix="Practice for " name="<img src=x>"/>);
++ const name=screen.getByText('<img src=x>');expect(container.querySelector('img')).toBeNull();
++ expect(container.querySelector('p')).toHaveTextContent('Practice for <img src=x>.');
++ rerender(<GunContext prefix="Saved results for " name="Second" hidden/>);
++ expect(screen.getByText('Second')).toBe(name);expect(container.querySelector('p')).toHaveClass('gun-context','hidden');
++});
+diff --git a/packages/ui/src/GunContext/GunContext.tsx b/packages/ui/src/GunContext/GunContext.tsx
+new file mode 100644
+index 0000000..d362556
+--- /dev/null
++++ b/packages/ui/src/GunContext/GunContext.tsx
+@@ -0,0 +1,3 @@
++export type GunContextProps={name?:string;hidden?:boolean;prefix:string;suffix?:string};
++/** Shared text only; the application owns selection, readiness and persistence. */
++export function GunContext({name,hidden=false,prefix,suffix='.'}:GunContextProps){return <p className={'gun-context'+(hidden?' hidden':'')}>{prefix}<strong className="gun-context-name">{name}</strong>{suffix}</p>;}
+diff --git a/packages/ui/src/GunContext/index.ts b/packages/ui/src/GunContext/index.ts
+new file mode 100644
+index 0000000..ec612d4
+--- /dev/null
++++ b/packages/ui/src/GunContext/index.ts
+@@ -0,0 +1 @@
++export {GunContext,type GunContextProps} from './GunContext.tsx';
+diff --git a/packages/ui/src/PreferenceToggle/PreferenceToggle.css b/packages/ui/src/PreferenceToggle/PreferenceToggle.css
+new file mode 100644
+index 0000000..335e740
+--- /dev/null
++++ b/packages/ui/src/PreferenceToggle/PreferenceToggle.css
+@@ -0,0 +1,9 @@
++.preference-toggle { display:flex; align-items:center; justify-content:space-between; gap:14px; min-height:64px; padding:14px; color:var(--session-text); cursor:pointer; }
++.preference-toggle>span { display:grid; gap:5px; min-width:0; }
++.preference-toggle strong { font-weight:650; font-size:.85rem; }
++.preference-toggle small { color:var(--session-muted); font-size:.71rem; line-height:1.5; overflow-wrap:anywhere; }
++.preference-toggle input { appearance:none; position:relative; width:48px; height:28px; margin:8px 0; padding:0; flex:none; border:1px solid #627587; border-radius:99px; background:#344654; cursor:pointer; }
++.preference-toggle input::before { content:""; position:absolute; width:22px; height:22px; left:2px; top:2px; background:#f5f7fa; border-radius:50%; box-shadow:0 1px 3px #0003; transition:transform .15s ease; }
++.preference-toggle input:checked { background:#ff8126; border-color:#ff8126; }
++.preference-toggle input:checked::before { transform:translateX(20px); }
++.preference-toggle input:disabled { cursor:not-allowed; opacity:.55; }
+diff --git a/packages/ui/src/PreferenceToggle/PreferenceToggle.test.tsx b/packages/ui/src/PreferenceToggle/PreferenceToggle.test.tsx
+new file mode 100644
+index 0000000..19007d3
+--- /dev/null
++++ b/packages/ui/src/PreferenceToggle/PreferenceToggle.test.tsx
+@@ -0,0 +1,18 @@
++/** @jest-environment jsdom */
++import '@dryfire/testing/setup';
++import {cleanup,render,screen} from '@testing-library/react';
++import userEvent from '@testing-library/user-event';
++import {PreferenceToggle} from './PreferenceToggle.tsx';
++afterEach(cleanup);
++test('label activation changes one native switch and preserves its value across parent updates',async()=>{
++ const user=userEvent.setup(),changes:boolean[]=[];const props={id:'sound',label:'Sound at start',description:'Play the signal.',onChange:(event:React.ChangeEvent<HTMLInputElement>)=>changes.push(event.currentTarget.checked)};
++ const {rerender}=render(<PreferenceToggle {...props}/>);const input=screen.getByRole('switch');await user.click(screen.getByText('Sound at start'));
++ expect(input).toBeChecked();expect(changes).toEqual([true]);
++ rerender(<PreferenceToggle {...props} disabled description="Unavailable"/>);expect(screen.getByRole('switch')).toBe(input);expect(input).toBeChecked();await user.click(input);expect(changes).toEqual([true]);
++});
++test('status and externally supplied descriptions retain their distinct accessible wiring',()=>{
++ const {rerender}=render(<PreferenceToggle id="noise" label="Noise Filter" description="Checking" descriptionId="noiseStatus" descriptionRole="status"/>);
++ expect(screen.getByRole('switch')).toHaveAttribute('aria-describedby','noiseStatus');expect(screen.getByRole('status')).toHaveTextContent('Checking');
++ rerender(<PreferenceToggle id="noise" label="Noise Filter" description="Help" aria-describedby="externalNote" name="startSound" defaultChecked/>);
++ expect(screen.getByRole('switch')).toHaveAttribute('aria-describedby','externalNote');expect(screen.getByRole('switch')).toHaveAttribute('name','startSound');expect(screen.queryByRole('status')).toBeNull();
++});
+diff --git a/packages/ui/src/PreferenceToggle/PreferenceToggle.tsx b/packages/ui/src/PreferenceToggle/PreferenceToggle.tsx
+new file mode 100644
+index 0000000..d1a2093
+--- /dev/null
++++ b/packages/ui/src/PreferenceToggle/PreferenceToggle.tsx
+@@ -0,0 +1,4 @@
++import type {InputHTMLAttributes} from 'react';
++export type PreferenceToggleProps=Omit<InputHTMLAttributes<HTMLInputElement>,'id'|'type'|'role'|'className'> & {id:string;label:string;description:string;descriptionId?:string;descriptionRole?:'status';className?:string};
++/** Uncontrolled native switch; parent adapters retain preference/capture ownership. */
++export function PreferenceToggle({id,label,description,descriptionId,descriptionRole,className,'aria-describedby':describedBy,...input}:PreferenceToggleProps){return <label className={'preference-toggle'+(className?' '+className:'')} htmlFor={id}><span><strong>{label}</strong><small id={descriptionId} role={descriptionRole}>{description}</small></span><input id={id} {...input} type="checkbox" role="switch" aria-describedby={describedBy??descriptionId}/></label>;}
+diff --git a/packages/ui/src/PreferenceToggle/index.ts b/packages/ui/src/PreferenceToggle/index.ts
+new file mode 100644
+index 0000000..496638d
+--- /dev/null
++++ b/packages/ui/src/PreferenceToggle/index.ts
+@@ -0,0 +1 @@
++export {PreferenceToggle,type PreferenceToggleProps} from './PreferenceToggle.tsx';
+diff --git a/src/styles.css b/src/styles.css
+index e1d4cbd..9d1a4c6 100644
+--- a/src/styles.css
++++ b/src/styles.css
+@@ -25,15 +25,17 @@
+ @import "../apps/web/src/styles/legacy-after-evaluation.css";
+ @import "../apps/web/src/pages/HomePage/HomePage.css";
+ @import "../apps/web/src/styles/legacy-before-settings.css";
++@import "../apps/web/src/features/settings/components/SettingsSection/SettingsSection.css";
+ @import "../apps/web/src/pages/SettingsPage/SettingsPage.css";
+ @import "../apps/web/src/styles/legacy-before-live-listen.css";
+ @import "../apps/web/src/pages/LiveListenPage/LiveListenPage.css";
+ @import "../apps/web/src/styles/legacy-before-drills.css";
+ @import "../apps/web/src/pages/DrillsPage/DrillsPage.css";
+ @import "../packages/ui/src/DrillCard/DrillCard.css";
++@import "../apps/web/src/features/settings/components/SettingsAction/SettingsAction.css";
+ @import "../apps/web/src/styles/legacy-after-drill-cards.css";
+ @import "../packages/ui/src/GunSwitcher/GunSwitcher.css";
+-@import "../apps/web/src/styles/legacy-before-gun-setup.css";
++@import "../packages/ui/src/GunContext/GunContext.css";
+ @import "../apps/web/src/pages/GunSetupPage/GunSetupPage.css";
+ @import "../apps/web/src/styles/legacy-after-gun-setup.css";
+ @import "../apps/web/src/pages/GunsPage/GunsPage.css";
+@@ -42,6 +44,7 @@
+ @import "../apps/web/src/styles/legacy-before-sequence-page.css";
+ @import "../apps/web/src/pages/SequencePage/SequencePage.css";
+ @import "../packages/ui/src/DrillSetup/DrillSetup.css";
++@import "../packages/ui/src/PreferenceToggle/PreferenceToggle.css";
+ @import "../apps/web/src/styles/legacy-after-sequence-page.css";
+ @import "../packages/ui/src/SequenceRun/SequenceRun.css";
+ @import "../apps/web/src/styles/legacy-session-section-headings.css";
+diff --git a/tools/verify-component-packages.mjs b/tools/verify-component-packages.mjs
+index ab09a83..d747249 100644
+--- a/tools/verify-component-packages.mjs
++++ b/tools/verify-component-packages.mjs
+@@ -7,6 +7,10 @@ const read = path => readFileSync(resolve(root, path), 'utf8');
+ const errors = [];
+ const require = (condition, message) => { if (!condition) errors.push(message); };
+ const folders = ['packages/ui/src', 'apps/web/src/pages', 'apps/web/src/public-site'];
++for(const feature of readdirSync(resolve(root,'apps/web/src/features'),{withFileTypes:true}).filter(entry=>entry.isDirectory())){
++ const components=`apps/web/src/features/${feature.name}/components`;
++ if(existsSync(resolve(root,components)))folders.push(components);
++}
+ const imports = text => [...text.matchAll(/\bfrom\s+['"]([^'"]+)['"]/g)].map(m => m[1]);
+ let components = 0;
+ for (const base of folders) {
+@@ -16,7 +20,7 @@ for (const base of folders) {
+     for (const suffix of ['.tsx', '.css', '.test.tsx']) require(existsSync(resolve(root, `${path}/${name}${suffix}`)), `${path}: missing ${name}${suffix}`);
+     require(existsSync(resolve(root, `${path}/index.ts`)), `${path}: missing public entry`);
+     const source = read(`${path}/${name}.tsx`);
+-    if (base.startsWith('packages/ui')) {
++    if (base.startsWith('packages/ui') || base.includes('/features/')) {
+       require(!imports(source).some(s => s.startsWith('@dryfire/web') || s.startsWith('.') && !resolve(root, path, s).startsWith(resolve(root, 'packages/ui/src') + '/')), `${path}: shared UI imports app/private implementation`);
+       require(!/\b(?:getUserMedia|indexedDB|localStorage)\b/.test(source), `${path}: shared UI acquires platform services`);
+     }
+diff --git a/vite.config.js b/vite.config.js
+index 5cedcaf..e71116e 100644
+--- a/vite.config.js
++++ b/vite.config.js
+@@ -66,6 +66,8 @@ export default defineConfig(({ mode }) => {
+         'pcm-capture.worklet': resolve(import.meta.dirname, 'workers/pcm-capture.worklet.js'),
+       },
+       output: {
++        // Keep tiny shared page primitives together without pulling React into startup.
++        codeSplitting: { groups: [{ name: 'pageFields', test: /\/packages\/ui\/src\/(?:PageHeading|GunContext|PreferenceToggle)\//, includeDependenciesRecursively: false }] },
+         entryFileNames: chunk =>
+           ['sw', 'pcm-capture.worklet'].includes(chunk.name)
+             ? `${chunk.name}.js`

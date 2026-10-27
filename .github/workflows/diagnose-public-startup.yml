@@ -10,6 +10,27 @@ on:
         type: boolean
         required: false
         default: false
+      presentation_variant:
+        type: choice
+        options: [none, css, shell, header, footer, contained-menu]
+        required: false
+        default: none
+      production_main:
+        type: boolean
+        required: false
+        default: false
+      root_flex:
+        type: boolean
+        required: false
+        default: false
+      trace_layout:
+        type: boolean
+        required: false
+        default: false
+      compare_production:
+        type: boolean
+        required: false
+        default: false
       browser:
         type: choice
         options: [webkit, chromium]
@@ -30,6 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
+        if: ${{ !inputs.compare_production }}
         with:
           ref: 6c38bff81662d30279d94d41ca5c949bdbbe1c6e
           path: .performance-baseline
@@ -38,7 +60,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory "$GITHUB_WORKSPACE/.performance-baseline"
       - name: Apply optional review candidate
-        if: inputs.candidate_patch != ''
+        if: ${{ !inputs.compare_production && inputs.candidate_patch != '' }}
         env:
           CANDIDATE_PATCH: ${{ inputs.candidate_patch }}
         run: git apply -- "$CANDIDATE_PATCH"
@@ -48,15 +70,18 @@ jobs:
           cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npm ci --no-audit --no-fund
+        if: ${{ !inputs.compare_production }}
         working-directory: .performance-baseline
       - run: npm run build
+        if: ${{ !inputs.compare_production }}
         working-directory: .performance-baseline
       - run: npm run build
+        if: ${{ !inputs.compare_production }}
       - name: Crossed WebKit HTML/module diagnostic, never acceptance
-        if: ${{ !inputs.measure_webkit_gate }}
+        if: ${{ !inputs.measure_webkit_gate && !inputs.compare_production }}
         run: node --experimental-vm-modules tools/performance/diagnose-startup.mjs --baseline=.performance-baseline/dist --candidate=dist
       - name: Measure the original public browser gate in isolation
-        if: inputs.measure_webkit_gate
+        if: ${{ inputs.measure_webkit_gate && !inputs.compare_production }}
         run: npm run perf:compare -- --baseline=.performance-baseline/dist --candidate=dist --browser=${{ inputs.browser }}
       - name: Publish actual performance evidence
         if: always() && inputs.measure_webkit_gate
@@ -65,6 +90,62 @@ jobs:
       - name: "Timing result: ${{ steps.gate.outputs.outcome || 'not measured' }}"
         if: always() && inputs.measure_webkit_gate
         run: ':'
+      - uses: actions/checkout@v4
+        if: inputs.compare_production
+        with:
+          ref: 71ae074cc3f1276ce46a632e35f58819130eca89
+          path: .investigation-production
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        if: inputs.compare_production
+        with:
+          ref: b84ceb4a26c5cb0afb33cadf1ca45ed9eedd06ff
+          path: .investigation-candidate
+          persist-credentials: false
+      - name: Build exact production and unpublished candidate
+        if: inputs.compare_production
+        env:
+          ROOT_FLEX: ${{ inputs.root_flex }}
+          PRODUCTION_MAIN: ${{ inputs.production_main }}
+          PRESENTATION_VARIANT: ${{ inputs.presentation_variant }}
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/.investigation-production"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/.investigation-candidate"
+          cd .investigation-production
+          npm ci --no-audit --no-fund
+          npm run build:public
+          cd ../.investigation-candidate
+          git apply docs/design/review-inputs/chg-062-complete.patch
+          npm ci --no-audit --no-fund
+          npm run build:public
+          cp -a dist ../.investigation-candidate-dist
+          node --input-type=module <<'NODE'
+          import {readFileSync,writeFileSync} from 'node:fs';
+          if(process.env.PRESENTATION_VARIANT&&process.env.PRESENTATION_VARIANT!=='none'){
+            // Presentation ablation happens in the compiled artifact below.
+          }else if(process.env.PRODUCTION_MAIN==='true'){
+            writeFileSync('src/main.js',readFileSync('../.investigation-production/src/main.js','utf8'));
+          }else if(process.env.ROOT_FLEX==='true'){
+            const file='apps/web/src/styles/legacy-after-drill-cards.css',from='.page-content{flex:1;min-width:0}';let css=readFileSync(file,'utf8');
+            if(css.split(from).length!==2)throw Error('Root-flex source contract changed');
+            writeFileSync(file,css.replace(from,'.page-content{flex:1 0 auto;min-width:0;min-height:0}'));
+          }else{
+            const file='src/main.js';let source=readFileSync(file,'utf8');
+            const snapshot='  const resetScroll = window.scrollX !== 0 || window.scrollY !== 0;\n';
+            const reset="  // Avoid forcing layout for a no-op reset; measure the old position before page writes.\n  if(resetScroll)window.scrollTo({top:0,behavior:'instant'});\n";
+            const position='  document.body.dataset.view = name;\n';
+            if(!source.includes(snapshot)||!source.includes(reset)||!source.includes(position))throw Error('Counterfactual source contract changed');
+            source=source.replace(snapshot,'').replace(reset,'').replace(position,position+"  window.scrollTo({top:0,behavior:'instant'});\n");
+            writeFileSync(file,source);
+          }
+          NODE
+          npm run build:public
+          if [ "$PRESENTATION_VARIANT" != "none" ]; then
+            node ../tools/performance/presentation-variant.mjs ../.investigation-production/dist dist "$PRESENTATION_VARIANT"
+          fi
+      - name: Compare production, candidate and isolated layout variant
+        if: inputs.compare_production
+        run: node tools/performance/investigate-first-settings.mjs --production=.investigation-production/dist --candidate=.investigation-candidate-dist --baselineScroll=.investigation-candidate/dist --trace=${{ inputs.trace_layout }} --variant-name=${{ inputs.presentation_variant != 'none' && format('presentation-{0}', inputs.presentation_variant) || inputs.production_main && 'productionMain' || inputs.root_flex && 'rootFlex' || 'baselineScroll' }}
       - name: Expose diagnostic results
         id: results
         if: always()

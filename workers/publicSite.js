@@ -32,6 +32,7 @@ export default {async fetch(request,env){
   const identity=parseAppPath(path);body=(await response.text()).replace(/<title>[^<]*<\/title>/,'<title>'+appTitleFor(identity)+'</title>').replace(/(<link rel="canonical" href=")[^"]+/, '$1'+CANONICAL_ORIGIN+appPathFor(identity)).replace(/(<meta name="robots" content=")[^"]+/, '$1noindex, nofollow').replace(/<script\b[^>]*id="page-structured-data"[^>]*>[\s\S]*?<\/script>/g,'');
   headers.delete('Content-Length');headers.delete('ETag');
  }
- if(route||app)headers.set('Cache-Control','public, max-age=0, must-revalidate');
+ if(response.status===200&&/^\/assets\/[^/]+-[A-Za-z0-9_-]+\.(?:js|css)$/.test(path))headers.set('Cache-Control','public, max-age=31536000, immutable');
+ else if(route||app||/\.(?:js|css|json|webmanifest|svg|png|gif|ico)$/.test(path))headers.set('Cache-Control','public, max-age=0, must-revalidate');
  return new Response(body,{status:response.status,headers});
 }};

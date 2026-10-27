@@ -4,7 +4,7 @@
  */
 import '@dryfire/testing/setup';
 import {render,cleanup} from '@testing-library/react';
-import {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from './DrillSetup';
+import {DrillSetup,DrillSetupDelayMode,DrillSetupDelayRange,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from './DrillSetup';
 import {NumberInput} from '../NumberInput';
 afterEach(cleanup);
 test.each(['practice','session'] as const)('%s uses one semantic configuration template with native bounds and disabled fieldset behavior',prefix=>{
@@ -23,4 +23,11 @@ test('guide navigation uses a shared outlined link with a decorative information
  const link=v.getByRole('link',{name:'About this practice'});
  expect(link).toHaveAttribute('href','#practice-guide');expect(link).toHaveClass('practice-guide-link');expect(link.querySelector('[aria-hidden="true"]')).toHaveTextContent('ⓘ');expect(link).not.toHaveTextContent('›');
  v.rerender(<DrillGuideLink id="guide" hidden/>);expect(link).toHaveClass('hidden');
+});
+
+test('shared delay controls preserve native selection and unfinished range values on parent updates',()=>{
+ const content=()=> <><DrillSetupDelayMode inputId="delay" modes={['fixed','random']} name="delayMode"/><DrillSetupDelayRange id="range" prefix="practice" minimum={<input id="practiceMinDelay" defaultValue="2"/>} maximum={<input id="practiceMaxDelay" defaultValue="5"/>}/></>;
+ const v=render(content()),select=v.getByLabelText('Start delay') as HTMLSelectElement,min=v.getByLabelText('Minimum seconds') as HTMLInputElement;
+ select.value='random';min.value='3';v.rerender(content());
+ expect(v.getByLabelText('Start delay')).toBe(select);expect(select.value).toBe('random');expect(v.getByLabelText('Minimum seconds')).toBe(min);expect(min.value).toBe('3');expect(v.getByLabelText('Maximum seconds')).toHaveAttribute('id','practiceMaxDelay');
 });

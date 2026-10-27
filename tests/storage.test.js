@@ -188,3 +188,6 @@ describe('portable local backup', () => {
     expect(await getExamples()).toHaveLength(1);
   });
 });
+
+test('updating a missing gun rejects instead of silently creating an orphan',async()=>{const {updateGun}=await import('../src/storage.js');await expect(updateGun('missing',{name:'Updated',type:'Handguns'})).rejects.toThrow('Gun profile not found.');});
+test('legacy restore supplies missing event timestamps through the persistence facade',async()=>{const {restoreBackup}=await import('../src/storage.js');await restoreBackup({format:'sound-trainer-backup',version:1,featureVersion:2,examples:[],events:[{id:'legacy-no-time',label:'trigger',score:75}]});const events=await getEvents();expect(events).toHaveLength(1);expect(events[0].createdAt).toBeGreaterThan(0);});
