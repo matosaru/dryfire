@@ -123,3 +123,11 @@ test('a disposed information owner cannot materialize a deferred page or load it
 test('missing About host remains safe for fallback calls without mutating another page',()=>{
  setContent('<section id="contactView"></section>');const load=jest.fn(()=>new Promise<never>(()=>{}));const bridge=createInformationBridge({onNavigate:jest.fn(),onBack:jest.fn(),onError:jest.fn(),load});bridge.setFull(true);bridge.show('about');expect(document.getElementById('aboutFeatureSummary')).toBeNull();expect(document.getElementById('contactView')?.childNodes).toHaveLength(0);bridge.dispose();
 });
+
+test('serialized About applies the latest Full state synchronously and restores public copy',()=>{
+ const tree=[['p',[['id','aboutFeatureSummary'],['data-full-summary','Full copy']],['Public copy']]];
+ setContent(`<section id="aboutView"><script type="application/json" data-static-page="about">${JSON.stringify(tree)}</script></section><section id="contactView"></section>`);
+ const bridge=createInformationBridge({onNavigate:jest.fn(),onBack(){},onError:jest.fn(),load:()=>new Promise(()=>{})});
+ bridge.setFull(true);bridge.show('about');expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Full copy');
+ bridge.setFull(false);expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Public copy');bridge.show('about');bridge.dispose();
+});

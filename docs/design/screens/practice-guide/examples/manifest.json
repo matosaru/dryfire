@@ -116,7 +116,7 @@
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "vite.config.js": "7c5e167d6d91394541c2c01e55f4bc939ad8489011789c625a7881ef40c36ccd",
     "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
-    "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
+    "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
     "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c",

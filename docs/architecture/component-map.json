@@ -1079,5 +1079,16 @@
       "tests": "packages/ui/src/SoundCard/SoundCard.test.tsx",
       "entry": "packages/ui/src/SoundCard/index.ts"
     }
-  ]
+  ],
+  "deferredAboutPreparation": {
+    "buildSource": "apps/web/src/app/renderInformationPages.tsx",
+    "runtimeSource": "src/staticCatalog.js",
+    "coordinator": "apps/web/src/app/informationBridge.ts",
+    "tests": [
+      "tests/staticPageTree.test.js",
+      "tests/informationPrerender.test.js",
+      "apps/web/src/app/informationBridge.test.ts"
+    ],
+    "contract": "Build-owned inert About data materializes once on explicit page entry. Existing template catalogs, native Back/Full summaries and public readable prerendered About HTML remain unchanged. Never pass stored/user HTML to this decoder."
+  }
 }
