@@ -1,0 +1,193 @@
+diff --git a/apps/web/src/app/informationBridge.test.ts b/apps/web/src/app/informationBridge.test.ts
+index 03df637..2395693 100644
+--- a/apps/web/src/app/informationBridge.test.ts
++++ b/apps/web/src/app/informationBridge.test.ts
+@@ -123,3 +123,11 @@ test('a disposed information owner cannot materialize a deferred page or load it
+ test('missing About host remains safe for fallback calls without mutating another page',()=>{
+  setContent('<section id="contactView"></section>');const load=jest.fn(()=>new Promise<never>(()=>{}));const bridge=createInformationBridge({onNavigate:jest.fn(),onBack:jest.fn(),onError:jest.fn(),load});bridge.setFull(true);bridge.show('about');expect(document.getElementById('aboutFeatureSummary')).toBeNull();expect(document.getElementById('contactView')?.childNodes).toHaveLength(0);bridge.dispose();
+ });
++
++test('serialized About applies the latest Full state synchronously and restores public copy',()=>{
++ const tree=[['p',[['id','aboutFeatureSummary'],['data-full-summary','Full copy']],['Public copy']]];
++ setContent(`<section id="aboutView"><script type="application/json" data-static-page="about">${JSON.stringify(tree)}</script></section><section id="contactView"></section>`);
++ const bridge=createInformationBridge({onNavigate:jest.fn(),onBack(){},onError:jest.fn(),load:()=>new Promise(()=>{})});
++ bridge.setFull(true);bridge.show('about');expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Full copy');
++ bridge.setFull(false);expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Public copy');bridge.show('about');bridge.dispose();
++});
+diff --git a/apps/web/src/app/informationBridge.ts b/apps/web/src/app/informationBridge.ts
+index 4cbbabd..de55e26 100644
+--- a/apps/web/src/app/informationBridge.ts
++++ b/apps/web/src/app/informationBridge.ts
+@@ -14,8 +14,8 @@ export function createInformationBridge({ onBack, onError, doc = document,
+   let pages: Pages | undefined, pending: Promise<void> | undefined;
+   let ready: Module | undefined;
+   let full = false, disposed = false;
+-  const summary = doc.getElementById('aboutFeatureSummary') ?? doc.getElementById('aboutView')?.querySelector('template')?.content.getElementById('aboutFeatureSummary');
+-  const freeSummary = summary?.textContent ?? '';
++  let summary = doc.getElementById('aboutFeatureSummary') ?? doc.getElementById('aboutView')?.querySelector('template')?.content.getElementById('aboutFeatureSummary');
++  let freeSummary = summary?.textContent ?? '';
+   const chrome = createChromeBridge(doc, onNavigate);
+   const enhance = () => {
+     if (disposed || !ready) return;
+@@ -34,7 +34,7 @@ export function createInformationBridge({ onBack, onError, doc = document,
+   return {
+     show(view: string) {
+       if(disposed)return;
+-      if(view==='about'){const host=doc.getElementById('aboutView');if(host)materializeStaticCatalog(host);}
++      if(view==='about'){const host=doc.getElementById('aboutView');if(host)materializeStaticCatalog(host);if(!summary){summary=doc.getElementById('aboutFeatureSummary');freeSummary=summary?.textContent??'';if(summary&&full)summary.textContent=summary.dataset.fullSummary!;}}
+       chrome.view(view); enhance();
+       if (disposed || ready || pending || !['about', 'contact'].includes(view)) return;
+       pending = load().then(module => {
+diff --git a/apps/web/src/app/renderInformationPages.tsx b/apps/web/src/app/renderInformationPages.tsx
+index 34c2a11..e4c2e63 100644
+--- a/apps/web/src/app/renderInformationPages.tsx
++++ b/apps/web/src/app/renderInformationPages.tsx
+@@ -1,10 +1,19 @@
+ import { renderToStaticMarkup } from 'react-dom/server';
++import {parseFragment, type DefaultTreeAdapterMap} from 'parse5';
++
++type BuildNode=DefaultTreeAdapterMap['textNode']|DefaultTreeAdapterMap['element'];
++type StaticNode=string|[string,[string,string][],StaticNode[]];
++/** Only our typed page's text/elements enter this build-only serializer. */
++function serializeStaticPage(html:string) {
++  const encode=(node:BuildNode):StaticNode=>'value' in node?node.value:[node.tagName,node.attrs.map(a=>[a.name,a.value]),(node.childNodes as BuildNode[]).map(encode)];
++  return JSON.stringify((parseFragment(html).childNodes as BuildNode[]).map(encode)).replaceAll('<','\\u003c');
++}
+ import { AboutPage } from '../pages/AboutPage/index.ts';
+ import { ContactPage } from '../pages/ContactPage/index.ts';
+ 
+ /** Prerender the same components used by the browser; no parallel HTML copy. */
+ export function renderInformationPage(id: string, deferred = false) {
+-  if (id === 'about') {const html=renderToStaticMarkup(<AboutPage />);return deferred?`<template>${html}</template>`:html;}
++  if (id === 'about') {const html=renderToStaticMarkup(<AboutPage />);return deferred?`<script type="application/json" data-static-page="about">${serializeStaticPage(html)}</script>`:html;}
+   if (id === 'contact') return renderToStaticMarkup(<ContactPage />);
+   throw new Error(`Not an informational page: ${id}`);
+ }
+diff --git a/docs/architecture/application-structure.md b/docs/architecture/application-structure.md
+index c33225f..adf39c9 100644
+--- a/docs/architecture/application-structure.md
++++ b/docs/architecture/application-structure.md
+@@ -147,3 +147,5 @@ The HTML entry remains `index.html`; browser composition remains `src/main.js`.
+ Each visual component retains its own source, CSS, test and public entry. Source-only moves preserve the reviewed screenshots/GIFs; complete pinned browser and original performance acceptance still gate publication. The machine-readable [component map](component-map.json) and [application sitemap](application-sitemap.md) remain the maintained ownership/route indexes.
+ 
+ The component map now includes the complete48package inventory (source, CSS, tests and public entry), regenerated by `npm run docs:generate` and enforced by `verify:architecture`. Screen ownership/effects remain reviewed descriptive entries; generating paths does not approve behavior or visual changes.
++
++The hidden About body is prepared as build-owned inert data and constructs its native DOM only when opened (`renderInformationPages.tsx` → `staticCatalog.js` → `informationBridge.ts`). Public About HTML remains directly prerendered/readable without JavaScript. This reduces startup parsing without introducing another page or parsing stored/user HTML. The materialized page matches its prior markup exactly; legacy template catalogs retain their existing fast path.
+diff --git a/docs/architecture/component-map.json b/docs/architecture/component-map.json
+index 4f45caa..5f13e46 100644
+--- a/docs/architecture/component-map.json
++++ b/docs/architecture/component-map.json
+@@ -1079,5 +1079,16 @@
+       "tests": "packages/ui/src/SoundCard/SoundCard.test.tsx",
+       "entry": "packages/ui/src/SoundCard/index.ts"
+     }
+-  ]
++  ],
++  "deferredAboutPreparation": {
++    "buildSource": "apps/web/src/app/renderInformationPages.tsx",
++    "runtimeSource": "src/staticCatalog.js",
++    "coordinator": "apps/web/src/app/informationBridge.ts",
++    "tests": [
++      "tests/staticPageTree.test.js",
++      "tests/informationPrerender.test.js",
++      "apps/web/src/app/informationBridge.test.ts"
++    ],
++    "contract": "Build-owned inert About data materializes once on explicit page entry. Existing template catalogs, native Back/Full summaries and public readable prerendered About HTML remain unchanged. Never pass stored/user HTML to this decoder."
++  }
+ }
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index 9262f7f..6cbc653 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -833,8 +833,8 @@
+     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
+     "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
+     "apps/web/src/app/informationPages.tsx": "442185805bb7faf789afcdf2f636e9e6d195e32d0be0a9b281a470880531f48d",
+-    "apps/web/src/app/informationBridge.ts": "1d3d84ecf6e70fb1bd14363b697ea0523eed1b8c617f73e58b1893261b692076",
+-    "apps/web/src/app/renderInformationPages.tsx": "413001c67e48594cc59e60861abdeb6bd1a40eda2ebde7bdb959ca0e458230f4",
++    "apps/web/src/app/informationBridge.ts": "0a73cc2630c6d444000bb3f936147315bd0d9baafcc3cd8fbd9b55a7ee839bf6",
++    "apps/web/src/app/renderInformationPages.tsx": "a3e32bf1afbd18a4d93b233cc221fcf15a3c9baef69ee415714f5eecd263a6b0",
+     "apps/web/src/pages/AboutPage/AboutPage.tsx": "68fec4cae9f2b6aab65b74c6c2b42251116b5094cd8e7e7e18d127da666e0168",
+     "apps/web/src/pages/AboutPage/index.ts": "a336de4df893b66990d2dc8b062a79ab26cba13d0a0b9fa3ed96d3e82f6b5298",
+     "apps/web/src/pages/AboutPage/AboutPage.css": "f461cfe293e1fec12d7a8bbbca835abd9a7495db77e1a5effa56241150b900b5",
+@@ -1001,7 +1001,7 @@
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+     "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
+-    "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
++    "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "packages/ui/src/DrillSetup/DrillSetup.tsx": "edcb8e569d71e9ab694c136053874ee5311062d84dfd93a749463f441eaf8658",
+     "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index 604c0fa..9f29c90 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -116,7 +116,7 @@
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+     "vite.config.js": "7c5e167d6d91394541c2c01e55f4bc939ad8489011789c625a7881ef40c36ccd",
+     "tools/minify-html.mjs": "18b72f21054dbdd33b9afc505b493d9a279e378f7da948693e9e214c7577af04",
+-    "src/staticCatalog.js": "43cd2a7ab8ae2bdbe57e5dad044ae82a91b8f0f9947e51b2fe6150dfd5b7e033",
++    "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
+     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
+     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
+     "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c",
+diff --git a/src/staticCatalog.js b/src/staticCatalog.js
+index f3fe2f9..9e32f8d 100644
+--- a/src/staticCatalog.js
++++ b/src/staticCatalog.js
+@@ -1,6 +1,25 @@
+-/** Move only trusted build-produced inert nodes; no stored/user HTML is parsed.
+- * The host and delegated actions survive; consumed templates cannot run twice. */
++/** Materialize only build-owned inert content; never parse user/stored HTML. */
+ export function materializeStaticCatalog(host) {
+-  const source=host.firstElementChild;
+-  if(source?.tagName==='TEMPLATE') source.replaceWith(source.content);
++ const source=host.firstElementChild;
++ if(source?.tagName==='TEMPLATE') {source.replaceWith(source.content);return;}
++ if(source?.tagName!=='SCRIPT'||source.getAttribute('data-static-page')!=='about'||source.getAttribute('type')!=='application/json')return;
++ const doc=host.ownerDocument;
++ const create=node=>{
++  if(typeof node==='string')return doc.createTextNode(node);
++  if(!Array.isArray(node)||node.length!==3)throw Error('Invalid static page');
++  const [tag,attrs,children]=node;
++  if(!/^(link|div|button|h[1-6]|img|p|br|section|ol|ul|li|a|strong|span|em)$/.test(tag)||!Array.isArray(attrs)||!Array.isArray(children))throw Error('Invalid static page');
++  const element=doc.createElement(tag);
++  for(const pair of attrs){
++   if(!Array.isArray(pair)||pair.length!==2)throw Error('Invalid static attribute');
++   const [name,value]=pair;
++   if(typeof value!=='string'||!/^(rel|as|class|type|id|src|width|height|alt|href|aria-[a-z-]+|data-[a-z-]+)$/.test(name)||((name==='href'||name==='src')&&!/^\/(?!\/)|^#/.test(value)))throw Error('Invalid static attribute');
++   element.setAttribute(name,value);
++  }
++  if(tag==='link'&&(element.getAttribute('rel')!=='preload'||element.getAttribute('as')!=='image'))throw Error('Invalid static resource');
++  element.append(...children.map(create));return element;
++ };
++ const tree=JSON.parse(source.textContent);
++ if(!Array.isArray(tree))throw Error('Invalid static page');
++ const fragment=doc.createDocumentFragment();fragment.append(...tree.map(create));source.replaceWith(fragment);
+ }
+diff --git a/tests/informationPrerender.test.js b/tests/informationPrerender.test.js
+index cab1a97..b960f72 100644
+--- a/tests/informationPrerender.test.js
++++ b/tests/informationPrerender.test.js
+@@ -2,6 +2,6 @@ import{JSDOM}from'jsdom';
+ import{renderInformationPage}from'../apps/web/src/app/renderInformationPages.tsx';
+ import{materializeStaticCatalog}from'../src/staticCatalog.js';
+ test('the inert About adapter becomes exactly the shared rendered page without a second HTML implementation',()=>{
+- const direct=renderInformationPage('about'),deferred=renderInformationPage('about',true),dom=new JSDOM('<section id="aboutView">'+deferred+'</section>');try{const host=dom.window.document.getElementById('aboutView');expect(host.firstElementChild.tagName).toBe('TEMPLATE');expect(dom.window.document.getElementById('aboutFeatureSummary')).toBeNull();materializeStaticCatalog(host);const expected=new JSDOM('<section>'+direct+'</section>');try{expect(host.innerHTML).toBe(expected.window.document.querySelector('section').innerHTML);}finally{expected.window.close();}expect(host.querySelectorAll('.marketing-mode-list a')).toHaveLength(4);materializeStaticCatalog(host);expect(host.querySelectorAll('#aboutFeatureSummary')).toHaveLength(1);}finally{dom.window.close();}
++ const direct=renderInformationPage('about'),deferred=renderInformationPage('about',true),dom=new JSDOM('<section id="aboutView">'+deferred+'</section>');try{const host=dom.window.document.getElementById('aboutView');expect(host.firstElementChild.tagName).toBe('SCRIPT');expect(dom.window.document.getElementById('aboutFeatureSummary')).toBeNull();materializeStaticCatalog(host);const expected=new JSDOM('<section>'+direct+'</section>');try{expect(host.innerHTML).toBe(expected.window.document.querySelector('section').innerHTML);}finally{expected.window.close();}expect(host.querySelectorAll('.marketing-mode-list a')).toHaveLength(4);materializeStaticCatalog(host);expect(host.querySelectorAll('#aboutFeatureSummary')).toHaveLength(1);}finally{dom.window.close();}
+ });
+ test('Contact stays directly readable, and unknown page identities fail explicitly',()=>{expect(renderInformationPage('contact',true)).toBe(renderInformationPage('contact'));expect(renderInformationPage('contact')).toContain('easydryfire@gmail.com');expect(()=>renderInformationPage('unknown',true)).toThrow('Not an informational page');});
+diff --git a/tests/staticPageTree.test.js b/tests/staticPageTree.test.js
+new file mode 100644
+index 0000000..e5d4f18
+--- /dev/null
++++ b/tests/staticPageTree.test.js
+@@ -0,0 +1,7 @@
++import {JSDOM} from 'jsdom';
++import {materializeStaticCatalog} from '../src/staticCatalog.js';
++const hostFor = tree => new JSDOM(`<section><script type="application/json" data-static-page="about">${JSON.stringify(tree).replaceAll('<','\\u003c')}</script></section>`);
++test('trusted serialized page creates text literally and materializes once',()=>{const dom=hostFor([['p',[['id','safe']],['<script>literal</script>']]]);try{const host=dom.window.document.querySelector('section');materializeStaticCatalog(host);expect(host.querySelector('#safe').textContent).toBe('<script>literal</script>');expect(host.querySelector('script')).toBeNull();materializeStaticCatalog(host);expect(host.children).toHaveLength(1);}finally{dom.window.close();}});
++test.each([[['script',[],[]]],[['p',[['onclick','alert(1)']],[]]],[['a',[['href','javascript:alert(1)']],[]]],[['img',[['src','//evil.test/image']],[]]],[['p',[],[42]]]])('invalid trees fail atomically: %j',(...tree)=>{const dom=hostFor(tree);try{const host=dom.window.document.querySelector('section'),before=host.innerHTML;expect(()=>materializeStaticCatalog(host)).toThrow();expect(host.innerHTML).toBe(before);}finally{dom.window.close();}});
++test('unrelated JSON is not a static page',()=>{const dom=new JSDOM('<section><script type="application/json">{}</script></section>');try{const host=dom.window.document.querySelector('section');materializeStaticCatalog(host);expect(host.firstElementChild.tagName).toBe('SCRIPT');}finally{dom.window.close();}});
++test('malformed JSON and malformed attributes leave the inert source intact',()=>{for(const payload of ['{','{}',JSON.stringify([['p',[['id']],[]]]),JSON.stringify([['link',[['rel','stylesheet'],['as','image'],['href','/x']],[]]])]){const dom=new JSDOM(`<section><script type="application/json" data-static-page="about">${payload}</script></section>`);try{const host=dom.window.document.querySelector('section'),before=host.innerHTML;expect(()=>materializeStaticCatalog(host)).toThrow();expect(host.innerHTML).toBe(before);}finally{dom.window.close();}}});
