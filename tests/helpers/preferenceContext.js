@@ -1,0 +1,3 @@
+/** Adapter for existing native-startup VM fixtures; assertions keep their old
+ * inputs while execution uses the single preference-state contract. */
+export function bindPreferenceContext(context){const keys={audio:'audioPreferences',theme:'appearance',vibration:'vibrationFeedback',rejected:'vibrationRejected',processing:'processingReport',pending:'preferencePending'};context.preferenceState=Object.fromEntries(Object.keys(keys).map(key=>[key,undefined]));for(const[key,legacy]of Object.entries(keys))Object.defineProperty(context.preferenceState,key,{get:()=>context[legacy],set:value=>{context[legacy]=value;},configurable:true});return context;}

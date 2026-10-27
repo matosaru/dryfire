@@ -8,7 +8,7 @@ import {
   DEFAULT_SESSION_CONFIG, normalizeSessionConfig, createSession, tickSession,
   recordSessionDetection, pauseSession, resumeSession, endSession, toSessionRecord,
 } from './drillSession.js';
-import { getGunSetting, setGunSetting, saveSession, getSessions } from './storage.js';
+import { getGunSetting, setGunSetting, saveSession, getSessions } from './storage/library.js';
 import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
 

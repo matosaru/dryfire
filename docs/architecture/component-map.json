@@ -570,6 +570,48 @@
       "css": "packages/ui/src/DrillSetup/DrillSetup.css",
       "tests": "packages/ui/src/DrillSetup/DrillSetup.test.tsx",
       "runtimeOwner": "Shared Sequence/Practice configuration markup; native controller owns retained form, validation and capture. Shared ordered steps serve setup and guides through existing parent ports; shared outlined guide navigation follows context/sounds before setup."
+    },
+    {
+      "source": "packages/ui/src/GunContext/GunContext.tsx",
+      "css": "packages/ui/src/GunContext/GunContext.css",
+      "tests": "packages/ui/src/GunContext/GunContext.test.tsx",
+      "runtimeOwner": "Eight page presentations; selection and context stay application-owned"
+    },
+    {
+      "source": "packages/ui/src/PreferenceToggle/PreferenceToggle.tsx",
+      "css": "packages/ui/src/PreferenceToggle/PreferenceToggle.css",
+      "tests": "packages/ui/src/PreferenceToggle/PreferenceToggle.test.tsx",
+      "runtimeOwner": "Settings and Practice/Sequence native switches; retained input state stays adapter/controller-owned"
+    },
+    {
+      "source": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx",
+      "css": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.css",
+      "tests": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.test.tsx",
+      "runtimeOwner": "Settings presentation groups; native children retained"
+    },
+    {
+      "source": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx",
+      "css": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.css",
+      "tests": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.test.tsx",
+      "runtimeOwner": "Settings action identity and callbacks; persistence/confirmation remain main-owned"
+    },
+    {
+      "source": "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.tsx",
+      "css": "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.css",
+      "tests": "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.test.tsx",
+      "contract": "Live Listen presentation only; parent-owned state/callbacks, stable native IDs, no microphone or storage acquisition."
+    },
+    {
+      "source": "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.tsx",
+      "css": "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.css",
+      "tests": "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.test.tsx",
+      "contract": "Live Listen presentation only; parent-owned state/callbacks, stable native IDs, no microphone or storage acquisition."
+    },
+    {
+      "source": "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.tsx",
+      "css": "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.css",
+      "tests": "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.test.tsx",
+      "contract": "Live Listen presentation only; parent-owned state/callbacks, stable native IDs, no microphone or storage acquisition."
     }
   ],
   "retainedSubtreeBoundary": {
@@ -674,5 +716,368 @@
     "marketingSource": "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx",
     "marketingTests": "apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx",
     "appPrerender": "tools/app-document.mjs"
-  }
+  },
+  "storageArchitecture": {
+    "facade": "src/storage.js",
+    "runtimeOperations": "src/storage/library.js",
+    "platformTransactions": "src/storage/database.js",
+    "restore": "src/storage/restoreBackup.js",
+    "validation": [
+      "src/storage/validation.js",
+      "src/storage/sessionValidation.js",
+      "src/storage/backupValidation.js"
+    ],
+    "contract": "Schema4 and formats1–4 unchanged. Restore validates synchronously before its single replacement transaction. UI imports the restore module only after an explicit confirmed import; engines use lean library operations. Original logical storage coverage floors follow the complete extracted denominator."
+  },
+  "applicationCoordinators": {
+    "preferences": "src/preferenceCoordinator.js",
+    "gunLibrary": "src/gunLibraryCoordinator.js",
+    "optionalLibraryView": "src/gunLibraryView.js",
+    "contract": "Injected existing owners; one preference record and library epoch/cache. Capture, navigation, persistence and timer ownership unchanged."
+  },
+  "releaseCache": {
+    "build": "tools/build-identity.mjs",
+    "worker": "workers/sw.js",
+    "registration": "src/serviceWorkerRegistration.js",
+    "integration": "visual-tests/releaseCache.spec.js",
+    "contract": "Deterministic identity, verified complete caches, revalidated HTML/fixed resources, immutable hashed bundles; normal activation without forced public reload/claim. IndexedDB untouched."
+  },
+  "componentPackages": [
+    {
+      "name": "LiveCapturePanel",
+      "source": "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.tsx",
+      "css": "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.css",
+      "tests": "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.test.tsx",
+      "entry": "apps/web/src/features/live-listen/components/LiveCapturePanel/index.ts"
+    },
+    {
+      "name": "LiveModePanel",
+      "source": "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.tsx",
+      "css": "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.css",
+      "tests": "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.test.tsx",
+      "entry": "apps/web/src/features/live-listen/components/LiveModePanel/index.ts"
+    },
+    {
+      "name": "LiveResultPanel",
+      "source": "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.tsx",
+      "css": "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.css",
+      "tests": "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.test.tsx",
+      "entry": "apps/web/src/features/live-listen/components/LiveResultPanel/index.ts"
+    },
+    {
+      "name": "SettingsAction",
+      "source": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx",
+      "css": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.css",
+      "tests": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.test.tsx",
+      "entry": "apps/web/src/features/settings/components/SettingsAction/index.ts"
+    },
+    {
+      "name": "SettingsSection",
+      "source": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx",
+      "css": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.css",
+      "tests": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.test.tsx",
+      "entry": "apps/web/src/features/settings/components/SettingsSection/index.ts"
+    },
+    {
+      "name": "AboutPage",
+      "source": "apps/web/src/pages/AboutPage/AboutPage.tsx",
+      "css": "apps/web/src/pages/AboutPage/AboutPage.css",
+      "tests": "apps/web/src/pages/AboutPage/AboutPage.test.tsx",
+      "entry": "apps/web/src/pages/AboutPage/index.ts"
+    },
+    {
+      "name": "ContactPage",
+      "source": "apps/web/src/pages/ContactPage/ContactPage.tsx",
+      "css": "apps/web/src/pages/ContactPage/ContactPage.css",
+      "tests": "apps/web/src/pages/ContactPage/ContactPage.test.tsx",
+      "entry": "apps/web/src/pages/ContactPage/index.ts"
+    },
+    {
+      "name": "DrillsPage",
+      "source": "apps/web/src/pages/DrillsPage/DrillsPage.tsx",
+      "css": "apps/web/src/pages/DrillsPage/DrillsPage.css",
+      "tests": "apps/web/src/pages/DrillsPage/DrillsPage.test.tsx",
+      "entry": "apps/web/src/pages/DrillsPage/index.ts"
+    },
+    {
+      "name": "GunSetupPage",
+      "source": "apps/web/src/pages/GunSetupPage/GunSetupPage.tsx",
+      "css": "apps/web/src/pages/GunSetupPage/GunSetupPage.css",
+      "tests": "apps/web/src/pages/GunSetupPage/GunSetupPage.test.tsx",
+      "entry": "apps/web/src/pages/GunSetupPage/index.ts"
+    },
+    {
+      "name": "GunsPage",
+      "source": "apps/web/src/pages/GunsPage/GunsPage.tsx",
+      "css": "apps/web/src/pages/GunsPage/GunsPage.css",
+      "tests": "apps/web/src/pages/GunsPage/GunsPage.test.tsx",
+      "entry": "apps/web/src/pages/GunsPage/index.ts"
+    },
+    {
+      "name": "HistoryPage",
+      "source": "apps/web/src/pages/HistoryPage/HistoryPage.tsx",
+      "css": "apps/web/src/pages/HistoryPage/HistoryPage.css",
+      "tests": "apps/web/src/pages/HistoryPage/HistoryPage.test.tsx",
+      "entry": "apps/web/src/pages/HistoryPage/index.ts"
+    },
+    {
+      "name": "HomePage",
+      "source": "apps/web/src/pages/HomePage/HomePage.tsx",
+      "css": "apps/web/src/pages/HomePage/HomePage.css",
+      "tests": "apps/web/src/pages/HomePage/HomePage.test.tsx",
+      "entry": "apps/web/src/pages/HomePage/index.ts"
+    },
+    {
+      "name": "LearnPage",
+      "source": "apps/web/src/pages/LearnPage/LearnPage.tsx",
+      "css": "apps/web/src/pages/LearnPage/LearnPage.css",
+      "tests": "apps/web/src/pages/LearnPage/LearnPage.test.tsx",
+      "entry": "apps/web/src/pages/LearnPage/index.ts"
+    },
+    {
+      "name": "LiveListenPage",
+      "source": "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx",
+      "css": "apps/web/src/pages/LiveListenPage/LiveListenPage.css",
+      "tests": "apps/web/src/pages/LiveListenPage/LiveListenPage.test.tsx",
+      "entry": "apps/web/src/pages/LiveListenPage/index.ts"
+    },
+    {
+      "name": "PracticeGuidePage",
+      "source": "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx",
+      "css": "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css",
+      "tests": "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.test.tsx",
+      "entry": "apps/web/src/pages/PracticeGuidePage/index.ts"
+    },
+    {
+      "name": "PracticePage",
+      "source": "apps/web/src/pages/PracticePage/PracticePage.tsx",
+      "css": "apps/web/src/pages/PracticePage/PracticePage.css",
+      "tests": "apps/web/src/pages/PracticePage/PracticePage.test.tsx",
+      "entry": "apps/web/src/pages/PracticePage/index.ts"
+    },
+    {
+      "name": "SequencePage",
+      "source": "apps/web/src/pages/SequencePage/SequencePage.tsx",
+      "css": "apps/web/src/pages/SequencePage/SequencePage.css",
+      "tests": "apps/web/src/pages/SequencePage/SequencePage.test.tsx",
+      "entry": "apps/web/src/pages/SequencePage/index.ts"
+    },
+    {
+      "name": "SettingsPage",
+      "source": "apps/web/src/pages/SettingsPage/SettingsPage.tsx",
+      "css": "apps/web/src/pages/SettingsPage/SettingsPage.css",
+      "tests": "apps/web/src/pages/SettingsPage/SettingsPage.test.tsx",
+      "entry": "apps/web/src/pages/SettingsPage/index.ts"
+    },
+    {
+      "name": "MarketingOverview",
+      "source": "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx",
+      "css": "apps/web/src/public-site/MarketingOverview/MarketingOverview.css",
+      "tests": "apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx",
+      "entry": "apps/web/src/public-site/MarketingOverview/index.ts"
+    },
+    {
+      "name": "PublicPage",
+      "source": "apps/web/src/public-site/PublicPage/PublicPage.tsx",
+      "css": "apps/web/src/public-site/PublicPage/PublicPage.css",
+      "tests": "apps/web/src/public-site/PublicPage/PublicPage.test.tsx",
+      "entry": "apps/web/src/public-site/PublicPage/index.ts"
+    },
+    {
+      "name": "AppShell",
+      "source": "packages/ui/src/AppShell/AppShell.tsx",
+      "css": "packages/ui/src/AppShell/AppShell.css",
+      "tests": "packages/ui/src/AppShell/AppShell.test.tsx",
+      "entry": "packages/ui/src/AppShell/index.ts"
+    },
+    {
+      "name": "BottomNavigation",
+      "source": "packages/ui/src/BottomNavigation/BottomNavigation.tsx",
+      "css": "packages/ui/src/BottomNavigation/BottomNavigation.css",
+      "tests": "packages/ui/src/BottomNavigation/BottomNavigation.test.tsx",
+      "entry": "packages/ui/src/BottomNavigation/index.ts"
+    },
+    {
+      "name": "BrandHeader",
+      "source": "packages/ui/src/BrandHeader/BrandHeader.tsx",
+      "css": "packages/ui/src/BrandHeader/BrandHeader.css",
+      "tests": "packages/ui/src/BrandHeader/BrandHeader.test.tsx",
+      "entry": "packages/ui/src/BrandHeader/index.ts"
+    },
+    {
+      "name": "CalibrationCatalog",
+      "source": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx",
+      "css": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css",
+      "tests": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.test.tsx",
+      "entry": "packages/ui/src/CalibrationCatalog/index.ts"
+    },
+    {
+      "name": "CustomDrillEditor",
+      "source": "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx",
+      "css": "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css",
+      "tests": "packages/ui/src/CustomDrillEditor/CustomDrillEditor.test.tsx",
+      "entry": "packages/ui/src/CustomDrillEditor/index.ts"
+    },
+    {
+      "name": "DrillCard",
+      "source": "packages/ui/src/DrillCard/DrillCard.tsx",
+      "css": "packages/ui/src/DrillCard/DrillCard.css",
+      "tests": "packages/ui/src/DrillCard/DrillCard.test.tsx",
+      "entry": "packages/ui/src/DrillCard/index.ts"
+    },
+    {
+      "name": "DrillSetup",
+      "source": "packages/ui/src/DrillSetup/DrillSetup.tsx",
+      "css": "packages/ui/src/DrillSetup/DrillSetup.css",
+      "tests": "packages/ui/src/DrillSetup/DrillSetup.test.tsx",
+      "entry": "packages/ui/src/DrillSetup/index.ts"
+    },
+    {
+      "name": "EvaluationPanel",
+      "source": "packages/ui/src/EvaluationPanel/EvaluationPanel.tsx",
+      "css": "packages/ui/src/EvaluationPanel/EvaluationPanel.css",
+      "tests": "packages/ui/src/EvaluationPanel/EvaluationPanel.test.tsx",
+      "entry": "packages/ui/src/EvaluationPanel/index.ts"
+    },
+    {
+      "name": "GunContext",
+      "source": "packages/ui/src/GunContext/GunContext.tsx",
+      "css": "packages/ui/src/GunContext/GunContext.css",
+      "tests": "packages/ui/src/GunContext/GunContext.test.tsx",
+      "entry": "packages/ui/src/GunContext/index.ts"
+    },
+    {
+      "name": "GunSwitcher",
+      "source": "packages/ui/src/GunSwitcher/GunSwitcher.tsx",
+      "css": "packages/ui/src/GunSwitcher/GunSwitcher.css",
+      "tests": "packages/ui/src/GunSwitcher/GunSwitcher.test.tsx",
+      "entry": "packages/ui/src/GunSwitcher/index.ts"
+    },
+    {
+      "name": "InfoFooter",
+      "source": "packages/ui/src/InfoFooter/InfoFooter.tsx",
+      "css": "packages/ui/src/InfoFooter/InfoFooter.css",
+      "tests": "packages/ui/src/InfoFooter/InfoFooter.test.tsx",
+      "entry": "packages/ui/src/InfoFooter/index.ts"
+    },
+    {
+      "name": "InformationCard",
+      "source": "packages/ui/src/InformationCard/InformationCard.tsx",
+      "css": "packages/ui/src/InformationCard/InformationCard.css",
+      "tests": "packages/ui/src/InformationCard/InformationCard.test.tsx",
+      "entry": "packages/ui/src/InformationCard/index.ts"
+    },
+    {
+      "name": "NumberInput",
+      "source": "packages/ui/src/NumberInput/NumberInput.tsx",
+      "css": "packages/ui/src/NumberInput/NumberInput.css",
+      "tests": "packages/ui/src/NumberInput/NumberInput.test.tsx",
+      "entry": "packages/ui/src/NumberInput/index.ts"
+    },
+    {
+      "name": "PageHeading",
+      "source": "packages/ui/src/PageHeading/PageHeading.tsx",
+      "css": "packages/ui/src/PageHeading/PageHeading.css",
+      "tests": "packages/ui/src/PageHeading/PageHeading.test.tsx",
+      "entry": "packages/ui/src/PageHeading/index.ts"
+    },
+    {
+      "name": "PracticeCatalog",
+      "source": "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx",
+      "css": "packages/ui/src/PracticeCatalog/PracticeCatalog.css",
+      "tests": "packages/ui/src/PracticeCatalog/PracticeCatalog.test.tsx",
+      "entry": "packages/ui/src/PracticeCatalog/index.ts"
+    },
+    {
+      "name": "PracticeReview",
+      "source": "packages/ui/src/PracticeReview/PracticeReview.tsx",
+      "css": "packages/ui/src/PracticeReview/PracticeReview.css",
+      "tests": "packages/ui/src/PracticeReview/PracticeReview.test.tsx",
+      "entry": "packages/ui/src/PracticeReview/index.ts"
+    },
+    {
+      "name": "PracticeRun",
+      "source": "packages/ui/src/PracticeRun/PracticeRun.tsx",
+      "css": "packages/ui/src/PracticeRun/PracticeRun.css",
+      "tests": "packages/ui/src/PracticeRun/PracticeRun.test.tsx",
+      "entry": "packages/ui/src/PracticeRun/index.ts"
+    },
+    {
+      "name": "PreferenceToggle",
+      "source": "packages/ui/src/PreferenceToggle/PreferenceToggle.tsx",
+      "css": "packages/ui/src/PreferenceToggle/PreferenceToggle.css",
+      "tests": "packages/ui/src/PreferenceToggle/PreferenceToggle.test.tsx",
+      "entry": "packages/ui/src/PreferenceToggle/index.ts"
+    },
+    {
+      "name": "ProgressContent",
+      "source": "packages/ui/src/ProgressContent/ProgressContent.tsx",
+      "css": "packages/ui/src/ProgressContent/ProgressContent.css",
+      "tests": "packages/ui/src/ProgressContent/ProgressContent.test.tsx",
+      "entry": "packages/ui/src/ProgressContent/index.ts"
+    },
+    {
+      "name": "RecognitionList",
+      "source": "packages/ui/src/RecognitionList/RecognitionList.tsx",
+      "css": "packages/ui/src/RecognitionList/RecognitionList.css",
+      "tests": "packages/ui/src/RecognitionList/RecognitionList.test.tsx",
+      "entry": "packages/ui/src/RecognitionList/index.ts"
+    },
+    {
+      "name": "RepetitionResult",
+      "source": "packages/ui/src/RepetitionResult/RepetitionResult.tsx",
+      "css": "packages/ui/src/RepetitionResult/RepetitionResult.css",
+      "tests": "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
+      "entry": "packages/ui/src/RepetitionResult/index.ts"
+    },
+    {
+      "name": "RetainedNode",
+      "source": "packages/ui/src/RetainedNode/RetainedNode.tsx",
+      "css": "packages/ui/src/RetainedNode/RetainedNode.css",
+      "tests": "packages/ui/src/RetainedNode/RetainedNode.test.tsx",
+      "entry": "packages/ui/src/RetainedNode/index.ts"
+    },
+    {
+      "name": "SafetyDialog",
+      "source": "packages/ui/src/SafetyDialog/SafetyDialog.tsx",
+      "css": "packages/ui/src/SafetyDialog/SafetyDialog.css",
+      "tests": "packages/ui/src/SafetyDialog/SafetyDialog.test.tsx",
+      "entry": "packages/ui/src/SafetyDialog/index.ts"
+    },
+    {
+      "name": "SafetyDisclosure",
+      "source": "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx",
+      "css": "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css",
+      "tests": "packages/ui/src/SafetyDisclosure/SafetyDisclosure.test.tsx",
+      "entry": "packages/ui/src/SafetyDisclosure/index.ts"
+    },
+    {
+      "name": "SavedSessionList",
+      "source": "packages/ui/src/SavedSessionList/SavedSessionList.tsx",
+      "css": "packages/ui/src/SavedSessionList/SavedSessionList.css",
+      "tests": "packages/ui/src/SavedSessionList/SavedSessionList.test.tsx",
+      "entry": "packages/ui/src/SavedSessionList/index.ts"
+    },
+    {
+      "name": "SequenceReview",
+      "source": "packages/ui/src/SequenceReview/SequenceReview.tsx",
+      "css": "packages/ui/src/SequenceReview/SequenceReview.css",
+      "tests": "packages/ui/src/SequenceReview/SequenceReview.test.tsx",
+      "entry": "packages/ui/src/SequenceReview/index.ts"
+    },
+    {
+      "name": "SequenceRun",
+      "source": "packages/ui/src/SequenceRun/SequenceRun.tsx",
+      "css": "packages/ui/src/SequenceRun/SequenceRun.css",
+      "tests": "packages/ui/src/SequenceRun/SequenceRun.test.tsx",
+      "entry": "packages/ui/src/SequenceRun/index.ts"
+    },
+    {
+      "name": "SoundCard",
+      "source": "packages/ui/src/SoundCard/SoundCard.tsx",
+      "css": "packages/ui/src/SoundCard/SoundCard.css",
+      "tests": "packages/ui/src/SoundCard/SoundCard.test.tsx",
+      "entry": "packages/ui/src/SoundCard/index.ts"
+    }
+  ]
 }

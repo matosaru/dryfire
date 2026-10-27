@@ -1,0 +1,2 @@
+export type SettingsActionProps={id:string;label:string;icon:string;className:string;disabled?:boolean;onAction?:(id:string)=>void};
+export function SettingsAction({id,label,icon,className,disabled,onAction}:SettingsActionProps){return <button id={id} disabled={disabled} onClick={()=>onAction?.(id)} className={className} type="button"><span className="settings-action-icon" aria-hidden="true">{icon}</span><span>{label}</span><span className="settings-chevron" aria-hidden="true">›</span></button>;}

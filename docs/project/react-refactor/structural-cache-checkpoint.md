@@ -1,5 +1,7 @@
 # Independent structural/cache release
 
+Current release: independent F2–F7/H2 accepted in [40478835224](https://github.com/matosaru/dryfire/actions/runs/40478835224); source/current-design publication tracked by [PR29](https://github.com/matosaru/dryfire/pull/29). H1 icons remain separate. Earlier checkpoint observations below are historical evidence.
+
 Status: prepared, complete CI acceptance pending. H1's header icon request remains separately blocked by confirmed Chromium Settings timing regressions; it is not abandoned or included in this release.
 
 Candidate: [structural-cache-complete.patch](../../design/review-inputs/structural-cache-complete.patch), based on b2e26f2192401d49f879001f83fc6748c450291c. Restore matching canonical PNG/GIF files from that same immutable commit through the existing complete Test and build workflow:

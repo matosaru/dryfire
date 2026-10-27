@@ -1,0 +1,2 @@
+export type LiveListenState={gunName?:string;contextHidden?:boolean;texts?:Record<string,string>;disabled?:Record<string,boolean>;hidden?:Record<string,boolean>;selects?:Record<string,string>;listening?:boolean;options?:{value:string;title:string}[];steps?:{className:string;number:string;title:string}[];distances?:{title:string;value:string;width:string}[];timeline?:{name:string;detail:string}[]};
+export type LiveListenPanelProps={state?:LiveListenState;onAction?:(id:string)=>void;onChange?:(id:string)=>void};

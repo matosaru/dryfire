@@ -56,6 +56,8 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
     // Production registers on HTTPS. Localhost is a secure context for exercising
     // the same built worker without weakening the application's HTTPS guard.
     await page.evaluate(async () => { await navigator.serviceWorker.register('/sw.js'); await navigator.serviceWorker.ready; });
+    // Normal lifecycle intentionally leaves the installing tab unchanged; a new document adopts it.
+    await page.reload();
     await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
     const missing = await page.evaluate(async () => {
       const resources = performance.getEntriesByType('resource').map(row => row.name)

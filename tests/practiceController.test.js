@@ -14,7 +14,7 @@ const audio = await import('../src/audio.js');
 const capture = jest.fn(), save = jest.fn(), set = jest.fn(), get = jest.fn();
 const cue = { prepare: jest.fn(), play: jest.fn(), close: jest.fn() };
 jest.unstable_mockModule('../src/audio.js', () => ({ ...audio, startContinuousListening: capture }));
-jest.unstable_mockModule('../src/storage.js', () => ({ getGunSetting: get, setGunSetting: set, saveSession: save }));
+jest.unstable_mockModule('../src/storage/library.js', () => ({ getGunSetting: get, setGunSetting: set, saveSession: save }));
 jest.unstable_mockModule('../src/feedback.js', () => ({ createStartCuePlayer: () => cue, requestFeedbackVibration: () => ({ supported: true, accepted: true }) }));
 const { createPracticeController } = await import('../src/practiceController.js');
 const catalog = readFileSync(new URL('./fixtures/practice-catalog.html', import.meta.url), 'utf8');

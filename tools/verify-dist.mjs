@@ -15,6 +15,7 @@ if (!['public', 'preview'].includes(expectedEdition) || edition.edition !== expe
     !html.includes(`data-build-edition="${expectedEdition}"`) || !/^[a-f0-9]{40}$/.test(edition.sourceRevision) || !/^[a-f0-9]{64}$/.test(edition.sourceDigest)) {
   throw new Error('Build edition or source metadata does not match the requested artifact.');
 }
+if(!/^[a-f0-9]{64}$/.test(edition.release??'')||!html.includes(`data-release-id="${edition.release}"`))throw new Error('Release identity does not match the app document.');
 if (html.includes('/src/main.js') || html.includes('/src/styles.css')) {
   throw new Error('The deploy directory contains unbundled development sources. Run npm run build.');
 }

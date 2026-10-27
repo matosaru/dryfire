@@ -7,3 +7,8 @@ export function DrillSetupSteps({id,label,children,hidden=false}:{id:string;labe
 
 /** A navigation affordance, never an action that starts capture. */
 export function DrillGuideLink({id,href="#practice-guide",hidden=false,onClick}:{id:string;href?:string;hidden?:boolean;onClick?:MouseEventHandler<HTMLAnchorElement>}){return <a id={id} className={`practice-guide-link${hidden?' hidden':''}`} href={href} onClick={onClick}><span aria-hidden="true">ⓘ</span>About this practice</a>;}
+
+/** Native field labels retain controllers' IDs, values and delegated events. */
+export function DrillSetupField({id,inputId,label,hidden=false,children}:{id?:string;inputId:string;label:string;hidden?:boolean;children:ReactNode}){return <label id={id} className={'session-field'+(hidden?' hidden':'')} htmlFor={inputId}><span>{label}</span>{children}</label>;}
+export function DrillSetupDelayMode({inputId,modes,name}:{inputId:string;modes:readonly ('fixed'|'random')[];name?:string}){return <DrillSetupField inputId={inputId} label="Start delay"><select id={inputId} name={name}>{modes.map(mode=><option key={mode} value={mode}>{mode==='fixed'?'Fixed':'Random'}</option>)}</select></DrillSetupField>;}
+export function DrillSetupDelayRange({id,prefix,hidden=false,minimum,maximum}:{id:string;prefix:'practice'|'session';hidden?:boolean;minimum:ReactNode;maximum:ReactNode}){return <div id={id} className={'session-delay-range'+(hidden?' hidden':'')}><DrillSetupField inputId={`${prefix}MinDelay`} label="Minimum seconds">{minimum}</DrillSetupField><DrillSetupField inputId={`${prefix}MaxDelay`} label="Maximum seconds">{maximum}</DrillSetupField></div>;}

@@ -1,4 +1,6 @@
-import {DrillSetup,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
+import {PreferenceToggle} from '@dryfire/ui/PreferenceToggle';
+import {GunContext} from '@dryfire/ui/GunContext';
+import {DrillSetup,DrillSetupField,DrillSetupDelayMode,DrillSetupDelayRange,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
 import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {SequenceRun} from '@dryfire/ui/SequenceRun';
@@ -8,7 +10,7 @@ export type SequencePageProps={title?:string;gunName?:string;contextHidden?:bool
 export function SequencePage({title,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){return <>
 <PageHeading id="session-title" title={title??'Drill Session'} backId="sessionBackBtn" backLabel="Back to previous screen" sharedBack={false} reactBack={false} onBack={onBack}/>
 
-      <p className={contextHidden?'gun-context hidden':'gun-context'}>Session for <strong className="gun-context-name">{gunName}</strong>.</p>
+      <GunContext name={gunName} hidden={contextHidden} prefix="Session for " suffix="."/>
       <p id="sessionPresetName" className="session-preset-name">{presetName}</p>
       <DrillSetupSteps id="sessionSteps" label="Ordered sound sequence">{steps}</DrillSetupSteps>
       <DrillGuideLink id="sessionGuideLink" href={guideHref} hidden={guideHidden} onClick={onGuide}/>
@@ -20,15 +22,12 @@ export function SequencePage({title,gunName,contextHidden=false,guideHidden=fals
           <button id="sessionStartBtn" type="submit" className="button primary wide-action">Start Session</button></>}>
             <DrillSetupCount inputId="sessionRepetitions" label={<span>Repetitions</span>}>{'{{sessionRepetitionsInput}}'}</DrillSetupCount>
             <div className="session-delay-card">
-              <label className="session-field" htmlFor="sessionDelayMode"><span>Start delay</span><select id="sessionDelayMode" name="delayMode"><option value="fixed">Fixed</option><option value="random">Random</option></select></label>
-              <div id="fixedDelayFields"><label className="session-field" htmlFor="sessionFixedDelay"><span>Delay in seconds</span>{'{{sessionFixedDelayInput}}'}</label></div>
-              <div id="randomDelayFields" className="session-delay-range hidden">
-                <label className="session-field" htmlFor="sessionMinDelay"><span>Minimum seconds</span>{'{{sessionMinDelayInput}}'}</label>
-                <label className="session-field" htmlFor="sessionMaxDelay"><span>Maximum seconds</span>{'{{sessionMaxDelayInput}}'}</label>
-              </div>
+              <DrillSetupDelayMode inputId="sessionDelayMode" modes={['fixed','random']} name="delayMode"/>
+              <div id="fixedDelayFields"><DrillSetupField inputId="sessionFixedDelay" label="Delay in seconds">{'{{sessionFixedDelayInput}}'}</DrillSetupField></div>
+              <DrillSetupDelayRange id="randomDelayFields" prefix="session" hidden minimum={'{{sessionMinDelayInput}}'} maximum={'{{sessionMaxDelayInput}}'}/>
               <p className="muted small">A fresh delay before every repetition.</p>
             </div>
-            <label className="preference-toggle session-sound-toggle" htmlFor="sessionStartSound"><span><strong>Sound at start</strong><small>Play a beep when GO appears.</small></span><input id="sessionStartSound" name="startSound" type="checkbox" role="switch" aria-describedby="sessionCueGuardNote" /></label>
+            <PreferenceToggle id="sessionStartSound" label="Sound at start" description="Play a beep when GO appears." className="session-sound-toggle" name="startSound" aria-describedby="sessionCueGuardNote"/>
             <p id="sessionCueGuardNote" className="muted small hidden">With the beep on, detection waits 0.3 seconds after GO to exclude the cue. Very fast sounds in that window may be missed.</p>
         </DrillSetup>
         <p className="muted small session-timing-note">Timings describe detected sounds, not verified physical actions.</p>

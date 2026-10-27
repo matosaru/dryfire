@@ -1,5 +1,7 @@
 # Follow-up architecture and cleanup audit
 
+Current release: independent F2–F7/H2 accepted in [40478835224](https://github.com/matosaru/dryfire/actions/runs/40478835224); source/current-design publication tracked by [PR29](https://github.com/matosaru/dryfire/pull/29). H1 icons remain separate. Earlier checkpoint observations below are historical evidence.
+
 Status: prepared candidate, pending complete pinned acceptance. This describes the candidate in [the checkpoint](f3-f6-checkpoint.md), not the currently deployed application.
 
 ## Entry points and ownership

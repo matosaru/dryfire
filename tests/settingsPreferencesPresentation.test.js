@@ -2,8 +2,10 @@
  * @jest-environment jsdom
  * @jest-environment-options {"customExportConditions":["node","node-addons"]}
  */
+import {bindPreferenceContext} from './helpers/preferenceContext.js';
+
 import '@dryfire/testing/setup';
-import {setNodeText} from '../src/domUpdates.js';
+import {setNodeText,setNodeDisabled} from '../src/domUpdates.js';
 import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
@@ -13,8 +15,9 @@ const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const body=source.slice(source.indexOf('function renderPreferences()'),source.indexOf('function reportAudioProcessing('));
 function setup(){
  document.body.innerHTML=renderPageTemplates('{{app}}');
- const context={setNodeText,settingsPage:null,preferencePresentation,$:selector=>document.querySelector(selector),previewTesting:{render:jest.fn()},getAudioCapabilities:()=>({noiseFilter:true,autoGain:true}),
+ const context={setNodeText,setNodeDisabled,settingsPage:null,preferencePresentation,$:selector=>document.querySelector(selector),previewTesting:{render:jest.fn()},getAudioCapabilities:()=>({noiseFilter:true,autoGain:true}),
   activeGun:{id:'a'},profileLocked:()=>false,audioPreferences:{noiseFilter:true,autoGain:false},processingReport:null,appearance:'light',busy:false,profileLoading:false,preferencePending:false,vibrationFeedback:true,vibrationRejected:false,getVibrationCapability:()=>true};
+ bindPreferenceContext(context);
  const render=vm.runInNewContext(body+'\nrenderPreferences;',context);return{context,render};
 }
 test('saved preferences retain gun/device ownership and next-capture messaging',()=>{
@@ -39,4 +42,10 @@ test('capture/profile/preference locks and rejected vibration retain their separ
 
 test('mounted Settings receives the preference model without competing native writes',()=>{
  const {context,render}=setup();context.settingsPage={update:jest.fn()};render();expect(context.settingsPage.update).toHaveBeenCalledWith({preferences:preferencePresentation({capabilities:context.getAudioCapabilities(),audioPreferences:context.audioPreferences,processingReport:null,appearance:'light',gunAvailable:true,locked:false,deviceLocked:false,vibrationFeedback:true,vibrationSupported:true,vibrationRejected:false})});expect(document.querySelector('#noiseFilterStatus')).toHaveTextContent('Checking browser support');
+});
+
+test('unchanged native preferences avoid property setters and style invalidation',()=>{
+ const {render}=setup();render();
+ const spies=[[HTMLInputElement.prototype,'checked'],[HTMLInputElement.prototype,'disabled'],[HTMLSelectElement.prototype,'value'],[HTMLSelectElement.prototype,'disabled']].map(([prototype,key])=>jest.spyOn(prototype,key,'set'));
+ try{render();for(const spy of spies)expect(spy).not.toHaveBeenCalled();}finally{for(const spy of spies)spy.mockRestore();}
 });

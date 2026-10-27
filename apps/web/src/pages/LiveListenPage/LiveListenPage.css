@@ -1,9 +1,1 @@
-/* Live feedback remains visible across consecutive acoustic events. */
-.listening-indicator { margin: 12px 0 8px; font-size: 0.9rem; font-weight: 650; color: var(--muted, #a4afba); }
-.listening-indicator.is-live { color: #73e2ad; }
-.timeline-heading { margin: 18px 0 8px; font-size: 0.9rem; }
-.session-timeline { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
-.session-timeline li { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; padding: 10px 12px; border: 1px solid rgba(150,160,175,0.26); border-radius: 11px; font-size: 0.85rem; }
-.session-timeline li span { color: #afbbc6; font-variant-numeric: tabular-nums; }
-
-
+/* Live Listen composes mode, capture/timeline and result panels. */

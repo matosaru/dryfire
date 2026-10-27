@@ -1,0 +1,4 @@
+.drill-panel { margin:16px 0 0; padding:18px; border-radius:17px; border:1px solid #34434a; background:#10191e; }
+.drill-panel-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; }
+.drill-panel h3 { margin:3px 0 0; font-size:1.16rem; }
+.drill-panel .eyebrow { margin:0; }

@@ -1,5 +1,7 @@
 # H1/H2 and F2–F6 candidate checkpoint
 
+Current release: independent F2–F7/H2 accepted in [40478835224](https://github.com/matosaru/dryfire/actions/runs/40478835224); source/current-design publication tracked by [PR29](https://github.com/matosaru/dryfire/pull/29). H1 icons remain separate. Earlier checkpoint observations below are historical evidence.
+
 Status: application source is prepared, not released. Shipping b/main source remains unchanged. Complete pinned acceptance is required before publication.
 
 The portable text candidate is [h1-h2-f2-f6-complete.patch](../../design/review-inputs/h1-h2-f2-f6-complete.patch), based on b84366b8. Its matching canonical PNG/GIF references are the immutable H1 source commit b84ceb4a26c5cb0afb33cadf1ca45ed9eedd06ff. These are existing reviewed images, not newly accepted baselines. `tools/apply-review-candidate.mjs` restores only those media paths, then applies the text patch. No image data is embedded in tool output.

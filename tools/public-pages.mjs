@@ -32,7 +32,9 @@ export function publicPagesPlugin(){return{name:'public-pages',generateBundle:{o
  const app=String(index.source);
  for(const route of PUBLIC_ROUTES){
   const html=route.appView?appDocumentHead(prerenderAppScreen(app,route),route):renderPublicHTML(route,[shared,name]);
-  const source=await minifyProductionHtml(prioritizeAppStyles(html));
+  const release=app.match(/data-release-id="([a-f0-9]{64})"/)?.[1];
+  const versioned=release&&!html.includes('data-release-id=')?html.replace('<html',`<html data-release-id="${release}"`):html;
+  const source=await minifyProductionHtml(prioritizeAppStyles(versioned));
   if(route.path==='/')index.source=source;
   else this.emitFile({type:'asset',fileName:publicAssetPath(route.path).slice(1),source});
  }

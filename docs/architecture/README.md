@@ -44,3 +44,5 @@ CHG-037 uses [reusable page templates](page-templates.md) for every screen. Pres
 CHG-041 adds a shared BETA badge beside the brand and a feedback invitation within the existing About page. The twelve-screen tree and public routes are unchanged; current captures include the shared marker in both editions. See [branding](../requirements/branding.md#beta-disclosure--chg-041) and [About](../requirements/about.md#beta-and-feedback--chg-041).
 
 CHG-047: [incremental React ownership, CSS and test boundaries](react-migration.md) · [screen-to-component/test map](component-map.json). Keep these current when moving a screen; the site hierarchy and stable routes remain unchanged.
+
+Component folders are indexed in `component-map.json` → `componentPackages`. After adding/moving a page, shared UI or feature component, run `npm run docs:generate`; it refreshes the complete source/CSS/test/public-entry inventory before generating route documentation. `npm run verify:architecture` rejects missing or stale component entries. Review screen ownership, requirements and visual source fingerprints separately; path generation does not approve a design change.
