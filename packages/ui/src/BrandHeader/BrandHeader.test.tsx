@@ -11,6 +11,7 @@ test('branding, beta disclosure, live status and settings retain their native se
   expect(screen.getByRole('heading', { name: 'Dry Fire With Ease', level: 1 })).toHaveTextContent('DRY FIREWITH EASE');
   expect(screen.getByLabelText('Beta version')).toHaveTextContent('BETA');
   expect(document.querySelector('.brand-logo')).toHaveAttribute('alt', '');
+  expect((document.querySelector('header.hero') as HTMLElement).style.getPropertyValue('--header-icons')).toMatch(/^url\("data:image\/svg\+xml;base64,/);
   expect(screen.getByRole('status')).toHaveTextContent('Loading…');
   const settings = screen.getByRole('button', { name: 'Settings' });
   expect(settings).not.toHaveAttribute('aria-current');

@@ -98,7 +98,6 @@ These are resources, not sitemap pages. App icons may remain fetchable/indexable
 - `/gun-types/rifle.svg`
 - `/gun-types/shotgun.svg`
 - `/gun-types/unknown.svg`
-- `/header-icons.svg`
 - `/icon-192.png`
 - `/icon-512.png`
 - `/logo.svg`
