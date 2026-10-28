@@ -22,23 +22,23 @@
         <button id="resetModelBtn" class="button danger" type="button"><span class="settings-action-icon" aria-hidden="true">⏻</span><span>Reset all sounds for this gun</span><span class="settings-chevron" aria-hidden="true">›</span></button>
         <p id="soundResetOutcome" class="small" role="status"></p>
       </div>
-      <div class="settings-group">
+      <div class="settings-group deferred-settings">
         <h3>Backup &amp; Data</h3>
         <p class="muted small">Export all gun profiles, learned numeric sound features, drill presets, recognition history, saved sessions and preferences. The backup contains no raw recordings. Keep this file private.</p>
         <div class="settings-actions"><button id="exportBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↑</span><span>Export backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><button id="importBtn" class="button secondary" type="button"><span class="settings-action-icon" aria-hidden="true">↓</span><span>Import backup</span><span class="settings-chevron" aria-hidden="true">›</span></button><input id="importFile" type="file" accept="application/json,.json" class="hidden" /></div>
         <p class="small muted">Import replaces saved guns, sounds, history, presets, sessions and preferences on this device. Older backups contain no saved sessions. Files from another device may perform differently.</p>
       </div>
-      <div class="settings-group preference-group">
+      <div class="settings-group preference-group deferred-settings">
         <h3>Audio processing · this gun</h3>
         <label class="preference-toggle" for="noiseFilter"><span><strong>Noise Filter</strong><small id="noiseFilterStatus" role="status">Checking browser support…</small></span><input id="noiseFilter" type="checkbox" role="switch" aria-describedby="noiseFilterStatus" /></label>
         <label class="preference-toggle" for="autoGainControl"><span><strong>Auto Gain</strong><small id="autoGainStatus" role="status">Checking browser support…</small></span><input id="autoGainControl" type="checkbox" role="switch" aria-describedby="autoGainStatus" /></label>
         <p class="muted small">Changes apply to the next capture. Audio processing may affect recognition and require fresh examples; it never deletes your learned sounds.</p>
       </div>
-      <div class="settings-group preference-group">
+      <div class="settings-group preference-group deferred-settings">
         <h3>Appearance &amp; feedback · this device</h3>
         <label class="preference-select" for="appearance"><span>Appearance</span><select id="appearance"><option value="dark">Dark</option><option value="light">Light</option><option value="system">System</option></select></label>
         <label class="preference-toggle" for="vibrationFeedback"><span><strong>Vibration Feedback</strong><small id="vibrationStatus" role="status">Checking browser support…</small></span><input id="vibrationFeedback" type="checkbox" role="switch" aria-describedby="vibrationStatus" /></label>
         <p class="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
       </div>
-      <div class="settings-group"><h3>Delete local app data</h3><p class="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" class="button danger wide-action" type="button">Delete all guns &amp; app data</button></div>
-      <div class="settings-group"><h3>Device information</h3><p id="deviceCheck" class="small muted"></p></div>
+      <div class="settings-group deferred-settings"><h3>Delete local app data</h3><p class="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" class="button danger wide-action" type="button">Delete all guns &amp; app data</button></div>
+      <div class="settings-group deferred-settings"><h3>Device information</h3><p id="deviceCheck" class="small muted"></p></div>

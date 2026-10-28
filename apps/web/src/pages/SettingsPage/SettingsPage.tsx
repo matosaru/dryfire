@@ -23,21 +23,21 @@ export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreferen
         <SettingsAction id="resetModelBtn" label="Reset all sounds for this gun" icon="⏻" disabled={state?.disabled?.resetModelBtn} onAction={onAction} className="button danger"/>
         <p id="soundResetOutcome" className="small" role="status">{state?.texts?.soundResetOutcome}</p>
       </SettingsSection>
-      <SettingsSection title="Backup & Data">
+      <SettingsSection title="Backup & Data" className="deferred-settings">
         <p className="muted small">Export all gun profiles, learned numeric sound features, drill presets, recognition history, saved sessions and preferences. The backup contains no raw recordings. Keep this file private.</p>
         <div className="settings-actions"><SettingsAction id="exportBtn" label="Export backup" icon="↑" disabled={state?.disabled?.exportBtn} onAction={onAction} className="button secondary"/><SettingsAction id="importBtn" label="Import backup" icon="↓" disabled={state?.disabled?.importBtn} onAction={onAction} className="button secondary"/>{fileInput??<input id="importFile" onChange={onImport} type="file" accept="application/json,.json" className="hidden" />}</div>
         <p className="small muted">Import replaces saved guns, sounds, history, presets, sessions and preferences on this device. Older backups contain no saved sessions. Files from another device may perform differently.</p>
       </SettingsSection>
-      <SettingsSection title="Audio processing · this gun" className="preference-group">
+      <SettingsSection title="Audio processing · this gun" className="preference-group deferred-settings">
         <PreferenceToggle id="noiseFilter" label="Noise Filter" description="Checking browser support…" descriptionId="noiseFilterStatus" descriptionRole="status" onChange={event=>onPreference?.('noiseFilter',event.currentTarget.checked)}/>
         <PreferenceToggle id="autoGainControl" label="Auto Gain" description="Checking browser support…" descriptionId="autoGainStatus" descriptionRole="status" onChange={event=>onPreference?.('autoGainControl',event.currentTarget.checked)}/>
         <p className="muted small">Changes apply to the next capture. Audio processing may affect recognition and require fresh examples; it never deletes your learned sounds.</p>
       </SettingsSection>
-      <SettingsSection title="Appearance & feedback · this device" className="preference-group">
+      <SettingsSection title="Appearance & feedback · this device" className="preference-group deferred-settings">
         <label className="preference-select" htmlFor="appearance"><span>Appearance</span><select id="appearance" onChange={event=>onPreference?.('appearance',event.currentTarget.value)}><option value="dark">Dark</option><option value="light">Light</option><option value="system">System</option></select></label>
         <PreferenceToggle id="vibrationFeedback" label="Vibration Feedback" description="Checking browser support…" descriptionId="vibrationStatus" descriptionRole="status" onChange={event=>onPreference?.('vibrationFeedback',event.currentTarget.checked)}/>
         <p className="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
       </SettingsSection>
-      <SettingsSection title="Delete local app data"><p className="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" disabled={state?.disabled?.resetLibraryBtn} onClick={()=>onAction?.('resetLibraryBtn')} className="button danger wide-action" type="button">Delete all guns &amp; app data</button></SettingsSection>
-      <SettingsSection title="Device information"><p id="deviceCheck" className="small muted">{state?.texts?.deviceCheck}</p></SettingsSection>
+      <SettingsSection title="Delete local app data" className="deferred-settings"><p className="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" disabled={state?.disabled?.resetLibraryBtn} onClick={()=>onAction?.('resetLibraryBtn')} className="button danger wide-action" type="button">Delete all guns &amp; app data</button></SettingsSection>
+      <SettingsSection title="Device information" className="deferred-settings"><p id="deviceCheck" className="small muted">{state?.texts?.deviceCheck}</p></SettingsSection>
 </>;}

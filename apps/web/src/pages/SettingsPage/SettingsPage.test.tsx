@@ -7,6 +7,7 @@ afterEach(cleanup);
 test('destructive scopes, backup warnings and browser controls retain distinct labels',()=>{
  render(<SettingsPage/>);expect(screen.getByRole('button',{name:/Reset all sounds for this gun/})).toBeVisible();expect(screen.getByRole('button',{name:'Delete all guns & app data'})).toBeVisible();
  expect(screen.getByText(/backup contains no raw recordings/)).toBeVisible();expect(screen.getByLabelText('Appearance')).toHaveValue('dark');expect(document.querySelector('#importFile')).toHaveAttribute('accept','application/json,.json');
+ expect(document.querySelectorAll('.settings-group.deferred-settings')).toHaveLength(5);expect(screen.getByText('Learned Sounds').closest('.settings-group')).not.toHaveClass('deferred-settings');
 });
 test('each action and preference dispatches its own typed value without acquiring services',()=>{
  const onAction=jest.fn(),onPreference=jest.fn(),onBack=jest.fn(),onImport=jest.fn();render(<SettingsPage onAction={onAction} onPreference={onPreference} onBack={onBack} onImport={onImport}/>);
