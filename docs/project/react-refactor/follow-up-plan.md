@@ -1,6 +1,6 @@
 # Follow-up modularization plan
 
-Prepared 2026-10-24 against `b` revision `2cf044c` / application `5b8aeed`. **F2–F7 and H2 accepted2026-10-27; H1 header icons remain separately deferred.** The owner requested review of Copilot's analyses, reusable pages and then this consolidated plan. This is separate from the [completed P0–P8 React refactor](plan.md); it does not reopen that migration or authorize a new framework rewrite.
+Prepared 2026-10-24 against `b` revision `2cf044c` / application `5b8aeed`. **F2–F7 and H2 accepted2026-10-27; H1 header icons resumed2026-10-27; WebKit investigation paused by owner.** The owner requested review of Copilot's analyses, reusable pages and then this consolidated plan. This is separate from the [completed P0–P8 React refactor](plan.md); it does not reopen that migration or authorize a new framework rewrite.
 
 Implementation starts on **b**. Latest owner direction (2026-10-26) authorizes automatic b → main PR promotion after complete acceptance, keeping both branches current. Dev is outside the active workflow. Cloudflare configuration remains owner-managed. Finish the Free product before reopening monetization planning.
 
@@ -19,7 +19,7 @@ The owner subsequently requested indexable public URLs with correct metadata bef
 | Step | Work | Completion criteria | Status |
 | --- | --- | --- | --- |
 | F1 | Freeze current contracts and map extraction boundaries | Current baseline checked; dependency/ownership map covers proposed components/services; missing characterization added before moving behavior; architecture checks cover new feature-component folders and permitted import directions | Complete for the structural release; original baseline/contracts and all exit gates verified |
-| H1 | Shared header icon navigation (separate approved visual change) | About, Contact, Settings icons at top right; accessible controls, consistent routes/guards and reviewed screenshots across pages | Deferred: isolated icon-header candidate fails original Chromium firstAction limits; shipping chrome retained |
+| H1 | Shared header icon navigation (separate approved visual change) | About, Contact, Settings icons at top right; accessible controls, consistent routes/guards and reviewed screenshots across pages | In progress: resumed shared icon header, removed footer links and added Home brand link; local verification underway, pinned publication acceptance pending |
 | H2 | Safe automatic release-asset refresh | Deterministic identity, complete release caches, normal activation without forced tab reload, offline recovery and unchanged saved data; [requirements](../../requirements/release-cache-updates.md) | Complete: deterministic verified release caches, normal activation and data-preservation tests; accepted40478835224 |
 | F2 | Shared page context and repeated Settings components | GunContext replaces identical context composition; SettingsSection, PreferenceToggle and SettingsAction replace repeated Settings markup with preserved DOM, IDs, statuses, input ownership and callbacks | Complete: shared context/Settings components; exact markup/styles and pinned browser acceptance pass |
 | F3 | Complete drill setup reuse and audit run/guide duplication | Existing DrillSetup owns repeated delay/sound/readiness composition where compatible; Practice/Sequence retain mode-specific options; existing common guide remains one page; run/live-example components share only truly repeated presentation | Complete: shared setup fields/delays; existing run/guide owners retained; all workflow tests pass |
@@ -148,8 +148,12 @@ Open a separate monetization discovery/planning iteration. Revisit prior proposa
 
 Produce separate requirements, designs, technical options and an implementation plan for review before commercial implementation. Native app releases remain deferred. No work on a paid branch or monetization infrastructure starts during the current Free phase.
 
+## Next queued performance task
+
+The header candidate is implemented locally and under acceptance. Lighthouse diagnosis reproduced a41.155ms app-attributed scrollTo reflow; batching its scroll/read and DOM/write phases removes that attribution locally. Root cause and before/after evidence are in [the mobile evidence](lighthouse-mobile-evidence.json). The blocking ~14.9KiB stylesheet (~300ms estimated savings) remains a separate optimization task; exclude browser-extension work and do not replace it with unstyled first paint. Compare real mobile paint/interaction evidence and preserve styled first paint, accessibility, both editions and original budgets. WebKit warm-startup diagnosis is paused separately, not fixed.
+
 ## Current status
 
-F2–F7 and H2 are complete and accepted in [run40478835224](https://github.com/matosaru/dryfire/actions/runs/40478835224): validation, both pinned screenshot editions and all four original timing jobs pass. Source publication follows b → [PR29](https://github.com/matosaru/dryfire/pull/29) → main; consult those live checks for promotion status. Shipping chrome and all canonical images stay unchanged. H1 remains separately deferred on its recorded Chromium timing regression, with its source/designs preserved. Dev and commercial/native work remain outside scope. Cloudflare live deployment is separate from Git publication.
+F2–F7 and H2 were accepted in run40478835224. The owner merged PR29; b/main are synchronized at57d9afd. Later published checks reported a public WebKit warm regression; it remains unresolved and its investigation is paused by the owner. H1 icon/header work is resumed with the Home brand-link addition and footer-link removal. Candidate code/local evidence does not establish pinned screenshot/performance acceptance or deployment. Dev, commercial and native work remain outside scope.
 
 [Copilot review](copilot-review.md) · [Completed refactor](plan.md) · [Architecture decision](../../architecture/decisions/001-progressive-react-startup.md) · [Current application sitemap](../../architecture/application-sitemap.md)

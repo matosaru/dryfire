@@ -6,7 +6,9 @@ if(!patch||!/^docs\/design\/review-inputs\/[a-zA-Z0-9_.-]+\.patch$/.test(patch)|
 if(ref){
  if(!/^[a-f0-9]{40}$/.test(ref))throw Error('Design reference must be an immutable full commit.');
  git(['fetch','--no-tags','origin',ref]);
- const media=git(['ls-tree','-r','--name-only',ref,'--','docs/design/screens','docs/design/baselines']).trim().split('\n').filter(path=>/\.(png|gif)$/.test(path));
+ // A shell-reference checkout must not roll current guide animations back to
+ // another revision. GIF changes belong to the explicit source/media candidate.
+ const media=git(['ls-tree','-r','--name-only',ref,'--','docs/design/screens','docs/design/baselines']).trim().split('\n').filter(path=>/\.png$/.test(path));
  if(!media.length)throw Error('Design reference contains no canonical media.');
  git(['restore','--source='+ref,'--worktree','--',...media]);
 }

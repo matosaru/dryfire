@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-27",
+  "base": "57d9afd7fa5ff689671f17807c0f35e1e8c584f9",
+  "status": "Unpublished candidate; pinned acceptance pending",
+  "expandedCSSSha256": "908b8ff6e0323c17fcab677fc8c4bd23bdb20f5dfc9e48d7e89db0dd6de948f5",
+  "scope": "Shared BrandHeader icons and Home logo link; obsolete footer-link rules removed. Public-only footer link presentation rules removed. Other component/style files unchanged; canonical screenshots and timing thresholds not updated. Removed unused old brand-mark/icon-button/status styles and overridden h1 declarations to retain original payload budgets; no unrelated component changes.",
+  "cleanupPixelReview": {
+    "renderer": "System Chromium diagnostic, not pinned acceptance",
+    "cases": 53,
+    "headersEqual": 53,
+    "wholeScreensEqual": 51,
+    "transientDifferences": [
+      "contact.dark.320.png",
+      "contact.light.390.png"
+    ],
+    "note": "Two Contact captures differ in a few pixels around the Back-control border during optional enhancement; not a canonical comparison. No intended body change."
+  },
+  "staticAudit": {
+    "scope": "BrandHeader, InfoFooter, AppShell",
+    "strictErrors": 0
+  },
+  "candidate": {
+    "patch": "docs/design/review-inputs/header-home-layout.patch",
+    "sha256": "d9fd77d7335addb3cb520783a00b4f572d5ad330c2c1184f1eacf2b5faf4740c",
+    "designRef": "b84ceb4a26c5cb0afb33cadf1ca45ed9eedd06ff",
+    "referencePolicy": "Existing proposed H1 PNGs only; current guide GIFs retained. Complete actual screenshot comparison remains required."
+  },
+  "localValidation": {
+    "unitTests": 1135,
+    "suites": 169,
+    "coverageRatchet": "passed unchanged",
+    "browserWorkflows": 9,
+    "browser": "system Chromium diagnostic only",
+    "publicPayload": {
+      "jsRaw": 160323,
+      "jsGzip": 50277,
+      "cssRaw": 61415,
+      "cssGzip": 12953
+    },
+    "previewPayload": {
+      "jsRaw": 161763,
+      "jsGzip": 50714,
+      "cssRaw": 61415,
+      "cssGzip": 12953
+    },
+    "bothBuildsAndArtifactVerification": "passed",
+    "bothWorkerDryRuns": "passed; not deployed",
+    "originalHarnessDiagnostic": "20 paired samples per metric; no confirmed slowdown in system Chromium, slower firstAction point estimate disclosed; pinned acceptance unverified"
+  }
+}

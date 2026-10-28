@@ -12,7 +12,7 @@ on:
         required: false
         default: ''
       candidate_design_ref:
-        description: 'Optional immutable commit supplying candidate PNG/GIF references only'
+        description: 'Optional immutable commit supplying PNG references; current guide GIFs are retained'
         type: string
         required: false
         default: ''
