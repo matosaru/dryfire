@@ -16,7 +16,7 @@ export default {async fetch(request,env){
  if(!route&&!app){
   if(path==='/robots.txt'&&!production)return new Response(request.method==='HEAD'?null:'User-agent: *\nDisallow: /\n',{headers:{'Content-Type':'text/plain; charset=utf-8','X-Robots-Tag':noindex}});
   if(path==='/sitemap.xml'||path==='/robots.txt')indexable=production;
-  else if(!/^\/(?:assets\/[a-zA-Z0-9_.-]+\.(?:js|css)|(?:motions|gun-types|guide-examples)\/[a-zA-Z0-9_.-]+\.(?:svg|gif)|(?:logo\.svg|favicon\.ico|icon-192\.png|icon-512\.png|apple-touch-icon\.png|manifest\.webmanifest|edition\.json|sw\.js|pcm-capture\.worklet\.js))$/.test(path))return missing(request,env);
+  else if(!/^\/(?:assets\/[a-zA-Z0-9_.-]+\.(?:js|css)|(?:motions|gun-types|guide-examples)\/[a-zA-Z0-9_.-]+\.(?:svg|gif)|(?:logo\.svg|header-icons\.svg|favicon\.ico|icon-192\.png|icon-512\.png|apple-touch-icon\.png|manifest\.webmanifest|edition\.json|sw\.js|pcm-capture\.worklet\.js))$/.test(path))return missing(request,env);
  }
  if(!env.ASSETS)return text('Static assets are unavailable.',503);
  if(production&&/^\/(?:favicon\.ico|logo\.svg|icon-192\.png|icon-512\.png|apple-touch-icon\.png)$/.test(path))indexable=true;

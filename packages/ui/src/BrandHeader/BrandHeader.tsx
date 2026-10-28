@@ -1,4 +1,4 @@
-import type { MouseEvent, ReactNode } from 'react';
+import type { MouseEvent } from 'react';
 
 export type BrandHeaderProps = {
   status?: string;
@@ -10,25 +10,16 @@ export type BrandHeaderProps = {
 
 type HeaderDestination = 'about'|'contact'|'settings';
 const destinations: HeaderDestination[] = ['about','contact','settings'];
-const icons: Record<HeaderDestination, ReactNode> = {
-  about: <><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></>,
-  contact: <><circle cx="12" cy="12" r="4"/><path d="M16 8v6a2 2 0 0 0 4 0v-2a8 8 0 1 0-3 6.25"/></>,
-  settings: <><path d="m10 3-.5 2-2 .8-1.8-1-2 3.4 1.6 1.4-.3 2.4-1.6 1.4 2 3.4 2-.6 1.8 1.2.5 2.2h4l.5-2.2 1.8-1.2 2 .6 2-3.4-1.6-1.4-.3-2.4 1.6-1.4-2-3.4-1.8 1-2-.8L14 3Z"/><circle cx="12" cy="11" r="3"/></>
-};
 
 function HeaderLink({destination,view,href,onNavigate,action}:{destination:HeaderDestination;view:string;href:string;action:boolean;onNavigate?:(view:HeaderDestination)=>void}) {
   const label=destination[0].toUpperCase()+destination.slice(1);
   const activate=(event:MouseEvent<HTMLAnchorElement|HTMLButtonElement>)=>{
     if(!onNavigate)return;
     if(!action){if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();}
-    if(event.detail===0)event.currentTarget.dataset.tooltipDismissed='true';
     onNavigate(destination);
   };
   const Control=action?'button':'a';
-  return <Control type={action?'button':undefined} id={destination==='settings'?'settingsShortcut':destination+'Btn'} className={`header-link${view===destination?' active':''}`} href={action?undefined:href} aria-label={label} title={label} aria-current={view===destination?'page':undefined} onClick={activate} onKeyDown={event=>{if(event.key==='Escape')event.currentTarget.dataset.tooltipDismissed='true';}} onBlur={event=>{delete event.currentTarget.dataset.tooltipDismissed;}} onPointerLeave={event=>{if(event.currentTarget.ownerDocument.activeElement!==event.currentTarget)delete event.currentTarget.dataset.tooltipDismissed;}}>
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{icons[destination]}</svg>
-    <span className="header-tooltip" aria-hidden="true">{label}</span>
-  </Control>;
+  return <Control type={action?'button':undefined} id={destination==='settings'?'settingsShortcut':destination+'Btn'} className={`header-link${view===destination?' active':''}`} data-icon={destination} href={action?undefined:href} aria-label={label} title={label} aria-current={view===destination?'page':undefined} onClick={activate}/>;
 }
 
 /** Presentation only; the application owns status, navigation and capture. */

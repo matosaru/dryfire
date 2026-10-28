@@ -20,7 +20,7 @@
     "tools/export-guide-examples.mjs": "5cf9a642dff74dcc1a39ada83255322c9becec5a073947c3f6bf5f078235a758",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
-    "packages/ui/src/BrandHeader/BrandHeader.css": "7817ae57e115480bdde788399dbba275b80780c3cc8faac86f42aa452b142dce",
+    "packages/ui/src/BrandHeader/BrandHeader.css": "5508b5c6004d8973b9c951dfbf674cbcce5b40e251412ba76f39651de3a74552",
     "packages/ui/src/BottomNavigation/BottomNavigation.css": "5708fbb98df65fe43f6ec0e2a4f2b1bfb8c973a9c5c95098e78b220975fd0ac4",
     "apps/web/src/styles/legacy-cards.css": "1859a192b56f8d040b6380ab4b85ae8317245d353ba93ab3f4715b799ef1cc54",
     "packages/ui/src/InfoFooter/InfoFooter.css": "c067b2816187a004a3168219ec42e6091b5517065faceeed7ff22beed70b6b9b",

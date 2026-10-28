@@ -25,21 +25,12 @@ export function createChromeBridge(doc: Document, onNavigate: (view: string) => 
     }
     const view = button.dataset.view ?? destinations[button.id];
     if (view) {
-      if((event as MouseEvent).detail===0&&button.classList.contains('header-link'))button.dataset.tooltipDismissed='true';
       onNavigate(view);
     }
   };
-  const tooltip = (event: Event) => {
-    const link=(event.target as Element).closest?.<HTMLElement>('.header-link');
-    if(!link)return;
-    if(event.type==='keydown') { if((event as KeyboardEvent).key==='Escape')link.dataset.tooltipDismissed='true'; }
-    else if((event.type!=='pointerout'||doc.activeElement!==link)&&!link.contains((event as FocusEvent).relatedTarget as Node|null))delete link.dataset.tooltipDismissed;
-  };
   regions.forEach(host => host.addEventListener('click', activate));
-  for(const type of ['keydown','focusout','pointerout']) regions[0].addEventListener(type,tooltip);
   const removeNative = () => {
     regions.forEach(host => host.removeEventListener('click', activate));
-    for(const type of ['keydown','focusout','pointerout']) regions[0].removeEventListener(type,tooltip);
   };
   const applied: Partial<ChromeSnapshot> = {};
   const update = <Key extends keyof ChromeSnapshot>(key: Key, value: ChromeSnapshot[Key]) => {

@@ -2,8 +2,8 @@
   "date": "2026-10-27",
   "base": "57d9afd7fa5ff689671f17807c0f35e1e8c584f9",
   "status": "Unpublished candidate; pinned acceptance pending",
-  "expandedCSSSha256": "908b8ff6e0323c17fcab677fc8c4bd23bdb20f5dfc9e48d7e89db0dd6de948f5",
-  "scope": "Shared BrandHeader icons and Home logo link; obsolete footer-link rules removed. Public-only footer link presentation rules removed. Other component/style files unchanged; canonical screenshots and timing thresholds not updated. Removed unused old brand-mark/icon-button/status styles and overridden h1 declarations to retain original payload budgets; no unrelated component changes.",
+  "expandedCSSSha256": "3433f5a52b1b8b7f91c6748c7c12283c8bff4c394b98385726b2093a8e6116f9",
+  "scope": "Shared BrandHeader icons and Home logo link; obsolete footer-link rules removed. Header icons use accessible named controls with CSS background artwork so the information toolbar adds no decorative layout nodes. Public-only footer link presentation rules removed. Other component/style files unchanged; canonical screenshots and timing thresholds not updated. Removed unused old brand-mark/icon-button/status styles and overridden h1 declarations to retain original payload budgets; no unrelated component changes.",
   "cleanupPixelReview": {
     "renderer": "System Chromium diagnostic, not pinned acceptance",
     "cases": 53,

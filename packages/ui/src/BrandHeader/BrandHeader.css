@@ -3,16 +3,16 @@
 .hero .brand-home:focus-visible { outline:2px solid var(--accent-orange,#ff9141); outline-offset:3px; }
 
 .hero .header-links { display:flex; align-items:center; }
-.hero .header-link { display:flex; align-items:center; justify-content:center; position:relative; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:11px; color:var(--primary-text,#fff); background:transparent; text-decoration:none; cursor:pointer; appearance:none; font-size:26px; }
-.hero .header-link:is(:hover,.active) { background:var(--header-hover,#263844); }
+.hero .header-link { flex:none; width:44px; height:44px; padding:0; border:0; border-radius:11px; color:var(--primary-text,#fff); background-image:url("/header-icons.svg"); background-position:0 0; background-repeat:no-repeat; background-size:132px 176px; cursor:pointer; appearance:none; }
+.hero .header-link:is(:hover,.active) { background-color:var(--header-hover,#263844); }
 .hero .header-link.active { color:var(--accent-orange,#ff9141); box-shadow:inset 0 -2px currentColor; }
 .hero .header-link:focus-visible { outline:2px solid var(--accent-orange,#ff9141); outline-offset:2px; }
-.header-tooltip { position:absolute; top:calc(100% + 5px); right:0; z-index:20; padding:5px 8px; border-radius:6px; color:var(--primary-text,#fff); background:var(--header-hover,#263844); font-size:.75rem; line-height:1.4; white-space:nowrap; display:none; }
-.hero .header-link:focus-visible .header-tooltip { display:block; }
-@media(hover:hover) { .hero .header-link:hover .header-tooltip { display:block; } }
-.hero .header-link[data-tooltip-dismissed] .header-tooltip { display:none; }
+.hero .header-link[data-icon="contact"] { background-position-x:-44px; }
+.hero .header-link[data-icon="settings"] { background-position-x:-88px; }
+.hero .header-link.active { background-position-y:-44px; }
 html[data-theme="light"] .hero { --header-hover:#d9e4ec; --primary-text:#243d51; }
-html[data-theme="light"] .hero .header-link.active { color:#ac4500; }
+html[data-theme="light"] .hero .header-link { background-position-y:-88px; }
+html[data-theme="light"] .hero .header-link.active { color:#ac4500; background-position-y:-132px; }
 @media(max-width:420px) {
   .hero { gap:6px; }
   .hero .brand-home { gap:6px; }
