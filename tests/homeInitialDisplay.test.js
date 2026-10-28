@@ -20,3 +20,12 @@ test('first Home displays the statistics already loaded with its profile without
 test('later Home visits still refresh statistics rather than keeping the initial snapshot',()=>{
  const s=setup('settings');s.show('home');expect(s.context.renderHome).toHaveBeenCalledTimes(1);expect(document.body.dataset.view).toBe('home');
 });
+
+test('initial startup does not synchronously scroll an intermediate loading screen',()=>{
+ const s=setup();s.show('home');expect(s.context.window.scrollTo).not.toHaveBeenCalled();
+});
+test('navigation resets scroll before publishing the new view or mutating its visibility',()=>{
+ const s=setup('settings');document.getElementById('homeView').classList.add('hidden');document.getElementById('settingsView').classList.remove('hidden');
+ const states=[];s.context.window.scrollTo.mockImplementation(()=>states.push({view:document.body.dataset.view,settingsHidden:document.getElementById('settingsView').classList.contains('hidden'),homeHidden:document.getElementById('homeView').classList.contains('hidden')}));
+ s.show('home');expect(states).toEqual([{view:'settings',settingsHidden:false,homeHidden:true}]);expect(document.body.dataset.view).toBe('home');
+});

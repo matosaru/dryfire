@@ -254,6 +254,7 @@ for (const item of cases) {
     expect(overflow, `Horizontal overflow ${overflow}px; visible offenders: ${JSON.stringify(offenders)}`).toBeLessThanOrEqual(0);
     expect(errors, 'Unexpected browser errors').toEqual([]);
     await testInfo.attach('screen-state', { body: JSON.stringify({ ...item, viewport: page.viewportSize(), browser: testInfo.project.name, browserVersion: browser.version(), clock: environment.clock }), contentType: 'application/json' });
+    await page.mouse.move(0,0); // Shared-header tooltips are separately interaction-tested.
     if (process.env.VISUAL_DIFF_PROBE === '1') await page.addStyleTag({ content: '.button.primary{background:#ff00ff!important}' });
     await expect(page).toHaveScreenshot(baselineName(item).split('/'));
   });

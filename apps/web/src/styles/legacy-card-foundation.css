@@ -3,10 +3,4 @@ h2,h3,p { margin-top:0; }
 .subhead,.muted,footer,.class-card p,.history-item p { color:#a8b5bd; }
 .subhead { margin-bottom:0; max-width:550px; line-height:1.5; }
 .eyebrow { color:#fa974d; margin:0 0 7px; font-size:.72rem; font-weight:800; letter-spacing:.13em; }
-.status-pill { border:1px solid #364148; background:#172126; border-radius:20px; padding:9px 13px; color:#d5e0e7; font-size:.8rem; max-width:100%; }
-.brand-mark { height:60px; width:60px; display:flex; justify-content:center; align-items:center; gap:3px; border-radius:17px; border:1px solid #543421; background:#2c1c13; }
-.brand-mark span { display:block; height:12px; width:3px; border-radius:5px; background:#ff9141; }
-.brand-mark span:nth-child(2),.brand-mark span:nth-child(6) { height:23px; }
-.brand-mark span:nth-child(3),.brand-mark span:nth-child(5) { height:34px; }
-.brand-mark span:nth-child(4) { height:44px; }
 .safety-card,.class-card,.prediction,.tip,.history-item,.empty-state,.listen-panel,.settings-row,.info-note { border:1px solid #29353c; background:#10171b; border-radius:17px; }

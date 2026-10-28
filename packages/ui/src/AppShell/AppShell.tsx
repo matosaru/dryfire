@@ -19,10 +19,10 @@ export type AppShellProps = {
  * control coherent; opaque content slots keep page/form ownership explicit. */
 export function AppShell({ view, status, navigationDisabled, onNavigate, footerNotice, safety, context, children, links }: AppShellProps) {
   return <div className="app-shell">
-    <BrandHeader settingsHref={links?.settings} brandHeading={links?'p':'h1'} view={view} status={status} onSettings={() => onNavigate?.('settings')} />
+    <BrandHeader links={links} brandHeading={links?'p':'h1'} view={view} status={status} onNavigate={onNavigate} />
     {safety}
     <main id="pageContent" className="page-content">{context}{children}</main>
-    <InfoFooter hrefs={links} view={view} onNavigate={onNavigate} notice={footerNotice} />
+    <InfoFooter notice={footerNotice} />
     <BottomNavigation hrefs={links} view={view} disabled={navigationDisabled} onNavigate={onNavigate} />
   </div>;
 }

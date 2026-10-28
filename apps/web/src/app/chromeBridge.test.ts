@@ -11,7 +11,7 @@ test('all prerendered chrome actions work before the renderer exists, including 
   const onNavigate = jest.fn(); const bridge = createChromeBridge(document,onNavigate);
   for (const selector of ['#settingsShortcut','#aboutBtn','#contactBtn','.tab[data-view="learn"]']) control(selector).click();
   document.querySelector<SVGElement>('.tab[data-view="drills"] path')!.dispatchEvent(new MouseEvent('click',{bubbles:true}));
-  document.querySelector('h1')!.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+  document.querySelector('header.hero')!.dispatchEvent(new MouseEvent('click',{bubbles:true}));
   expect(onNavigate.mock.calls).toEqual([['settings'],['about'],['contact'],['learn'],['drills']]);
   bridge.navigationDisabled(true);
   control('.tab[data-view="home"]').dispatchEvent(new MouseEvent('click',{bubbles:true}));
@@ -19,6 +19,19 @@ test('all prerendered chrome actions work before the renderer exists, including 
   bridge.navigationDisabled(false); control('.tab[data-view="home"]').click();
   expect(onNavigate).toHaveBeenLastCalledWith('home');
   bridge.dispose(); control('#aboutBtn').click(); expect(onNavigate).toHaveBeenCalledTimes(6);
+});
+
+test('native logo and wordmark return Home without hijacking modified clicks',()=>{
+ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate);
+ const home=document.getElementById('brandHome')!;
+ for(const options of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
+  const event=new MouseEvent('click',{bubbles:true,cancelable:true,...options});home.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);
+ }
+ expect(navigate).not.toHaveBeenCalled();
+ home.querySelector('img')!.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+ expect(navigate.mock.calls).toEqual([['home']]);
+ bridge.view('home');expect(home).toHaveAttribute('aria-current','page');
+ bridge.view('contact');expect(home).not.toHaveAttribute('aria-current');bridge.dispose();
 });
 
 test('native selection and live status retain all thirteen released route states', () => {
@@ -79,4 +92,60 @@ test('repeated identical snapshots do not rewrite native chrome or schedule rend
   expect(renderer.update).toHaveBeenCalledTimes(1);
   expect(renderer.update).toHaveBeenCalledWith({view:'learn',status:'Listening',navigationDisabled:true});
   observer.disconnect();bridge.dispose();
+});
+
+
+test('header links preserve modified clicks and intercept ordinary nested-icon navigation once',()=>{
+ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate);
+ const link=document.querySelector<HTMLAnchorElement>('#contactBtn')!;
+ for(const options of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
+  const event=new MouseEvent('click',{bubbles:true,cancelable:true,...options});link.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);
+ }
+ expect(navigate).not.toHaveBeenCalled();
+ const event=new MouseEvent('click',{bubbles:true,cancelable:true});link.querySelector('path')!.dispatchEvent(event);
+ expect(event.defaultPrevented).toBe(true);expect(navigate.mock.calls).toEqual([['contact']]);expect(link).toHaveAttribute('data-tooltip-dismissed','true');bridge.dispose();
+});
+
+test('native tooltip dismissal handles nested icons, focus changes and unrelated header events',()=>{
+ const bridge=createChromeBridge(document,jest.fn()),link=document.querySelector<HTMLAnchorElement>('#aboutBtn')!;
+ const icon=link.querySelector('svg')!;
+ document.querySelector('h1')!.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
+ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
+ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:link}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
+ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:document.querySelector('#contactBtn')}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
+ link.dataset.tooltipDismissed='true';link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:null}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
+ bridge.dispose();icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
+});
+
+test('unrelated native header controls retain their classes and do not acquire a route',()=>{
+ const extra=document.createElement('button');extra.className='unrelated';document.querySelector('header.hero')!.append(extra);
+ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate);extra.click();bridge.view('about');
+ expect(navigate).not.toHaveBeenCalled();expect(extra.className).toBe('unrelated');expect(extra).not.toHaveAttribute('aria-current');bridge.dispose();
+});
+
+test('navigation does not rewrite unchanged information controls or notify their ARIA state',()=>{
+ const bridge=createChromeBridge(document,jest.fn());bridge.view('gunSetup');
+ const about=control('#aboutBtn'),contact=control('#contactBtn');
+ const aboutARIA=jest.spyOn(about,'ariaCurrent','set'),contactARIA=jest.spyOn(contact,'ariaCurrent','set');
+ const aboutClass=jest.spyOn(about.classList,'toggle'),contactClass=jest.spyOn(contact.classList,'toggle');
+ bridge.view('settings');
+ expect(aboutARIA).not.toHaveBeenCalled();expect(contactARIA).not.toHaveBeenCalled();
+ expect(aboutClass).not.toHaveBeenCalled();expect(contactClass).not.toHaveBeenCalled();
+ bridge.dispose();
+});
+
+test('Escape dismissal survives pointer exit caused by hiding a focused tooltip',()=>{
+ document.body.innerHTML=fixture;
+ const bridge=createChromeBridge(document,jest.fn()),link=document.getElementById('aboutBtn')!;
+ link.focus();link.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+ link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:document.body}));
+ expect(link.dataset.tooltipDismissed).toBe('true');
+ link.blur();expect(link.dataset.tooltipDismissed).toBeUndefined();bridge.dispose();
+});
+
+test('pointer activation navigates without writing keyboard-only tooltip state',()=>{
+ const navigate=jest.fn(),bridge=createChromeBridge(document,navigate),button=control('#settingsShortcut');
+ button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:1}));expect(navigate).toHaveBeenCalledWith('settings');expect(button.dataset.tooltipDismissed).toBeUndefined();
+ button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:0}));expect(button.dataset.tooltipDismissed).toBe('true');bridge.dispose();
 });

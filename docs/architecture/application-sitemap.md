@@ -43,7 +43,7 @@ flowchart TD
   settings -- Manage guns --> guns
 ```
 
-The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. Settings opens from the header; About and Contact open from the footer. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
+The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. They remain part of the shared shell, including informational pages. About, Contact and Settings open from the shared header; the logo/wordmark links Home. The footer retains disclosure and copyright, without duplicate information links. Gun controls are contextual. Back/Forward return through visited screens; a guide returns to its own source setup with edited values preserved. An operation may be unavailable while capturing or without its required gun/training; the sitemap does not bypass those guards.
 
 ## Screen directory
 

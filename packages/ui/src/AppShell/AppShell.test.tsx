@@ -16,8 +16,8 @@ test('one common shell composes safety, context, persistent content and both nav
   const shell = document.querySelector('.app-shell')!;
   expect([...shell.children].map(node => node.tagName)).toEqual(['HEADER', 'DIV', 'MAIN', 'FOOTER', 'NAV']);
   expect(screen.getByRole('main').children[0]).toBe(screen.getByTestId('context'));
-  await userEvent.setup().click(screen.getByRole('button', { name: 'Open settings' }));
-  await userEvent.setup().click(screen.getByRole('button', { name: 'About' }));
+  await userEvent.setup().click(screen.getByRole('button', { name: 'Settings' }));
+  await userEvent.setup().click(screen.getByRole('link', { name: 'About' }));
   await userEvent.setup().click(screen.getByRole('button', { name: 'History' }));
   expect(onNavigate.mock.calls).toEqual([['settings'], ['about'], ['history']]);
 });
@@ -36,5 +36,5 @@ test('rerendering shell props preserves a mounted invalid draft, its selection a
 
 test('default static composition requires no callbacks', async () => {
   render(<AppShell />);
-  await userEvent.setup().click(screen.getByRole('button', { name: 'Open settings' }));
+  await userEvent.setup().click(screen.getByRole('button', { name: 'Settings' }));
 });

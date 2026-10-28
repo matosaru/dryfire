@@ -21,3 +21,16 @@ CHG-060 public static SEO pages reuse AppShell, BrandHeader, InfoFooter and fixe
 Owner-approved: `/` opens the real trainer, informational and setup URLs are flat, and every built-in sequence has a distinct path. Retain marketing as `MarketingOverview` inside About with the existing brand, routine, free/local promise, CTA and mode guide cards. Public About/Contact/manuals use the same actual app components and fixed navigation as their in-app equivalents. Preserve the original marketing capture as historical evidence. No rebrand or unrelated layout changes. Review changed About/public captures in both pinned browsers and preserve unrelated baselines; original performance budgets apply.
 
 Existing native selects remain OS-owned: practice delay/start-source, appearance, History progress filter and private preview simulation. Native popup geometry is intentionally platform-dependent; no authored dropdown redesign is authorized by this routing change. Preserve existing labels, keyboard behavior and numeric validation contracts. This explicit ownership decision also applies to the retained native template adapters.
+
+## CHG-062 — shared information icons and Home brand link
+
+The owner resumed header work and explicitly requested removing the bottom About/Contact links and making the header logo return Home (2026-10-27). Reuse BrandHeader in AppShell: About, drawn @ Contact, Settings in that order, 24px outlined icons/44px targets, white in Dark, existing Light palette, orange current/focus treatment. The logo plus wordmark form one accessible Home link. InfoFooter retains only disclosure/copyright/private status; fixed bottom navigation remains unchanged. Runtime ownership stays BrandHeader.css and existing shell/chrome bridges. Preserve guards, native/modified link behavior, draft ownership and Beta disclosure. This is an intentional approved shell change; current candidate screenshots are separate from accepted references.
+
+## Canonical UI Map
+
+| Capability | Canonical owner | Source of truth | Allowed variants | Verification |
+| --- | --- | --- | --- | --- |
+| Navigation | AppShell, BrandHeader, BottomNavigation and chromeBridge | Shared layout requirements and CHG-062 | Guarded in-app navigation; real public links; native startup and exclusive React enhancement | Shell/component/bridge tests and page-layout browser workflows |
+| Select/Listbox | Existing labeled native selects | Native ownership decision above | OS-owned popup; preserved values and keyboard behavior | Feature unit and workflow tests |
+
+The static audit manifest currently scopes the shared header/footer/shell changed in CHG-062. It is not a whole-application compliance claim or a reason to redesign unrelated forms.

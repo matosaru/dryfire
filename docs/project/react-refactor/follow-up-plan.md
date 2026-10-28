@@ -154,6 +154,6 @@ The header candidate is implemented locally and under acceptance. Lighthouse dia
 
 ## Current status
 
-F2–F7 and H2 were accepted in run40478835224. The owner merged PR29; b/main are synchronized at57d9afd. Later published checks reported a public WebKit warm regression; it remains unresolved and its investigation is paused by the owner. H1 icon/header work is resumed with the Home brand-link addition and footer-link removal. Candidate code/local evidence does not establish pinned screenshot/performance acceptance or deployment. Dev, commercial and native work remain outside scope.
+F2–F7 and H2 were accepted in run40478835224. The owner merged PR30; b/main were synchronized at1d5ff86 before the application candidate was applied locally to b. H1 now implements the About / @ Contact / Settings header controls, Home brand link and footer-link removal together with the traced scroll-order fix. Run40636731934 proved the early stylesheet preload did not fix public WebKit warm startup; the revised candidate now matches the immutable baseline resource order exactly: module before stylesheet, without an early style preload. Refresh complete local and pinned acceptance before promotion. Dev, commercial and native work remain outside scope.
 
 [Copilot review](copilot-review.md) · [Completed refactor](plan.md) · [Architecture decision](../../architecture/decisions/001-progressive-react-startup.md) · [Current application sitemap](../../architecture/application-sitemap.md)

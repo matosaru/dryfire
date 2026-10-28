@@ -4,5 +4,3 @@
 .storage-card strong { display:block; margin:1px 0 6px; color:var(--primary-text,#f0f4f8); font-size:.87rem; }
 .storage-card p { margin:0; font-size:.73rem; line-height:1.55; color:#aec3d5; }
 .text-button { padding:11px 0; min-height:44px; background:none; border:0; color:#66bfff; font-size:.85rem; cursor:pointer; }
-.footer-links { display:flex; justify-content:center; align-items:center; gap:28px; padding-bottom:12px; margin-bottom:16px; border-bottom:1px solid #253139; }
-.footer-page-link { color:var(--primary-text,inherit); text-decoration:underline; text-underline-offset:3px; }

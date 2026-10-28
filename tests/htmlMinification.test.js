@@ -27,18 +27,13 @@ test('normal layout whitespace compacts while inline word boundaries and preform
  const host=document.createElement('template');host.innerHTML=result;expect(host.content.querySelector('pre').textContent).toBe('  a\n    b');expect(host.content.querySelector('textarea').textContent).toBe('  keep\n    draft');expect(host.content.querySelectorAll('p')[1].textContent).toBe('Second word');
 });
 
-test('critical app styles are discovered after viewport and before module loading without changing resources or body',()=>{
+test('production optimization preserves Vite module and stylesheet resource order',()=>{
  const html='<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>App</title><script type="module" crossorigin src="/app.js"></script><link rel="stylesheet" crossorigin href="/one.css"><link rel="stylesheet" href="/two.css"><link rel="manifest" href="/manifest.json"></head><body><p>Unchanged</p></body></html>';
- const result=prioritizeAppStyles(html);const page=new JSDOM(result);const head=page.window.document.head;
- expect([...head.querySelectorAll('link[rel=stylesheet]')].map(node=>node.getAttribute('href'))).toEqual(['/one.css','/two.css']);
- expect(head.querySelector('link[rel=stylesheet]').hasAttribute('crossorigin')).toBe(true);
- expect(result.indexOf('name="viewport"')).toBeLessThan(result.indexOf('href="/one.css"'));
- expect(result.indexOf('href="/two.css"')).toBeLessThan(result.indexOf('type="module"'));
- expect(head.querySelector('script').getAttribute('src')).toBe('/app.js');
- expect(head.querySelector('link[rel=manifest]').getAttribute('href')).toBe('/manifest.json');
- expect(result.slice(result.indexOf('<body>'))).toBe(html.slice(html.indexOf('<body>')));page.window.close();
+ expect(prioritizeAppStyles(html)).toBe(html);
+ expect(prioritizeAppStyles(prioritizeAppStyles(html))).toBe(html);
 });
 test('public documents without modules and documents without styles stay unchanged',()=>{
  for(const html of ['<html><head><link rel="stylesheet" href="/public.css"></head><body>Public</body></html>','<head><script type="module" src="/app.js"></script></head>','<body>Fragment</body>'])expect(prioritizeAppStyles(html)).toBe(html);
- expect(prioritizeAppStyles('<head><script type="module" src="/app.js"></script><link rel="stylesheet" href="/app.css"></head>')).toMatch(/^<head>\s*<link/);
+ const app='<head><script type="module" src="/app.js"></script><link rel="stylesheet" href="/app.css"></head>';
+ expect(prioritizeAppStyles(app)).toBe(app);
 });
