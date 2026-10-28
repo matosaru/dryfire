@@ -27,16 +27,30 @@ test('normal layout whitespace compacts while inline word boundaries and preform
  const host=document.createElement('template');host.innerHTML=result;expect(host.content.querySelector('pre').textContent).toBe('  a\n    b');expect(host.content.querySelector('textarea').textContent).toBe('  keep\n    draft');expect(host.content.querySelectorAll('p')[1].textContent).toBe('Second word');
 });
 
-test('critical app styles are discovered after viewport and before module loading without changing resources or body',()=>{
+test('critical app styles are preloaded before module loading while blocking styles retain their original order',()=>{
  const html='<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>App</title><script type="module" crossorigin src="/app.js"></script><link rel="stylesheet" crossorigin href="/one.css"><link rel="stylesheet" href="/two.css"><link rel="manifest" href="/manifest.json"></head><body><p>Unchanged</p></body></html>';
  const result=prioritizeAppStyles(html);const page=new JSDOM(result);const head=page.window.document.head;
  expect([...head.querySelectorAll('link[rel=stylesheet]')].map(node=>node.getAttribute('href'))).toEqual(['/one.css','/two.css']);
  expect(head.querySelector('link[rel=stylesheet]').hasAttribute('crossorigin')).toBe(true);
  expect(result.indexOf('name="viewport"')).toBeLessThan(result.indexOf('href="/one.css"'));
- expect(result.indexOf('href="/two.css"')).toBeLessThan(result.indexOf('type="module"'));
+ expect([...head.querySelectorAll('link[rel=preload][as=style]')].map(node=>node.getAttribute('href'))).toEqual(['/one.css','/two.css']);
+ expect(head.querySelector('link[rel=preload]').hasAttribute('crossorigin')).toBe(true);
+ expect(result.indexOf('rel="preload"')).toBeLessThan(result.indexOf('type="module"'));
+ expect(result.indexOf('type="module"')).toBeLessThan(result.indexOf('rel="stylesheet"'));
  expect(head.querySelector('script').getAttribute('src')).toBe('/app.js');
  expect(head.querySelector('link[rel=manifest]').getAttribute('href')).toBe('/manifest.json');
  expect(result.slice(result.indexOf('<body>'))).toBe(html.slice(html.indexOf('<body>')));page.window.close();
+ expect(prioritizeAppStyles(result)).toBe(result);
+});
+test('style preload preserves request attributes and does not duplicate existing hints',()=>{
+ const html='<head><link rel="preload" as="style" href="/one.css"><script type="module" src="/app.js"></script><link rel="stylesheet" href="/one.css"><link id="app-style" onload="window.stylesReady=true" rel="stylesheet" crossorigin="use-credentials" integrity="sha256-example" referrerpolicy="no-referrer" media="screen" href="/two.css"></head>';
+ const page=new JSDOM(prioritizeAppStyles(html));
+ const hints=page.window.document.querySelectorAll('link[rel=preload]');
+ expect(hints).toHaveLength(2);
+ const hint=page.window.document.querySelector('link[rel=preload][href="/two.css"]');
+ expect(hint.hasAttribute('id')).toBe(false);expect(hint.hasAttribute('onload')).toBe(false);
+ for(const attribute of ['href','crossorigin','integrity','referrerpolicy','media'])expect(hint.getAttribute(attribute)).toBe(page.window.document.querySelectorAll('link[rel=stylesheet]')[1].getAttribute(attribute));
+ page.window.close();
 });
 test('public documents without modules and documents without styles stay unchanged',()=>{
  for(const html of ['<html><head><link rel="stylesheet" href="/public.css"></head><body>Public</body></html>','<head><script type="module" src="/app.js"></script></head>','<body>Fragment</body>'])expect(prioritizeAppStyles(html)).toBe(html);
