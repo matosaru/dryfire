@@ -115,7 +115,7 @@
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "vite.config.js": "7c5e167d6d91394541c2c01e55f4bc939ad8489011789c625a7881ef40c36ccd",
-    "tools/minify-html.mjs": "447ed02f7134d49e9b139c4bbdec30aacc18d48917cbd1835550655a99f9c8b8",
+    "tools/minify-html.mjs": "74d15e28f128e2ca19305ecea8a014b91d4a4fa4df0611880e4cb57afdb76f01",
     "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
     "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
@@ -316,6 +316,6 @@
   },
   "warmStylesheetReview": {
     "reviewedOn": "2026-10-28",
-    "note": "Build-only resource-order correction. Stylesheet attributes and cascade, app markup, guide components, CSS, scenario engines and encoded GIF bytes are unchanged. Preload/idempotence tests cover the new hint; pinned WebKit performance acceptance remains required."
+    "note": "Build-only resource-order correction preserves Vite output: module before the blocking stylesheet and no early style preload, matching the immutable accepted artifact. Stylesheet attributes/cascade, app markup, guide components, CSS, scenario engines and encoded GIF bytes are unchanged. Pinned WebKit performance acceptance remains required."
   }
 }
