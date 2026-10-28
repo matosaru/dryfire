@@ -533,6 +533,10 @@ function displayView(name) {
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
   if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
   const initialDisplay = document.body.dataset.view === 'loading';
+  // Scroll APIs flush layout. Reset the already-painted old screen before any
+  // view/style writes; a new document already starts at the top. Flushing after
+  // changing data-view temporarily laid out the outgoing Home screen on startup.
+  if (!initialDisplay) window.scrollTo({top:0,behavior:'instant'});
   informationPages.show(name);
   if(name==='home' && document.body.dataset.view!=='loading' && !homePage && !homePagePending){
     homePagePending=loadProfilePages().then(module=>{if(!profileLocked() && !$('#safetyModal').open)homePage=module.mountHomePage($('#homeView'),view=>switchView(view));}).catch(showError).finally(()=>{homePagePending=null;});
@@ -542,7 +546,6 @@ function displayView(name) {
   activeView=name;
   if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
   document.body.dataset.view = name;
-  window.scrollTo({top:0,behavior:'instant'});
   if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
   document.getElementById(name+'View').classList.toggle('hidden',false);
   setMessage();

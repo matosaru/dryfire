@@ -6,7 +6,7 @@ User instruction: **“also start creating aboutpage, suggest page text. and add
 
 | ID | Requirement | Authorization |
 | --- | --- | --- |
-| ABOUT-01 | Provide a dedicated About screen reached directly from the shared app footer, independently of Settings, including before a first gun has been saved. Describe the current app accurately and briefly. | Direct instruction, CHG-027/028 |
+| ABOUT-01 | Provide a dedicated About screen reached directly from the shared app header, independently of Settings, including before a first gun has been saved. Describe the current app accurately and briefly. | Direct instruction, CHG-027/028 |
 | ABOUT-02 | Explain local storage and backup recovery, experimental acoustic recognition and existing safety checks without promising cloud recovery, perfect detection or verified firearm safety. | Current CORE/DATA invariants applied to the requested page |
 | ABOUT-03 | Display the selectable address **easydryfire@gmail.com** as a working `mailto:` link on the separate Contact screen. Opening an email composer is user initiated; no saved gun/history/audio data is attached or sent automatically. See [Contact](contact.md). | Explicit Contact address, CHG-027/029 |
 | ABOUT-04 | Preserve app/browser Back and Forward, Dark/Light readability and access without microphone permission. Opening About does not create a gun, acknowledge safety or alter saved data. | Existing navigation, appearance and data invariants |
@@ -44,7 +44,7 @@ Complete the safety check before recording or practice. Sound recognition is exp
 
 - **ABOUT-06 / CHG-033:** show the same fixed five-item bottom navigation as other app pages: Home, Learn, Drills, Live Listen and History. Keep safe-area/content padding so it does not cover page/footer content. About is not a practice tab, so no unrelated tab is marked active. Before gun setup, those destinations use the existing setup gate; opening a tab never starts the microphone or confirms safety.
 
-- App footer → About opens About and → Contact opens Contact before and after gun setup. Back returns to the visited screen; browser Back/Forward restores the visited app state.
+- App header → About opens About and → Contact opens Contact before and after gun setup. Back returns to the visited screen; browser Back/Forward restores the visited app state.
 - About contains no contact card; [Contact](contact.md) owns the email page. Neither page sends private data or introduces an email backend or form.
 - About does not request microphone access or complete the safety acknowledgement. Existing persisted data, formats, current free features and defaults remain intact.
 - Review mobile Dark/Light layouts at 390 and 320 px without horizontal overflow; maintain the registry, actual screen evidence and pinned browser baselines.
@@ -63,3 +63,7 @@ Use two separate **About** and **Contact** controls centered in the shared foote
 ## Retained marketing content — CHG-061
 
 The owner explicitly requires the marketing homepage to become part of About, not be permanently deleted. Reuse `MarketingOverview` for the introduction, simple routine, free/local-data promise, “Open the free app” action and four unique practice-guide links. About retains Beta feedback, local-data recovery and safety sections in the common app shell. `/about/` is the single canonical public/app About URL; `/welcome/` redirects here. Root `/` opens the trainer. Existing full-preview copy boundaries and navigation/save/capture guards remain.
+
+## CHG-062 header navigation supersedes footer placement
+
+About and Contact are now specified as shared top-right icon controls, followed by Settings. Contact uses a drawn @. Remove their bottom text controls while preserving the disclosure, copyright and fixed five-tab navigation. The logo/wordmark is a Home link. Earlier footer placement/underline requirements describe superseded designs; current geometry and accessibility follow [LAYOUT-01–07](page-layout.md). Implementation and pinned image acceptance are tracked separately.

@@ -2,14 +2,14 @@
 .home-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
 .home-actions .button{font-size:.87rem;min-width:0}
 @media(max-width:680px){.class-grid{grid-template-columns:1fr}.home-actions{grid-template-columns:1fr}.class-preview{min-width:110px}}
-@media(max-width:380px){.app-shell{padding-left:11px;padding-right:11px}.status-pill{display:none}.class-preview{width:36%;min-width:93px}.class-card{padding:10px}.class-actions .button{padding:10px}.tab{font-size:.68rem}}
+@media(max-width:380px){.app-shell{padding-left:11px;padding-right:11px}.class-preview{width:36%;min-width:93px}.class-card{padding:10px}.class-actions .button{padding:10px}.tab{font-size:.68rem}}
 
 /* Reference design: compact mobile panels and persistent bottom navigation. */
 :root{--accent-orange:#ff8126}
 body{background:radial-gradient(ellipse at top,#192127,#090e12 65%)}
 .app-shell{max-width:480px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:max(22px,env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom))}
 .page-content{flex:1;min-width:0}
-.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}.brand-eyebrow{font-size:1.22rem;letter-spacing:.18em}.hero h1{font-size:.55rem;letter-spacing:.34em}.icon-button{background:none;border:0;color:var(--primary-text,#96a2b0);font-size:26px}.status-pill{display:none}
+.hero{margin-bottom:14px}.brand-logo{border-radius:0;width:49px;height:49px}.brand-eyebrow{font-size:1.22rem;letter-spacing:.18em}
 .hero .brand-name{margin:0;color:var(--primary-text,#f5f7fa);font-size:inherit;font-weight:900;letter-spacing:normal;line-height:1.2}
 .brand-name .brand-eyebrow{display:block;font-size:clamp(1rem,4.9vw,1.22rem);letter-spacing:.14em;white-space:nowrap}
 .brand-tagline{display:block;margin-top:4px;font-size:.75rem;font-weight:750;letter-spacing:.24em;color:#c3ced9;white-space:nowrap}

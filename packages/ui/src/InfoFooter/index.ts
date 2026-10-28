@@ -1,1 +1,1 @@
-export { InfoFooter, InfoFooterLinks, type InfoFooterProps } from './InfoFooter.tsx';
+export { InfoFooter, type InfoFooterProps } from './InfoFooter.tsx';

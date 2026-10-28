@@ -3,8 +3,8 @@ html[data-theme="light"] .about-card { background:#fff; border-color:#c5d2de; }
 html[data-theme="light"] :is(.about-intro>p:last-child,.about-card p,.about-card ol) { color:#4a6276; }
 html[data-theme="light"] .about-email { color:#a34706; }
 button:focus-visible,input:focus-visible { outline:3px solid #ffb77f; outline-offset:3px; }
-@media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; } .status-pill { margin-left:77px; } }
-@media(max-width:420px){ .hero { gap:12px; } .brand-mark { height:47px; width:47px; } .hero-copy { min-width:0; width:calc(100% - 62px); } .status-pill { margin-left:0; } .settings-row { align-items:flex-start; flex-direction:column; } }
+@media(max-width:730px){ .class-grid { grid-template-columns:1fr; } .class-card-top { min-height:0; flex-direction:row; } .section-head { flex-wrap:wrap; } .section-head .button { width:100%; } }
+@media(max-width:420px){ .hero { gap:12px; } .hero-copy { min-width:0; width:calc(100% - 62px); } .settings-row { align-items:flex-start; flex-direction:column; } }
 
 /* Live listening and manual evaluation */
 .listener-control { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }

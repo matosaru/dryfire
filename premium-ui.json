@@ -1,0 +1,9 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": ["packages/ui/src/BrandHeader", "packages/ui/src/InfoFooter", "packages/ui/src/AppShell"],
+  "canonicalMap": "DESIGN.md",
+  "ownership": {
+    "Select/Listbox": "native",
+    "Date": "native"
+  }
+}

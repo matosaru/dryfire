@@ -1,10 +1,7 @@
 @media(max-width:440px) {
   .app-shell { padding-left:14px; padding-right:14px; }
   .hero { padding:10px 0 18px; }
-  .hero h1 { font-size:1.52rem; letter-spacing:-.04em; }
   .hero .subhead { font-size:.8rem; }
-  .brand-mark { width:46px; height:46px; border-radius:13px; }
-  .status-pill { font-size:.75rem; }
   .safety-card { gap:9px; padding:13px; }
   .safety-card p { font-size:.8rem; }
   .nav-glyph { font-size:1.25rem; }

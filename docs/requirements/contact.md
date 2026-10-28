@@ -29,3 +29,7 @@ Opens your email app. You can also copy the address.
 - A public `/contact` server route, contact form, copy-button behavior and email backend remain unimplemented CHG-026 scope. CONTACT-01 in [web commercial requirements](web-commercial.md) retains that forward scope.
 
 Design: [Contact](../design/screens/contact/README.md). Shared controls: [footer](../design/screens/shared/README.md).
+
+## CHG-062 header navigation supersedes footer placement
+
+About and Contact are now specified as shared top-right icon controls, followed by Settings. Contact uses a drawn @. Remove their bottom text controls while preserving the disclosure, copyright and fixed five-tab navigation. The logo/wordmark is a Home link. Earlier footer placement/underline requirements describe superseded designs; current geometry and accessibility follow [LAYOUT-01–07](page-layout.md). Implementation and pinned image acceptance are tracked separately.

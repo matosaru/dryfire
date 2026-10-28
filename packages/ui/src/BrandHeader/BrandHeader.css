@@ -1,2 +1,35 @@
-.hero { display:flex; align-items:center; gap:18px; padding:24px 0; flex-wrap:wrap; }
-.hero-copy { flex:1; min-width:220px; }
+.status-pill { display:none; }
+.hero .brand-home { display:flex; align-items:center; gap:10px; flex:1; min-width:0; color:inherit; text-decoration:none; border-radius:6px; }
+.hero .brand-home:focus-visible { outline:2px solid var(--accent-orange,#ff9141); outline-offset:3px; }
+
+.hero .header-links { display:flex; align-items:center; }
+.hero .header-link { display:flex; align-items:center; justify-content:center; position:relative; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:11px; color:var(--primary-text,#fff); background:transparent; text-decoration:none; cursor:pointer; appearance:none; font-size:26px; }
+.hero .header-link:is(:hover,.active) { background:var(--header-hover,#263844); }
+.hero .header-link.active { color:var(--accent-orange,#ff9141); box-shadow:inset 0 -2px currentColor; }
+.hero .header-link:focus-visible { outline:2px solid var(--accent-orange,#ff9141); outline-offset:2px; }
+.header-tooltip { position:absolute; top:calc(100% + 5px); right:0; z-index:20; padding:5px 8px; border-radius:6px; color:var(--primary-text,#fff); background:var(--header-hover,#263844); font-size:.75rem; line-height:1.4; white-space:nowrap; display:none; }
+.hero .header-link:focus-visible .header-tooltip { display:block; }
+@media(hover:hover) { .hero .header-link:hover .header-tooltip { display:block; } }
+.hero .header-link[data-tooltip-dismissed] .header-tooltip { display:none; }
+html[data-theme="light"] .hero { --header-hover:#d9e4ec; --primary-text:#243d51; }
+html[data-theme="light"] .hero .header-link.active { color:#ac4500; }
+@media(max-width:420px) {
+  .hero { gap:6px; }
+  .hero .brand-home { gap:6px; }
+  .hero .brand-logo { width:32px; height:32px; }
+  .hero .hero-copy { min-width:0; width:auto; }
+  .hero .brand-eyebrow { font-size:.85rem; letter-spacing:.1em; }
+  .hero .brand-tagline { font-size:.5rem; }
+  .hero .brand-heading { flex-wrap:wrap; gap:4px; }
+  .hero .header-actions { gap:0; }
+}
+@media(forced-colors:active) { .hero .header-link.active { outline:1px solid LinkText; } }
+
+/* Keep the information toolbar out of intrinsic flex sizing; reserve its exact space. */
+header.hero { position:relative; min-height:59px; padding-right:142px; }
+.hero .header-actions { position:absolute; right:0; top:calc(50% - 2.5px); transform:translateY(-50%); }
+@media(max-width:300px) {
+  header.hero { padding-right:0; flex-wrap:wrap; }
+  .hero .brand-home { flex-basis:100%; }
+  .hero .header-actions { position:static; transform:none; margin-left:auto; }
+}

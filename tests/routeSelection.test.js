@@ -13,7 +13,7 @@ test('all screens transfer active/aria-current state without touching unrelated 
   const bridge = createChromeBridge(document, () => {});
   const select = view => bridge.view(view);
   const settings = document.getElementById('settingsShortcut');
-  const footer = ['about', 'contact'].map(id => document.getElementById(id + 'Btn'));
+  const information = ['about', 'contact'].map(id => document.getElementById(id + 'Btn'));
   for (const name of [...PAGE_IDS, ...PAGE_IDS.toReversed()]) {
     select(name);
     for (const tab of document.querySelectorAll('.tab')) {
@@ -24,9 +24,9 @@ test('all screens transfer active/aria-current state without touching unrelated 
     }
     expect(settings.classList.contains('active')).toBe(name === 'settings');
     expect(settings.getAttribute('aria-current')).toBe(name === 'settings' ? 'page' : null);
-    footer.forEach((link, index) => {
+    information.forEach((link, index) => {
       expect(link.getAttribute('aria-current')).toBe(name === ['about', 'contact'][index] ? 'page' : null);
-      expect(link.classList.contains('active')).toBe(false);
+      expect(link.classList.contains('active')).toBe(name === ['about', 'contact'][index]);
     });
   }
   bridge.dispose();
