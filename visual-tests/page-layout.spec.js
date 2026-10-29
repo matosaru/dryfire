@@ -27,7 +27,7 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
       await expect(information.getByRole('link',{name:'Contact',exact:true})).toBeVisible();
       for(const link of await information.locator('.header-link').all()){
         const box=await link.boundingBox();expect(box.width).toBeGreaterThanOrEqual(44);expect(box.height).toBeGreaterThanOrEqual(44);
-        await expect(link).toHaveAttribute('data-icon',/^(about|contact|settings)$/);
+        await expect(link.locator('svg')).toHaveAttribute('aria-hidden','true');
         if(!(await link.getAttribute('aria-current')))await expect(link).toHaveCSS('color',resolvedTheme==='light'?'rgb(36, 61, 81)':'rgb(255, 255, 255)');
       }
       await expect(page.getByRole('contentinfo').getByRole('link')).toHaveCount(0);
@@ -89,13 +89,15 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
 }
 
 
-test('header icon keyboard labels and modified links preserve navigation',async({page})=>{
+test('header icon keyboard labels, focus tooltips and modified links preserve navigation',async({page})=>{
  await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();
  const about=page.getByRole('banner').getByRole('link',{name:'About',exact:true});
- await expect(about).toHaveAttribute('title','About');await about.focus();
+ await expect(about).toHaveAttribute('title','About');await about.focus();await expect(about.locator('.header-tooltip')).toBeVisible();await about.locator('.header-tooltip').hover();await expect(about.locator('.header-tooltip')).toBeVisible();
+ await page.keyboard.press('Escape');await expect(about.locator('.header-tooltip')).not.toBeVisible();
  await page.keyboard.press('Tab');await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true})).toBeFocused();
  await page.keyboard.press('Enter');await expect(page).toHaveURL(/\/contact\/$/);
  await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true})).toHaveAttribute('aria-current','page');
+ await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true}).locator('.header-tooltip')).not.toBeVisible();
 
  await page.goBack();await expect(page.locator('#gunSetupView')).toBeVisible();
  await page.setViewportSize({width:640,height:844});await page.evaluate(()=>document.documentElement.style.zoom='2');
