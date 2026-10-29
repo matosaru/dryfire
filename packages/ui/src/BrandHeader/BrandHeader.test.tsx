@@ -33,7 +33,7 @@ test('header information links share named decorative icons and real destination
   const links=[screen.getByRole('link',{name:'About'}),screen.getByRole('link',{name:'Contact'}),screen.getByRole('button',{name:'Settings'})];
   expect(links.map(link=>link.getAttribute('aria-label'))).toEqual(['About','Contact','Settings']);
   expect(links.map(link=>link.getAttribute('href'))).toEqual(['/about/','/contact/',null]);expect(links[2]).toHaveAttribute('type','button');
-  expect(container.querySelectorAll('.header-link svg[aria-hidden="true"][focusable="false"]')).toHaveLength(3);
+  expect(container.querySelectorAll('.header-link svg[aria-hidden="true"]')).toHaveLength(3);
   await userEvent.setup().click(links[0]);expect(onNavigate).toHaveBeenCalledWith('about');expect(links[0]).not.toHaveAttribute('data-tooltip-dismissed');
   rerender(<BrandHeader view="contact" onNavigate={onNavigate}/>);
   expect(links[1]).toHaveAttribute('aria-current','page');expect(links[0]).not.toHaveAttribute('aria-current');

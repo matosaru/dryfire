@@ -864,7 +864,7 @@
     "packages/ui/src/BottomNavigation/BottomNavigation.tsx": "67906ae23ae5cca321e2ad4d71c43779467a083b0db69cc272d78ef2794900b3",
     "packages/ui/src/BottomNavigation/index.ts": "cd44fa73fcbc57adbcb618d50ae415cca66ddeaf75552ae312d7d27a4b32fff3",
     "packages/ui/src/BrandHeader/BrandHeader.css": "7817ae57e115480bdde788399dbba275b80780c3cc8faac86f42aa452b142dce",
-    "packages/ui/src/BrandHeader/BrandHeader.tsx": "3e38705da8a2eeaf6900c52d5b5d6062c6e48b00c809e404cd6692f3df19fba5",
+    "packages/ui/src/BrandHeader/BrandHeader.tsx": "cc952f764a509d3996dbf2cc354b2104442760564682db759923d1f81d4b7796",
     "packages/ui/src/BrandHeader/index.ts": "9627490423356d66750d624ed92655f59be182d4e9e286224e2e712e7714d457",
     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.copy.ts": "e80cc6e405badb60f4023c43d9fd725e0369e376f889fedb7fd6d3efa0a449ba",
     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css": "540275a1d8e8edd8aff06cf4834bfbbf91ce9685ae770dbe4c01cb6046b21262",
