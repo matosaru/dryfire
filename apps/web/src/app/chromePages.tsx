@@ -12,9 +12,9 @@ export const mountChrome: ChromeFactory = ({ doc, initial, onNavigate }) => {
   if (hosts.some(host => !host)) throw new Error('Shared chrome mounts are missing.');
   const regions = hosts as Element[];
   const active = doc.activeElement as HTMLButtonElement | null;
-  const focused = active && regions.some(host => host.contains(active)) ? {id:active.id,view:active.dataset.view,dismissed:active.dataset.tooltipDismissed} : null;
+  const focused = active && regions.some(host => host.contains(active)) ? {id:active.id,view:active.dataset.view,dismissed:active.dataset.tipOff} : null;
   const restoreFocus = () => {
-    if (focused?.id) {const node=doc.getElementById(focused.id);if(node&&focused.dismissed)node.dataset.tooltipDismissed=focused.dismissed;node?.focus();}
+    if (focused?.id) {const node=doc.getElementById(focused.id);if(node&&focused.dismissed)node.dataset.tipOff=focused.dismissed;node?.focus();}
     else if (focused?.view) [...regions[1].querySelectorAll<HTMLButtonElement>('.tab')].find(button=>button.dataset.view===focused.view)?.focus();
   };
   const state = { ...initial };

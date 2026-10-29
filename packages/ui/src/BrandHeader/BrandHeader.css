@@ -10,7 +10,7 @@
 .header-tooltip { position:absolute; top:calc(100% + 5px); right:0; z-index:20; padding:5px 8px; border-radius:6px; color:var(--primary-text,#fff); background:var(--header-hover,#263844); font-size:.75rem; line-height:1.4; white-space:nowrap; display:none; }
 .hero .header-link:focus-visible .header-tooltip { display:block; }
 @media(hover:hover) { .hero .header-link:hover .header-tooltip { display:block; } }
-.hero .header-link[data-tooltip-dismissed] .header-tooltip { display:none; }
+.hero .header-link[data-tip-off] .header-tooltip { display:none; }
 html[data-theme="light"] .hero { --header-hover:#d9e4ec; --primary-text:#243d51; }
 html[data-theme="light"] .hero .header-link.active { color:#ac4500; }
 @media(max-width:420px) {

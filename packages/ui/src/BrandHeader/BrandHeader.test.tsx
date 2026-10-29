@@ -33,8 +33,8 @@ test('header information links share named decorative icons and real destination
   const links=[screen.getByRole('link',{name:'About'}),screen.getByRole('link',{name:'Contact'}),screen.getByRole('button',{name:'Settings'})];
   expect(links.map(link=>link.getAttribute('aria-label'))).toEqual(['About','Contact','Settings']);
   expect(links.map(link=>link.getAttribute('href'))).toEqual(['/about/','/contact/',null]);expect(links[2]).toHaveAttribute('type','button');
-  expect(container.querySelectorAll('.header-link svg[aria-hidden="true"]')).toHaveLength(3);
-  await userEvent.setup().click(links[0]);expect(onNavigate).toHaveBeenCalledWith('about');expect(links[0]).not.toHaveAttribute('data-tooltip-dismissed');
+  expect(container.querySelectorAll('.header-link svg[aria-hidden="true"][focusable="false"]')).toHaveLength(3);
+  await userEvent.setup().click(links[0]);expect(onNavigate).toHaveBeenCalledWith('about');expect(links[0]).not.toHaveAttribute('data-tip-off');
   rerender(<BrandHeader view="contact" onNavigate={onNavigate}/>);
   expect(links[1]).toHaveAttribute('aria-current','page');expect(links[0]).not.toHaveAttribute('aria-current');
 });
@@ -44,15 +44,15 @@ test('header keyboard and pointer tooltips dismiss without hijacking modified li
  render(<BrandHeader onNavigate={navigate} links={{about:'/about/?source=header',contact:'/contact/',settings:'/settings/'}}/>);
  const about=screen.getByRole('link',{name:'About'}),contact=screen.getByRole('link',{name:'Contact'});
  await user.tab();expect(screen.getByRole('link',{name:'Home — Dry Fire With Ease'})).toHaveFocus();
- await user.tab();expect(about).toHaveFocus();await user.keyboard('{ArrowRight}{Escape}');expect(about).toHaveAttribute('data-tooltip-dismissed','true');
- await user.hover(about);await user.unhover(about);expect(about).toHaveAttribute('data-tooltip-dismissed','true');
- await user.tab();expect(contact).toHaveFocus();expect(about).not.toHaveAttribute('data-tooltip-dismissed');
- await user.hover(about);await user.unhover(about);expect(about).not.toHaveAttribute('data-tooltip-dismissed');
+ await user.tab();expect(about).toHaveFocus();await user.keyboard('{ArrowRight}{Escape}');expect(about).toHaveAttribute('data-tip-off','true');
+ await user.hover(about);await user.unhover(about);expect(about).toHaveAttribute('data-tip-off','true');
+ await user.tab();expect(contact).toHaveFocus();expect(about).not.toHaveAttribute('data-tip-off');
+ await user.hover(about);await user.unhover(about);expect(about).not.toHaveAttribute('data-tip-off');
  for(const options of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}]){
   const event=new MouseEvent('click',{bubbles:true,cancelable:true,...options});about.dispatchEvent(event);expect(event.defaultPrevented).toBe(false);
  }
  expect(navigate).not.toHaveBeenCalled();expect(about).toHaveAttribute('href','/about/?source=header');
- await user.keyboard('{Enter}');expect(navigate).toHaveBeenCalledWith('contact');expect(contact).toHaveAttribute('data-tooltip-dismissed','true');
+ await user.keyboard('{Enter}');expect(navigate).toHaveBeenCalledWith('contact');expect(contact).toHaveAttribute('data-tip-off','true');
 });
 
 test('the complete brand is an accessible Home link with normal modified-click behavior',async()=>{

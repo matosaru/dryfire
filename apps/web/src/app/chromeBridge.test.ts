@@ -103,19 +103,19 @@ test('header links preserve modified clicks and intercept ordinary nested-icon n
  }
  expect(navigate).not.toHaveBeenCalled();
  const event=new MouseEvent('click',{bubbles:true,cancelable:true});link.querySelector('path')!.dispatchEvent(event);
- expect(event.defaultPrevented).toBe(true);expect(navigate.mock.calls).toEqual([['contact']]);expect(link).toHaveAttribute('data-tooltip-dismissed','true');bridge.dispose();
+ expect(event.defaultPrevented).toBe(true);expect(navigate.mock.calls).toEqual([['contact']]);expect(link).toHaveAttribute('data-tip-off','true');bridge.dispose();
 });
 
 test('native tooltip dismissal handles nested icons, focus changes and unrelated header events',()=>{
  const bridge=createChromeBridge(document,jest.fn()),link=document.querySelector<HTMLAnchorElement>('#aboutBtn')!;
  const icon=link.querySelector('svg')!;
  document.querySelector('h1')!.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
- icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
- icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
- icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:link}));expect(link).toHaveAttribute('data-tooltip-dismissed','true');
- icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:document.querySelector('#contactBtn')}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
- link.dataset.tooltipDismissed='true';link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:null}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
- bridge.dispose();icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).not.toHaveAttribute('data-tooltip-dismissed');
+ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));expect(link).not.toHaveAttribute('data-tip-off');
+ icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).toHaveAttribute('data-tip-off','true');
+ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:link}));expect(link).toHaveAttribute('data-tip-off','true');
+ icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:document.querySelector('#contactBtn')}));expect(link).not.toHaveAttribute('data-tip-off');
+ link.dataset.tipOff='true';link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:null}));expect(link).not.toHaveAttribute('data-tip-off');
+ bridge.dispose();icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).not.toHaveAttribute('data-tip-off');
 });
 
 test('unrelated native header controls retain their classes and do not acquire a route',()=>{
@@ -140,12 +140,12 @@ test('Escape dismissal survives pointer exit caused by hiding a focused tooltip'
  const bridge=createChromeBridge(document,jest.fn()),link=document.getElementById('aboutBtn')!;
  link.focus();link.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
  link.dispatchEvent(new MouseEvent('pointerout',{bubbles:true,relatedTarget:document.body}));
- expect(link.dataset.tooltipDismissed).toBe('true');
- link.blur();expect(link.dataset.tooltipDismissed).toBeUndefined();bridge.dispose();
+ expect(link.dataset.tipOff).toBe('true');
+ link.blur();expect(link.dataset.tipOff).toBeUndefined();bridge.dispose();
 });
 
 test('pointer activation navigates without writing keyboard-only tooltip state',()=>{
  const navigate=jest.fn(),bridge=createChromeBridge(document,navigate),button=control('#settingsShortcut');
- button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:1}));expect(navigate).toHaveBeenCalledWith('settings');expect(button.dataset.tooltipDismissed).toBeUndefined();
- button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:0}));expect(button.dataset.tooltipDismissed).toBe('true');bridge.dispose();
+ button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:1}));expect(navigate).toHaveBeenCalledWith('settings');expect(button.dataset.tipOff).toBeUndefined();
+ button.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:0}));expect(button.dataset.tipOff).toBe('true');bridge.dispose();
 });
