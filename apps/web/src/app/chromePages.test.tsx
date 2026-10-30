@@ -16,9 +16,9 @@ test('Strict Mode chrome preserves other owners and keyboard focus, with exactly
   const draft=document.getElementById('draft') as HTMLInputElement;
   draft.value='invalid draft';draft.setSelectionRange(2,5);
   const main=document.getElementById('pageContent'), badge=document.getElementById('previewModeBadge');
-  document.getElementById('contactBtn')!.focus();document.getElementById('contactBtn')!.dataset.tooltipDismissed='true';
+  document.getElementById('contactBtn')!.focus();document.getElementById('contactBtn')!.dataset.tipOff='true';
   act(()=>{bridge.view('practice');bridge.status('Microphone connected');bridge.enhance(mountChrome);bridge.enhance(mountChrome);});
-  expect(screen.getByRole('link',{name:'Contact'})).toHaveFocus();expect(screen.getByRole('link',{name:'Contact'})).toHaveAttribute('data-tooltip-dismissed','true');
+  expect(screen.getByRole('link',{name:'Contact'})).toHaveFocus();expect(screen.getByRole('link',{name:'Contact'})).toHaveAttribute('data-tip-off','true');
   expect(document.getElementById('draft')).toBe(draft);expect(draft.value).toBe('invalid draft');
   expect([draft.selectionStart,draft.selectionEnd]).toEqual([2,5]);
   expect(document.getElementById('pageContent')).toBe(main);expect(document.getElementById('previewModeBadge')).toBe(badge);
