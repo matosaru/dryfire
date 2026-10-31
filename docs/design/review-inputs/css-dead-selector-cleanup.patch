@@ -1,0 +1,371 @@
+diff --git a/apps/web/src/pages/GunsPage/GunsPage.css b/apps/web/src/pages/GunsPage/GunsPage.css
+index 58bdf4b..5a8967a 100644
+--- a/apps/web/src/pages/GunsPage/GunsPage.css
++++ b/apps/web/src/pages/GunsPage/GunsPage.css
+@@ -10,7 +10,6 @@
+ .gun-card-name { display:block; font-size:1rem; font-weight:750; line-height:1.4; overflow-wrap:anywhere; }
+ .gun-card-type { display:block; margin-top:4px; font-size:.79rem; line-height:1.4; color:#b4c9dd; }
+ .gun-selected { justify-self:start; background:#ff8126; color:#201409; font-size:.63rem; font-weight:800; border-radius:8px; padding:5px 7px; }
+-.gun-card-chevron { color:#becfe0; font-size:27px; line-height:1; }
+ .gun-card-status { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; font-size:.71rem; color:#aebfd1; }
+ .gun-readiness { color:#ffd264; }
+ .gun-readiness.ready { color:#69e5a0; }
+diff --git a/apps/web/src/pages/HomePage/HomePage.css b/apps/web/src/pages/HomePage/HomePage.css
+index 46be1b9..7c36f83 100644
+--- a/apps/web/src/pages/HomePage/HomePage.css
++++ b/apps/web/src/pages/HomePage/HomePage.css
+@@ -2,7 +2,6 @@
+ .home-stats article { background:#141d22; border:1px solid #2e3a42; border-radius:16px; padding:16px 10px; min-width:0; }
+ .home-stats strong { display:block; color:#fff; font-size:clamp(1.22rem,4vw,2rem); letter-spacing:-.035em; line-height:1.4; }
+ .home-stats small { font-size:.73rem; color:#adbcc4; line-height:1.25; display:block; }
+-.stat-icon { color:#ff9c59; font-size:1.35rem; display:block; margin-bottom:5px; }
+ .home-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+ .home-actions .button { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:14px 12px; text-align:left; }
+ .home-actions .button span { font-size:1.3rem; }
+diff --git a/apps/web/src/styles/legacy-after-evaluation.css b/apps/web/src/styles/legacy-after-evaluation.css
+index f0afda7..b1a475f 100644
+--- a/apps/web/src/styles/legacy-after-evaluation.css
++++ b/apps/web/src/styles/legacy-after-evaluation.css
+@@ -14,6 +14,5 @@ button { -webkit-tap-highlight-color:transparent; }
+ .tab { padding:8px 2px; min-width:0; font-size:.78rem; }
+ .nav-glyph { display:block; font-size:1.35rem; line-height:1.1; margin-bottom:2px; font-weight:500; }
+ .app-shell { padding-bottom:max(40px,env(safe-area-inset-bottom)); }
+-.home-kicker { color:#ff9b56; font-weight:850; font-size:.74rem; letter-spacing:.15em; margin-top:10px; }
+ .home-title { font-size:clamp(2.2rem,8vw,3.65rem); line-height:1.06; letter-spacing:-.055em; margin:15px 0 14px; }
+ .home-title em { color:#ff9141; font-style:normal; }
+diff --git a/apps/web/src/styles/legacy-after-saved-sessions.css b/apps/web/src/styles/legacy-after-saved-sessions.css
+index 77b87f8..0238901 100644
+--- a/apps/web/src/styles/legacy-after-saved-sessions.css
++++ b/apps/web/src/styles/legacy-after-saved-sessions.css
+@@ -11,8 +11,6 @@
+   .session-delay-card { padding:11px; }
+   .session-delay-range { gap:8px; }
+   .session-delay-range .session-field { font-size:.73rem; }
+-  .session-summary-stats { gap:6px; }
+-  .session-summary-stats strong { font-size:.87rem; }
+   .preference-select { flex-wrap:wrap; }
+   .preference-select select { width:100%; max-width:none; }
+ }
+@@ -32,7 +30,7 @@ html[data-theme="light"] :is(.muted,footer,.class-card p,.history-item p,.distan
+ html[data-theme="light"] #activeGunType { color:#4a6276; }
+ html[data-theme="light"] :is(.safety-card,.class-card,.prediction,.tip,.history-item,.empty-state,.listen-panel,.settings-row,.evaluation-panel,.drill-panel,.preset-card,.settings-group,.gun-card,.custom-drill-editor,.storage-card) { background:#fff; border-color:#c5d2de; color:#182936; box-shadow:0 4px 14px #1c3e5a08; }
+ html[data-theme="light"] :is(.welcome-card,.dashboard-card,.gun-switcher) { background:linear-gradient(135deg,#ffffff,#edf3f8); border-color:#c5d2de; color:#182936; }
+-html[data-theme="light"] :is(.welcome-card p,.dashboard-card small,.gun-switcher-action>span,.gun-context strong,.storage-card strong,.gun-card-chevron,.drill-stats strong,.install-card p,.verify-inline label,.home-stats strong,.custom-step-name) { color:#243d51; }
++html[data-theme="light"] :is(.welcome-card p,.dashboard-card small,.gun-switcher-action>span,.gun-context strong,.storage-card strong,.drill-stats strong,.install-card p,.verify-inline label,.home-stats strong,.custom-step-name) { color:#243d51; }
+ html[data-theme="light"] .hero .brand-name { color:#182936; }
+ html[data-theme="light"] .brand-tagline { color:#486074; }
+ html[data-theme="light"] .brand-logo { background:#17212a; border-radius:9px; padding:3px; }
+@@ -66,7 +64,7 @@ html[data-theme="light"] .dashboard-icon.orange { background:#ffe9d8; color:#b54
+ html[data-theme="light"] .dashboard-icon.blue { background:#d9eefb; color:#15668d; }
+ html[data-theme="light"] .dashboard-icon.green { background:#def2e7; color:#16633f; }
+ html[data-theme="light"] .dashboard-icon.purple { background:#eee4fa; color:#75429c; }
+-html[data-theme="light"] :is(.step-number,.custom-step-number) { background:#d4e5f1; color:#264f6e; }
++html[data-theme="light"] .step-number { background:#d4e5f1; color:#264f6e; }
+ html[data-theme="light"] .drill-step.current { background:#fff0e5; border-color:#b96a2c; color:#713706; }
+ html[data-theme="light"] .drill-step.current .step-number { background:#f5a364; color:#34200b; }
+ html[data-theme="light"] .drill-step.done { background:#e8f5ee; border-color:#579673; color:#16633f; }
+diff --git a/apps/web/src/styles/legacy-before-live-listen.css b/apps/web/src/styles/legacy-before-live-listen.css
+index 74d472e..a2cf259 100644
+--- a/apps/web/src/styles/legacy-before-live-listen.css
++++ b/apps/web/src/styles/legacy-before-live-listen.css
+@@ -1,7 +1,6 @@
+ @media(max-width:440px) {
+   .app-shell { padding-left:14px; padding-right:14px; }
+   .hero { padding:10px 0 18px; }
+-  .hero .subhead { font-size:.8rem; }
+   .safety-card { gap:9px; padding:13px; }
+   .safety-card p { font-size:.8rem; }
+   .nav-glyph { font-size:1.25rem; }
+diff --git a/apps/web/src/styles/legacy-before-settings.css b/apps/web/src/styles/legacy-before-settings.css
+index 55d311c..a8429c5 100644
+--- a/apps/web/src/styles/legacy-before-settings.css
++++ b/apps/web/src/styles/legacy-before-settings.css
+@@ -1,6 +1,3 @@
+-.home-steps { margin-top:20px; }
+-.home-steps ol { padding-left:19px; margin:10px 0 0; }
+-.home-steps li { margin-top:6px; }
+ .install-card { background:linear-gradient(155deg,#281b14,#131a1f 70%); border:1px solid #64422a; border-radius:20px; padding:20px; margin:18px 0; }
+ .install-card h3 { font-size:1.55rem; margin:8px 0; }
+ .install-badge { display:inline-block; border:1px solid #86532c; color:#ffb480; border-radius:30px; padding:5px 10px; font-size:.7rem; letter-spacing:.08em; font-weight:850; }
+diff --git a/apps/web/src/styles/legacy-card-foundation.css b/apps/web/src/styles/legacy-card-foundation.css
+index aa4b74d..168faf8 100644
+--- a/apps/web/src/styles/legacy-card-foundation.css
++++ b/apps/web/src/styles/legacy-card-foundation.css
+@@ -1,6 +1,5 @@
+ h1 { margin:3px 0 8px; font-size:clamp(2rem,6vw,3.5rem); letter-spacing:-.05em; line-height:1.04; }
+ h2,h3,p { margin-top:0; }
+-.subhead,.muted,footer,.class-card p,.history-item p { color:#a8b5bd; }
+-.subhead { margin-bottom:0; max-width:550px; line-height:1.5; }
++.muted,footer,.class-card p,.history-item p { color:#a8b5bd; }
+ .eyebrow { color:#fa974d; margin:0 0 7px; font-size:.72rem; font-weight:800; letter-spacing:.13em; }
+ .safety-card,.class-card,.prediction,.tip,.history-item,.empty-state,.listen-panel,.settings-row,.info-note { border:1px solid #29353c; background:#10171b; border-radius:17px; }
+diff --git a/apps/web/src/styles/legacy-practice-heading.css b/apps/web/src/styles/legacy-practice-heading.css
+index 89397b1..b477fd9 100644
+--- a/apps/web/src/styles/legacy-practice-heading.css
++++ b/apps/web/src/styles/legacy-practice-heading.css
+@@ -1,2 +1 @@
+ .practice-section-title { margin-top: 32px; }
+-.practice-mode-tag { color: var(--accent-orange); font-size: .75rem; font-weight: 700; }
+diff --git a/apps/web/src/styles/legacy-session-run-actions.css b/apps/web/src/styles/legacy-session-run-actions.css
+index 1161f1f..8178bb2 100644
+--- a/apps/web/src/styles/legacy-session-run-actions.css
++++ b/apps/web/src/styles/legacy-session-run-actions.css
+@@ -1,4 +1,2 @@
+-.session-record-header { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:7px 14px; font-size:.82rem; }
+-.session-record-meta { color:var(--session-muted); font-size:.71rem; line-height:1.5; margin:8px 0 0; }
+ .session-run-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; }
+ .session-run-actions .button { flex:1 1 120px; min-height:48px; }
+diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
+index 53a78a6..ff02b3f 100644
+--- a/docs/architecture/screen-map.json
++++ b/docs/architecture/screen-map.json
+@@ -1,6 +1,6 @@
+ {
+   "version": 1,
+-  "reviewedOn": "2026-10-29",
++  "reviewedOn": "2026-10-31",
+   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
+   "publicOrigin": "https://easydryfire.com",
+   "publicPaths": [
+@@ -884,7 +884,7 @@
+     "packages/ui/src/GunSwitcher/GunSwitcher.tsx": "da6310e96bce26f52eb6964c9d93359d9af795113000a74a56529c73f8d0c1b9",
+     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx": "ec94aca2ed7ca812312358f8a1c7b455f34847320bc991681cd73093ea091437",
+     "packages/ui/src/SafetyDialog/SafetyDialog.tsx": "d4e5e673dc6018c907e9e990b9d183d2d127165d9dbd62cd6512d1b5f0489d14",
+-    "apps/web/src/styles/legacy-card-foundation.css": "d47e3df7a3bbeaf2c582e84b0e1aab5bb0063d18383aea8be637493986b8cb8d",
++    "apps/web/src/styles/legacy-card-foundation.css": "80e3c7a80c373fe764f4cde19f02f26878133335fb798c1db7580a98eb02b74d",
+     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
+     "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
+     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
+@@ -892,14 +892,14 @@
+     "apps/web/src/pages/GunsPage/GunsPage.tsx": "ce34fec219cf0fcce5b601ca9ce06c6e3686b7102d37781a44ddc0a9d58b0cb2",
+     "apps/web/src/app/gunsPage.tsx": "d1c5f687da8c2415d4b15c09aea288c2dc98ca805690efd6c03216c943277d37",
+     "apps/web/src/app/renderGunsPage.tsx": "18a8bbd8533454c305b37be107e37a10df53d5ef840e887bad1fcf69595af9db",
+-    "apps/web/src/pages/GunsPage/GunsPage.css": "0ca384aca93f0ca6da65a103ad75c156804cac9514d764397e1c387874061718",
++    "apps/web/src/pages/GunsPage/GunsPage.css": "11d33801cb8ea764286a3f389476b50c7de6f69912cb54ba92bb29e09f722021",
+     "apps/web/src/app/homePage.tsx": "9df978d7ac95657cb2e99b931f55b0a57c65de46ef7756adaba8714f112434ee",
+     "apps/web/src/app/gunSetupPage.tsx": "afa0a59d16e2ba851130db8a7e100c628cd3c923fbfa2ff66052cc024a1aeac4",
+     "apps/web/src/app/profilePages/index.ts": "f17312ec88f6ba98d0b563cbc5951d5af90d3a9bd4582d41facac415675c9d4d",
+     "apps/web/src/app/renderHomePage.tsx": "e2abdf6d1ca99a2915075e1093aea5cf5cfc408724aac8093335131075951fa7",
+     "apps/web/src/app/renderGunSetupPage.tsx": "646a4ca39fbb103b31b7e7e6f5472e6cfcb3778a2a2ba0bcf62746add61cea36",
+     "apps/web/src/pages/HomePage/HomePage.tsx": "ba38b765a212724fcb717212755d64ed88c903022d61d8a4a7e1f717424628ec",
+-    "apps/web/src/pages/HomePage/HomePage.css": "70924e9e2f91e0402c65174ca01817b5e594a79ac95c0b2e37de487c513d7a59",
++    "apps/web/src/pages/HomePage/HomePage.css": "0a8cdf95133194679e1f87fee35abd230b77bd1a9aa2bd226bd6c7c89524225f",
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.tsx": "044f79f543885de79afd6ee7e2d1395a75cdf839d519293d28a409445aee8a24",
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
+     "apps/web/src/styles/legacy-after-gun-setup.css": "10214881326191c474881e0ee8ea59607ab99552995ac44842f24b3400c753c4",
+@@ -908,12 +908,12 @@
+     "apps/web/src/pages/SettingsPage/SettingsPage.css": "9e3d21fcc81ecbfb94d1b2bddb69f885534b9813311787b81dd2fc9d053f6330",
+     "apps/web/src/app/renderSettingsPage.tsx": "143a39d906358453254ee1fb6fb4b25718be1949199e4b72b637c523f6dd86e9",
+     "src/templates/shared/preview-testing.html": "dfe2d0060997b3e67c4aa51097e921ed39b131bc4e7583ec0fb479315e2d801b",
+-    "apps/web/src/styles/legacy-before-settings.css": "7dc974973ff4720c2075a21ce2229b2e91e03c14044e0ef8d907e81db6615d11",
++    "apps/web/src/styles/legacy-before-settings.css": "d796631fab5158684181d488c644afeaae2d5bc8453d086c6098793e39e14426",
+     "apps/web/src/app/settingsPage.tsx": "86bfd9d34d26b74de231df749ba46cce7da940c699bdb89be8ba88ead13093b5",
+     "apps/web/src/pages/LearnPage/LearnPage.tsx": "24f2344766814f1a68f7e54c0a11ba15088c68f0fcf1a87a36da758bdc936412",
+     "apps/web/src/pages/LearnPage/LearnPage.css": "1be7874e8228e2159550a7d8f41ef0c0e6cd6bfe73b481eeffc8afdd3cb8da2d",
+     "packages/ui/src/SoundCard/SoundCard.tsx": "6ef9dd3a206ba68546e33dcb07d6f583384af2256d5860151392aea3600d7d26",
+-    "packages/ui/src/SoundCard/SoundCard.css": "eb3a52e26d1d1ea910e0c1002b852982ac16a2424b3a8781b280b7ffbb57a18d",
++    "packages/ui/src/SoundCard/SoundCard.css": "de9362726c2df6a620ee0f4e14cd7d8a1fac0c35bdbf000103ccf954c3358856",
+     "apps/web/src/app/renderLearnPage.tsx": "56d494561d46d55ec1951ff24b2fbb7f73efb97817ac70e66e7f754fd44bf424",
+     "apps/web/src/app/learnPage.tsx": "81c0401a017f3d210327bc622fa43662a4bbcc29df4064f546a15990cc7bb81b",
+     "apps/web/src/app/liveListenPage.tsx": "c538704e32add37632cf3885ccb4778d536ac9a32dc010d9a67336e06ae4ac28",
+@@ -921,7 +921,7 @@
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "5f962191a298b2ee43db27d9a0908766f6defa86035896ce274c6371a9ef50eb",
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "03016410bb5cd5b9f71a8abaceeaa1dd6ad4063ce519be3ccf3d01d56e6bfd6d",
+     "apps/web/src/features/live-listen/presentation.ts": "88218eeaefbac140403beb0d7ece18340942b015399726f5c32618770b8263b8",
+-    "apps/web/src/styles/legacy-before-live-listen.css": "d46cf59a70012686721a4ec0a34b0086c61e63ad59ee5e14b374143961b1ef78",
++    "apps/web/src/styles/legacy-before-live-listen.css": "50521c4db38e5829030c833cdb0bc14ae1a523a35009c199447185106938d93d",
+     "apps/web/src/app/drillsPage.tsx": "4461ac757c62c6ef5820636ec6636b3f87a83b2b5f968bd793a0d3cfc65d0a9f",
+     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
+     "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "325c6c6c5bc68c5494d015a11f8714d9ae1b3aec12bde0b1c50d7a7030ade4af",
+@@ -933,7 +933,7 @@
+     "apps/web/src/styles/legacy-after-drill-cards.css": "69996bdd071d363ca685951e8cffc4a5cad4dc5e1b5dd691c4855f4bdea30de9",
+     "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
+     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
+-    "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
++    "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "217df1f2edf94773d5147d0811fbdc39d355580346d2f1d2ee440e22174ba7c4",
+     "apps/web/src/styles/legacy-before-custom-editor.css": "ad9a9b3fc449f79cedbc0c657aad43dd635c20b80f45d6d1891ab5b0b101b546",
+     "apps/web/src/app/historyPage.tsx": "c1539ae19dfdef5af6790b5cd123780154205eba9e0475c4ed71ff742a89e89a",
+     "apps/web/src/app/renderHistoryPage.tsx": "c27fb519b66c739ebba98bbe80861330f204bee014654d4ac988d5fb0f1238ea",
+@@ -945,8 +945,8 @@
+     "apps/web/src/styles/legacy-after-history-list.css": "fcadfa3ceda88072b3008771d894c55ab2c6db4881616cde7ba29b055b3a8b7d",
+     "apps/web/src/styles/legacy-before-history-list.css": "f13587c5b6d6928dfc3bcce139e925529cce18f5a5b645445cb145bf3e163825",
+     "apps/web/src/styles/legacy-before-evaluation.css": "894976008e366a76806eb6b3f82711befb050a868cb29a85b11e6086c8a0fe96",
+-    "apps/web/src/styles/legacy-after-evaluation.css": "14626bc045626136df9cdfa1bb947a74647f37139727ade34fc85ed59b37e14e",
+-    "apps/web/src/styles/legacy-after-saved-sessions.css": "56bb784d275539fa1ef27bf277f923fc119816071933944ffe2834582d0591b3",
++    "apps/web/src/styles/legacy-after-evaluation.css": "a6dde292dde4a4e2da6612efd6dc0992afe6f3db3c11ebcf67ca44a62d04b5db",
++    "apps/web/src/styles/legacy-after-saved-sessions.css": "4da686ed0aaa1715961f0a5f8652896986400fc19eec8fbc941d0f3095a6a72c",
+     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
+     "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
+     "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
+@@ -960,12 +960,12 @@
+     "packages/ui/src/PracticeReview/PracticeReview.tsx": "1ac7376704bc331caa7a0465b5dd2c0fa2dc15cd9e138780495eac1b42b332e4",
+     "packages/ui/src/SequenceRun/SequenceRun.tsx": "20423e2f4c7a57e48961b9cc56fdda30c5d0716911db70bee8237080327c80df",
+     "packages/ui/src/SequenceReview/SequenceReview.tsx": "b6723e2fe002859120cb4f0bbf2bf3e1f8282fbac4bb4b83e3aae2812a0dc874",
+-    "apps/web/src/styles/legacy-practice-heading.css": "be0553eaac4a005079fed1c9685cfe8aa6a33fac9c7bc62e0ab804c1b6a57c8f",
++    "apps/web/src/styles/legacy-practice-heading.css": "09ee606b68d63296e9a7c33d266cb6543696e6d9b7b7f9a24109a9a22b290513",
+     "packages/ui/src/PracticeRun/PracticeRun.meter.css": "a73b0d8d204019b3bfdda61a773c6a0cb06e0c7f86117bfb576f69d61b2bb08a",
+     "packages/ui/src/PracticeRun/PracticeRun.css": "1733f93c5580166ed12c7672c41ca462b70ffe47a26ce301a658b69ceeb34d3a",
+     "packages/ui/src/PracticeReview/PracticeReview.css": "371db58124b0e00f9be8f17c289ea3c13fd581caf7cf01ffcf5b948c11778357",
+     "packages/ui/src/SequenceRun/SequenceRun.css": "949ad9dd299acd94b1563bf6c1107c8d6ebefa487531ed40dd117c8c90ee0ab2",
+-    "packages/ui/src/SequenceReview/SequenceReview.css": "3f8a7949dda9e2d07ba7102db172279cf0e4bf7850cfc794d71065f7b20a475a",
++    "packages/ui/src/SequenceReview/SequenceReview.css": "3dedc20626f46277aa965f120b9a5514eb4ca8f9a973fe381eb32488bf09b821",
+     "apps/web/src/features/sessions/resultPresentation.ts": "781e1189119cc9a5e3d284497799827bcff2768ce7687f49235b783cbb007542",
+     "packages/ui/src/RepetitionResult/RepetitionResult.tsx": "0ab5ca95f294b59879cf33f0e4864a3d051d6fa37b92c1ba3d6787ac89447149",
+     "packages/ui/src/RepetitionResult/RepetitionResult.css": "103745e188f46e5712152e774d0eb60a8563f751fa917f7d18bef91b59c2b0c6",
+@@ -973,7 +973,7 @@
+     "apps/web/src/styles/legacy-session-detail-lists.css": "20adeaaff527223f1a9f4181cab78c86daf2024071e89d3c583274d8e09954ce",
+     "apps/web/src/styles/legacy-session-section-headings.css": "1bbd376c87ae14eb275e22f6b9943f64fe1a89d8687f85588933cd09fe6a8230",
+     "apps/web/src/styles/legacy-session-review-actions.css": "89addcb480760d6aea765aee8a238569b18c3d5d7ca9b95f438bca9af7914ba9",
+-    "apps/web/src/styles/legacy-session-run-actions.css": "ea9bfe9db6ec15e855704300ca72b0537749f0c88144a1b58872edcd7338cdef",
++    "apps/web/src/styles/legacy-session-run-actions.css": "b197b24ff1b4e6de24ab3b0ae14d8776d60bf336df3d66baf20ef936dabf6ee7",
+     "apps/web/src/features/sessions/phasePresentation.ts": "5c788b0f902338a4ec81352b69d8d3d1f1270203e23d0d29510098f583ad9836",
+     "apps/web/src/app/practiceContents.tsx": "b2ebc00e6385080155f27b7fac16d964c8f914100b742f0ecdcdce33f2e3cee6",
+     "apps/web/src/app/sequenceContents.tsx": "47229b751bc654749387ead6278e542de272ba5e4c75552120982733b554e512",
+diff --git a/docs/architecture/site-tree.md b/docs/architecture/site-tree.md
+index d85faa1..ea05e00 100644
+--- a/docs/architecture/site-tree.md
++++ b/docs/architecture/site-tree.md
+@@ -1,6 +1,6 @@
+ # Site and screen tree
+ 
+-Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-29; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 / CHG-059 shared guide control/layout and group accents / CHG-060 public SEO and readable app paths / CHG-061 app homepage, flat routes, unique sequences and retained marketing About documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
++Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-31; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 / CHG-059 shared guide control/layout and group accents / CHG-060 public SEO and readable app paths / CHG-061 app homepage, flat routes, unique sequences and retained marketing About documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
+ 
+ ## Public site
+ 
+diff --git a/docs/design/proposals/chg-062/header-resume-review.json b/docs/design/proposals/chg-062/header-resume-review.json
+index 474eaf3..18f13ce 100644
+--- a/docs/design/proposals/chg-062/header-resume-review.json
++++ b/docs/design/proposals/chg-062/header-resume-review.json
+@@ -2,7 +2,7 @@
+   "date": "2026-10-27",
+   "base": "57d9afd7fa5ff689671f17807c0f35e1e8c584f9",
+   "status": "Accepted implementation; exact-pixel visual baseline retained",
+-  "expandedCSSSha256": "648379dc0dc9a335b64fd30e53ea262777105ed0b91907c7aab32cd72cb1ada9",
++  "expandedCSSSha256": "cd4f4b98dd8ba4642d746dce9fa69e0c4e5a6bc88668f8a1b999a296d932c02c",
+   "scope": "Shared BrandHeader icons and Home logo link; obsolete footer-link rules removed. Header icons use accessible named inline SVG controls matching the reviewed exact-pixel baselines. Public-only footer link presentation rules removed; unrelated component styles remain unchanged.",
+   "cleanupPixelReview": {
+     "renderer": "System Chromium diagnostic, not pinned acceptance",
+diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
+index 91c8516..12fcacf 100644
+--- a/docs/design/screens/practice-guide/examples/manifest.json
++++ b/docs/design/screens/practice-guide/examples/manifest.json
+@@ -28,42 +28,42 @@
+     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css": "540275a1d8e8edd8aff06cf4834bfbbf91ce9685ae770dbe4c01cb6046b21262",
+     "packages/ui/src/NumberInput/NumberInput.css": "6b25ec1e508798cc1e6fe16c90c80100f60d71556f9cf1e6b5cf98dce058d806",
+     "src/practiceModes.js": "52eefe470cf0dd67582596a38662f9b7690865f8976a32a3122f07de87195fe7",
+-    "apps/web/src/styles/legacy-card-foundation.css": "d47e3df7a3bbeaf2c582e84b0e1aab5bb0063d18383aea8be637493986b8cb8d",
++    "apps/web/src/styles/legacy-card-foundation.css": "80e3c7a80c373fe764f4cde19f02f26878133335fb798c1db7580a98eb02b74d",
+     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
+     "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
+     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
+     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
+-    "apps/web/src/pages/GunsPage/GunsPage.css": "0ca384aca93f0ca6da65a103ad75c156804cac9514d764397e1c387874061718",
+-    "apps/web/src/pages/HomePage/HomePage.css": "70924e9e2f91e0402c65174ca01817b5e594a79ac95c0b2e37de487c513d7a59",
++    "apps/web/src/pages/GunsPage/GunsPage.css": "11d33801cb8ea764286a3f389476b50c7de6f69912cb54ba92bb29e09f722021",
++    "apps/web/src/pages/HomePage/HomePage.css": "0a8cdf95133194679e1f87fee35abd230b77bd1a9aa2bd226bd6c7c89524225f",
+     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
+     "apps/web/src/styles/legacy-after-gun-setup.css": "10214881326191c474881e0ee8ea59607ab99552995ac44842f24b3400c753c4",
+-    "apps/web/src/styles/legacy-before-settings.css": "7dc974973ff4720c2075a21ce2229b2e91e03c14044e0ef8d907e81db6615d11",
++    "apps/web/src/styles/legacy-before-settings.css": "d796631fab5158684181d488c644afeaae2d5bc8453d086c6098793e39e14426",
+     "apps/web/src/pages/SettingsPage/SettingsPage.css": "9e3d21fcc81ecbfb94d1b2bddb69f885534b9813311787b81dd2fc9d053f6330",
+     "apps/web/src/pages/LearnPage/LearnPage.css": "1be7874e8228e2159550a7d8f41ef0c0e6cd6bfe73b481eeffc8afdd3cb8da2d",
+-    "packages/ui/src/SoundCard/SoundCard.css": "eb3a52e26d1d1ea910e0c1002b852982ac16a2424b3a8781b280b7ffbb57a18d",
+-    "apps/web/src/styles/legacy-before-live-listen.css": "d46cf59a70012686721a4ec0a34b0086c61e63ad59ee5e14b374143961b1ef78",
++    "packages/ui/src/SoundCard/SoundCard.css": "de9362726c2df6a620ee0f4e14cd7d8a1fac0c35bdbf000103ccf954c3358856",
++    "apps/web/src/styles/legacy-before-live-listen.css": "50521c4db38e5829030c833cdb0bc14ae1a523a35009c199447185106938d93d",
+     "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "03016410bb5cd5b9f71a8abaceeaa1dd6ad4063ce519be3ccf3d01d56e6bfd6d",
+     "apps/web/src/styles/legacy-before-drills.css": "8796913efa2f2266be952ea79cee4237acaa85e2e8c35e716068b10765eddb77",
+     "apps/web/src/styles/legacy-after-drill-cards.css": "69996bdd071d363ca685951e8cffc4a5cad4dc5e1b5dd691c4855f4bdea30de9",
+     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
+     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
+     "apps/web/src/styles/legacy-before-custom-editor.css": "ad9a9b3fc449f79cedbc0c657aad43dd635c20b80f45d6d1891ab5b0b101b546",
+-    "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "9bc85f4dd133cfef07879395ca653bb5be075fe132be8a07b14aea8168ce2588",
++    "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "217df1f2edf94773d5147d0811fbdc39d355580346d2f1d2ee440e22174ba7c4",
+     "apps/web/src/styles/legacy-before-history-list.css": "f13587c5b6d6928dfc3bcce139e925529cce18f5a5b645445cb145bf3e163825",
+     "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
+     "apps/web/src/styles/legacy-after-history-list.css": "fcadfa3ceda88072b3008771d894c55ab2c6db4881616cde7ba29b055b3a8b7d",
+     "apps/web/src/styles/legacy-before-evaluation.css": "894976008e366a76806eb6b3f82711befb050a868cb29a85b11e6086c8a0fe96",
+     "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
+-    "apps/web/src/styles/legacy-after-evaluation.css": "14626bc045626136df9cdfa1bb947a74647f37139727ade34fc85ed59b37e14e",
++    "apps/web/src/styles/legacy-after-evaluation.css": "a6dde292dde4a4e2da6612efd6dc0992afe6f3db3c11ebcf67ca44a62d04b5db",
+     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
+     "packages/ui/src/SavedSessionList/SavedSessionList.css": "f9a0c565ff87a62a2488e41cff9a05a0ef23a953cf1f153163d2cc6740ae67b1",
+-    "apps/web/src/styles/legacy-after-saved-sessions.css": "56bb784d275539fa1ef27bf277f923fc119816071933944ffe2834582d0591b3",
++    "apps/web/src/styles/legacy-after-saved-sessions.css": "4da686ed0aaa1715961f0a5f8652896986400fc19eec8fbc941d0f3095a6a72c",
+     "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
+     "packages/ui/src/ProgressContent/ProgressContent.css": "51d807fae23db615339543ed09d3659468b282bdcfa42e0a24d73a1b4807afbd",
+     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
+     "packages/ui/src/SequenceRun/SequenceRun.css": "949ad9dd299acd94b1563bf6c1107c8d6ebefa487531ed40dd117c8c90ee0ab2",
+-    "packages/ui/src/SequenceReview/SequenceReview.css": "3f8a7949dda9e2d07ba7102db172279cf0e4bf7850cfc794d71065f7b20a475a",
+-    "apps/web/src/styles/legacy-practice-heading.css": "be0553eaac4a005079fed1c9685cfe8aa6a33fac9c7bc62e0ab804c1b6a57c8f",
++    "packages/ui/src/SequenceReview/SequenceReview.css": "3dedc20626f46277aa965f120b9a5514eb4ca8f9a973fe381eb32488bf09b821",
++    "apps/web/src/styles/legacy-practice-heading.css": "09ee606b68d63296e9a7c33d266cb6543696e6d9b7b7f9a24109a9a22b290513",
+     "packages/ui/src/PracticeRun/PracticeRun.css": "1733f93c5580166ed12c7672c41ca462b70ffe47a26ce301a658b69ceeb34d3a",
+     "packages/ui/src/PracticeReview/PracticeReview.css": "371db58124b0e00f9be8f17c289ea3c13fd581caf7cf01ffcf5b948c11778357",
+     "packages/ui/src/PracticeRun/PracticeRun.meter.css": "a73b0d8d204019b3bfdda61a773c6a0cb06e0c7f86117bfb576f69d61b2bb08a",
+@@ -77,7 +77,7 @@
+     "packages/ui/src/SequenceReview/index.ts": "8a778eaff0f4799346ba6dc47b85bd0f04cf04079e49fa427fa3059af7332184",
+     "apps/web/src/styles/legacy-session-section-headings.css": "1bbd376c87ae14eb275e22f6b9943f64fe1a89d8687f85588933cd09fe6a8230",
+     "packages/ui/src/RepetitionResult/RepetitionResult.css": "103745e188f46e5712152e774d0eb60a8563f751fa917f7d18bef91b59c2b0c6",
+-    "apps/web/src/styles/legacy-session-run-actions.css": "ea9bfe9db6ec15e855704300ca72b0537749f0c88144a1b58872edcd7338cdef",
++    "apps/web/src/styles/legacy-session-run-actions.css": "b197b24ff1b4e6de24ab3b0ae14d8776d60bf336df3d66baf20ef936dabf6ee7",
+     "apps/web/src/styles/legacy-session-detail-lists.css": "20adeaaff527223f1a9f4181cab78c86daf2024071e89d3c583274d8e09954ce",
+     "packages/ui/src/RepetitionResult/RepetitionResult.details.css": "5b6ac899b74b36ec7bd9ba67dd347abd99024c57177d8e8c5e4cdee07dc5bc27",
+     "apps/web/src/styles/legacy-session-review-actions.css": "89addcb480760d6aea765aee8a238569b18c3d5d7ca9b95f438bca9af7914ba9",
+diff --git a/packages/ui/src/CustomDrillEditor/CustomDrillEditor.css b/packages/ui/src/CustomDrillEditor/CustomDrillEditor.css
+index 2db83a0..61783a5 100644
+--- a/packages/ui/src/CustomDrillEditor/CustomDrillEditor.css
++++ b/packages/ui/src/CustomDrillEditor/CustomDrillEditor.css
+@@ -3,7 +3,6 @@
+ .custom-drill-editor .editor-label { margin:1px 0 -5px; text-transform:uppercase; color:#b8cbdc; font-size:.7rem; letter-spacing:.07em; }
+ .custom-drill-steps { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+ .custom-drill-steps>li { display:flex; align-items:center; gap:8px; padding:9px; background:#14222d; border:1px solid #354a5b; border-radius:10px; }
+-.custom-step-number { display:grid; place-items:center; width:27px; height:27px; flex:none; background:#23546a; border-radius:50%; color:#c1eeff; font-size:.8rem; font-weight:800; }
+ .custom-step-name { flex:1; min-width:0; font-size:.79rem; line-height:1.35; }
+ .custom-step-controls { display:flex; gap:4px; flex:none; }
+ .custom-step-controls button { width:34px; height:34px; min-height:34px; padding:0; border:1px solid #40566b; background:#1e2e3b; border-radius:7px; color:var(--primary-text,#e3eef8); cursor:pointer; font-size:1rem; }
+diff --git a/packages/ui/src/SequenceReview/SequenceReview.css b/packages/ui/src/SequenceReview/SequenceReview.css
+index 3746eee..c99027c 100644
+--- a/packages/ui/src/SequenceReview/SequenceReview.css
++++ b/packages/ui/src/SequenceReview/SequenceReview.css
+@@ -2,8 +2,4 @@
+ .session-review-card h3 { font-size:1.02rem; color:var(--session-text); margin-bottom:15px; }
+ .session-review-card h3[data-status="completed"] { color:var(--session-positive); }
+ .session-summary-count { display:block; margin:4px 0 7px; font-size:2.7rem; font-weight:800; letter-spacing:-.04em; font-variant-numeric:tabular-nums; }
+-.session-summary-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; padding-top:15px; margin-top:18px; border-top:1px solid var(--session-border); }
+-.session-summary-stats>div { min-width:0; }
+-.session-summary-stats strong { display:block; color:var(--session-text); font-size:1rem; overflow-wrap:anywhere; }
+-.session-summary-stats span { display:block; color:var(--session-muted); font-size:.66rem; margin-top:5px; }
+ .session-saved-note { color:var(--session-muted); font-size:.72rem; margin:13px 0 0; }
+diff --git a/packages/ui/src/SoundCard/SoundCard.css b/packages/ui/src/SoundCard/SoundCard.css
+index 31eb803..4558f3d 100644
+--- a/packages/ui/src/SoundCard/SoundCard.css
++++ b/packages/ui/src/SoundCard/SoundCard.css
+@@ -1,8 +1,5 @@
+ .class-card { display:flex; flex-direction:column; gap:13px; padding:16px; min-width:0; }
+ .class-card-top { display:flex; flex-direction:column; align-items:flex-start; gap:12px; min-height:131px; }
+-.class-symbol { display:grid; place-items:center; height:45px; width:45px; border-radius:13px; font-size:.9rem; font-weight:900; background:#302014; color:#fa974d; }
+-.tone-blue .class-symbol { background:#102942; color:#56adff; }
+-.tone-purple .class-symbol { background:#31233c; color:#cb8ef3; }
+ .class-card h3 { margin:0 0 5px; font-size:1.25rem; }
+ .class-card p { margin:0; line-height:1.42; font-size:.88rem; }
+ .progress-label { font-size:.78rem!important; color:#b9c5cb!important; }
+diff --git a/tests/styleSources.test.js b/tests/styleSources.test.js
+index 589322d..0c82215 100644
+--- a/tests/styleSources.test.js
++++ b/tests/styleSources.test.js
+@@ -26,3 +26,13 @@ test('imports cannot escape the repository boundary', () => {
+   writeFileSync(join(root, 'entry.css'), '@import "../outside.css";\n');
+   expect(() => styleSources('entry.css', root)).toThrow('CSS import leaves repository');
+ });
++
++test('the shipping stylesheet does not restore retired component selectors', () => {
++  const { css } = composedStyles();
++  const retired = [
++    'subhead', 'class-symbol', 'home-kicker', 'stat-icon', 'home-steps',
++    'gun-card-chevron', 'custom-step-number', 'session-record-header',
++    'session-record-meta', 'session-summary-stats', 'practice-mode-tag'
++  ];
++  for (const token of retired) expect(css).not.toContain(`.${token}`);
++});
