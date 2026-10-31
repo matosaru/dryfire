@@ -1,4 +1,2 @@
-.session-record-header { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:7px 14px; font-size:.82rem; }
-.session-record-meta { color:var(--session-muted); font-size:.71rem; line-height:1.5; margin:8px 0 0; }
 .session-run-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; }
 .session-run-actions .button { flex:1 1 120px; min-height:48px; }

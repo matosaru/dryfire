@@ -62,7 +62,7 @@ test('invalid edit drafts survive About and Contact, then Cancel preserves every
   await page.evaluate(()=>{window.__gunDraftField=document.getElementById('gunName');});
   for(const id of ['about','contact']){
     await page.locator(`#${id}Btn`).click();await expect(page.locator(`#${id}View`)).toBeVisible();
-    await page.locator(`#${id}View [data-react-back]`).click();await expect(page.locator('#gunSetupView')).toBeVisible();
+    await page.locator(`#${id}View [data-r-back]`).click();await expect(page.locator('#gunSetupView')).toBeVisible();
     await expect(page.locator('#gunName')).toHaveValue('');
     await expect(page.locator('[name="gunTypeChoice"][value="Rifles and Carbines"]')).toBeChecked();
     expect(await page.evaluate(()=>document.getElementById('gunName')===window.__gunDraftField)).toBe(true);

@@ -3,7 +3,6 @@
 .custom-drill-editor .editor-label { margin:1px 0 -5px; text-transform:uppercase; color:#b8cbdc; font-size:.7rem; letter-spacing:.07em; }
 .custom-drill-steps { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
 .custom-drill-steps>li { display:flex; align-items:center; gap:8px; padding:9px; background:#14222d; border:1px solid #354a5b; border-radius:10px; }
-.custom-step-number { display:grid; place-items:center; width:27px; height:27px; flex:none; background:#23546a; border-radius:50%; color:#c1eeff; font-size:.8rem; font-weight:800; }
 .custom-step-name { flex:1; min-width:0; font-size:.79rem; line-height:1.35; }
 .custom-step-controls { display:flex; gap:4px; flex:none; }
 .custom-step-controls button { width:34px; height:34px; min-height:34px; padding:0; border:1px solid #40566b; background:#1e2e3b; border-radius:7px; color:var(--primary-text,#e3eef8); cursor:pointer; font-size:1rem; }

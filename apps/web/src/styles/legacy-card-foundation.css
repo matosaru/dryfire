@@ -1,6 +1,5 @@
 h1 { margin:3px 0 8px; font-size:clamp(2rem,6vw,3.5rem); letter-spacing:-.05em; line-height:1.04; }
 h2,h3,p { margin-top:0; }
-.subhead,.muted,footer,.class-card p,.history-item p { color:#a8b5bd; }
-.subhead { margin-bottom:0; max-width:550px; line-height:1.5; }
+.muted,footer,.class-card p,.history-item p { color:#a8b5bd; }
 .eyebrow { color:#fa974d; margin:0 0 7px; font-size:.72rem; font-weight:800; letter-spacing:.13em; }
 .safety-card,.class-card,.prediction,.tip,.history-item,.empty-state,.listen-panel,.settings-row,.info-note { border:1px solid #29353c; background:#10171b; border-radius:17px; }

@@ -19,7 +19,7 @@ test('delayed chrome enhancement preserves the native safety gate and never dupl
   await expect(page.locator('#homeView')).toBeVisible();
   await page.evaluate(()=>{window.__nativeSettingsButton=document.getElementById('settingsShortcut');});
   await page.locator('#aboutBtn').click();await expect(page.locator('#aboutView')).toBeVisible();
-  await page.locator('[data-react-back]').first().click();await expect(page.locator('#homeView')).toBeVisible();
+  await page.locator('[data-r-back]').first().click();await expect(page.locator('#homeView')).toBeVisible();
   await page.locator('.tab[data-view="drills"]').click();await page.locator('[data-practice-mode="single"]').click();
   await page.locator('#practiceStartBtn').click();await expect(page.locator('#safetyModal')).toBeVisible();
   release();

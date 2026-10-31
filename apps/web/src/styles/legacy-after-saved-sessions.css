@@ -11,8 +11,6 @@
   .session-delay-card { padding:11px; }
   .session-delay-range { gap:8px; }
   .session-delay-range .session-field { font-size:.73rem; }
-  .session-summary-stats { gap:6px; }
-  .session-summary-stats strong { font-size:.87rem; }
   .preference-select { flex-wrap:wrap; }
   .preference-select select { width:100%; max-width:none; }
 }
@@ -32,7 +30,7 @@ html[data-theme="light"] :is(.muted,footer,.class-card p,.history-item p,.distan
 html[data-theme="light"] #activeGunType { color:#4a6276; }
 html[data-theme="light"] :is(.safety-card,.class-card,.prediction,.tip,.history-item,.empty-state,.listen-panel,.settings-row,.evaluation-panel,.drill-panel,.preset-card,.settings-group,.gun-card,.custom-drill-editor,.storage-card) { background:#fff; border-color:#c5d2de; color:#182936; box-shadow:0 4px 14px #1c3e5a08; }
 html[data-theme="light"] :is(.welcome-card,.dashboard-card,.gun-switcher) { background:linear-gradient(135deg,#ffffff,#edf3f8); border-color:#c5d2de; color:#182936; }
-html[data-theme="light"] :is(.welcome-card p,.dashboard-card small,.gun-switcher-action>span,.gun-context strong,.storage-card strong,.gun-card-chevron,.drill-stats strong,.install-card p,.verify-inline label,.home-stats strong,.custom-step-name) { color:#243d51; }
+html[data-theme="light"] :is(.welcome-card p,.dashboard-card small,.gun-switcher-action>span,.gun-context strong,.storage-card strong,.drill-stats strong,.install-card p,.verify-inline label,.home-stats strong,.custom-step-name) { color:#243d51; }
 html[data-theme="light"] .hero .brand-name { color:#182936; }
 html[data-theme="light"] .brand-tagline { color:#486074; }
 html[data-theme="light"] .brand-logo { background:#17212a; border-radius:9px; padding:3px; }
@@ -66,7 +64,7 @@ html[data-theme="light"] .dashboard-icon.orange { background:#ffe9d8; color:#b54
 html[data-theme="light"] .dashboard-icon.blue { background:#d9eefb; color:#15668d; }
 html[data-theme="light"] .dashboard-icon.green { background:#def2e7; color:#16633f; }
 html[data-theme="light"] .dashboard-icon.purple { background:#eee4fa; color:#75429c; }
-html[data-theme="light"] :is(.step-number,.custom-step-number) { background:#d4e5f1; color:#264f6e; }
+html[data-theme="light"] .step-number { background:#d4e5f1; color:#264f6e; }
 html[data-theme="light"] .drill-step.current { background:#fff0e5; border-color:#b96a2c; color:#713706; }
 html[data-theme="light"] .drill-step.current .step-number { background:#f5a364; color:#34200b; }
 html[data-theme="light"] .drill-step.done { background:#e8f5ee; border-color:#579673; color:#16633f; }
