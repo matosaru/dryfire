@@ -54,3 +54,14 @@ Startup readiness is now characterized against actual Home/Gun Setup templates. 
 Observed identical-build evidence: WebKit returning median 96→97 ms / p95 100→106 ms, 11/20 pairs slower, triggers the old point-only tail rule. Frame-paced quantiles from twenty samples are not enough to establish a code regression. The original point criteria remain, but a paired bootstrap (5,000 deterministic resamples, 99% interval for median/p95 differences) must exclude zero before classification as reproducible. Default sampling is now 20 pairs plus 20 repeated pairs whenever a point is slower. Even a consistent slowdown below 5% remains a failure when demonstrated; unit controls explicitly test 2 ms. A raw unconfirmed point remains disclosed as uncertain and is not a performance improvement claim. Payload budgets and screenshot references/tolerances are unchanged.
 
 The public performance matrix also runs `tools/performance/probe-timing.mjs` against the original artifact twice, with a deliberate candidate-only 250 ms CPU stall at each document startup. The wrapper succeeds only if the comparison exits nonzero and actually confirms a startup timing regression; a launch/configuration/cleanup error is not accepted as a detected regression. Probe evidence stays in `performance-results/timing-probe.json`. This known-slow control protects against accidentally disabling timing enforcement while correcting false point-only classifications. The 25-minute job timeout is a CI execution allowance, not a latency budget.
+
+## Render-blocking stylesheet investigation
+
+The 2026-10-31 follow-up reproduced Lighthouse's render-blocking warning against the accepted `689e43c` artifact. Asynchronous full-CSS loading plus an inline critical subset removes the audit, but it is rejected by this project's application benchmark:
+
+- 31.4 KB critical CSS adds 7.5 KB gzip to HTML and worsens LCP despite earlier FCP.
+- 15.1 KB critical CSS repeatedly removes the audit and improves FCP by roughly 250–300 ms, but median LCP remains slower.
+- Even a sub-1 KB loading-only critical style changes stylesheet application timing enough to regress returning-user startup from 270.1 to 321.6 ms and first-action p95 from 80.4 to 89.1 ms in the unchanged local Chromium diagnostic.
+- An earlier preload-first variant also failed pinned WebKit warm startup, so a preload or Early-Hints restatement is not treated as a new solution.
+
+These experiments were removed. Preserve the accepted module-before-stylesheet discovery and blocking cascade until an alternative reduces the CSS resource itself. A future split must characterize native startup templates, lazy page ownership, light/dark cascade order, offline cache completeness and route readiness before changing imports. Lighthouse score alone cannot override slower startup or interaction evidence.
