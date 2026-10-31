@@ -14,6 +14,5 @@ button { -webkit-tap-highlight-color:transparent; }
 .tab { padding:8px 2px; min-width:0; font-size:.78rem; }
 .nav-glyph { display:block; font-size:1.35rem; line-height:1.1; margin-bottom:2px; font-weight:500; }
 .app-shell { padding-bottom:max(40px,env(safe-area-inset-bottom)); }
-.home-kicker { color:#ff9b56; font-weight:850; font-size:.74rem; letter-spacing:.15em; margin-top:10px; }
 .home-title { font-size:clamp(2.2rem,8vw,3.65rem); line-height:1.06; letter-spacing:-.055em; margin:15px 0 14px; }
 .home-title em { color:#ff9141; font-style:normal; }

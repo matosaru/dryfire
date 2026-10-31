@@ -156,6 +156,6 @@ The remaining safe optimization is to reduce the blocking resource itself. First
 
 ## Current status
 
-F2–F7, H1 and H2 are complete. `b`/`main` contain accepted `8e85e41` through PR #34. The 450 exact Chromium/WebKit references and all performance jobs passed for that release. The blocking-CSS experiment produced no shippable loading change. The next safe direction is underway: the [CSS ownership audit](css-ownership-audit.md) maps all 74 shipping sources and removes the first proven-unused selector set, pending complete browser acceptance. Dev, commercial and native work remain outside scope.
+F2–F7, H1 and H2 are complete. `b`/`main` contain accepted `8e85e41` through PR #34. The blocking-CSS experiment produced no shippable loading change. The [CSS ownership audit](css-ownership-audit.md) maps all 74 shipping sources and removes the first proven-unused selector set. Complete candidate run `41224685902` passed validation, both 450-reference exact screenshot editions and all four unchanged performance gates; normal b push and checked production promotion remain. Dev, commercial and native work remain outside scope.
 
 [Copilot review](copilot-review.md) · [Completed refactor](plan.md) · [Architecture decision](../../architecture/decisions/001-progressive-react-startup.md) · [Current application sitemap](../../architecture/application-sitemap.md)

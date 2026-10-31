@@ -1003,7 +1003,7 @@ async function init() {
   for (const id of ['restoreGunBackupBtn', 'gunLibraryBackupBtn']) $('#'+id).addEventListener('click', () => switchView('settings'));
   $('#builtInDrillsTab').addEventListener('click', () => selectDrillCollection(false));
   $('#customDrillsTab').addEventListener('click', () => selectDrillCollection(true));
-  document.querySelectorAll('[data-back]:not([data-react-back])').forEach(button => button.addEventListener('click', () => goBack()));
+  document.querySelectorAll('[data-back]:not([data-r-back])').forEach(button => button.addEventListener('click', () => goBack()));
   $('#homeLearnBtn').addEventListener('click', () => switchView('learn'));
   $('#homeDrillsBtn').addEventListener('click', () => switchView('drills'));
   $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));

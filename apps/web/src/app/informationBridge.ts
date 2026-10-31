@@ -27,7 +27,7 @@ export function createInformationBridge({ onBack, onError, doc = document,
   };
   const fallback = (event: Event) => {
     const target = event.target;
-    if (!pages && target instanceof Element && target.closest('[data-react-back]')) onBack();
+    if (!pages && target instanceof Element && target.closest('[data-r-back]')) onBack();
   };
   const hosts = [doc.getElementById('aboutView'), doc.getElementById('contactView')];
   hosts.forEach(host => host?.addEventListener('click', fallback));

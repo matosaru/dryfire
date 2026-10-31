@@ -76,7 +76,7 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
     // their lazy runtime must have been included in the original cache metadata.
     await page.locator('#aboutBtn').click();
     await expect(page.locator('#aboutView')).toBeVisible();
-    await expect(page.locator('#aboutView [data-react-back]')).toBeVisible();
+    await expect(page.locator('#aboutView [data-r-back]')).toBeVisible();
     const informationModule = JSON.parse(readFileSync(new URL('../dist/edition.json', import.meta.url))).assets.find(path => /\/informationPages-[^/]+\.js$/.test(path));
     expect(informationModule).toBeTruthy();
     // Import completion proves actual React code loaded, not only static HTML.

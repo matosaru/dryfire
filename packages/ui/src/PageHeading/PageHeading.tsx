@@ -10,5 +10,5 @@ export interface PageHeadingProps {
 }
 
 export function PageHeading({ id, title, backLabel = 'Back to previous screen', backId, sharedBack=true, eyebrow, reactBack = true, onBack }: PageHeadingProps) {
-  return <div className="section-head"><button id={backId} type="button" className="back-button" data-back={sharedBack?'':undefined} data-react-back={reactBack?'':undefined} aria-label={backLabel} onClick={onBack}>‹</button>{eyebrow?<div><p className="eyebrow">{eyebrow}</p><h2 id={id}>{title}</h2></div>:<h2 id={id}>{title}</h2>}</div>;
+  return <div className="section-head"><button id={backId} type="button" className="back-button" data-back={sharedBack?'':undefined} data-r-back={reactBack?'':undefined} aria-label={backLabel} onClick={onBack}>‹</button>{eyebrow?<div><p className="eyebrow">{eyebrow}</p><h2 id={id}>{title}</h2></div>:<h2 id={id}>{title}</h2>}</div>;
 }

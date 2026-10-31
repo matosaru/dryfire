@@ -2,8 +2,4 @@
 .session-review-card h3 { font-size:1.02rem; color:var(--session-text); margin-bottom:15px; }
 .session-review-card h3[data-status="completed"] { color:var(--session-positive); }
 .session-summary-count { display:block; margin:4px 0 7px; font-size:2.7rem; font-weight:800; letter-spacing:-.04em; font-variant-numeric:tabular-nums; }
-.session-summary-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; padding-top:15px; margin-top:18px; border-top:1px solid var(--session-border); }
-.session-summary-stats>div { min-width:0; }
-.session-summary-stats strong { display:block; color:var(--session-text); font-size:1rem; overflow-wrap:anywhere; }
-.session-summary-stats span { display:block; color:var(--session-muted); font-size:.66rem; margin-top:5px; }
 .session-saved-note { color:var(--session-muted); font-size:.72rem; margin:13px 0 0; }

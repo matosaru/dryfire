@@ -32,8 +32,8 @@ test('missing mounts fail before acquiring a root', () => {
 });
 
 test('connecting React preserves keyboard focus inside the prerendered page', () => {
-  document.querySelector('#aboutView')!.innerHTML = '<button data-react-back>Back</button>';
-  const initialBack = document.querySelector<HTMLButtonElement>('[data-react-back]')!;
+  document.querySelector('#aboutView')!.innerHTML = '<button data-r-back>Back</button>';
+  const initialBack = document.querySelector<HTMLButtonElement>('[data-r-back]')!;
   initialBack.focus();
   let pages: ReturnType<typeof mountInformationPages>;
   act(() => { pages = mountInformationPages({ onBack() {} }); });

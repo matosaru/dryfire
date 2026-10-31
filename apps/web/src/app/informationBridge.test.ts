@@ -15,13 +15,13 @@ test('the render runtime loads only on an informational route and receives the l
   const mount = jest.fn(() => pages);
   let resolve!: (module: { mountInformationPages: typeof mount; mountChrome: typeof mountChrome }) => void;
   const load = jest.fn(() => new Promise<{ mountInformationPages: typeof mount; mountChrome: typeof mountChrome }>(done => { resolve = done; }));
-  setContent('<section id="aboutView"><button data-react-back>Back</button></section><section id="contactView"></section>');
+  setContent('<section id="aboutView"><button data-r-back>Back</button></section><section id="contactView"></section>');
   const bridge = createInformationBridge({ onNavigate:jest.fn(), onBack: back, onError: error, load });
   bridge.show('home'); bridge.setFull(true);
   expect(load).not.toHaveBeenCalled();
   bridge.show('about'); bridge.show('contact');
   expect(load).toHaveBeenCalledTimes(1);
-  document.querySelector<HTMLButtonElement>('[data-react-back]')!.click();
+  document.querySelector<HTMLButtonElement>('[data-r-back]')!.click();
   expect(back).toHaveBeenCalledTimes(1);
   bridge.setFull(false); bridge.setFull(true);
   resolve({ mountInformationPages: mount, mountChrome });
@@ -30,7 +30,7 @@ test('the render runtime loads only on an informational route and receives the l
   expect(mount).toHaveBeenCalledWith(expect.objectContaining({full:true}));
   bridge.setFull(false);
   expect(pages.setFull).toHaveBeenLastCalledWith(false);
-  document.querySelector<HTMLButtonElement>('[data-react-back]')!.click();
+  document.querySelector<HTMLButtonElement>('[data-r-back]')!.click();
   expect(back).toHaveBeenCalledTimes(1); // React now owns its own Back callback.
   bridge.dispose(); bridge.dispose();
   expect(pages.dispose).toHaveBeenCalledTimes(1);
@@ -38,7 +38,7 @@ test('the render runtime loads only on an informational route and receives the l
 });
 
 test('a failed chunk keeps static navigation usable and retries on the next visit', async () => {
-  setContent('<section id="aboutView"><button data-react-back>Back</button></section><section id="contactView"></section>');
+  setContent('<section id="aboutView"><button data-r-back>Back</button></section><section id="contactView"></section>');
   const onError = jest.fn(), onBack = jest.fn();
   const pages = { setFull: jest.fn(), dispose: jest.fn() };
   const mount = jest.fn(() => pages);
@@ -49,7 +49,7 @@ test('a failed chunk keeps static navigation usable and retries on the next visi
   bridge.show('about');
   await Promise.resolve(); await Promise.resolve(); await Promise.resolve();
   expect(onError).toHaveBeenCalledTimes(1);
-  document.querySelector<HTMLButtonElement>('[data-react-back]')!.click();
+  document.querySelector<HTMLButtonElement>('[data-r-back]')!.click();
   expect(onBack).toHaveBeenCalledTimes(1);
   bridge.show('contact');
   await Promise.resolve(); await Promise.resolve();
@@ -111,7 +111,7 @@ test('failed enhancement retains native actions and retries without mounting dup
 });
 
 test('inert compiled About content stays outside startup DOM and opens synchronously before its chunk',()=>{
- setContent('<section id="aboutView"><template><button data-react-back>Back</button><p id="aboutFeatureSummary" data-full-summary="Full">Free</p><a href="/single-trigger-press-guide/">Guide</a></template></section><section id="contactView"></section>');
+ setContent('<section id="aboutView"><template><button data-r-back>Back</button><p id="aboutFeatureSummary" data-full-summary="Full">Free</p><a href="/single-trigger-press-guide/">Guide</a></template></section><section id="contactView"></section>');
  const onBack=jest.fn(),load=jest.fn(()=>new Promise<never>(()=>{}));const bridge=createInformationBridge({onNavigate:jest.fn(),onBack,onError:jest.fn(),load});
  bridge.setFull(true);bridge.show('home');expect(document.getElementById('aboutFeatureSummary')).toBeNull();expect(load).not.toHaveBeenCalled();bridge.show('about');expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Full');expect(document.querySelector('#aboutView template')).toBeNull();document.querySelector<HTMLButtonElement>('#aboutView button')!.click();expect(onBack).toHaveBeenCalledTimes(1);bridge.show('about');expect(document.querySelectorAll('#aboutFeatureSummary')).toHaveLength(1);bridge.dispose();
 });

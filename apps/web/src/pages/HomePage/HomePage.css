@@ -2,7 +2,6 @@
 .home-stats article { background:#141d22; border:1px solid #2e3a42; border-radius:16px; padding:16px 10px; min-width:0; }
 .home-stats strong { display:block; color:#fff; font-size:clamp(1.22rem,4vw,2rem); letter-spacing:-.035em; line-height:1.4; }
 .home-stats small { font-size:.73rem; color:#adbcc4; line-height:1.25; display:block; }
-.stat-icon { color:#ff9c59; font-size:1.35rem; display:block; margin-bottom:5px; }
 .home-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
 .home-actions .button { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:14px 12px; text-align:left; }
 .home-actions .button span { font-size:1.3rem; }

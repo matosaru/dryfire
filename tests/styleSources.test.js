@@ -26,3 +26,13 @@ test('imports cannot escape the repository boundary', () => {
   writeFileSync(join(root, 'entry.css'), '@import "../outside.css";\n');
   expect(() => styleSources('entry.css', root)).toThrow('CSS import leaves repository');
 });
+
+test('the shipping stylesheet does not restore retired component selectors', () => {
+  const { css } = composedStyles();
+  const retired = [
+    'subhead', 'class-symbol', 'home-kicker', 'stat-icon', 'home-steps',
+    'gun-card-chevron', 'custom-step-number', 'session-record-header',
+    'session-record-meta', 'session-summary-stats', 'practice-mode-tag'
+  ];
+  for (const token of retired) expect(css).not.toContain(`.${token}`);
+});
