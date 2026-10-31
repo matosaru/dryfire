@@ -1,3 +1,108 @@
+diff --git a/apps/web/src/app/informationBridge.test.ts b/apps/web/src/app/informationBridge.test.ts
+index 2395693..50a6214 100644
+--- a/apps/web/src/app/informationBridge.test.ts
++++ b/apps/web/src/app/informationBridge.test.ts
+@@ -15,13 +15,13 @@ test('the render runtime loads only on an informational route and receives the l
+   const mount = jest.fn(() => pages);
+   let resolve!: (module: { mountInformationPages: typeof mount; mountChrome: typeof mountChrome }) => void;
+   const load = jest.fn(() => new Promise<{ mountInformationPages: typeof mount; mountChrome: typeof mountChrome }>(done => { resolve = done; }));
+-  setContent('<section id="aboutView"><button data-react-back>Back</button></section><section id="contactView"></section>');
++  setContent('<section id="aboutView"><button data-r-back>Back</button></section><section id="contactView"></section>');
+   const bridge = createInformationBridge({ onNavigate:jest.fn(), onBack: back, onError: error, load });
+   bridge.show('home'); bridge.setFull(true);
+   expect(load).not.toHaveBeenCalled();
+   bridge.show('about'); bridge.show('contact');
+   expect(load).toHaveBeenCalledTimes(1);
+-  document.querySelector<HTMLButtonElement>('[data-react-back]')!.click();
++  document.querySelector<HTMLButtonElement>('[data-r-back]')!.click();
+   expect(back).toHaveBeenCalledTimes(1);
+   bridge.setFull(false); bridge.setFull(true);
+   resolve({ mountInformationPages: mount, mountChrome });
+@@ -30,7 +30,7 @@ test('the render runtime loads only on an informational route and receives the l
+   expect(mount).toHaveBeenCalledWith(expect.objectContaining({full:true}));
+   bridge.setFull(false);
+   expect(pages.setFull).toHaveBeenLastCalledWith(false);
+-  document.querySelector<HTMLButtonElement>('[data-react-back]')!.click();
++  document.querySelector<HTMLButtonElement>('[data-r-back]')!.click();
+   expect(back).toHaveBeenCalledTimes(1); // React now owns its own Back callback.
+   bridge.dispose(); bridge.dispose();
+   expect(pages.dispose).toHaveBeenCalledTimes(1);
+@@ -38,7 +38,7 @@ test('the render runtime loads only on an informational route and receives the l
+ });
+
+ test('a failed chunk keeps static navigation usable and retries on the next visit', async () => {
+-  setContent('<section id="aboutView"><button data-react-back>Back</button></section><section id="contactView"></section>');
++  setContent('<section id="aboutView"><button data-r-back>Back</button></section><section id="contactView"></section>');
+   const onError = jest.fn(), onBack = jest.fn();
+   const pages = { setFull: jest.fn(), dispose: jest.fn() };
+   const mount = jest.fn(() => pages);
+@@ -49,7 +49,7 @@ test('a failed chunk keeps static navigation usable and retries on the next visi
+   bridge.show('about');
+   await Promise.resolve(); await Promise.resolve(); await Promise.resolve();
+   expect(onError).toHaveBeenCalledTimes(1);
+-  document.querySelector<HTMLButtonElement>('[data-react-back]')!.click();
++  document.querySelector<HTMLButtonElement>('[data-r-back]')!.click();
+   expect(onBack).toHaveBeenCalledTimes(1);
+   bridge.show('contact');
+   await Promise.resolve(); await Promise.resolve();
+@@ -111,7 +111,7 @@ test('failed enhancement retains native actions and retries without mounting dup
+ });
+
+ test('inert compiled About content stays outside startup DOM and opens synchronously before its chunk',()=>{
+- setContent('<section id="aboutView"><template><button data-react-back>Back</button><p id="aboutFeatureSummary" data-full-summary="Full">Free</p><a href="/single-trigger-press-guide/">Guide</a></template></section><section id="contactView"></section>');
++ setContent('<section id="aboutView"><template><button data-r-back>Back</button><p id="aboutFeatureSummary" data-full-summary="Full">Free</p><a href="/single-trigger-press-guide/">Guide</a></template></section><section id="contactView"></section>');
+  const onBack=jest.fn(),load=jest.fn(()=>new Promise<never>(()=>{}));const bridge=createInformationBridge({onNavigate:jest.fn(),onBack,onError:jest.fn(),load});
+  bridge.setFull(true);bridge.show('home');expect(document.getElementById('aboutFeatureSummary')).toBeNull();expect(load).not.toHaveBeenCalled();bridge.show('about');expect(document.getElementById('aboutFeatureSummary')?.textContent).toBe('Full');expect(document.querySelector('#aboutView template')).toBeNull();document.querySelector<HTMLButtonElement>('#aboutView button')!.click();expect(onBack).toHaveBeenCalledTimes(1);bridge.show('about');expect(document.querySelectorAll('#aboutFeatureSummary')).toHaveLength(1);bridge.dispose();
+ });
+diff --git a/apps/web/src/app/informationBridge.ts b/apps/web/src/app/informationBridge.ts
+index de55e26..a5acb61 100644
+--- a/apps/web/src/app/informationBridge.ts
++++ b/apps/web/src/app/informationBridge.ts
+@@ -27,7 +27,7 @@ export function createInformationBridge({ onBack, onError, doc = document,
+   };
+   const fallback = (event: Event) => {
+     const target = event.target;
+-    if (!pages && target instanceof Element && target.closest('[data-react-back]')) onBack();
++    if (!pages && target instanceof Element && target.closest('[data-r-back]')) onBack();
+   };
+   const hosts = [doc.getElementById('aboutView'), doc.getElementById('contactView')];
+   hosts.forEach(host => host?.addEventListener('click', fallback));
+diff --git a/apps/web/src/app/informationPages.test.tsx b/apps/web/src/app/informationPages.test.tsx
+index 81b926c..a16d23e 100644
+--- a/apps/web/src/app/informationPages.test.tsx
++++ b/apps/web/src/app/informationPages.test.tsx
+@@ -32,8 +32,8 @@ test('missing mounts fail before acquiring a root', () => {
+ });
+
+ test('connecting React preserves keyboard focus inside the prerendered page', () => {
+-  document.querySelector('#aboutView')!.innerHTML = '<button data-react-back>Back</button>';
+-  const initialBack = document.querySelector<HTMLButtonElement>('[data-react-back]')!;
++  document.querySelector('#aboutView')!.innerHTML = '<button data-r-back>Back</button>';
++  const initialBack = document.querySelector<HTMLButtonElement>('[data-r-back]')!;
+   initialBack.focus();
+   let pages: ReturnType<typeof mountInformationPages>;
+   act(() => { pages = mountInformationPages({ onBack() {} }); });
+diff --git a/apps/web/src/app/informationPages.tsx b/apps/web/src/app/informationPages.tsx
+index 853a31c..93b78e2 100644
+--- a/apps/web/src/app/informationPages.tsx
++++ b/apps/web/src/app/informationPages.tsx
+@@ -11,14 +11,14 @@ export function mountInformationPages({ onBack, doc = document, full = false }:
+   const about = doc.getElementById('aboutView');
+   const contact = doc.getElementById('contactView');
+   if (!about || !contact) throw new Error('Informational page mounts are missing.');
+-  const focusedBackHost = [about, contact].find(host => host.contains(doc.activeElement) && doc.activeElement?.matches('[data-react-back]'));
++  const focusedBackHost = [about, contact].find(host => host.contains(doc.activeElement) && doc.activeElement?.matches('[data-r-back]'));
+   const roots: Root[] = [createRoot(about), createRoot(contact)];
+   let disposed = false, currentFull = full;
+   flushSync(() => {
+     roots[0].render(<StrictMode><AboutPage full={full} onBack={onBack} /></StrictMode>);
+     roots[1].render(<StrictMode><ContactPage onBack={onBack} /></StrictMode>);
+   });
+-  focusedBackHost?.querySelector<HTMLButtonElement>('[data-react-back]')?.focus();
++  focusedBackHost?.querySelector<HTMLButtonElement>('[data-r-back]')?.focus();
+   return {
+     setFull(full: boolean) {
+       if (disposed || currentFull === full) return;
 diff --git a/apps/web/src/pages/GunsPage/GunsPage.css b/apps/web/src/pages/GunsPage/GunsPage.css
 index 58bdf4b..5a8967a 100644
 --- a/apps/web/src/pages/GunsPage/GunsPage.css
@@ -116,7 +221,7 @@ index 1161f1f..8178bb2 100644
  .session-run-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; }
  .session-run-actions .button { flex:1 1 120px; min-height:48px; }
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index 53a78a6..ff02b3f 100644
+index 53a78a6..1e4463b 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -1,6 +1,6 @@
@@ -127,6 +232,35 @@ index 53a78a6..ff02b3f 100644
    "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
    "publicOrigin": "https://easydryfire.com",
    "publicPaths": [
+@@ -808,7 +808,7 @@
+   ],
+   "reviewedSources": {
+     "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
+-    "src/main.js": "4536f8c9ac52e060cc14468bb89df4bf791d0c70c93ece16f37342a91e7b1d43",
++    "src/main.js": "26dc36b7c20a9d7cddbecd9761a216dca220a18340baa616978e9848981a6e8d",
+     "src/styles.css": "db7e1bf8efe85cfcdf01f605e32ed5c0a10e515e6c938c350f73d1bb968c4b19",
+     "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
+     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
+@@ -832,8 +832,8 @@
+     "src/practiceGuideManuals.js": "da39dc4e262d951d39b854c10364507730509acb3f01f33f94eb37edb189238e",
+     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
+     "src/sessionPresentation.js": "22643badbe1bf002c7cc8f1e5af6fc046de931a0beafb409a40af74d61487b98",
+-    "apps/web/src/app/informationPages.tsx": "442185805bb7faf789afcdf2f636e9e6d195e32d0be0a9b281a470880531f48d",
+-    "apps/web/src/app/informationBridge.ts": "0a73cc2630c6d444000bb3f936147315bd0d9baafcc3cd8fbd9b55a7ee839bf6",
++    "apps/web/src/app/informationPages.tsx": "6bd1c7daaa3ba5e828ce8292a285758c2ea31532a638840f49c7777938dd9181",
++    "apps/web/src/app/informationBridge.ts": "7f6dfcbb1c2bc72083c4e7206002fb2eca6babbe261b9f2a424ac4ad4a2a7d3b",
+     "apps/web/src/app/renderInformationPages.tsx": "a3e32bf1afbd18a4d93b233cc221fcf15a3c9baef69ee415714f5eecd263a6b0",
+     "apps/web/src/pages/AboutPage/AboutPage.tsx": "68fec4cae9f2b6aab65b74c6c2b42251116b5094cd8e7e7e18d127da666e0168",
+     "apps/web/src/pages/AboutPage/index.ts": "a336de4df893b66990d2dc8b062a79ab26cba13d0a0b9fa3ed96d3e82f6b5298",
+@@ -841,7 +841,7 @@
+     "apps/web/src/pages/ContactPage/ContactPage.tsx": "65a01c0f7560d15c40f725f3cf715ec41adcff7daf53903845c667ee042ce244",
+     "apps/web/src/pages/ContactPage/ContactPage.css": "48411add5890d908e191a4340ec2a2154fa4a328c578e4daf4b1240ed3775d71",
+     "apps/web/src/pages/ContactPage/index.ts": "032b0e9e92fb4ede387783b85fdd297406f727e6cd1c7e969929e3231cd167c9",
+-    "packages/ui/src/PageHeading/PageHeading.tsx": "49f5e8c76db7f93c4bc5300116b068c1635519fc68c354188eb7a2027d53da58",
++    "packages/ui/src/PageHeading/PageHeading.tsx": "195d0e242a8f2904235ba1349682002b8cb59b914420fdfdc318ce2e97acd809",
+     "packages/ui/src/PageHeading/PageHeading.css": "17a188929d245b237da7e8832a3779beb7f3a3208acc7131d1433f3617225b5d",
+     "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
+     "packages/ui/src/InformationCard/InformationCard.css": "5c866ea8582066954f298ce2e43ee6f474d85b11539e516cc615b7da27b97f0d",
 @@ -884,7 +884,7 @@
      "packages/ui/src/GunSwitcher/GunSwitcher.tsx": "da6310e96bce26f52eb6964c9d93359d9af795113000a74a56529c73f8d0c1b9",
      "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx": "ec94aca2ed7ca812312358f8a1c7b455f34847320bc991681cd73093ea091437",
@@ -227,12 +361,12 @@ index d85faa1..ea05e00 100644
 +++ b/docs/architecture/site-tree.md
 @@ -1,6 +1,6 @@
  # Site and screen tree
- 
+
 -Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-29; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 / CHG-059 shared guide control/layout and group accents / CHG-060 public SEO and readable app paths / CHG-061 app homepage, flat routes, unique sequences and retained marketing About documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
 +Generated from [screen-map.json](screen-map.json). Reviewed 2026-10-31; application source baseline `98e4bbd`, with CHG-017 / CHG-019 / CHG-020 / CHG-021 / CHG-022 / CHG-023 / CHG-027 About and email contact / CHG-028 independent About footer link / CHG-029 separate About/Contact and centered footer / CHG-030 pure white Dark primary text / CHG-031 white Dark About/Contact controls / CHG-032 / CHG-033 / CHG-034 / CHG-035 / CHG-036 / CHG-037 / CHG-041 / CHG-044 / CHG-045 / CHG-047 / CHG-049 P1 route ownership extraction (no visual change) / CHG-049 static practice catalog prerender (unchanged final UI) / CHG-049 P2 shared chrome and static controls (unchanged final UI) / CHG-057 / CHG-053 / CHG-059 shared guide control/layout and group accents / CHG-060 public SEO and readable app paths / CHG-061 app homepage, flat routes, unique sequences and retained marketing About documented changes and exact reviewed-source fingerprints in the registry. Regenerate with `npm run docs:generate`.
- 
+
  ## Public site
- 
+
 diff --git a/docs/design/proposals/chg-062/header-resume-review.json b/docs/design/proposals/chg-062/header-resume-review.json
 index 474eaf3..18f13ce 100644
 --- a/docs/design/proposals/chg-062/header-resume-review.json
@@ -247,7 +381,7 @@ index 474eaf3..18f13ce 100644
    "cleanupPixelReview": {
      "renderer": "System Chromium diagnostic, not pinned acceptance",
 diff --git a/docs/design/screens/practice-guide/examples/manifest.json b/docs/design/screens/practice-guide/examples/manifest.json
-index 91c8516..12fcacf 100644
+index 91c8516..e1d9eb4 100644
 --- a/docs/design/screens/practice-guide/examples/manifest.json
 +++ b/docs/design/screens/practice-guide/examples/manifest.json
 @@ -28,42 +28,42 @@
@@ -313,6 +447,24 @@ index 91c8516..12fcacf 100644
      "apps/web/src/styles/legacy-session-detail-lists.css": "20adeaaff527223f1a9f4181cab78c86daf2024071e89d3c583274d8e09954ce",
      "packages/ui/src/RepetitionResult/RepetitionResult.details.css": "5b6ac899b74b36ec7bd9ba67dd347abd99024c57177d8e8c5e4cdee07dc5bc27",
      "apps/web/src/styles/legacy-session-review-actions.css": "89addcb480760d6aea765aee8a238569b18c3d5d7ca9b95f438bca9af7914ba9",
+@@ -100,7 +100,7 @@
+     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "39e68450b650292de4523e345ba76388cfe50a5cb418a9704fac9ae7d2f570b8",
+     "apps/web/src/pages/PracticeGuidePage/index.ts": "cbaa34b0c350d037b794d8112a741d5e4d191d0f19cf941e3a0a457d74665f52",
+     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
+-    "packages/ui/src/PageHeading/PageHeading.tsx": "49f5e8c76db7f93c4bc5300116b068c1635519fc68c354188eb7a2027d53da58",
++    "packages/ui/src/PageHeading/PageHeading.tsx": "195d0e242a8f2904235ba1349682002b8cb59b914420fdfdc318ce2e97acd809",
+     "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
+     "apps/web/src/pages/PracticePage/PracticePage.tsx": "f9e9b656fa88d2f3e9eea00b2c81623d0e5926bae98cfc628e07cf42006194dd",
+     "apps/web/src/pages/PracticePage/index.ts": "5b5b81bf639048fdae1497102f8195e6f3e88390603e112e39e0ec56f5ae5876",
+@@ -111,7 +111,7 @@
+     "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
+     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
+     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
+-    "src/main.js": "4536f8c9ac52e060cc14468bb89df4bf791d0c70c93ece16f37342a91e7b1d43",
++    "src/main.js": "26dc36b7c20a9d7cddbecd9761a216dca220a18340baa616978e9848981a6e8d",
+     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
+     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
+     "vite.config.js": "7c5e167d6d91394541c2c01e55f4bc939ad8489011789c625a7881ef40c36ccd",
 diff --git a/packages/ui/src/CustomDrillEditor/CustomDrillEditor.css b/packages/ui/src/CustomDrillEditor/CustomDrillEditor.css
 index 2db83a0..61783a5 100644
 --- a/packages/ui/src/CustomDrillEditor/CustomDrillEditor.css
@@ -325,6 +477,27 @@ index 2db83a0..61783a5 100644
  .custom-step-name { flex:1; min-width:0; font-size:.79rem; line-height:1.35; }
  .custom-step-controls { display:flex; gap:4px; flex:none; }
  .custom-step-controls button { width:34px; height:34px; min-height:34px; padding:0; border:1px solid #40566b; background:#1e2e3b; border-radius:7px; color:var(--primary-text,#e3eef8); cursor:pointer; font-size:1rem; }
+diff --git a/packages/ui/src/PageHeading/PageHeading.test.tsx b/packages/ui/src/PageHeading/PageHeading.test.tsx
+index ea6559c..75491a1 100644
+--- a/packages/ui/src/PageHeading/PageHeading.test.tsx
++++ b/packages/ui/src/PageHeading/PageHeading.test.tsx
+@@ -14,4 +14,4 @@ test('Back is a named keyboard action and does not submit a surrounding form', a
+   await user.keyboard('{Enter}'); expect(back).toHaveBeenCalledTimes(1); expect(submit).not.toHaveBeenCalled();
+ });
+
+-test('numbered page headings preserve native fallback binding and the shared title structure',()=>{const result=render(<PageHeading id="learn-title" title="Learn Sounds" eyebrow="01 / SOUND PROFILES" reactBack={false}/>);expect(result.getByText('01 / SOUND PROFILES')).toHaveClass('eyebrow');const back=result.getByRole('button',{name:'Back to previous screen'});expect(back).toHaveAttribute('data-back','');expect(back).not.toHaveAttribute('data-react-back');expect(result.container.querySelector('.section-head>div>h2')).toHaveAttribute('id','learn-title');});
++test('numbered page headings preserve native fallback binding and the shared title structure',()=>{const result=render(<PageHeading id="learn-title" title="Learn Sounds" eyebrow="01 / SOUND PROFILES" reactBack={false}/>);expect(result.getByText('01 / SOUND PROFILES')).toHaveClass('eyebrow');const back=result.getByRole('button',{name:'Back to previous screen'});expect(back).toHaveAttribute('data-back','');expect(back).not.toHaveAttribute('data-r-back');expect(result.container.querySelector('.section-head>div>h2')).toHaveAttribute('id','learn-title');});
+diff --git a/packages/ui/src/PageHeading/PageHeading.tsx b/packages/ui/src/PageHeading/PageHeading.tsx
+index 1f15005..62c67cf 100644
+--- a/packages/ui/src/PageHeading/PageHeading.tsx
++++ b/packages/ui/src/PageHeading/PageHeading.tsx
+@@ -10,5 +10,5 @@ export interface PageHeadingProps {
+ }
+
+ export function PageHeading({ id, title, backLabel = 'Back to previous screen', backId, sharedBack=true, eyebrow, reactBack = true, onBack }: PageHeadingProps) {
+-  return <div className="section-head"><button id={backId} type="button" className="back-button" data-back={sharedBack?'':undefined} data-react-back={reactBack?'':undefined} aria-label={backLabel} onClick={onBack}>‹</button>{eyebrow?<div><p className="eyebrow">{eyebrow}</p><h2 id={id}>{title}</h2></div>:<h2 id={id}>{title}</h2>}</div>;
++  return <div className="section-head"><button id={backId} type="button" className="back-button" data-back={sharedBack?'':undefined} data-r-back={reactBack?'':undefined} aria-label={backLabel} onClick={onBack}>‹</button>{eyebrow?<div><p className="eyebrow">{eyebrow}</p><h2 id={id}>{title}</h2></div>:<h2 id={id}>{title}</h2>}</div>;
+ }
 diff --git a/packages/ui/src/SequenceReview/SequenceReview.css b/packages/ui/src/SequenceReview/SequenceReview.css
 index 3746eee..c99027c 100644
 --- a/packages/ui/src/SequenceReview/SequenceReview.css
@@ -351,6 +524,19 @@ index 31eb803..4558f3d 100644
  .class-card h3 { margin:0 0 5px; font-size:1.25rem; }
  .class-card p { margin:0; line-height:1.42; font-size:.88rem; }
  .progress-label { font-size:.78rem!important; color:#b9c5cb!important; }
+diff --git a/src/main.js b/src/main.js
+index bc2456c..13456fd 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -1003,7 +1003,7 @@ async function init() {
+   for (const id of ['restoreGunBackupBtn', 'gunLibraryBackupBtn']) $('#'+id).addEventListener('click', () => switchView('settings'));
+   $('#builtInDrillsTab').addEventListener('click', () => selectDrillCollection(false));
+   $('#customDrillsTab').addEventListener('click', () => selectDrillCollection(true));
+-  document.querySelectorAll('[data-back]:not([data-react-back])').forEach(button => button.addEventListener('click', () => goBack()));
++  document.querySelectorAll('[data-back]:not([data-r-back])').forEach(button => button.addEventListener('click', () => goBack()));
+   $('#homeLearnBtn').addEventListener('click', () => switchView('learn'));
+   $('#homeDrillsBtn').addEventListener('click', () => switchView('drills'));
+   $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));
 diff --git a/tests/styleSources.test.js b/tests/styleSources.test.js
 index 589322d..0c82215 100644
 --- a/tests/styleSources.test.js
@@ -369,3 +555,42 @@ index 589322d..0c82215 100644
 +  ];
 +  for (const token of retired) expect(css).not.toContain(`.${token}`);
 +});
+diff --git a/visual-tests/chrome-lifecycle.spec.js b/visual-tests/chrome-lifecycle.spec.js
+index 425435a..4171a2d 100644
+--- a/visual-tests/chrome-lifecycle.spec.js
++++ b/visual-tests/chrome-lifecycle.spec.js
+@@ -19,7 +19,7 @@ test('delayed chrome enhancement preserves the native safety gate and never dupl
+   await expect(page.locator('#homeView')).toBeVisible();
+   await page.evaluate(()=>{window.__nativeSettingsButton=document.getElementById('settingsShortcut');});
+   await page.locator('#aboutBtn').click();await expect(page.locator('#aboutView')).toBeVisible();
+-  await page.locator('[data-react-back]').first().click();await expect(page.locator('#homeView')).toBeVisible();
++  await page.locator('[data-r-back]').first().click();await expect(page.locator('#homeView')).toBeVisible();
+   await page.locator('.tab[data-view="drills"]').click();await page.locator('[data-practice-mode="single"]').click();
+   await page.locator('#practiceStartBtn').click();await expect(page.locator('#safetyModal')).toBeVisible();
+   release();
+diff --git a/visual-tests/gun-management.spec.js b/visual-tests/gun-management.spec.js
+index 52c744c..0949304 100644
+--- a/visual-tests/gun-management.spec.js
++++ b/visual-tests/gun-management.spec.js
+@@ -62,7 +62,7 @@ test('invalid edit drafts survive About and Contact, then Cancel preserves every
+   await page.evaluate(()=>{window.__gunDraftField=document.getElementById('gunName');});
+   for(const id of ['about','contact']){
+     await page.locator(`#${id}Btn`).click();await expect(page.locator(`#${id}View`)).toBeVisible();
+-    await page.locator(`#${id}View [data-react-back]`).click();await expect(page.locator('#gunSetupView')).toBeVisible();
++    await page.locator(`#${id}View [data-r-back]`).click();await expect(page.locator('#gunSetupView')).toBeVisible();
+     await expect(page.locator('#gunName')).toHaveValue('');
+     await expect(page.locator('[name="gunTypeChoice"][value="Rifles and Carbines"]')).toBeChecked();
+     expect(await page.evaluate(()=>document.getElementById('gunName')===window.__gunDraftField)).toBe(true);
+diff --git a/visual-tests/offline.spec.js b/visual-tests/offline.spec.js
+index fdc4318..fc2a286 100644
+--- a/visual-tests/offline.spec.js
++++ b/visual-tests/offline.spec.js
+@@ -76,7 +76,7 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
+     // their lazy runtime must have been included in the original cache metadata.
+     await page.locator('#aboutBtn').click();
+     await expect(page.locator('#aboutView')).toBeVisible();
+-    await expect(page.locator('#aboutView [data-react-back]')).toBeVisible();
++    await expect(page.locator('#aboutView [data-r-back]')).toBeVisible();
+     const informationModule = JSON.parse(readFileSync(new URL('../dist/edition.json', import.meta.url))).assets.find(path => /\/informationPages-[^/]+\.js$/.test(path));
+     expect(informationModule).toBeTruthy();
+     // Import completion proves actual React code loaded, not only static HTML.

@@ -22,7 +22,9 @@ The first cleanup searched application source, page templates, UI packages, work
 - Sound/gun/custom drill remnants: `.class-symbol`, `.gun-card-chevron`, `.custom-step-number`.
 - Retired session presentation: `.session-record-header`, `.session-record-meta`, `.session-summary-stats`, `.practice-mode-tag`.
 
-The cleanup removes 23 rule/selectors across 12 owners, including dead members of light-theme and responsive selector groups. `tests/styleSources.test.js` prevents these retired selectors from silently returning. The public application stylesheet changes from 61,405 to 59,685 raw bytes (1,720 bytes smaller); its locally measured level-9 gzip size is 12,531 bytes. The separate public-site stylesheet remains 1,318 raw / 554 gzip bytes.
+The cleanup removes 23 rule/selectors across 12 owners, including dead members of light-theme and responsive selector groups. `tests/styleSources.test.js` prevents these retired selectors from silently returning. The public application stylesheet changes from 61,405 to 59,685 raw bytes (1,720 bytes smaller); its built gzip measurement is 12,617 bytes. The separate public-site stylesheet remains 1,318 raw / 554 gzip bytes.
+
+The first pinned candidate exposed an unrelated one-byte preview critical-JavaScript overage caused by changed release/chunk identities. The unchanged budget was retained. The private React ownership attribute `data-react-back` is now `data-r-back` across its single runtime contract and tests, reducing the preview entry chunk by eight raw bytes and restoring payload headroom without changing markup semantics, styling or user behavior.
 
 ## Safe continuation
 
