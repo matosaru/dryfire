@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-10-31",
+  "reviewedOn": "2026-11-01",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://easydryfire.com",
   "publicPaths": [
@@ -809,14 +809,14 @@
   "reviewedSources": {
     "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
     "src/main.js": "26dc36b7c20a9d7cddbecd9761a216dca220a18340baa616978e9848981a6e8d",
-    "src/styles.css": "db7e1bf8efe85cfcdf01f605e32ed5c0a10e515e6c938c350f73d1bb968c4b19",
+    "src/styles.css": "8005d12e975319c619caf461592cae74152c71cd30bc765555db07a261467cad",
     "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
     "src/practiceSession.js": "6f062e3814c7ca0137300c3fefc9e2c1430fdcf0fcf313a66236425e0c85c971",
     "src/practiceController.js": "982c5a99e111457f1b533c8bb21ff164b776d66f6ec88b812c14255131851721",
     "src/sessionController.js": "adcb5a8d08746833dc0102affa7489565c06ca1676254ef97223b20336446345",
     "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
     "src/inputLimits.js": "1aeeb5369f15b50b0510b6463537b92beb6a5d0d1763a140a0915f9b9126fbc6",
-    "src/optional/progressView.js": "7cd6d75e07c89eeb7a9cf7f2b62874f71f789b6839408c87a5c3ad0d2f20e9de",
+    "src/optional/progressView.js": "9509653c17025c708e80523f5746685be645b401efdf1597d28209dfd77a184c",
     "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
     "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
     "src/storage.js": "6cc0b923be9d28cef78ff31532f62ae839dad712a464e79d581abaf12ab64ca3",
@@ -847,7 +847,7 @@
     "packages/ui/src/InformationCard/InformationCard.css": "5c866ea8582066954f298ce2e43ee6f474d85b11539e516cc615b7da27b97f0d",
     "packages/ui/src/InformationCard/index.ts": "542b7a435d68941a02393517e3da92be644d7c11f006ae8f373b8a9fda64c447",
     "packages/ui/src/InformationCard/InformationCard.tsx": "2e0c4d1a75ac8c869282fad19f76aa22a8cd256a2f377095a90b42574293b532",
-    "tools/style-sources.mjs": "623da8cc0f68612bfc80daef6ea763b8cbb4e6ca0ea029d3d5f643a73e4cf548",
+    "tools/style-sources.mjs": "5679bdbcdd1648eb9d058191cce726f1c601391843fc2dc3f7f6752d074872c7",
     "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "b041999974ca3986bbf24f40f8bfe40a124c66b396ea47cf5aa3d2a554bbe40d",
     "apps/web/src/app/routeContext.ts": "8211be0b05a2947d3ea5d44bad6e57a0af63e32c426d744ba4de0d3e38c91f59",
     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",

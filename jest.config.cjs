@@ -6,6 +6,7 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': ['babel-jest', { babelrc: false, configFile: false, presets: [['@babel/preset-react', { runtime: 'automatic' }], '@babel/preset-typescript'] }],
   },
+  moduleNameMapper: { '\\.css(?:\\?inline)?$': '<rootDir>/tests/styleMock.cjs' },
   collectCoverageFrom: [
     'src/**/*.js',
     'workers/**/*.js',

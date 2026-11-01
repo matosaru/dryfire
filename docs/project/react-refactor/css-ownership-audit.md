@@ -6,13 +6,13 @@ Audited 2026-10-31 on `b` after the accepted `8e85e41` release. The audit follow
 
 | Owner | Sources | Responsibility |
 | --- | ---: | --- |
-| `src/styles.css` | 1 | Ordered application stylesheet entry point only |
+| `src/styles.css` | 1 | Ordered critical application stylesheet entry point only |
 | `apps/web/src/pages/*` | 13 | Complete page-specific layout and states |
 | `packages/ui/src/*` | 28 | Reusable component styles colocated with their component |
 | `apps/web/src/styles/*` shared owners | 6 | Shell, navigation, shared session/theme behavior |
 | `apps/web/src/styles/legacy-*` | 26 | Preserved cascade fragments awaiting evidence-based migration or deletion |
 
-`tools/style-sources.mjs` is the authoritative import walker used by source contracts and media fingerprints. There are 74 sources in the current graph. A source is not moved merely to improve its name: visual ownership and cascade order must remain demonstrably unchanged.
+`tools/style-sources.mjs` is the authoritative import walker used by source contracts and media fingerprints. After the first split, 73 sources remain in the critical graph and one source has an explicit lazy owner. A source is not moved merely to improve its name: visual ownership and cascade order must remain demonstrably unchanged.
 
 ## Proven-unused cleanup
 
@@ -32,4 +32,10 @@ The first pinned candidate exposed an unrelated one-byte preview critical-JavaSc
 2. Migrate a `legacy-*` fragment to a page or component owner only when all its selectors share that owner and preserving import position keeps the cascade identical.
 3. Consider route CSS splitting only after first-run, returning, deep-route, theme, offline and Back/Forward loading states are characterized. A page must never become visible before its styles.
 4. Retain the accepted blocking stylesheet load order until a candidate passes the original payload and browser timing gates. Lighthouse alone is not an acceptance result.
+
+## First route-owned candidate
+
+`packages/ui/src/ProgressContent/ProgressContent.css` styles only chart/statistics nodes created by the private preview `src/optional/progressView.js` entry. The History shell, filters, empty host and page layout remain in the critical stylesheet. Vite embeds the feature CSS in that lazy module; the module installs one scoped style element before it creates chart content. Public builds exclude both the private implementation and its CSS entirely, while preview keeps the deferred owner in `edition.json` for authenticated delivery.
+
+The candidate changes critical CSS from 59,685 raw / 12,617 gzip to 58,675 raw / 12,444 gzip. Preview carries those 1,010 raw CSS bytes inside the already-deferred `progressView` JavaScript owner only when Full progress is requested. The resulting preview critical JavaScript is 161,725 raw / 50,700 gzip, below the original immutable ceiling; public excludes the private rules. Exact lazy-owner, offline, theme, screenshot and timing acceptance is required before publication.
 

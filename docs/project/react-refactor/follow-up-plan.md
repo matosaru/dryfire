@@ -156,6 +156,6 @@ The remaining safe optimization is to reduce the blocking resource itself. First
 
 ## Current status
 
-F2–F7, H1 and H2 are complete. `b`/`main` contain accepted `8e85e41` through PR #34. The blocking-CSS experiment produced no shippable loading change. The [CSS ownership audit](css-ownership-audit.md) maps all 74 shipping sources and removes the first proven-unused selector set. Complete candidate run `41224685902` passed validation, both 450-reference exact screenshot editions and all four unchanged performance gates; normal b push and checked production promotion remain. Dev, commercial and native work remain outside scope.
+F2–F7, H1 and H2 are complete. `main` contains accepted CSS cleanup merge `63b5ceb` through PR #35; its production run `41226814425` passed every job. The [CSS ownership audit](css-ownership-audit.md) maps all shipping sources. Candidate run `41287832745` accepts the next split: private `ProgressContent.css` moves behind its existing lazy owner, reducing critical CSS by another 1,010 raw / 173 gzip bytes while preserving the History shell and every exact screenshot/performance contract. Apply that exact candidate to `b`, require the normal branch matrix, then promote through a checked `b`→`main` PR. Dev, commercial and native work remain outside scope.
 
 [Copilot review](copilot-review.md) · [Completed refactor](plan.md) · [Architecture decision](../../architecture/decisions/001-progressive-react-startup.md) · [Current application sitemap](../../architecture/application-sitemap.md)

@@ -2,7 +2,7 @@
   "date": "2026-10-27",
   "base": "57d9afd7fa5ff689671f17807c0f35e1e8c584f9",
   "status": "Accepted implementation; exact-pixel visual baseline retained",
-  "expandedCSSSha256": "cd4f4b98dd8ba4642d746dce9fa69e0c4e5a6bc88668f8a1b999a296d932c02c",
+  "expandedCSSSha256": "9b75621b5fb2af6700c98790244aee78e4ac71d455ce0192df1bcb5cf0b08b3f",
   "scope": "Shared BrandHeader icons and Home logo link; obsolete footer-link rules removed. Header icons use accessible named inline SVG controls matching the reviewed exact-pixel baselines. Public-only footer link presentation rules removed; unrelated component styles remain unchanged.",
   "cleanupPixelReview": {
     "renderer": "System Chromium diagnostic, not pinned acceptance",
