@@ -1,5 +1,5 @@
 diff --git a/DESIGN.md b/DESIGN.md
-index 4a55dfc..e90a36f 100644
+index 4a55dfc..a4517e1 100644
 --- a/DESIGN.md
 +++ b/DESIGN.md
 @@ -2,7 +2,7 @@
@@ -7,12 +7,12 @@ index 4a55dfc..e90a36f 100644
  This is a navigation entry for the maintained [design catalog](docs/design/README.md), [shared layout contract](docs/requirements/page-layout.md), [branding](docs/requirements/branding.md) and [component ownership map](docs/architecture/component-map.json).
 
 -The approved refactor preserves the existing identity, wording, responsive layout, accessibility, theme colors, navigation, screenshots and guide media. Runtime tokens and the ordered cascade remain owned by [src/styles.css](src/styles.css) and its imported component/style files; do not copy or redefine tokens independently.
-+The approved refactor preserves the existing identity, wording, responsive layout, accessibility, theme colors, navigation, screenshots and guide media. Runtime tokens and the critical ordered cascade remain owned by [src/styles.css](src/styles.css) and its imported component/style files; do not copy or redefine tokens independently. CSS used only by a lazy feature may travel with that feature when its module resolves before creating any styled content, preserves the critical cascade, and passes exact browser/offline acceptance. `ProgressContent.css` is the first named exception, owned by the private `progressView` entry.
++The approved refactor preserves the existing identity, wording, responsive layout, accessibility, theme colors, navigation, screenshots and guide media. Runtime tokens and the critical ordered cascade remain owned by [src/styles.css](src/styles.css) and its imported component/style files; do not copy or redefine tokens independently. CSS used only by a lazy feature may travel inside that feature when its module resolves before creating any styled content, preserves the critical cascade, and passes exact browser/offline acceptance. `ProgressContent.css` is the first named exception, embedded by the private `progressView` entry.
 
  Use the existing shared shell, typed page packages and guarded feature controllers. Keep data, safety, capture and Free/Full policy with their established owners. Visual changes require the documented requirements/design process; structural migration is not permission to redesign.
 
 diff --git a/docs/architecture/screen-map.json b/docs/architecture/screen-map.json
-index 1e4463b..faa11d4 100644
+index 1e4463b..d6c1a6b 100644
 --- a/docs/architecture/screen-map.json
 +++ b/docs/architecture/screen-map.json
 @@ -1,6 +1,6 @@
@@ -36,7 +36,7 @@ index 1e4463b..faa11d4 100644
      "src/safetyGate.js": "71b6805d8981265b18118a764ea78379db1996bec4194b8fff61d01dda4edbbb",
      "src/inputLimits.js": "1aeeb5369f15b50b0510b6463537b92beb6a5d0d1763a140a0915f9b9126fbc6",
 -    "src/optional/progressView.js": "7cd6d75e07c89eeb7a9cf7f2b62874f71f789b6839408c87a5c3ad0d2f20e9de",
-+    "src/optional/progressView.js": "404ce4419ab66f83494562a3d436cfb0e152482ea981437f2ebb52329dbbab9e",
++    "src/optional/progressView.js": "9509653c17025c708e80523f5746685be645b401efdf1597d28209dfd77a184c",
      "src/buildEdition.js": "564c90134c15e21bca974bdfa4bbb03887b6a28d756476ad0517ad1a033d1c43",
      "src/optional/customDrillEditor.js": "4168e742743d042b2dd8a2e3f95058f45d97473c53d7f05dc9b70281d64dd183",
      "src/storage.js": "6cc0b923be9d28cef78ff31532f62ae839dad712a464e79d581abaf12ab64ca3",
@@ -94,19 +94,21 @@ index e1d9eb4..6407a28 100644
      "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
      "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
 diff --git a/docs/project/implementation-history.md b/docs/project/implementation-history.md
-index 46ad9fa..8d29f63 100644
+index 46ad9fa..51da078 100644
 --- a/docs/project/implementation-history.md
 +++ b/docs/project/implementation-history.md
-@@ -1114,3 +1114,7 @@ Removed only those dead selectors, including dead members of responsive/light-th
+@@ -1114,3 +1114,9 @@ Removed only those dead selectors, including dead members of responsive/light-th
  Review-only run 41224303269 passed candidate application, documentation and the full test suite but rejected both preview performance jobs before timing: the changed asset/release identities made preview critical JS gzip 50,715 bytes, one byte over the unchanged 50,714 limit. Kept the limit. Shortened the internal React Back ownership marker from `data-react-back` to `data-r-back` across native/React ownership and browser contracts; it has no visual or public-data meaning. Local preview output is now 161,725 raw / 50,699 gzip, with CSS 59,685 raw / 12,617 gzip. A new complete candidate run is required; the failed run is not acceptance.
 
  Revised exact patch SHA256 `981b5d72343636fd250d56d4acb29a8a7cebe39f739ce0b09642fa3bba029819` passed complete candidate run `41224685902`: validation/1,136 tests and coverage, public and preview exact Chromium/WebKit screenshot catalogs and defect probes, plus all four unchanged performance comparisons and their controls. No canonical PNG/GIF, timing limit or payload budget changed. Apply that accepted source/metadata candidate to b; normal push acceptance and a checked b→main PR remain required before production promotion.
 +
 +Normal b run `41225731767` passed all eight jobs. PR #35 merged as `63b5ceb`; b and main were synchronized to that merge. Production run `41226814425` passed validation, both exact screenshot editions and all four unchanged performance comparisons. Automated repository deployment remained skipped, so this records source/CI promotion rather than a live Cloudflare claim.
 +
-+Started the next safe CSS phase after the accepted cleanup. Characterization found that most page/component styles must remain critical because native startup templates can become visible before lazy React ownership. `ProgressContent.css` is different: only the private Full progress module creates its chart/stat/statistics nodes. Moved that 1,010-byte file to the existing lazy `progressView` owner while retaining History shell/filter styles globally. Added explicit lazy-style ownership/source contracts and a slow-CSS browser assertion that the visible shell remains styled while chart content waits. Public builds exclude the private CSS; preview emits a 418-gzip feature stylesheet. Critical CSS is 58,675 raw / 12,444 gzip, down 1,010 raw / 173 gzip from the accepted cleanup. Focused tests and both edition artifact/payload checks pass; complete acceptance is pending.
++Started the next safe CSS phase after the accepted cleanup. Characterization found that most page/component styles must remain critical because native startup templates can become visible before lazy React ownership. `ProgressContent.css` is different: only the private Full progress module creates its chart/stat/statistics nodes. Moved that 1,010-byte file to the existing lazy `progressView` owner while retaining History shell/filter styles globally. Added explicit lazy-style ownership/source contracts and a delayed-owner browser assertion that the visible shell remains styled while chart content waits. Public builds exclude the private CSS. Critical CSS is 58,675 raw / 12,444 gzip, down 1,010 raw / 173 gzip from the accepted cleanup.
++
++Candidate run `41287363793` rejected the initial separate-CSS-asset form before timing because Vite's dynamic stylesheet dependency added 53 raw / 20 gzip bytes beyond the immutable preview entry ceiling. The limit remains unchanged. The revision embeds the same minified rules in the already-deferred `progressView` module, which installs them synchronously before creating chart content. Preview critical JavaScript is now 161,725 raw / 50,700 gzip, below its original ceiling; public output still contains neither the feature nor its rules. A fresh complete candidate run is required.
 diff --git a/docs/project/react-refactor/context.md b/docs/project/react-refactor/context.md
-index 1e38e9d..69b5038 100644
+index 1e38e9d..8aa897d 100644
 --- a/docs/project/react-refactor/context.md
 +++ b/docs/project/react-refactor/context.md
 @@ -5,5 +5,5 @@ Updated 2026-10-31. [Active plan](follow-up-plan.md) · [CSS audit](css-ownershi
@@ -114,10 +116,10 @@ index 1e38e9d..69b5038 100644
  - Accepted application source is `8e85e41`; `b` and `main` are synchronized at PR #34's merge. Its source run `41189700956` passed validation, 450 exact Chromium/WebKit references, all four performance jobs and screenshot aggregation. Baseline: 1,135 tests / 169 suites, 16 smoke checks, public 160,293 raw / 50,266 gzip critical JS and 61,405 raw / 12,948 gzip CSS.
  - The 2026-10-31 Lighthouse follow-up tested broad, narrowed and sub-1 KB critical CSS with asynchronous full styles. Although the narrowed variant removed the render-blocking audit and improved FCP, every viable async form regressed LCP or the unchanged application harness; the minimal form regressed returning startup 270.1→321.6 ms and first-action p95 80.4→89.1 ms. Earlier preload-first work failed pinned WebKit. All experiment code was removed and accepted resource order restored.
 -- Accepted candidate run `41224685902` maps all 74 CSS sources and removes 23 selectors with no runtime producer. Public application CSS is 1,720 raw bytes smaller; a direct source contract prevents those retired selectors returning. All eight pinned validation, exact Chromium/WebKit screenshot and unchanged performance jobs passed. Publish the exact `981b5d7` review patch to `b`, verify its normal push run, then promote through a checked b→main PR. Route/component splitting follows only after this conservative release is accepted in production.
-+- CSS cleanup merge `63b5ceb` is synchronized on b/main; production run `41226814425` passed all eight jobs. The next local candidate gives private `ProgressContent.css` an explicit lazy owner, leaving 73 sources critical and deferring one source. Critical CSS is 58,675 raw / 12,444 gzip; public excludes the private file and preview emits 1,010 raw / 418 gzip only with its feature. Focused tests and both artifacts pass; complete local and pinned acceptance remains required before publication.
++- CSS cleanup merge `63b5ceb` is synchronized on b/main; production run `41226814425` passed all eight jobs. The next local candidate gives private `ProgressContent.css` an explicit lazy owner, leaving 73 sources critical and embedding one source in `progressView`. Critical CSS is 58,675 raw / 12,444 gzip; public excludes the private file and preview carries it only inside the deferred feature module. Candidate run `41287363793` rejected the first separate-asset form for a 53-raw/20-gzip preview entry overage; the revised embedded form is 161,725 raw / 50,700 gzip and needs a fresh complete gate.
  - Before publication run type/lint/architecture/docs, smoke, full Jest+coverage, both editions and artifact/payload/Worker checks, exact pinned Chromium/WebKit screenshots, and unchanged performance jobs. Keep `main` unchanged until that gate passes.
 diff --git a/docs/project/react-refactor/css-ownership-audit.md b/docs/project/react-refactor/css-ownership-audit.md
-index d58c7b7..4b2b6ea 100644
+index d58c7b7..75fe7d7 100644
 --- a/docs/project/react-refactor/css-ownership-audit.md
 +++ b/docs/project/react-refactor/css-ownership-audit.md
 @@ -6,13 +6,13 @@ Audited 2026-10-31 on `b` after the accepted `8e85e41` release. The audit follow
@@ -142,9 +144,9 @@ index d58c7b7..4b2b6ea 100644
 
 +## First route-owned candidate
 +
-+`packages/ui/src/ProgressContent/ProgressContent.css` styles only chart/statistics nodes created by the private preview `src/optional/progressView.js` entry. The History shell, filters, empty host and page layout remain in the critical stylesheet. Vite waits for the feature CSS before resolving that dynamic module, so native chart content is not created while its stylesheet is blocked. Public builds exclude this private CSS entirely; preview builds cache it through `edition.json` and load it before the chart appears.
++`packages/ui/src/ProgressContent/ProgressContent.css` styles only chart/statistics nodes created by the private preview `src/optional/progressView.js` entry. The History shell, filters, empty host and page layout remain in the critical stylesheet. Vite embeds the feature CSS in that lazy module; the module installs one scoped style element before it creates chart content. Public builds exclude both the private implementation and its CSS entirely, while preview keeps the deferred owner in `edition.json` for authenticated delivery.
 +
-+The candidate changes critical CSS from 59,685 raw / 12,617 gzip to 58,675 raw / 12,444 gzip. Preview emits a separate 1,010 raw / 418 gzip `progressView` stylesheet only when Full progress is requested. The public entry JavaScript remains within its original budget; preview pays the existing dynamic CSS loader cost and remains within its original budget. Exact slow-style, offline, theme, screenshot and timing acceptance is required before publication.
++The candidate changes critical CSS from 59,685 raw / 12,617 gzip to 58,675 raw / 12,444 gzip. Preview carries those 1,010 raw CSS bytes inside the already-deferred `progressView` JavaScript owner only when Full progress is requested. The resulting preview critical JavaScript is 161,725 raw / 50,700 gzip, below the original immutable ceiling; public excludes the private rules. Exact lazy-owner, offline, theme, screenshot and timing acceptance is required before publication.
 +
 diff --git a/docs/project/react-refactor/follow-up-plan.md b/docs/project/react-refactor/follow-up-plan.md
 index efc0aa2..61f505d 100644
@@ -159,29 +161,37 @@ index efc0aa2..61f505d 100644
 
  [Copilot review](copilot-review.md) · [Completed refactor](plan.md) · [Architecture decision](../../architecture/decisions/001-progressive-react-startup.md) · [Current application sitemap](../../architecture/application-sitemap.md)
 diff --git a/jest.config.cjs b/jest.config.cjs
-index 44ec740..7e7a9ce 100644
+index 44ec740..72579f2 100644
 --- a/jest.config.cjs
 +++ b/jest.config.cjs
 @@ -6,6 +6,7 @@ module.exports = {
    transform: {
      '^.+\\.tsx?$': ['babel-jest', { babelrc: false, configFile: false, presets: [['@babel/preset-react', { runtime: 'automatic' }], '@babel/preset-typescript'] }],
    },
-+  moduleNameMapper: { '\\.css$': '<rootDir>/tests/styleMock.cjs' },
++  moduleNameMapper: { '\\.css(?:\\?inline)?$': '<rootDir>/tests/styleMock.cjs' },
    collectCoverageFrom: [
      'src/**/*.js',
      'workers/**/*.js',
 diff --git a/src/optional/progressView.js b/src/optional/progressView.js
-index a811c04..dabe405 100644
+index a811c04..805ced4 100644
 --- a/src/optional/progressView.js
 +++ b/src/optional/progressView.js
 @@ -1,6 +1,7 @@
  import { textElement } from '../textElement.js';
  import {progressPresentation} from '../../apps/web/src/features/history/progressPresentation.ts';
  import { progressGroups, progressSummary } from '../practiceProgress.js';
-+import '../../packages/ui/src/ProgressContent/ProgressContent.css';
++import progressStyles from '../../packages/ui/src/ProgressContent/ProgressContent.css?inline';
  const element = (doc, tag, text, className = '') => textElement(tag, text, className, doc);
  const format = (value, unit = 'ms') => value === null ? '—' : unit === 'ms' ? `${(value / 1000).toFixed(2)} s` : `${value.toFixed(1)} ${unit}`;
  const timing = group => {
+@@ -8,6 +9,7 @@ const timing = group => {
+   return `${c.startSource === 'external' ? 'External beep' : c.soundAtStart ? 'App beep' : 'Silent start'} · ${c.delayMode === 'fixed' ? `${c.fixedDelaySeconds}s fixed` : `${c.randomMinSeconds}–${c.randomMaxSeconds}s random`}${group.mode === 'par' ? ` · ${c.parSeconds}s par` : ''}`;
+ };
+ export function createProgressView(doc, { enabled = () => true, onError = () => {} } = {}) {
++  if(!doc.querySelector('style[data-progress-styles]')){const style=doc.createElement('style');style.dataset.progressStyles='';style.textContent=progressStyles;doc.head.append(style);}
+   const $ = id => doc.getElementById(id), select = $('progressGroup'), range = $('progressRange'), host = $('progressContent');
+   let groups = [], owner = null, view, module, pending;
+   function model(){if(!enabled())return{};const group=groups.find(row=>row.key===select.value);const data=group?progressSummary(group,{days:Number(range.value)}):undefined;return progressPresentation(group,data);}
 diff --git a/src/styles.css b/src/styles.css
 index 9d73274..7400980 100644
 --- a/src/styles.css
@@ -194,13 +204,13 @@ index 9d73274..7400980 100644
  @import "../apps/web/src/styles/legacy-after-progress-content.css";
 diff --git a/tests/styleMock.cjs b/tests/styleMock.cjs
 new file mode 100644
-index 0000000..f053ebf
+index 0000000..9dc5fc1
 --- /dev/null
 +++ b/tests/styleMock.cjs
 @@ -0,0 +1 @@
-+module.exports = {};
++module.exports = '';
 diff --git a/tests/styleSources.test.js b/tests/styleSources.test.js
-index 0c82215..96f86b3 100644
+index 0c82215..8c386bd 100644
 --- a/tests/styleSources.test.js
 +++ b/tests/styleSources.test.js
 @@ -1,7 +1,7 @@
@@ -225,7 +235,7 @@ index 0c82215..96f86b3 100644
 +  expect(lazyStyleSources()).toEqual([path]);
 +  expect(lazyStyleOwners['src/optional/progressView.js']).toEqual([path]);
 +  expect(readFileSync(resolve(process.cwd(), 'src/optional/progressView.js'), 'utf8'))
-+    .toContain("import '../../packages/ui/src/ProgressContent/ProgressContent.css';");
++    .toContain("import progressStyles from '../../packages/ui/src/ProgressContent/ProgressContent.css?inline';");
 +});
 diff --git a/tools/style-sources.mjs b/tools/style-sources.mjs
 index 45169c7..336eff8 100644
@@ -247,28 +257,38 @@ index 45169c7..336eff8 100644
   * dependency list is used for media fingerprints and source contract checks. */
  export function styleSources(entry = 'src/styles.css', root = process.cwd()) {
 diff --git a/tools/verify-dist.mjs b/tools/verify-dist.mjs
-index a40198b..bd87a0a 100644
+index a40198b..43a40c3 100644
 --- a/tools/verify-dist.mjs
 +++ b/tools/verify-dist.mjs
-@@ -30,6 +30,16 @@ if (!files.some(path => /assets[\\/].*\.js$/.test(path)) || !files.some(path =>
+@@ -30,14 +30,26 @@ if (!files.some(path => /assets[\\/].*\.js$/.test(path)) || !files.some(path =>
  if (files.some(path => path.endsWith('.map') || path.startsWith('src/') || path.startsWith('tests/') || path.startsWith('apps/') || path.startsWith('packages/') || path === 'vite.config.js')) {
    throw new Error('Source maps or development sources unexpectedly exposed in the deployment.');
  }
 +const cssAssets = await Promise.all(files.filter(path => path.endsWith('.css')).map(async path => ({ path, css: await readFile(join(distPath, path), 'utf8') })));
 +const progressStyles = cssAssets.filter(({ css }) => css.includes('.progress-stats'));
 +if (expectedEdition === 'public' && progressStyles.length) throw new Error('Private progress styles leaked into the public build.');
-+if (expectedEdition === 'preview' && (progressStyles.length !== 1 || !/assets[\\/]progressView-.*\.css$/.test(progressStyles[0].path))) {
-+  throw new Error('Private progress styles must ship as one lazy progressView asset.');
-+}
++if (expectedEdition === 'preview' && progressStyles.length) throw new Error('Private progress styles must stay inside their lazy JavaScript owner.');
 +const criticalStyle = html.match(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"/)?.[1];
 +if (!criticalStyle || cssAssets.find(({ path }) => `/${path.replaceAll('\\', '/')}` === criticalStyle)?.css.includes('.progress-stats')) {
 +  throw new Error('Private progress styles must not block application startup.');
 +}
++let progressStyleOwners = 0;
  for (const file of files.filter(path => path.endsWith('.js'))) {
    const js = await readFile(join(distPath, file), 'utf8');
++  if (js.includes('.progress-stats')) { progressStyleOwners++; if (!/assets[\\/]progressView-.*\.js$/.test(file)) throw new Error('Private progress styles escaped their lazy owner.'); }
    if (expectedEdition === 'public' && js.includes('progress-chart')) throw new Error('Optional chart implementation leaked into the public build.');
+   if (expectedEdition === 'public' && /dryfire-private-preview-mode|previewTestMode/.test(js)) throw new Error('Private testing override leaked into public JavaScript.');
+   if (js.includes('function renderClassCards()') || js.includes('function startContinuousListening(') || js.includes('class PcmCaptureProcessor extends AudioWorkletProcessor')) {
+     throw new Error('Development code signatures detected in published JS; verify minifier settings.');
+   }
+ }
++if (expectedEdition === 'public' && progressStyleOwners) throw new Error('Private progress styles leaked into public JavaScript.');
++if (expectedEdition === 'preview' && progressStyleOwners !== 1) throw new Error('Preview must contain one lazy progress style owner.');
+ for (const worker of ['sw.js', 'pcm-capture.worklet.js']) {
+   if (!files.includes(worker)) throw new Error(`Missing bundled worker ${worker}`);
+   new Script(await readFile(join(distPath, worker), 'utf8'), { filename: worker });
 diff --git a/visual-tests/progress-runtime.spec.js b/visual-tests/progress-runtime.spec.js
-index d292ff9..c3e0f94 100644
+index d292ff9..f9c57b6 100644
 --- a/visual-tests/progress-runtime.spec.js
 +++ b/visual-tests/progress-runtime.spec.js
 @@ -5,13 +5,15 @@ import {edition} from './catalog.js';
@@ -278,11 +298,11 @@ index d292ff9..c3e0f94 100644
 - const errors=[];page.on('pageerror',error=>errors.push(error.message));page.on('dialog',dialog=>dialog.accept());let release;const blocked=new Promise(resolve=>{release=resolve;});await page.route('**/assets/progressContent-*.js',async route=>{await blocked;await route.continue();});
 + const errors=[];page.on('pageerror',error=>errors.push(error.message));page.on('dialog',dialog=>dialog.accept());
 + let releaseReact;const reactBlocked=new Promise(resolve=>{releaseReact=resolve;});await page.route('**/assets/progressContent-*.js',async route=>{await reactBlocked;await route.continue();});
-+ let releaseStyles,markStylesRequested;const stylesBlocked=new Promise(resolve=>{releaseStyles=resolve;}),stylesRequested=new Promise(resolve=>{markStylesRequested=resolve;});await page.route('**/assets/progressView-*.css',async route=>{markStylesRequested();await stylesBlocked;await route.continue();});
++ let releaseProgress,markProgressRequested;const progressBlocked=new Promise(resolve=>{releaseProgress=resolve;}),progressRequested=new Promise(resolve=>{markProgressRequested=resolve;});await page.route('**/assets/progressView-*.js',async route=>{markProgressRequested();await progressBlocked;await route.continue();});
   await page.goto('/');await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});await expect(page.locator('#homeView')).toBeVisible();
   if(theme==='light'){await page.locator('#settingsShortcut').click();await page.locator('#appearance').selectOption(theme);}
 - const historyLoaded=page.waitForResponse(response=>/\/assets\/historyPage-/.test(response.url()));await page.locator('.tab[data-view="history"]').click();await historyLoaded;await expect(page.locator('.progress-chart')).toBeVisible();await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="history"]').click();await expect(page.locator('#historyView')).toHaveAttribute('data-react-history','');
-+ const historyLoaded=page.waitForResponse(response=>/\/assets\/historyPage-/.test(response.url()));await page.locator('.tab[data-view="history"]').click();await historyLoaded;await stylesRequested;await expect(page.locator('#progressSection')).toBeVisible();await expect(page.locator('#progressGroup')).toBeVisible();await expect(page.locator('#progressContent')).toBeEmpty();const stylesLoaded=page.waitForResponse(response=>/\/assets\/progressView-.*\.css/.test(response.url()));releaseStyles();await stylesLoaded;await expect(page.locator('.progress-chart')).toBeVisible();await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="history"]').click();await expect(page.locator('#historyView')).toHaveAttribute('data-react-history','');
++ const historyLoaded=page.waitForResponse(response=>/\/assets\/historyPage-/.test(response.url()));await page.locator('.tab[data-view="history"]').click();await historyLoaded;await progressRequested;await expect(page.locator('#progressSection')).toBeVisible();await expect(page.locator('#progressGroup')).toBeVisible();await expect(page.locator('#progressContent')).toBeEmpty();await expect(page.locator('style[data-progress-styles]')).toHaveCount(0);const progressLoaded=page.waitForResponse(response=>/\/assets\/progressView-.*\.js/.test(response.url()));releaseProgress();await progressLoaded;await expect(page.locator('style[data-progress-styles]')).toHaveCount(1);await expect(page.locator('.progress-chart')).toBeVisible();await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="history"]').click();await expect(page.locator('#historyView')).toHaveAttribute('data-react-history','');
   await page.locator('#progressGroup').selectOption({label:'Par-time practice · Silent start · 0s fixed · 1s par'});await page.locator('#progressRange').selectOption('30');await expect(page.locator('.progress-stats')).toContainText('Hit rate');await page.locator('#history-title').click();
   const group=await page.locator('#progressGroup').elementHandle(),range=await page.locator('#progressRange').elementHandle(),selected=await page.locator('#progressGroup').inputValue();const before=await page.locator('#progressSection').screenshot({animations:'disabled'});
 - const loaded=page.waitForResponse(response=>/\/assets\/progressContent-/.test(response.url()));release();await loaded;await expect(page.locator('#progressContent')).not.toHaveAttribute('data-react-progress');
