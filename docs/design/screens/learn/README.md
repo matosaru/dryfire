@@ -1,5 +1,7 @@
 # Learn Sounds design
 
+CHG-063: Trigger learning now includes a read-only **Needs samples / Variable examples / Stable profile** summary with one plain-language next action. The recording guidance uses the expected practice phone position and representative room; saved samples are never silently removed. [Audio v3 requirements](../../../requirements/audio-recognition-v3.md) define the behavior and evidence limits.
+
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
 
 CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.

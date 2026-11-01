@@ -18,6 +18,7 @@ import { PRACTICE_MODES } from '../src/practiceModes.js';
 import { PAGE_DEFINITIONS } from '../src/pageDefinitions.js';
 
 const read = name => readFileSync(new URL(`../src/templates/${name}.html`, import.meta.url), 'utf8');
+const triggerProfileCss=readFileSync(new URL('../packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.css',import.meta.url),'utf8').trim();
 const fill = (template, slots) => template.replace(/\{\{([a-zA-Z]+)\}\}/g, (_, name) => {
   if (!Object.hasOwn(slots, name)) throw new Error(`Unknown page template slot: ${name}`);
   return slots[name];
@@ -42,7 +43,7 @@ function content(id) {
     case 'history': return renderHistoryPage(read('shared/history-progress'),fragments.maxResultsInput);
     case 'drills': return renderDrillsPage(fragments.practiceCatalog);
     case 'recognize': return renderLiveListenPage();
-    case 'learn': return renderLearnPage(fragments.calibrationCatalog);
+    case 'learn': return renderLearnPage(fragments.calibrationCatalog,triggerProfileCss);
     case 'settings': return renderSettingsPage(read('shared/preview-testing'));
     case 'gunSetup': return renderGunSetupPage();
     case 'home': return renderHomePage();

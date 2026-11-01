@@ -1,6 +1,6 @@
 # Device accuracy-testing protocol
 
-This is a *manual* acoustic validation protocol. The code includes an accuracy summary over confirmed **detected** events, but there is **no supplied real-world labelled dataset** and no claimed field accuracy. Automated tests use synthetic waveforms only.
+This is a *manual* acoustic validation protocol. There is no supplied real-world labelled dataset and no claimed field accuracy. Automated tests use synthetic waveforms only. CHG-063 adds privacy-safe paired evaluation; raw PCM remains unsaved.
 
 For the current trigger-first practice release, also complete the [iPhone release checks](IPHONE_RELEASE_CHECKS.md). This protocol measures recognition accuracy; it does not establish production deployment or physical feedback by itself.
 
@@ -8,8 +8,8 @@ For the current trigger-first practice release, also complete the [iPhone releas
 
 1. Deploy to HTTPS or install a debug Android/iOS build. Allow microphone permission, confirm audio source availability.
 2. Follow the safety checklist; use only verified unloaded equipment with ammunition removed and safe direction/backstop.
-3. Fix one consistent phone placement. Record at least 8 Trigger examples in Learn. Train optional positive classes only when used; add separate reset/noise rejection examples when possible. Keep test examples distinct from calibration.
-4. Start live listening and choose **Normal** sensitivity. Try a quiet room first.
+3. Fix one consistent phone placement. Record at least 8 Trigger examples in Learn and check the profile-quality guidance. Train optional positive classes only when used; add separate reset/noise rejection examples when possible. Keep test examples distinct from calibration.
+4. Start live listening and choose **Normal** sensitivity. Wait for the ambient-readiness status; record any noisy-room warning.
 5. Prepare a written list of **unseen** events to perform. Do not evaluate on recordings you used to train.
 
 ## Suggested manual test matrix
@@ -38,6 +38,10 @@ Perform these in a safe and controlled training environment. For recognition eva
 - **False detections during silence:** separately record the number per listening hour (app currently does not compute this).
 
 **Cautions:** small datasets are noisy; `N` limits history and changes the evaluation sample size; changes in room/phone distance/OS audio processing may change performance. Numeric match score is a heuristic similarity score, not a probability.
+
+## CHG-063 paired significance gate
+
+Compare baseline and candidate decisions on the same unseen labelled events. The development checkpoint is 50 trigger presses and 100 negative events on the primary iPhone across multiple sessions. Promotion needs at least 300 trigger presses and 600 negatives across at least three device/condition combinations. Use a paired bootstrap 95% interval or an exact paired test. Claim better recall only when the lower confidence bound is above zero and false-shot/duplicate rates do not materially regress. Do not tune thresholds on the promotion corpus.
 
 ## Important mobile checklist
 

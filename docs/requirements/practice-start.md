@@ -1,16 +1,16 @@
 # Microphone readiness and start timing
 
-Revision 1.0 · CHG-022 · Directly requested, 2026-10-11 · implemented locally; publication and device checks tracked separately
+Revision 1.1 · CHG-022 plus CHG-063 readiness/cue override · 2026-11-01 · feature branch candidate
 
 This revision supplements [practice modes](practice-modes.md) and the [Practice design](../design/screens/practice/README.md). The user reported a missed first click in Single practice and explicitly requested listening when the timer starts, a failed early trigger, and a much louder beep. The reported hardware cause remains unverified. Existing gun-owned data, limits, four modes and legacy sequence rules are preserved.
 
 | ID | Required behavior |
 | --- | --- |
-| START-01 | For Start/Resume in all four practice modes, connect capture and wait for at least 100 ms of actual PCM from a running AudioContext before creating the countdown or external-cue wait. Silent PCM is valid input. No arriving input within five seconds produces an actionable error and releases capture; cancellation/navigation also releases it without a late start. |
-| START-02 | Keep detection armed throughout the Single ready countdown and across GO. Do not reset an in-flight early click at the beep. Exclude the app cue's existing 80 ms interval by captured sample time without erasing preceding input. Recognized clicks at 0.2–0.5 seconds after GO must remain eligible, including the first click. |
+| START-01 | For Start/Resume in all practices and sequence sessions, connect capture and observe at least 600 ms of actual PCM from a running AudioContext before creating the countdown or external-cue wait. Use robust room-level statistics to initialize detection. Silent PCM is valid input. No arriving input within five seconds produces an actionable error and releases capture; cancellation/navigation also releases it without a late start. |
+| START-02 | Keep detection armed throughout the Single ready countdown and across GO. Do not reset an in-flight early click at the beep. Exclude the shared cue guard by captured sample time without erasing preceding input. Recognized clicks after the guard must remain eligible, including the first click. |
 | START-03 | In Single practice, a recognized trigger captured within the current attempt before GO is a **Miss · early trigger**, contributes one completed attempt and zero accepted shots, and is saved in Review/History. Unknown or handling sounds do not fail an attempt. Stale events from a previous attempt are ignored. Judge delayed callbacks by their captured onset, even when delivered after GO. |
 | START-04 | Following an early Single miss, automatically use a fresh configured delay/signal for the next attempt; stop at the target. The early detection has an nonpositive offset relative to actual GO or the pending countdown reference (at least the processing clock if GO is overdue), with no successful reaction time or accepted step. Old records/format-4 backups remain readable; invalid negative offsets and contradictory early outcomes are rejected. Other practice modes retain their current pre-start/count semantics. |
-| START-05 | Increase the shared app beep's peak Web Audio gain from 0.06 to 0.45 while retaining the 880 Hz tone, short envelope and cleanup. Show a concise device-volume note. This changes generated amplitude, not the device's volume; physical loudness remains a device check. |
+| START-05 | The CHG-063 cue uses a 1500 Hz, 0.82-peak, 140 ms Web Audio envelope and a 190 ms trigger-practice guard. Setup includes Test start sound and a media-volume note. Sequence sessions retain their conservative 300 ms guard. This changes generated amplitude, not device volume; physical loudness remains a device check. |
 | START-06 | During countdown retain its visible seconds and STOP; show the live microphone indicator directly below. After GO keep STOP/meter and show recognition/early-failure feedback. Connecting is cancellable and explains that audio readiness is being checked. Pause/end release capture and clear the indicator. |
 
 ## Acceptance

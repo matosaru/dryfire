@@ -237,7 +237,7 @@ test.each(['worklet', 'compatibility'])('%s readiness requires arriving PCM, not
   }
   const session = await startContinuousListening({ onEvent() {}, detectionEnabled: false });
   let ready = false;
-  const waiting = session.waitForInput().then(() => { ready = true; });
+  const waiting = session.waitForInput().then(result => { ready = true; return result; });
   await Promise.resolve(); expect(ready).toBe(false);
   const deliver = length => {
     const pcm = new Float32Array(length);
@@ -245,8 +245,9 @@ test.each(['worklet', 'compatibility'])('%s readiness requires arriving PCM, not
     else nodes[0].onaudioprocess({ playbackTime: 1 + length / rate, inputBuffer: { getChannelData: () => pcm },
       outputBuffer: { numberOfChannels: 1, getChannelData: () => new Float32Array(length) } });
   };
-  deliver(rate * .05); await Promise.resolve(); expect(ready).toBe(false);
-  deliver(rate * .05); await waiting; expect(ready).toBe(true);
+  deliver(rate * .3); await Promise.resolve(); expect(ready).toBe(false);
+  deliver(rate * .3); const result = await waiting; expect(ready).toBe(true);
+  expect(result).toMatchObject({ ready: true, status: 'ready' });
   await session.stop();
 });
 

@@ -1,5 +1,7 @@
 import { jest } from '@jest/globals';
-import { createStartCuePlayer, getVibrationCapability, requestFeedbackVibration } from '../src/feedback.js';
+import { getVibrationCapability, requestFeedbackVibration } from '../src/feedback.js';
+import { createStartCuePlayer, playStartCuePreview } from '../src/startCue.js';
+import { START_CUE_DURATION_SECONDS, START_CUE_FREQUENCY_HZ, START_CUE_PEAK_GAIN } from '../src/startCueProfile.js';
 
 const originalNavigator = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
 afterEach(() => {
@@ -26,8 +28,9 @@ test('cue preparation is explicit; GO schedules a bounded tone and close release
   expect(await player.prepare()).toBe(true);
   expect(player.play()).toBe(true);
   expect(oscillators[0].start).toHaveBeenCalledWith(2);
-  expect(oscillators[0].stop.mock.calls[0][0] - 2).toBeLessThan(0.3);
-  expect(gains[0].gain.linearRampToValueAtTime).toHaveBeenCalledWith(0.45, 2.006);
+  expect(oscillators[0].frequency.value).toBe(START_CUE_FREQUENCY_HZ);
+  expect(oscillators[0].stop).toHaveBeenCalledWith(2 + START_CUE_DURATION_SECONDS);
+  expect(gains[0].gain.linearRampToValueAtTime).toHaveBeenCalledWith(START_CUE_PEAK_GAIN, 2.008);
   await player.close();
   expect(contexts[0].state).toBe('closed');
   expect(player.play()).toBe(false);
@@ -42,6 +45,15 @@ test('unavailable or blocked audio does not claim a successful cue', async () =>
   expect(await blocked.prepare()).toBe(false);
   expect(blocked.play()).toBe(false);
   await blocked.close();
+});
+
+test('cue preview prepares from a user action and closes its context after playback', async () => {
+  jest.useFakeTimers();
+  const close=jest.fn(async()=>{}),player={prepare:jest.fn(async()=>true),play:jest.fn(()=>true),close};
+  await expect(playStartCuePreview({createPlayer:()=>player})).resolves.toBe(true);
+  expect(player.prepare).toHaveBeenCalledTimes(1);expect(player.play).toHaveBeenCalledTimes(1);
+  await jest.advanceTimersByTimeAsync(400);expect(close).toHaveBeenCalledTimes(1);
+  jest.useRealTimers();
 });
 
 test('vibration absence, rejection and acceptance are distinct from physical verification', () => {

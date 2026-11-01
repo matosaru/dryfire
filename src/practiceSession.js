@@ -3,7 +3,7 @@ export { PRACTICE_MODES, practiceMode, practiceDefinition } from './practiceMode
 
 const LABELS = ['draw', 'rack', 'trigger', 'reload'];
 const TYPES = ['Handguns', 'Rifles and Carbines', 'Shotguns'];
-export const PRACTICE_CUE_GUARD_MS = 80;
+export const PRACTICE_CUE_GUARD_MS = 190;
 // Let segmentation finish an event captured before a deadline; score by onset.
 export const DETECTION_SETTLE_MS = 2000;
 export const continuousPractice = mode => ['repeated', 'control'].includes(mode);

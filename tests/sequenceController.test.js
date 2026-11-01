@@ -12,9 +12,10 @@ import {controllerPage,deferred,clickPcm} from './helpers/controllerDom.js';
 const audio=await import('../src/audio.js');
 const capture=jest.fn(),save=jest.fn(),get=jest.fn(),set=jest.fn(),getSessions=jest.fn();
 const cue={prepare:jest.fn(),play:jest.fn(),close:jest.fn()};
+const previewCue=jest.fn(async()=>true);
 jest.unstable_mockModule('../src/audio.js',()=>({...audio,startContinuousListening:capture}));
 jest.unstable_mockModule('../src/storage/library.js',()=>({getGunSetting:get,setGunSetting:set,saveSession:save,getSessions}));
-jest.unstable_mockModule('../src/feedback.js',()=>({createStartCuePlayer:()=>cue,requestFeedbackVibration:()=>({supported:true,accepted:true})}));
+jest.unstable_mockModule('../src/feedback.js',()=>({requestFeedbackVibration:()=>({supported:true,accepted:true})}));
 const {createSessionController}=await import('../src/sessionController.js');
 const library=JSON.parse(readFileSync(new URL('../visual-tests/fixtures/library.json',import.meta.url),'utf8'));
 const originalClone=globalThis.structuredClone;
@@ -31,10 +32,10 @@ beforeEach(()=>{
  document.body.innerHTML='<input id="safetyAck" type="checkbox" checked><div id="savedSessions"></div>'+'<div id="sessionView">'+controllerPage('session')+'</div>';
  context={gun:library.guns[0],examples:library.examples.filter(row=>row.gunId===library.guns[0].id),calibration:[],audioPreferences:{noiseFilter:true},sensitivity:'medium'};
  callbacks=Object.fromEntries(['onNavigate','onBack','onChange','onError','onStatus','onProcessing','onVibration','onPracticeRecord'].map(key=>[key,jest.fn()]));callbacks.ensureSafe=jest.fn(()=>true);
- session={nowMs:()=>performance.now(),stop:jest.fn(async()=>{}),armDetection:jest.fn(),disarmDetection:jest.fn()};captureCalled=deferred();
+ session={nowMs:()=>performance.now(),waitForInput:jest.fn(async()=>({ready:true,status:'ready'})),stop:jest.fn(async()=>{}),armDetection:jest.fn(),disarmDetection:jest.fn()};captureCalled=deferred();
  capture.mockReset().mockImplementation(async value=>{options=value;captureCalled.resolve();return session;});save.mockReset().mockResolvedValue(undefined);set.mockReset().mockResolvedValue(undefined);get.mockReset().mockImplementation(async(_key,fallback)=>fallback);getSessions.mockReset().mockResolvedValue([]);
  cue.prepare.mockReset().mockResolvedValue(true);cue.play.mockReset().mockReturnValue(true);cue.close.mockReset().mockResolvedValue(undefined);
- loadPresentation=()=>import('../src/sessionPresentation.js');
+ loadPresentation=async()=>({...await import('../src/sessionPresentation.js'),createStartCuePlayer:()=>cue,playStartCuePreview:previewCue});
  controller=createSessionController({...callbacks,loadPresentation:()=>loadPresentation(),getContext:()=>context,titleFor:label=>label,vibrationEnabled:()=>false});
  if(react){controller.connectView((...args)=>(mounted=mountSequenceContents(...args)));controller.connectPage((...args)=>(parent=mountSequencePage(...args)),event=>event.preventDefault());}
 });

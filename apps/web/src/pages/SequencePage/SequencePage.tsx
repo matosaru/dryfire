@@ -1,6 +1,6 @@
 import {PreferenceToggle} from '@dryfire/ui/PreferenceToggle';
 import {GunContext} from '@dryfire/ui/GunContext';
-import {DrillSetup,DrillSetupField,DrillSetupDelayMode,DrillSetupDelayRange,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
+import {DrillSetup,DrillSetupField,DrillSetupDelayMode,DrillSetupDelayRange,DrillSetupCount,DrillSetupSteps,DrillGuideLink,DrillStartSoundTest} from '@dryfire/ui/DrillSetup';
 import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {SequenceRun} from '@dryfire/ui/SequenceRun';
@@ -28,6 +28,7 @@ export function SequencePage({title,gunName,contextHidden=false,guideHidden=fals
               <p className="muted small">A fresh delay before every repetition.</p>
             </div>
             <PreferenceToggle id="sessionStartSound" label="Sound at start" description="Play a beep when GO appears." className="session-sound-toggle" name="startSound" aria-describedby="sessionCueGuardNote"/>
+            <DrillStartSoundTest id="sessionTestStartSound" onClick={()=>onAction?.('sessionTestStartSound')}/>
             <p id="sessionCueGuardNote" className="muted small hidden">With the beep on, detection waits 0.3 seconds after GO to exclude the cue. Very fast sounds in that window may be missed.</p>
         </DrillSetup>
         <p className="muted small session-timing-note">Timings describe detected sounds, not verified physical actions.</p>

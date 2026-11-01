@@ -1078,6 +1078,13 @@
       "css": "packages/ui/src/SoundCard/SoundCard.css",
       "tests": "packages/ui/src/SoundCard/SoundCard.test.tsx",
       "entry": "packages/ui/src/SoundCard/index.ts"
+    },
+    {
+      "name": "TriggerProfileStatus",
+      "source": "packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.tsx",
+      "css": "packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.css",
+      "tests": "packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.test.tsx",
+      "entry": "packages/ui/src/TriggerProfileStatus/index.ts"
     }
   ],
   "deferredAboutPreparation": {

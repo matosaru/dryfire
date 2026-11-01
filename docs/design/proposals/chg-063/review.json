@@ -1,0 +1,10 @@
+{
+  "status": "local implementation candidate; pinned screenshot review pending",
+  "expandedCSSSha256": "9b75621b5fb2af6700c98790244aee78e4ac71d455ce0192df1bcb5cf0b08b3f",
+  "reviewedChanges": [
+    "Trigger profile guidance card",
+    "Shared Test start sound control",
+    "Ambient readiness wording"
+  ],
+  "physicalDeviceEvidence": false
+}

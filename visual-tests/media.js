@@ -37,8 +37,8 @@ export function installSyntheticMedia() {
     ready() {
       const node = [...nodes].reverse().find(n => n.port.onmessage);
       if (!node) throw new Error('No active synthetic microphone');
-      node.port.onmessage({ data: { samples: new Float32Array(Math.round(node.context.sampleRate * .12)),
-        startFrame: Math.max(0, Math.round((node.context.currentTime - .12) * node.context.sampleRate)) } });
+      node.port.onmessage({ data: { samples: new Float32Array(Math.round(node.context.sampleRate * .65)),
+        startFrame: Math.max(0, Math.round((node.context.currentTime - .65) * node.context.sampleRate)) } });
     },
     emit(label = 'trigger', onsetMs) {
       const node = [...nodes].reverse().find(n => n.port.onmessage);

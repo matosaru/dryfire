@@ -178,6 +178,11 @@ export function createEventDetector(sampleRate, onEvent, options = {}) {
   return {
     push,
     reset,
+    setNoiseFloor(value) {
+      if (!Number.isFinite(value) || value < 0) return false;
+      noiseFloor = Math.max(0.0001, Math.min(0.05, value));
+      return true;
+    },
     get noiseFloor() { return noiseFloor; },
     get active() { return active; },
     stop() {

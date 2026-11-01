@@ -12,6 +12,7 @@ import vm from 'node:vm';
 import {renderPageTemplates} from '../tools/page-templates.mjs';
 import {listeningReadiness} from '../apps/web/src/features/live-listen/readiness.ts';
 import {soundCard} from '../src/uiComponents.js';
+import {assessTriggerProfile,renderTriggerProfile} from '../src/profileQuality.js';
 const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const start=source.indexOf('const labelMeta ='), metadata=source.slice(start,source.indexOf('};',start)+2);
 const rendering=source.slice(source.indexOf('function learningProps()'),source.indexOf('async function toggleOptionalSound'));
@@ -23,7 +24,7 @@ function setup() {
     titleFor:label=>label,labels:['draw','rack','trigger','reload'],getCounts:()=>counts,triggerReady:()=>counts.trigger>=3,
     MAX_EXAMPLES_PER_CLASS:10,MIN_EXAMPLES_PER_CLASS:3,RECOMMENDED_EXAMPLES_PER_CLASS:8,
     profileLocked:()=>context.busy,busy:false,livePendingStart:false,liveSession:null,sessionController:null,practiceController:null,
-    calibration:[],recordCalibration:jest.fn(),resetCalibration:jest.fn(),enabledSoundLabels:['trigger','draw'],recordExample:record,resetSoundProfile:reset,toggleOptionalSound:jest.fn(),renderCalibrationCards:calibration,
+    calibration:[],examples:[],profileQuality:{assessTriggerProfile,renderTriggerProfile},recordCalibration:jest.fn(),resetCalibration:jest.fn(),enabledSoundLabels:['trigger','draw'],recordExample:record,resetSoundProfile:reset,toggleOptionalSound:jest.fn(),renderCalibrationCards:calibration,
   };
   bindPreferenceContext(context);
   const {renderClassCards,renderLearningLocks}=vm.runInNewContext(metadata+'\n'+source.slice(source.indexOf('function liveText('),source.indexOf('function bindSettings('))+'\n'+source.slice(source.indexOf('function renderListeningReadiness('),source.indexOf('function renderGunControls('))+'\n'+rendering+'\n;({renderClassCards,renderLearningLocks});',context);

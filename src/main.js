@@ -130,6 +130,7 @@ let livePage;
 let drillsPage;
 let historyPage, historyOwner, historyRows=[], historySessions=[];
 const preparePageModule=createModulePreparation(showError);
+let profileQuality;
 const guideHandlers=new Map();
 const historyHandlers=new Map();
 function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else setNodeDisabled($('#'+id),disabled);}
@@ -399,7 +400,7 @@ function getCounts() { return trainingCounts(examples); }
 function renderModelNotice(notice,noticeHidden){if(learnPage)learnPage.update({notice,noticeHidden});else{$('#modelNotice').textContent=notice;$('#modelNotice').classList.toggle('hidden',noticeHidden);}}
 function learningProps(){
   const counts=getCounts();
-  return{locked:profileLocked(),cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
+  return{locked:profileLocked(),triggerQuality:profileQuality?.assessTriggerProfile(examples),cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
     label,meta:labelMeta[label],count:counts[label],maxExamples:MAX_EXAMPLES_PER_CLASS,minExamples:MIN_EXAMPLES_PER_CLASS,recommendedExamples:RECOMMENDED_EXAMPLES_PER_CLASS,locked:profileLocked(),
     onRecord:()=>recordExample(label),onReset:()=>resetSoundProfile(label),optional:label!=='trigger',enabled:enabledSoundLabels.includes(label),onToggle:enabled=>toggleOptionalSound(label,enabled),
   })),calibrationProps:{counts:Object.fromEntries(['reset','noise','cue'].map(kind=>[kind,calibration.filter(row=>row.kind===kind).length])),maximum:MAX_EXAMPLES_PER_CLASS,locked:profileLocked(),
@@ -437,6 +438,7 @@ function renderClassCards() {
         onToggle: enabled => toggleOptionalSound(label, enabled)
       }));
     }
+    profileQuality?.renderTriggerProfile(examples);
     renderCalibrationCards();
   }
   renderListeningReadiness(counts);
@@ -582,6 +584,7 @@ function displayView(name) {
     }
   }
   if(name==='learn'){
+    import('./profileQuality.js').then(module=>{profileQuality=module;renderClassCards();}).catch(showError);
     const learnModule=preparePageModule('learn',()=>import('../apps/web/src/app/learnPage.tsx'));
     if(!learnPage && learnModule && !profileLocked() && !$('#safetyModal').open){
       try{learnPage=learnModule.mountLearnPage($('#learnView'),{...learningProps(),onBack:()=>goBack()});}catch(error){showError(error);}

@@ -1,6 +1,6 @@
 import {PreferenceToggle} from '@dryfire/ui/PreferenceToggle';
 import {GunContext} from '@dryfire/ui/GunContext';
-import {DrillSetup,DrillSetupField,DrillSetupDelayMode,DrillSetupDelayRange,DrillSetupCount,DrillSetupSteps,DrillGuideLink} from '@dryfire/ui/DrillSetup';
+import {DrillSetup,DrillSetupField,DrillSetupDelayMode,DrillSetupDelayRange,DrillSetupCount,DrillSetupSteps,DrillGuideLink,DrillStartSoundTest} from '@dryfire/ui/DrillSetup';
 import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {PracticeRun} from '@dryfire/ui/PracticeRun';
@@ -24,6 +24,7 @@ export function PracticePage({title,gunName,contextHidden=false,guideHidden=fals
             <DrillSetupDelayRange id="practiceRandomFields" prefix="practice" minimum={'{{practiceMinDelayInput}}'} maximum={'{{practiceMaxDelayInput}}'}/>
           </div>
             <PreferenceToggle id="practiceStartSound" label="Sound at start" description="Play a beep at each repetition start." className="session-sound-toggle" defaultChecked/>
+            <DrillStartSoundTest id="practiceTestStartSound" containerId="practiceStartSoundTest" onClick={()=>onAction?.('practiceTestStartSound')}/>
           </div>
         </DrillSetup>
       </div>
