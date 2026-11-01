@@ -67,4 +67,6 @@ test('vibration absence, rejection and acceptance are distinct from physical ver
   vibrate.mockReturnValue(true);
   expect(requestFeedbackVibration('completion')).toEqual({ supported: true, accepted: true });
   expect(vibrate.mock.calls[1][0]).toEqual([25, 40, 25]);
+  vibrate.mockImplementation(()=>{throw new Error('blocked');});
+  expect(requestFeedbackVibration('go')).toEqual({supported:true,accepted:false});
 });
