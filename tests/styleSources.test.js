@@ -1,7 +1,7 @@
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
-import { styleSources, composedStyles } from '../tools/style-sources.mjs';
+import { styleSources, composedStyles, lazyStyleOwners, lazyStyleSources } from '../tools/style-sources.mjs';
 let root;
 beforeEach(() => { root = mkdtempSync(join(tmpdir(), 'dryfire-css-contract-')); mkdirSync(join(root, 'components')); });
 afterEach(() => rmSync(root, { recursive: true, force: true }));
@@ -35,4 +35,13 @@ test('the shipping stylesheet does not restore retired component selectors', () 
     'session-record-meta', 'session-summary-stats', 'practice-mode-tag'
   ];
   for (const token of retired) expect(css).not.toContain(`.${token}`);
+});
+
+test('private progress presentation styles load with their only runtime owner', () => {
+  const path = 'packages/ui/src/ProgressContent/ProgressContent.css';
+  expect(styleSources()).not.toContain(path);
+  expect(lazyStyleSources()).toEqual([path]);
+  expect(lazyStyleOwners['src/optional/progressView.js']).toEqual([path]);
+  expect(readFileSync(resolve(process.cwd(), 'src/optional/progressView.js'), 'utf8'))
+    .toContain("import progressStyles from '../../packages/ui/src/ProgressContent/ProgressContent.css?inline';");
 });

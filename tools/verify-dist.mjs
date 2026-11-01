@@ -30,14 +30,26 @@ if (!files.some(path => /assets[\\/].*\.js$/.test(path)) || !files.some(path => 
 if (files.some(path => path.endsWith('.map') || path.startsWith('src/') || path.startsWith('tests/') || path.startsWith('apps/') || path.startsWith('packages/') || path === 'vite.config.js')) {
   throw new Error('Source maps or development sources unexpectedly exposed in the deployment.');
 }
+const cssAssets = await Promise.all(files.filter(path => path.endsWith('.css')).map(async path => ({ path, css: await readFile(join(distPath, path), 'utf8') })));
+const progressStyles = cssAssets.filter(({ css }) => css.includes('.progress-stats'));
+if (expectedEdition === 'public' && progressStyles.length) throw new Error('Private progress styles leaked into the public build.');
+if (expectedEdition === 'preview' && progressStyles.length) throw new Error('Private progress styles must stay inside their lazy JavaScript owner.');
+const criticalStyle = html.match(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"/)?.[1];
+if (!criticalStyle || cssAssets.find(({ path }) => `/${path.replaceAll('\\', '/')}` === criticalStyle)?.css.includes('.progress-stats')) {
+  throw new Error('Private progress styles must not block application startup.');
+}
+let progressStyleOwners = 0;
 for (const file of files.filter(path => path.endsWith('.js'))) {
   const js = await readFile(join(distPath, file), 'utf8');
+  if (js.includes('.progress-stats')) { progressStyleOwners++; if (!/assets[\\/]progressView-.*\.js$/.test(file)) throw new Error('Private progress styles escaped their lazy owner.'); }
   if (expectedEdition === 'public' && js.includes('progress-chart')) throw new Error('Optional chart implementation leaked into the public build.');
   if (expectedEdition === 'public' && /dryfire-private-preview-mode|previewTestMode/.test(js)) throw new Error('Private testing override leaked into public JavaScript.');
   if (js.includes('function renderClassCards()') || js.includes('function startContinuousListening(') || js.includes('class PcmCaptureProcessor extends AudioWorkletProcessor')) {
     throw new Error('Development code signatures detected in published JS; verify minifier settings.');
   }
 }
+if (expectedEdition === 'public' && progressStyleOwners) throw new Error('Private progress styles leaked into public JavaScript.');
+if (expectedEdition === 'preview' && progressStyleOwners !== 1) throw new Error('Preview must contain one lazy progress style owner.');
 for (const worker of ['sw.js', 'pcm-capture.worklet.js']) {
   if (!files.includes(worker)) throw new Error(`Missing bundled worker ${worker}`);
   new Script(await readFile(join(distPath, worker), 'utf8'), { filename: worker });

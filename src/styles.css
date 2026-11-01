@@ -69,5 +69,4 @@
 @import "../packages/ui/src/NumberInput/NumberInput.css";
 @import "../packages/ui/src/SafetyDialog/SafetyDialog.css";
 @import "../apps/web/src/styles/legacy-progress-filters.css";
-@import "../packages/ui/src/ProgressContent/ProgressContent.css";
 @import "../apps/web/src/styles/legacy-after-progress-content.css";

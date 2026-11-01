@@ -1,6 +1,7 @@
 import { textElement } from '../textElement.js';
 import {progressPresentation} from '../../apps/web/src/features/history/progressPresentation.ts';
 import { progressGroups, progressSummary } from '../practiceProgress.js';
+import progressStyles from '../../packages/ui/src/ProgressContent/ProgressContent.css?inline';
 const element = (doc, tag, text, className = '') => textElement(tag, text, className, doc);
 const format = (value, unit = 'ms') => value === null ? '—' : unit === 'ms' ? `${(value / 1000).toFixed(2)} s` : `${value.toFixed(1)} ${unit}`;
 const timing = group => {
@@ -8,6 +9,7 @@ const timing = group => {
   return `${c.startSource === 'external' ? 'External beep' : c.soundAtStart ? 'App beep' : 'Silent start'} · ${c.delayMode === 'fixed' ? `${c.fixedDelaySeconds}s fixed` : `${c.randomMinSeconds}–${c.randomMaxSeconds}s random`}${group.mode === 'par' ? ` · ${c.parSeconds}s par` : ''}`;
 };
 export function createProgressView(doc, { enabled = () => true, onError = () => {} } = {}) {
+  if(!doc.querySelector('style[data-progress-styles]')){const style=doc.createElement('style');style.dataset.progressStyles='';style.textContent=progressStyles;doc.head.append(style);}
   const $ = id => doc.getElementById(id), select = $('progressGroup'), range = $('progressRange'), host = $('progressContent');
   let groups = [], owner = null, view, module, pending;
   function model(){if(!enabled())return{};const group=groups.find(row=>row.key===select.value);const data=group?progressSummary(group,{days:Number(range.value)}):undefined;return progressPresentation(group,data);}

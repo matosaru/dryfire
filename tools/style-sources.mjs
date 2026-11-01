@@ -1,6 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { resolve, relative, dirname } from 'node:path';
 
+export const lazyStyleOwners = Object.freeze({
+  'src/optional/progressView.js': Object.freeze(['packages/ui/src/ProgressContent/ProgressContent.css'])
+});
+
+export function lazyStyleSources() {
+  return [...new Set(Object.values(lazyStyleOwners).flat())];
+}
+
 /** Follow the ordered local CSS entry without changing its cascade. The same
  * dependency list is used for media fingerprints and source contract checks. */
 export function styleSources(entry = 'src/styles.css', root = process.cwd()) {
