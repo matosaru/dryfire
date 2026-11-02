@@ -2,7 +2,7 @@ import {DRILLS} from './drills.js';
 import {practiceDefinition} from './practiceModes.js';
 
 /** Stable public identities only. Gun names, results and custom IDs stay local. */
-const views={home:'',gunSetup:'gun-setup',guns:'guns',learn:'learn',drills:'drills',recognize:'live-listen',history:'history',settings:'settings',about:'about',contact:'contact'};
+const views={home:'',gunSetup:'gun-setup',guns:'guns',learn:'learn',soundCheck:'sound-check',drills:'drills',recognize:'live-listen',history:'history',settings:'settings',about:'about',contact:'contact'};
 const modes={single:'single-trigger-press',repeated:'repeated-trigger-press',par:'par-time-practice',control:'trigger-control'};
 const sequences={'rack-trigger':'rack-slide-trigger-pull','mag-trigger':'magazine-change-trigger-pull','draw-mag-trigger':'draw-magazine-change-trigger-pull','trigger-only':'trigger-pull-sequence'};
 const pathFor=slug=>`/${slug}${slug?'/':''}`;
@@ -26,7 +26,7 @@ export function offlineAppPaths(){return[
 export function parseAppPath(path){
  if(path==='/')return{view:'home'};
  if(typeof path!=='string')return null;
- const slug=path.slice(1,-1),view=slug===views.recognize?'recognize':slug===views.gunSetup?'gunSetup':slug;
+ const slug=path.slice(1,-1),view=Object.entries(views).find(([,value])=>value===slug)?.[0];
  if(Object.hasOwn(views,view)&&path===pathFor(views[view]))return{view};
  for(const[mode,slug]of Object.entries(modes))if(path===pathFor(slug))return{view:'practice',mode};
  for(const[preset,slug]of Object.entries(sequences))if(path===pathFor(slug))return{view:'session',preset};
@@ -69,7 +69,7 @@ export function legacyPathRedirect(path){
 export function appTitleFor(route){
  const product='Dry Fire With Ease';
  if(route?.view==='home')return product+' — Free Dry-Fire Practice App';
- const titles={gunSetup:'Gun setup',guns:'My Guns',learn:'Learn Sounds',drills:'Drills',recognize:'Live Listen',history:'History',settings:'Settings',about:'About',contact:'Contact'};
+ const titles={gunSetup:'Gun setup',guns:'My Guns',learn:'Learn Sounds',soundCheck:'Sound Check',drills:'Drills',recognize:'Live Listen',history:'History',settings:'Settings',about:'About',contact:'Contact'};
  let title=titles[route?.view]??'App';
  if(route?.view==='practice')title=practiceDefinition(route.mode)?.title??'Practice';
  if(route?.view==='session')title=DRILLS.find(drill=>drill.id===route.preset)?.title??'Custom sequence';

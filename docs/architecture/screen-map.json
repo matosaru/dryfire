@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-11-01",
+  "reviewedOn": "2026-11-02",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://easydryfire.com",
   "publicPaths": [
@@ -172,6 +172,29 @@
         }
       ],
       "design": "docs/design/screens/learn/README.md"
+    },
+    {
+      "id": "soundCheck",
+      "folder": "sound-check",
+      "domId": "soundCheckView",
+      "title": "Sound Check",
+      "parent": "learn",
+      "entry": "Run sound check from the Trigger profile status",
+      "requirements": [
+        "docs/requirements/audio-recognition-v3.md",
+        "docs/requirements/core.md",
+        "docs/requirements/page-layout.md"
+      ],
+      "notes": "Guided labelled attempts use ambient readiness and a two-second armed window. Review reports v2 matches, misses, false shots and duplicates plus a v3 shadow comparison when compatible new samples exist. Export contains numeric decisions and session conditions, never raw audio or gun names.",
+      "states": [
+        {
+          "key": "overview.dark",
+          "anchor": "soundCheckSetup",
+          "label": "Labelled check setup",
+          "image": "docs/design/screens/sound-check/overview.dark.png"
+        }
+      ],
+      "design": "docs/design/screens/sound-check/README.md"
     },
     {
       "id": "drills",
@@ -808,8 +831,8 @@
   ],
   "reviewedSources": {
     "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
-    "src/main.js": "c18f3279c997cc2c516d4cf85dd585eac7e54f10be7a041ae6e2496ea07b4da7",
-    "src/styles.css": "8005d12e975319c619caf461592cae74152c71cd30bc765555db07a261467cad",
+    "src/main.js": "b8359116771c80daff9c8132ddf6ea5bdb54d5e79afe895457103dc4645d9202",
+    "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
     "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
     "src/practiceSession.js": "3520faf984f8d04c08a46f7a7b4304d14dbbda9ba2f23989db218ada207c53ec",
     "src/practiceController.js": "667ff8c60af10ab6ed0f3145b75bd6fd7f8ff7e965d8b5dfbb78e7ae80fab7a7",
@@ -823,8 +846,8 @@
     "vite.config.js": "7c5e167d6d91394541c2c01e55f4bc939ad8489011789c625a7881ef40c36ccd",
     "src/optional/previewTesting.js": "555ccd77a51dd87a6f7e224909c51601dd50b94bf2da738a02e274ed70ae728d",
     "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
-    "src/pageDefinitions.js": "69404a00a854d9287c2e2924be58755f4ebe63d1b4f379283e1e9894778715bf",
-    "tools/page-templates.mjs": "f4b9687c9b7ebb6c204090acec6c2d12ba53e105d5106a21ee6d4be631da5a22",
+    "src/pageDefinitions.js": "60371a98062e7ad4eb910d2ce9a9fc4cc29c5612cd195789594e2533d666e48b",
+    "tools/page-templates.mjs": "00afc77c7ff017a6f7afb627dfd6e3ef2c4a86f719e4bf6aece74a4906e258b4",
     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",
     "src/practiceGuides.js": "e0c006baa36c8d8661594b098f755c2adf4113c079e7d5301d49886f62c9800a",
     "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
@@ -910,9 +933,9 @@
     "src/templates/shared/preview-testing.html": "dfe2d0060997b3e67c4aa51097e921ed39b131bc4e7583ec0fb479315e2d801b",
     "apps/web/src/styles/legacy-before-settings.css": "d796631fab5158684181d488c644afeaae2d5bc8453d086c6098793e39e14426",
     "apps/web/src/app/settingsPage.tsx": "86bfd9d34d26b74de231df749ba46cce7da940c699bdb89be8ba88ead13093b5",
-    "apps/web/src/pages/LearnPage/LearnPage.tsx": "ea9fca229593de24cbc8c53b36c9ff43ecd217fd7b24c72816ba9763cc26bdcc",
+    "apps/web/src/pages/LearnPage/LearnPage.tsx": "6eef40eb1df171fda0c9c1e4226f1af1492e019ee34ced8db7cba05988d66891",
     "apps/web/src/pages/LearnPage/LearnPage.css": "1be7874e8228e2159550a7d8f41ef0c0e6cd6bfe73b481eeffc8afdd3cb8da2d",
-    "packages/ui/src/SoundCard/SoundCard.tsx": "6ef9dd3a206ba68546e33dcb07d6f583384af2256d5860151392aea3600d7d26",
+    "packages/ui/src/SoundCard/SoundCard.tsx": "dd0f58c0245ea0148c5afc172d5f23d79eea2274521493bc4819cb5fd06014d2",
     "packages/ui/src/SoundCard/SoundCard.css": "de9362726c2df6a620ee0f4e14cd7d8a1fac0c35bdbf000103ccf954c3358856",
     "apps/web/src/app/renderLearnPage.tsx": "da03c7af80d3dcb3a8c7cbab429c322bed539a71b9d7ed751ce30be043cd649f",
     "apps/web/src/app/learnPage.tsx": "11e628d28f9e56bb4be7277eea5a5a573a5b9c84f76c33b92257f85fa6130415",
@@ -1006,21 +1029,21 @@
     "packages/ui/src/DrillSetup/DrillSetup.tsx": "53c73d9a52fb91726b65498baeb46b183dfabecfd66806d623c1e9d0b7924be0",
     "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
     "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b",
-    "src/appPaths.js": "365288bab72de580bc680eab77f779813d73adeff98553e0de714a1d7717f1a7",
+    "src/appPaths.js": "c4f3bb7f496cd938f57584427ded01934970d943bb0af994d86dc2c035b5216a",
     "site/routes.js": "3a9808b5fe8f6b3fb63358dabea45f02c056c47bbedc50e791646971465732d5",
     "workers/publicSite.js": "b6f0422cf90199e3af353c23496fba3aff62699eab12dd0c063b576136ed4127",
     "tools/public-pages.mjs": "f27f71b21b077a54e69762c810c42ccc256e0f22bdc87586080d25bc80e7b5c9",
-    "apps/web/src/public-site/PublicPage/PublicPage.tsx": "d4fd60f6fab96f722bc130c9a8706d7ba871a63e24d8d67c126bf966dcb8d41e",
+    "apps/web/src/public-site/PublicPage/PublicPage.tsx": "72dc2f30906dea496c6182bcb3e42d987c8395968288bed54288487f53ec2897",
     "apps/web/src/public-site/PublicPage/PublicPage.css": "720964429947d545f8af9c93f3a902438fa03c681bc0ff7844c0cb45237f95de",
     "tools/app-document.mjs": "548b0bf8eb3c476e0149cfc4d46f84dfb441bcf89f0276c526f683987383c80d",
     "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx": "0e2ca183b5963dd6d8d02c3c7f9c0e731df994391a1855a0de64652a4131bba2",
     "apps/web/src/public-site/MarketingOverview/MarketingOverview.css": "835ecb53212b8b940f593c2108cb16cd8d737e3457eb14558130b61791eeeed3",
     "src/gunPreferenceReads.js": "612ee5623de87e64b917624124c08cebd4011215722ae9886b072b3fa973f892",
-    "src/storage/library.js": "b2510e42d309eb6f6f5a12b20a2d645d48e6dc87f7c0e6bc5d406b849c6cf07b",
+    "src/storage/library.js": "93103fc92eab00d8c268e64f2a79f1f8abbcabe30bc592b11a40d5f490c10621",
     "src/storage/constants.js": "e97da22393702bbbee6a9ef70e4a74e1ced16670c781159b47c1fb6d18a23446",
     "src/storage/restoreBackup.js": "8397a6c1fb08afd5aa8fefdeeadf18cfc4e0380b3637055ecc3c56f5b245632b",
     "src/storage/sessionValidation.js": "0e46f2793131f7ce434b87bc2909bba39c0bac25744bda65c86c3633531f58c0",
-    "src/storage/backupValidation.js": "1044267563affe5f41343f3704c6b368a5aace52e7f79d9c7fc2c300476b4f47",
+    "src/storage/backupValidation.js": "80159f4fc63ae98f5c8e72c9ae2d3f7320f8b9c09ed39291dba1129b60fa83b6",
     "src/storage/database.js": "128df61f68beaf61e45658e38f4617ba30e22aa3586aa7fbfd69fa5f5893b14c",
     "src/storage/validation.js": "4c79d3530cd4578df2ec185f32335ba94b49a2ff162d4682e200a2c5063e8779",
     "src/featureFormat.js": "52f7664d1727549cca22e033041fc6884be34a2a35a65e05eeee3a85ed5e72f2",

@@ -1,5 +1,5 @@
 import {
-  addEvent, addExample, clearEvents, clearExamples, clearExamplesForLabel, getEvents, getExamples,
+  addEvent, addExample, replaceExamplesForLabel, clearEvents, clearExamples, clearExamplesForLabel, getEvents, getExamples,
   getOutdatedExampleCount, getSetting, normalizeMaxResults, setSetting, trimEvents, verifyEvent,
   MAX_EXAMPLES_PER_CLASS, createGun, getGunSetting, setGunSetting,
 } from '../src/storage.js';
@@ -56,6 +56,13 @@ describe('IndexedDB storage', () => {
     expect((await getExamples()).map(x=>x.label).sort()).toEqual(['rack','reload','trigger']);
     expect((await getEvents()).map(x=>x.id)).toEqual([event.id]);
     await expect(clearExamplesForLabel('bad')).rejects.toThrow(TypeError);
+  });
+
+  test('replacement atomically swaps only one profile and retains optional spectral features',async()=>{
+    await addExample('trigger',Array(15).fill(.1));await addExample('trigger',Array(15).fill(.2));await addExample('rack',Array(15).fill(.3));
+    const spectral=Array(23).fill(.4);await replaceExamplesForLabel('trigger',Array(15).fill(.5),undefined,{spectralFeatures:spectral});
+    const rows=await getExamples(),triggers=rows.filter(row=>row.label==='trigger');expect(triggers).toHaveLength(1);expect(triggers[0]).toMatchObject({spectralFeatureVersion:3,spectralFeatures:spectral});expect(rows.filter(row=>row.label==='rack')).toHaveLength(1);
+    await expect(replaceExamplesForLabel('trigger',[NaN])).rejects.toThrow(TypeError);expect((await getExamples()).filter(row=>row.label==='trigger')).toHaveLength(1);
   });
 
   test('rejects invalid training samples', async () => {

@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { renderDrillsPage } from '../apps/web/src/app/renderDrillsPage.tsx';
 import { renderLiveListenPage } from '../apps/web/src/app/renderLiveListenPage.tsx';
 import { renderLearnPage } from '../apps/web/src/app/renderLearnPage.tsx';
+import { renderSoundCheckPage } from '../apps/web/src/app/renderSoundCheckPage.tsx';
 import { renderSettingsPage } from '../apps/web/src/app/renderSettingsPage.tsx';
 import { renderGunSetupPage } from '../apps/web/src/app/renderGunSetupPage.tsx';
 import { renderHomePage } from '../apps/web/src/app/renderHomePage.tsx';
@@ -44,6 +45,7 @@ function content(id) {
     case 'drills': return renderDrillsPage(fragments.practiceCatalog);
     case 'recognize': return renderLiveListenPage();
     case 'learn': return renderLearnPage(fragments.calibrationCatalog,triggerProfileCss);
+    case 'soundCheck': return renderSoundCheckPage();
     case 'settings': return renderSettingsPage(read('shared/preview-testing'));
     case 'gunSetup': return renderGunSetupPage();
     case 'home': return renderHomePage();

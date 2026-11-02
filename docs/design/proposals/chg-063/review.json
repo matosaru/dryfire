@@ -1,10 +1,12 @@
 {
-  "status": "local implementation candidate; pinned screenshot review pending",
-  "expandedCSSSha256": "9b75621b5fb2af6700c98790244aee78e4ac71d455ce0192df1bcb5cf0b08b3f",
+  "status": "reviewed local candidate; 454 exact pinned public/preview captures pass",
+  "expandedCSSSha256": "5c550b51ae8e116d26990c771b2e4834e8b77cf048e6d36a81fd45006b6b1f97",
   "reviewedChanges": [
     "Trigger profile guidance card",
     "Shared Test start sound control",
-    "Ambient readiness wording"
+    "Ambient readiness wording",
+    "Sound Check setup, run and review",
+    "Atomic learned-sound replacement"
   ],
   "physicalDeviceEvidence": false
 }

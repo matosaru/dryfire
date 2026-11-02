@@ -79,6 +79,32 @@ export function extractFeatures(samples, sampleRate) {
   return features.map(value => Number.isFinite(value) ? value : 0);
 }
 
+/** Version 3 candidate: v2 shape plus onset-window log spectral-band energy. */
+export function extractSpectralFeatures(samples, sampleRate) {
+  if (!(samples instanceof Float32Array) || !samples.length || !Number.isFinite(sampleRate) || sampleRate < 1000) {
+    throw new TypeError('Expected Float32Array PCM samples and a valid sample rate.');
+  }
+  const base = extractFeatures(samples, sampleRate);
+  const size = Math.min(samples.length, Math.max(128, Math.floor(sampleRate * .04)));
+  let peakIndex = 0, peakValue = 0;
+  for (let i = 0; i < samples.length; i += 1) if (Math.abs(samples[i]) > peakValue) { peakValue = Math.abs(samples[i]); peakIndex = i; }
+  const start = Math.max(0, Math.min(samples.length - size, peakIndex - Math.floor(size * .25)));
+  const window = samples.subarray(start, start + size);
+  const nyquist = sampleRate / 2;
+  const centres = [250, 500, 1000, 2000, 3000, 4000, 6000, 8000].map(value => Math.min(value, nyquist * .9));
+  const power = centres.map(frequency => {
+    let real = 0, imaginary = 0;
+    for (let i = 0; i < window.length; i += 1) {
+      const hann = window.length > 1 ? .5 - .5 * Math.cos(2 * Math.PI * i / (window.length - 1)) : 1;
+      const angle = 2 * Math.PI * frequency * i / sampleRate;
+      real += window[i] * hann * Math.cos(angle); imaginary -= window[i] * hann * Math.sin(angle);
+    }
+    return real * real + imaginary * imaginary;
+  });
+  const total = power.reduce((sum, value) => sum + value, 0) || 1;
+  return [...base, ...power.map(value => Math.log1p(value / total * 1000))];
+}
+
 /**
  * Find the dominant acoustic event, reject quiet/clipped recordings, and
  * analyse a bounded window centred on it. Not equivalent to a trained VAD.
@@ -114,6 +140,7 @@ export function analyzeRecording(samples, sampleRate) {
   const event = samples.subarray(start, start + width);
   return {
     features: extractFeatures(event, sampleRate),
+    spectralFeatures: extractSpectralFeatures(event, sampleRate),
     peak: overallPeak,
     rms: overallRms,
     durationMs: Math.round(event.length / sampleRate * 1000),
@@ -144,7 +171,7 @@ function sleep(ms, signal) {
  * The ScriptProcessor path is a WebView-compatible MVP fallback; a native
  * AudioWorklet/PCM plugin is the next step for low-latency streaming detection.
  */
-export async function recordFeatureVector(onState = () => {}, { audioPreferences, onProcessing = () => {}, signal } = {}) {
+export async function recordFeatureVector(onState = () => {}, { audioPreferences, onProcessing = () => {}, onAnalysis = () => {}, signal } = {}) {
   const preferences = normalizeAudioPreferences(audioPreferences);
   const capabilities = getAudioCapabilities();
   throwIfAborted(signal);
@@ -215,7 +242,9 @@ export async function recordFeatureVector(onState = () => {}, { audioPreferences
     const samples = new Float32Array(length);
     let offset = 0;
     for (const chunk of chunks) { samples.set(chunk, offset); offset += chunk.length; }
-    return analyzeRecording(samples, context.sampleRate).features;
+    const analysis = analyzeRecording(samples, context.sampleRate);
+    onAnalysis(analysis);
+    return analysis.features;
   } catch (error) {
     if (error?.name === 'NotAllowedError' || error?.name === 'PermissionDeniedError') {
       throw new Error('Microphone permission was denied. Enable it in browser or app settings.');

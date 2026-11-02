@@ -31,7 +31,7 @@ import { normalizeAudioPreferences, getAudioCapabilities } from './audioPreferen
 import { getVibrationCapability } from './feedback.js';
 import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
 import {
-  addExample, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
+  addExample, replaceExamplesForLabel, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
   addEvent, getEvents, verifyEvent, clearEvents, trimEvents, normalizeMaxResults, MAX_EXAMPLES_PER_CLASS, exportBackup,
   getGuns, createGun, updateGun, deleteGun, getLibraryOverview, setActiveGun, resetLibrary, clearSessions,
   getGunSetting, setGunSetting, getCustomDrills, saveCustomDrill,
@@ -126,6 +126,7 @@ let homeRenderToken = 0;
 let homePage, homePagePending, profilePages;
 let settingsPage;
 let learnPage;
+let soundCheckController,soundCheckPending;
 let livePage;
 let drillsPage;
 let historyPage, historyOwner, historyRows=[], historySessions=[];
@@ -202,7 +203,7 @@ function ownerId() {
   if (!activeGun || activeGun.needsDetails) throw new Error('Add your gun name and type before training.');
   return activeGun.id;
 }
-function profileLocked() { return busy || profileLoading || preferenceState.pending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked(); }
+function profileLocked() { return busy || profileLoading || preferenceState.pending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked() || !!soundCheckController?.locked?.(); }
 function currentDrill(id) { return getDrill(id, customDrills); }
 /** One navigation/capture policy for native startup and owned React pages. */
 function renderListeningReadiness(counts = getCounts()) {
@@ -400,9 +401,9 @@ function getCounts() { return trainingCounts(examples); }
 function renderModelNotice(notice,noticeHidden){if(learnPage)learnPage.update({notice,noticeHidden});else{$('#modelNotice').textContent=notice;$('#modelNotice').classList.toggle('hidden',noticeHidden);}}
 function learningProps(){
   const counts=getCounts();
-  return{locked:profileLocked(),triggerQuality:profileQuality?.assessTriggerProfile(examples),cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
+  return{locked:profileLocked(),triggerQuality:profileQuality?.assessTriggerProfile(examples),onSoundCheck:()=>{if(triggerReady())switchView('soundCheck');else setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples first.`);},cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
     label,meta:labelMeta[label],count:counts[label],maxExamples:MAX_EXAMPLES_PER_CLASS,minExamples:MIN_EXAMPLES_PER_CLASS,recommendedExamples:RECOMMENDED_EXAMPLES_PER_CLASS,locked:profileLocked(),
-    onRecord:()=>recordExample(label),onReset:()=>resetSoundProfile(label),optional:label!=='trigger',enabled:enabledSoundLabels.includes(label),onToggle:enabled=>toggleOptionalSound(label,enabled),
+    onRecord:()=>recordExample(label),onReplace:()=>replaceSoundProfile(label),onReset:()=>resetSoundProfile(label),optional:label!=='trigger',enabled:enabledSoundLabels.includes(label),onToggle:enabled=>toggleOptionalSound(label,enabled),
   })),calibrationProps:{counts:Object.fromEntries(['reset','noise','cue'].map(kind=>[kind,calibration.filter(row=>row.kind===kind).length])),maximum:MAX_EXAMPLES_PER_CLASS,locked:profileLocked(),
     onRecord:kind=>{if(!profileLocked())recordCalibration(kind);},onReset:kind=>resetCalibration(kind,{reset:'Trigger reset clicks',noise:'Other noise / handling',cue:'External start beep'}[kind]),
   }};
@@ -413,6 +414,7 @@ function renderLearningLocks() {
   document.querySelectorAll('.class-card[data-sound-label]').forEach(card => {
     const count = counts[card.getAttribute('data-sound-label')] || 0;
     card.querySelector('.record-example').disabled = locked || count >= MAX_EXAMPLES_PER_CLASS;
+    card.querySelector('.replace-class').disabled = locked || !count;
     card.querySelector('.reset-class').disabled = locked || !count;
   });
 }
@@ -433,7 +435,7 @@ function renderClassCards() {
         minExamples: MIN_EXAMPLES_PER_CLASS,
         recommendedExamples: RECOMMENDED_EXAMPLES_PER_CLASS,
         locked: profileLocked(),
-        onRecord: () => recordExample(label),
+        onRecord: () => recordExample(label), onReplace:()=>replaceSoundProfile(label),
         onReset: () => resetSoundProfile(label), optional: label !== 'trigger', enabled: enabledSoundLabels.includes(label),
         onToggle: enabled => toggleOptionalSound(label, enabled)
       }));
@@ -487,8 +489,9 @@ async function resetCalibration(kind,title){
 async function recordCalibration(kind) {
   const gunId = ownerId();
   await capture(async () => {
-    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing });
-    await addCalibrationExample(kind, features, gunId); calibration = await getCalibrationExamples(gunId);
+    let analysis;
+    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing,onAnalysis:value=>{analysis=value;} });
+    await addCalibrationExample(kind, features, gunId,{spectralFeatures:analysis?.spectralFeatures}); calibration = await getCalibrationExamples(gunId);
     setStatus('Calibration saved'); renderClassCards();
   });
 }
@@ -505,6 +508,19 @@ async function resetSoundProfile(label) {
     setMessage(`${titleFor(label)} examples removed for ${activeGun.name}. Other sounds, guns and history were kept.`);
   } catch(error) {showError(error);}
   finally {setBusy(false);renderClassCards();}
+}
+
+async function replaceSoundProfile(label){
+  if(profileLocked()||!labels.includes(label)||!confirm(`Record one new ${titleFor(label)} sample, then replace all existing ${titleFor(label)} samples for this gun? Other sounds and history stay saved.`))return;
+  const gunId=ownerId();
+  await capture(async()=>{
+    let analysis;
+    const features=await recordFeatureVector(setStatus,{audioPreferences:preferenceState.audio,onProcessing:reportAudioProcessing,onAnalysis:value=>{analysis=value;}});
+    await replaceExamplesForLabel(label,features,gunId,{spectralFeatures:analysis?.spectralFeatures});
+    examples=await getExamples(gunId);
+    setStatus(`${titleFor(label)} profile replaced`);
+    setMessage(`Existing ${titleFor(label)} samples were replaced only after the new capture succeeded.`);
+  });
 }
 
 function renderDrillCatalog() {
@@ -545,6 +561,7 @@ function displayView(name) {
   }
   if(name==='practice'||name==='session')void practiceGuideController.prepare().catch(()=>{});
   const previousView=activeView;
+  if(previousView==='soundCheck'&&name!=='soundCheck'&&soundCheckController){soundCheckController.dispose();soundCheckController=null;}
   activeView=name;
   if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
   document.body.dataset.view = name;
@@ -590,6 +607,10 @@ function displayView(name) {
       try{learnPage=learnModule.mountLearnPage($('#learnView'),{...learningProps(),onBack:()=>goBack()});}catch(error){showError(error);}
     }
     renderClassCards();
+  }
+  if(name==='soundCheck'){
+    if(!triggerReady()){switchView('learn');setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before running Sound Check.`);return;}
+    if(!soundCheckController&&!soundCheckPending&&!profileLocked()&&!$('#safetyModal').open)soundCheckPending=import('./soundCheckController.js').then(module=>{if(activeView==='soundCheck'&&!profileLocked()&&!soundCheckController)soundCheckController=module.createSoundCheckController({doc:document,startContinuousListening,examples,calibration,enabledLabels:enabledSoundLabels,audioPreferences:preferenceState.audio,onError:showError,startGuard:action=>ensureSafe(action)});}).catch(showError).finally(()=>{soundCheckPending=null;});
   }
   if(name==='history'){
     const historyModule=preparePageModule('history',()=>import('../apps/web/src/app/historyPage.tsx'));
@@ -666,8 +687,9 @@ async function capture(action) {
 async function recordExample(label) {
   const gunId = ownerId();
   await capture(async () => {
-    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing });
-    await addExample(label, features, gunId);
+    let analysis;
+    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing,onAnalysis:value=>{analysis=value;} });
+    await addExample(label, features, gunId,{spectralFeatures:analysis?.spectralFeatures});
     examples = await getExamples(gunId);
     setStatus(`${titleFor(label)} saved`);
   });
@@ -1011,6 +1033,7 @@ async function init() {
   $('#homeDrillsBtn').addEventListener('click', () => switchView('drills'));
   $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
+  $('#runSoundCheckBtn').addEventListener('click',()=>{if(triggerReady())switchView('soundCheck');else setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples first.`);});
   bindLive('changeDrillBtn','click', () => switchView('drills'));
   $('#freeListenBtn').addEventListener('click', () => switchView('recognize'));
   renderDrillCatalog();
@@ -1075,17 +1098,20 @@ async function init() {
     if (document.hidden && (liveSession || livePendingStart)) void stopLive();
     if (document.hidden && sessionController?.locked()) sessionController.interrupt('background').catch(showError);
     if (document.hidden && practiceController?.locked()) practiceController.interrupt('background').catch(showError);
+    if (document.hidden && soundCheckController?.locked?.()) soundCheckController.stop().catch(showError);
   });
   window.addEventListener('pagehide', () => {
     if (liveSession || livePendingStart) void stopLive();
     if (sessionController?.locked()) sessionController.interrupt('pagehide').catch(() => {});
     if (practiceController?.locked()) practiceController.interrupt('pagehide').catch(() => {});
+    if (soundCheckController?.locked?.()) soundCheckController.stop().catch(() => {});
   });
   $('#safetyAck').addEventListener('change', () => {
     $('#safetySummaryState').textContent = $('#safetyAck').checked ? 'Confirmed for this session' : 'Required before recording';
     if (!$('#safetyAck').checked && (liveSession || livePendingStart)) void stopLive();
     if (!$('#safetyAck').checked && sessionController?.locked()) sessionController.interrupt('safety-check').catch(showError);
     if (!$('#safetyAck').checked && practiceController?.locked()) practiceController.interrupt('safety-check').catch(showError);
+    if (!$('#safetyAck').checked && soundCheckController?.locked?.()) soundCheckController.stop().catch(showError);
   });
   bindSettings('resetModelBtn','click', async () => {
     if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Reset all learned sounds and reset/noise/beep calibration for ${activeGun.name}? Gun profiles, presets, saved sessions, recognition history and other guns will be kept.`)) return;

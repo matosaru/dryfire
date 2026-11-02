@@ -9,7 +9,8 @@ export function normalizeCalibration(value) {
         !isFeatureVector(row.features) || row.features.length !== 15 || !Number.isInteger(row.featureVersion) || row.featureVersion < 1 ||
         !Number.isFinite(row.createdAt) || row.createdAt < 0 || (counts[row.kind] ?? 0) >= 50) throw new TypeError('Invalid rejection/cue calibration.');
     ids.add(row.id); counts[row.kind] = (counts[row.kind] ?? 0) + 1;
-    return { id: row.id, kind: row.kind, features: [...row.features], featureVersion: row.featureVersion, createdAt: row.createdAt };
+    return { id: row.id, kind: row.kind, features: [...row.features], featureVersion: row.featureVersion,
+      ...(isFeatureVector(row.spectralFeatures)&&row.spectralFeatures.length===23&&row.spectralFeatureVersion===3?{spectralFeatures:[...row.spectralFeatures],spectralFeatureVersion:3}:{}),createdAt: row.createdAt };
   });
 }
 export const compatibleCalibration = rows => rows.filter(row => row.featureVersion === FEATURE_VERSION);

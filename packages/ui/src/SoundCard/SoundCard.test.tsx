@@ -14,7 +14,7 @@ test('every progress and lock state preserves the native sound card DOM and redu
  }
 });
 test('actions are distinct and disabled controls cannot dispatch',()=>{
- const onRecord=jest.fn(),onReset=jest.fn(),onToggle=jest.fn();const result=render(<SoundCard {...defaults} count={3} optional enabled onRecord={onRecord} onReset={onReset} onToggle={onToggle}/>);
- fireEvent.click(result.getByRole('button',{name:'Record Trigger pull sample'}));fireEvent.click(result.getByRole('button',{name:'Reset learned Trigger pull sounds'}));fireEvent.click(result.getByRole('checkbox'));expect(onRecord).toHaveBeenCalledTimes(1);expect(onReset).toHaveBeenCalledTimes(1);expect(onToggle).toHaveBeenCalledWith(false);
- result.rerender(<SoundCard {...defaults} count={10} locked onRecord={onRecord} onReset={onReset}/>);for(const button of result.getAllByRole('button'))fireEvent.click(button);expect(onRecord).toHaveBeenCalledTimes(1);expect(onReset).toHaveBeenCalledTimes(1);
+ const onRecord=jest.fn(),onReplace=jest.fn(),onReset=jest.fn(),onToggle=jest.fn();const result=render(<SoundCard {...defaults} count={3} optional enabled onRecord={onRecord} onReplace={onReplace} onReset={onReset} onToggle={onToggle}/>);
+ fireEvent.click(result.getByRole('button',{name:'Record Trigger pull sample'}));fireEvent.click(result.getByRole('button',{name:'Replace learned Trigger pull sounds'}));fireEvent.click(result.getByRole('button',{name:'Reset learned Trigger pull sounds'}));fireEvent.click(result.getByRole('checkbox'));expect(onRecord).toHaveBeenCalledTimes(1);expect(onReplace).toHaveBeenCalledTimes(1);expect(onReset).toHaveBeenCalledTimes(1);expect(onToggle).toHaveBeenCalledWith(false);
+ result.rerender(<SoundCard {...defaults} count={10} locked onRecord={onRecord} onReplace={onReplace} onReset={onReset}/>);for(const button of result.getAllByRole('button'))fireEvent.click(button);expect(onRecord).toHaveBeenCalledTimes(1);expect(onReplace).toHaveBeenCalledTimes(1);expect(onReset).toHaveBeenCalledTimes(1);
 });

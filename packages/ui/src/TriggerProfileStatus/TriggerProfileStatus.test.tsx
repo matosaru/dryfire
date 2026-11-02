@@ -1,6 +1,7 @@
 /** @jest-environment jsdom */
 import '@dryfire/testing/setup';
-import {render,cleanup} from '@testing-library/react';
+import {jest} from '@jest/globals';
+import {render,cleanup,fireEvent} from '@testing-library/react';
 import {TriggerProfileStatus} from './TriggerProfileStatus';
 afterEach(cleanup);
 test.each([
@@ -10,4 +11,10 @@ test.each([
  expect(result.getByRole('region',{name:title})).toHaveClass(`is-${status}`);
  expect(result.getByText(symbol)).toHaveAttribute('aria-hidden','true');
  expect(result.getByText('Next action')).toBeVisible();
+});
+test('opens Sound Check only when the profile has enough samples',()=>{
+ const onSoundCheck=jest.fn();
+ const result=render(<TriggerProfileStatus quality={{status:'stable',title:'Stable profile',message:'Ready',sampleCount:8,needed:0,outlierIndexes:[]}} onSoundCheck={onSoundCheck}/>);
+ fireEvent.click(result.getByRole('button',{name:'Run sound check'}));
+ expect(onSoundCheck).toHaveBeenCalledTimes(1);
 });

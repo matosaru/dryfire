@@ -39,5 +39,6 @@ export function renderTriggerProfile(examples, root = document) {
   root.querySelector('#triggerProfileSymbol').textContent=quality.status==='stable'?'✓':quality.status==='variable'?'!':'…';
   root.querySelector('#triggerProfileTitle').textContent=quality.title;
   root.querySelector('#triggerProfileMessage').textContent=quality.message;
+  const check=root.querySelector('#runSoundCheckBtn');if(check)check.disabled=quality.status==='needs-samples';
 }
 

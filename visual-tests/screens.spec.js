@@ -97,6 +97,12 @@ async function prepare(page, item) {
       if (item.state.startsWith('calibration')) await page.locator('details.optional-sounds').nth(1).locator('summary').click();
       if (item.state.startsWith('recording-limit')) await expect(page.locator('[data-sound-label="trigger"] .record-example')).toBeDisabled();
       break;
+    case 'soundCheck':
+      await tab(page,'learn');
+      await page.locator('#runSoundCheckBtn').click();
+      await visible(page,'soundCheckView');
+      await expect(page.locator('#soundCheckAttempts')).toHaveValue('10');
+      break;
     case 'drills':
       await tab(page, 'drills');
       await expect(page.locator('[data-practice-mode]')).toHaveCount(4);

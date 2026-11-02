@@ -45,3 +45,14 @@ export function selectRecognition(predictions) {
 export function recognizeRecording(examples, samples, sampleRate, options) {
   return selectRecognition(recognitionFeatures(samples, sampleRate).map(features => classify(examples, features, options)));
 }
+
+/** Candidate-only decision for labelled Sound Check; never drives practice. */
+export function recognizeRecordingV3(examples,samples,sampleRate,{enabledLabels,negativeExamples=[]}={}){
+  const compatible=examples.filter(row=>row.spectralFeatureVersion===3&&row.spectralFeatures?.length===23)
+    .map(row=>({...row,features:row.spectralFeatures}));
+  if(compatible.length<3)return null;
+  const negatives=negativeExamples.filter(row=>row.spectralFeatureVersion===3&&row.spectralFeatures?.length===23)
+    .map(row=>({...row,features:row.spectralFeatures}));
+  const candidate=analyzeRecording(samples,sampleRate).spectralFeatures;
+  return classify(compatible,candidate,{enabledLabels,negativeExamples:negatives});
+}

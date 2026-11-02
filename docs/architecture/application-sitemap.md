@@ -1,6 +1,6 @@
 # Application sitemap
 
-Generated from [screen-map.json](screen-map.json). Run `npm run docs:generate` after a navigation change; `npm run docs:check` rejects a stale map. This describes the working app, with 13 screens and 1 shared safety dialog.
+Generated from [screen-map.json](screen-map.json). Run `npm run docs:generate` after a navigation change; `npm run docs:check` rejects a stale map. This describes the working app, with 14 screens and 1 shared safety dialog.
 
 ## Navigation map
 
@@ -13,6 +13,7 @@ flowchart TD
   home["Home"]
   guns["My Guns"]
   learn["Learn Sounds"]
+  soundCheck["Sound Check"]
   drills["Drills"]
   practice["Practice"]
   session["Drill Session"]
@@ -25,6 +26,7 @@ flowchart TD
   gunSetup -- Save --> home
   home --> guns
   home --> learn
+  learn --> soundCheck
   home --> drills
   drills --> practice
   drills --> session
@@ -53,6 +55,7 @@ The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. 
 | Home | `homeView` | After gun selection/setup and returning visits | [Design](../design/screens/home/README.md) |
 | My Guns | `gunsView` | Active-gun switcher | [Design](../design/screens/guns/README.md) |
 | Learn Sounds | `learnView` | Learn tab, Home card or missing-sound link | [Design](../design/screens/learn/README.md) |
+| Sound Check | `soundCheckView` | Run sound check from the Trigger profile status | [Design](../design/screens/sound-check/README.md) |
 | Drills | `drillsView` | Drills tab, Home card or review completion | [Design](../design/screens/drills/README.md) |
 | Practice | `practiceView` | Four trigger-mode cards or saved practice review in History | [Design](../design/screens/practice/README.md) |
 | Drill Session | `sessionView` | Start Drill on a built-in/custom sequence, or History review | [Design](../design/screens/session/README.md) |

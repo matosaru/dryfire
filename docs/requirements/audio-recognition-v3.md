@@ -1,6 +1,6 @@
 # Predictable audio learning and recognition
 
-Revision 1.0 · CHG-063 · 2026-11-01
+Revision 1.1 · CHG-063 · 2026-11-02
 
 ## Goal
 
@@ -53,7 +53,10 @@ The owner instructed: **“Prepare a valid step by step plan. And proceed with a
 
 - A sound check lets a tester perform known trigger presses and mark missed or incorrect outcomes.
 - The check reports expected presses, detected matches, misses, false shots and duplicates using plain counts.
-- Device/session metadata may be exported for evaluation only when it contains no raw audio or personal content.
+- Device/session metadata and versioned numeric feature vectors may be exported for evaluation only when they contain no raw audio or personal content.
+- Each attempt uses an explicit actual-sound label and a two-second armed window. Detection stays disarmed between attempts so preparation noise is not scored.
+- New recordings may retain an optional 23-value version-three spectral vector beside the unchanged version-two vector. The candidate decision is shown only in Sound Check and never drives practice until promotion evidence passes.
+- Replace records one new sample first, then atomically replaces only that gun's selected sound profile. Failure or cancellation keeps every existing sample.
 - Help and practice manuals describe calibration, readiness, start sound, early presses and troubleshooting consistently.
 
 ## Accuracy evidence

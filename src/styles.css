@@ -10,6 +10,7 @@
 @import "../apps/web/src/styles/legacy-cards.css";
 @import "../packages/ui/src/PageHeading/PageHeading.css";
 @import "../apps/web/src/pages/LearnPage/LearnPage.css";
+@import "../apps/web/src/pages/SoundCheckPage/SoundCheckPage.css";
 @import "../packages/ui/src/SoundCard/SoundCard.css";
 @import "../apps/web/src/styles/legacy-before-history-list.css";
 @import "../packages/ui/src/RecognitionList/RecognitionList.css";

@@ -1,6 +1,6 @@
 # Remaining trusted HTML fragments
 
-All13 screen parents now come from typed page packages in `apps/web/src/pages/`, composed with the shared AppShell/header/footer/navigation and contextual safety/gun components. [The compiler](../../tools/page-templates.mjs) uses these same sources for both editions; `index.html` owns metadata and its single app mount.
+All 14 screen parents now come from typed page packages in `apps/web/src/pages/`, composed with the shared AppShell/header/footer/navigation and contextual safety/gun components. [The compiler](../../tools/page-templates.mjs) uses these same sources for both editions; `index.html` owns metadata and its single app mount.
 
 Only three raw fragments remain active: [view.html](view.html) supplies stable screen wrappers; [history-progress.html](shared/history-progress.html) and [preview-testing.html](shared/preview-testing.html) retain the existing private controls and edition markers. Their native/service lifetimes remain explicit islands during the staged runtime migration.
 

@@ -18,7 +18,7 @@ Status: active on `feature/audio-recognition-v3` · CHG-063 · 2026-11-01
 2. Record existing detector/classifier/cue behavior and bundle sizes.
 3. Treat physical-device accuracy as unverified even when automated tests pass.
 
-### 1. Add measurement before tuning — foundation complete; guided device capture next
+### 1. Add measurement before tuning — implemented; owner device capture pending
 
 1. Add a versioned, labelled evaluation-event format containing features, expected class, device/session conditions and decision output; exclude PCM.
 2. Add a deterministic baseline-versus-candidate evaluator for recall, false shots, duplicates and timing error.
@@ -37,7 +37,7 @@ Exit: the same corpus produces reproducible metrics and can compare both algorit
 
 Exit: integration tests prove capture starts before countdown, cue guard ends deterministically and a fast valid first click reaches the engine.
 
-### 3. Improve guided learning — quality guidance implemented; replace flow next
+### 3. Improve guided learning — implemented; owner review pending
 
 1. Compute profile consistency/outlier information from saved feature vectors.
 2. Present Needs samples, Variable or Stable with one recommended action.
@@ -55,7 +55,7 @@ Exit: users can see whether a trigger profile is usable and what to correct with
 
 Exit: envelope tests pass, the cue never counts as a shot in the synthetic corpus, and physical iPhone verification records whether it is clearly audible.
 
-### 5. Evaluate a feature-version-3 classifier
+### 5. Evaluate a feature-version-3 classifier — shadow implementation complete; evidence pending
 
 1. Add onset-aligned spectral information such as log-mel/MFCC bands while retaining current time-domain features.
 2. Train a per-gun trigger verifier with negative-example rejection and bounded thresholds.
@@ -87,17 +87,18 @@ The first development checkpoint can guide iteration; it cannot support a produc
 - [x] Requirements and significance gates specified.
 - [x] Phased implementation and device protocol specified.
 - [x] Unchanged baseline recorded: 1,137 tests / 169 suites, 16 smoke checks and optimized public artifact verification passed at `df3b864`.
-- [x] Privacy-safe measurement/evaluation foundation implemented with deterministic paired metrics; interactive labelled Sound Check remains the next slice.
+- [x] Privacy-safe measurement/evaluation foundation and interactive labelled Sound Check/report export implemented.
 - [x] Ambient readiness implemented for Practice and Sequence capture with robust room sampling before countdown.
-- [x] Guided learning quality implemented as read-only Needs samples / Variable / Stable guidance; explicit replace flow remains next.
+- [x] Guided learning quality and atomic explicit replace flow implemented.
 - [x] Louder cue, shared acoustic guard and Test start sound action implemented; physical iPhone audibility remains unverified.
-- [ ] Candidate spectral classifier evaluated.
-- [x] Help/manual, current captures and reviewed visual baselines updated; public and preview exact replays pass 450/450 Chromium/WebKit cases.
+- [x] Candidate spectral extractor/classifier runs beside v2 in Sound Check and never drives practice.
+- [ ] Candidate spectral classifier evaluated on the owner-supplied unseen iPhone corpus.
+- [x] Help/manual, current captures and reviewed visual baselines updated; public and preview exact replays pass 454/454 Chromium/WebKit cases.
 - [ ] Physical iPhone checkpoint passed.
 
 ## Local checkpoint · 2026-11-01
 
-The first implementation slice is complete on the feature branch. It passes 1,157 tests / 173 suites, the coverage ratchet, type checks, both lint suites, 16 smoke checks, documentation checks and 450 exact public/preview screenshot cases across Chromium and WebKit. The minified public artifact passes verification at 160,205 raw / 50,177 gzip bytes of critical JavaScript and 58,675 / 12,444 bytes of critical CSS. The paired Chromium and WebKit branch-point comparisons pass without changing performance or payload thresholds.
+The implementation candidate is complete on the feature branch. It passes 1,166 tests / 177 suites, the coverage ratchet, type checks, both lint suites, 16 smoke checks, documentation checks and 454 exact public/preview screenshot cases across Chromium and WebKit. The minified public artifact remains within the original payload limits. Paired Chromium/WebKit performance and branch CI are the final automated release gates before owner testing.
 
-This checkpoint establishes implementation stability, not recognition significance. Next implement the interactive labelled Sound Check/report workflow, collect the development corpus on iPhone Safari/Home Screen and use those results to decide whether feature-v3 spectral work is justified. The stronger cue still needs physical audibility confirmation because browser automation cannot measure the phone speaker.
+This checkpoint establishes implementation stability, not recognition significance. The owner next collects the development corpus with Sound Check on iPhone Safari/Home Screen; exported reports decide whether feature v3 can be promoted. The stronger cue still needs physical audibility confirmation because browser automation cannot measure the phone speaker.
 

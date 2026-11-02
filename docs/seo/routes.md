@@ -29,13 +29,14 @@ Canonical origin: **https://easydryfire.com**. Each page has useful prerendered 
 
 ## Operational app URLs
 
-These 18 paths open the app with explicit noindex and stay out of the XML sitemap. Paths contain screen/mode identity only; gun names, recordings and saved-session identifiers remain local. Opening a URL preserves existing setup/training/safety/capture guards and never automatically starts recording. A missing source context may return to the corresponding selection/setup screen.
+These 19 paths open the app with explicit noindex and stay out of the XML sitemap. Paths contain screen/mode identity only; gun names, recordings and saved-session identifiers remain local. Opening a URL preserves existing setup/training/safety/capture guards and never automatically starts recording. A missing source context may return to the corresponding selection/setup screen.
 
 | Path | Screen | In XML sitemap |
 | --- | --- | --- |
 | `/gun-setup/` | Gun setup | No; noindex |
 | `/guns/` | My Guns | No; noindex |
 | `/learn/` | Learn Sounds | No; noindex |
+| `/sound-check/` | Sound Check | No; noindex |
 | `/drills/` | Drills | No; noindex |
 | `/live-listen/` | Live Listen | No; noindex |
 | `/history/` | History | No; noindex |
