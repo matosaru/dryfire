@@ -6,7 +6,9 @@
     "Shared Test start sound control",
     "Ambient readiness wording",
     "Sound Check setup, run and review",
-    "Atomic learned-sound replacement"
+    "Atomic learned-sound replacement",
+    "Sound Check controller readiness, spacing and explicit phone distances",
+    "Contact email copy fallback"
   ],
   "physicalDeviceEvidence": false
 }

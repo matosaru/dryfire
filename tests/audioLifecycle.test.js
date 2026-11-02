@@ -109,6 +109,18 @@ test('training uses the same saved processing options and releases its microphon
   expect(contexts[0].close).toHaveBeenCalledTimes(1);
 });
 
+test('training can attach optional candidate features without changing the returned v2 vector',async()=>{
+  jest.useFakeTimers();const featureExtractor=jest.fn(()=>[9,8,7]),onAnalysis=jest.fn();
+  const pending=recordFeatureVector(()=>{},{featureExtractor,onAnalysis});
+  await jest.advanceTimersByTimeAsync(3000);
+  const pcm=samples(.5,[[.05,.35]]);
+  nodes[0].onaudioprocess({inputBuffer:{getChannelData:()=>pcm},outputBuffer:{numberOfChannels:1,getChannelData:()=>new Float32Array(pcm.length)}});
+  await jest.advanceTimersByTimeAsync(1300);
+  const features=await pending;
+  expect(features).toHaveLength(15);expect(featureExtractor).toHaveBeenCalledWith(expect.any(Float32Array),rate);
+  expect(onAnalysis).toHaveBeenCalledWith(expect.objectContaining({features,spectralFeatures:[9,8,7]}));
+});
+
 test('cancellation from a processing report does not open a new recording context', async () => {
   const controller = new AbortController();
   const pending = recordFeatureVector(() => {}, { signal: controller.signal,

@@ -1,6 +1,8 @@
 import { analyzeRecording } from '../src/audio.js';
 import { createEventDetector } from '../src/eventDetector.js';
-import { recognizeRecording,recognizeRecordingV3 } from '../src/recognition.js';
+import { recognizeRecording } from '../src/recognition.js';
+import { recognizeRecordingV3 } from '../src/recognitionV3.js';
+import {extractSpectralFeatures} from '../src/spectralFeatures.js';
 const rate = 48000;
 function recording(frequency, amplitude = .065, start = .6, duration = .12) {
   const pcm = new Float32Array(rate * 2);
@@ -63,10 +65,10 @@ test('near-identical recorded reset and press remain conservatively unknown', ()
 });
 
 test('version-three shadow decisions require compatible spectral training and leave v2 profiles unchanged',()=>{
-  const pcm=recording(2800),analysis=analyzeRecording(pcm,rate);
-  const rows=Array.from({length:3},(_,index)=>({label:'trigger',features:[index],spectralFeatures:analysis.spectralFeatures.map(value=>value+index*.0001),spectralFeatureVersion:3}));
+  const pcm=recording(2800),analysis=analyzeRecording(pcm,rate),spectral=extractSpectralFeatures(pcm,rate);
+  const rows=Array.from({length:3},(_,index)=>({label:'trigger',features:[index],spectralFeatures:spectral.map(value=>value+index*.0001),spectralFeatureVersion:3}));
   expect(recognizeRecordingV3(rows,pcm,rate,{enabledLabels:['trigger']})).toMatchObject({label:'trigger',status:'matched'});
-  expect(recognizeRecordingV3(rows,pcm,rate,{enabledLabels:['trigger'],negativeExamples:[{spectralFeatureVersion:3,spectralFeatures:analyzeRecording(recording(900),rate).spectralFeatures},{spectralFeatureVersion:2,spectralFeatures:analysis.spectralFeatures}]})).toMatchObject({label:'trigger'});
+  expect(recognizeRecordingV3(rows,pcm,rate,{enabledLabels:['trigger'],negativeExamples:[{spectralFeatureVersion:3,spectralFeatures:extractSpectralFeatures(recording(900),rate)},{spectralFeatureVersion:2,spectralFeatures:spectral}]})).toMatchObject({label:'trigger'});
   expect(recognizeRecordingV3(rows.map(({spectralFeatures,spectralFeatureVersion,...row})=>row),pcm,rate,{enabledLabels:['trigger']})).toBeNull();
   expect(recognizeRecordingV3([{spectralFeatureVersion:3,spectralFeatures:null},...rows.slice(0,2)],pcm,rate)).toBeNull();
   expect(rows[0].features).toEqual([0]);

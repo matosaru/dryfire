@@ -96,9 +96,9 @@ The first development checkpoint can guide iteration; it cannot support a produc
 - [x] Help/manual, current captures and reviewed visual baselines updated; public and preview exact replays pass 454/454 Chromium/WebKit cases.
 - [ ] Physical iPhone checkpoint passed.
 
-## Local checkpoint · 2026-11-01
+## Local checkpoint · 2026-11-02
 
-The implementation candidate is complete on the feature branch. It passes 1,166 tests / 177 suites, the coverage ratchet, type checks, both lint suites, 16 smoke checks, documentation checks and 454 exact public/preview screenshot cases across Chromium and WebKit. The minified public artifact remains within the original payload limits. Paired Chromium/WebKit performance and branch CI are the final automated release gates before owner testing.
+The implementation candidate, owner-reported Sound Check start correction and Contact copy fallback are complete on the feature branch. It passes 1,169 tests / 177 suites, the coverage ratchet, type checks, both lint suites, 16 smoke checks, documentation checks and 454 exact public/preview screenshot cases across Chromium and WebKit. The real Sound Check route test waits for controller readiness, clicks Start and observes the safety dialog. Public critical payload remains below the unchanged main-branch ceilings at 159,308 raw / 50,203 gzip JavaScript and 59,532 raw / 12,587 gzip CSS. Paired Chromium/WebKit performance and branch CI are the final automated release gates before owner testing.
 
 This checkpoint establishes implementation stability, not recognition significance. The owner next collects the development corpus with Sound Check on iPhone Safari/Home Screen; exported reports decide whether feature v3 can be promoted. The stronger cue still needs physical audibility confirmation because browser automation cannot measure the phone speaker.
 

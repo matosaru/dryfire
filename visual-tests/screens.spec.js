@@ -102,6 +102,11 @@ async function prepare(page, item) {
       await page.locator('#runSoundCheckBtn').click();
       await visible(page,'soundCheckView');
       await expect(page.locator('#soundCheckAttempts')).toHaveValue('10');
+      await expect(page.locator('#soundCheckStartBtn')).toBeEnabled();
+      await page.locator('#soundCheckStartBtn').click();
+      await visible(page,'safetyModal');
+      await page.locator('#safetyCancelBtn').click();
+      await expect(page.locator('#safetyModal')).not.toBeVisible();
       break;
     case 'drills':
       await tab(page, 'drills');

@@ -704,3 +704,13 @@ CHG-062 resume and Home link (2026-10-27): owner says “maybe lets skip at the 
 Owner instruction: **“Prepare a valid step by step plan. And proceed with audio listening and learning improvement implementation. For this, let’s create a separate feature branch. We will test on on and work on it until significancy is reached. Suggest testing strategy also. Make UX friendly, and clear. Update user help pages and manual with new approach.”**
 
 Approved scope is [audio-recognition-v3.md](../requirements/audio-recognition-v3.md): guided trigger-profile quality, deterministic ambient readiness, privacy-safe evaluation diagnostics, a louder testable start cue, compatible staged classifier evaluation and updated help/manuals. Work is isolated on `feature/audio-recognition-v3`. Existing profiles and data remain compatible; raw PCM is not stored/uploaded. A classifier is promoted only after paired unseen real-device evidence reaches the documented significance and false-shot/duplicate non-regression gates. Automated tests do not constitute physical microphone accuracy evidence.
+
+CHG-063 owner-test correction (2026-11-02): the owner reports that **Start Sound Check** does nothing and that its form spacing/phone-position choices are unclear. Keep Start disabled until the lazy controller is attached, then expose readiness, preserve the shared safety/microphone flow and cover the real route → click → safety-modal path in pinned browser tests. Add visible spacing and define Close as under 30 cm / 1 ft, Normal as 30 cm–1 m / 1–3 ft and Far as over 1 m / 3 ft. Stored metadata values remain compatible.
+
+## CHG-065 — Contact email fallback (2026-11-02)
+
+Owner requests the next contact correction after current audio work: retain `mailto:easydryfire@gmail.com`, add a **Copy email** action and keep the address manually selectable when clipboard access is unavailable. Status feedback must be accessible and no private app data is attached. A backend contact form remains optional and is not part of this implementation.
+
+## CHG-066 — Measurement-unit preference (queued 2026-11-02)
+
+Owner queues the next separate task after the audio feature: add a persisted Metric / Imperial preference in Settings and make every applicable distance label, help text and behavior follow it. Specify one shared formatting/conversion source, migration/default behavior, accessibility copy and unit/integration/visual coverage before implementation. Do not mix this cross-app preference into CHG-063 owner testing.

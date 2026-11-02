@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "52cfeb367f8014d907fb71bd2788a72a7a1de2cc",
+  "sourceCommit": "9c9e89833524a834b5ad561186f93c7ec07f52ab",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
@@ -87,7 +87,7 @@
     "apps/web/src/features/sessions/phasePresentation.ts": "5c788b0f902338a4ec81352b69d8d3d1f1270203e23d0d29510098f583ad9836",
     "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
-    "src/main.js": "b8359116771c80daff9c8132ddf6ea5bdb54d5e79afe895457103dc4645d9202",
+    "src/main.js": "0a4b5a91901f8569777d4baa64973a1485c903a413ba514b24107e7503be3801",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "e8af579899f2ce3aeff4f3ec305a6a75180c4a52fbdf2e74c54400d070ab117e",
+      "sha256": "c1705c1659a4fe7f472f62d69ec053bac20a736ce2fcef9354b52ff8cc2e486b",
       "width": 358,
       "height": 1004
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "e37d98019be8c15ddf1ab73d4bac78711f2eb6058edce9a26847b83e41a521b9",
+      "sha256": "fdded4fa51f25cbf6d0d0a3aa501cd2ed35bea2bb7211e0c47784224c5cb80c1",
       "width": 358,
       "height": 750
     },
@@ -190,7 +190,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-rack-trigger.gif",
-      "sha256": "8e66673ad686192f4699370a1effda5daf8174d5ddff593d315a28639cef70df",
+      "sha256": "baf459b90d7cf24892253b996cafe31f8733976040eb37a2d536c4e1129f1dd7",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "bb419e212127c7ac98e77d85bdb4291d5bdca57c3865e40d7f06070fe6021049",
+      "sha256": "32ba6e3cb59b95fcbb7ca097ad76bab47afdad9c9f4f35d31653f36890232f34",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "45674d8f44892124090ba00d7ef7f56066cb86a20420d9d0f76d9c4e697e64b2",
+      "sha256": "ad63d68dd72b065b3b217b909502134b8c49c5bc9f8368833df911f6565cf5aa",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "0715c1b9597e4eb0d219def94161771e0c7706b55f1df3795450b0635a0a1cfe",
+      "sha256": "d3d46fa770b76d32fcfc42da35fd6d2c0266ef354de58c3e35d338e3029f2315",
       "width": 358,
       "height": 750
     }

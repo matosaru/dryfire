@@ -5,9 +5,7 @@ import {startGunPreferenceReads} from './gunPreferenceReads.js';
 import {parseAppPath,isAppPath,appPathFor,appTitleFor,isIndexableAppPath,setupForGuide} from './appPaths.js';
 import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
 import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
-import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
 import { createModulePreparation } from './modulePreparation.js';
-import {distancePresentation,liveDrillPresentation} from '../apps/web/src/features/live-listen/presentation.ts';
 import { preferencePresentation } from '../apps/web/src/features/settings/preferencePresentation.ts';
 import { resolveRouteView } from '@dryfire/web/route-context';
 import { createInformationBridge } from '@dryfire/web/information-bridge';
@@ -127,6 +125,7 @@ let homePage, homePagePending, profilePages;
 let settingsPage;
 let learnPage;
 let soundCheckController,soundCheckPending;
+let legacyHistoryRenderer;
 let livePage;
 let drillsPage;
 let historyPage, historyOwner, historyRows=[], historySessions=[];
@@ -340,11 +339,7 @@ function selectDrillCollection(custom){
  if(custom && !CAPABILITIES.customDrillCreation && !customDrills.length)custom=false;
  const limited=!CAPABILITIES.customDrillCreation && !customDrills.length;
  if(drillsPage)drillsPage.update({collectionHidden:limited,customTabHidden:limited,customSelected:custom,createHidden:!custom||!CAPABILITIES.customDrillCreation});
- else{
-  $('#customDrillsTab').classList.toggle('hidden',limited);$('#builtInDrillsTab').parentElement.classList.toggle('hidden',limited);
-  $('#builtInDrillsTab').setAttribute('aria-pressed',String(!custom));$('#customDrillsTab').setAttribute('aria-pressed',String(custom));
-  $('#drillCatalog').classList.toggle('hidden',custom);$('#newCustomDrillBtn').classList.toggle('hidden',!custom||!CAPABILITIES.customDrillCreation);$('#customDrillCatalog').classList.toggle('hidden',!custom);
- }
+ else void import('./optional/renderLegacyDrillCollection.js').then(({renderLegacyDrillCollection})=>renderLegacyDrillCollection(document,{custom,limited,creation:CAPABILITIES.customDrillCreation})).catch(showError);
  $('#customDrillForm').classList.add('hidden');
 }
 function drillCards(){return{
@@ -365,13 +360,7 @@ async function chooseDrill(id) {
 }
 function renderCustomCatalog() {
   if(drillsPage){const view=drillCards();drillsPage.update({customs:view.customs,emptyCustom:view.emptyCustom});return;}
-  const host = $('#customDrillCatalog');
-  host.replaceChildren();
-  if (!customDrills.length) { const empty = document.createElement('p'); empty.className = 'empty-state'; empty.textContent = 'No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.'; host.append(empty); }
-  for (const drill of customDrills) {
-    const card = drillCard({drill, titleFor, onChoose: () => chooseDrill(drill.id)});
-    const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'button secondary'; edit.textContent = 'Edit sequence'; edit.addEventListener('click', () => customEditor.open(drill)); card.append(edit); host.append(card);
-  }
+  void import('./optional/renderLegacyCustomCatalog.js').then(({renderLegacyCustomCatalog})=>renderLegacyCustomCatalog(document,customDrills,{drillCard,titleFor,onChoose:chooseDrill,onEdit:drill=>customEditor.open(drill)})).catch(showError);
 }
 async function saveEditedCustomDrill(drill, gunId) {
   await saveCustomDrill(drill, gunId);
@@ -489,8 +478,9 @@ async function resetCalibration(kind,title){
 async function recordCalibration(kind) {
   const gunId = ownerId();
   await capture(async () => {
+    const {extractSpectralFeatures}=await import('./spectralFeatures.js');
     let analysis;
-    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing,onAnalysis:value=>{analysis=value;} });
+    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing,onAnalysis:value=>{analysis=value;},featureExtractor:extractSpectralFeatures });
     await addCalibrationExample(kind, features, gunId,{spectralFeatures:analysis?.spectralFeatures}); calibration = await getCalibrationExamples(gunId);
     setStatus('Calibration saved'); renderClassCards();
   });
@@ -514,8 +504,9 @@ async function replaceSoundProfile(label){
   if(profileLocked()||!labels.includes(label)||!confirm(`Record one new ${titleFor(label)} sample, then replace all existing ${titleFor(label)} samples for this gun? Other sounds and history stay saved.`))return;
   const gunId=ownerId();
   await capture(async()=>{
+    const {extractSpectralFeatures}=await import('./spectralFeatures.js');
     let analysis;
-    const features=await recordFeatureVector(setStatus,{audioPreferences:preferenceState.audio,onProcessing:reportAudioProcessing,onAnalysis:value=>{analysis=value;}});
+    const features=await recordFeatureVector(setStatus,{audioPreferences:preferenceState.audio,onProcessing:reportAudioProcessing,onAnalysis:value=>{analysis=value;},featureExtractor:extractSpectralFeatures});
     await replaceExamplesForLabel(label,features,gunId,{spectralFeatures:analysis?.spectralFeatures});
     examples=await getExamples(gunId);
     setStatus(`${titleFor(label)} profile replaced`);
@@ -610,7 +601,7 @@ function displayView(name) {
   }
   if(name==='soundCheck'){
     if(!triggerReady()){switchView('learn');setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before running Sound Check.`);return;}
-    if(!soundCheckController&&!soundCheckPending&&!profileLocked()&&!$('#safetyModal').open)soundCheckPending=import('./soundCheckController.js').then(module=>{if(activeView==='soundCheck'&&!profileLocked()&&!soundCheckController)soundCheckController=module.createSoundCheckController({doc:document,startContinuousListening,examples,calibration,enabledLabels:enabledSoundLabels,audioPreferences:preferenceState.audio,onError:showError,startGuard:action=>ensureSafe(action)});}).catch(showError).finally(()=>{soundCheckPending=null;});
+    if(!soundCheckController&&!soundCheckPending&&!profileLocked())soundCheckPending=import('./soundCheckController.js').then(module=>{if(activeView==='soundCheck'&&!profileLocked()&&!soundCheckController)soundCheckController=module.createSoundCheckController({doc:document,startContinuousListening,examples,calibration,enabledLabels:enabledSoundLabels,audioPreferences:preferenceState.audio,onError:showError,startGuard:action=>ensureSafe(action)});}).catch(showError).finally(()=>{soundCheckPending=null;});
   }
   if(name==='history'){
     const historyModule=preparePageModule('history',()=>import('../apps/web/src/app/historyPage.tsx'));
@@ -635,18 +626,11 @@ function displayView(name) {
 }
 
 function renderDistances(distances){
- const rows=distancePresentation(labels,distances,titleFor);
- if(livePage){livePage.update({distances:rows});return;}
- const host=$('#distanceBars');host.replaceChildren();
- for(const item of rows){const row=document.createElement('div');row.className='distance-row';const line=document.createElement('div');line.className='distance-label';const name=document.createElement('span');name.textContent=item.title;const value=document.createElement('span');value.textContent=item.value;const bar=document.createElement('div');bar.className='bar';const fill=document.createElement('span');fill.style.width=item.width;bar.append(fill);line.append(name,value);row.append(line,bar);host.append(row);}
+ void import('./optional/renderLegacyDistances.js').then(({renderLegacyDistances})=>{const rows=renderLegacyDistances(document,labels,distances,titleFor,!livePage);if(livePage)livePage.update({distances:rows});}).catch(showError);
 }
 function renderDrill(){
- const view=liveDrillPresentation(currentDrill($('#drillSelect').value),drillState,titleFor);
- if(livePage){livePage.update(view);return;}
- for(const[id,text]of Object.entries(view.texts))liveText(id,text);
- for(const[id,hidden]of Object.entries(view.hidden))liveHidden(id,hidden);
- const steps=$('#drillSteps');steps.replaceChildren();
- for(const step of view.steps){const item=document.createElement('li');item.className=step.className;const number=document.createElement('span');number.className='step-number';number.textContent=step.number;const name=document.createElement('span');name.textContent=step.title;item.append(number,name);steps.append(item);}
+ const drill=currentDrill($('#drillSelect').value),state=drillState;
+ void import('./optional/renderLegacyLiveDrill.js').then(({renderLegacyLiveDrill})=>{const view=renderLegacyLiveDrill(document,drill,state,titleFor,!livePage);if(livePage)livePage.update(view);}).catch(showError);
 }
 
 function resetDrill() {
@@ -687,8 +671,9 @@ async function capture(action) {
 async function recordExample(label) {
   const gunId = ownerId();
   await capture(async () => {
+    const {extractSpectralFeatures}=await import('./spectralFeatures.js');
     let analysis;
-    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing,onAnalysis:value=>{analysis=value;} });
+    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing,onAnalysis:value=>{analysis=value;},featureExtractor:extractSpectralFeatures });
     await addExample(label, features, gunId,{spectralFeatures:analysis?.spectralFeatures});
     examples = await getExamples(gunId);
     setStatus(`${titleFor(label)} saved`);
@@ -844,47 +829,6 @@ async function toggleLive() {
   }
 }
 
-function renderEvaluation(events) {
-  const stats = evaluationPresentation(evaluateEvents(events), ACTUAL_CLASSES, PREDICTED_CLASSES);
-  $('#verifiedCount').textContent = stats.verified;
-  $('#accuracyPct').textContent = stats.accuracy;
-  $('#falsePositivePct').textContent = stats.falsePositive;
-  const host = $('#confusionTable');
-  host.replaceChildren();
-  if (!stats.verified) {
-    const p = document.createElement('p');
-    p.className = 'muted small';
-    p.textContent = 'Verify at least one event below to see the confusion matrix.';
-    host.append(p);
-    return;
-  }
-  const table = document.createElement('table');
-  const caption = document.createElement('caption');
-  caption.textContent = 'Actual sound by predicted label (counts)';
-  table.append(caption);
-  const head = document.createElement('tr');
-  for (const name of ['Actual ↓ / Predicted →', ...PREDICTED_CLASSES]) {
-    const th = document.createElement('th');
-    th.scope = 'col'; th.textContent = name; head.append(th);
-  }
-  const thead = document.createElement('thead'); thead.append(head); table.append(thead);
-  const tbody = document.createElement('tbody');
-  for (const actual of ACTUAL_CLASSES) {
-    const tr = document.createElement('tr');
-    const th = document.createElement('th'); th.scope = 'row'; th.textContent = actual;
-    tr.append(th);
-    for (const predicted of PREDICTED_CLASSES) {
-      const td = document.createElement('td');
-      td.textContent = stats.matrix[actual][predicted];
-      if (predicted === actual || (actual === 'other' && predicted === 'unknown')) td.className = 'correct';
-      tr.append(td);
-    }
-    tbody.append(tr);
-  }
-  table.append(tbody);
-  host.append(table);
-}
-
 async function renderHome() {
   const token = ++homeRenderToken;
   const gunId = activeGun?.id;
@@ -918,55 +862,9 @@ async function renderHistory() {
     } else progressView?.render(sessions || [], gunId);
   } else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();
   historyRows=rows;historySessions=sessions||[];historyOwner=gunId;
-  if(!historyPage)renderEvaluation(rows);
+  if(!historyPage){const module=legacyHistoryRenderer||=await import('./optional/renderLegacyHistory.js');module.renderEvaluation(document,rows);module.renderHistoryList(document,rows,{labels,titleFor,drillTitleFor:id=>currentDrill(id)?.title,onVerify:async(id,value)=>{await verifyEvent(id,value||null,gunId);await renderHistory();},onError:showError});}
   if(homePage)homePage.update({events:rows.length}); else $('#homeEvents').textContent = String(rows.length);
   if(historyPage){historyPage.setResults({rows,sessions:historySessions,stats:evaluateEvents(rows),gunId});return;}
-  const host = $('#historyList');
-  host.replaceChildren();
-  if (!rows.length) {
-    const empty = document.createElement('div');
-    empty.className = 'empty-state';
-    empty.textContent = 'No recognition events yet.';
-    host.append(empty);
-    return;
-  }
-  for (const row of recognitionRows(rows, titleFor, id => currentDrill(id)?.title)) {
-    const item = document.createElement('article');
-    item.className = 'history-item';
-    const copy = document.createElement('div');
-    const title = document.createElement('strong');
-    title.textContent = row.title;
-    const date = document.createElement('p');
-    date.textContent = row.date;
-    const score = document.createElement('span');
-    score.textContent = row.score;
-    if (row.sequence) {
-      const drillDescription = document.createElement('p');
-      drillDescription.textContent = row.sequence;
-      copy.append(drillDescription);
-    }
-    copy.append(title, date);
-    const controls = document.createElement('div');
-    controls.className = 'history-controls';
-    const actualLabel = document.createElement('label');
-    actualLabel.textContent = 'Actual:';
-    const actual = document.createElement('select');
-    actual.setAttribute('aria-label', `Actual sound for ${row.date}`);
-    for (const [value, label] of [['', 'Not verified'], ...labels.map(key => [key, titleFor(key)]), ['other', 'Other / noise']]) {
-      const option = document.createElement('option');
-      option.value = value;
-      option.textContent = label;
-      actual.append(option);
-    }
-    actual.value = row.actualLabel ?? '';
-    actual.addEventListener('change', async () => {
-      try { await verifyEvent(row.id, actual.value || null, gunId); await renderHistory(); }
-      catch (error) { showError(error); }
-    });
-    controls.append(actualLabel, actual, score);
-    item.append(copy, controls);
-    host.append(item);
-  }
 }
 
 async function init() {
