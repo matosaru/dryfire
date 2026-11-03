@@ -8,8 +8,7 @@ for(const theme of ['dark','light'])test(`Live Listen retains ${theme} pixels an
  let release;const blocked=new Promise(resolve=>{release=resolve;});await page.route('**/assets/liveListenPage-*.js',async route=>{await blocked;await route.continue();});await restore(page);
  if(theme==='light'){await page.locator('#settingsShortcut').click();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);}
  await page.locator('.tab[data-view="recognize"]').click();await page.locator('#sensitivity').selectOption('high');const before=await page.locator('#recognizeView').screenshot({animations:'disabled'});
- const loaded=page.waitForResponse(response=>/\/assets\/liveListenPage-/.test(response.url()));release();await loaded;await expect(page.locator('#recognizeView')).not.toHaveAttribute('data-react-live-listen');
- await page.locator('.tab[data-view="home"]').click();await page.locator('.tab[data-view="recognize"]').click();await expect(page.locator('#recognizeView')).toHaveAttribute('data-react-live-listen','');await expect(page.locator('#sensitivity')).toHaveValue('high');
+ const loaded=page.waitForResponse(response=>/\/assets\/liveListenPage-/.test(response.url()));release();await loaded;await expect(page.locator('#recognizeView')).toHaveAttribute('data-react-live-listen','');await expect(page.locator('#sensitivity')).toHaveValue('high');
  const after=await page.locator('#recognizeView').screenshot({animations:'disabled'});await testInfo.attach('native',{body:before,contentType:'image/png'});await testInfo.attach('react',{body:after,contentType:'image/png'});expect(createHash('sha256').update(after).digest('hex')).toBe(createHash('sha256').update(before).digest('hex'));
 });
 test('mounted Live Listen keeps successive recognized events, ignores unknowns, verifies and releases the microphone',async({page})=>{

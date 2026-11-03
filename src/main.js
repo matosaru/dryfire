@@ -126,7 +126,7 @@ let settingsPage;
 let learnPage;
 let soundCheckController,soundCheckPage,soundCheckPending;
 let legacyHistoryRenderer;
-let livePage;
+let livePage,livePageModule,livePagePending;
 let drillsPage,legacyDrillsPending,customDrillCollectionSelected=false;
 let historyPage, historyOwner, historyRows=[], historySessions=[];
 const preparePageModule=createModulePreparation(showError);
@@ -488,10 +488,8 @@ async function resetCalibration(kind,title){
 async function recordCalibration(kind) {
   const gunId = ownerId();
   await capture(async () => {
-    const {extractSpectralFeatures}=await import('./spectralFeatures.js');
-    let analysis;
-    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing,onAnalysis:value=>{analysis=value;},featureExtractor:extractSpectralFeatures });
-    await addCalibrationExample(kind, features, gunId,{spectralFeatures:analysis?.spectralFeatures}); calibration = await getCalibrationExamples(gunId);
+    const sample=await recordProfileFeature();
+    await addCalibrationExample(kind,sample.features,gunId,{spectralFeatures:sample.spectralFeatures}); calibration = await getCalibrationExamples(gunId);
     setStatus('Calibration saved'); renderClassCards();
   });
 }
@@ -511,17 +509,8 @@ async function resetSoundProfile(label) {
 }
 
 async function replaceSoundProfile(label){
-  if(profileLocked()||!labels.includes(label)||!confirm(`Record one new ${titleFor(label)} sample, then replace all existing ${titleFor(label)} samples for this gun? Other sounds and history stay saved.`))return;
-  const gunId=ownerId();
-  await capture(async()=>{
-    const {extractSpectralFeatures}=await import('./spectralFeatures.js');
-    let analysis;
-    const features=await recordFeatureVector(setStatus,{audioPreferences:preferenceState.audio,onProcessing:reportAudioProcessing,onAnalysis:value=>{analysis=value;},featureExtractor:extractSpectralFeatures});
-    await replaceExamplesForLabel(label,features,gunId,{spectralFeatures:analysis?.spectralFeatures});
-    examples=await getExamples(gunId);
-    setStatus(`${titleFor(label)} profile replaced`);
-    setMessage(`Existing ${titleFor(label)} samples were replaced only after the new capture succeeded.`);
-  });
+  const module=await import('./optional/profileCapture.js');
+  return module.replaceSoundProfile(label,profileLocked(),labels,confirm,titleFor,ownerId,capture,recordProfileFeature,replaceExamplesForLabel,getExamples,value=>{examples=value;},setStatus,setMessage);
 }
 
 function renderDrillCatalog() {
@@ -602,10 +591,12 @@ function displayView(name) {
     renderListeningReadiness();
     renderLiveButton();
     renderDrill();
-    const liveModule=preparePageModule('recognize',()=>import('../apps/web/src/app/liveListenPage.tsx'));
-    if(!livePage && liveModule && !profileLocked() && !$('#safetyModal').open){
-      try{livePage=liveModule.mountLiveListenPage($('#recognizeView'),{onBack:()=>goBack(),onAction:id=>liveHandlers.get(id)?.(),onChange:id=>liveHandlers.get(id)?.()});}catch(error){showError(error);}
-    }
+    const connectLivePage=()=>{
+      if(livePage||!livePageModule||activeView!=='recognize'||profileLocked()||$('#safetyModal').open)return;
+      try{livePage=livePageModule.mountLiveListenPage($('#recognizeView'),{onBack:()=>goBack(),onAction:id=>liveHandlers.get(id)?.(),onChange:id=>liveHandlers.get(id)?.()});}catch(error){showError(error);}
+    };
+    if(livePageModule)connectLivePage();
+    else if(!livePagePending)livePagePending=import('../apps/web/src/app/liveListenPage.tsx').then(module=>{livePageModule=module;connectLivePage();}).catch(showError).finally(()=>{livePagePending=null;});
   }
   if(name==='learn'){
     import('./profileQuality.js').then(module=>{profileQuality=module;renderClassCards();}).catch(showError);
@@ -686,13 +677,16 @@ async function capture(action) {
   finally { setBusy(false); renderClassCards(); }
 }
 
+async function recordProfileFeature(){
+  const module=await import('./optional/profileCapture.js');
+  return module.recordProfileFeature(recordFeatureVector,setStatus,preferenceState.audio,reportAudioProcessing);
+}
+
 async function recordExample(label) {
   const gunId = ownerId();
   await capture(async () => {
-    const {extractSpectralFeatures}=await import('./spectralFeatures.js');
-    let analysis;
-    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing,onAnalysis:value=>{analysis=value;},featureExtractor:extractSpectralFeatures });
-    await addExample(label, features, gunId,{spectralFeatures:analysis?.spectralFeatures});
+    const sample=await recordProfileFeature();
+    await addExample(label,sample.features,gunId,{spectralFeatures:sample.spectralFeatures});
     examples = await getExamples(gunId);
     setStatus(`${titleFor(label)} saved`);
   });
