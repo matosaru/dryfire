@@ -1,9 +1,9 @@
 import {GunContext} from '@dryfire/ui/GunContext';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 
-export function SoundCheckPage(){return <>
+export function SoundCheckPage({gunName}:{gunName?:string}){return <>
  <PageHeading id="soundCheck-title" title="Sound Check" eyebrow="TRIGGER PROFILE CHECK" reactBack={false}/>
- <GunContext prefix="Check the learned trigger profile for " suffix="."/>
+ <GunContext name={gunName} prefix="Check the learned trigger profile for " suffix="."/>
  <section id="soundCheckSetup" className="sound-check-card" aria-labelledby="soundCheckSetupTitle">
   <h3 id="soundCheckSetupTitle">Prepare a labelled check</h3>
   <p className="muted small">Keep the phone in its practice position. Each attempt opens a two-second listening window. Raw audio is never saved or exported.</p>

@@ -124,10 +124,10 @@ let homeRenderToken = 0;
 let homePage, homePagePending, profilePages;
 let settingsPage;
 let learnPage;
-let soundCheckController,soundCheckPending;
+let soundCheckController,soundCheckPage,soundCheckPending;
 let legacyHistoryRenderer;
 let livePage;
-let drillsPage;
+let drillsPage,legacyDrillsPending,customDrillCollectionSelected=false;
 let historyPage, historyOwner, historyRows=[], historySessions=[];
 const preparePageModule=createModulePreparation(showError);
 let profileQuality;
@@ -335,12 +335,22 @@ function renderGunLibrary() { return gunLibraryCoordinator.render(); }
 
 function submitGun(event) { return gunLibraryCoordinator.submit(event); }
 
-function selectDrillCollection(custom){
- if(custom && !CAPABILITIES.customDrillCreation && !customDrills.length)custom=false;
- const limited=!CAPABILITIES.customDrillCreation && !customDrills.length;
+function renderLegacyDrills(){
+ if(activeView!=='drills'||drillsPage)return;
+ legacyDrillsPending||=Promise.all([import('./optional/renderLegacyDrillCollection.js'),import('./optional/renderLegacyCustomCatalog.js')]).then(([collection,catalog])=>{
+  if(activeView!=='drills'||drillsPage)return;
+  const limited=!CAPABILITIES.customDrillCreation&&!customDrills.length;
+  collection.renderLegacyDrillCollection(document,{custom:customDrillCollectionSelected,limited,creation:CAPABILITIES.customDrillCreation});
+  catalog.renderLegacyCustomCatalog(document,customDrills,{drillCard,titleFor,onChoose:chooseDrill,onEdit:drill=>customEditor.open(drill)});
+ }).catch(showError).finally(()=>{legacyDrillsPending=null;});
+}
+function selectDrillCollection(custom,closeEditor=true){
+ if(custom&&!CAPABILITIES.customDrillCreation&&!customDrills.length)custom=false;
+ customDrillCollectionSelected=custom;
+ const limited=!CAPABILITIES.customDrillCreation&&!customDrills.length;
  if(drillsPage)drillsPage.update({collectionHidden:limited,customTabHidden:limited,customSelected:custom,createHidden:!custom||!CAPABILITIES.customDrillCreation});
- else void import('./optional/renderLegacyDrillCollection.js').then(({renderLegacyDrillCollection})=>renderLegacyDrillCollection(document,{custom,limited,creation:CAPABILITIES.customDrillCreation})).catch(showError);
- $('#customDrillForm').classList.add('hidden');
+ else renderLegacyDrills();
+ if(closeEditor)$('#customDrillForm').classList.add('hidden');
 }
 function drillCards(){return{
  builtIns:SEQUENCE_DRILLS.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id)})),
@@ -360,7 +370,7 @@ async function chooseDrill(id) {
 }
 function renderCustomCatalog() {
   if(drillsPage){const view=drillCards();drillsPage.update({customs:view.customs,emptyCustom:view.emptyCustom});return;}
-  void import('./optional/renderLegacyCustomCatalog.js').then(({renderLegacyCustomCatalog})=>renderLegacyCustomCatalog(document,customDrills,{drillCard,titleFor,onChoose:chooseDrill,onEdit:drill=>customEditor.open(drill)})).catch(showError);
+  renderLegacyDrills();
 }
 async function saveEditedCustomDrill(drill, gunId) {
   await saveCustomDrill(drill, gunId);
@@ -579,6 +589,7 @@ function displayView(name) {
   }
   if(name==='drills'){
     if($('#practiceCatalog').firstElementChild?.tagName==='TEMPLATE')practiceController.renderCatalog();
+    selectDrillCollection(customDrillCollectionSelected,false); renderCustomCatalog();
     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>switchView('recognize')},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
@@ -586,6 +597,11 @@ function displayView(name) {
     if(drillsPage && !profileLocked() && !$('#safetyModal').open){try{customEditor.connectView(drillsModule.mountCustomDrillFields);}catch(error){showError(error);}}
   }
   if(name==='recognize'){
+    // Startup no longer downloads the optional Live Listen renderers on Home.
+    // Refresh the lightweight first-entry page before its React enhancement.
+    renderListeningReadiness();
+    renderLiveButton();
+    renderDrill();
     const liveModule=preparePageModule('recognize',()=>import('../apps/web/src/app/liveListenPage.tsx'));
     if(!livePage && liveModule && !profileLocked() && !$('#safetyModal').open){
       try{livePage=liveModule.mountLiveListenPage($('#recognizeView'),{onBack:()=>goBack(),onAction:id=>liveHandlers.get(id)?.(),onChange:id=>liveHandlers.get(id)?.()});}catch(error){showError(error);}
@@ -601,7 +617,7 @@ function displayView(name) {
   }
   if(name==='soundCheck'){
     if(!triggerReady()){switchView('learn');setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before running Sound Check.`);return;}
-    if(!soundCheckController&&!soundCheckPending&&!profileLocked())soundCheckPending=import('./soundCheckController.js').then(module=>{if(activeView==='soundCheck'&&!profileLocked()&&!soundCheckController)soundCheckController=module.createSoundCheckController({doc:document,startContinuousListening,examples,calibration,enabledLabels:enabledSoundLabels,audioPreferences:preferenceState.audio,onError:showError,startGuard:action=>ensureSafe(action)});}).catch(showError).finally(()=>{soundCheckPending=null;});
+    if(!soundCheckController&&!soundCheckPending&&!profileLocked())soundCheckPending=Promise.all([import('../apps/web/src/app/soundCheckPage.tsx'),import('./soundCheckController.js')]).then(([pageModule,module])=>{if(activeView!=='soundCheck'||profileLocked()||soundCheckController)return;soundCheckPage ||= pageModule.mountSoundCheckPage($('#soundCheckView'),activeGun?.name);soundCheckController=module.createSoundCheckController({doc:document,startContinuousListening,examples,calibration,enabledLabels:enabledSoundLabels,audioPreferences:preferenceState.audio,onError:showError,startGuard:action=>ensureSafe(action)});}).catch(showError).finally(()=>{soundCheckPending=null;});
   }
   if(name==='history'){
     const historyModule=preparePageModule('history',()=>import('../apps/web/src/app/historyPage.tsx'));
@@ -626,9 +642,11 @@ function displayView(name) {
 }
 
 function renderDistances(distances){
+ if(!livePage&&activeView!=='recognize')return;
  void import('./optional/renderLegacyDistances.js').then(({renderLegacyDistances})=>{const rows=renderLegacyDistances(document,labels,distances,titleFor,!livePage);if(livePage)livePage.update({distances:rows});}).catch(showError);
 }
 function renderDrill(){
+ if(!livePage&&activeView!=='recognize')return;
  const drill=currentDrill($('#drillSelect').value),state=drillState;
  void import('./optional/renderLegacyLiveDrill.js').then(({renderLegacyLiveDrill})=>{const view=renderLegacyLiveDrill(document,drill,state,titleFor,!livePage);if(livePage)livePage.update(view);}).catch(showError);
 }
@@ -862,35 +880,19 @@ async function renderHistory() {
     } else progressView?.render(sessions || [], gunId);
   } else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();
   historyRows=rows;historySessions=sessions||[];historyOwner=gunId;
-  if(!historyPage){const module=legacyHistoryRenderer||=await import('./optional/renderLegacyHistory.js');module.renderEvaluation(document,rows);module.renderHistoryList(document,rows,{labels,titleFor,drillTitleFor:id=>currentDrill(id)?.title,onVerify:async(id,value)=>{await verifyEvent(id,value||null,gunId);await renderHistory();},onError:showError});}
+  if(!historyPage&&activeView==='history'){const module=legacyHistoryRenderer||=await import('./optional/renderLegacyHistory.js');module.renderEvaluation(document,rows);module.renderHistoryList(document,rows,{labels,titleFor,drillTitleFor:id=>currentDrill(id)?.title,onVerify:async(id,value)=>{await verifyEvent(id,value||null,gunId);await renderHistory();},onError:showError});}
   if(homePage)homePage.update({events:rows.length}); else $('#homeEvents').textContent = String(rows.length);
   if(historyPage){historyPage.setResults({rows,sessions:historySessions,stats:evaluateEvents(rows),gunId});return;}
 }
 
 async function init() {
   bindCalibrationActions();
-  if (typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__) {
-    const { createPreviewTesting, retirePreviewShell } = await import('./optional/previewTesting.js');
-    await retirePreviewShell({ serviceWorker: navigator.serviceWorker, caches: window.caches, origin: location.origin });
-    let storage;
-    try { storage = window.localStorage; } catch { /* Simulation works without preference storage. */ }
-    const applyPresentation = () => {
-      const full = CAPABILITIES.advancedGraphs;
-      document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
-      const notice = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
-      gunLibraryCoordinator.setNotice(notice);
-      const sequenceDescription=full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
-      if(drillsPage)drillsPage.update({sequenceDescription});else $('#sequenceDescription').textContent=sequenceDescription;
-      informationPages.setFull(full);
-    };
-    previewTesting = createPreviewTesting({ doc: document, storage,
-      locked: () => profileLocked() || !!practiceController?.hasUnsavedResults() || $('#safetyModal').open || !$('#customDrillForm').classList.contains('hidden'),
-      onMessage: setMessage, onChange: capabilities => {
-        CAPABILITIES = capabilities; applyPresentation(); selectDrillCollection(false);
-        renderGunControls(); renderPreferences(); renderHistory().catch(showError);
-      } });
-    CAPABILITIES = previewTesting.capabilities; applyPresentation();
-  }
+  const previewPreparation = typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__
+    ? import('./optional/previewTesting.js').then(async module => {
+      await module.retirePreviewShell({ serviceWorker: navigator.serviceWorker, caches: window.caches, origin: location.origin });
+      return module;
+    })
+    : null;
   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
   screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>{const path=(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search;return path===location.pathname+location.search?undefined:path;}):undefined,
@@ -1091,6 +1093,27 @@ async function init() {
     ? 'Installed: you are using the Home Screen app.'
     : 'Not yet installed. Follow these steps to put it on your Home Screen.';
   $('#deviceCheck').textContent = `${window.isSecureContext ? 'Secure connection' : 'Insecure connection — microphone may be blocked'} · ${navigator.mediaDevices?.getUserMedia ? 'Microphone API available' : 'Microphone API unavailable'} · Local storage only`;
+  if (previewPreparation) {
+    const { createPreviewTesting } = await previewPreparation;
+    let storage;
+    try { storage = window.localStorage; } catch { /* Simulation works without preference storage. */ }
+    const applyPresentation = () => {
+      const full = CAPABILITIES.advancedGraphs;
+      document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
+      const notice = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
+      gunLibraryCoordinator.setNotice(notice);
+      const sequenceDescription=full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
+      if(drillsPage)drillsPage.update({sequenceDescription});else $('#sequenceDescription').textContent=sequenceDescription;
+      informationPages.setFull(full);
+    };
+    previewTesting = createPreviewTesting({ doc: document, storage,
+      locked: () => profileLocked() || !!practiceController?.hasUnsavedResults() || $('#safetyModal').open || !$('#customDrillForm').classList.contains('hidden'),
+      onMessage: setMessage, onChange: capabilities => {
+        CAPABILITIES = capabilities; applyPresentation(); selectDrillCollection(false);
+        renderGunControls(); renderPreferences(); renderHistory().catch(showError);
+      } });
+    CAPABILITIES = previewTesting.capabilities; applyPresentation();
+  }
   const recovered = [];
   const library = await getLibraryOverview();
   for (const gun of library.guns) recovered.push(...await recoverInterruptedSessions(gun.id));

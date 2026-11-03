@@ -102,3 +102,9 @@ The implementation candidate, owner-reported Sound Check start correction and Co
 
 This checkpoint establishes implementation stability, not recognition significance. The owner next collects the development corpus with Sound Check on iPhone Safari/Home Screen; exported reports decide whether feature v3 can be promoted. The stronger cue still needs physical audibility confirmation because browser automation cannot measure the phone speaker.
 
+## Preview-readiness checkpoint · 2026-11-03
+
+Sound Check now mounts only when opened, preserves the selected gun name and exposes a tested controller-ready state before interaction. Live Listen refreshes its gun-owned readiness and drill presentation on the first visit while its React enhancement downloads. About and Contact retain lightweight accessible first-entry content. Optional Drills, Live Listen, History and information renderers no longer load on Home; the public and preview startup payload ceilings remain unchanged.
+
+The final local candidate passes 1,170 tests / 178 suites, the unchanged coverage ratchet, type checks, both lint suites, 16 smoke checks, architecture and documentation checks, public artifact verification, and focused public/preview Sound Check and Live Listen checks in pinned Chromium and WebKit. The complete public browser run passed 374 cases with 11 intentional skips; one header-layout case timed out under the combined runner and passed immediately in isolation. Preview-focused checks passed 27 cases initially; three Chromium setup timeouts passed 5/5 with one worker, while all corresponding WebKit and screenshot cases passed. Canonical CI remains the final automated gate before the branch is labelled ready for physical iPhone testing.
+

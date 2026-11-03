@@ -101,6 +101,7 @@ async function prepare(page, item) {
       await tab(page,'learn');
       await page.locator('#runSoundCheckBtn').click();
       await visible(page,'soundCheckView');
+      await expect(page.locator('#soundCheckView')).toHaveAttribute('data-react-sound-check','');
       await expect(page.locator('#soundCheckAttempts')).toHaveValue('10');
       await expect(page.locator('#soundCheckStartBtn')).toBeEnabled();
       await page.locator('#soundCheckStartBtn').click();
@@ -188,6 +189,7 @@ async function prepare(page, item) {
     }
     case 'recognize':
       await tab(page, 'recognize');
+      await expect(page.locator('#drillExplanation')).toContainText('Select a preset');
       if(item.state.startsWith('needs-training')){await expect(page.locator('#trainingSummary')).toContainText('0/3');await expect(page.locator('#listenBtn')).toBeDisabled();}
       if(item.state.startsWith('connecting')){await page.evaluate(()=>{navigator.mediaDevices.getUserMedia=()=>new Promise(()=>{});});await page.locator('#listenBtn').click();await confirmSafety(page);await expect(page.locator('#trainingSummary')).toContainText('Connecting');await expect(page.locator('#listenBtn')).toBeDisabled();}
       if (item.state.startsWith('listening')) { await page.locator('#listenBtn').click(); await confirmSafety(page); await expect(page.locator('#listeningIndicator')).toContainText('Microphone active'); await emit(page); await expect(page.locator('#sessionTimeline li')).toHaveCount(1); }

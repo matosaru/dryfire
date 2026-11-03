@@ -57,6 +57,8 @@ export default defineConfig(({ mode }) => {
     cssMinify: 'lightningcss',
     sourcemap: false,
     target: 'safari16.4',
+    // Safari 16.4+ supports modulepreload natively; avoid the legacy startup polyfill.
+    modulePreload: { polyfill: false },
     rolldownOptions: {
       input: {
         index: resolve(import.meta.dirname, 'index.html'),
