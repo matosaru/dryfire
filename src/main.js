@@ -577,8 +577,7 @@ function displayView(name) {
     }
   }
   if(name==='drills'){
-    if($('#practiceCatalog').firstElementChild?.tagName==='TEMPLATE')practiceController.renderCatalog();
-    selectDrillCollection(customDrillCollectionSelected,false); renderCustomCatalog();
+    $('#practiceCatalog').firstElementChild.tagName==='TEMPLATE'&&practiceController.renderCatalog();
     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>switchView('recognize')},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
@@ -869,7 +868,7 @@ async function renderHistory() {
         progressView.render(sessions || [], gunId);
       }).catch(error => {
         if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;
-        showError(new Error('Progress charts could not load. Your saved history is still available. Check your connection and reload to try again.', { cause: error }));
+        showError(new Error('Progress charts could not load. Saved history remains available. Check your connection and reload to try again.', { cause: error }));
       });
     } else progressView?.render(sessions || [], gunId);
   } else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();

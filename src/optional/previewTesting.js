@@ -1,6 +1,6 @@
 import { editionCapabilities } from '../buildEdition.js';
 
-export const PREVIEW_MODE_KEY = 'dryfire-private-preview-mode';
+const PREVIEW_MODE_KEY = 'dryfire-private-preview-mode';
 export function createPreviewSimulation({ storage, locked = () => false, onChange = () => {} } = {}) {
   let mode = 'free';
   try { if (storage?.getItem(PREVIEW_MODE_KEY) === 'full') mode = 'full'; } catch { /* Preference storage can be unavailable. */ }
@@ -9,7 +9,7 @@ export function createPreviewSimulation({ storage, locked = () => false, onChang
     get mode() { return mode; },
     get capabilities() { return capabilitiesFor(mode); },
     select(next) {
-      if (!['free', 'full'].includes(next)) throw new Error('Unknown preview simulation.');
+      if (next !== 'free' && next !== 'full') throw new Error('Unknown preview simulation.');
       if (locked()) return false;
       if (next === mode) return true;
       onChange(capabilitiesFor(next));
@@ -34,10 +34,11 @@ export function createPreviewTesting({ doc, storage, locked, onChange, onMessage
       select = current;
       select.addEventListener('change', change);
     }
+    const full = simulation.mode === 'full';
     select.value = simulation.mode; select.disabled = locked();
-    doc.getElementById('previewModeBadge').textContent = `Private preview · ${simulation.mode === 'full' ? 'Full' : 'Free'} mode`;
+    doc.getElementById('previewModeBadge').textContent = `Private preview · ${full ? 'Full' : 'Free'} mode`;
     doc.getElementById('previewModeStatus').textContent = locked() ? 'Finish active work before changing test mode.'
-      : simulation.mode === 'full' ? 'Full: five guns, new custom drills and progress graphs.'
+      : full ? 'Full: five guns, new custom drills and progress graphs.'
       : 'Free: two guns, built-in practice and saved timing results. Existing data stays available.';
   }
   render();
@@ -48,8 +49,7 @@ export function createPreviewTesting({ doc, storage, locked, onChange, onMessage
 // These operations affect this origin's app cache, never IndexedDB/user backups.
 export async function retirePreviewShell({ serviceWorker, caches, origin }) {
   for (const registration of await serviceWorker?.getRegistrations() ?? []) {
-    const scripts = [registration.active, registration.waiting, registration.installing].filter(Boolean);
-    if (scripts.some(worker => new URL(worker.scriptURL).href === `${origin}/sw.js`)) await registration.unregister();
+    if ([registration.active, registration.waiting, registration.installing].some(worker => worker && new URL(worker.scriptURL).href === `${origin}/sw.js`)) await registration.unregister();
   }
   for (const key of await caches?.keys() ?? []) if (key.startsWith('dryfire-sound-trainer-')) await caches.delete(key);
 }
