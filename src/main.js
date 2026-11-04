@@ -199,7 +199,7 @@ const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+
 const gunLibraryCoordinator=createGunLibraryCoordinator({get guns(){return guns;},set guns(value){guns=value;},get gun(){return activeGun;},get capabilities(){return CAPABILITIES;},get loading(){return profileLoading;},set loading(value){profileLoading=value;},get events(){return eventQueue;},get session(){return sessionController;},get practice(){return practiceController;},get pendingEntry(){return pendingEntry;},get pages(){return profilePages;}},{getGuns,getExamples,getCustomDrills,deleteGun,setActiveGun,updateGun,createGun},{profileLocked,setMessage,switchView,loadProfilePages,showError,setBusy,loadActiveGun,setStatus,openEntry,renderGunControls,renderLiveButton,renderClassCards,gunImagePath,$,document,confirm:message=>confirm(message)});
 
 function ownerId() {
-  if (!activeGun || activeGun.needsDetails) throw new Error('Add your gun name and type before training.');
+  if (!activeGun || activeGun.needsDetails) throw new Error('Add gun details before training.');
   return activeGun.id;
 }
 function profileLocked() { return busy || profileLoading || preferenceState.pending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked() || !!soundCheckController?.locked?.(); }
@@ -535,7 +535,7 @@ function goBack(fallback = 'home') { return screenNavigation ? screenNavigation.
 function displayView(name) {
   if (busy || profileLoading || !PAGE_IDS.includes(name)) return;
   if (name !== 'practice' && practiceController?.hasUnsavedResults()) {
-    showError(new Error('Practice results are not saved. Keep this review open and retry saving.'));
+    showError(new Error('Practice results are not saved. Keep this review open and retry.'));
     return;
   }
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
@@ -578,7 +578,7 @@ function displayView(name) {
   }
   if(name==='drills'){
     $('#practiceCatalog').firstElementChild.tagName==='TEMPLATE'&&practiceController.renderCatalog();
-    const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
+    const drillsModule=preparePageModule('drills',()=>afterPaint(()=>(renderLegacyDrills(),import('../apps/web/src/app/drillsPage.tsx'))));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
       try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>switchView('recognize')},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
     }
@@ -708,7 +708,7 @@ function showRecognition(result, event) {
 
 async function savePrediction(features, token = null, gunId = ownerId(), prediction = undefined) {
   const result = prediction === undefined ? classify(examples, features, recognitionOptions(calibration, enabledSoundLabels)) : prediction;
-  if (!result) throw new Error('No valid training data found.');
+  if (!result) throw new Error('Training data is invalid.');
   if (token !== null && token !== liveToken) return;
   const drillMatch = token !== null ? recordDrillPrediction(result) : null;
   const event = await addEvent({
@@ -866,9 +866,9 @@ async function renderHistory() {
         if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;
         progressView ||= createProgressView(document, { enabled: () => CAPABILITIES.advancedGraphs, onError: showError });
         progressView.render(sessions || [], gunId);
-      }).catch(error => {
+      }).catch(() => {
         if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;
-        showError(new Error('Progress charts could not load. Saved history remains available. Check your connection and reload to try again.', { cause: error }));
+        showError(new Error('Progress charts failed. Your saved history is still available.'));
       });
     } else progressView?.render(sessions || [], gunId);
   } else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();
