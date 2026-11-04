@@ -1025,11 +1025,6 @@
       "width": 390,
       "height": 1292
     },
-    "chromium/preview/public-site/practice.dark.390.png": {
-      "sha256": "107f2ae8e0e4492aceefec0c2606f2f22ace38b318954ac9a4a57ad6d1b195d8",
-      "width": 390,
-      "height": 1292
-    },
     "chromium/public/public-site/single.dark.390.png": {
       "sha256": "a559137ac974da24051d70d71508575894f4e5e2c6883b88e670464e11ab71df",
       "width": 390,
@@ -1115,11 +1110,6 @@
       "width": 390,
       "height": 1518
     },
-    "chromium/preview/public-site/sequence.dark.390.png": {
-      "sha256": "156c55d5c294210a04f7eacb7625b3a7e30fba8702e05f766a3f8f2b02f170ba",
-      "width": 390,
-      "height": 1518
-    },
     "chromium/public/public-site/calibration.dark.390.png": {
       "sha256": "b4874f042ca27dd09a6c79567dc89256c8ed7f2d1c42e2f0ff14e4300b2ef36b",
       "width": 390,
@@ -1136,16 +1126,6 @@
       "height": 2091
     },
     "chromium/public/public-site/help.dark.320.png": {
-      "sha256": "665c1c4d67800264956893b9c524a9e513c7bebcc1279980616c52f58709450a",
-      "width": 320,
-      "height": 2346
-    },
-    "chromium/preview/public-site/help.dark.390.png": {
-      "sha256": "004eb41df9d0c0189945b1b1daa64f40dca1e9e92f7686ebddbffbdb7dce929e",
-      "width": 390,
-      "height": 2091
-    },
-    "chromium/preview/public-site/help.dark.320.png": {
       "sha256": "665c1c4d67800264956893b9c524a9e513c7bebcc1279980616c52f58709450a",
       "width": 320,
       "height": 2346
@@ -2160,11 +2140,6 @@
       "width": 390,
       "height": 1281
     },
-    "webkit/preview/public-site/practice.dark.390.png": {
-      "sha256": "f09110fa5bc7cf0e782258332d36d4418d16dca50f91b403739eefbb1f893cc0",
-      "width": 390,
-      "height": 1281
-    },
     "webkit/public/public-site/single.dark.390.png": {
       "sha256": "2d93e10bb113547a2ac72ce36c2687b3d3b9112fc507101538cc59bdd5fc6cdf",
       "width": 390,
@@ -2250,11 +2225,6 @@
       "width": 390,
       "height": 1504
     },
-    "webkit/preview/public-site/sequence.dark.390.png": {
-      "sha256": "cc883f4cc89e7475e0582968e319b93b80d454356f1ac1014f75b9da140e3431",
-      "width": 390,
-      "height": 1504
-    },
     "webkit/public/public-site/calibration.dark.390.png": {
       "sha256": "80614f1ae994b76f70e4e5fdada38af5e03263065ab2ea58dfc55d49fc364441",
       "width": 390,
@@ -2271,16 +2241,6 @@
       "height": 2071
     },
     "webkit/public/public-site/help.dark.320.png": {
-      "sha256": "12727de4cf8890c04eb3e3176502ccb0047818059564641217634597c07b4210",
-      "width": 320,
-      "height": 2319
-    },
-    "webkit/preview/public-site/help.dark.390.png": {
-      "sha256": "60c2981a73223db14c15d4cd8f36c8fb16b114801d1dc3c178874afb86bde72e",
-      "width": 390,
-      "height": 2071
-    },
-    "webkit/preview/public-site/help.dark.320.png": {
       "sha256": "12727de4cf8890c04eb3e3176502ccb0047818059564641217634597c07b4210",
       "width": 320,
       "height": 2319
