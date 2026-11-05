@@ -1,4 +1,4 @@
-# Live Listen design
+# Test Learned Sounds design
 
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
 
@@ -12,7 +12,7 @@ CHG-029 capture refresh: current references use the pinned production-build rend
 
 Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · CHG-023 footer published in [`dbf8687`](https://github.com/matosaru/dryfire/commit/dbf8687); earlier feature baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
-Entry: Live Listen tab, Home card or Start free listening. App anchor: `recognizeView`. This is a state of the same `/` web app, not a separate indexable URL.
+Entry: **Learn Sounds → Open recognition test**. App anchor: `recognizeView`; direct compatibility path `/live-listen/` remains noindex. This is a state of the same web app, not an indexable public page. Home, Drills and the bottom navigation do not duplicate the entry.
 
 ## Layout and interaction
 
@@ -22,7 +22,7 @@ Functional specifications: [core](../../../requirements/core.md) · [practice-mo
 
 ## Current visual references
 
-![Live Listen current layout](ready.dark.png)
+![Test Learned Sounds current layout](ready.dark.png)
 
 | Screen/state | Capture | App anchor |
 | --- | --- | --- |
@@ -36,7 +36,7 @@ For a visible change, update the affected captures, this Markdown and the [scree
 
 ## CHG-053 readiness guidance
 
-Home, Drills free listening and the bottom tab share one navigation rule: a valid loaded gun can open this page before training. The existing summary immediately above the capture buttons explains why capture is unavailable. Missing training shows the selected gun’s current count out of three and tells the user to open Learn; optional sounds do not block it. Connecting/saving/current-operation/unsaved-result states have clear recovery text. Active listening keeps Stop usable. No new layout, colors or microphone permission on navigation. Native and React owners use the same policy and copy.
+Learn owns the normal entry. A valid loaded gun can open this page before training. The intro explains that it checks learned sound recognition, is not a timed drill and does not save drill-session results. The summary immediately above the capture buttons explains why capture is unavailable. Missing training shows the selected gun’s current count out of three and tells the user to return to Learn; optional sounds do not block it. Connecting/saving/current-operation/unsaved-result states have clear recovery text. Active listening keeps Stop usable. Opening the page does not request microphone permission. Native and React owners use the same policy and copy.
 
 | State | Current reference |
 | --- | --- |

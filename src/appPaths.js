@@ -69,7 +69,7 @@ export function legacyPathRedirect(path){
 export function appTitleFor(route){
  const product='Dry Fire With Ease';
  if(route?.view==='home')return product+' — Free Dry-Fire Practice App';
- const titles={gunSetup:'Gun setup',guns:'My Guns',learn:'Learn Sounds',soundCheck:'Sound Check',drills:'Drills',recognize:'Live Listen',history:'History',settings:'Settings',about:'About',contact:'Contact'};
+ const titles={gunSetup:'Gun setup',guns:'My Guns',learn:'Learn Sounds',soundCheck:'Sound Check',drills:'Drills',recognize:'Test Learned Sounds',history:'History',settings:'Settings',about:'About',contact:'Contact'};
  let title=titles[route?.view]??'App';
  if(route?.view==='practice')title=practiceDefinition(route.mode)?.title??'Practice';
  if(route?.view==='session')title=DRILLS.find(drill=>drill.id===route.preset)?.title??'Custom sequence';

@@ -18,7 +18,7 @@ flowchart TD
   practice["Practice"]
   session["Drill Session"]
   practiceGuide["About this practice"]
-  recognize["Live Listen"]
+  recognize["Test Learned Sounds"]
   history["History"]
   settings["Settings"]
   about["About"]
@@ -30,7 +30,7 @@ flowchart TD
   home --> drills
   drills --> practice
   drills --> session
-  home --> recognize
+  learn --> recognize
   home --> history
   guns -- Add or edit --> gunSetup
   practice -- About this practice --> practiceGuide
@@ -60,7 +60,7 @@ The five bottom tabs are **Home · Learn · Drills · Live Listen · History**. 
 | Practice | `practiceView` | Four trigger-mode cards or saved practice review in History | [Design](../design/screens/practice/README.md) |
 | Drill Session | `sessionView` | Start Drill on a built-in/custom sequence, or History review | [Design](../design/screens/session/README.md) |
 | About this practice | `practiceGuideView` | About this practice link on stopped Practice or Sequence configuration | [Design](../design/screens/practice-guide/README.md) |
-| Live Listen | `recognizeView` | Live Listen tab, Home card or Start free listening | [Design](../design/screens/live-listen/README.md) |
+| Test Learned Sounds | `recognizeView` | Learn Sounds → Open recognition test (direct /live-listen/ compatibility route remains noindex) | [Design](../design/screens/live-listen/README.md) |
 | History | `historyView` | History tab or Home card | [Design](../design/screens/history/README.md) |
 | Settings | `settingsView` | Settings gear in the shared branded header; backup/restore links | [Design](../design/screens/settings/README.md) |
 | About | `aboutView` | Shared app footer → About, including before gun setup | [Design](../design/screens/about/README.md) |

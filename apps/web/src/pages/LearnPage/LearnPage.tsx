@@ -3,10 +3,10 @@ import {PageHeading} from '@dryfire/ui/PageHeading';
 import type {ReactNode} from 'react';
 import {SoundCard,type SoundCardProps} from '@dryfire/ui/SoundCard';
 import {TriggerProfileStatus,type TriggerProfileQuality} from '@dryfire/ui/TriggerProfileStatus';
-export type LearnPageProps={cards?:SoundCardProps[];locked?:boolean;calibration?:ReactNode;triggerQuality?:TriggerProfileQuality;profileCss?:string;gunName?:string;contextHidden?:boolean;notice?:string;noticeHidden?:boolean;optionalOpen?:boolean;calibrationOpen?:boolean;onBack?:()=>void;onSoundCheck?:()=>void};
+export type LearnPageProps={cards?:SoundCardProps[];locked?:boolean;calibration?:ReactNode;triggerQuality?:TriggerProfileQuality;profileCss?:string;gunName?:string;contextHidden?:boolean;notice?:string;noticeHidden?:boolean;optionalOpen?:boolean;calibrationOpen?:boolean;listenDisabled?:boolean;onBack?:()=>void;onSoundCheck?:()=>void;onTestLearnedSounds?:()=>void};
 const emptyQuality:TriggerProfileQuality={status:'needs-samples',title:'Needs samples',message:'Record 3 more natural trigger presses.',sampleCount:0,needed:3,outlierIndexes:[]};
 /** Learning presentation; recording, safety, limits and saved features stay feature-owned. */
-export function LearnPage({cards=[],locked,calibration,triggerQuality,profileCss,gunName,contextHidden=false,notice,noticeHidden=true,optionalOpen,calibrationOpen,onBack,onSoundCheck}:LearnPageProps){return <>
+export function LearnPage({cards=[],locked,calibration,triggerQuality,profileCss,gunName,contextHidden=false,notice,noticeHidden=true,optionalOpen,calibrationOpen,listenDisabled=false,onBack,onSoundCheck,onTestLearnedSounds}:LearnPageProps){return <>
 {profileCss?<style data-trigger-profile="">{profileCss}</style>:null}
 <PageHeading id="learn-title" title="Learn Sounds" eyebrow="01 / SOUND PROFILES" reactBack={false} onBack={onBack}/>
       <GunContext name={gunName} hidden={contextHidden} prefix="Learned sounds for " suffix="."/>
@@ -14,6 +14,7 @@ export function LearnPage({cards=[],locked,calibration,triggerQuality,profileCss
       <div id="modelNotice" className={noticeHidden?"info-note hidden":"info-note"} role="status">{notice}</div>
       <div id="classCards" className="class-grid">{cards.filter(card=>!card.optional).map(card=><SoundCard key={card.label} {...card} locked={locked??card.locked}/>)}</div>
       <TriggerProfileStatus quality={triggerQuality??emptyQuality} disabled={locked} onSoundCheck={onSoundCheck}/>
+      <section className="learned-sound-test" aria-labelledby="learned-sound-test-title"><span className="dashboard-icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9v6m4-9v12m5-15v18m5-15v12m4-9v6"/></svg></span><div><h3 id="learned-sound-test-title">Test learned sounds</h3><p className="muted small">Check whether this gun’s learned sounds are recognized correctly. This is a recognition test, not a timed drill, and it does not save drill-session results.</p></div><button id="learnListenBtn" className="button secondary wide-action" type="button" disabled={listenDisabled} onClick={onTestLearnedSounds}>Open recognition test →</button></section>
       <details className="optional-sounds" open={optionalOpen}><summary>Optional sounds <span>For handling and sequence drills</span></summary><div id="optionalClassCards" className="class-grid">{cards.filter(card=>card.optional).map(card=><SoundCard key={card.label} {...card} locked={locked??card.locked}/>)}</div></details>
       <details className="optional-sounds" open={calibrationOpen}><summary>Improve recognition <span>Reset, noise and external cue calibration</span></summary><p className="muted small">Optional rejection examples help avoid false shot counts. Very similar press/reset clicks can remain ambiguous; verify matches yourself. External-beep practice needs 3 cue samples.</p>{calibration}</details>
       <p className="muted small">The animations are illustrative sound cues, not step-by-step handling demonstrations. Resetting one sound keeps this gun's other sounds and history, and every other gun's data.</p>

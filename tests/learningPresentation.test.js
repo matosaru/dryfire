@@ -48,7 +48,7 @@ test('profile locks and changed gun counts refresh visible learning and Home rea
   for(const button of document.querySelectorAll('.class-card button'))expect(button).toBeDisabled();
   s.context.busy=false;s.context.activeGun={id:'two',name:'Two',needsDetails:false};s.counts.trigger=0;s.counts.draw=0;s.render();
   expect(document.querySelector('#trainingSummary')).toHaveTextContent('Learn at least 3 trigger examples');
-  expect(document.querySelector('#homeListenBtn')).toBeEnabled();
+  expect(document.querySelector('#learnListenBtn')).toBeEnabled();
   expect(document.querySelector('[data-sound-label="trigger"] .reset-class')).toBeDisabled();
   expect(s.record).not.toHaveBeenCalled();expect(s.reset).not.toHaveBeenCalled();
 });
@@ -60,7 +60,7 @@ test('practice updates retain hidden Learning nodes while readiness stays curren
   s.context.activeView='practice';s.counts.trigger=0;s.render();
   expect(document.querySelector('[data-sound-label="trigger"]')).toBe(original);
   expect(document.querySelector('#homeExamples')).toHaveTextContent('0 / 8 trigger');
-  expect(document.querySelector('#homeListenBtn')).toBeEnabled();
+  expect(document.querySelector('#learnListenBtn')).toBeEnabled();
   expect(s.calibration).toHaveBeenCalledTimes(1);
   s.context.activeView='learn';s.render();
   expect(document.querySelector('[data-sound-label="trigger"]')).not.toBe(original);
@@ -70,7 +70,7 @@ test('practice updates retain hidden Learning nodes while readiness stays curren
 
 test('after Home ownership transfer, readiness is sent to its renderer without native Home mutations',()=>{
  const s=setup(),update=jest.fn();s.context.homePage={update};document.querySelector('#homeExamples').textContent='Owned';s.render();
- expect(update).toHaveBeenCalledWith({gunName:'One',contextHidden:false,training:'3 / 8 trigger',listenDisabled:false});expect(document.querySelector('#homeExamples')).toHaveTextContent('Owned');
+ expect(update).toHaveBeenCalledWith({gunName:'One',contextHidden:false,training:'3 / 8 trigger'});expect(document.querySelector('#homeExamples')).toHaveTextContent('Owned');
 });
 
 test('mounted Learn receives the owned model and callbacks without native card writes',()=>{

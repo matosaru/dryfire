@@ -14,11 +14,11 @@ CHG-029 capture refresh: current references use the pinned production-build rend
 
 Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · CHG-023 footer published in [`dbf8687`](https://github.com/matosaru/dryfire/commit/dbf8687); earlier feature baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
-Entry: Learn tab, Home card or missing-sound link. App anchor: `learnView`. This is a state of the same `/` web app, not a separate indexable URL.
+Entry: Learn tab, Home card or missing-sound link. App anchor: `learnView`. This is a state of the same `/` web app, not a separate indexable URL. CHG-067 adds the single normal entry to **Test Learned Sounds**, with copy explaining that it verifies learned recognition and does not save timed drill results.
 
 ## Layout and interaction
 
-Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.
+Primary Trigger training card; a dedicated learned-sound recognition-test card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.
 
 Functional specifications: [core](../../../requirements/core.md) · [practice-modes](../../../requirements/practice-modes.md) · [practice-improvements](../../../requirements/practice-improvements.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 

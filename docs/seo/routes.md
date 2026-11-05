@@ -38,7 +38,7 @@ These 19 paths open the app with explicit noindex and stay out of the XML sitema
 | `/learn/` | Learn Sounds | No; noindex |
 | `/sound-check/` | Sound Check | No; noindex |
 | `/drills/` | Drills | No; noindex |
-| `/live-listen/` | Live Listen | No; noindex |
+| `/live-listen/` | Test Learned Sounds | No; noindex |
 | `/history/` | History | No; noindex |
 | `/settings/` | Settings | No; noindex |
 | `/single-trigger-press/` | Single trigger press | No; noindex |

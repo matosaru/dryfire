@@ -188,7 +188,7 @@ async function prepare(page, item) {
       break;
     }
     case 'recognize':
-      await tab(page, 'recognize');
+      await tab(page, 'learn'); await page.locator('#learnListenBtn').click(); await visible(page, 'recognizeView');
       await expect(page.locator('#recognizeView')).toHaveAttribute('data-react-live-listen','');
       if(item.state.startsWith('needs-training')){await expect(page.locator('#trainingSummary')).toContainText('0/3');await expect(page.locator('#listenBtn')).toBeDisabled();}
       if(item.state.startsWith('connecting')){await page.evaluate(()=>{navigator.mediaDevices.getUserMedia=()=>new Promise(()=>{});});await page.locator('#listenBtn').click();await confirmSafety(page);await expect(page.locator('#trainingSummary')).toContainText('Connecting');await expect(page.locator('#listenBtn')).toBeDisabled();}

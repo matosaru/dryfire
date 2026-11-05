@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-11-04",
+  "reviewedOn": "2026-11-05",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://easydryfire.com",
   "publicPaths": [
@@ -84,7 +84,7 @@
         "docs/requirements/about.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. Separate centered About and Contact footer links open their independent pages.",
+      "notes": "Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/History cards and gun-specific summary counts. Bottom navigation has four destinations. Learned-sound recognition testing is reached from Learn. Separate About and Contact header icons open their independent pages.",
       "states": [
         {
           "key": "overview.dark",
@@ -144,7 +144,7 @@
         "docs/requirements/practice-improvements.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
+      "notes": "Primary Trigger training card; dedicated Test Learned Sounds entry; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. The recognition check explains that it tests learned profiles, is not a timed drill and does not save drill-session results. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.",
       "states": [
         {
           "key": "overview.dark",
@@ -551,16 +551,16 @@
       "id": "recognize",
       "folder": "live-listen",
       "domId": "recognizeView",
-      "title": "Live Listen",
-      "parent": "home",
-      "entry": "Live Listen tab, Home card or Start free listening",
+      "title": "Test Learned Sounds",
+      "parent": "learn",
+      "entry": "Learn Sounds → Open recognition test (direct /live-listen/ compatibility route remains noindex)",
       "requirements": [
         "docs/requirements/core.md",
         "docs/requirements/practice-modes.md",
         "docs/requirements/practice-improvements.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Free-listening/sequence selection, current event and score, level/waveform, single sound test and continuous Start/Stop controls. Continuous capture remains active through separate events until stopped or left. Unknown input stays transient; accepted known results can be verified in History. Microphone level does not establish that a click was recognized.",
+      "notes": "Recognition test for the selected gun’s learned profiles, with optional saved-sequence selection, current event and score, level/waveform, single sound test and continuous Start/Stop controls. It is not a timed drill and does not save drill-session results. Continuous capture remains active through separate events until stopped or left. Unknown input stays transient; accepted known results can be verified in History. Microphone level does not establish that a click was recognized.",
       "states": [
         {
           "key": "ready.dark",
@@ -788,7 +788,7 @@
         "docs/requirements/persistence.md",
         "docs/requirements/page-layout.md"
       ],
-      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered white Dark/footer-matching Light footer controls remain available with a divider below; fixed five-item bottom navigation is visible; gun switching and safety disclosure are hidden.",
+      "notes": "Independent email/contact screen with selectable confirmed mailto address, accessible without a gun or microphone. Preserves history, appearance, data and safety state. Both centered white Dark/footer-matching Light footer controls remain available with a divider below; fixed four-item bottom navigation is visible; gun switching and safety disclosure are hidden.",
       "states": [
         {
           "key": "overview.dark",
@@ -831,7 +831,7 @@
   ],
   "reviewedSources": {
     "index.html": "79ec1fff4917246537a670ac02e3dab7915dc96a1682ed74748a9f74e53e69cb",
-    "src/main.js": "6b05f4f9c2890bed93b9abfb9ae4d8ca7842224631305034c0f0355263abac37",
+    "src/main.js": "2f3390fa99a3fda2521add15abd37b3d15192f400a9612040c4b1552206eabb9",
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
     "src/screenNavigation.js": "4ef1157d90ca775cbea0875e9a68e4e09cac6ae01cbfc514b290139f55e40039",
     "src/practiceSession.js": "3520faf984f8d04c08a46f7a7b4304d14dbbda9ba2f23989db218ada207c53ec",
@@ -884,7 +884,7 @@
     "packages/ui/src/AppShell/AppShell.tsx": "4ecfda873aa3dc775c4033f0efd4a54b3ef0b9242f5b2bee8ce7d820711c0439",
     "packages/ui/src/AppShell/index.ts": "fd2a7ca0f5dc81821e1b940c03b6c2fa15f73d2997aacb7f23f0a16c4e1002c3",
     "packages/ui/src/BottomNavigation/BottomNavigation.css": "5708fbb98df65fe43f6ec0e2a4f2b1bfb8c973a9c5c95098e78b220975fd0ac4",
-    "packages/ui/src/BottomNavigation/BottomNavigation.tsx": "67906ae23ae5cca321e2ad4d71c43779467a083b0db69cc272d78ef2794900b3",
+    "packages/ui/src/BottomNavigation/BottomNavigation.tsx": "275672ef57594e9bcf0271043cc1bb7097a11e3993553a7ec8077b21e2bec6eb",
     "packages/ui/src/BottomNavigation/index.ts": "cd44fa73fcbc57adbcb618d50ae415cca66ddeaf75552ae312d7d27a4b32fff3",
     "packages/ui/src/BrandHeader/BrandHeader.css": "beabe3e119c023a2df16d829f27549540c5d26766ab33e142d4a7a99d36463a2",
     "packages/ui/src/BrandHeader/BrandHeader.tsx": "63ef3cf2bdaf48d32d3463594ed09ac69365238db6e58ebe106852e1af6e1b71",
@@ -916,12 +916,12 @@
     "apps/web/src/app/gunsPage.tsx": "d1c5f687da8c2415d4b15c09aea288c2dc98ca805690efd6c03216c943277d37",
     "apps/web/src/app/renderGunsPage.tsx": "18a8bbd8533454c305b37be107e37a10df53d5ef840e887bad1fcf69595af9db",
     "apps/web/src/pages/GunsPage/GunsPage.css": "11d33801cb8ea764286a3f389476b50c7de6f69912cb54ba92bb29e09f722021",
-    "apps/web/src/app/homePage.tsx": "9df978d7ac95657cb2e99b931f55b0a57c65de46ef7756adaba8714f112434ee",
+    "apps/web/src/app/homePage.tsx": "6a5d24e667d7ff3efe51eede0454cd0912a1b62b5a4cb4d50a206f53cc5bde93",
     "apps/web/src/app/gunSetupPage.tsx": "afa0a59d16e2ba851130db8a7e100c628cd3c923fbfa2ff66052cc024a1aeac4",
     "apps/web/src/app/profilePages/index.ts": "f17312ec88f6ba98d0b563cbc5951d5af90d3a9bd4582d41facac415675c9d4d",
     "apps/web/src/app/renderHomePage.tsx": "e2abdf6d1ca99a2915075e1093aea5cf5cfc408724aac8093335131075951fa7",
     "apps/web/src/app/renderGunSetupPage.tsx": "646a4ca39fbb103b31b7e7e6f5472e6cfcb3778a2a2ba0bcf62746add61cea36",
-    "apps/web/src/pages/HomePage/HomePage.tsx": "ba38b765a212724fcb717212755d64ed88c903022d61d8a4a7e1f717424628ec",
+    "apps/web/src/pages/HomePage/HomePage.tsx": "1decdc54ae393c338bb434c02fe127d32bd99fba958a1aaeeb6d286810ba1cbe",
     "apps/web/src/pages/HomePage/HomePage.css": "0a8cdf95133194679e1f87fee35abd230b77bd1a9aa2bd226bd6c7c89524225f",
     "apps/web/src/pages/GunSetupPage/GunSetupPage.tsx": "044f79f543885de79afd6ee7e2d1395a75cdf839d519293d28a409445aee8a24",
     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
@@ -933,26 +933,26 @@
     "src/templates/shared/preview-testing.html": "dfe2d0060997b3e67c4aa51097e921ed39b131bc4e7583ec0fb479315e2d801b",
     "apps/web/src/styles/legacy-before-settings.css": "d796631fab5158684181d488c644afeaae2d5bc8453d086c6098793e39e14426",
     "apps/web/src/app/settingsPage.tsx": "86bfd9d34d26b74de231df749ba46cce7da940c699bdb89be8ba88ead13093b5",
-    "apps/web/src/pages/LearnPage/LearnPage.tsx": "6eef40eb1df171fda0c9c1e4226f1af1492e019ee34ced8db7cba05988d66891",
-    "apps/web/src/pages/LearnPage/LearnPage.css": "1be7874e8228e2159550a7d8f41ef0c0e6cd6bfe73b481eeffc8afdd3cb8da2d",
+    "apps/web/src/pages/LearnPage/LearnPage.tsx": "96b78b4a4521ea98aee5a555616bae2f07f9e59136e5f3985af86976efe9fc8e",
+    "apps/web/src/pages/LearnPage/LearnPage.css": "906a73ca001a353ff4f881c4bcdbbfc88250b2c73b077df3bfffe0a061c4546c",
     "packages/ui/src/SoundCard/SoundCard.tsx": "dd0f58c0245ea0148c5afc172d5f23d79eea2274521493bc4819cb5fd06014d2",
     "packages/ui/src/SoundCard/SoundCard.css": "de9362726c2df6a620ee0f4e14cd7d8a1fac0c35bdbf000103ccf954c3358856",
     "apps/web/src/app/renderLearnPage.tsx": "da03c7af80d3dcb3a8c7cbab429c322bed539a71b9d7ed751ce30be043cd649f",
-    "apps/web/src/app/learnPage.tsx": "11e628d28f9e56bb4be7277eea5a5a573a5b9c84f76c33b92257f85fa6130415",
+    "apps/web/src/app/learnPage.tsx": "81bc88568778051feabcf915320601736eb8d1fd0a3f44b40430218067326410",
     "apps/web/src/app/liveListenPage.tsx": "c538704e32add37632cf3885ccb4778d536ac9a32dc010d9a67336e06ae4ac28",
     "apps/web/src/app/renderLiveListenPage.tsx": "b94a079090eee2558540829a3d9508155a58bbb2f94b03073e00a74cf759b579",
-    "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "5f962191a298b2ee43db27d9a0908766f6defa86035896ce274c6371a9ef50eb",
-    "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "03016410bb5cd5b9f71a8abaceeaa1dd6ad4063ce519be3ccf3d01d56e6bfd6d",
+    "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx": "27c11b80c82f74fa4608a76416b3fe62e6251a8260194b6ec6b2876bc4b164bf",
+    "apps/web/src/pages/LiveListenPage/LiveListenPage.css": "8db4bf94771e79b5482b41d08b9a23f2939a5960685977db3a84707bedb03645",
     "apps/web/src/features/live-listen/presentation.ts": "88218eeaefbac140403beb0d7ece18340942b015399726f5c32618770b8263b8",
     "apps/web/src/styles/legacy-before-live-listen.css": "50521c4db38e5829030c833cdb0bc14ae1a523a35009c199447185106938d93d",
-    "apps/web/src/app/drillsPage.tsx": "4461ac757c62c6ef5820636ec6636b3f87a83b2b5f968bd793a0d3cfc65d0a9f",
+    "apps/web/src/app/drillsPage.tsx": "705b56741fe31c90b4720833a6da8faabb7feb94f0859c6072b1cc67a3669d4c",
     "apps/web/src/app/renderDrillsPage.tsx": "37c8ab627a909a83120713de83841fb64001916ed6f1379d86cb56cd4eead821",
-    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "325c6c6c5bc68c5494d015a11f8714d9ae1b3aec12bde0b1c50d7a7030ade4af",
+    "apps/web/src/pages/DrillsPage/DrillsPage.tsx": "f4c05c1714af38ae18ffc138bc72a80c8da4779a4c4758d434617c501897da14",
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
     "packages/ui/src/DrillCard/DrillCard.tsx": "cb922f2186e09d534ff0c1767bcc73066ca6e155f77966b1e86d4de5668b601d",
     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
     "packages/ui/src/RetainedNode/RetainedNode.tsx": "351036d9dee16e01c2e9a29df9ab9704e2c96f5f9626be56d1f7ca70f6208170",
-    "apps/web/src/styles/legacy-before-drills.css": "8796913efa2f2266be952ea79cee4237acaa85e2e8c35e716068b10765eddb77",
+    "apps/web/src/styles/legacy-before-drills.css": "d566cfef163d973fa83c264448277d297eb47652ede3b6b10ef003b7f11428c1",
     "apps/web/src/styles/legacy-after-drill-cards.css": "69996bdd071d363ca685951e8cffc4a5cad4dc5e1b5dd691c4855f4bdea30de9",
     "apps/web/src/app/customDrillFields.tsx": "ccf4e7024d6713357eb71393a75a2aefcd0085f4c7419071f98c125e0054af3c",
     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
@@ -968,7 +968,7 @@
     "apps/web/src/styles/legacy-after-history-list.css": "fcadfa3ceda88072b3008771d894c55ab2c6db4881616cde7ba29b055b3a8b7d",
     "apps/web/src/styles/legacy-before-history-list.css": "f13587c5b6d6928dfc3bcce139e925529cce18f5a5b645445cb145bf3e163825",
     "apps/web/src/styles/legacy-before-evaluation.css": "894976008e366a76806eb6b3f82711befb050a868cb29a85b11e6086c8a0fe96",
-    "apps/web/src/styles/legacy-after-evaluation.css": "a6dde292dde4a4e2da6612efd6dc0992afe6f3db3c11ebcf67ca44a62d04b5db",
+    "apps/web/src/styles/legacy-after-evaluation.css": "0989a333adf141fe1ab5eb6be5ea099b73ba2d04556dc4f60b546ff94fba00bc",
     "apps/web/src/styles/legacy-after-saved-sessions.css": "4da686ed0aaa1715961f0a5f8652896986400fc19eec8fbc941d0f3095a6a72c",
     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
     "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
@@ -1029,11 +1029,11 @@
     "packages/ui/src/DrillSetup/DrillSetup.tsx": "53c73d9a52fb91726b65498baeb46b183dfabecfd66806d623c1e9d0b7924be0",
     "packages/ui/src/DrillSetup/DrillSetup.css": "a035901b2493ae1cfc80ab53ed1aadf22c79d9b61e0d95a23a1d16ef203c982e",
     "src/domUpdates.js": "4dbdf7718a7f937246903689209d121d468233f6448febace11c64765382001b",
-    "src/appPaths.js": "c4f3bb7f496cd938f57584427ded01934970d943bb0af994d86dc2c035b5216a",
+    "src/appPaths.js": "2291231155d5a9e44841cc02bfd7fa4b558af1a598ee56f329c597cd4a6c8935",
     "site/routes.js": "3a9808b5fe8f6b3fb63358dabea45f02c056c47bbedc50e791646971465732d5",
     "workers/publicSite.js": "b6f0422cf90199e3af353c23496fba3aff62699eab12dd0c063b576136ed4127",
     "tools/public-pages.mjs": "f27f71b21b077a54e69762c810c42ccc256e0f22bdc87586080d25bc80e7b5c9",
-    "apps/web/src/public-site/PublicPage/PublicPage.tsx": "fd467db6ada633b94823e3d2150a8a56b08795718cc03a7740afaa5057739125",
+    "apps/web/src/public-site/PublicPage/PublicPage.tsx": "37bf770a43610d630624ceb2cb668c698aeb18651ab6334dfbaa1a9ac7d9f601",
     "apps/web/src/public-site/PublicPage/PublicPage.css": "720964429947d545f8af9c93f3a902438fa03c681bc0ff7844c0cb45237f95de",
     "tools/app-document.mjs": "548b0bf8eb3c476e0149cfc4d46f84dfb441bcf89f0276c526f683987383c80d",
     "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx": "0e2ca183b5963dd6d8d02c3c7f9c0e731df994391a1855a0de64652a4131bba2",
@@ -1088,7 +1088,8 @@
     "CHG-053",
     "CHG-059 shared guide control/layout and group accents",
     "CHG-060 public SEO and readable app paths",
-    "CHG-061 app homepage, flat routes, unique sequences and retained marketing About"
+    "CHG-061 app homepage, flat routes, unique sequences and retained marketing About",
+    "CHG-067 Learn-owned learned-sound recognition check and four-item primary navigation"
   ],
   "publicScreens": [
     {

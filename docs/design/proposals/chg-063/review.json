@@ -1,6 +1,6 @@
 {
-  "status": "reviewed local candidate; 454 exact pinned public/preview captures pass",
-  "expandedCSSSha256": "5c550b51ae8e116d26990c771b2e4834e8b77cf048e6d36a81fd45006b6b1f97",
+  "status": "reviewed local candidate; 446 exact pinned public/preview captures pass",
+  "expandedCSSSha256": "e3aa1f8531fdb8a5ca38b8d26397a01dede38c4abe8a6eb5c1c96679835ce846",
   "reviewedChanges": [
     "Trigger profile guidance card",
     "Shared Test start sound control",
@@ -8,7 +8,8 @@
     "Sound Check setup, run and review",
     "Atomic learned-sound replacement",
     "Sound Check controller readiness, spacing and explicit phone distances",
-    "Contact email copy fallback"
+    "Contact email copy fallback",
+    "CHG-067 four-item primary navigation and Learn-owned recognition check"
   ],
   "physicalDeviceEvidence": false
 }

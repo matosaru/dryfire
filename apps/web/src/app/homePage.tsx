@@ -5,8 +5,7 @@ import {HomePage,type HomePageProps} from '../pages/HomePage/index.ts';
 export function mountHomePage(host:Element,onNavigate:(view:string)=>void){
  let state:HomePageProps={
   gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),
-  training:host.querySelector('#homeExamples')!.textContent!,events:Number(host.querySelector('#homeEvents')!.textContent),accuracy:host.querySelector('#homeAccuracy')!.textContent!,
-  listenDisabled:(host.querySelector('#homeListenBtn') as HTMLButtonElement).disabled,onNavigate,
+  training:host.querySelector('#homeExamples')!.textContent!,events:Number(host.querySelector('#homeEvents')!.textContent),accuracy:host.querySelector('#homeAccuracy')!.textContent!,onNavigate,
  };
  const backup=[...host.childNodes],active=host.ownerDocument.activeElement as HTMLElement|null;
  const focusId=host.contains(active)?active?.id:undefined;

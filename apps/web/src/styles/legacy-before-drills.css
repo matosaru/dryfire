@@ -32,7 +32,7 @@
 .safety-card h2{font-size:.86rem;margin:0 0 3px}
 .safety-card p{margin-bottom:7px;font-size:.76rem;line-height:1.35}
 .checkbox-row{font-size:.78rem}
-.tabs{grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;margin:0 0 15px}
+.tabs{grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;margin:0 0 15px}
 .tab{padding:7px 2px;min-height:56px;font-size:.72rem;line-height:1.2}
 .nav-glyph{font-size:1.3rem;margin-bottom:4px}
 .class-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}

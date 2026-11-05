@@ -5,7 +5,7 @@ import type {ReactNode} from 'react';
 type Guide={id:string;title:string;purpose:string;measures:string;steps:string[];expect:string;requires:string};
 export type PublicRoute={id:string;path:string;title:string;heading:string;description:string;guide?:Guide};
 export type PublicPageProps={route:PublicRoute;routes:PublicRoute[]};
-const links={home:'/',learn:'/learn/',drills:'/drills/',recognize:'/live-listen/',history:'/history/',settings:'/settings/',about:'/about/',contact:'/contact/'};
+const links={home:'/',learn:'/learn/',drills:'/drills/',history:'/history/',settings:'/settings/',about:'/about/',contact:'/contact/'};
 function Panel({title,children}:{title:string;children:ReactNode}){return <section className="public-panel"><h2>{title}</h2>{children}</section>;}
 export function PublicPage({route}:PublicPageProps){
  const guide=route.guide,modePath=guide?`/${route.path.slice(1).replace('-guide/','/')}`:'/';

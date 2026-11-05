@@ -44,7 +44,7 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
       expect(header.homeRight).toBeLessThanOrEqual(header.toolbarLeft - 4);
       expect(header.badgeRight).toBeLessThanOrEqual(header.toolbarLeft - 4);
       await expect(page.locator('.tabs')).toBeInViewport();
-      await expect(page.locator('.tabs .tab')).toHaveCount(5);
+      await expect(page.locator('.tabs .tab')).toHaveCount(4);
       expect(await page.locator('.tabs').evaluate(node => getComputedStyle(node).position)).toBe('fixed');
       await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
       await expect(page.locator('.tabs')).toBeInViewport();
@@ -66,10 +66,11 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
     const backup = structuredClone(library); backup.settings.appearance = theme;
     await page.locator('#importFile').setInputFiles({ name: 'library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
     await expect(page.locator('#homeView')).toBeVisible(); await expect(page.locator('html')).toHaveAttribute('data-theme',theme); await shell();
-    await expect(page.locator('.tabs .tab:enabled')).toHaveCount(5);
-    for (const view of ['learn', 'drills', 'recognize', 'history']) {
+    await expect(page.locator('.tabs .tab:enabled')).toHaveCount(4);
+    for (const view of ['learn', 'drills', 'history']) {
       await page.locator(`.tab[data-view="${view}"]`).click(); await expect(page.locator(`#${view}View`)).toBeVisible(); await shell();
     }
+    await page.locator('.tab[data-view="learn"]').click();await page.locator('#learnListenBtn').click();await expect(page.locator('#recognizeView')).toBeVisible();await shell();
     await page.locator('.tab[data-view="drills"]').click(); await page.locator('[data-practice-mode="single"]').click();
     await expect(page.locator('#practiceView')).toBeVisible(); await shell();
     await page.locator('#practiceGuideLink').click(); await expect(page.locator('#practiceGuideView')).toBeVisible(); await shell();
@@ -120,7 +121,7 @@ test('header brand returns Home from information pages before and after enhancem
   await expect(home).toHaveAttribute('aria-current','page');
  }
  await expect(page.locator('footer #aboutBtn,footer #contactBtn')).toHaveCount(0);
- await expect(page.locator('.tabs .tab')).toHaveCount(5);
+ await expect(page.locator('.tabs .tab')).toHaveCount(4);
 });
 
 test('startup avoids redundant scrolling and route scroll resets precede view mutations',async({page})=>{

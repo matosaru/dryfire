@@ -221,10 +221,10 @@ function renderListeningReadiness(counts = getCounts()) {
   informationPages.setNavigationDisabled(view.entryDisabled);
   const context = {gunName:activeGun?.name || 'No gun selected',contextHidden:!gunAvailable};
   const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
-  if(homePage)homePage.update({...context,training,listenDisabled:view.entryDisabled});
-  else {setNodeText($('#homeExamples'),training);setNodeDisabled($('#homeListenBtn'),view.entryDisabled);}
-  if(drillsPage)drillsPage.update({...context,freeListenDisabled:view.entryDisabled});
-  else setNodeDisabled($('#freeListenBtn'),view.entryDisabled);
+  if(homePage)homePage.update({...context,training});
+  else setNodeText($('#homeExamples'),training);
+  if(learnPage)learnPage.update({...context,listenDisabled:view.entryDisabled});
+  else setNodeDisabled($('#learnListenBtn'),view.entryDisabled);
 }
 
 function renderGunControls() {
@@ -580,7 +580,7 @@ function displayView(name) {
     $('#practiceCatalog').firstElementChild.tagName==='TEMPLATE'&&practiceController.renderCatalog();
     const drillsModule=preparePageModule('drills',()=>afterPaint(()=>(renderLegacyDrills(),import('../apps/web/src/app/drillsPage.tsx'))));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
-      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>switchView('recognize')},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
+      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open()},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
     }
     if(drillsPage && !profileLocked() && !$('#safetyModal').open){try{customEditor.connectView(drillsModule.mountCustomDrillFields);}catch(error){showError(error);}}
   }
@@ -601,7 +601,7 @@ function displayView(name) {
     import('./profileQuality.js').then(module=>{profileQuality=module;renderClassCards();}).catch(showError);
     const learnModule=preparePageModule('learn',()=>import('../apps/web/src/app/learnPage.tsx'));
     if(!learnPage && learnModule && !profileLocked() && !$('#safetyModal').open){
-      try{learnPage=learnModule.mountLearnPage($('#learnView'),{...learningProps(),onBack:()=>goBack()});}catch(error){showError(error);}
+      try{learnPage=learnModule.mountLearnPage($('#learnView'),{...learningProps(),onBack:()=>goBack(),onTestLearnedSounds:()=>switchView('recognize')});}catch(error){showError(error);}
     }
     renderClassCards();
   }
@@ -924,11 +924,10 @@ async function init() {
   document.querySelectorAll('[data-back]:not([data-r-back])').forEach(button => button.addEventListener('click', () => goBack()));
   $('#homeLearnBtn').addEventListener('click', () => switchView('learn'));
   $('#homeDrillsBtn').addEventListener('click', () => switchView('drills'));
-  $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
   $('#runSoundCheckBtn').addEventListener('click',()=>{if(triggerReady())switchView('soundCheck');else setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples first.`);});
+  $('#learnListenBtn').addEventListener('click', () => switchView('recognize'));
   bindLive('changeDrillBtn','click', () => switchView('drills'));
-  $('#freeListenBtn').addEventListener('click', () => switchView('recognize'));
   renderDrillCatalog();
   bindLive('listenBtn','click', toggleLive);
   bindLive('drillSelect','change', () => { if (profileLocked()) return; resetDrill(); setGunSetting('selectedDrill', $('#drillSelect').value, ownerId()).catch(showError); });

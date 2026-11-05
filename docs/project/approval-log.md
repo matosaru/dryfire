@@ -707,6 +707,10 @@ Approved scope is [audio-recognition-v3.md](../requirements/audio-recognition-v3
 
 CHG-063 owner-test correction (2026-11-02): the owner reports that **Start Sound Check** does nothing and that its form spacing/phone-position choices are unclear. Keep Start disabled until the lazy controller is attached, then expose readiness, preserve the shared safety/microphone flow and cover the real route → click → safety-modal path in pinned browser tests. Add visible spacing and define Close as under 30 cm / 1 ft, Normal as 30 cm–1 m / 1–3 ft and Far as over 1 m / 3 ft. Stored metadata values remain compatible.
 
+## CHG-067 — Learn-owned learned-sound recognition check (2026-11-05)
+
+Owner clarification: “If this is a page, just to test, if sounds recognition works correctly, move it to learn sounds page, remove from main navigation, write inside it, that this is a page to check learned sounds.” Rename the former Live Listen presentation to **Test Learned Sounds** and make Learn its single normal entry. Remove its Home card, Drills action and bottom-navigation tab. Explain on Learn and the check page that it verifies the selected gun’s learned sound recognition, is not a timed drill and does not save drill-session results. Keep the existing noindex `/live-listen/` route for bookmark/history compatibility, and preserve recognition, storage, safety, microphone and readiness behavior.
+
 ## CHG-065 — Contact email fallback (2026-11-02)
 
 Owner requests the next contact correction after current audio work: retain `mailto:easydryfire@gmail.com`, add a **Copy email** action and keep the address manually selectable when clipboard access is unavailable. Status feedback must be accessible and no private app data is attached. A backend contact form remains optional and is not part of this implementation.
