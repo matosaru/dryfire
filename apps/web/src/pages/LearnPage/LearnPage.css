@@ -1,3 +1,1 @@
 .class-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:13px; margin:22px 0 16px; }
-.learned-sound-test{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:start;margin:18px 0;padding:16px;border:1px solid #314653;border-radius:14px;background:#14232c}.learned-sound-test .dashboard-icon{grid-row:1;width:44px;height:44px;margin:0}.learned-sound-test h3{margin:1px 0 6px}.learned-sound-test p{margin:0}.learned-sound-test .button{grid-column:1/-1;margin-top:2px}
-html[data-theme="light"] .learned-sound-test{background:#edf6fa;border-color:#b9cfdb}

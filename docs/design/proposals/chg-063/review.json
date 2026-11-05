@@ -1,6 +1,6 @@
 {
   "status": "reviewed local candidate; 446 exact pinned public/preview captures pass",
-  "expandedCSSSha256": "e3aa1f8531fdb8a5ca38b8d26397a01dede38c4abe8a6eb5c1c96679835ce846",
+  "expandedCSSSha256": "8842992a44558c7a48d897e4b81c2be93025b7317e576a5d85cdf8e6a0eea464",
   "reviewedChanges": [
     "Trigger profile guidance card",
     "Shared Test start sound control",
