@@ -10,7 +10,7 @@ html { -webkit-text-size-adjust:100%; }
 body { overscroll-behavior-y:contain; }
 button, select, input { font-size:16px; }
 button { -webkit-tap-highlight-color:transparent; }
-.tabs { grid-template-columns:repeat(5,minmax(0,1fr)); gap:2px; }
+.tabs { grid-template-columns:repeat(4,minmax(0,1fr)); gap:2px; }
 .tab { padding:8px 2px; min-width:0; font-size:.78rem; }
 .nav-glyph { display:block; font-size:1.35rem; line-height:1.1; margin-bottom:2px; font-weight:500; }
 .app-shell { padding-bottom:max(40px,env(safe-area-inset-bottom)); }

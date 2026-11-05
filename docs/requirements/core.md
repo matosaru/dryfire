@@ -7,7 +7,7 @@ Evidence: existing repository instructions, implementation and the requested ref
 | ID | Requirement |
 | --- | --- |
 | CORE-01 | Provide an offline-first web PWA with readable development sources and bundled production assets. |
-| CORE-02 | Keep Home, Learn, Drills, Live Listen and History navigation, with Settings accessible from the compact header. Preserve the dark/orange reference design and DF monogram; use **Dry Fire With Ease** branding according to [BRAND-01 through BRAND-05](branding.md). |
+| CORE-02 | Keep Home, Learn, Drills and History in the primary bottom navigation, with Settings accessible from the compact header. Put the learned-sound recognition check inside Learn rather than presenting it as a primary practice destination. Preserve the dark/orange reference design and DF monogram; use **Dry Fire With Ease** branding according to [BRAND-01 through BRAND-05](branding.md). | CHG-067 |
 | CORE-03 | Preserve four distinct sound identifiers: `draw`, `rack`, `trigger`, `reload`. Display `reload` as magazine change. Do not rename stored identifiers or silently reinterpret learned data. |
 | CORE-04 | Learn at least three examples per required sound; recommend eight to ten. New recordings are capped at ten per sound per gun under CHG-017; preserve existing compatible profiles/backups above ten. |
 | CORE-05 | Store derived acoustic features, not playable raw audio. Recognition runs locally. Raw-audio storage or upload is separate, unapproved scope. |

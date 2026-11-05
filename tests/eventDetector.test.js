@@ -16,6 +16,13 @@ function feed(detector, seconds, events = [], chunkSize = 256, ambient = 0) {
 }
 
 describe('automatic sound segmentation', () => {
+  test('ambient readiness can seed a bounded detector noise floor', () => {
+    const detector=createEventDetector(rate,()=>{});
+    expect(detector.setNoiseFloor(Number.NaN)).toBe(false);
+    expect(detector.setNoiseFloor(-1)).toBe(false);
+    expect(detector.setNoiseFloor(0)).toBe(true);expect(detector.noiseFloor).toBe(.0001);
+    expect(detector.setNoiseFloor(1)).toBe(true);expect(detector.noiseFloor).toBe(.05);
+  });
   test('capture onset timestamps stay independent of callback chunk sizes', () => {
     const results = [128, 256, 2048].map(chunkSize => {
       const found = [];

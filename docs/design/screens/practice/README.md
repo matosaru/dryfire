@@ -2,6 +2,8 @@ CHG-058: all four trigger modes reuse the Sequence configuration template throug
 
 # Practice design
 
+CHG-063: app-signal setup includes the shared **Test start sound** action, explains device media-volume control and displays the actual 0.19-second cue guard. Microphone capture observes the room before countdown and reports readiness before an attempt begins. [Audio v3 requirements](../../../requirements/audio-recognition-v3.md) define the behavior and physical-device acceptance gate.
+
 CHG-044: stopped configuration now includes **ⓘ About this practice** after context/sounds, immediately before setup. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
 
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).

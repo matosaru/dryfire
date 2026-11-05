@@ -8,7 +8,7 @@ import { practiceDefinition, normalizePracticeConfig, practiceLabels, continuous
   createPractice, tickPractice, detectPractice, nextPractice, pausePractice, resumePractice, endPractice,
   toPracticeRecord, PRACTICE_CUE_GUARD_MS } from './practiceSession.js';
 import { getGunSetting, setGunSetting, saveSession } from './storage/library.js';
-import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
+import { requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
 import {materializeStaticCatalog} from './staticCatalog.js';
 
@@ -94,6 +94,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       $(id).classList.toggle('hidden', !visible);
       $(id).querySelectorAll('input, select').forEach(input => { input.disabled = !visible; });
     }
+    $('practiceStartSoundTest').classList.toggle('hidden', external);
     $('practiceCountLabel').textContent = continuousPractice(mode) ? 'Click target' : 'Repetitions';
     const context = getContext();
     let message = '', config;
@@ -109,7 +110,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     $('practiceLearnBtn').classList.toggle('hidden', !missing.length && !missingCue);
     $('practiceStartBtn').disabled = locked() || context.available === false || missing.length > 0 || missingCue || !config || !context.gun || context.gun.needsDetails;
     $('practiceCueNote').textContent = external ? 'Waiting for your calibrated beep starts the acoustic timer. The app does not play a second cue.'
-      : $('practiceStartSound').checked ? `Microphone ready before countdown. ${mode === 'single' ? 'A trigger before the beep fails the attempt. ' : ''}Set your device volume for the start beep. The first 0.08 s after GO is excluded to reject the cue.` : 'Microphone ready before countdown. Silent start uses the on-screen signal; Single triggers before it fail the attempt.';
+      : $('practiceStartSound').checked ? `Microphone ready before countdown. ${mode === 'single' ? 'A trigger before the beep fails the attempt. ' : ''}Set your device media volume for the start sound. The first ${(PRACTICE_CUE_GUARD_MS / 1000).toFixed(2)} s after GO is excluded to reject the cue.` : 'Microphone ready before countdown. Silent start uses the on-screen signal; Single triggers before it fail the attempt.';
     renderSteps(required);
   }
   function renderSteps(labels){const steps=labels.map(label=>({text:titleFor(label),className:'drill-step'}));if(page)page.update({steps});else $('practiceSteps').replaceChildren(...steps.map(step=>node('li',step.text,step.className)));}
@@ -225,7 +226,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     if (!context.gun || practiceLabels().some(label => counts[label] < 3) ||
         (config.startSource === 'external' && context.calibration.filter(row => row.kind === 'cue').length < 3)) { configure(); return; }
     const token = ++operation; pending = true; resetInput(); inputFeedback = ''; changed();
-    cue = createStartCuePlayer();
+    cue = presentation.createStartCuePlayer();
     const preparing = config.startSource === 'app' && config.soundAtStart ? cue.prepare() : Promise.resolve(true);
     try {
       await configQueue;
@@ -320,6 +321,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   $('practiceBackBtn').addEventListener('click', () => onBack());
   bind('practiceDoneBtn', () => { if (!locked()) onNavigate('drills'); });
   $('practiceLearnBtn').addEventListener('click', () => onNavigate('learn'));
+  bind('practiceTestStartSound', async () => { if (!await presentation.playStartCuePreview()) onError(new Error('Start sound unavailable. Check browser audio permission and media volume.')); });
   bind('practiceRepeatBtn', () => { const record = state ? toPracticeRecord(state) : review; if (record) open(record.practiceMode, record.config).catch(onError); });
   bind('practiceRetryBtn', () => { enqueue(persist).then(changed).catch(onError); });
   $('safetyAck').addEventListener('change', () => { if (!state && !review) configure(); });

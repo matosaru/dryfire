@@ -8,8 +8,9 @@ export type {LiveListenState} from '../../features/live-listen/index.ts';
 export type LiveListenPageProps={state?:LiveListenState;onBack?:()=>void;onAction?:(id:string)=>void;onChange?:(id:string)=>void};
 /** Live presentation only: microphone, recognition, persistence and timing remain feature-owned. */
 export function LiveListenPage({state,onBack,onAction,onChange}:LiveListenPageProps){return <>
-<PageHeading id="recognize-title" title="Live Listen" eyebrow="03 / REAL-TIME DETECTION" reactBack={false} onBack={onBack}/>
-      <GunContext name={state?.gunName} hidden={state?.contextHidden} prefix="Listening uses the learned sounds of " suffix="."/>
+<PageHeading id="recognize-title" title="Test Learned Sounds" eyebrow="LEARN / RECOGNITION CHECK" reactBack={false} onBack={onBack}/>
+      <GunContext name={state?.gunName} hidden={state?.contextHidden} prefix="Testing the learned sounds of " suffix="."/>
+      <div className="info-note"><strong>Check your learned sounds.</strong> Use this page to confirm that new microphone events match the sound profiles you recorded in Learn. It is not a timed drill and does not save drill-session results.</div>
       <LiveModePanel state={state} onAction={onAction} onChange={onChange}/>
 <LiveCapturePanel state={state} onAction={onAction} onChange={onChange}/>
 <LiveResultPanel state={state} onAction={onAction} onChange={onChange}/>

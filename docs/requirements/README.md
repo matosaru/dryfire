@@ -1,6 +1,6 @@
 # Functional requirements
 
-Revision 1.27 · CHG-060 public SEO/routes / CHG-059 shared guide layout/catalog accents / CHG-058 shared drill configuration / CHG-044 contextual practice guides / CHG-041 shared Beta disclosure / CHG-037 shared page architecture / CHG-036 b/main Free and dev Full branch profiles / CHG-035 private-preview simulation / CHG-034 two-gun public edition / CHG-033 informational-page bottom navigation · 2026-10-23
+Revision 1.28 · CHG-063 predictable audio learning/recognition / CHG-060 public SEO/routes / CHG-059 shared guide layout/catalog accents / CHG-058 shared drill configuration / CHG-044 contextual practice guides / CHG-041 shared Beta disclosure · 2026-11-01
 
 CHG-027 starts [About](about.md) with email support; CHG-029 separates [Contact](contact.md) and refines the centered shared footer links in independent app screens. Suggested copy remains reviewable; broader CHG-026 implementations stay paused.
 
@@ -8,6 +8,7 @@ This is the single current functional index. Markdown requirements define behavi
 
 | Specification | Authoritative scope | Current application status |
 | --- | --- | --- |
+| [Audio learning and recognition](audio-recognition-v3.md) | CHG-063 guided learning, ambient readiness, measurable decisions, louder testable cue and significance gates | Active on isolated feature branch; production behavior unchanged until evidence gates pass |
 | [Page layout](page-layout.md) | Shared header/main/footer/fixed navigation across all screens, safe-area/scroll/readiness guards | Implemented with reusable templates; current capture acceptance and CI/publication in the delivery tracker |
 | [Live Listen availability](live-listen-readiness.md) | Consistent navigation, capture readiness and visible reasons | Implemented CHG-053; all eight post-push CI jobs passed on b |
 | [Shared drill setup](drill-setup-template.md) | Sequence-style form, numeric cards and sound list reused by four trigger modes | Implemented CHG-058; all eight pre-publication CI jobs passed, deployment separate |

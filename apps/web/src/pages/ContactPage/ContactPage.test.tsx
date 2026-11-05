@@ -12,3 +12,20 @@ test('Contact exposes the approved mailto address and a working Back action', as
   expect(document.querySelector('form')).toBeNull();
   await userEvent.setup().click(screen.getByRole('button', { name: 'Back' })); expect(back).toHaveBeenCalledTimes(1);
 });
+
+test('Contact copies the visible email and reports success',async()=>{
+  const writeText=jest.fn(async(_text:string)=>{});
+  Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText}});
+  render(<ContactPage/>);
+  await userEvent.click(screen.getByRole('button',{name:'Copy email'}));
+  expect(writeText).toHaveBeenCalledWith('easydryfire@gmail.com');
+  expect(screen.getByRole('status')).toHaveTextContent('Email copied.');
+});
+
+test('Contact keeps the address selectable when clipboard access is unavailable',async()=>{
+  Object.defineProperty(navigator,'clipboard',{configurable:true,value:undefined});
+  render(<ContactPage/>);
+  await userEvent.click(screen.getByRole('button',{name:'Copy email'}));
+  expect(screen.getByRole('status')).toHaveTextContent('Copy unavailable');
+  expect(screen.getByRole('link',{name:'easydryfire@gmail.com'})).toBeVisible();
+});

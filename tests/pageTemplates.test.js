@@ -8,7 +8,7 @@ test('route IDs and build-time heading metadata preserve the released screen ord
   expect(Object.isFrozen(PAGE_DEFINITIONS)).toBe(true);
   expect(PAGE_DEFINITIONS).toEqual([
     ['gunSetup', 'gunSetupTitle'], ['guns', 'gunsTitle'], ['home', 'home-title'],
-    ['learn', 'learn-title'], ['drills', 'drills-title'], ['practice', 'practice-title'],
+    ['learn', 'learn-title'], ['soundCheck', 'soundCheck-title'], ['drills', 'drills-title'], ['practice', 'practice-title'],
     ['session', 'session-title'], ['practiceGuide', 'practiceGuide-title'],
     ['recognize', 'recognize-title'], ['history', 'history-title'],
     ['settings', 'settings-title'], ['about', 'about-title'], ['contact', 'contact-title'],
@@ -18,7 +18,7 @@ test('route IDs and build-time heading metadata preserve the released screen ord
 
 test('all screen content uses one wrapper and one shared application layout', () => {
   const html = renderPageTemplates(readFileSync(new URL('../index.html', import.meta.url), 'utf8'));
-  expect(PAGE_DEFINITIONS).toHaveLength(13);
+  expect(PAGE_DEFINITIONS).toHaveLength(14);
   for (const { id, titleId } of PAGE_DEFINITIONS) {
     expect(html.match(new RegExp(`id="${id}View"`, 'g'))).toHaveLength(1);
     expect(html).toContain(`aria-labelledby="${titleId}"`);

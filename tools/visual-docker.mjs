@@ -7,6 +7,8 @@ if (args.includes('--update-snapshots=all') && process.env.CI) throw new Error('
 const result = spawnSync('docker', ['run', '--rm', '--platform', environment.platform, '--shm-size=1g',
   '--user', `${process.getuid?.() ?? 1000}:${process.getgid?.() ?? 1000}`,
   '--mount', `type=bind,src=${resolve('.')},dst=/repo`, '--workdir', '/repo',
+  ...(process.env.APP_EDITION ? ['-e', `APP_EDITION=${process.env.APP_EDITION}`] : []),
+  ...(process.env.VISUAL_EDITION ? ['-e', `VISUAL_EDITION=${process.env.VISUAL_EDITION}`] : []),
   '-e', `VISUAL_IMAGE=${environment.image}`, environment.image, 'npx', '--no-install', 'playwright', 'test', ...args], { stdio: 'inherit' });
 if (result.error) throw result.error;
 process.exit(result.status ?? 1);

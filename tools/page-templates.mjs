@@ -9,7 +9,6 @@ import { renderSettingsPage } from '../apps/web/src/app/renderSettingsPage.tsx';
 import { renderGunSetupPage } from '../apps/web/src/app/renderGunSetupPage.tsx';
 import { renderHomePage } from '../apps/web/src/app/renderHomePage.tsx';
 import { renderGunsPage } from '../apps/web/src/app/renderGunsPage.tsx';
-import { renderInformationPage } from '../apps/web/src/app/renderInformationPages.tsx';
 import { renderCalibrationCatalog } from '../apps/web/src/app/renderCalibrationCatalog.tsx';
 import { renderAppShell } from '../apps/web/src/app/renderAppShell.tsx';
 import { renderNumberInput } from '../apps/web/src/app/renderNumberInput.tsx';
@@ -18,6 +17,7 @@ import { PRACTICE_MODES } from '../src/practiceModes.js';
 import { PAGE_DEFINITIONS } from '../src/pageDefinitions.js';
 
 const read = name => readFileSync(new URL(`../src/templates/${name}.html`, import.meta.url), 'utf8');
+const triggerProfileCss=readFileSync(new URL('../packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.css',import.meta.url),'utf8').trim();
 const fill = (template, slots) => template.replace(/\{\{([a-zA-Z]+)\}\}/g, (_, name) => {
   if (!Object.hasOwn(slots, name)) throw new Error(`Unknown page template slot: ${name}`);
   return slots[name];
@@ -42,12 +42,14 @@ function content(id) {
     case 'history': return renderHistoryPage(read('shared/history-progress'),fragments.maxResultsInput);
     case 'drills': return renderDrillsPage(fragments.practiceCatalog);
     case 'recognize': return renderLiveListenPage();
-    case 'learn': return renderLearnPage(fragments.calibrationCatalog);
+    case 'learn': return renderLearnPage(fragments.calibrationCatalog,triggerProfileCss);
+    case 'soundCheck': return '';
     case 'settings': return renderSettingsPage(read('shared/preview-testing'));
     case 'gunSetup': return renderGunSetupPage();
     case 'home': return renderHomePage();
     case 'guns': return renderGunsPage();
-    case 'about': case 'contact': return renderInformationPage(id,true);
+    case 'about': return '<div class=\"section-head\"><button type=\"button\" class=\"back-button\" data-back data-r-back aria-label=\"Back to previous screen\">‹</button><h2 id=\"about-title\">About</h2></div><p id=\"aboutFeatureSummary\" data-full-summary=\"Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.\">Learn your trigger click, choose a built-in practice mode and review saved timing results.</p>';
+    case 'contact': return '<div class=\"section-head\"><button type=\"button\" class=\"back-button\" data-back data-r-back aria-label=\"Back to previous screen\">‹</button><h2 id=\"contact-title\">Contact</h2></div>';
     default: throw new Error(`Unknown page definition: ${id}`);
   }
 }

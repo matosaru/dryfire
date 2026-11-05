@@ -1,5 +1,7 @@
 # Drill Session design
 
+CHG-063: sequence setup reuses the shared **Test start sound** action, and Start Session waits for the same bounded microphone-readiness observation used by trigger practice before countdown begins. [Audio v3 requirements](../../../requirements/audio-recognition-v3.md) define the behavior and physical-device acceptance gate.
+
 CHG-044: stopped configuration now includes **ⓘ About this practice** after context/sounds, immediately before setup. It opens the [shared guide](../practice-guide/README.md) without microphone/safety prompts and preserves the current gun, mode/preset and invalid/unsaved settings. The link is hidden during connecting/running/review. [Guide requirements](../../../requirements/practice-guides.md) define navigation and examples; actual image acceptance/publication is in the tracker.
 
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).

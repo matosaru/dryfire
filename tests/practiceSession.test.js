@@ -1,4 +1,4 @@
-import { PRACTICE_MODES, normalizePracticeConfig, createPractice, tickPractice, detectPractice, nextPractice, pausePractice, resumePractice, endPractice, toPracticeRecord, recoverPracticeRecord, validatePracticeRecord, practiceStatistics } from '../src/practiceSession.js';
+import { PRACTICE_MODES, PRACTICE_CUE_GUARD_MS, normalizePracticeConfig, createPractice, tickPractice, detectPractice, nextPractice, pausePractice, resumePractice, endPractice, toPracticeRecord, recoverPracticeRecord, validatePracticeRecord, practiceStatistics } from '../src/practiceSession.js';
 const gun = { id: 'gun-a', name: 'Test gun', type: 'Handguns' };
 const clock = n => ({ monoNow: n, epochNow: 10000 + n, randomValue: 0 });
 function start(mode = 'single', config = {}) {
@@ -72,7 +72,7 @@ describe('one practice engine supports all modes', () => {
   test('app cue guard excludes input but does not apply to silent practice', () => {
     const s = start('single', { soundAtStart: true });
     expect(event(s, 'trigger', 50)).toBe(s);
-    expect(event(s, 'trigger', 100).shots).toBe(1);
+    expect(event(s, 'trigger', PRACTICE_CUE_GUARD_MS + 20).shots).toBe(1);
   });
   test('interrupt/recovery preserves a partial and does not auto-resume capture', () => {
     let s = event(start('single'), 'rack', 200);

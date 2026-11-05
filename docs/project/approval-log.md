@@ -698,3 +698,23 @@ CHG-062 consistency/accessibility (2026-10-25): owner requests all icons have th
 CHG-064 investigation direction (2026-10-25): after the timing question, owner reports “I merged b to main”, then requests “investigate a slowdown”, “and prepare next steps” and “proceed with next steps from the plan”. Retain the original timing gate; no explicit10ms exception was selected or implemented. Proceed with source/reference repair and controlled production/candidate diagnosis on b. User's main merge is observed separately; no assistant main/dev modification.
 
 CHG-062 resume and Home link (2026-10-27): owner says “maybe lets skip at the moment webkit startup, work on header icons step”, “and removing botton links”, then “the logo click in header should always lead to homepage”. Resume the approved About / @ Contact / Settings shared header, remove the duplicate footer entries and link the complete brand to Home through existing navigation guards. WebKit investigation is paused, not declared fixed or a permanent gate waiver. Owner additionally queues the supplied mobile Lighthouse CSS/render-blocking and forced-reflow issue as the next task.
+
+## CHG-063 — Predictable audio learning and recognition (2026-11-01)
+
+Owner instruction: **“Prepare a valid step by step plan. And proceed with audio listening and learning improvement implementation. For this, let’s create a separate feature branch. We will test on on and work on it until significancy is reached. Suggest testing strategy also. Make UX friendly, and clear. Update user help pages and manual with new approach.”**
+
+Approved scope is [audio-recognition-v3.md](../requirements/audio-recognition-v3.md): guided trigger-profile quality, deterministic ambient readiness, privacy-safe evaluation diagnostics, a louder testable start cue, compatible staged classifier evaluation and updated help/manuals. Work is isolated on `feature/audio-recognition-v3`. Existing profiles and data remain compatible; raw PCM is not stored/uploaded. A classifier is promoted only after paired unseen real-device evidence reaches the documented significance and false-shot/duplicate non-regression gates. Automated tests do not constitute physical microphone accuracy evidence.
+
+CHG-063 owner-test correction (2026-11-02): the owner reports that **Start Sound Check** does nothing and that its form spacing/phone-position choices are unclear. Keep Start disabled until the lazy controller is attached, then expose readiness, preserve the shared safety/microphone flow and cover the real route → click → safety-modal path in pinned browser tests. Add visible spacing and define Close as under 30 cm / 1 ft, Normal as 30 cm–1 m / 1–3 ft and Far as over 1 m / 3 ft. Stored metadata values remain compatible.
+
+## CHG-067 — Learn-owned learned-sound recognition check (2026-11-05)
+
+Owner clarification: “If this is a page, just to test, if sounds recognition works correctly, move it to learn sounds page, remove from main navigation, write inside it, that this is a page to check learned sounds.” Rename the former Live Listen presentation to **Test Learned Sounds** and make Learn its single normal entry. Remove its Home card, Drills action and bottom-navigation tab. Explain on Learn and the check page that it verifies the selected gun’s learned sound recognition, is not a timed drill and does not save drill-session results. Keep the existing noindex `/live-listen/` route for bookmark/history compatibility, and preserve recognition, storage, safety, microphone and readiness behavior.
+
+## CHG-065 — Contact email fallback (2026-11-02)
+
+Owner requests the next contact correction after current audio work: retain `mailto:easydryfire@gmail.com`, add a **Copy email** action and keep the address manually selectable when clipboard access is unavailable. Status feedback must be accessible and no private app data is attached. A backend contact form remains optional and is not part of this implementation.
+
+## CHG-066 — Measurement-unit preference (queued 2026-11-02)
+
+Owner queues the next separate task after the audio feature: add a persisted Metric / Imperial preference in Settings and make every applicable distance label, help text and behavior follow it. Specify one shared formatting/conversion source, migration/default behavior, accessibility copy and unit/integration/visual coverage before implementation. Do not mix this cross-app preference into CHG-063 owner testing.

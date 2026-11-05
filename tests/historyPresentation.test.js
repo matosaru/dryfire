@@ -4,13 +4,14 @@ import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {evaluateEvents,ACTUAL_CLASSES,PREDICTED_CLASSES} from '../src/evaluation.js';
+import * as legacyHistoryRendererModule from '../src/optional/renderLegacyHistory.js';
 const legacy=readFileSync(new URL('./fixtures/legacy-history-rendering.js',import.meta.url),'utf8');
 const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
-const current=main.slice(main.indexOf('function renderEvaluation('),main.indexOf('async function renderHome('))+main.slice(main.indexOf('async function renderHistory('),main.indexOf('async function init('));
+const current=main.slice(main.indexOf('async function renderHistory('),main.indexOf('async function init('));
 describe.each([['legacy',legacy],['current',current]])('%s History behavior',(_name,source)=>{
 function setup(){
  document.body.innerHTML='<div id="progressContent"></div><strong id="verifiedCount"></strong><strong id="accuracyPct"></strong><strong id="falsePositivePct"></strong><div id="confusionTable"></div><span id="homeEvents"></span><div id="historyList">Previous results</div>';
- const context={recognitionRows,evaluationPresentation,historyPage:null,historyRenderToken:0,activeGun:{id:'one'},getEvents:jest.fn().mockResolvedValue([]),sessionController:{renderSavedSessions:jest.fn().mockResolvedValue([])},CAPABILITIES:{advancedGraphs:false},progressView:{render:jest.fn(),clear:jest.fn()},evaluateEvents,ACTUAL_CLASSES,PREDICTED_CLASSES,homePage:null,document,$:selector=>document.querySelector(selector),titleFor:label=>({trigger:'Trigger pull',draw:'Draw from holster',rack:'Rack slide',reload:'Change magazine'}[label]||'Unknown'),currentDrill:()=>({title:'Current title'}),labels:['draw','rack','trigger','reload'],verifyEvent:jest.fn().mockResolvedValue(undefined),showError:jest.fn()};
+ const context={recognitionRows,evaluationPresentation,legacyHistoryRenderer:legacyHistoryRendererModule,historyPage:null,historyRenderToken:0,activeView:'history',activeGun:{id:'one'},getEvents:jest.fn().mockResolvedValue([]),sessionController:{renderSavedSessions:jest.fn().mockResolvedValue([])},CAPABILITIES:{advancedGraphs:false},progressView:{render:jest.fn(),clear:jest.fn()},evaluateEvents,ACTUAL_CLASSES,PREDICTED_CLASSES,homePage:null,document,$:selector=>document.querySelector(selector),titleFor:label=>({trigger:'Trigger pull',draw:'Draw from holster',rack:'Rack slide',reload:'Change magazine'}[label]||'Unknown'),currentDrill:()=>({title:'Current title'}),labels:['draw','rack','trigger','reload'],verifyEvent:jest.fn().mockResolvedValue(undefined),showError:jest.fn()};
  const render=vm.runInNewContext(source+'\nrenderHistory',context);return{context,render};
 }
 const row={id:'e',gunId:'one',label:'trigger',createdAt:1700000000000,confidence:.854,actualLabel:'trigger',drillId:'custom',drillTitle:'Original <title>',drillCompleted:true};

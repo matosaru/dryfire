@@ -1,5 +1,6 @@
 /** @jest-environment jsdom */
-import { createPreviewTesting, PREVIEW_MODE_KEY } from '../src/optional/previewTesting.js';
+import { createPreviewTesting } from '../src/optional/previewTesting.js';
+const PREVIEW_MODE_KEY = 'dryfire-private-preview-mode';
 
 function controls() {
   document.body.innerHTML = '<select id="previewTestMode"><option value="free">Free</option><option value="full">Full</option></select><p id="previewModeBadge"></p><p id="previewModeStatus"></p>';

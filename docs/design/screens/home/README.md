@@ -16,7 +16,7 @@ Entry: After gun selection/setup and returning visits. App anchor: `homeView`. T
 
 ## Layout and interaction
 
-Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/Live Listen/History cards and gun-specific summary counts. Bottom navigation has five destinations. CHG-029 centers separate About and Contact controls in the footer, white in Dark and footer-matching in Light, with no arrow and a divider below, opening independent screens directly without Settings.
+Compact DF / WITH EASE header, Settings gear, illustrated active-gun switcher with the selected type, Learn/Drills/History cards and gun-specific summary counts. Bottom navigation has four destinations. Learned-sound recognition testing is owned by Learn. CHG-029 centers separate About and Contact controls in the footer, white in Dark and footer-matching in Light, with no arrow and a divider below, opening independent screens directly without Settings.
 
 Functional specifications: [core](../../../requirements/core.md) · [branding](../../../requirements/branding.md) · [gun-profiles](../../../requirements/gun-profiles.md) · [About](../../../requirements/about.md) · [Contact](../../../requirements/contact.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 

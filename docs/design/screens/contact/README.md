@@ -1,10 +1,12 @@
 # Contact design
 
+The visible `mailto:easydryfire@gmail.com` link is paired with a 44 px **Copy email** control. Clipboard success or failure is announced through a polite status region. If browser clipboard access is unavailable, the address stays visible and selectable; no private app data is attached or sent.
+
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
 
 CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
 
-CHG-033: show the existing fixed five-item bottom navigation, with normal safe-area/content padding in Dark and Light. Contact is not a main tab; preserve its footer current-page marker, Back/Forward and capture/setup guards.
+CHG-033 / CHG-067: show the existing fixed four-item bottom navigation, with normal safe-area/content padding in Dark and Light. Contact is not a main tab; preserve its footer current-page marker, Back/Forward and capture/setup guards.
 
 CHG-031: About/Contact footer controls are pure white in Dark (`#FFFFFF`); Light/disclosure colors and the existing layout/underline/focus/divider remain. [ABOUT-05](../../../requirements/about.md) and the [shared footer design](../shared/README.md) define the correction. [Current capture review](../../baselines/bright-footer-validation.json) records the passing pinned runs; publication is tracked separately.
 
@@ -14,7 +16,7 @@ CHG-029 · 2026-10-12 · Separate history-backed Contact screen of `/`, not a pu
 
 Shared branded header with Settings; compact Contact content heading with Back. A readable “Get in touch” card contains the existing feedback invitation, selectable **easydryfire@gmail.com** mailto link and explanation that it opens the user's email app. About's purpose/routine/storage/safety copy belongs on its separate screen.
 
-Gun switching and the inline safety disclosure are hidden. The shared five-item bottom navigation is visible with normal content/safe-area padding. No microphone permission or data change occurs. Both centered footer links remain visible, with the current page indicated accessibly. Links use #FFFFFF in Dark and inherit the footer text color in Light, keep their 0.85rem font/underline/focus outline and have no arrows. A divider separates them from the disclosure/copyright text.
+Gun switching and the inline safety disclosure are hidden. The shared four-item bottom navigation is visible with normal content/safe-area padding. No microphone permission or data change occurs. Both centered footer links remain visible, with the current page indicated accessibly. Links use #FFFFFF in Dark and inherit the footer text color in Light, keep their 0.85rem font/underline/focus outline and have no arrows. A divider separates them from the disclosure/copyright text.
 
 Specifications: [Contact](../../../requirements/contact.md) · [About](../../../requirements/about.md) · [core](../../../requirements/core.md) · [persistence](../../../requirements/persistence.md) · [shared footer](../shared/README.md).
 

@@ -1,5 +1,7 @@
 # Learn Sounds design
 
+CHG-063: Trigger learning now includes a read-only **Needs samples / Variable examples / Stable profile** summary with one plain-language next action. The recording guidance uses the expected practice phone position and representative room; saved samples are never silently removed. [Audio v3 requirements](../../../requirements/audio-recognition-v3.md) define the behavior and evidence limits.
+
 CHG-041: the shared header now shows an orange **BETA** badge beside the wordmark in both themes/editions. It remains readable on narrow screens without covering the brand or Settings. [Beta requirements](../../../requirements/branding.md#beta-disclosure--chg-041) define this shared lifecycle label; image review/delivery is recorded in the [tracker](../../../project/implementation-history.md).
 
 CHG-037: this screen uses the common app layout and screen wrapper, shared branded header with Settings, informational footer and fixed five-tab navigation. Context controls remain screen-specific. [Layout requirements](../../../requirements/page-layout.md), [template architecture](../../../architecture/page-templates.md) and [reviewed current captures](../../baselines/page-templates-review.json) define the current shell; earlier entries below retain historical evidence.
@@ -12,11 +14,11 @@ CHG-029 capture refresh: current references use the pinned production-build rend
 
 Current implemented layout · CHG-018 coverage audit / CHG-019 corrections · 2026-10-11 · CHG-023 footer published in [`dbf8687`](https://github.com/matosaru/dryfire/commit/dbf8687); earlier feature baseline [`aacdb18`](https://github.com/matosaru/dryfire/commit/aacdb18); exact reviewed file hashes are in the registry
 
-Entry: Learn tab, Home card or missing-sound link. App anchor: `learnView`. This is a state of the same `/` web app, not a separate indexable URL.
+Entry: Learn tab, Home card or missing-sound link. App anchor: `learnView`. This is a state of the same `/` web app, not a separate indexable URL. CHG-067 adds the single normal entry to **Test Learned Sounds**, with copy explaining that it verifies learned recognition and does not save timed drill results.
 
 ## Layout and interaction
 
-Primary Trigger training card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.
+Primary Trigger training card; a dedicated learned-sound recognition-test card; optional Draw/Rack/Magazine disclosure with per-label recognition controls; optional reset/noise/external-beep calibration disclosure. Preview, Train, Test and confirmed per-category Reset are distinct. Three compatible samples are required; 8–10 recommended. New recordings stop at ten per gun/type/category; older over-cap data remains. Capture asks for safety first.
 
 Functional specifications: [core](../../../requirements/core.md) · [practice-modes](../../../requirements/practice-modes.md) · [practice-improvements](../../../requirements/practice-improvements.md). These define acceptance behavior and input bounds; the layout here does not introduce a second set of requirement IDs.
 

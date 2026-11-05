@@ -1,6 +1,6 @@
 import {parseAppPath,appPathFor,isAppPath,offlineAppPaths,legacyPathRedirect,guidePathFor} from '../src/appPaths.js';
 test('canonical application pages use flat paths with the application at root',()=>{
- for(const [view,path]of Object.entries({home:'/',guns:'/guns/',gunSetup:'/gun-setup/',learn:'/learn/',drills:'/drills/',recognize:'/live-listen/',history:'/history/',settings:'/settings/',about:'/about/',contact:'/contact/'})){
+ for(const [view,path]of Object.entries({home:'/',guns:'/guns/',gunSetup:'/gun-setup/',learn:'/learn/',soundCheck:'/sound-check/',drills:'/drills/',recognize:'/live-listen/',history:'/history/',settings:'/settings/',about:'/about/',contact:'/contact/'})){
   expect(appPathFor({view})).toBe(path);expect(parseAppPath(path)).toEqual({view});
  }
  expect(parseAppPath('/app/learn/')).toBeNull();for(const path of ['/unknown/','/history/private-id/','/help/'])expect(isAppPath(path)).toBe(false);

@@ -97,6 +97,18 @@ async function prepare(page, item) {
       if (item.state.startsWith('calibration')) await page.locator('details.optional-sounds').nth(1).locator('summary').click();
       if (item.state.startsWith('recording-limit')) await expect(page.locator('[data-sound-label="trigger"] .record-example')).toBeDisabled();
       break;
+    case 'soundCheck':
+      await tab(page,'learn');
+      await page.locator('#runSoundCheckBtn').click();
+      await visible(page,'soundCheckView');
+      await expect(page.locator('#soundCheckView')).toHaveAttribute('data-react-sound-check','');
+      await expect(page.locator('#soundCheckAttempts')).toHaveValue('10');
+      await expect(page.locator('#soundCheckStartBtn')).toBeEnabled();
+      await page.locator('#soundCheckStartBtn').click();
+      await visible(page,'safetyModal');
+      await page.locator('#safetyCancelBtn').click();
+      await expect(page.locator('#safetyModal')).not.toBeVisible();
+      break;
     case 'drills':
       await tab(page, 'drills');
       await expect(page.locator('[data-practice-mode]')).toHaveCount(4);
@@ -176,7 +188,8 @@ async function prepare(page, item) {
       break;
     }
     case 'recognize':
-      await tab(page, 'recognize');
+      await tab(page, 'learn'); await page.locator('#learnListenBtn').click(); await visible(page, 'recognizeView');
+      await expect(page.locator('#recognizeView')).toHaveAttribute('data-react-live-listen','');
       if(item.state.startsWith('needs-training')){await expect(page.locator('#trainingSummary')).toContainText('0/3');await expect(page.locator('#listenBtn')).toBeDisabled();}
       if(item.state.startsWith('connecting')){await page.evaluate(()=>{navigator.mediaDevices.getUserMedia=()=>new Promise(()=>{});});await page.locator('#listenBtn').click();await confirmSafety(page);await expect(page.locator('#trainingSummary')).toContainText('Connecting');await expect(page.locator('#listenBtn')).toBeDisabled();}
       if (item.state.startsWith('listening')) { await page.locator('#listenBtn').click(); await confirmSafety(page); await expect(page.locator('#listeningIndicator')).toContainText('Microphone active'); await emit(page); await expect(page.locator('#sessionTimeline li')).toHaveCount(1); }

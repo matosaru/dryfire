@@ -1,4 +1,5 @@
-import { createPreviewSimulation, PREVIEW_MODE_KEY, retirePreviewShell } from '../src/optional/previewTesting.js';
+import { createPreviewSimulation, retirePreviewShell } from '../src/optional/previewTesting.js';
+const PREVIEW_MODE_KEY = 'dryfire-private-preview-mode';
 
 function saved(value) {
   const values = new Map([['other', 'keep'], ...(value ? [[PREVIEW_MODE_KEY, value]] : [])]);
