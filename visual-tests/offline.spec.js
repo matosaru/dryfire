@@ -92,11 +92,20 @@ test(edition === 'public' ? 'first installed offline refresh keeps app bundles a
     if (edition === 'preview') await expect(page.locator('.progress-chart')).toBeVisible();
     else await expect(page.locator('#progressSection')).not.toBeVisible();
     const modules=JSON.parse(readFileSync(new URL('../dist/edition.json',import.meta.url))).assets;
+    const openView = async view => {
+      if (view === 'settings') return page.locator('#settingsShortcut').click();
+      if (view === 'recognize') {
+        await page.locator('.tab[data-view="learn"]').click();
+        return page.locator('#learnListenBtn').click();
+      }
+      return page.locator(`.tab[data-view="${view}"]`).click();
+    };
     for(const [view,entry,mount,marker] of [['settings','settingsPage','mountSettingsPage','data-react-settings'],['learn','learnPage','mountLearnPage','data-react-learn'],['recognize','liveListenPage','mountLiveListenPage','data-react-live-listen'],['drills','drillsPage','mountDrillsPage','data-react-drills'],['history','historyPage','mountHistoryPage','data-react-history']]){
-      if(view==='settings')await page.locator('#settingsShortcut').click();else await page.locator(`.tab[data-view="${view}"]`).click();
+      await openView(view);
       const module=modules.find(path=>path.includes(`/assets/${entry}-`));expect(module).toBeTruthy();
       expect(await page.evaluate(async({module,mount})=>typeof(await import(module))[mount]==='function',{module,mount})).toBe(true);
-      await page.locator('.tab[data-view="home"]').click();if(view==='settings')await page.locator('#settingsShortcut').click();else await page.locator(`.tab[data-view="${view}"]`).click();
+      await page.locator('.tab[data-view="home"]').click();
+      await openView(view);
       await expect(page.locator(`#${view}View`)).toHaveAttribute(marker,'');
     }
 
