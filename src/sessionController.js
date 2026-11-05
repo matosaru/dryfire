@@ -9,7 +9,7 @@ import {
   recordSessionDetection, pauseSession, resumeSession, endSession, toSessionRecord,
 } from './drillSession.js';
 import { getGunSetting, setGunSetting, saveSession, getSessions } from './storage/library.js';
-import { createStartCuePlayer, requestFeedbackVibration } from './feedback.js';
+import { requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
 
 const $ = selector => document.querySelector(selector);
@@ -232,6 +232,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if (token !== operation || capture !== captureToken) { await session.stop(); return null; }
     microphone = session;
     clock = session.nowMs;
+    await session.waitForInput();
+    if (token !== operation || capture !== captureToken) { await session.stop(); return null; }
     return session;
   }
 
@@ -245,7 +247,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     pending = true;
     review = null;
     if (!resuming) { state = null; savedRevision = null; saveError = null; }
-    cue = createStartCuePlayer();
+    cue = presentation.createStartCuePlayer();
     const cueReady = config.soundAtStart ? cue.prepare() : Promise.resolve(true); // Explicit Start/Resume gesture.
     changed();
     try {
@@ -397,6 +399,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   $('#sessionBackBtn').addEventListener('click', () => onBack());
   bind('backToDrillsBtn', () => onNavigate('drills'));
   $('#sessionLearnBtn').addEventListener('click', () => onNavigate('learn'));
+  bind('sessionTestStartSound', async () => { if (!await presentation.playStartCuePreview()) onError(new Error('Start sound unavailable. Check browser audio permission and media volume.')); });
   bind('repeatSessionBtn', () => {
     const record = state ? toSessionRecord(state) : review;
     if (record) open({ id: record.drillId, title: record.drillTitle, steps: record.drillSteps }, record.config).catch(onError);

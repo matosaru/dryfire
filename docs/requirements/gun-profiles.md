@@ -16,7 +16,7 @@ Local implementation captures: [first-gun setup](../design/archive/chg-012/gun-s
 | GUN-02 | Offer exactly these type labels: **Handguns**, **Rifles and Carbines**, **Shotguns**. | Approved |
 | GUN-03 | Support up to five saved gun profiles. Display capacity and prevent a sixth profile. | Approved |
 | GUN-04 | My Guns shows saved profiles and lets the user select one or add another while capacity remains. | Approved flow |
-| GUN-05 | The selected gun's Home displays its name/type and entries for Learn Sounds, Drills, Live Listen and History. Keep a clear gun switcher. | Approved flow |
+| GUN-05 | The selected gun's Home displays its name/type and entries for Learn Sounds, Drills and History. Learn contains the selected gun's learned-sound recognition check. Keep a clear gun switcher. | Approved flow; recognition navigation revised 2026-11-05 |
 | GUN-06 | Keep learned sounds, custom drills, drill configuration and history separate for each gun. Classification uses only the selected gun's learned model. | Approved |
 | GUN-07 | Remember profiles and the selected gun across refreshes and compatible same-origin deployments. | Approved |
 | GUN-08 | Do not apply the future free-version one-gun limit in this iteration. | Explicitly deferred restriction |

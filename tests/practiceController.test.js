@@ -13,9 +13,10 @@ import {mountPracticeContents} from '../apps/web/src/app/practiceContents.tsx';
 const audio = await import('../src/audio.js');
 const capture = jest.fn(), save = jest.fn(), set = jest.fn(), get = jest.fn();
 const cue = { prepare: jest.fn(), play: jest.fn(), close: jest.fn() };
+const previewCue = jest.fn(async () => true);
 jest.unstable_mockModule('../src/audio.js', () => ({ ...audio, startContinuousListening: capture }));
 jest.unstable_mockModule('../src/storage/library.js', () => ({ getGunSetting: get, setGunSetting: set, saveSession: save }));
-jest.unstable_mockModule('../src/feedback.js', () => ({ createStartCuePlayer: () => cue, requestFeedbackVibration: () => ({ supported: true, accepted: true }) }));
+jest.unstable_mockModule('../src/feedback.js', () => ({ requestFeedbackVibration: () => ({ supported: true, accepted: true }) }));
 const { createPracticeController } = await import('../src/practiceController.js');
 const catalog = readFileSync(new URL('./fixtures/practice-catalog.html', import.meta.url), 'utf8');
 const library = JSON.parse(readFileSync(new URL('../visual-tests/fixtures/library.json', import.meta.url)));
@@ -40,7 +41,8 @@ beforeEach(() => {
   capture.mockReset().mockImplementation(async value => { options = value; captureCalled.resolve(); return session; });
   get.mockReset().mockImplementation(async (_key, fallback) => fallback); set.mockReset().mockResolvedValue(undefined); save.mockReset().mockResolvedValue(undefined);
   cue.prepare.mockReset().mockResolvedValue(true); cue.play.mockReset().mockImplementation(() => { cueTimes.push(performance.now()); return true; }); cue.close.mockReset().mockResolvedValue(undefined);
-  loadPresentation=()=>import('../src/sessionPresentation.js');
+  previewCue.mockClear();
+  loadPresentation=async()=>({...await import('../src/sessionPresentation.js'),createStartCuePlayer:()=>cue,playStartCuePreview:previewCue});
   controller = createPracticeController({ ...callbacks,loadPresentation:()=>loadPresentation(), getContext: () => context, titleFor: label => label, vibrationEnabled: () => false });
   if(react){controller.connectView((...args)=>(mounted=mountPracticeContents(...args)));controller.connectPage((...args)=>(parent=mountPracticePage(...args)),event=>event.preventDefault());}
 });
@@ -150,6 +152,8 @@ test.each(['single','repeated','par','control'])('%s configuration keeps a focus
   expect(capture).not.toHaveBeenCalled();
   expect($('practicePar').disabled).toBe(mode !== 'par');
 });
+
+test('start-sound preview plays from its user action and hides for an external cue',async()=>{await controller.open('single',config);expect($('practiceStartSoundTest').classList.contains('hidden')).toBe(false);$('practiceTestStartSound').click();await Promise.resolve();expect(previewCue).toHaveBeenCalledTimes(1);$('practiceStartSource').value='external';$('practiceStartSource').dispatchEvent(new Event('change',{bubbles:true}));await controller.flush();expect($('practiceStartSoundTest').classList.contains('hidden')).toBe(true);});
 
 test('invalid drafts stay visible and do not overwrite the saved gun configuration', async () => {
   await controller.open('single', config);

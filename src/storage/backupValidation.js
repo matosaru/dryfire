@@ -85,7 +85,8 @@ export function validateBackup(backup, createLegacyGun, now) {
     if (typeof row.id !== 'string' || !row.id || exampleIds.has(row.id)) throw new Error('Invalid or duplicated backup ID.');
     exampleIds.add(row.id);
     return { id: row.id, gunId, label: row.label, featureVersion: FEATURE_VERSION,
-      features: [...row.features], createdAt: Number.isFinite(row.createdAt) ? row.createdAt : now() };
+      features: [...row.features], ...(validFeatures(row.spectralFeatures)&&row.spectralFeatures.length===23?{spectralFeatures:[...row.spectralFeatures],spectralFeatureVersion:3}:{}),
+      createdAt: Number.isFinite(row.createdAt) ? row.createdAt : now() };
   });
   const eventIds = new Set();
   const eventCounts = new Map();

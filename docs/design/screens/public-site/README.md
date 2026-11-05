@@ -1,5 +1,7 @@
 # Public website — shared app and informational layouts
 
+CHG-063: Help and calibration explain the pre-countdown ambient observation, raw-audio privacy, stronger testable start cue, device media-volume dependency and representative trigger recording. These pages do not claim physical-device accuracy before the [audio v3 evidence gates](../../../requirements/audio-recognition-v3.md) pass.
+
 CHG-061,2026-10-24. Root opens the actual trainer; marketing is retained inside About. Public About/Contact/manuals prerender their actual app components, with the same header/footer/fixed navigation. Static overview/Help pages reuse the same shell.  [Public SEO requirements](../../../requirements/public-seo.md) own behavior. PublicPage composes shared chrome with real links, Dark default, white text, orange action and fixed navigation. Content is readable without JS/profile/microphone and reuses actual in-app manuals. [SEO route plan](../../../seo/indexable-routes-plan.md) owns URLs; [history](../../../project/implementation-history.md) separates acceptance/publication from live deployment.
 
 | Page | Current capture |

@@ -173,10 +173,11 @@ function currentExample(row) {
   return row.featureVersion === FEATURE_VERSION && labels.includes(row.label) && validFeatures(row.features);
 }
 
-export async function addExample(label, features, gunId) {
-  if (!labels.includes(label) || !validFeatures(features)) throw new TypeError('Invalid label or audio feature vector.');
+export async function addExample(label, features, gunId, {spectralFeatures} = {}) {
+  if (!labels.includes(label) || !validFeatures(features) || (spectralFeatures!==undefined&&(!validFeatures(spectralFeatures)||spectralFeatures.length!==23))) throw new TypeError('Invalid label or audio feature vector.');
   const owner = await resolveGunId(gunId, true);
-  const row = { id: crypto.randomUUID(), gunId: owner, label, features: [...features], featureVersion: FEATURE_VERSION, createdAt: Date.now() };
+  const row = { id: crypto.randomUUID(), gunId: owner, label, features: [...features], featureVersion: FEATURE_VERSION,
+    ...(spectralFeatures?{spectralFeatures:[...spectralFeatures],spectralFeatureVersion:3}:{}),createdAt: Date.now() };
   return withOwnedTransaction(owner, EXAMPLES, (tx, context) => {
     const store = tx.objectStore(EXAMPLES);
     const request = store.index('gunId').getAll(owner);
@@ -188,6 +189,14 @@ export async function addExample(label, features, gunId) {
       context.result = row;
     };
   });
+}
+
+/** Atomically replace one sound profile only after a new capture succeeds. */
+export async function replaceExamplesForLabel(label,features,gunId,{spectralFeatures}={}){
+ if(!labels.includes(label)||!validFeatures(features)||(spectralFeatures!==undefined&&(!validFeatures(spectralFeatures)||spectralFeatures.length!==23)))throw new TypeError('Invalid replacement sound profile.');
+ const owner=await resolveGunId(gunId,true),row={id:crypto.randomUUID(),gunId:owner,label,features:[...features],featureVersion:FEATURE_VERSION,
+  ...(spectralFeatures?{spectralFeatures:[...spectralFeatures],spectralFeatureVersion:3}:{}),createdAt:Date.now()};
+ return withOwnedTransaction(owner,EXAMPLES,(tx,context)=>{const store=tx.objectStore(EXAMPLES),request=store.index('gunId').openCursor(IDBKeyRange.only(owner));request.onsuccess=()=>{try{const cursor=request.result;if(cursor){if(cursor.value.label===label)cursor.delete();cursor.continue();return;}store.put(row);context.result=row;}catch(error){context.fail(error);}};});
 }
 
 export async function getExamples(gunId) {
@@ -332,10 +341,11 @@ export async function getCalibrationExamples(gunId) {
   return compatibleCalibration(normalizeCalibration(await getGunSetting('calibrationExamples', [], gunId)));
 }
 
-export async function addCalibrationExample(kind, features, gunId) {
-  if (!CALIBRATION_KINDS.includes(kind) || !validFeatures(features) || features.length !== 15) throw new TypeError('Invalid calibration example.');
+export async function addCalibrationExample(kind, features, gunId, {spectralFeatures} = {}) {
+  if (!CALIBRATION_KINDS.includes(kind) || !validFeatures(features) || features.length !== 15 || (spectralFeatures!==undefined&&(!validFeatures(spectralFeatures)||spectralFeatures.length!==23))) throw new TypeError('Invalid calibration example.');
   const owner = await resolveGunId(gunId, true);
-  const row = { id: crypto.randomUUID(), kind, features: [...features], featureVersion: FEATURE_VERSION, createdAt: Date.now() };
+  const row = { id: crypto.randomUUID(), kind, features: [...features], featureVersion: FEATURE_VERSION,
+    ...(spectralFeatures?{spectralFeatures:[...spectralFeatures],spectralFeatureVersion:3}:{}),createdAt: Date.now() };
   return withOwnedTransaction(owner, GUN_SETTINGS, (tx, context) => {
     const store = tx.objectStore(GUN_SETTINGS);
     const request = store.get([owner, 'calibrationExamples']);

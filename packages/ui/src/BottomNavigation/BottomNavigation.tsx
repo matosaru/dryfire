@@ -1,10 +1,9 @@
-export type Destination = 'home' | 'learn' | 'drills' | 'recognize' | 'history';
+export type Destination = 'home' | 'learn' | 'drills' | 'history';
 export type BottomNavigationProps = { view?: string; disabled?: boolean; onNavigate?: (view: Destination) => void; hrefs?:Record<Destination,string> };
 const items = [
   { view: 'home', title: 'Home', shape: <path d="m3 11 9-8 9 8v10h-6v-7H9v7H3z" /> },
   { view: 'learn', title: 'Learn', shape: <path d="M3 10v4m4-7v10m5-13v16m5-13v10m4-7v4" /> },
   { view: 'drills', title: 'Drills', shape: <><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3" /><path d="M12 1v4m0 14v4M1 12h4m14 0h4" /></> },
-  { view: 'recognize', title: 'Live Listen', shape: <path d="M3 9v6m4-9v12m5-15v18m5-15v12m4-9v6" /> },
   { view: 'history', title: 'History', shape: <path d="M4 14h3v7H4zm7-6h3v13h-3zm7-5h3v18h-3z" /> },
 ] satisfies { view: Destination; title: string; shape: React.ReactNode }[];
 

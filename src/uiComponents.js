@@ -18,7 +18,7 @@ export function actionButton({ label, className = 'button primary', disabled = f
 }
 export function soundCard({
   label, meta, count, maxExamples, minExamples, recommendedExamples, locked,
-  onRecord, onReset, optional = false, enabled = false, onToggle
+  onRecord, onReplace, onReset, optional = false, enabled = false, onToggle
 }, doc = document) {
   const card = doc.createElement('article');
   card.className = `class-card tone-${meta.tone}`;
@@ -66,6 +66,13 @@ export function soundCard({
       disabled: locked || count >= maxExamples,
       ariaLabel: `Record ${meta.title} sample`,
       onClick: onRecord
+    }, doc),
+    actionButton({
+      label: 'Replace',
+      className: 'button secondary replace-class',
+      disabled: locked || count === 0,
+      ariaLabel: `Replace learned ${meta.title} sounds`,
+      onClick: onReplace
     }, doc),
     actionButton({
       label: 'Reset',

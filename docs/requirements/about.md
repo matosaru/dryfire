@@ -42,7 +42,7 @@ Complete the safety check before recording or practice. Sound recognition is exp
 
 ## Acceptance and boundaries
 
-- **ABOUT-06 / CHG-033:** show the same fixed five-item bottom navigation as other app pages: Home, Learn, Drills, Live Listen and History. Keep safe-area/content padding so it does not cover page/footer content. About is not a practice tab, so no unrelated tab is marked active. Before gun setup, those destinations use the existing setup gate; opening a tab never starts the microphone or confirms safety.
+- **ABOUT-06 / CHG-033 / CHG-067:** show the same fixed four-item bottom navigation as other app pages: Home, Learn, Drills and History. Keep safe-area/content padding so it does not cover page/footer content. About is not a practice tab, so no unrelated tab is marked active. Before gun setup, those destinations use the existing setup gate; opening a tab never starts the microphone or confirms safety.
 
 - App header → About opens About and → Contact opens Contact before and after gun setup. Back returns to the visited screen; browser Back/Forward restores the visited app state.
 - About contains no contact card; [Contact](contact.md) owns the email page. Neither page sends private data or introduces an email backend or form.

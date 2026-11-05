@@ -18,21 +18,24 @@ function flatten(root) {
 }
 describe('reusable UI factories', () => {
   test('learning card retains progress, accessibility and independent reset action', () => {
-    const record = jest.fn(), reset = jest.fn();
+    const record = jest.fn(), replace = jest.fn(), reset = jest.fn();
     const card = soundCard({
       label:'rack', meta:{title:'Rack slide',description:'Slide movement',tone:'blue'}, count:3,
       maxExamples:50, minExamples:3, recommendedExamples:10, locked:false,
-      onRecord:record, onReset:reset
+      onRecord:record, onReplace:replace, onReset:reset
     },fakeDocument());
     const nodes = flatten(card);
     const buttons = nodes.filter(node => node.tag === 'button');
-    expect(buttons).toHaveLength(2);
+    expect(buttons).toHaveLength(3);
     expect(buttons[0].attributes['aria-label']).toBe('Record Rack slide sample');
-    expect(buttons[1].attributes['aria-label']).toBe('Reset learned Rack slide sounds');
+    expect(buttons[1].attributes['aria-label']).toBe('Replace learned Rack slide sounds');
+    expect(buttons[2].attributes['aria-label']).toBe('Reset learned Rack slide sounds');
     expect(buttons[0].disabled).toBe(false);
     buttons[0].handlers.click();
     buttons[1].handlers.click();
+    buttons[2].handlers.click();
     expect(record).toHaveBeenCalledTimes(1);
+    expect(replace).toHaveBeenCalledTimes(1);
     expect(reset).toHaveBeenCalledTimes(1);
     expect(nodes.some(node => node.textContent.includes('ready to recognize'))).toBe(true);
   });

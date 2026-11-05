@@ -2,6 +2,7 @@ import {practiceRunPresentation,sequenceRunPresentation,practiceReviewPresentati
 import {practiceResultPresentation,sequenceResultPresentation} from '../apps/web/src/features/sessions/resultPresentation.ts';
 // Shared read-only presentation for live sessions and explicitly simulated help examples.
 import { continuousPractice, practiceElapsed, practiceStatistics } from './practiceSession.js';
+export {createStartCuePlayer,playStartCuePreview} from './startCue.js';
 
 function resultDetailsNode(model,node){
   const card=node('details','','session-result-card');

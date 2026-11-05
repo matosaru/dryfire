@@ -144,7 +144,7 @@ function sleep(ms, signal) {
  * The ScriptProcessor path is a WebView-compatible MVP fallback; a native
  * AudioWorklet/PCM plugin is the next step for low-latency streaming detection.
  */
-export async function recordFeatureVector(onState = () => {}, { audioPreferences, onProcessing = () => {}, signal } = {}) {
+export async function recordFeatureVector(onState = () => {}, { audioPreferences, onProcessing = () => {}, onAnalysis = () => {}, featureExtractor, signal } = {}) {
   const preferences = normalizeAudioPreferences(audioPreferences);
   const capabilities = getAudioCapabilities();
   throwIfAborted(signal);
@@ -215,7 +215,10 @@ export async function recordFeatureVector(onState = () => {}, { audioPreferences
     const samples = new Float32Array(length);
     let offset = 0;
     for (const chunk of chunks) { samples.set(chunk, offset); offset += chunk.length; }
-    return analyzeRecording(samples, context.sampleRate).features;
+    const analysis = analyzeRecording(samples, context.sampleRate);
+    if (featureExtractor) analysis.spectralFeatures = featureExtractor(samples, context.sampleRate);
+    onAnalysis(analysis);
+    return analysis.features;
   } catch (error) {
     if (error?.name === 'NotAllowedError' || error?.name === 'PermissionDeniedError') {
       throw new Error('Microphone permission was denied. Enable it in browser or app settings.');
@@ -242,7 +245,9 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   }
   const AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext;
   if (!AudioContextClass) throw new Error('Web Audio is unavailable on this device.');
-  const { createEventDetector } = await import('./eventDetector.js');
+  const [{ createEventDetector }, { createAmbientReadinessEstimator, describeAmbientReadiness }] = await Promise.all([
+    import('./eventDetector.js'), import('./audioReadiness.js'),
+  ]);
   throwIfAborted(signal);
   const noiseMultiplier = { high: 3.5, normal: 5, low: 7 }[sensitivity] ?? 5;
   let stream, context, source, node, output;
@@ -255,19 +260,21 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   let closePromise;
   let detectionArmed = detectionEnabled !== false;
   let armedAfterFrame = 0;
-  let inputFrames = 0;
   let suppressedFrames = null;
+  let readinessEstimator;
+  let readinessResult;
   const inputWaiters = new Set();
   const onAbort = () => { void stop(); };
 
   function waitForInput({ timeoutMs = 5000 } = {}) {
     if (stopped) return Promise.reject(Object.assign(new Error('Audio capture was cancelled.'), { name: 'AbortError' }));
-    if (inputFrames >= context.sampleRate * .1 && context.state === 'running') return Promise.resolve();
+    const current = readinessEstimator?.snapshot();
+    if (current?.ready && context.state === 'running') return Promise.resolve(current);
     return new Promise((resolve, reject) => {
       const waiter = {
         finish(error) {
           clearTimeout(waiter.timer); inputWaiters.delete(waiter);
-          if (error) reject(error); else resolve();
+          if (error) reject(error); else resolve(readinessResult);
         },
       };
       waiter.timer = setTimeout(() => waiter.finish(new Error('No audio input arriving. Check microphone permission and try again.')), timeoutMs);
@@ -330,14 +337,23 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     onProcessing(inspectAudioProcessing(stream.getAudioTracks()[0], preferences, capabilities));
     throwIfAborted(signal);
     detector = createEventDetector(context.sampleRate, onEvent, { noiseMultiplier });
+    readinessEstimator = createAmbientReadinessEstimator(context.sampleRate);
     source = context.createMediaStreamSource(stream);
     output = context.createGain();
     output.gain.value = 0;
     const onChunk = (samples, startFrame) => {
       if (!running || !(samples instanceof Float32Array) || !samples.length || !Number.isFinite(startFrame)) return;
       if (context.state === 'running') {
-        inputFrames += samples.length;
-        if (inputFrames >= context.sampleRate * .1) for (const waiter of inputWaiters) waiter.finish();
+        if (!readinessResult?.ready) {
+          readinessEstimator.push(samples);
+          const observed = readinessEstimator.snapshot();
+          if (observed.ready) {
+            readinessResult = observed;
+            detector.setNoiseFloor(observed.recommendedNoiseFloor);
+            onState(describeAmbientReadiness(observed));
+            for (const waiter of inputWaiters) waiter.finish();
+          }
+        }
       }
       if (detectionArmed) {
         // Gate by captured sample time, not delivery time: delayed chunks may contain the cue.

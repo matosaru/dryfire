@@ -9,7 +9,7 @@ const html = renderPageTemplates(await readFile(new URL('../index.html', import.
 
 test('all app navigation targets and controls exist in HTML', () => {
   for (const id of ['homeView', 'learnView', 'recognizeView', 'historyView', 'settingsView',
-    'homeLearnBtn', 'homeListenBtn', 'exportBtn', 'importBtn', 'importFile', 'installStatus',
+    'homeLearnBtn', 'learnListenBtn', 'exportBtn', 'importBtn', 'importFile', 'installStatus',
     'homeExamples', 'homeEvents', 'homeAccuracy', 'safetyAck', 'listenBtn', 'trainingSummary',
     'maxResults', 'predictionCard', 'historyList',
     'drillSelect', 'drillSteps', 'drillStats', 'drillFeedback', 'drillProgressBadge', 'resetDrillBtn']) {
@@ -39,7 +39,7 @@ test('four labels and repeated-event timeline are present', () => {
 test('compact navigation, per-class reset and animated previews are wired', async()=>{
   const main=await readFile(new URL('../src/main.js',import.meta.url),'utf8');
   const { css: styles }=composedStyles();
-  for(const id of ['settingsShortcut','drillCatalog','homeDrillsBtn','changeDrillBtn','freeListenBtn'])assert.match(html,new RegExp('id="'+id+'"'));
+  for(const id of ['settingsShortcut','drillCatalog','homeDrillsBtn','changeDrillBtn','learnListenBtn'])assert.match(html,new RegExp('id="'+id+'"'));
   assert.match(html,/data-view="drills"/);
   assert.match(main,/resetSoundProfile\(label\)/);
   assert.equal(typeof clearExamplesForLabel,'function');

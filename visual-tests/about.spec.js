@@ -9,8 +9,8 @@ for (const screen of ['about', 'contact']) test(`${screen} bottom navigation rea
   await page.locator('#restoreGunBackupBtn').click();
   await page.locator('#importFile').setInputFiles({ name: 'fixture.json', mimeType: 'application/json', buffer: library });
   await expect(page.locator('#homeView')).toBeVisible(); await page.locator(`#${screen}Btn`).click();
-  await expect(page.locator('.tabs .tab')).toHaveCount(5);
-  for (const view of ['home', 'learn', 'drills', 'recognize', 'history']) {
+  await expect(page.locator('.tabs .tab')).toHaveCount(4);
+  for (const view of ['home', 'learn', 'drills', 'history']) {
     await expect(page.locator('.tabs .tab.active')).toHaveCount(0);
     await page.locator(`.tab[data-view="${view}"]`).click(); await expect(page.locator(`#${view}View`)).toBeVisible();
     await page.goBack(); await expect(page.locator(`#${screen}View`)).toBeVisible();

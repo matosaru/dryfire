@@ -36,7 +36,7 @@ for (const base of folders) {
   }
 }
 // Validation/engines stay independent of IndexedDB, microphone and UI adapters.
-const pureFiles=['storage/constants','storage/validation','storage/sessionValidation','storage/backupValidation','featureFormat','classifier','calibration','drills','drillSession','practiceSession','practiceModes','evaluation','inputLimits'].map(name=>'src/'+name+'.js');
+const pureFiles=['storage/constants','storage/validation','storage/sessionValidation','storage/backupValidation','featureFormat','classifier','calibration','drills','drillSession','practiceSession','practiceModes','startCueProfile','evaluation','inputLimits'].map(name=>'src/'+name+'.js');
 const pureSet=new Set(pureFiles.map(path=>resolve(root,path))),visiting=new Set(),visited=new Set();
 function checkPure(path){
  if(visiting.has(path)){require(false,`Pure dependency cycle: ${path}`);return;}

@@ -155,7 +155,7 @@ For step-by-step hosting instructions (GitHub + Netlify or manual Netlify Drop),
 ## Historical version 0.8.0 — interface refresh
 
 - Compact header and angular **DF** logo inspired by the dark/olive reference image; matching installed-app icons.
-- Main navigation: **Home / Learn / Drills / Live Listen / History**, with Settings in the top-right gear.
+- Main navigation: **Home / Learn / Drills / History**, with Settings in the top-right gear. Open **Learn → Test learned sounds** for the continuous recognition check.
 - Four lightweight, looping animated SVG sound cues on Learn cards. Vector previews reduce download size; movement is decorative and not a measured waveform.
 - Per-sound **Reset** button deletes only that class's learned examples. Settings → **Reset all learned sounds** removes all four classes, preserving recognition history. History has an independent clear control. All deletions ask for confirmation.
 - No audio feature format or IndexedDB version change: existing compatible models and history remain intact.

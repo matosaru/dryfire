@@ -5,9 +5,7 @@ import {startGunPreferenceReads} from './gunPreferenceReads.js';
 import {parseAppPath,isAppPath,appPathFor,appTitleFor,isIndexableAppPath,setupForGuide} from './appPaths.js';
 import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
 import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
-import { recognitionRows, evaluationPresentation } from '../apps/web/src/features/history/presentation.ts';
 import { createModulePreparation } from './modulePreparation.js';
-import {distancePresentation,liveDrillPresentation} from '../apps/web/src/features/live-listen/presentation.ts';
 import { preferencePresentation } from '../apps/web/src/features/settings/preferencePresentation.ts';
 import { resolveRouteView } from '@dryfire/web/route-context';
 import { createInformationBridge } from '@dryfire/web/information-bridge';
@@ -31,7 +29,7 @@ import { normalizeAudioPreferences, getAudioCapabilities } from './audioPreferen
 import { getVibrationCapability } from './feedback.js';
 import { classify, labels, MIN_EXAMPLES_PER_CLASS, RECOMMENDED_EXAMPLES_PER_CLASS, trainingCounts } from './classifier.js';
 import {
-  addExample, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
+  addExample, replaceExamplesForLabel, getExamples, getOutdatedExampleCount, clearExamples, clearExamplesForLabel,
   addEvent, getEvents, verifyEvent, clearEvents, trimEvents, normalizeMaxResults, MAX_EXAMPLES_PER_CLASS, exportBackup,
   getGuns, createGun, updateGun, deleteGun, getLibraryOverview, setActiveGun, resetLibrary, clearSessions,
   getGunSetting, setGunSetting, getCustomDrills, saveCustomDrill,
@@ -126,10 +124,13 @@ let homeRenderToken = 0;
 let homePage, homePagePending, profilePages;
 let settingsPage;
 let learnPage;
-let livePage;
-let drillsPage;
+let soundCheckController,soundCheckPage,soundCheckPending;
+let legacyHistoryRenderer;
+let livePage,livePageModule,livePagePending;
+let drillsPage,legacyDrillsPending,customDrillCollectionSelected=false;
 let historyPage, historyOwner, historyRows=[], historySessions=[];
 const preparePageModule=createModulePreparation(showError);
+let profileQuality;
 const guideHandlers=new Map();
 const historyHandlers=new Map();
 function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else setNodeDisabled($('#'+id),disabled);}
@@ -198,10 +199,10 @@ const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+
 const gunLibraryCoordinator=createGunLibraryCoordinator({get guns(){return guns;},set guns(value){guns=value;},get gun(){return activeGun;},get capabilities(){return CAPABILITIES;},get loading(){return profileLoading;},set loading(value){profileLoading=value;},get events(){return eventQueue;},get session(){return sessionController;},get practice(){return practiceController;},get pendingEntry(){return pendingEntry;},get pages(){return profilePages;}},{getGuns,getExamples,getCustomDrills,deleteGun,setActiveGun,updateGun,createGun},{profileLocked,setMessage,switchView,loadProfilePages,showError,setBusy,loadActiveGun,setStatus,openEntry,renderGunControls,renderLiveButton,renderClassCards,gunImagePath,$,document,confirm:message=>confirm(message)});
 
 function ownerId() {
-  if (!activeGun || activeGun.needsDetails) throw new Error('Add your gun name and type before training.');
+  if (!activeGun || activeGun.needsDetails) throw new Error('Add gun details before training.');
   return activeGun.id;
 }
-function profileLocked() { return busy || profileLoading || preferenceState.pending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked(); }
+function profileLocked() { return busy || profileLoading || preferenceState.pending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked() || !!soundCheckController?.locked?.(); }
 function currentDrill(id) { return getDrill(id, customDrills); }
 /** One navigation/capture policy for native startup and owned React pages. */
 function renderListeningReadiness(counts = getCounts()) {
@@ -220,10 +221,10 @@ function renderListeningReadiness(counts = getCounts()) {
   informationPages.setNavigationDisabled(view.entryDisabled);
   const context = {gunName:activeGun?.name || 'No gun selected',contextHidden:!gunAvailable};
   const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
-  if(homePage)homePage.update({...context,training,listenDisabled:view.entryDisabled});
-  else {setNodeText($('#homeExamples'),training);setNodeDisabled($('#homeListenBtn'),view.entryDisabled);}
-  if(drillsPage)drillsPage.update({...context,freeListenDisabled:view.entryDisabled});
-  else setNodeDisabled($('#freeListenBtn'),view.entryDisabled);
+  if(homePage)homePage.update({...context,training});
+  else setNodeText($('#homeExamples'),training);
+  if(learnPage)learnPage.update({...context,listenDisabled:view.entryDisabled});
+  else setNodeDisabled($('#learnListenBtn'),view.entryDisabled);
 }
 
 function renderGunControls() {
@@ -334,16 +335,22 @@ function renderGunLibrary() { return gunLibraryCoordinator.render(); }
 
 function submitGun(event) { return gunLibraryCoordinator.submit(event); }
 
-function selectDrillCollection(custom){
- if(custom && !CAPABILITIES.customDrillCreation && !customDrills.length)custom=false;
- const limited=!CAPABILITIES.customDrillCreation && !customDrills.length;
+function renderLegacyDrills(){
+ if(activeView!=='drills'||drillsPage)return;
+ legacyDrillsPending||=Promise.all([import('./optional/renderLegacyDrillCollection.js'),import('./optional/renderLegacyCustomCatalog.js')]).then(([collection,catalog])=>{
+  if(activeView!=='drills'||drillsPage)return;
+  const limited=!CAPABILITIES.customDrillCreation&&!customDrills.length;
+  collection.renderLegacyDrillCollection(document,{custom:customDrillCollectionSelected,limited,creation:CAPABILITIES.customDrillCreation});
+  catalog.renderLegacyCustomCatalog(document,customDrills,{drillCard,titleFor,onChoose:chooseDrill,onEdit:drill=>customEditor.open(drill)});
+ }).catch(showError).finally(()=>{legacyDrillsPending=null;});
+}
+function selectDrillCollection(custom,closeEditor=true){
+ if(custom&&!CAPABILITIES.customDrillCreation&&!customDrills.length)custom=false;
+ customDrillCollectionSelected=custom;
+ const limited=!CAPABILITIES.customDrillCreation&&!customDrills.length;
  if(drillsPage)drillsPage.update({collectionHidden:limited,customTabHidden:limited,customSelected:custom,createHidden:!custom||!CAPABILITIES.customDrillCreation});
- else{
-  $('#customDrillsTab').classList.toggle('hidden',limited);$('#builtInDrillsTab').parentElement.classList.toggle('hidden',limited);
-  $('#builtInDrillsTab').setAttribute('aria-pressed',String(!custom));$('#customDrillsTab').setAttribute('aria-pressed',String(custom));
-  $('#drillCatalog').classList.toggle('hidden',custom);$('#newCustomDrillBtn').classList.toggle('hidden',!custom||!CAPABILITIES.customDrillCreation);$('#customDrillCatalog').classList.toggle('hidden',!custom);
- }
- $('#customDrillForm').classList.add('hidden');
+ else renderLegacyDrills();
+ if(closeEditor)$('#customDrillForm').classList.add('hidden');
 }
 function drillCards(){return{
  builtIns:SEQUENCE_DRILLS.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id)})),
@@ -363,13 +370,7 @@ async function chooseDrill(id) {
 }
 function renderCustomCatalog() {
   if(drillsPage){const view=drillCards();drillsPage.update({customs:view.customs,emptyCustom:view.emptyCustom});return;}
-  const host = $('#customDrillCatalog');
-  host.replaceChildren();
-  if (!customDrills.length) { const empty = document.createElement('p'); empty.className = 'empty-state'; empty.textContent = 'No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.'; host.append(empty); }
-  for (const drill of customDrills) {
-    const card = drillCard({drill, titleFor, onChoose: () => chooseDrill(drill.id)});
-    const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'button secondary'; edit.textContent = 'Edit sequence'; edit.addEventListener('click', () => customEditor.open(drill)); card.append(edit); host.append(card);
-  }
+  renderLegacyDrills();
 }
 async function saveEditedCustomDrill(drill, gunId) {
   await saveCustomDrill(drill, gunId);
@@ -399,9 +400,9 @@ function getCounts() { return trainingCounts(examples); }
 function renderModelNotice(notice,noticeHidden){if(learnPage)learnPage.update({notice,noticeHidden});else{$('#modelNotice').textContent=notice;$('#modelNotice').classList.toggle('hidden',noticeHidden);}}
 function learningProps(){
   const counts=getCounts();
-  return{locked:profileLocked(),cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
+  return{locked:profileLocked(),triggerQuality:profileQuality?.assessTriggerProfile(examples),onSoundCheck:()=>{if(triggerReady())switchView('soundCheck');else setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples first.`);},cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
     label,meta:labelMeta[label],count:counts[label],maxExamples:MAX_EXAMPLES_PER_CLASS,minExamples:MIN_EXAMPLES_PER_CLASS,recommendedExamples:RECOMMENDED_EXAMPLES_PER_CLASS,locked:profileLocked(),
-    onRecord:()=>recordExample(label),onReset:()=>resetSoundProfile(label),optional:label!=='trigger',enabled:enabledSoundLabels.includes(label),onToggle:enabled=>toggleOptionalSound(label,enabled),
+    onRecord:()=>recordExample(label),onReplace:()=>replaceSoundProfile(label),onReset:()=>resetSoundProfile(label),optional:label!=='trigger',enabled:enabledSoundLabels.includes(label),onToggle:enabled=>toggleOptionalSound(label,enabled),
   })),calibrationProps:{counts:Object.fromEntries(['reset','noise','cue'].map(kind=>[kind,calibration.filter(row=>row.kind===kind).length])),maximum:MAX_EXAMPLES_PER_CLASS,locked:profileLocked(),
     onRecord:kind=>{if(!profileLocked())recordCalibration(kind);},onReset:kind=>resetCalibration(kind,{reset:'Trigger reset clicks',noise:'Other noise / handling',cue:'External start beep'}[kind]),
   }};
@@ -412,6 +413,7 @@ function renderLearningLocks() {
   document.querySelectorAll('.class-card[data-sound-label]').forEach(card => {
     const count = counts[card.getAttribute('data-sound-label')] || 0;
     card.querySelector('.record-example').disabled = locked || count >= MAX_EXAMPLES_PER_CLASS;
+    card.querySelector('.replace-class').disabled = locked || !count;
     card.querySelector('.reset-class').disabled = locked || !count;
   });
 }
@@ -432,11 +434,12 @@ function renderClassCards() {
         minExamples: MIN_EXAMPLES_PER_CLASS,
         recommendedExamples: RECOMMENDED_EXAMPLES_PER_CLASS,
         locked: profileLocked(),
-        onRecord: () => recordExample(label),
+        onRecord: () => recordExample(label), onReplace:()=>replaceSoundProfile(label),
         onReset: () => resetSoundProfile(label), optional: label !== 'trigger', enabled: enabledSoundLabels.includes(label),
         onToggle: enabled => toggleOptionalSound(label, enabled)
       }));
     }
+    profileQuality?.renderTriggerProfile(examples);
     renderCalibrationCards();
   }
   renderListeningReadiness(counts);
@@ -485,8 +488,8 @@ async function resetCalibration(kind,title){
 async function recordCalibration(kind) {
   const gunId = ownerId();
   await capture(async () => {
-    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing });
-    await addCalibrationExample(kind, features, gunId); calibration = await getCalibrationExamples(gunId);
+    const sample=await recordProfileFeature();
+    await addCalibrationExample(kind,sample.features,gunId,{spectralFeatures:sample.spectralFeatures}); calibration = await getCalibrationExamples(gunId);
     setStatus('Calibration saved'); renderClassCards();
   });
 }
@@ -503,6 +506,11 @@ async function resetSoundProfile(label) {
     setMessage(`${titleFor(label)} examples removed for ${activeGun.name}. Other sounds, guns and history were kept.`);
   } catch(error) {showError(error);}
   finally {setBusy(false);renderClassCards();}
+}
+
+async function replaceSoundProfile(label){
+  const module=await import('./optional/profileCapture.js');
+  return module.replaceSoundProfile(label,profileLocked(),labels,confirm,titleFor,ownerId,capture,recordProfileFeature,replaceExamplesForLabel,getExamples,value=>{examples=value;},setStatus,setMessage);
 }
 
 function renderDrillCatalog() {
@@ -527,7 +535,7 @@ function goBack(fallback = 'home') { return screenNavigation ? screenNavigation.
 function displayView(name) {
   if (busy || profileLoading || !PAGE_IDS.includes(name)) return;
   if (name !== 'practice' && practiceController?.hasUnsavedResults()) {
-    showError(new Error('Practice results are not saved. Keep this review open and retry saving.'));
+    showError(new Error('Practice results are not saved. Keep this review open and retry.'));
     return;
   }
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
@@ -543,6 +551,7 @@ function displayView(name) {
   }
   if(name==='practice'||name==='session')void practiceGuideController.prepare().catch(()=>{});
   const previousView=activeView;
+  if(previousView==='soundCheck'&&name!=='soundCheck'&&soundCheckController){soundCheckController.dispose();soundCheckController=null;}
   activeView=name;
   if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
   document.body.dataset.view = name;
@@ -568,25 +577,37 @@ function displayView(name) {
     }
   }
   if(name==='drills'){
-    if($('#practiceCatalog').firstElementChild?.tagName==='TEMPLATE')practiceController.renderCatalog();
-    const drillsModule=preparePageModule('drills',()=>afterPaint(()=>import('../apps/web/src/app/drillsPage.tsx')));
+    $('#practiceCatalog').firstElementChild.tagName==='TEMPLATE'&&practiceController.renderCatalog();
+    const drillsModule=preparePageModule('drills',()=>afterPaint(()=>(renderLegacyDrills(),import('../apps/web/src/app/drillsPage.tsx'))));
     if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
-      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open(),onFree:()=>switchView('recognize')},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
+      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open()},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
     }
     if(drillsPage && !profileLocked() && !$('#safetyModal').open){try{customEditor.connectView(drillsModule.mountCustomDrillFields);}catch(error){showError(error);}}
   }
   if(name==='recognize'){
-    const liveModule=preparePageModule('recognize',()=>import('../apps/web/src/app/liveListenPage.tsx'));
-    if(!livePage && liveModule && !profileLocked() && !$('#safetyModal').open){
-      try{livePage=liveModule.mountLiveListenPage($('#recognizeView'),{onBack:()=>goBack(),onAction:id=>liveHandlers.get(id)?.(),onChange:id=>liveHandlers.get(id)?.()});}catch(error){showError(error);}
-    }
+    // Startup no longer downloads the optional Live Listen renderers on Home.
+    // Refresh the lightweight first-entry page before its React enhancement.
+    renderListeningReadiness();
+    renderLiveButton();
+    renderDrill();
+    const connectLivePage=()=>{
+      if(livePage||!livePageModule||activeView!=='recognize'||profileLocked()||$('#safetyModal').open)return;
+      try{livePage=livePageModule.mountLiveListenPage($('#recognizeView'),{onBack:()=>goBack(),onAction:id=>liveHandlers.get(id)?.(),onChange:id=>liveHandlers.get(id)?.()});}catch(error){showError(error);}
+    };
+    if(livePageModule)connectLivePage();
+    else if(!livePagePending)livePagePending=import('../apps/web/src/app/liveListenPage.tsx').then(module=>{livePageModule=module;connectLivePage();}).catch(showError).finally(()=>{livePagePending=null;});
   }
   if(name==='learn'){
+    import('./profileQuality.js').then(module=>{profileQuality=module;renderClassCards();}).catch(showError);
     const learnModule=preparePageModule('learn',()=>import('../apps/web/src/app/learnPage.tsx'));
     if(!learnPage && learnModule && !profileLocked() && !$('#safetyModal').open){
-      try{learnPage=learnModule.mountLearnPage($('#learnView'),{...learningProps(),onBack:()=>goBack()});}catch(error){showError(error);}
+      try{learnPage=learnModule.mountLearnPage($('#learnView'),{...learningProps(),onBack:()=>goBack(),onTestLearnedSounds:()=>switchView('recognize')});}catch(error){showError(error);}
     }
     renderClassCards();
+  }
+  if(name==='soundCheck'){
+    if(!triggerReady()){switchView('learn');setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before running Sound Check.`);return;}
+    if(!soundCheckController&&!soundCheckPending&&!profileLocked())soundCheckPending=Promise.all([import('../apps/web/src/app/soundCheckPage.tsx'),import('./soundCheckController.js')]).then(([pageModule,module])=>{if(activeView!=='soundCheck'||profileLocked()||soundCheckController)return;soundCheckPage ||= pageModule.mountSoundCheckPage($('#soundCheckView'),activeGun?.name);soundCheckController=module.createSoundCheckController({doc:document,startContinuousListening,examples,calibration,enabledLabels:enabledSoundLabels,audioPreferences:preferenceState.audio,onError:showError,startGuard:action=>ensureSafe(action)});}).catch(showError).finally(()=>{soundCheckPending=null;});
   }
   if(name==='history'){
     const historyModule=preparePageModule('history',()=>import('../apps/web/src/app/historyPage.tsx'));
@@ -611,18 +632,13 @@ function displayView(name) {
 }
 
 function renderDistances(distances){
- const rows=distancePresentation(labels,distances,titleFor);
- if(livePage){livePage.update({distances:rows});return;}
- const host=$('#distanceBars');host.replaceChildren();
- for(const item of rows){const row=document.createElement('div');row.className='distance-row';const line=document.createElement('div');line.className='distance-label';const name=document.createElement('span');name.textContent=item.title;const value=document.createElement('span');value.textContent=item.value;const bar=document.createElement('div');bar.className='bar';const fill=document.createElement('span');fill.style.width=item.width;bar.append(fill);line.append(name,value);row.append(line,bar);host.append(row);}
+ if(!livePage&&activeView!=='recognize')return;
+ void import('./optional/renderLegacyDistances.js').then(({renderLegacyDistances})=>{const rows=renderLegacyDistances(document,labels,distances,titleFor,!livePage);if(livePage)livePage.update({distances:rows});}).catch(showError);
 }
 function renderDrill(){
- const view=liveDrillPresentation(currentDrill($('#drillSelect').value),drillState,titleFor);
- if(livePage){livePage.update(view);return;}
- for(const[id,text]of Object.entries(view.texts))liveText(id,text);
- for(const[id,hidden]of Object.entries(view.hidden))liveHidden(id,hidden);
- const steps=$('#drillSteps');steps.replaceChildren();
- for(const step of view.steps){const item=document.createElement('li');item.className=step.className;const number=document.createElement('span');number.className='step-number';number.textContent=step.number;const name=document.createElement('span');name.textContent=step.title;item.append(number,name);steps.append(item);}
+ if(!livePage&&activeView!=='recognize')return;
+ const drill=currentDrill($('#drillSelect').value),state=drillState;
+ void import('./optional/renderLegacyLiveDrill.js').then(({renderLegacyLiveDrill})=>{const view=renderLegacyLiveDrill(document,drill,state,titleFor,!livePage);if(livePage)livePage.update(view);}).catch(showError);
 }
 
 function resetDrill() {
@@ -660,11 +676,16 @@ async function capture(action) {
   finally { setBusy(false); renderClassCards(); }
 }
 
+async function recordProfileFeature(){
+  const module=await import('./optional/profileCapture.js');
+  return module.recordProfileFeature(recordFeatureVector,setStatus,preferenceState.audio,reportAudioProcessing);
+}
+
 async function recordExample(label) {
   const gunId = ownerId();
   await capture(async () => {
-    const features = await recordFeatureVector(setStatus, { audioPreferences:preferenceState.audio, onProcessing: reportAudioProcessing });
-    await addExample(label, features, gunId);
+    const sample=await recordProfileFeature();
+    await addExample(label,sample.features,gunId,{spectralFeatures:sample.spectralFeatures});
     examples = await getExamples(gunId);
     setStatus(`${titleFor(label)} saved`);
   });
@@ -687,7 +708,7 @@ function showRecognition(result, event) {
 
 async function savePrediction(features, token = null, gunId = ownerId(), prediction = undefined) {
   const result = prediction === undefined ? classify(examples, features, recognitionOptions(calibration, enabledSoundLabels)) : prediction;
-  if (!result) throw new Error('No valid training data found.');
+  if (!result) throw new Error('Training data is invalid.');
   if (token !== null && token !== liveToken) return;
   const drillMatch = token !== null ? recordDrillPrediction(result) : null;
   const event = await addEvent({
@@ -819,47 +840,6 @@ async function toggleLive() {
   }
 }
 
-function renderEvaluation(events) {
-  const stats = evaluationPresentation(evaluateEvents(events), ACTUAL_CLASSES, PREDICTED_CLASSES);
-  $('#verifiedCount').textContent = stats.verified;
-  $('#accuracyPct').textContent = stats.accuracy;
-  $('#falsePositivePct').textContent = stats.falsePositive;
-  const host = $('#confusionTable');
-  host.replaceChildren();
-  if (!stats.verified) {
-    const p = document.createElement('p');
-    p.className = 'muted small';
-    p.textContent = 'Verify at least one event below to see the confusion matrix.';
-    host.append(p);
-    return;
-  }
-  const table = document.createElement('table');
-  const caption = document.createElement('caption');
-  caption.textContent = 'Actual sound by predicted label (counts)';
-  table.append(caption);
-  const head = document.createElement('tr');
-  for (const name of ['Actual ↓ / Predicted →', ...PREDICTED_CLASSES]) {
-    const th = document.createElement('th');
-    th.scope = 'col'; th.textContent = name; head.append(th);
-  }
-  const thead = document.createElement('thead'); thead.append(head); table.append(thead);
-  const tbody = document.createElement('tbody');
-  for (const actual of ACTUAL_CLASSES) {
-    const tr = document.createElement('tr');
-    const th = document.createElement('th'); th.scope = 'row'; th.textContent = actual;
-    tr.append(th);
-    for (const predicted of PREDICTED_CLASSES) {
-      const td = document.createElement('td');
-      td.textContent = stats.matrix[actual][predicted];
-      if (predicted === actual || (actual === 'other' && predicted === 'unknown')) td.className = 'correct';
-      tr.append(td);
-    }
-    tbody.append(tr);
-  }
-  table.append(tbody);
-  host.append(table);
-}
-
 async function renderHome() {
   const token = ++homeRenderToken;
   const gunId = activeGun?.id;
@@ -886,88 +866,26 @@ async function renderHistory() {
         if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;
         progressView ||= createProgressView(document, { enabled: () => CAPABILITIES.advancedGraphs, onError: showError });
         progressView.render(sessions || [], gunId);
-      }).catch(error => {
+      }).catch(() => {
         if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;
-        showError(new Error('Progress charts could not load. Your saved history is still available. Check your connection and reload to try again.', { cause: error }));
+        showError(new Error('Progress charts failed. Your saved history is still available.'));
       });
     } else progressView?.render(sessions || [], gunId);
   } else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();
   historyRows=rows;historySessions=sessions||[];historyOwner=gunId;
-  if(!historyPage)renderEvaluation(rows);
+  if(!historyPage&&activeView==='history'){const module=legacyHistoryRenderer||=await import('./optional/renderLegacyHistory.js');module.renderEvaluation(document,rows);module.renderHistoryList(document,rows,{labels,titleFor,drillTitleFor:id=>currentDrill(id)?.title,onVerify:async(id,value)=>{await verifyEvent(id,value||null,gunId);await renderHistory();},onError:showError});}
   if(homePage)homePage.update({events:rows.length}); else $('#homeEvents').textContent = String(rows.length);
   if(historyPage){historyPage.setResults({rows,sessions:historySessions,stats:evaluateEvents(rows),gunId});return;}
-  const host = $('#historyList');
-  host.replaceChildren();
-  if (!rows.length) {
-    const empty = document.createElement('div');
-    empty.className = 'empty-state';
-    empty.textContent = 'No recognition events yet.';
-    host.append(empty);
-    return;
-  }
-  for (const row of recognitionRows(rows, titleFor, id => currentDrill(id)?.title)) {
-    const item = document.createElement('article');
-    item.className = 'history-item';
-    const copy = document.createElement('div');
-    const title = document.createElement('strong');
-    title.textContent = row.title;
-    const date = document.createElement('p');
-    date.textContent = row.date;
-    const score = document.createElement('span');
-    score.textContent = row.score;
-    if (row.sequence) {
-      const drillDescription = document.createElement('p');
-      drillDescription.textContent = row.sequence;
-      copy.append(drillDescription);
-    }
-    copy.append(title, date);
-    const controls = document.createElement('div');
-    controls.className = 'history-controls';
-    const actualLabel = document.createElement('label');
-    actualLabel.textContent = 'Actual:';
-    const actual = document.createElement('select');
-    actual.setAttribute('aria-label', `Actual sound for ${row.date}`);
-    for (const [value, label] of [['', 'Not verified'], ...labels.map(key => [key, titleFor(key)]), ['other', 'Other / noise']]) {
-      const option = document.createElement('option');
-      option.value = value;
-      option.textContent = label;
-      actual.append(option);
-    }
-    actual.value = row.actualLabel ?? '';
-    actual.addEventListener('change', async () => {
-      try { await verifyEvent(row.id, actual.value || null, gunId); await renderHistory(); }
-      catch (error) { showError(error); }
-    });
-    controls.append(actualLabel, actual, score);
-    item.append(copy, controls);
-    host.append(item);
-  }
 }
 
 async function init() {
   bindCalibrationActions();
-  if (typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__) {
-    const { createPreviewTesting, retirePreviewShell } = await import('./optional/previewTesting.js');
-    await retirePreviewShell({ serviceWorker: navigator.serviceWorker, caches: window.caches, origin: location.origin });
-    let storage;
-    try { storage = window.localStorage; } catch { /* Simulation works without preference storage. */ }
-    const applyPresentation = () => {
-      const full = CAPABILITIES.advancedGraphs;
-      document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
-      const notice = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
-      gunLibraryCoordinator.setNotice(notice);
-      const sequenceDescription=full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
-      if(drillsPage)drillsPage.update({sequenceDescription});else $('#sequenceDescription').textContent=sequenceDescription;
-      informationPages.setFull(full);
-    };
-    previewTesting = createPreviewTesting({ doc: document, storage,
-      locked: () => profileLocked() || !!practiceController?.hasUnsavedResults() || $('#safetyModal').open || !$('#customDrillForm').classList.contains('hidden'),
-      onMessage: setMessage, onChange: capabilities => {
-        CAPABILITIES = capabilities; applyPresentation(); selectDrillCollection(false);
-        renderGunControls(); renderPreferences(); renderHistory().catch(showError);
-      } });
-    CAPABILITIES = previewTesting.capabilities; applyPresentation();
-  }
+  const previewPreparation = typeof __FULL_PREVIEW__ !== 'undefined' && __FULL_PREVIEW__
+    ? import('./optional/previewTesting.js').then(async module => {
+      await module.retirePreviewShell({ serviceWorker: navigator.serviceWorker, caches: window.caches, origin: location.origin });
+      return module;
+    })
+    : null;
   customEditor = createCustomDrillEditor({ doc: document, getCapabilities: () => CAPABILITIES, getContext: () => ({ activeGun, customDrills }), locked: profileLocked,
     titleFor, setBusy, onSave: saveEditedCustomDrill, onMessage: setMessage, onError: showError });
   screenNavigation = createScreenNavigation({ history: window.history, events: window, initial: routeFor('home'), resolve: resolveRoute, urlFor:appURLs?(route=>{const path=(pendingEntry&&route.view==='gunSetup'?appPathFor(pendingEntry):appPathFor(route))+location.search;return path===location.pathname+location.search?undefined:path;}):undefined,
@@ -1006,10 +924,10 @@ async function init() {
   document.querySelectorAll('[data-back]:not([data-r-back])').forEach(button => button.addEventListener('click', () => goBack()));
   $('#homeLearnBtn').addEventListener('click', () => switchView('learn'));
   $('#homeDrillsBtn').addEventListener('click', () => switchView('drills'));
-  $('#homeListenBtn').addEventListener('click', () => switchView('recognize'));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
+  $('#runSoundCheckBtn').addEventListener('click',()=>{if(triggerReady())switchView('soundCheck');else setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples first.`);});
+  $('#learnListenBtn').addEventListener('click', () => switchView('recognize'));
   bindLive('changeDrillBtn','click', () => switchView('drills'));
-  $('#freeListenBtn').addEventListener('click', () => switchView('recognize'));
   renderDrillCatalog();
   bindLive('listenBtn','click', toggleLive);
   bindLive('drillSelect','change', () => { if (profileLocked()) return; resetDrill(); setGunSetting('selectedDrill', $('#drillSelect').value, ownerId()).catch(showError); });
@@ -1072,17 +990,20 @@ async function init() {
     if (document.hidden && (liveSession || livePendingStart)) void stopLive();
     if (document.hidden && sessionController?.locked()) sessionController.interrupt('background').catch(showError);
     if (document.hidden && practiceController?.locked()) practiceController.interrupt('background').catch(showError);
+    if (document.hidden && soundCheckController?.locked?.()) soundCheckController.stop().catch(showError);
   });
   window.addEventListener('pagehide', () => {
     if (liveSession || livePendingStart) void stopLive();
     if (sessionController?.locked()) sessionController.interrupt('pagehide').catch(() => {});
     if (practiceController?.locked()) practiceController.interrupt('pagehide').catch(() => {});
+    if (soundCheckController?.locked?.()) soundCheckController.stop().catch(() => {});
   });
   $('#safetyAck').addEventListener('change', () => {
     $('#safetySummaryState').textContent = $('#safetyAck').checked ? 'Confirmed for this session' : 'Required before recording';
     if (!$('#safetyAck').checked && (liveSession || livePendingStart)) void stopLive();
     if (!$('#safetyAck').checked && sessionController?.locked()) sessionController.interrupt('safety-check').catch(showError);
     if (!$('#safetyAck').checked && practiceController?.locked()) practiceController.interrupt('safety-check').catch(showError);
+    if (!$('#safetyAck').checked && soundCheckController?.locked?.()) soundCheckController.stop().catch(showError);
   });
   bindSettings('resetModelBtn','click', async () => {
     if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Reset all learned sounds and reset/noise/beep calibration for ${activeGun.name}? Gun profiles, presets, saved sessions, recognition history and other guns will be kept.`)) return;
@@ -1164,6 +1085,27 @@ async function init() {
     ? 'Installed: you are using the Home Screen app.'
     : 'Not yet installed. Follow these steps to put it on your Home Screen.';
   $('#deviceCheck').textContent = `${window.isSecureContext ? 'Secure connection' : 'Insecure connection — microphone may be blocked'} · ${navigator.mediaDevices?.getUserMedia ? 'Microphone API available' : 'Microphone API unavailable'} · Local storage only`;
+  if (previewPreparation) {
+    const { createPreviewTesting } = await previewPreparation;
+    let storage;
+    try { storage = window.localStorage; } catch { /* Simulation works without preference storage. */ }
+    const applyPresentation = () => {
+      const full = CAPABILITIES.advancedGraphs;
+      document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
+      const notice = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
+      gunLibraryCoordinator.setNotice(notice);
+      const sequenceDescription=full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
+      if(drillsPage)drillsPage.update({sequenceDescription});else $('#sequenceDescription').textContent=sequenceDescription;
+      informationPages.setFull(full);
+    };
+    previewTesting = createPreviewTesting({ doc: document, storage,
+      locked: () => profileLocked() || !!practiceController?.hasUnsavedResults() || $('#safetyModal').open || !$('#customDrillForm').classList.contains('hidden'),
+      onMessage: setMessage, onChange: capabilities => {
+        CAPABILITIES = capabilities; applyPresentation(); selectDrillCollection(false);
+        renderGunControls(); renderPreferences(); renderHistory().catch(showError);
+      } });
+    CAPABILITIES = previewTesting.capabilities; applyPresentation();
+  }
   const recovered = [];
   const library = await getLibraryOverview();
   for (const gun of library.guns) recovered.push(...await recoverInterruptedSessions(gun.id));

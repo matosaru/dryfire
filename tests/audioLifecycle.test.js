@@ -109,6 +109,18 @@ test('training uses the same saved processing options and releases its microphon
   expect(contexts[0].close).toHaveBeenCalledTimes(1);
 });
 
+test('training can attach optional candidate features without changing the returned v2 vector',async()=>{
+  jest.useFakeTimers();const featureExtractor=jest.fn(()=>[9,8,7]),onAnalysis=jest.fn();
+  const pending=recordFeatureVector(()=>{},{featureExtractor,onAnalysis});
+  await jest.advanceTimersByTimeAsync(3000);
+  const pcm=samples(.5,[[.05,.35]]);
+  nodes[0].onaudioprocess({inputBuffer:{getChannelData:()=>pcm},outputBuffer:{numberOfChannels:1,getChannelData:()=>new Float32Array(pcm.length)}});
+  await jest.advanceTimersByTimeAsync(1300);
+  const features=await pending;
+  expect(features).toHaveLength(15);expect(featureExtractor).toHaveBeenCalledWith(expect.any(Float32Array),rate);
+  expect(onAnalysis).toHaveBeenCalledWith(expect.objectContaining({features,spectralFeatures:[9,8,7]}));
+});
+
 test('cancellation from a processing report does not open a new recording context', async () => {
   const controller = new AbortController();
   const pending = recordFeatureVector(() => {}, { signal: controller.signal,
@@ -237,7 +249,7 @@ test.each(['worklet', 'compatibility'])('%s readiness requires arriving PCM, not
   }
   const session = await startContinuousListening({ onEvent() {}, detectionEnabled: false });
   let ready = false;
-  const waiting = session.waitForInput().then(() => { ready = true; });
+  const waiting = session.waitForInput().then(result => { ready = true; return result; });
   await Promise.resolve(); expect(ready).toBe(false);
   const deliver = length => {
     const pcm = new Float32Array(length);
@@ -245,8 +257,9 @@ test.each(['worklet', 'compatibility'])('%s readiness requires arriving PCM, not
     else nodes[0].onaudioprocess({ playbackTime: 1 + length / rate, inputBuffer: { getChannelData: () => pcm },
       outputBuffer: { numberOfChannels: 1, getChannelData: () => new Float32Array(length) } });
   };
-  deliver(rate * .05); await Promise.resolve(); expect(ready).toBe(false);
-  deliver(rate * .05); await waiting; expect(ready).toBe(true);
+  deliver(rate * .3); await Promise.resolve(); expect(ready).toBe(false);
+  deliver(rate * .3); const result = await waiting; expect(ready).toBe(true);
+  expect(result).toMatchObject({ ready: true, status: 'ready' });
   await session.stop();
 });
 
