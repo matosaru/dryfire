@@ -1,6 +1,6 @@
 # Dry Fire With Ease
 
-An offline-first microphone-based dry-fire practice app, with gun-specific calibration and saved results.
+An offline-first microphone-based dry-fire practice app, with gun-specific calibration and saved results
 
 - [Documentation packages](docs/README.md)
 - [Implementation history and remaining plan](docs/project/implementation-history.md)
