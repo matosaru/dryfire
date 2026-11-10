@@ -6,12 +6,12 @@ Reviewed 2026-11-09. The generated [`component-map.json`](component-map.json) is
 
 | Layer | Location | Count | Intended ownership |
 | --- | --- | ---: | --- |
-| Shared UI library | `packages/ui/src` (`@dryfire/ui/*`) | 29 | Cross-feature shell, context, controls, catalogs, session presentation and history presentation |
+| Shared UI library | `packages/ui/src` (`@dryfire/ui/*`) | 30 | Cross-feature shell, context, controls, catalogs, session presentation and history presentation |
 | Feature-local components | `apps/web/src/features/*/components` | 5 | Reusable only inside Settings or learned-sound checking until a second real consumer exists |
 | Application pages | `apps/web/src/pages` | 14 | Screen composition and page-local layout; no direct storage/microphone ownership |
 | Public-site components | `apps/web/src/public-site` | 2 | Indexable public-page shell and reusable marketing content |
 
-All 50 packages above have a source file, co-located CSS, meaningful component test and public `index.ts`. `npm run verify:architecture` checks those boundaries.
+All 51 packages above have a source file, co-located CSS, meaningful component test and public `index.ts`. `npm run verify:architecture` checks those boundaries.
 
 ## Shared `@dryfire/ui` catalog
 

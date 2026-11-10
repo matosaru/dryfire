@@ -9,7 +9,8 @@ export const lazyStyleOwners = Object.freeze({
  * The owner import is an explicit dependency; the aggregate remains their sole
  * emitted source while native prerendered content still needs immediate paint. */
 export const startupStyleOwners = Object.freeze({
-  'packages/ui/src/InformationCard/InformationCard.tsx': 'packages/ui/src/InformationCard/InformationCard.css'
+  'packages/ui/src/InformationCard/InformationCard.tsx': 'packages/ui/src/InformationCard/InformationCard.css',
+  'packages/ui/src/DrillCard/DrillCard.tsx': 'packages/ui/src/DrillCard/DrillCard.css'
 });
 
 export function lazyStyleSources() {

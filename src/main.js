@@ -936,8 +936,8 @@ async function init() {
     };guideHandlers.set(id,handler);$('#'+id).addEventListener('click',handler);
   }
   darkPreference?.addEventListener?.('change', () => { if (preferenceState.theme === 'system') applyAppearance(); });
-  for(const [id,action] of [['appearance','appearance'],['measurementSystem','measurementSystem'],['vibrationFeedback','vibration']])bindSettings(id,'change',()=>{devicePreferenceRevision++;void runPreferenceAction(action);});
-  for(const [id,key] of [['noiseFilter','noiseFilter'],['autoGainControl','autoGain']])bindSettings(id,'change',()=>runPreferenceAction('audio',id,key));
+  for(const [id,action] of [['appearance','appearance'],['measurementSystem','measurementSystem'],['vibrationFeedback','vibration']])bindSettings(id,'change',()=>{const control=$('#'+id),value=control.type==='checkbox'?control.checked:control.value;devicePreferenceRevision++;void runPreferenceAction(action,value);});
+  for(const [id,key] of [['noiseFilter','noiseFilter'],['autoGainControl','autoGain']])bindSettings(id,'change',()=>runPreferenceAction('audio',id,key,$('#'+id).checked));
   $('#gunForm').addEventListener('submit', event => { submitGun(event).catch(showError); });
   document.querySelectorAll('[name="gunTypeChoice"]').forEach(input => input.addEventListener('change', () => { if (input.checked) $('#gunType').value = input.value; }));
   $('#gunSwitcherBtn').addEventListener('click', () => { if (!profileLocked()) switchView('guns'); });

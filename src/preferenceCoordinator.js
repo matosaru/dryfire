@@ -2,13 +2,13 @@
 export function createPreferenceState(normalizeAudioPreferences){return {audio:normalizeAudioPreferences(),theme:'dark',measurementSystem:'metric',vibration:false,rejected:false,processing:null,pending:false};}
 export function createPreferenceActions(state,ports){
  const normalizeAudioPreferences=ports.normalizeAudioPreferences;
- async function appearance(){const value=ports.read('appearance').value;if(!['dark','light','system'].includes(value))return;try{await ports.saveDevice('appearance',value);state.theme=value;ports.applyTheme();}catch(error){ports.error(error);ports.render();}}
- async function measurementSystem(){const value=ports.read('measurementSystem').value;if(value!=='metric'&&value!=='imperial')return;const previous=state.measurementSystem;try{await ports.saveDevice('measurementSystem',value);state.measurementSystem=value;ports.applyMeasurements();ports.render();}catch(error){state.measurementSystem=previous;ports.error(error);ports.render();}}
- async function vibration(){if(ports.locked()){ports.render();return;}try{state.vibration=ports.read('vibrationFeedback').checked;await ports.saveDevice('vibrationFeedback',state.vibration);ports.render();}catch(error){ports.error(error);await ports.reload();ports.render();}}
- async function audio(id,key){
+ async function appearance(value=ports.read('appearance').value){if(!['dark','light','system'].includes(value))return;try{await ports.saveDevice('appearance',value);state.theme=value;ports.applyTheme();}catch(error){ports.error(error);ports.render();}}
+ async function measurementSystem(value=ports.read('measurementSystem').value){if(value!=='metric'&&value!=='imperial')return;const previous=state.measurementSystem;try{await ports.saveDevice('measurementSystem',value);state.measurementSystem=value;ports.applyMeasurements();ports.render();}catch(error){state.measurementSystem=previous;ports.error(error);ports.render();}}
+ async function vibration(checked=ports.read('vibrationFeedback').checked){if(ports.locked()){ports.render();return;}try{state.vibration=checked;await ports.saveDevice('vibrationFeedback',state.vibration);ports.render();}catch(error){ports.error(error);await ports.reload();ports.render();}}
+ async function audio(id,key,checked=ports.read(id).checked){
   if(ports.locked()){ports.render();return;}
   const previous=state.audio;
-  try{const gunId=ports.owner();const next=normalizeAudioPreferences({...state.audio,[key]:ports.read(id).checked});state.pending=true;state.audio=next;ports.refresh();await ports.saveGun('audioPreferences',next,gunId);if(gunId!==ports.activeOwner())return;state.audio=next;state.processing=null;ports.render();ports.message('Saved for the next capture. Audio processing can affect recognition; collect fresh examples if needed. Existing samples were kept.');}
+  try{const gunId=ports.owner();const next=normalizeAudioPreferences({...state.audio,[key]:checked});state.pending=true;state.audio=next;ports.refresh();await ports.saveGun('audioPreferences',next,gunId);if(gunId!==ports.activeOwner())return;state.audio=next;state.processing=null;ports.render();ports.message('Saved for the next capture. Audio processing can affect recognition; collect fresh examples if needed. Existing samples were kept.');}
   catch(error){state.audio=previous;ports.error(error);}
   finally{state.pending=false;ports.refresh();}
  }

@@ -17,6 +17,12 @@ test('device failures preserve committed appearance and reload vibration prefere
  ports.reload.mockImplementation(async()=>{state.vibration=false;});await actions.vibration();expect(ports.reload).toHaveBeenCalledTimes(1);expect(state.vibration).toBe(false);expect(ports.error).toHaveBeenCalledTimes(2);
  ports.read.mockReturnValue({value:'invalid'});await actions.appearance();expect(ports.saveDevice).toHaveBeenCalledTimes(2);
 });
+test('async preference owners save the value captured by the synchronous control event',async()=>{
+ const {state,ports,actions}=setup(),write=deferred();ports.saveDevice.mockReturnValue(write.promise);
+ const pending=actions.appearance('light');ports.read.mockReturnValue({value:'dark'});
+ expect(ports.saveDevice).toHaveBeenCalledWith('appearance','light');write.resolve();await pending;
+ expect(state.theme).toBe('light');expect(ports.applyTheme).toHaveBeenCalledTimes(1);
+});
 test('measurement units persist as a normalized device preference and refresh visible measurements',async()=>{
  const {state,ports,actions}=setup();expect(state.measurementSystem).toBe('metric');await actions.measurementSystem();
  expect(ports.saveDevice).toHaveBeenCalledWith('measurementSystem','imperial');expect(state.measurementSystem).toBe('imperial');expect(ports.applyMeasurements).toHaveBeenCalledTimes(1);expect(ports.render).toHaveBeenCalledTimes(1);

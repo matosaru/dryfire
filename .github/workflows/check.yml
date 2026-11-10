@@ -36,6 +36,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci --no-audit --no-fund
+      - name: Run focused SEO and canonical route tests
+        run: npm run test:seo
       - run: npm run verify:profile
       - run: npm run typecheck
       - run: npm run lint:components

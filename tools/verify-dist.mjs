@@ -38,6 +38,13 @@ const criticalStyle = html.match(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)
 if (!criticalStyle || cssAssets.find(({ path }) => `/${path.replaceAll('\\', '/')}` === criticalStyle)?.css.includes('.progress-stats')) {
   throw new Error('Private progress styles must not block application startup.');
 }
+const criticalCss = cssAssets.find(({ path }) => `/${path.replaceAll('\\', '/')}` === criticalStyle)?.css ?? '';
+for (const marker of ['.about-card', '.preset-card']) {
+  if (!criticalCss.includes(marker)) throw new Error(`Startup component styles are missing from the critical stylesheet: ${marker}`);
+  if (cssAssets.some(({ path, css }) => `/${path.replaceAll('\\', '/')}` !== criticalStyle && css.includes(marker))) {
+    throw new Error(`Startup component styles were emitted more than once: ${marker}`);
+  }
+}
 let progressStyleReferences = 0;
 for (const file of files.filter(path => path.endsWith('.js'))) {
   const js = await readFile(join(distPath, file), 'utf8');
