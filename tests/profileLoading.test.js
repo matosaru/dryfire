@@ -74,6 +74,12 @@ test('late startup preference reads cannot overwrite a newer user selection',asy
  const pending=loadPreferences();c.devicePreferenceRevision++;c.appearance='light';appearance.resolve('dark');await pending;
  expect(c.appearance).toBe('light');expect(c.applyAppearance).not.toHaveBeenCalled();
 });
+test('late profile snapshots cannot overwrite a newer device appearance',async()=>{
+ const {context:c,load}=setup(),snapshot=deferred();c.getLibraryOverview.mockReturnValue(snapshot.promise);
+ const pending=load();c.devicePreferenceRevision++;c.appearance='light';
+ snapshot.resolve({activeGun:{id:'a',name:'Test'},guns:[{id:'a'}],devicePreferences:{appearance:'dark',vibrationFeedback:false}});await pending;
+ expect(c.appearance).toBe('light');expect(c.applyAppearance).not.toHaveBeenCalled();
+});
 test('startup can reuse its complete snapshot without reopening the library',async()=>{
  const {context:c,load}=setup(null);await load({activeGun:null,guns:[],devicePreferences:{appearance:'invalid',vibrationFeedback:'true'}});expect(c.getLibraryOverview).not.toHaveBeenCalled();expect(c.appearance).toBe('dark');expect(c.vibrationFeedback).toBe(false);expect(c.getSetting).not.toHaveBeenCalled();
 });

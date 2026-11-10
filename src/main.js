@@ -301,6 +301,7 @@ function initializeTimedControllers() {
 }
 
 async function loadActiveGun(overview) {
+  const devicePreferencesRevision=devicePreferenceRevision;
   historyRenderToken += 1;
   homeRenderToken += 1;
   gunLibraryCoordinator.invalidate();
@@ -309,7 +310,7 @@ async function loadActiveGun(overview) {
   // The selected gun, library and device preferences come from one read-only transaction.
   const library = overview ?? await getLibraryOverview();
   activeGun = library.activeGun; guns = library.guns;
-  applyDevicePreferences(library.devicePreferences);
+  if(devicePreferencesRevision===devicePreferenceRevision)applyDevicePreferences(library.devicePreferences);
   const id = activeGun?.id;
   if (id) initializeTimedControllers();
   examples = id ? await getExamples(id) : [];
