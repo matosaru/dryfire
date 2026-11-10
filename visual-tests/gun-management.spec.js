@@ -126,6 +126,11 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   await expect(page.locator('#settingsView')).not.toHaveAttribute('data-react-settings');
   await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
   await expect(page.locator('#noiseFilterStatus')).not.toHaveText('Checking browser support…');
+  await expect(page.locator('#autoGainStatus')).not.toHaveText('Checking browser support…');
+  await expect(page.locator('#vibrationStatus')).not.toHaveText('Checking browser support…');
+  await expect(page.locator('#installStatus')).not.toHaveText('Checking installation status…');
+  await expect(page.locator('#deviceCheck')).toContainText('Local storage only');
+  await expect(page.locator('#soundResetSummary')).toContainText('12 learned samples');
   const file=await page.locator('#importFile').elementHandle();
   const before=await page.locator('#settingsView').screenshot({animations:'disabled'});
   const loaded=page.waitForResponse(response=>/\/assets\/settingsPage-/.test(response.url()));release();await loaded;

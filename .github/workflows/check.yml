@@ -120,6 +120,9 @@ jobs:
         if: always()
         run: node tools/report-browser-failures.mjs
       - name: Prove visible defects fail and produce difference images
+        # The reviewed page screenshot catalog is production-only; preview
+        # builds still run the complete functional browser suite above.
+        if: matrix.edition == 'public'
         run: npm run visual:probe
       - uses: actions/upload-artifact@v4
         if: always()
