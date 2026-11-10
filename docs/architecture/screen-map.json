@@ -958,7 +958,7 @@
     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx": "3fa82eb9ae3c0923d7fb2f8cb54274e49af95fdb02653e8e8c1aefef72c7d70e",
     "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css": "217df1f2edf94773d5147d0811fbdc39d355580346d2f1d2ee440e22174ba7c4",
     "apps/web/src/styles/legacy-before-custom-editor.css": "ad9a9b3fc449f79cedbc0c657aad43dd635c20b80f45d6d1891ab5b0b101b546",
-    "apps/web/src/app/historyPage.tsx": "a15f3035693ca0efcb075d682f15b1e87ed69fb57bfa37dfe9d661f1f0b5cd80",
+    "apps/web/src/app/historyPage.tsx": "d92765398b369e1f3084a14e6369d8d37e621e942a53ef9bd33ed4e5a4e8be77",
     "apps/web/src/app/renderHistoryPage.tsx": "c27fb519b66c739ebba98bbe80861330f204bee014654d4ac988d5fb0f1238ea",
     "apps/web/src/features/history/presentation.ts": "f88e17f61df5cfa3600f824a991cdb12a5a5ca492c3d69485410ca585625b8ff",
     "apps/web/src/pages/HistoryPage/HistoryPage.tsx": "ea8e938c80a5f7cf0c18530e8ee7d092404b66df9e9011e2db3baaa4068630c2",
