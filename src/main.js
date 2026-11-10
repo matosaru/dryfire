@@ -1,12 +1,10 @@
 import {registerReleaseWorker} from './serviceWorkerRegistration.js';
 import {createGunLibraryCoordinator} from './gunLibraryCoordinator.js';
-import {createPreferenceState,createPreferenceActions} from './preferenceCoordinator.js';
 import {startGunPreferenceReads} from './gunPreferenceReads.js';
 import {parseAppPath,isAppPath,appPathFor,appTitleFor,isIndexableAppPath,setupForGuide} from './appPaths.js';
 import {selectNode,setNodeText,setNodeDisabled} from './domUpdates.js';
 import { listeningReadiness } from '../apps/web/src/features/live-listen/readiness.ts';
 import { createModulePreparation } from './modulePreparation.js';
-import { preferencePresentation } from '../apps/web/src/features/settings/preferencePresentation.ts';
 import { resolveRouteView } from '@dryfire/web/route-context';
 import { createInformationBridge } from '@dryfire/web/information-bridge';
 import { PAGE_IDS } from './pageDefinitions.js';
@@ -109,7 +107,7 @@ let customDrills = [];
 
 let customEditor = null;
 let profileLoading = false;
-const preferenceState=createPreferenceState();
+const preferenceState={audio:normalizeAudioPreferences(),theme:'dark',measurementSystem:'metric',vibration:false,rejected:false,processing:null,pending:false};
 
 let sessionController = null;
 let practiceController = null;
@@ -123,6 +121,8 @@ let historyRenderToken = 0;
 let homeRenderToken = 0;
 let homePage, homePagePending, profilePages;
 let settingsPage;
+let presentSettingsPreferences;
+let nativeSettingsPreferences,nativeSettingsPreferencesPending,nativeSettingsPreferencesScheduled=false;
 let learnPage;
 let soundCheckController,soundCheckPage,soundCheckPending;
 let legacyHistoryRenderer;
@@ -169,32 +169,50 @@ function applyAppearance() {
 }
 async function loadDevicePreferences() {
   const [saved, vibration] = await Promise.all([getSetting('appearance', 'dark'), getSetting('vibrationFeedback', false)]);
-  applyDevicePreferences({appearance:saved,vibrationFeedback:vibration});
+  applyDevicePreferences({appearance:saved,vibrationFeedback:vibration,measurementSystem:preferenceState.measurementSystem});
 }
-function applyDevicePreferences({appearance:saved,vibrationFeedback:vibration}) {
+function applyDevicePreferences({appearance:saved,vibrationFeedback:vibration,measurementSystem}) {
   preferenceState.theme = ['dark', 'light', 'system'].includes(saved) ? saved : 'dark';
+  preferenceState.measurementSystem=measurementSystem;
   preferenceState.vibration = vibration === true;
   preferenceState.rejected = false;
   applyAppearance();
 }
 function renderPreferences() {
   previewTesting?.render();
-  const view=preferencePresentation({capabilities:getAudioCapabilities(),audioPreferences:preferenceState.audio,processingReport:preferenceState.processing,appearance:preferenceState.theme,
+  if(settingsPage&&presentSettingsPreferences)settingsPage.update({preferences:presentSettingsPreferences({capabilities:getAudioCapabilities(),audioPreferences:preferenceState.audio,processingReport:preferenceState.processing,appearance:preferenceState.theme,measurementSystem:preferenceState.measurementSystem,
     gunAvailable:!!activeGun && !activeGun.needsDetails,locked:profileLocked(),deviceLocked:busy || profileLoading || preferenceState.pending,
-    vibrationFeedback:preferenceState.vibration,vibrationSupported:getVibrationCapability(),vibrationRejected:preferenceState.rejected});
-  if(settingsPage){settingsPage.update({preferences:view});return;}
-  for(const item of view.audio){
-    const input=$('#'+item.inputId);if(input.checked!==item.checked)input.checked=item.checked;setNodeDisabled(input,item.disabled);setNodeText($('#'+item.statusId),item.status);
+    vibrationFeedback:preferenceState.vibration,vibrationSupported:getVibrationCapability(),vibrationRejected:preferenceState.rejected})});
+  else if(activeView==='settings'){
+    const appearance=$('#appearance'),measurement=$('#measurementSystem'),vibration=$('#vibrationFeedback');
+    if(appearance.value!==preferenceState.theme)appearance.value=preferenceState.theme;
+    if(measurement.value!==preferenceState.measurementSystem)measurement.value=preferenceState.measurementSystem;
+    if(vibration.checked!==preferenceState.vibration)vibration.checked=preferenceState.vibration;
+    nativeSettingsPreferences?.renderNativeSettingsPreferences({doc:document,capabilities:getAudioCapabilities(),audioPreferences:preferenceState.audio,processingReport:preferenceState.processing,appearance:preferenceState.theme,measurementSystem:preferenceState.measurementSystem,
+      gunAvailable:!!activeGun&&!activeGun.needsDetails,locked:profileLocked(),deviceLocked:busy||profileLoading||preferenceState.pending,vibrationFeedback:preferenceState.vibration,vibrationSupported:getVibrationCapability(),vibrationRejected:preferenceState.rejected});
   }
-  const appearanceInput=$('#appearance'),vibrationInput=$('#vibrationFeedback');
-  if(appearanceInput.value!==view.appearance.value)appearanceInput.value=view.appearance.value;setNodeDisabled(appearanceInput,view.appearance.disabled);
-  if(vibrationInput.checked!==view.vibration.checked)vibrationInput.checked=view.vibration.checked;setNodeDisabled(vibrationInput,view.vibration.disabled);
-  setNodeText($('#vibrationStatus'),view.vibration.status);
+}
+function prepareNativeSettingsPreferences(){
+ if(nativeSettingsPreferences||nativeSettingsPreferencesPending||nativeSettingsPreferencesScheduled)return;
+ nativeSettingsPreferencesScheduled=true;
+ requestAnimationFrame(()=>setTimeout(()=>{
+  nativeSettingsPreferencesScheduled=false;
+  if(nativeSettingsPreferences||nativeSettingsPreferencesPending||activeView!=='settings'||settingsPage)return;
+  nativeSettingsPreferencesPending=import('./optional/settingsPreferences.js').then(module=>{nativeSettingsPreferences=module;if(activeView==='settings'&&!settingsPage)renderPreferences();}).catch(showError).finally(()=>{nativeSettingsPreferencesPending=null;});
+ },250));
 }
 function reportAudioProcessing(report) { preferenceState.processing = report; renderPreferences(); }
 function reportVibration(result) { if (!result.supported || !result.accepted) { preferenceState.rejected = true; renderPreferences(); } }
+const deleteHistoryRecord=(kind,id,gunId,message)=>import('./optional/historyDeletion.js').then(module=>module.removeHistoryRecord(kind,id,gunId,{renderHistory,historyText,showError,message})).catch(showError);
 
-const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+id),locked:profileLocked,owner:ownerId,activeOwner:()=>activeGun?.id,saveDevice:setSetting,saveGun:setGunSetting,render:renderPreferences,refresh:()=>{renderLiveButton();renderClassCards();},applyTheme:applyAppearance,reload:loadDevicePreferences,error:showError,message:setMessage});
+let preferenceActions;
+async function runPreferenceAction(name,...args){
+ try{
+  const {createPreferenceActions}=await import('./preferenceCoordinator.js');
+  preferenceActions||=createPreferenceActions(preferenceState,{normalizeAudioPreferences,read:id=>$('#'+id),locked:profileLocked,owner:ownerId,activeOwner:()=>activeGun?.id,saveDevice:setSetting,saveGun:setGunSetting,render:renderPreferences,refresh:()=>{renderLiveButton();renderClassCards();},applyTheme:applyAppearance,applyMeasurements:()=>soundCheckPage?.updateUnits(preferenceState.measurementSystem),reload:loadDevicePreferences,error:showError,message:setMessage});
+  await preferenceActions[name](...args);
+ }catch(error){showError(error);}
+}
 
 const gunLibraryCoordinator=createGunLibraryCoordinator({get guns(){return guns;},set guns(value){guns=value;},get gun(){return activeGun;},get capabilities(){return CAPABILITIES;},get loading(){return profileLoading;},set loading(value){profileLoading=value;},get events(){return eventQueue;},get session(){return sessionController;},get practice(){return practiceController;},get pendingEntry(){return pendingEntry;},get pages(){return profilePages;}},{getGuns,getExamples,getCustomDrills,deleteGun,setActiveGun,updateGun,createGun},{profileLocked,setMessage,switchView,loadProfilePages,showError,setBusy,loadActiveGun,setStatus,openEntry,renderGunControls,renderLiveButton,renderClassCards,gunImagePath,$,document,confirm:message=>confirm(message)});
 
@@ -246,6 +264,7 @@ function renderGunControls() {
     $('#addGunBtn').classList.toggle('hidden', CAPABILITIES.edition === 'public' && guns.length >= CAPABILITIES.gunCreationLimit);
   }
   for (const id of ['clearHistoryBtn', 'clearSessionsBtn']) historyDisabled(id,profileLocked() || !activeGun || activeGun.needsDetails);
+  historyPage?.update({disabled:{historyRecordActions:profileLocked() || !activeGun || activeGun.needsDetails}});
   document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(livePage ? ':not(#recognizeView)' : '')+(drillsPage ? ':not(#drillsView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context-name').forEach(span => { setNodeText(span,activeGun?.name || 'No gun selected'); });
   document.querySelectorAll((homePage ? '.view:not(#homeView)' : '.view')+(settingsPage ? ':not(#settingsView)' : '')+(learnPage ? ':not(#learnView)' : '')+(historyPage ? ':not(#historyView)' : '')+(practiceController?.hasPage() ? ':not(#practiceView)' : '')+(sessionController?.hasPage() ? ':not(#sessionView)' : '')+' .gun-context').forEach(row => { row.classList.toggle('hidden', !activeGun || activeGun.needsDetails); });
   sessionController?.updateContext({gunName:activeGun?.name || 'No gun selected',contextHidden:!activeGun || !!activeGun.needsDetails});
@@ -269,7 +288,7 @@ function initializeTimedControllers() {
   sessionController ||=  createSessionController({
     getContext: practiceContext,
     titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
-    onChange: () => renderLiveButton(),
+    onChange: () => renderLiveButton(), onDeleteSaved:record=>deleteHistoryRecord('session',record.id,ownerId(),'One saved session was deleted. Progress statistics were updated.'),
     onProcessing: reportAudioProcessing, vibrationEnabled: () => preferenceState.vibration && !preferenceState.rejected,
     onVibration: reportVibration,
     onPracticeRecord: record => practiceController.showRecord(record),
@@ -607,12 +626,12 @@ function displayView(name) {
   }
   if(name==='soundCheck'){
     if(!triggerReady()){switchView('learn');setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before running Sound Check.`);return;}
-    if(!soundCheckController&&!soundCheckPending&&!profileLocked())soundCheckPending=Promise.all([import('../apps/web/src/app/soundCheckPage.tsx'),import('./soundCheckController.js')]).then(([pageModule,module])=>{if(activeView!=='soundCheck'||profileLocked()||soundCheckController)return;soundCheckPage ||= pageModule.mountSoundCheckPage($('#soundCheckView'),activeGun?.name);soundCheckController=module.createSoundCheckController({doc:document,startContinuousListening,examples,calibration,enabledLabels:enabledSoundLabels,audioPreferences:preferenceState.audio,onError:showError,startGuard:action=>ensureSafe(action)});}).catch(showError).finally(()=>{soundCheckPending=null;});
+    if(!soundCheckController&&!soundCheckPending&&!profileLocked())soundCheckPending=Promise.all([import('../apps/web/src/app/soundCheckPage.tsx'),import('./soundCheckController.js')]).then(([pageModule,module])=>{if(activeView!=='soundCheck'||profileLocked()||soundCheckController)return;soundCheckPage ||= pageModule.mountSoundCheckPage($('#soundCheckView'),activeGun?.name,preferenceState.measurementSystem);soundCheckController=module.createSoundCheckController({doc:document,startContinuousListening,examples,calibration,enabledLabels:enabledSoundLabels,audioPreferences:preferenceState.audio,onError:showError,startGuard:action=>ensureSafe(action)});}).catch(showError).finally(()=>{soundCheckPending=null;});
   }
   if(name==='history'){
     const historyModule=preparePageModule('history',()=>import('../apps/web/src/app/historyPage.tsx'));
     if(!historyPage && historyModule && historyOwner===activeGun?.id && !profileLocked() && !$('#safetyModal').open){
-      try{historyPage=historyModule.mountHistoryPage($('#historyView'),{rows:historyRows,sessions:historySessions,stats:evaluateEvents(historyRows),gunId:historyOwner},{onBack:()=>goBack(),onAction:id=>historyHandlers.get(id)?.(),onOpen:record=>sessionController.openSavedRecord(record),onVerify:async(id,value,gunId)=>{try{await verifyEvent(id,value||null,gunId);await renderHistory();}catch(error){showError(error);}},titleFor,drillTitleFor:id=>currentDrill(id)?.title,labels,actual:ACTUAL_CLASSES,predicted:PREDICTED_CLASSES});}catch(error){showError(error);}
+      try{historyPage=historyModule.mountHistoryPage($('#historyView'),{rows:historyRows,sessions:historySessions,stats:evaluateEvents(historyRows),gunId:historyOwner},{onBack:()=>goBack(),onAction:id=>historyHandlers.get(id)?.(),onOpen:record=>sessionController.openSavedRecord(record),onVerify:async(id,value,gunId)=>{try{await verifyEvent(id,value||null,gunId);await renderHistory();}catch(error){showError(error);}},onDeleteEvent:(row,gunId)=>deleteHistoryRecord('event',row.id,gunId),onDeleteSession:(record,gunId)=>deleteHistoryRecord('session',record.id,gunId,'Session deleted.'),titleFor,drillTitleFor:id=>currentDrill(id)?.title,labels,actual:ACTUAL_CLASSES,predicted:PREDICTED_CLASSES});}catch(error){showError(error);}
     }
     if(historyPage && !profileLocked() && !$('#safetyModal').open){try{progressView?.prepare();}catch(error){showError(error);}}
     renderHistory().catch(showError);
@@ -622,9 +641,10 @@ function displayView(name) {
   if(name==='guns')renderGunLibrary().catch(showError);
   if(name==='settings'){
     // Restore/help already work natively before onboarding; prepare React after a valid gun exists.
+    prepareNativeSettingsPreferences();
     const settingsModule=activeGun && !activeGun.needsDetails && preparePageModule('settings',()=>afterPaint(()=>import('../apps/web/src/app/settingsPage.tsx')));
     if(!settingsPage && settingsModule && !profileLocked() && !$('#safetyModal').open){
-      try{settingsPage=settingsModule.mountSettingsPage($('#settingsView'),{onBack:()=>goBack(),onAction:id=>settingsHandlers.get(id)?.(),onPreference:id=>settingsHandlers.get(id)?.()});}
+      try{presentSettingsPreferences=settingsModule.presentSettingsPreferences;settingsPage=settingsModule.mountSettingsPage($('#settingsView'),{onBack:()=>goBack(),onAction:id=>settingsHandlers.get(id)?.(),onPreference:id=>settingsHandlers.get(id)?.()});renderPreferences();}
       catch(error){showError(error);}
     }
     renderPreferences();
@@ -873,7 +893,7 @@ async function renderHistory() {
     } else progressView?.render(sessions || [], gunId);
   } else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();
   historyRows=rows;historySessions=sessions||[];historyOwner=gunId;
-  if(!historyPage&&activeView==='history'){const module=legacyHistoryRenderer||=await import('./optional/renderLegacyHistory.js');module.renderEvaluation(document,rows);module.renderHistoryList(document,rows,{labels,titleFor,drillTitleFor:id=>currentDrill(id)?.title,onVerify:async(id,value)=>{await verifyEvent(id,value||null,gunId);await renderHistory();},onError:showError});}
+  if(!historyPage&&activeView==='history'){const module=legacyHistoryRenderer||=await import('./optional/renderLegacyHistory.js');module.renderEvaluation(document,rows);module.renderHistoryList(document,rows,{labels,titleFor,drillTitleFor:id=>currentDrill(id)?.title,onVerify:async(id,value)=>{await verifyEvent(id,value||null,gunId);await renderHistory();},onDelete:row=>deleteHistoryRecord('event',row.id,gunId),onError:showError});}
   if(homePage)homePage.update({events:rows.length}); else $('#homeEvents').textContent = String(rows.length);
   if(historyPage){historyPage.setResults({rows,sessions:historySessions,stats:evaluateEvents(rows),gunId});return;}
 }
@@ -910,9 +930,10 @@ async function init() {
     };guideHandlers.set(id,handler);$('#'+id).addEventListener('click',handler);
   }
   darkPreference?.addEventListener?.('change', () => { if (preferenceState.theme === 'system') applyAppearance(); });
-  bindSettings('appearance','change',preferenceActions.appearance);
-  bindSettings('vibrationFeedback','change',preferenceActions.vibration);
-  for(const [id,key] of [['noiseFilter','noiseFilter'],['autoGainControl','autoGain']])bindSettings(id,'change',()=>preferenceActions.audio(id,key));
+  bindSettings('appearance','change',()=>runPreferenceAction('appearance'));
+  bindSettings('measurementSystem','change',()=>runPreferenceAction('measurementSystem'));
+  bindSettings('vibrationFeedback','change',()=>runPreferenceAction('vibration'));
+  for(const [id,key] of [['noiseFilter','noiseFilter'],['autoGainControl','autoGain']])bindSettings(id,'change',()=>runPreferenceAction('audio',id,key));
   $('#gunForm').addEventListener('submit', event => { submitGun(event).catch(showError); });
   document.querySelectorAll('[name="gunTypeChoice"]').forEach(input => input.addEventListener('change', () => { if (input.checked) $('#gunType').value = input.value; }));
   $('#gunSwitcherBtn').addEventListener('click', () => { if (!profileLocked()) switchView('guns'); });

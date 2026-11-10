@@ -1,5 +1,5 @@
 {
-  "status": "reviewed local candidate; 446 exact pinned public/preview captures pass",
+  "status": "reviewed local candidate; 26 canonical mobile Chromium page captures pass",
   "expandedCSSSha256": "8842992a44558c7a48d897e4b81c2be93025b7317e576a5d85cdf8e6a0eea464",
   "reviewedChanges": [
     "Trigger profile guidance card",
@@ -9,7 +9,11 @@
     "Atomic learned-sound replacement",
     "Sound Check controller readiness, spacing and explicit phone distances",
     "Contact email copy fallback",
-    "CHG-067 four-item primary navigation and Learn-owned recognition check"
+    "CHG-067 four-item primary navigation and Learn-owned recognition check",
+    "CHG-066 persisted Metric / Imperial measurement selector and Sound Check distance copy",
+    "CHG-068 inline single-record deletion on History",
+    "CHG-069 one canonical mobile Chromium screenshot per distinct page type",
+    "CHG-070 semantic token foundation and design-system documentation"
   ],
   "physicalDeviceEvidence": false
 }

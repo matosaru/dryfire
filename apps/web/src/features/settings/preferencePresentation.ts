@@ -2,7 +2,7 @@ type AudioKey='noiseFilter'|'autoGain';
 export type PreferencePresentationInput={
  capabilities:Record<AudioKey,boolean>;audioPreferences:Record<AudioKey,boolean>;
  processingReport?:Partial<Record<AudioKey,{status:string;applied?:boolean;requested?:boolean}>>|null;
- appearance:string;gunAvailable:boolean;locked:boolean;deviceLocked:boolean;
+ appearance:string;measurementSystem:string;gunAvailable:boolean;locked:boolean;deviceLocked:boolean;
  vibrationFeedback:boolean;vibrationSupported:boolean;vibrationRejected:boolean;
 };
 /** Pure, shared Settings presentation; platform capabilities and persistence remain injected. */
@@ -16,7 +16,7 @@ export function preferencePresentation(input:PreferencePresentationInput){
     :report?.status==='unconfirmed'?'The browser did not confirm this setting on the last audio track.'
     :`Saved ${input.audioPreferences[key]?'On':'Off'} · applies to the next capture.`};
  });
- return{audio,appearance:{value:input.appearance,disabled:input.deviceLocked},
+ return{audio,appearance:{value:input.appearance,disabled:input.deviceLocked},measurementSystem:{value:input.measurementSystem,disabled:input.deviceLocked},
   vibration:{checked:input.vibrationFeedback,disabled:!input.vibrationSupported||input.vibrationRejected||input.locked,
    status:!input.vibrationSupported?'Vibration is unavailable in this browser.'
     :input.vibrationRejected?'The browser declined vibration. Visual feedback remains available.'

@@ -99,6 +99,25 @@ test('React Settings retains backup picker, disclosure, theme and action ownersh
   expect(errors).toEqual([]);
 });
 
+test('measurement units persist, export and update Sound Check distance guidance',async({page})=>{
+  page.on('dialog',dialog=>dialog.accept());await restore(page);
+  await page.locator('#settingsShortcut').click();
+  await page.locator('#measurementSystem').selectOption('imperial');
+  await page.locator('.tab[data-view="learn"]').click();
+  await page.locator('#runSoundCheckBtn').click();
+  await expect(page.locator('.sound-check-distance-help')).toContainText('under 1 ft');
+  await expect(page.locator('.sound-check-distance-help')).not.toContainText('cm');
+  await page.locator('#settingsShortcut').click();
+  await expect(page.locator('#measurementSystem')).toHaveValue('imperial');
+  const saved=await backup(page);expect(saved.settings.measurementSystem).toBe('imperial');
+  await page.reload();await expect(page.locator('#settingsView')).toBeVisible();
+  await expect(page.locator('#measurementSystem')).toHaveValue('imperial');
+  await page.locator('#measurementSystem').selectOption('metric');
+  await page.locator('.tab[data-view="learn"]').click();
+  await page.locator('#runSoundCheckBtn').click();
+  await expect(page.locator('.sound-check-distance-help')).toContainText('under 30 cm');
+});
+
 for(const theme of ['dark','light'])test(`delayed Settings code keeps controls and pixel-identical ${theme} handoff`,async({page})=>{
   let release;const blocked=new Promise(resolve=>{release=resolve;});
   await page.route('**/assets/settingsPage-*.js',async route=>{await blocked;await route.continue();});
@@ -106,6 +125,7 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   await page.locator('#settingsShortcut').click();
   await expect(page.locator('#settingsView')).not.toHaveAttribute('data-react-settings');
   await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
+  await expect(page.locator('#noiseFilterStatus')).not.toHaveText('Checking browser support…');
   const file=await page.locator('#importFile').elementHandle();
   const before=await page.locator('#settingsView').screenshot({animations:'disabled'});
   const loaded=page.waitForResponse(response=>/\/assets\/settingsPage-/.test(response.url()));release();await loaded;

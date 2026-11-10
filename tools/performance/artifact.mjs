@@ -46,3 +46,12 @@ export function payloadViolations(actual, baseline) {
   }
   return errors;
 }
+
+/** Resolve the separately reviewed transfer cap for an artifact edition. */
+export function acceptedPayloadBudget(document, edition) {
+  const budget = document?.editions?.[edition];
+  if (!budget || budget.edition !== edition || !budget.critical) {
+    throw new Error(`Missing accepted ${edition} payload budget.`);
+  }
+  return budget;
+}

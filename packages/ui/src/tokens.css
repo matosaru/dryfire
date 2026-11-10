@@ -1,0 +1,47 @@
+/*
+ * Canonical semantic design tokens for new and migrated UI.
+ * Existing legacy selectors retain their current declarations until migrated;
+ * these aliases intentionally do not alter rendered values by themselves.
+ */
+:root {
+  color-scheme: dark;
+  --color-canvas: #090d10;
+  --color-surface: #14212b;
+  --color-surface-raised: #1a2935;
+  --color-border: #344a5a;
+  --color-text: #ffffff;
+  --color-text-muted: #b2c5d5;
+  --color-accent: #ff8126;
+  --color-trigger: #46baff;
+  --color-sequence: #b574f6;
+  --color-positive: #73e2ad;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --control-min-size: 2.75rem;
+  --content-phone: 390px;
+  --content-app: 480px;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-canvas: #f4f7f9;
+  --color-surface: #ffffff;
+  --color-surface-raised: #edf3f7;
+  --color-border: #c5d2de;
+  --color-text: #182936;
+  --color-text-muted: #4a6276;
+  --color-positive: #16633f;
+}

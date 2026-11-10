@@ -94,7 +94,7 @@ test('early failure saves, automatically restarts and accepts the first 200 ms c
   await page.reload();
   await page.locator('.tab[data-view="history"]').click();
   await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(6);
-  await page.locator('#savedSessions .saved-session-card').first().getByRole('button').click();
+  await page.locator('#savedSessions .saved-session-card').first().locator('button.button.secondary.wide-action').click();
   await expect(page.locator('#practiceResults')).toContainText('Miss · early trigger');
 });
 

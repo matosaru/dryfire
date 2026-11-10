@@ -1,0 +1,7 @@
+.history-delete-button,.history-delete-confirm .button { min-height:36px; padding:6px 10px; }
+.history-delete-button { justify-self:end; border:1px solid var(--session-border); border-radius:8px; background:transparent; color:var(--session-muted); cursor:pointer; font:inherit; font-weight:700; }
+.history-delete-button:hover,.history-delete-button:focus-visible { border-color:#ff7a1a; color:var(--session-text); }
+.history-delete-button:disabled { cursor:not-allowed; opacity:.5; }
+.history-delete-confirm { display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:8px; padding-top:8px; border-top:1px solid var(--session-border); }
+.history-delete-confirm>span { color:var(--session-muted); font-size:.78rem; }
+@media(max-width:420px){.history-delete-confirm{grid-template-columns:1fr 1fr}.history-delete-confirm>span{grid-column:1/-1}.history-delete-confirm .button{width:100%}}

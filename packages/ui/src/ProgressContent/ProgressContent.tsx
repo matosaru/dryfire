@@ -1,4 +1,5 @@
 import {Fragment} from 'react';
+import './ProgressContent.css';
 export type ProgressModel={empty?:string;timing?:string;cards?:{label:string;value:string}[];trend?:string;metric?:string;chart?:{label:string;grid:{y:number;label:string}[];line:string;dots:{x:number;y:number;title:string}[];dates:{x:number;anchor:'start'|'end';text:string}[];note:string;rows:string[][]}};
 /** Stateless chart, accessible table and summary; no grouping, storage or feature entitlement. */
 export function ProgressContent({model}:{model:ProgressModel}){const chart=model.chart;return <>

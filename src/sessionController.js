@@ -17,7 +17,7 @@ const $ = selector => document.querySelector(selector);
 
 /** Dedicated timed sessions; free listening retains its own capture lifecycle. */
 export function createSessionController({ getContext, titleFor, ensureSafe, onNavigate, onBack,
-  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord, loadPresentation = () => import('./sessionPresentation.js') }) {
+  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord, onDeleteSaved, loadPresentation = () => import('./sessionPresentation.js') }) {
   let presentation;
   const preparePresentation = async () => presentation ??= await loadPresentation();
   let selection = null;
@@ -360,17 +360,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     const records = gunId ? await getSessions(gunId) : [];
     if (gunId !== getContext().gun?.id || !isCurrent()) return;
     if(!paint)return records;
-    const host = $('#savedSessions');
-    host.replaceChildren();
-    if (!records.length) host.append(node('p', 'No saved drill sessions for this gun yet.', 'empty-state'));
-    for (const record of records) {
-      const card = node('article', '', 'saved-session-card');
-      const count = record.kind === 'practice' ? `${record.shots} shots · ${record.completed} attempts` : `${record.completed}/${record.config.repetitions}`;
-      const button = node('button', `${new Date(record.startedAt).toLocaleString()} · ${count} · ${record.status}`, 'button secondary wide-action');
-      button.type = 'button';
-      button.addEventListener('click', () => openSavedRecord(record));
-      card.append(node('strong', record.drillTitle), button); host.append(card);
-    }
+    const {renderSavedSessions} = await import('./optional/renderLegacyHistory.js');
+    if(isCurrent())renderSavedSessions(document,records,{onOpen:openSavedRecord,onDelete:onDeleteSaved,onError});
     return records;
   }
 

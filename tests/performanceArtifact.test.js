@@ -2,7 +2,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from 'nod
 import { gzipSync } from 'node:zlib';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { measureArtifact, payloadViolations } from '../tools/performance/artifact.mjs';
+import { measureArtifact, payloadViolations, acceptedPayloadBudget } from '../tools/performance/artifact.mjs';
 let directory;
 beforeEach(() => {
   directory = mkdtempSync(join(tmpdir(),'dryfire-artifact-')); mkdirSync(join(directory,'assets'));
@@ -39,6 +39,11 @@ test('a mandatory transitive chunk cannot hide an increased initial payload', ()
 test('different editions cannot share an accidentally lower or higher budget', () => {
   const baseline = measureArtifact(directory);
   expect(payloadViolations({...baseline,edition:'preview'},baseline)).toEqual(['Artifact editions do not match.']);
+});
+test('performance payload limits come from the accepted edition budget, independently of timing artifacts', () => {
+  const budget={version:1,editions:{public:{edition:'public',critical:{js:{raw:10,gzip:10},css:{raw:10,gzip:10}}}}};
+  expect(acceptedPayloadBudget(budget,'public')).toBe(budget.editions.public);
+  expect(()=>acceptedPayloadBudget(budget,'preview')).toThrow('Missing accepted preview payload budget.');
 });
 test('external and escaping static imports fail rather than vanishing from accounting', () => {
   writeFileSync(join(directory,'assets/app.js'),'import "https://example.test/runtime.js";');

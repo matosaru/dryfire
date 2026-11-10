@@ -1,7 +1,8 @@
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
-import { styleSources, composedStyles, lazyStyleOwners, lazyStyleSources } from '../tools/style-sources.mjs';
+import { styleSources, composedStyles, lazyStyleOwners, lazyStyleSources, startupStyleOwners } from '../tools/style-sources.mjs';
+import { startupCssOwnerPlugin } from '../tools/startup-css-owner.mjs';
 let root;
 beforeEach(() => { root = mkdtempSync(join(tmpdir(), 'dryfire-css-contract-')); mkdirSync(join(root, 'components')); });
 afterEach(() => rmSync(root, { recursive: true, force: true }));
@@ -15,7 +16,6 @@ test('nested colocated CSS retains the original cascade and exposes every media 
   expect(result.css).toBe('.card{color:red}\n.card{padding:12px}\n.card{color:green}\n.card{color:blue}\n');
   expect(result.sources).toEqual(['entry.css', 'base.css', 'components/card.css', 'components/spacing.css']);
 });
-
 test('a circular import fails before recursive composition can loop', () => {
   writeFileSync(join(root, 'entry.css'), '@import "./components/card.css";\n');
   writeFileSync(join(root, 'components/card.css'), '@import "../entry.css";\n');
@@ -43,5 +43,20 @@ test('private progress presentation styles load with their only runtime owner', 
   expect(lazyStyleSources()).toEqual([path]);
   expect(lazyStyleOwners['src/optional/progressView.js']).toEqual([path]);
   expect(readFileSync(resolve(process.cwd(), 'src/optional/progressView.js'), 'utf8'))
-    .toContain("import progressStyles from '../../packages/ui/src/ProgressContent/ProgressContent.css?inline';");
+    .toContain("import '../../packages/ui/src/ProgressContent/ProgressContent.css';");
+  expect(readFileSync(resolve(process.cwd(), 'packages/ui/src/ProgressContent/ProgressContent.tsx'), 'utf8'))
+    .toContain("import './ProgressContent.css';");
+});
+
+test('component-owned startup CSS is resolved through the single critical stylesheet copy', () => {
+  const ownerPath = resolve(process.cwd(), 'packages/ui/src/InformationCard/InformationCard.tsx');
+  const cssPath = 'packages/ui/src/InformationCard/InformationCard.css';
+  const id = startupCssOwnerPlugin().resolveId('./InformationCard.css', ownerPath);
+  expect(readFileSync(ownerPath, 'utf8')).toContain("import './InformationCard.css';");
+  expect(startupStyleOwners['packages/ui/src/InformationCard/InformationCard.tsx']).toBe(cssPath);
+  expect(styleSources()).toContain(cssPath);
+  expect(startupCssOwnerPlugin().load(id)).toBe('export {};\n');
+  expect(startupCssOwnerPlugin().resolveId('./InformationCard.css?direct', `${ownerPath}?used`)).toBe(id);
+  expect(startupCssOwnerPlugin().resolveId('./Other.css', ownerPath)).toBeNull();
+  expect(startupCssOwnerPlugin().resolveId('../packages/ui/src/InformationCard/InformationCard.css', resolve(process.cwd(), 'src/styles.css'))).toBeNull();
 });

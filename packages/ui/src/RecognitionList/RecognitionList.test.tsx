@@ -16,3 +16,8 @@ test('initial and empty lists differ; rows retain optional sequence, verificatio
  view.rerender(<RecognitionList rows={rows} options={options} onVerify={verify}/>);expect(view.getByLabelText('Actual sound for Today')).toBe(select);expect(select).toHaveValue('other');
  view.rerender(<RecognitionList rows={[{...rows[0],actualLabel:'other'}]} options={options}/>);expect(view.getByLabelText('Actual sound for Today')).toHaveValue('other');fireEvent.change(view.getByRole('combobox'),{target:{value:''}});
 });
+test('individual result deletion uses accessible inline confirm and cancel actions',()=>{
+ const row={id:'a',title:'Trigger pull',date:'Today',score:'95/100',actualLabel:''},remove=jest.fn(),view=render(<RecognitionList rows={[row]} options={[]} onDelete={remove}/>);
+ fireEvent.click(view.getByRole('button',{name:'Delete recognition result from Today'}));expect(view.getByText('Delete this recognition result?')).toBeVisible();fireEvent.click(view.getByRole('button',{name:'Cancel deleting recognition result from Today'}));expect(remove).not.toHaveBeenCalled();
+ fireEvent.click(view.getByRole('button',{name:'Delete recognition result from Today'}));fireEvent.click(view.getByRole('button',{name:'Confirm deleting recognition result from Today'}));expect(remove).toHaveBeenCalledWith(row);
+});

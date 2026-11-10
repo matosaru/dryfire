@@ -1,39 +1,146 @@
-# Repository instructions
+# Codex repository guide — Dry Fire With Ease
 
-Latest release direction (2026-10-26): the owner asks to keep b and main up to date. Develop on b and promote fully accepted releases through b → main pull requests automatically; this supersedes the earlier assistant main freeze. Complete acceptance below still applies before promotion. Dev remains outside scope.
+## Project overview
 
-Before merging or promoting application changes into any branch, require complete candidate acceptance: unit/coverage, integration, both-edition builds/verification, pinned Chromium/WebKit screenshot suites and the unchanged performance gate. Focused tests alone are insufficient. Use a review-only candidate patch in CI if the local environment lacks the pinned browsers; do not substitute local Chromium for WebKit or label cancelled/pending checks as passed. Fix failures and complete the gate before applying the application candidate. The owner reinforced this with “try fixing all tests, then merge. Add this directive to your context” (2026-10-22); keep b-only/main-dev freeze constraints below.
+Dry Fire With Ease is an offline-first Vite PWA for microphone-assisted dry-fire practice. The runtime is progressively migrating from vanilla JavaScript to typed React while preserving fast native startup adapters. Data is stored locally in IndexedDB; production assets are deployed to Cloudflare Workers.
 
-Maintain [refactor working context](docs/project/react-refactor/context.md) after each completed task/increment. Keep only current authorization, source/task, verified evidence, open debt and the next action; link to the spec/plan/history instead of duplicating them. Offload detailed decisions/results to their authoritative documents, remove superseded status from the handoff, and preserve user constraints, approval evidence and unresolved failures. Do not claim unobserved CI/deployment or background progress.
+| Area | Technology |
+| --- | --- |
+| UI | React, TypeScript, reusable packages under `packages/ui` |
+| Runtime/controllers | JavaScript modules under `src` |
+| Build | Vite, minified production output in ignored `dist/` |
+| Storage | IndexedDB schema 4; backup format 4 with legacy restore support |
+| Tests | Jest, Testing Library, Playwright Chromium/WebKit |
+| Hosting | Cloudflare Workers static assets |
 
-CHG-051 resolves startup ownership: the owner delegated the decision with “use your judgement” after the renderer/performance explanation. Retain tested progressive startup adapters and guarded lazy React owners per docs/architecture/decisions/001-progressive-react-startup.md; preserve original performance and all other invariants. Remove obsolete consumers and shared-model/style duplication, not actively required startup behavior. This supersedes unconditional fallback retirement in the earlier plan; no main/dev/deployment or product-scope change.
+Node.js 22 or newer is required. Install from the committed lockfile with `npm ci`.
 
-CHG-050 changes refactor sequencing: continue structural migration after functional/visual/data/edition/payload verification and track known timing debt for final optimization. Do not suppress timing failures or change the original baseline. Final release still requires passing performance acceptance. The owner has paused dev synchronization to save credits; work on b only until resumed.
+## Repository map
 
-CHG-049 approves [spec.md](docs/project/react-refactor/spec.md) and [plan.md](docs/project/react-refactor/plan.md): **“proceed with a plan”**, **“full autonomy for implementation”**, initial changes to **b and dev**. The CHG-048 review gate is satisfied. Execute the stages without repeated approval, beginning with characterization/coverage/performance; preserve all design, behavior, data, minification and edition invariants. Main remains PR-only and Cloudflare remains owner-managed. Do not skip an exit gate or claim the entire migration complete after a partial increment.
+| Path | Responsibility |
+| --- | --- |
+| `apps/web/src/pages/` | Typed application page components and page-local CSS/tests |
+| `apps/web/src/features/` | Feature presentation and feature-local components |
+| `apps/web/src/app/` | Guarded React mounts and controller-to-page adapters |
+| `packages/ui/src/` | Shared reusable UI components, semantic tokens, CSS and tests |
+| `src/` | Runtime controllers, audio, navigation, storage and startup adapters |
+| `workers/` | Service worker, audio worklet and Worker entry points |
+| `tests/` | Runtime, storage, integration and adapter tests |
+| `visual-tests/` | Playwright workflows and canonical screenshot harness |
+| `docs/requirements/` | Authoritative functional requirements |
+| `docs/design/` | Current screen designs, reviewed captures and provenance |
+| `docs/architecture/` | Screen/component ownership, routes and maintenance rules |
+| `docs/project/` | Approval evidence, implementation history and active plans |
 
-CHG-048 is the latest refactor instruction: analyze the released structure and linked article, prepare [spec.md](docs/project/react-refactor/spec.md) and [plan.md](docs/project/react-refactor/plan.md), preserve design/functionality/performance and **show the plan before proceeding**. Further CHG-047 application migration is paused until the owner approves this revision. Documentation/research/baseline measurement may proceed; do not change application code, tests/configuration, CSS or visual references for this planning request. The article has now been read successfully; its recommendations and coverage/performance gaps are in the specification.
+The application entry point and ownership map are documented in [application-structure.md](docs/architecture/application-structure.md) and [component-map.json](docs/architecture/component-map.json).
 
-CHG-047 is the earlier user instruction **“let proceed with refactor plan”**. It started incremental implementation of the [React refactor plan](docs/project/react-refactor-plan.md), superseding CHG-046’s planning-only restriction for that technical scope. Preserve visual references/tests, data/audio/route ownership and Free/Full profiles; work on b then synchronize dev. CHG-048 now gates further implementation and records the completed article comparison.
+## Sources of truth
 
-CHG-045 requires the live screen, help example, screenshots and current GIF exports to stay synchronized. Use the shared run/review fragments and read-only presentation; regenerate exports and their source/media fingerprints after relevant changes. CHG-046 requests a React structure/refactor **plan only after the design release**, preserving visuals/tests; it does not authorize a framework migration.
+Read these before changing the affected area:
 
-CHG-044 implements the [contextual practice guides](docs/requirements/practice-guides.md) in the shared page architecture. Preserve gun/source ownership, history and invalid/unsaved setup drafts when reading a guide. Its synthetic controlled examples use pure session engines, never microphone/storage APIs; keep initial motion paused, actual selected sequence/endpoints, the disclosed example settings, early-Single semantics and navigation/background pause. Current application designs and browser references are separate from earlier CHG-042/043 proposal GIFs.
+1. [Functional requirements](docs/requirements/README.md)
+2. [Design context](DESIGN.md) and [design catalog](docs/design/README.md)
+3. [Approval log](docs/project/approval-log.md)
+4. [Architecture maintenance](docs/architecture/README.md)
+5. [Detailed repository rules](docs/development/AGENTS.md)
 
-Read the repository-wide [agent instructions](docs/development/AGENTS.md), [functional requirements](docs/requirements/README.md), [approval log](docs/project/approval-log.md) and [design catalog](docs/design/README.md) before work. Preserve saved user data and reuse existing explicit approvals.
+Historical CHG decisions remain evidence in the linked documents. They do not override a later direct user instruction or the current rules in this file.
 
-Full documentation belongs in the appropriate package under `docs/`; the [documentation index](docs/README.md) defines ownership. CHG-018 supersedes the older all-under-`docs/design/` rule.
+Task/model allocation and context discipline are documented in [codex-workflow.md](docs/development/codex-workflow.md). Model, approval and sandbox configuration remains client/environment-owned rather than committed to this repository.
+For a complete `b` candidate, use the repository's [candidate-acceptance skill](.agents/skills/dryfire-candidate-acceptance/SKILL.md); focused checks never replace that gate.
 
-For a screen, state, navigation or visible-control change, update its requirement/design, review the [screen registry](docs/architecture/screen-map.json), then run `npm run docs:generate` and `npm run docs:check`. Follow the [maintenance procedure](docs/architecture/README.md). Keep the implementation history current after every request; do not equate publication with deployment.
+## Current branch and delivery rules
 
-CHG-036 supersedes CHG-025: follow [the branching strategy](docs/project/branching-strategy.md). Free changes go directly to `b` (pre-production), then sync `b` → `dev` retaining Full additions/profile. Full-only changes go directly to `dev`. Production uses a checked `b` → `main` PR; never push main directly or release dev into main. No feature branches are required. Build defaults: public on b/main, private full preview on dev; preserve destination `build-profile.json` and `wrangler.jsonc` when merging. The user owns Cloudflare setup; prepare and validate code/config only. Distinguish CI/push/merge from live deployment.
+- Develop Free application changes on `b`.
+- Promote an accepted `b` candidate to `main` through a pull request. Never push application changes directly to `main`.
+- `dev` is outside the current work scope unless the user explicitly restores it.
+- The user configures Cloudflare. Prepare and validate repository code/configuration; do not claim live deployment without observing it.
+- Before committing or pushing, inspect the diff and run the complete applicable acceptance gate. Focused tests alone are insufficient.
 
-CHG-026 currently authorizes [plans/research only](docs/project/web-commercial-plan.md), committed to a feature branch. The user explicitly says not to start implementations; wait for a later implementation instruction. Native apps are deferred. Price/paid allocation/providers/data policies and public-Free/private-preview gates remain proposals; existing free features and saved data stay intact. Country/market: Lithuania/Europe. Public Contact address: easydryfire@gmail.com.
+## Working rules
 
-CHG-027 is the later, specific instruction to start [About and email contact](docs/requirements/about.md) on a separate feature branch from `dev`. Implement that slice with suggested copy for review; the broader CHG-026 implementation pause remains in force.
+- Preserve approved behavior, saved data, routes, accessibility and reviewed visuals unless the user explicitly changes them.
+- Prefer small changes in the existing owner. Do not add a dependency when an existing component or platform primitive solves the problem.
+- Shared UI receives data and callbacks; it does not access microphones or IndexedDB directly.
+- Keep React ownership exclusive. A native startup adapter must stop mutating a region after React owns it.
+- Reuse semantic tokens and canonical primitives described in [the design-system package](docs/design-system/README.md). Do not introduce unexplained raw colors, spacing scales or duplicate controls.
+- Keep native selects native unless a separately approved design changes that decision.
+- Add meaningful tests for behavior and ownership. Do not add implementation-mirroring tests solely to increase counts.
+- Preserve IndexedDB identifiers, backup compatibility and gun ownership. Destructive actions require accurate scope and confirmation.
+- Synthetic audio tests do not establish physical microphone accuracy, cue audibility or safe firearm handling.
 
-CHG-029 separates [Contact](docs/requirements/contact.md) from About, with centered footer links and a divider. CHG-031 makes these controls white in Dark mode and retains their Light color. Both are independent app states; this specific instruction leaves broader CHG-026 implementations paused. Preserve font/underline/focus, history, saved data and safety/capture guards.
+## Commands
 
-CHG-032 explicitly starts [public/full build editions](docs/requirements/build-editions.md); CHG-034 sets the public new-gun limit to two. No new custom creation or advanced graphs publicly; retain full preview and old-data use/edit/restore. Keep the optional source package, edition/source artifact verification and both-edition CI. Hosted full preview requires separately verified authentication; b/main builds stay public; dev is the full private preview. Other commercial implementations remain paused. CHG-033 shows the existing five bottom tabs on About/Contact with safe-area/setup/capture guards. CHG-035 authorizes a private-preview-only Free/Full simulation and signed Access asset gate; live policy/deployment must be verified. Product accounts/billing/production overrides remain paused.
+### Fast local checks
 
-CHG-037: every screen uses the [common reusable page templates](docs/architecture/page-templates.md) and [shared layout requirements](docs/requirements/page-layout.md). Keep header/footer/navigation in shared fragments and each screen’s content in its page template; preserve stable definitions/IDs, edition filtering, profile/capture guards and reviewed image coverage. Do not duplicate the app shell in new pages.
+```bash
+npm ci
+npm run typecheck
+npm run lint:components
+npm run lint:runtime
+npm run test:smoke
+npm test
+npm run build:public
+npm run verify:dist -- --edition=public
+```
+
+### Documentation and architecture
+
+```bash
+npm run verify:architecture
+npm run docs:generate
+npm run docs:check
+npm run visual:review
+```
+
+Run `npm run docs:review` only after reviewing affected requirements, designs and rendered evidence.
+
+### Complete application acceptance
+
+```bash
+npm run test:coverage
+npm run coverage:check
+npm run build:public
+npm run verify:dist -- --edition=public
+npm run perf:payload
+npm run build:preview
+npm run verify:dist -- --edition=preview
+```
+
+Run the pinned Playwright container for browser workflows and canonical screenshots:
+
+```bash
+npm run build:public
+VISUAL_EDITION=public npm run test:visual:docker
+npm run build:preview
+VISUAL_EDITION=preview npm run test:visual:docker
+```
+
+Run the unchanged performance comparison required by [PERFORMANCE.md](docs/development/PERFORMANCE.md). Never replace pinned Chromium/WebKit evidence with a local browser or treat cancelled/pending CI as passed.
+
+## Visible-change process
+
+For a screen, state, navigation, copy or visible-control change:
+
+1. Update its requirement and design document.
+2. Review `docs/architecture/screen-map.json` and component ownership.
+3. Update meaningful unit/integration tests.
+4. Generate the canonical 390 px Chromium page capture when its page appearance changes.
+5. Inspect the actual image before recording its fingerprint.
+6. Run `npm run docs:review`, `npm run docs:generate`, and `npm run docs:check` in that order.
+
+Normal tests and CI must never auto-accept screenshot baselines.
+
+## Definition of done
+
+A change is done only when:
+
+- implementation, requirements and design documentation agree;
+- relevant unit, integration, storage and browser tests pass;
+- coverage, architecture, documentation, build/profile, payload and performance gates pass;
+- both public and preview artifacts are verified;
+- canonical visual references are inspected and exact comparisons pass when affected;
+- the implementation history and current handoff identify completed and remaining work;
+- the exact accepted candidate is committed to `b` and observed CI is green before promotion.
+
+Keep [react-refactor/context.md](docs/project/react-refactor/context.md) concise and current after each completed increment. Record deployment and physical-device checks separately from source acceptance.
