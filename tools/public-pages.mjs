@@ -26,10 +26,10 @@ export function publicPagesPlugin(){return{name:'public-pages',generateBundle:{o
  const css=transform({filename:'public-site.css',code:Buffer.from(readFileSync('apps/web/src/public-site/PublicPage/PublicPage.css')),minify:true}).code;
  const name=`assets/public-site-${createHash('sha256').update(css).digest('hex').slice(0,8)}.css`;
  this.emitFile({type:'asset',fileName:name,source:css});
- const shared=Object.keys(bundle).find(file=>file.endsWith('.css')&&file!==name);
- if(!shared)throw new Error('Public pages need the existing shared application styles.');
  const index=bundle['index.html'];if(index?.type!=='asset')throw new Error('Public pages require the compiled app document.');
  const app=String(index.source);
+ const shared=app.match(/<link\b[^>]*rel="stylesheet"[^>]*href="\/([^"]+)"/)?.[1];
+ if(!shared||!bundle[shared])throw new Error('Public pages need the stylesheet linked by the compiled app document.');
  for(const route of PUBLIC_ROUTES){
   const html=route.appView?appDocumentHead(prerenderAppScreen(app,route),route):renderPublicHTML(route,[shared,name]);
   const release=app.match(/data-release-id="([a-f0-9]{64})"/)?.[1];

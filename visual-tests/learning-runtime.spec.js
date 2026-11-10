@@ -9,7 +9,7 @@ for(const theme of ['dark','light'])test(`Learn keeps ${theme} pixels, drafts, s
   await page.route('**/assets/learnPage-*.js',async route=>{await blocked;await route.continue();});
   await freezeMotionArtwork(page);
   await page.goto('/');await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});await expect(page.locator('#homeView')).toBeVisible();
-  if(theme==='light'){await page.locator('#settingsShortcut').click();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);}
+  if(theme==='light'){await page.locator('#settingsShortcut').click();await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);}
   await page.locator('.tab[data-view="learn"]').click();
   const disclosures=page.locator('#learnView details.optional-sounds');for(const disclosure of await disclosures.all())await disclosure.locator('summary').click();
   for(const image of await page.locator('#learnView img').all()){await image.scrollIntoViewIfNeeded();await expect.poll(()=>image.evaluate(node=>node.complete&&node.naturalWidth>0)).toBe(true);}

@@ -12,6 +12,7 @@ module.exports = {
     'workers/**/*.js',
     'apps/web/src/**/*.{ts,tsx}',
     'packages/ui/src/**/*.{ts,tsx}',
+    '!**/*.d.ts',
     '!**/*.test.{js,ts,tsx}',
     '!**/index.ts',
   ],

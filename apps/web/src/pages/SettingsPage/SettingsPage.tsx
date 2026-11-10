@@ -4,7 +4,9 @@ import {GunContext} from '@dryfire/ui/GunContext';
 import {SettingsSection} from '../../features/settings/components/SettingsSection/index.ts';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import type {ReactNode,ChangeEventHandler} from 'react';
-export type SettingsState={gunName?:string;contextHidden?:boolean;installationOpen?:boolean;texts?:Record<string,string>;disabled?:Record<string,boolean>};
+import type {preferencePresentation} from '../../features/settings/preferencePresentation.ts';
+type Preferences=ReturnType<typeof preferencePresentation>;
+export type SettingsState={gunName?:string;contextHidden?:boolean;installationOpen?:boolean;texts?:Record<string,string>;disabled?:Record<string,boolean>;preferences?:Preferences};
 export type SettingsPageProps={state?:SettingsState;fileInput?:ReactNode;preview?:ReactNode;onBack?:()=>void;onAction?:(id:string)=>void;onPreference?:(id:string,value:string|boolean)=>void;onImport?:ChangeEventHandler<HTMLInputElement>};
 /** Shared source for Settings; persistence/capabilities/preview lifetimes remain feature-owned. */
 export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreference,onImport}:SettingsPageProps){return <><PageHeading id="settings-title" title="Settings" eyebrow="05 / DEVICE & PRIVACY" reactBack={false} onBack={onBack}/>
@@ -29,13 +31,14 @@ export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreferen
         <p className="small muted">Import replaces saved guns, sounds, history, presets, sessions and preferences on this device. Older backups contain no saved sessions. Files from another device may perform differently.</p>
       </SettingsSection>
       <SettingsSection title="Audio processing · this gun" className="preference-group">
-        <PreferenceToggle id="noiseFilter" label="Noise Filter" description="Checking browser support…" descriptionId="noiseFilterStatus" descriptionRole="status" onChange={event=>onPreference?.('noiseFilter',event.currentTarget.checked)}/>
-        <PreferenceToggle id="autoGainControl" label="Auto Gain" description="Checking browser support…" descriptionId="autoGainStatus" descriptionRole="status" onChange={event=>onPreference?.('autoGainControl',event.currentTarget.checked)}/>
+        <PreferenceToggle id="noiseFilter" label="Noise Filter" description={state?.preferences?.audio[0].status??"Checking browser support…"} descriptionId="noiseFilterStatus" descriptionRole="status" defaultChecked={state?.preferences?.audio[0].checked} disabled={state?.preferences?.audio[0].disabled} onChange={event=>onPreference?.('noiseFilter',event.currentTarget.checked)}/>
+        <PreferenceToggle id="autoGainControl" label="Auto Gain" description={state?.preferences?.audio[1].status??"Checking browser support…"} descriptionId="autoGainStatus" descriptionRole="status" defaultChecked={state?.preferences?.audio[1].checked} disabled={state?.preferences?.audio[1].disabled} onChange={event=>onPreference?.('autoGainControl',event.currentTarget.checked)}/>
         <p className="muted small">Changes apply to the next capture. Audio processing may affect recognition and require fresh examples; it never deletes your learned sounds.</p>
       </SettingsSection>
-      <SettingsSection title="Appearance & feedback · this device" className="preference-group">
-        <label className="preference-select" htmlFor="appearance"><span>Appearance</span><select id="appearance" onChange={event=>onPreference?.('appearance',event.currentTarget.value)}><option value="dark">Dark</option><option value="light">Light</option><option value="system">System</option></select></label>
-        <PreferenceToggle id="vibrationFeedback" label="Vibration Feedback" description="Checking browser support…" descriptionId="vibrationStatus" descriptionRole="status" onChange={event=>onPreference?.('vibrationFeedback',event.currentTarget.checked)}/>
+      <SettingsSection title="Appearance, units & feedback · this device" className="preference-group">
+        <label className="preference-select" htmlFor="appearance"><span>Appearance</span><select id="appearance" defaultValue={state?.preferences?.appearance.value} disabled={state?.preferences?.appearance.disabled} onChange={event=>onPreference?.('appearance',event.currentTarget.value)}><option value="dark">Dark</option><option value="light">Light</option><option value="system">System</option></select></label>
+        <label className="preference-select" htmlFor="measurementSystem"><span>Measurement units</span><select id="measurementSystem" defaultValue={state?.preferences?.measurementSystem.value} disabled={state?.preferences?.measurementSystem.disabled} onChange={event=>onPreference?.('measurementSystem',event.currentTarget.value)}><option value="metric">Metric</option><option value="imperial">Imperial</option></select></label>
+        <PreferenceToggle id="vibrationFeedback" label="Vibration Feedback" description={state?.preferences?.vibration.status??"Checking browser support…"} descriptionId="vibrationStatus" descriptionRole="status" defaultChecked={state?.preferences?.vibration.checked} disabled={state?.preferences?.vibration.disabled} onChange={event=>onPreference?.('vibrationFeedback',event.currentTarget.checked)}/>
         <p className="muted small">When enabled and supported, vibration is requested at GO and repetition completion.</p>
       </SettingsSection>
       <SettingsSection title="Delete local app data"><p className="muted small">Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.</p><button id="resetLibraryBtn" disabled={state?.disabled?.resetLibraryBtn} onClick={()=>onAction?.('resetLibraryBtn')} className="button danger wide-action" type="button">Delete all guns &amp; app data</button></SettingsSection>

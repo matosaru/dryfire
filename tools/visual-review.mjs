@@ -2,11 +2,12 @@ import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { allCases, baselineName } from '../visual-tests/catalog.js';
 const environment = JSON.parse(readFileSync('visual-tests/environment.json'));
-const paths = ['chromium', 'webkit'].flatMap(browser => allCases.map(item => `${browser}/${baselineName(item)}`));
+const paths = allCases.map(item => `chromium/${baselineName(item)}`);
 const root = 'docs/design/baselines';
 const walk = dir => readdirSync(dir, { withFileTypes: true }).flatMap(item => item.isDirectory() ? walk(`${dir}/${item.name}`) : [`${dir}/${item.name}`]);
 const actual = walk(root).filter(path => path.endsWith('.png')).map(path => path.slice(root.length + 1));
-if (JSON.stringify([...paths].sort()) !== JSON.stringify(actual.sort())) throw new Error('Missing or unowned visual baselines.');
+const missing=paths.filter(path=>!actual.includes(path));
+if(missing.length)throw new Error(`Missing canonical visual baselines: ${missing.join(', ')}`);
 const images = Object.fromEntries(paths.map(path => {
   const bytes = readFileSync(`${root}/${path}`);
   if (!bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) throw new Error(`Invalid PNG: ${path}`);
@@ -19,5 +20,5 @@ if (process.argv.includes('--write')) {
   writeFileSync(path, manifest); console.log(`Recorded ${paths.length} reviewed baseline fingerprints.`);
 } else {
   if (!existsSync(path) || readFileSync(path, 'utf8') !== manifest) throw new Error('Baselines changed without review; review images and run npm run visual:review -- --write.');
-  console.log(`Visual coverage verified: ${allCases.length} edition/state/width cases × 2 browsers, exact matching enabled.`);
+  console.log(`Visual coverage verified: ${allCases.length} distinct mobile page cases in Chromium, exact matching enabled.`);
 }

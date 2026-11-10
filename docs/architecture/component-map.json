@@ -989,6 +989,13 @@
       "entry": "packages/ui/src/GunSwitcher/index.ts"
     },
     {
+      "name": "HistoryDeleteControl",
+      "source": "packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.tsx",
+      "css": "packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.css",
+      "tests": "packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.test.tsx",
+      "entry": "packages/ui/src/HistoryDeleteControl/index.ts"
+    },
+    {
       "name": "InfoFooter",
       "source": "packages/ui/src/InfoFooter/InfoFooter.tsx",
       "css": "packages/ui/src/InfoFooter/InfoFooter.css",

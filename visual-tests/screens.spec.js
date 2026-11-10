@@ -133,7 +133,7 @@ async function prepare(page, item) {
         await expect(page.locator('#practiceSaved')).toHaveText('Saved on this device'); break;
       }
       if (item.state.startsWith('review')) {
-        await tab(page, 'history'); await page.locator('#savedSessions .saved-session-card').filter({ hasText: 'Single trigger press' }).first().getByRole('button').click();
+        await tab(page, 'history'); await page.locator('#savedSessions .saved-session-card').filter({ hasText: 'Single trigger press' }).first().locator('button.button.secondary.wide-action').click();
         await expect(page.locator('#practiceSaved')).toHaveText('Saved on this device'); break;
       }
       await startPractice(page, item.state.startsWith('countdown'));
@@ -195,13 +195,20 @@ async function prepare(page, item) {
       if (item.state.startsWith('listening')) { await page.locator('#listenBtn').click(); await confirmSafety(page); await expect(page.locator('#listeningIndicator')).toContainText('Microphone active'); await emit(page); await expect(page.locator('#sessionTimeline li')).toHaveCount(1); }
       break;
     case 'history':
-      await tab(page, 'history'); await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);
+      await tab(page, 'history'); await tab(page, 'home'); await tab(page, 'history');
+      await expect(page.locator('#historyView')).toHaveAttribute('data-react-history', '');
+      await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);
       if (item.state.startsWith('data-table')) await page.locator('.progress-data summary').click();
       if (item.state.startsWith('recognition-cleared')) { await page.locator('#clearHistoryBtn').click(); await expect(page.locator('#historyClearOutcome')).toContainText('was cleared'); await expect(page.locator('#historyList .history-item')).toHaveCount(0); }
       if (item.state.startsWith('sessions-cleared')) { await page.locator('#clearSessionsBtn').click(); await expect(page.locator('#sessionsClearOutcome')).toContainText('were cleared'); await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(0); }
       break;
     case 'settings':
       await page.locator('#settingsShortcut').click(); await visible(page, 'settingsView');
+      // Device capability copy is rendered after the initial static Settings
+      // shell. Capture the stable state, not the brief loading placeholders.
+      await page.clock.runFor(300);
+      await expect(page.locator('#noiseFilterStatus')).not.toContainText('Checking browser support');
+      await expect(page.locator('#vibrationStatus')).not.toContainText('Checking browser support');
       if (item.state.startsWith('installation-help')) { await page.locator('.install-details summary').click(); await expect(page.locator('.install-card')).toBeVisible(); }
       if (item.state.startsWith('sounds-reset')) { await page.locator('#resetModelBtn').click(); await expect(page.locator('#soundResetOutcome')).toContainText('reset'); await expect(page.locator('#soundResetSummary')).toContainText('0 learned samples'); }
       break;
@@ -223,6 +230,7 @@ async function prepare(page, item) {
 
 for (const item of cases) {
   test(`${item.folder}/${item.state} at ${item.width}px`, async ({ page, browser }, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'Canonical screenshots run once in mobile Chromium.');
     const errors = []; page.on('pageerror', error => errors.push(error.message));
     await page.setViewportSize({ width: item.width, height: environment.viewport.height });
     await prepare(page, item);

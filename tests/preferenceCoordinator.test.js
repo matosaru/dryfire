@@ -1,7 +1,8 @@
 import {jest} from '@jest/globals';
 import {createPreferenceState,createPreferenceActions} from '../src/preferenceCoordinator.js';
+import {normalizeAudioPreferences} from '../src/audioPreferences.js';
 const deferred=()=>{let resolve,reject;const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});return{promise,resolve,reject};};
-function setup(){const state=createPreferenceState(),ports={read:jest.fn(id=>id==='appearance'?{value:'system'}:{checked:true}),locked:()=>state.pending,owner:()=> 'a',activeOwner:jest.fn(()=> 'a'),saveDevice:jest.fn(async()=>{}),saveGun:jest.fn(async()=>{}),render:jest.fn(),refresh:jest.fn(),applyTheme:jest.fn(),reload:jest.fn(async()=>{}),error:jest.fn(),message:jest.fn()};return{state,ports,actions:createPreferenceActions(state,ports)};}
+function setup(){const state=createPreferenceState(normalizeAudioPreferences),ports={normalizeAudioPreferences,read:jest.fn(id=>id==='appearance'?{value:'system'}:id==='measurementSystem'?{value:'imperial'}:{checked:true}),locked:()=>state.pending,owner:()=> 'a',activeOwner:jest.fn(()=> 'a'),saveDevice:jest.fn(async()=>{}),saveGun:jest.fn(async()=>{}),render:jest.fn(),refresh:jest.fn(),applyTheme:jest.fn(),applyMeasurements:jest.fn(),reload:jest.fn(async()=>{}),error:jest.fn(),message:jest.fn()};return{state,ports,actions:createPreferenceActions(state,ports)};}
 test('pending audio writes preserve the captured previous snapshot and roll back on failure',async()=>{
  const {state,ports,actions}=setup(),write=deferred(),previous=state.audio;ports.saveGun.mockReturnValue(write.promise);
  const pending=actions.audio('noiseFilter','noiseFilter');expect(state.pending).toBe(true);expect(ports.saveGun).toHaveBeenCalledWith('audioPreferences',expect.objectContaining({noiseFilter:true}),'a');expect(previous.noiseFilter).toBe(false);
@@ -15,4 +16,9 @@ test('device failures preserve committed appearance and reload vibration prefere
  const {state,ports,actions}=setup();ports.saveDevice.mockRejectedValue(Error('offline'));await actions.appearance();expect(state.theme).toBe('dark');expect(ports.applyTheme).not.toHaveBeenCalled();
  ports.reload.mockImplementation(async()=>{state.vibration=false;});await actions.vibration();expect(ports.reload).toHaveBeenCalledTimes(1);expect(state.vibration).toBe(false);expect(ports.error).toHaveBeenCalledTimes(2);
  ports.read.mockReturnValue({value:'invalid'});await actions.appearance();expect(ports.saveDevice).toHaveBeenCalledTimes(2);
+});
+test('measurement units persist as a normalized device preference and refresh visible measurements',async()=>{
+ const {state,ports,actions}=setup();expect(state.measurementSystem).toBe('metric');await actions.measurementSystem();
+ expect(ports.saveDevice).toHaveBeenCalledWith('measurementSystem','imperial');expect(state.measurementSystem).toBe('imperial');expect(ports.applyMeasurements).toHaveBeenCalledTimes(1);expect(ports.render).toHaveBeenCalledTimes(1);
+ ports.read.mockReturnValue({value:'unknown'});await actions.measurementSystem();expect(ports.saveDevice).toHaveBeenCalledTimes(1);
 });

@@ -9,7 +9,7 @@ export function addLegacySequence(backup) {
 }
 export async function openLegacySequence(page) {
   await page.locator('.tab[data-view="history"]').click();
-  await page.locator('#savedSessions .saved-session-card').filter({ has: page.getByText('Trigger pull', { exact: true }) }).getByRole('button').click();
+  await page.locator('#savedSessions .saved-session-card').filter({ has: page.getByText('Trigger pull', { exact: true }) }).locator('button.button.secondary.wide-action').click();
   await page.locator('#repeatSessionBtn').click();
   await page.locator('#sessionConfigure').waitFor({ state: 'visible' });
 }

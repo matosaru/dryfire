@@ -1,5 +1,11 @@
 # Requirements approval log
 
+## CHG-070 — Codex project and design-system setup completion
+
+- **Direct instruction:** On 2026-11-09, after reviewing the missing parts of the Codex setup, the owner instructed: “Can you prepare missing parts?”
+- **Approved scope:** replace the historical root agent entry with a concise current project/folder/workflow/command/definition-of-done guide; add a canonical semantic token layer and design-system documentation for primitive ownership and usage. Preserve current visuals, behavior, data and dependencies.
+- **Status:** implementation prepared on `b`; acceptance and publication remain separate.
+
 Recorded: 2026-10-10. This initial ledger records available conversation evidence and deliberately separates feature requests, design approval and implementation.
 
 ## CHG-001 — Reference design and existing behavior
@@ -718,3 +724,15 @@ Owner requests the next contact correction after current audio work: retain `mai
 ## CHG-066 — Measurement-unit preference (queued 2026-11-02)
 
 Owner queues the next separate task after the audio feature: add a persisted Metric / Imperial preference in Settings and make every applicable distance label, help text and behavior follow it. Specify one shared formatting/conversion source, migration/default behavior, accessibility copy and unit/integration/visual coverage before implementation. Do not mix this cross-app preference into CHG-063 owner testing.
+
+## CHG-068 — Delete individual History records (2026-11-07)
+
+Owner requests: **“additional possibility to clear history items one by one. Currently only full history can be cleared”** and directs adding this work to the plan. Queue individually confirmed deletion for saved session records and recognized-sound records owned by the selected gun. Preserve the existing bulk-clear actions, every unrelated record, learned sounds, gun profiles and presets. Requirements/design and implementation follow CHG-066; this request updates the plan and does not claim the control already exists.
+
+## CHG-069 — One mobile Chromium visual per page type (2026-11-07)
+
+Owner requests decreasing visual tests to **“a count of different page types. One visual test per page. Mobile screen size, one browser.”** Queue an audited reduction to one canonical 390 px Chromium screenshot for each distinct navigable page type. Remove duplicate theme, edition, engine and transient-state approved PNGs only after mapping them to retained page owners. Preserve semantic unit/integration/browser checks for behavior, themes, editions, responsive states, accessibility and WebKit-specific behavior; screenshot reduction is not permission to reduce functional coverage or accept unreviewed visual changes.
+
+## CHG-071 — Component library and component-owned CSS refactor (2026-11-09)
+
+Owner confirms the staged refactor plan and specifically requires every component to own/import its linked styles and theme rules where needed. Scope is the existing `@dryfire/ui` and feature/page component layers; preserve UI design, behavior, DOM/data contracts, startup performance, offline behavior and current payload/performance limits. User authorizes autonomous staged implementation with model allocation, verification and bounded fixes. Approved references: [plan](component-library-refactor-plan.md) and [specification](component-library-refactor-spec.md). Work stays on `b`; no main/dev changes. No visual baseline, performance threshold or design is implicitly approved for change.

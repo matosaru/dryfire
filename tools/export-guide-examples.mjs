@@ -1,4 +1,5 @@
 import { addLegacySequence, openLegacySequence } from '../visual-tests/legacy-sequence.js';
+import { installPausedClock } from '../visual-tests/clock.js';
 // Export the working help component, never a second animation drawing.
 // Requires a built public dist and Playwright Chromium. Encode with the paired
 // Python/Pillow tool. The pinned CI collector is the reviewed renderer.
@@ -14,7 +15,7 @@ if (edition.edition !== 'public') throw new Error('Export guides from the public
 mkdirSync(out, { recursive: true });
 const sources = [...styleSources(), 'tools/style-sources.mjs', 'vite.config.js', 'tools/minify-html.mjs', 'tools/static-catalog.mjs', 'src/staticCatalog.js', 'src/sessionPresentation.js', 'src/textElement.js', 'apps/web/src/features/sessions/resultPresentation.ts', 'apps/web/src/features/sessions/phasePresentation.ts', 'src/practiceGuideController.js', 'src/practiceGuideBridge.js', 'src/main.js', 'src/afterPaint.js', 'src/practiceGuideRendering.js', 'src/practiceGuideExamples.js', 'src/practiceGuides.js', 'src/practiceGuideManuals.js', 'src/practiceSession.js', 'src/practiceModes.js', 'src/drillSession.js', 'src/drills.js', 'apps/web/src/pages/PracticePage/PracticePage.tsx', 'apps/web/src/pages/PracticePage/index.ts', 'apps/web/src/pages/SequencePage/SequencePage.tsx', 'apps/web/src/pages/SequencePage/index.ts', 'apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx', 'apps/web/src/pages/PracticeGuidePage/index.ts', 'apps/web/src/app/renderSessionPages.tsx', 'packages/ui/src/PageHeading/PageHeading.tsx', 'packages/ui/src/PageHeading/index.ts', 'tools/page-templates.mjs', 'tools/export-guide-examples.mjs', 'visual-tests/legacy-sequence.js', 'tools/encode-guide-examples.py', 'apps/web/src/app/sessionContents.tsx', 'apps/web/src/app/practiceContents.tsx', 'apps/web/src/app/sequenceContents.tsx', 'apps/web/src/app/guideContents.tsx', 'apps/web/src/app/practicePage.tsx', 'apps/web/src/app/sequencePage.tsx', 'apps/web/src/app/guidePage.tsx', 'apps/web/src/app/retainedPage.tsx', 'apps/web/src/features/sessions/controlClasses.ts', 'packages/ui/src/RepetitionResult/RepetitionResult.tsx', 'packages/ui/src/RepetitionResult/index.ts', ...['PracticeRun','PracticeReview','SequenceRun','SequenceReview'].flatMap(name=>[`packages/ui/src/${name}/${name}.tsx`,`packages/ui/src/${name}/index.ts`])];
 const sourceHashes = Object.fromEntries(sources.map(p => [p, createHash('sha256').update(readFileSync(p)).digest('hex')]));
-const server = spawn(process.execPath, ['--import', 'tsx', 'node_modules/vite/bin/vite.js', 'preview', '--host', '127.0.0.1', '--port', '4174', '--strictPort'], { stdio: 'ignore' });
+const server = spawn(process.execPath, ['--import', 'tsx', '--import', './tools/register-css-loader.mjs', 'node_modules/vite/bin/vite.js', 'preview', '--host', '127.0.0.1', '--port', '4174', '--strictPort'], { stdio: 'ignore' });
 let browser;
 try {
   for (let i=0;i<100;i++) {
@@ -33,7 +34,7 @@ try {
   const library = JSON.parse(readFileSync('visual-tests/fixtures/library.json')); library.settings.appearance = 'dark'; addLegacySequence(library);
   await page.locator('#importFile').setInputFiles({ name:'example-library.json', mimeType:'application/json', buffer:Buffer.from(JSON.stringify(library)) });
   await page.locator('#homeView').waitFor({ state:'visible' });
-  const now = new Date('2026-10-11T11:00:00Z'); await page.clock.install({ time: now }); await page.clock.pauseAt(now);
+  await installPausedClock(page);
   const cases = ['single','single-early','repeated','par','control','sequence-trigger-only','sequence-rack-trigger','sequence-mag-trigger','sequence-draw-mag-trigger','sequence-custom'];
   const exports = [];
   for (const name of cases.filter(name => !process.argv.includes('--only') || name === process.argv[process.argv.indexOf('--only') + 1])) {

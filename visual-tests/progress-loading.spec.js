@@ -1,11 +1,12 @@
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 import {edition} from './catalog.js';
+import {setReviewedTime} from './clock.js';
 const library=readFileSync(new URL('./fixtures/library.json',import.meta.url));
 const chunk=/\/assets\/progressView-[^/]+\.js/;
 test.skip(edition!=='preview','Private charts are excluded from the public artifact.');
 async function restore(page){
- await page.addInitScript(()=>localStorage.setItem('dryfire-private-preview-mode','full'));page.on('dialog',dialog=>dialog.accept());await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();await page.locator('#restoreGunBackupBtn').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});await expect(page.locator('#homeView')).toBeVisible();
+ await setReviewedTime(page);await page.addInitScript(()=>localStorage.setItem('dryfire-private-preview-mode','full'));page.on('dialog',dialog=>dialog.accept());await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();await page.locator('#restoreGunBackupBtn').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});await expect(page.locator('#homeView')).toBeVisible();
 }
 test('private chart code waits for History; pending charts never block saved text or overwrite navigation',async({page})=>{
  let release;const pending=new Promise(resolve=>{release=resolve;});let requests=0;page.on('request',request=>{if(chunk.test(request.url()))requests++;});await page.route('**/assets/progressView-*.js',async route=>{await pending;await route.continue();});

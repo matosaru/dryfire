@@ -5,7 +5,7 @@ const library=JSON.parse(readFileSync(new URL('./fixtures/library.json',import.m
 test('shared guide controls, group accents and ordered manual work in both themes and narrow layouts',async({page})=>{
  await page.setViewportSize({width:320,height:900});await page.addInitScript(installSyntheticMedia);page.on('dialog',d=>d.accept());await page.goto('/');await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(library))});await expect(page.locator('#homeView')).toBeVisible();
  for(const theme of ['dark','light']){
-  await page.locator('#settingsShortcut').click();await page.locator('#appearance').selectOption(theme);
+  await page.locator('#settingsShortcut').click();await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption(theme);
   await page.locator('.tab[data-view="drills"]').click();
   for(const target of await page.locator('#practiceCatalog .drill-target').all())await expect(target).toHaveCSS('color','rgb(70, 186, 255)');
   for(const target of await page.locator('#drillCatalog .drill-target').all())await expect(target).toHaveCSS('color','rgb(181, 116, 246)');

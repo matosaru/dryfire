@@ -12,8 +12,8 @@ test('each action and preference dispatches its own typed value without acquirin
  const onAction=jest.fn(),onPreference=jest.fn(),onBack=jest.fn(),onImport=jest.fn();render(<SettingsPage onAction={onAction} onPreference={onPreference} onBack={onBack} onImport={onImport}/>);
  for(const id of ['resetModelBtn','exportBtn','importBtn','resetLibraryBtn'])fireEvent.click(document.getElementById(id)!);
  for(const id of ['noiseFilter','autoGainControl','vibrationFeedback'])fireEvent.click(document.getElementById(id)!);
- fireEvent.change(screen.getByLabelText('Appearance'),{target:{value:'system'}});fireEvent.click(screen.getByRole('button',{name:'Back to previous screen'}));fireEvent.change(document.querySelector('#importFile')!,{target:{files:[new File(['{}'],'test.json')]}});
- expect(onAction.mock.calls).toEqual([['resetModelBtn'],['exportBtn'],['importBtn'],['resetLibraryBtn']]);expect(onPreference.mock.calls).toEqual([['noiseFilter',true],['autoGainControl',true],['vibrationFeedback',true],['appearance','system']]);expect(onBack).toHaveBeenCalledTimes(1);expect(onImport).toHaveBeenCalledTimes(1);
+ fireEvent.change(screen.getByLabelText('Appearance'),{target:{value:'system'}});fireEvent.change(screen.getByLabelText('Measurement units'),{target:{value:'imperial'}});fireEvent.click(screen.getByRole('button',{name:'Back to previous screen'}));fireEvent.change(document.querySelector('#importFile')!,{target:{files:[new File(['{}'],'test.json')]}});
+ expect(onAction.mock.calls).toEqual([['resetModelBtn'],['exportBtn'],['importBtn'],['resetLibraryBtn']]);expect(onPreference.mock.calls).toEqual([['noiseFilter',true],['autoGainControl',true],['vibrationFeedback',true],['appearance','system'],['measurementSystem','imperial']]);expect(onBack).toHaveBeenCalledTimes(1);expect(onImport).toHaveBeenCalledTimes(1);
 });
 test('native controls remain usable without callbacks and preserve installation disclosure state on rerender',()=>{
  const {rerender}=render(<SettingsPage/>);const details=document.querySelector<HTMLDetailsElement>('details')!;details.open=true;

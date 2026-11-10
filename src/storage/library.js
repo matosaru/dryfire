@@ -13,7 +13,7 @@ import { recoverPracticeRecord } from '../practiceSession.js';
 import { normalizeCalibration, compatibleCalibration, CALIBRATION_KINDS } from '../calibration.js';
 
 /** Recheck ownership inside the write so library replacement cannot race it. */
-function withOwnedTransaction(owner, storeName, action) {
+export function withOwnedTransaction(owner, storeName, action) {
   return withTransaction([GUNS, ...(Array.isArray(storeName) ? storeName : [storeName])], 'readwrite', (tx, context) => {
     const request = tx.objectStore(GUNS).get(owner);
     request.onsuccess = () => {
@@ -55,14 +55,15 @@ export async function getLibraryOverview() {
     const result = {}; context.result = result;
     const guns = tx.objectStore(GUNS).getAll();
     guns.onsuccess = () => { result.guns = guns.result; };
-    for (const key of [ACTIVE_GUN, 'appearance', 'vibrationFeedback']) {
+    for (const key of [ACTIVE_GUN, 'appearance', 'vibrationFeedback', 'measurementSystem']) {
       const request = tx.objectStore(SETTINGS).get(key);
       request.onsuccess = () => { result[key] = request.result?.value; };
     }
   });
   const guns = orderGuns(rows.guns);
   return { guns, activeGun: rows[ACTIVE_GUN] ? guns.find(gun => gun.id === rows[ACTIVE_GUN]) ?? null : null,
-    devicePreferences: { appearance: rows.appearance ?? 'dark', vibrationFeedback: rows.vibrationFeedback ?? false } };
+    devicePreferences: { appearance: rows.appearance ?? 'dark', vibrationFeedback: rows.vibrationFeedback ?? false,
+      measurementSystem: rows.measurementSystem === 'imperial' ? 'imperial' : 'metric' } };
 }
 
 export async function getActiveGun() {
@@ -151,7 +152,7 @@ export async function setActiveGun(id) {
   });
 }
 
-async function resolveGunId(gunId, required = false) {
+export async function resolveGunId(gunId, required = false) {
   const id = gunId === undefined ? (await getActiveGun())?.id : gunId;
   if (id == null) {
     if (required) throw new Error('Select or add a gun before saving its data.');

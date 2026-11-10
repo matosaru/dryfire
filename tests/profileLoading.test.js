@@ -12,6 +12,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {renderPageTemplates} from '../tools/page-templates.mjs';
 import {normalizeAudioPreferences} from '../src/audioPreferences.js';
+import {normalizeMeasurementSystem} from '../src/measurementUnits.js';
 import {normalizeEnabledLabels,initialEnabledLabels} from '../src/calibration.js';
 import {normalizeMaxResults} from '../src/storage.js';
 const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
@@ -21,12 +22,12 @@ function setup(gun={id:'a',name:'Test',type:'Handguns'}){
  document.body.innerHTML=renderPageTemplates('{{app}}');
  const context={gunLibraryCoordinator:{invalidate:jest.fn()},startGunPreferenceReads,getLibraryOverview:jest.fn(async()=>({activeGun:gun,guns:gun?[gun]:[],devicePreferences:{appearance:'light',vibrationFeedback:true}})),setNodeText,setNodeDisabled,initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
   activeGun:null,guns:[],examples:[],customDrills:[],audioPreferences:{},calibration:[],enabledSoundLabels:[],
-  processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',vibrationFeedback:false,vibrationRejected:true,
+  processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',measurementSystem:'metric',vibrationFeedback:false,vibrationRejected:true,devicePreferenceRevision:0,
   getActiveGun:jest.fn(async()=>gun),getGuns:jest.fn(async()=>gun?[gun]:[]),
   getExamples:jest.fn(async()=>[{label:'trigger',gunId:'a'}]),getCustomDrills:jest.fn(async()=>[]),getOutdatedExampleCount:jest.fn(async()=>2),
   getGunSetting:jest.fn(async(key,fallback)=>({maxResults:75,sensitivity:'high',selectedDrill:'valid',audioPreferences:{noiseFilter:false},enabledSoundLabels:['trigger','rack']})[key]??fallback),
   getCalibrationExamples:jest.fn(async()=>[{kind:'noise'}]),getSetting:jest.fn(async(key)=>key==='appearance'?'light':true),
-  normalizeAudioPreferences,normalizeEnabledLabels,initialEnabledLabels,normalizeMaxResults,currentDrill:jest.fn(id=>id==='valid'?{id}:null),
+  normalizeAudioPreferences,normalizeMeasurementSystem,normalizeEnabledLabels,initialEnabledLabels,normalizeMaxResults,currentDrill:jest.fn(id=>id==='valid'?{id}:null),
   sessionController:{reset:jest.fn()},practiceController:{reset:jest.fn()},customEditor:{reset:jest.fn()},DRILLS:[{id:'valid',title:'Valid sequence'}],
   applyAppearance:jest.fn(),selectDrillCollection:jest.fn(),renderGunControls:jest.fn(),renderClassCards:jest.fn(),renderDrillCatalog:jest.fn(),
   renderCustomCatalog:jest.fn(),resetDrill:jest.fn(),renderPreferences:jest.fn(),renderHome:jest.fn(async()=>{}),
@@ -66,6 +67,18 @@ test('standalone preference reload still waits for both device settings',async()
  const {context:c,loadPreferences}=setup(),appearance=deferred(),requested=deferred();
  c.getSetting.mockImplementation(key=>{if(key==='appearance'){requested.resolve();return appearance.promise;}return Promise.resolve(true);});
  const pending=loadPreferences();await requested.promise;expect(c.getSetting).toHaveBeenCalledWith('vibrationFeedback',false);expect(c.applyAppearance).not.toHaveBeenCalled();appearance.resolve('light');await pending;expect(c.appearance).toBe('light');
+});
+test('late startup preference reads cannot overwrite a newer user selection',async()=>{
+ const {context:c,loadPreferences}=setup(),appearance=deferred();
+ c.getSetting.mockImplementation(key=>key==='appearance'?appearance.promise:Promise.resolve(false));
+ const pending=loadPreferences();c.devicePreferenceRevision++;c.appearance='light';appearance.resolve('dark');await pending;
+ expect(c.appearance).toBe('light');expect(c.applyAppearance).not.toHaveBeenCalled();
+});
+test('late profile snapshots cannot overwrite a newer device appearance',async()=>{
+ const {context:c,load}=setup(),snapshot=deferred();c.getLibraryOverview.mockReturnValue(snapshot.promise);
+ const pending=load();c.devicePreferenceRevision++;c.appearance='light';
+ snapshot.resolve({activeGun:{id:'a',name:'Test'},guns:[{id:'a'}],devicePreferences:{appearance:'dark',vibrationFeedback:false}});await pending;
+ expect(c.appearance).toBe('light');expect(c.applyAppearance).not.toHaveBeenCalled();
 });
 test('startup can reuse its complete snapshot without reopening the library',async()=>{
  const {context:c,load}=setup(null);await load({activeGun:null,guns:[],devicePreferences:{appearance:'invalid',vibrationFeedback:'true'}});expect(c.getLibraryOverview).not.toHaveBeenCalled();expect(c.appearance).toBe('dark');expect(c.vibrationFeedback).toBe(false);expect(c.getSetting).not.toHaveBeenCalled();

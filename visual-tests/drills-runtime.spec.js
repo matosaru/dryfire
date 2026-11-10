@@ -6,7 +6,7 @@ const library=readFileSync(new URL('./fixtures/library.json',import.meta.url));
 for(const theme of ['dark','light'])test(`Drills keeps ${theme} pixels and saved-preset drafts across delayed handoff`,async({page},testInfo)=>{
  const errors=[];page.on('pageerror',error=>errors.push(error.message));page.on('dialog',dialog=>dialog.accept());let release;const blocked=new Promise(resolve=>{release=resolve;});await page.route('**/assets/drillsPage-*.js',async route=>{await blocked;await route.continue();});
  await page.goto('/');await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:library});await expect(page.locator('#homeView')).toBeVisible();
- if(theme==='light'){await page.locator('#settingsShortcut').click();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);}
+ if(theme==='light'){await page.locator('#settingsShortcut').click();await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);}
  await page.locator('.tab[data-view="drills"]').click();await page.locator('#customDrillsTab').click();await page.locator('#customDrillCatalog').getByRole('button',{name:'Edit sequence'}).click();
  await page.locator('#customDrillName').fill('');await page.locator('#customAction').selectOption('trigger');await page.locator('#addCustomActionBtn').click();await page.locator('#drills-title').click();
  const form=await page.locator('#customDrillForm').elementHandle();const before=await page.locator('#drillsView').screenshot({animations:'disabled'});

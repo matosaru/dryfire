@@ -8,9 +8,12 @@ test('mounts the Sound Check form on demand and disposes its root',()=>{
  expect(host).toHaveAttribute('data-react-sound-check');
  expect(host.querySelector('#soundCheckStartBtn')).toBeDisabled();
  expect(host).toHaveTextContent('Check the learned trigger profile for QA Handgun.');
- expect(host).toHaveTextContent('Close: under 30 cm / 1 ft');
+ expect(host).toHaveTextContent('Close: under 30 cm');
+ page.updateUnits('imperial');
+ expect(host).toHaveTextContent('Close: under 1 ft');
  page.dispose();
  page.dispose();
+ page.updateUnits('metric');
  expect(host).not.toHaveAttribute('data-react-sound-check');
  expect(host).toBeEmptyDOMElement();
  host.remove();

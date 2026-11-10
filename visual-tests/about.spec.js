@@ -73,7 +73,7 @@ test('About and Contact preserve selected-gun data and the current appearance', 
   await page.locator('#importFile').setInputFiles({ name: 'fixture.json', mimeType: 'application/json', buffer: library });
   await expect(page.locator('#homeView')).toBeVisible();
   await page.locator('#settingsShortcut').click();
-  await page.locator('#appearance').selectOption('light');
+  await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption('light');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   const exportLibrary = async () => {
     const pending = page.waitForEvent('download');

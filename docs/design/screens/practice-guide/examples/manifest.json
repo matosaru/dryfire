@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "80a5a7915aa394df1ac71dcbcba1d1487b35355d",
+  "sourceCommit": "86a281792de2563e5ca49e2787d5e311c62aaff5",
   "renderer": "local Chromium 145.0.7632.6",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
@@ -76,8 +76,8 @@
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
     "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
-    "tools/style-sources.mjs": "5679bdbcdd1648eb9d058191cce726f1c601391843fc2dc3f7f6752d074872c7",
-    "vite.config.js": "7c5e167d6d91394541c2c01e55f4bc939ad8489011789c625a7881ef40c36ccd",
+    "tools/style-sources.mjs": "adc653150e84f94cd866b00e4802f1b076f8c8c5d15034888dfefbc3eda46daf",
+    "vite.config.js": "0f11df68866aefc218f7114efc22c8810ad59586c006e00c76896bdbe56a5a02",
     "tools/minify-html.mjs": "74d15e28f128e2ca19305ecea8a014b91d4a4fa4df0611880e4cb57afdb76f01",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
     "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
@@ -87,7 +87,7 @@
     "apps/web/src/features/sessions/phasePresentation.ts": "5c788b0f902338a4ec81352b69d8d3d1f1270203e23d0d29510098f583ad9836",
     "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
-    "src/main.js": "2f3390fa99a3fda2521add15abd37b3d15192f400a9612040c4b1552206eabb9",
+    "src/main.js": "814a9789738a2a8c2ea863251953861709cbc8cb97b488d00c953db41efb9f1d",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
@@ -107,8 +107,8 @@
     "packages/ui/src/PageHeading/PageHeading.tsx": "195d0e242a8f2904235ba1349682002b8cb59b914420fdfdc318ce2e97acd809",
     "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
     "tools/page-templates.mjs": "4694abd1ed9bffa093fb4df005ce1f1c643298dd600855287e7e430e5cc3b4f2",
-    "tools/export-guide-examples.mjs": "5cf9a642dff74dcc1a39ada83255322c9becec5a073947c3f6bf5f078235a758",
-    "visual-tests/legacy-sequence.js": "dca681e1e4886d66cc441d24cd7c6d5d4c787da6ce1ef88946d7037884028293",
+    "tools/export-guide-examples.mjs": "f8561c23e3c69f7dbdff61f4a504cde0a6b238b0b970e525445fee464323a6ab",
+    "visual-tests/legacy-sequence.js": "ce618fc284a672556a4cf2fc2824e3f5fc42dab1dfe1f9e49e429a3cc08cd160",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
     "apps/web/src/app/sessionContents.tsx": "ad58a14f24a7c0e7c4a856683d1280b661ee82a7e0280e4e0b0570465690d600",
     "apps/web/src/app/practiceContents.tsx": "b2ebc00e6385080155f27b7fac16d964c8f914100b742f0ecdcdce33f2e3cee6",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "cb68b7d0d7741bf5df58d4275fcedb9e904049de43021c5614ea6360d10bb131",
+      "sha256": "6dd9bfd4e6326f879e68d765972522949220a53cf1b0030d68decaa0ebab5af1",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "470905368efe160484a915c58e0a8b3e5292f34d4b69b4c935625ac611ef4869",
+      "sha256": "d09c5495c87c73f43022c76c51dbad1b7d928787c7e5566fcd458274d78eafca",
       "width": 358,
       "height": 1004
     },
@@ -163,7 +163,7 @@
       "frames": 68,
       "frameMs": 200,
       "file": "par.gif",
-      "sha256": "8bdbcdc97b34a5d31f13be3122978869098af72373bb2eb9e1f4920ed33ec7f7",
+      "sha256": "85e4a6152117be1d0c629c0f7aafd6572e9d5bd5cf0b2e27ba0d9e604fe2ebd6",
       "width": 358,
       "height": 1004
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "cebbf06e29ba8a68c23b46f91d50a30750e43e3231474c6cfd8d7283c82777e8",
+      "sha256": "2096990b9a0e967de032825d3765b0676f6d9eafa7e8e826e71a6b19359f4e46",
       "width": 358,
       "height": 750
     },
@@ -190,7 +190,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-rack-trigger.gif",
-      "sha256": "da14a169af4193df3603ab4af4d65d5892ead65229bba25ddcf45dad6abfc259",
+      "sha256": "991141876051cac840d6875d7bcdb9f4c9c90ef2e7013c5d88e4a38e6ae8153f",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "d76c866ab406b152054bc148eb474172aa8897a79f0c38264d7cc7235ebfab0f",
+      "sha256": "46fc724b85f861be4a16f0a18aecb4c78f99ecbee6798f153dfff102b637b516",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "27e5d989de2f1c042fa2d56eb431b5fa517960d0c3d9b00d38b6b5b5cd819dc8",
+      "sha256": "482c3b1a0cac45f1d3f5069ac34af709b0f8ac78df556ca8bc4cc9398c9fe1d1",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "87f858030610677cd182995d476c555c2198619f67c4730be0152620eaec570c",
+      "sha256": "161c9a98fbda347868dc72badd99907c3a28aeedf921edab3873a48fc14004a7",
       "width": 358,
       "height": 750
     }

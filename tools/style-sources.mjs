@@ -5,6 +5,13 @@ export const lazyStyleOwners = Object.freeze({
   'src/optional/progressView.js': Object.freeze(['packages/ui/src/ProgressContent/ProgressContent.css'])
 });
 
+/** Component-owned styles already present in the startup compatibility sheet.
+ * The owner import is an explicit dependency; the aggregate remains their sole
+ * emitted source while native prerendered content still needs immediate paint. */
+export const startupStyleOwners = Object.freeze({
+  'packages/ui/src/InformationCard/InformationCard.tsx': 'packages/ui/src/InformationCard/InformationCard.css'
+});
+
 export function lazyStyleSources() {
   return [...new Set(Object.values(lazyStyleOwners).flat())];
 }

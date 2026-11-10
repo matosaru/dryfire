@@ -84,7 +84,7 @@ test('React Settings retains backup picker, disclosure, theme and action ownersh
   if(await page.locator('#previewTestMode').count()){await page.locator('#previewTestMode').selectOption('free');await expect(page.locator('#previewModeBadge')).toContainText('Free mode');await page.locator('#previewTestMode').selectOption('full');await expect(page.locator('#previewModeBadge')).toContainText('Full mode');}
   await page.locator('.install-details summary').click();
   await expect(page.locator('.install-details')).toHaveAttribute('open','');
-  await page.locator('#appearance').selectOption('light');await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+  await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption('light');await expect(page.locator('html')).toHaveAttribute('data-theme','light');
   const input=await page.locator('#importFile').elementHandle();
   await page.locator('.tab[data-view="home"]').click();await page.locator('#settingsShortcut').click();
   await expect(page.locator('.install-details')).toHaveAttribute('open','');
@@ -99,13 +99,39 @@ test('React Settings retains backup picker, disclosure, theme and action ownersh
   expect(errors).toEqual([]);
 });
 
+test('measurement units persist, export and update Sound Check distance guidance',async({page})=>{
+  page.on('dialog',dialog=>dialog.accept());await restore(page);
+  await page.locator('#settingsShortcut').click();
+  await expect(page.locator('#measurementSystem')).toBeEnabled();await page.locator('#measurementSystem').selectOption('imperial');
+  await page.locator('.tab[data-view="learn"]').click();
+  await page.locator('#runSoundCheckBtn').click();
+  await expect(page.locator('.sound-check-distance-help')).toContainText('under 1 ft');
+  await expect(page.locator('.sound-check-distance-help')).not.toContainText('cm');
+  await page.locator('#settingsShortcut').click();
+  await expect(page.locator('#measurementSystem')).toHaveValue('imperial');
+  const saved=await backup(page);expect(saved.settings.measurementSystem).toBe('imperial');
+  await page.reload();await expect(page.locator('#settingsView')).toBeVisible();
+  await expect(page.locator('#measurementSystem')).toHaveValue('imperial');
+  await expect(page.locator('#measurementSystem')).toBeEnabled();await page.locator('#measurementSystem').selectOption('metric');
+  await page.locator('.tab[data-view="learn"]').click();
+  await page.locator('#runSoundCheckBtn').click();
+  await expect(page.locator('.sound-check-distance-help')).toContainText('under 30 cm');
+});
+
 for(const theme of ['dark','light'])test(`delayed Settings code keeps controls and pixel-identical ${theme} handoff`,async({page})=>{
   let release;const blocked=new Promise(resolve=>{release=resolve;});
   await page.route('**/assets/settingsPage-*.js',async route=>{await blocked;await route.continue();});
   page.on('dialog',dialog=>dialog.accept());await restore(page);
   await page.locator('#settingsShortcut').click();
   await expect(page.locator('#settingsView')).not.toHaveAttribute('data-react-settings');
-  await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
+  await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
+  await expect(page.locator('#noiseFilterStatus')).not.toHaveText('Checking browser support…');
+  await expect(page.locator('#autoGainStatus')).not.toHaveText('Checking browser support…');
+  await expect(page.locator('#vibrationStatus')).not.toHaveText('Checking browser support…');
+  await expect(page.locator('#installStatus')).not.toHaveText('Checking installation status…');
+  await expect(page.locator('#deviceCheck')).toContainText('Local storage only');
+  await expect(page.locator('#soundResetSummary')).toContainText('12 learned samples');
+  await page.evaluate(()=>document.activeElement?.blur());
   const file=await page.locator('#importFile').elementHandle();
   const before=await page.locator('#settingsView').screenshot({animations:'disabled'});
   const loaded=page.waitForResponse(response=>/\/assets\/settingsPage-/.test(response.url()));release();await loaded;
@@ -114,5 +140,9 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   await page.locator('.tab[data-view="home"]').click();await page.locator('#settingsShortcut').click();
   await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
   expect(await file.evaluate(node=>node===document.getElementById('importFile'))).toBe(true);
+  await expect(page.locator('#appearance')).toHaveValue(theme);
+  await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
+  await expect(page.locator('#soundResetSummary')).toContainText('12 learned samples');
+  await page.evaluate(()=>document.activeElement?.blur());
   expect(createHash('sha256').update(await page.locator('#settingsView').screenshot({animations:'disabled'})).digest('hex')).toBe(createHash('sha256').update(before).digest('hex'));
 });
