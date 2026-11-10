@@ -131,6 +131,7 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   await expect(page.locator('#installStatus')).not.toHaveText('Checking installation status…');
   await expect(page.locator('#deviceCheck')).toContainText('Local storage only');
   await expect(page.locator('#soundResetSummary')).toContainText('12 learned samples');
+  await page.evaluate(()=>document.activeElement?.blur());
   const file=await page.locator('#importFile').elementHandle();
   const before=await page.locator('#settingsView').screenshot({animations:'disabled'});
   const loaded=page.waitForResponse(response=>/\/assets\/settingsPage-/.test(response.url()));release();await loaded;
@@ -139,5 +140,8 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   await page.locator('.tab[data-view="home"]').click();await page.locator('#settingsShortcut').click();
   await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
   expect(await file.evaluate(node=>node===document.getElementById('importFile'))).toBe(true);
+  await expect(page.locator('#appearance')).toHaveValue(theme);
+  await expect(page.locator('#soundResetSummary')).toContainText('12 learned samples');
+  await page.evaluate(()=>document.activeElement?.blur());
   expect(createHash('sha256').update(await page.locator('#settingsView').screenshot({animations:'disabled'})).digest('hex')).toBe(createHash('sha256').update(before).digest('hex'));
 });
