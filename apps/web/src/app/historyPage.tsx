@@ -25,7 +25,7 @@ export function mountHistoryPage(host:Element,initial:Data,actions:Actions){
  catch(error){flushSync(()=>root.unmount());host.replaceChildren(...backup);active?.focus();throw error;}
  return{
   update(next:HistoryState){if(disposed)return;state={...state,...next,texts:{...state.texts,...next.texts},disabled:{...state.disabled,...next.disabled}};render();},
-  setResults(data:Data){if(disposed)return;owner=data.gunId;state={...state,...results(data)};render();},
+  setResults(data:Data){if(disposed)return;owner=data.gunId;state={...state,...results(data)};render();host.setAttribute('data-history-results-ready','');},
   dispose(){if(disposed)return;disposed=true;host.removeAttribute('data-react-history');flushSync(()=>root.unmount());},
  };
 }
