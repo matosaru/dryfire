@@ -7,8 +7,12 @@ if (result.error) throw result.error;
 if (result.status !== 1) throw new Error(`Injected visible defect must fail, got exit ${result.status}`);
 const report = JSON.parse(readFileSync('test-results-probe/results.json'));
 const tests = report.suites.flatMap(function flatten(suite) { return [...(suite.specs ?? []).flatMap(spec => spec.tests), ...(suite.suites ?? []).flatMap(flatten)]; });
-if (tests.length !== 2 || report.stats.unexpected !== 2) throw new Error('Expected one deliberate comparison failure in each browser.');
-for (const test of tests) {
+const canonical = tests.filter(test => test.projectName === 'chromium');
+const nonCanonical = tests.filter(test => test.projectName !== 'chromium');
+if (canonical.length !== 1 || nonCanonical.length !== 1 || nonCanonical[0].results[0]?.status !== 'skipped' || report.stats.unexpected !== 1 || report.stats.skipped !== 1) {
+  throw new Error('Expected one deliberate screenshot failure in Chromium and the non-canonical browser to be skipped.');
+}
+for (const test of canonical) {
   const outcome = test.results[0];
   if (outcome.status !== 'failed' || !outcome.errors.some(error => /pixels.*different|image.*differ|Screenshot comparison failed/s.test(error.message))) throw new Error('Probe failed for a reason other than visual differences.');
   for (const suffix of ['-expected.png', '-actual.png', '-diff.png']) {
@@ -16,4 +20,4 @@ for (const test of tests) {
     if (!attachment || !existsSync(attachment.path)) throw new Error(`Missing ${suffix} evidence for ${test.projectName}`);
   }
 }
-console.log('Expected failures verified: both browsers detect the visible defect and produce expected/actual/diff PNGs. The application and baselines are unchanged.');
+console.log('Expected failure verified: Chromium detects the visible defect and produces expected/actual/diff PNGs. Non-canonical browser coverage remains skipped; the application and baselines are unchanged.');

@@ -204,6 +204,11 @@ async function prepare(page, item) {
       break;
     case 'settings':
       await page.locator('#settingsShortcut').click(); await visible(page, 'settingsView');
+      // Device capability copy is rendered after the initial static Settings
+      // shell. Capture the stable state, not the brief loading placeholders.
+      await page.clock.runFor(300);
+      await expect(page.locator('#noiseFilterStatus')).not.toContainText('Checking browser support');
+      await expect(page.locator('#vibrationStatus')).not.toContainText('Checking browser support');
       if (item.state.startsWith('installation-help')) { await page.locator('.install-details summary').click(); await expect(page.locator('.install-card')).toBeVisible(); }
       if (item.state.startsWith('sounds-reset')) { await page.locator('#resetModelBtn').click(); await expect(page.locator('#soundResetOutcome')).toContainText('reset'); await expect(page.locator('#soundResetSummary')).toContainText('0 learned samples'); }
       break;
