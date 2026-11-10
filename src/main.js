@@ -108,6 +108,7 @@ let customDrills = [];
 let customEditor = null;
 let profileLoading = false;
 const preferenceState={audio:normalizeAudioPreferences(),theme:'dark',measurementSystem:'metric',vibration:false,rejected:false,processing:null,pending:false};
+let devicePreferenceRevision=0;
 
 let sessionController = null;
 let practiceController = null;
@@ -168,7 +169,11 @@ function applyAppearance() {
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#f4f6f8' : '#0b1116');
 }
 async function loadDevicePreferences() {
+  const revision=devicePreferenceRevision;
   const [saved, vibration] = await Promise.all([getSetting('appearance', 'dark'), getSetting('vibrationFeedback', false)]);
+  // A slow startup read must not overwrite a preference the user changed
+  // while IndexedDB was resolving (for example immediately after restoring a backup).
+  if(revision!==devicePreferenceRevision)return;
   applyDevicePreferences({appearance:saved,vibrationFeedback:vibration,measurementSystem:preferenceState.measurementSystem});
 }
 function applyDevicePreferences({appearance:saved,vibrationFeedback:vibration,measurementSystem}) {
@@ -930,9 +935,7 @@ async function init() {
     };guideHandlers.set(id,handler);$('#'+id).addEventListener('click',handler);
   }
   darkPreference?.addEventListener?.('change', () => { if (preferenceState.theme === 'system') applyAppearance(); });
-  bindSettings('appearance','change',()=>runPreferenceAction('appearance'));
-  bindSettings('measurementSystem','change',()=>runPreferenceAction('measurementSystem'));
-  bindSettings('vibrationFeedback','change',()=>runPreferenceAction('vibration'));
+  for(const [id,action] of [['appearance','appearance'],['measurementSystem','measurementSystem'],['vibrationFeedback','vibration']])bindSettings(id,'change',()=>{devicePreferenceRevision++;void runPreferenceAction(action);});
   for(const [id,key] of [['noiseFilter','noiseFilter'],['autoGainControl','autoGain']])bindSettings(id,'change',()=>runPreferenceAction('audio',id,key));
   $('#gunForm').addEventListener('submit', event => { submitGun(event).catch(showError); });
   document.querySelectorAll('[name="gunTypeChoice"]').forEach(input => input.addEventListener('change', () => { if (input.checked) $('#gunType').value = input.value; }));
