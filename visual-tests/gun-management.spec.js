@@ -141,6 +141,7 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
   expect(await file.evaluate(node=>node===document.getElementById('importFile'))).toBe(true);
   await expect(page.locator('#appearance')).toHaveValue(theme);
+  await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
   await expect(page.locator('#soundResetSummary')).toContainText('12 learned samples');
   await page.evaluate(()=>document.activeElement?.blur());
   expect(createHash('sha256').update(await page.locator('#settingsView').screenshot({animations:'disabled'})).digest('hex')).toBe(createHash('sha256').update(before).digest('hex'));
