@@ -1,5 +1,9 @@
 # Implementation history and remaining plan
 
+## CHG-072 — Build-derived About version (2026-11-10)
+
+Increment the root app version to 0.8.1. Vite injects that package version into the About Beta line; the page test reads the same version, preventing a stale manually hard-coded label. The About screenshot baseline and functional/design/deployment documentation are updated. Local acceptance passes: 1,191 tests / 182 suites, typecheck, component/runtime lint, architecture and coverage ratchets, docs validation, public minified build, distribution verification, and the About Chromium visual check. GitHub CI and production promotion remain pending.
+
 ## CHG-070 — Codex context and design-system foundation (2026-11-09)
 
 The root `AGENTS.md` now provides a concise current stack, folder map, working rules, commands, visible-change process and definition of done, while detailed historical evidence remains in its authoritative documentation packages. A new design-system package documents semantic tokens and canonical primitive/component ownership; `packages/ui/src/tokens.css` supplies nonvisual Dark/Light semantic aliases imported first by the established cascade. No component is restyled by this foundation. Validation and branch publication remain in progress.

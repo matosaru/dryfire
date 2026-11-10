@@ -1,4 +1,4 @@
-# Deploy v0.8.0 from GitHub (works on an iPhone)
+# Deploy v0.8.1 from GitHub (works on an iPhone)
 
 For the owner-approved public .app→.com301 rule, use the [exact redirect configuration and verification guide](cloudflare-public-redirect.md). The owner reports that the redirect was created; independent live verification is network-blocked in this workspace. Development hosts are unaffected.
 
