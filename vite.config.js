@@ -16,8 +16,9 @@ import { startupCssOwnerPlugin } from './tools/startup-css-owner.mjs';
 export default defineConfig(({ mode }) => {
   const edition = resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.env.APP_EDITION, mode });
   const identity=buildIdentity();
+  const appVersion = JSON.parse(readFileSync(resolve(import.meta.dirname, 'package.json'), 'utf8')).version;
   return {
-  define: { __BUILD_RELEASE_ID__: JSON.stringify(identity.release), __APP_NAV_REDIRECTS__: JSON.stringify(legacyRedirects()), __APP_OFFLINE_PATHS__: JSON.stringify(offlineAppPaths()), __BUILD_SOURCE_DIGEST__: JSON.stringify(identity.sourceDigest), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
+  define: { __APP_VERSION__: JSON.stringify(appVersion), __BUILD_RELEASE_ID__: JSON.stringify(identity.release), __APP_NAV_REDIRECTS__: JSON.stringify(legacyRedirects()), __APP_OFFLINE_PATHS__: JSON.stringify(offlineAppPaths()), __BUILD_SOURCE_DIGEST__: JSON.stringify(identity.sourceDigest), __BUILD_EDITION__: JSON.stringify(edition), __FULL_PREVIEW__: JSON.stringify(edition === 'preview') },
   server: { host: '127.0.0.1' },
   // The optimized preview serves same-origin assets, like the production Worker.
   // Avoid development CORS Vary headers invalidating preloaded offline assets.

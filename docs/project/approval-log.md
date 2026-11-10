@@ -1,5 +1,11 @@
 # Requirements approval log
 
+## CHG-072 — About page version display (2026-11-10)
+
+- **Direct instruction:** “How can I verify a correct version? Can you increase version number displayed in about page?”
+- **Approved scope:** increment app release from 0.8.0 to 0.8.1 and display the package version beside the Beta label on About, injected from build metadata so it cannot drift independently. Update the About requirement, design reference and deployment guide.
+- **Status:** implementation is complete locally on `b`; local acceptance is green. CI and production promotion follow the existing PR process.
+
 ## CHG-070 — Codex project and design-system setup completion
 
 - **Direct instruction:** On 2026-11-09, after reviewing the missing parts of the Codex setup, the owner instructed: “Can you prepare missing parts?”

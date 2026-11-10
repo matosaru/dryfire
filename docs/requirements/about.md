@@ -1,6 +1,6 @@
 # About
 
-Revision 1.5 · CHG-027/028/029/031/033/041 · 2026-10-15. CHG-033 restores the shared bottom navigation. Exact editorial copy remains suggested for review; implementation, validation and publication are tracked separately.
+Revision 1.6 · CHG-027/028/029/031/033/041/072 · 2026-11-10. CHG-033 restores the shared bottom navigation; CHG-072 makes the About version build-derived. Exact editorial copy remains suggested for review; implementation, validation and publication are tracked separately.
 
 User instruction: **“also start creating aboutpage, suggest page text. and add easydryfire@gmail.com as a contact email. create this as a separate feature branch”**. This specifically starts the About/contact slice after the CHG-026 implementation pause. Other commercial, account, cloud, paywall and SEO implementations remain paused.
 
@@ -11,6 +11,7 @@ User instruction: **“also start creating aboutpage, suggest page text. and add
 | ABOUT-03 | Display the selectable address **easydryfire@gmail.com** as a working `mailto:` link on the separate Contact screen. Opening an email composer is user initiated; no saved gun/history/audio data is attached or sent automatically. See [Contact](contact.md). | Explicit Contact address, CHG-027/029 |
 | ABOUT-04 | Preserve app/browser Back and Forward, Dark/Light readability and access without microphone permission. Opening About does not create a gun, acknowledge safety or alter saved data. | Existing navigation, appearance and data invariants |
 | ABOUT-05 | Shared About and Contact controls use `#FFFFFF` in resolved Dark mode for stronger contrast. Light controls keep the footer text color. Preserve centered placement, size/underline/focus/touch target, no arrows and the divider below. Disclosure/copyright retains its muted color. | CHG-031 contrast correction under the existing requested implementation and pure-white preference |
+| ABOUT-07 | Show the current app version beside the Beta label, sourced from the root package version at build time. Bump the package version for a user-visible release; About must not use a manually duplicated version string. | Direct user request, 2026-11-10 |
 
 ## Suggested page text
 

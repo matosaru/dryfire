@@ -7,7 +7,7 @@ import { AboutPage } from './index.ts';
 
 test('the beta, local-data and acoustic limitations remain available before gun setup', async () => {
   const back = jest.fn(); render(<AboutPage onBack={back} />);
-  expect(screen.getByText('Sound trainer · Beta · v0.8.0')).toBeVisible();
+  expect(screen.getByText(`Sound trainer · Beta · v${__APP_VERSION__}`)).toBeVisible();
   expect(screen.getByRole('region', { name: 'Feedback welcome' })).toHaveTextContent('All feedback and suggestions are welcome');
   expect(screen.getByRole('region', { name: 'Saved on your device' })).toHaveTextContent('No account is required');
   expect(screen.getByRole('heading', { name: 'Practice responsibly' }).parentElement).toHaveTextContent('cannot verify an unloaded firearm');

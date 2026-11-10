@@ -77,7 +77,7 @@
     "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
     "tools/style-sources.mjs": "adc653150e84f94cd866b00e4802f1b076f8c8c5d15034888dfefbc3eda46daf",
-    "vite.config.js": "0f11df68866aefc218f7114efc22c8810ad59586c006e00c76896bdbe56a5a02",
+    "vite.config.js": "7d100c0b7e5c8c43ff94a31a2729aa754083b7c873fbad0449b54cf13e86cec1",
     "tools/minify-html.mjs": "74d15e28f128e2ca19305ecea8a014b91d4a4fa4df0611880e4cb57afdb76f01",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
     "src/staticCatalog.js": "0a610fd06efbeaaa7046215bb8f0440ad05a592bd83baf0541c37ac894165c1d",
