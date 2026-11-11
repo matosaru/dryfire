@@ -1,3 +1,4 @@
+import './SequenceRun.css';
 import type {ReactNode} from 'react';
 import type {SessionControlView} from '../PracticeRun/PracticeRun.tsx';
 export type SequenceRunProps={prefix?:string;onAction?:(id:string)=>void;view?:SessionControlView&{progress?:{max:number;value:number}};latest?:ReactNode;silent?:boolean};

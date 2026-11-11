@@ -28,7 +28,12 @@ export const startupStyleOwners = Object.freeze({
   'packages/ui/src/EvaluationPanel/EvaluationPanel.tsx': 'packages/ui/src/EvaluationPanel/EvaluationPanel.css',
   'packages/ui/src/GunSwitcher/GunSwitcher.tsx': 'packages/ui/src/GunSwitcher/GunSwitcher.css',
   'packages/ui/src/SavedSessionList/SavedSessionList.tsx': 'packages/ui/src/SavedSessionList/SavedSessionList.css',
-  'packages/ui/src/SafetyDialog/SafetyDialog.tsx': 'packages/ui/src/SafetyDialog/SafetyDialog.css'
+  'packages/ui/src/SafetyDialog/SafetyDialog.tsx': 'packages/ui/src/SafetyDialog/SafetyDialog.css',
+  'packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx': 'packages/ui/src/CustomDrillEditor/CustomDrillEditor.css',
+  'packages/ui/src/DrillSetup/DrillSetup.tsx': 'packages/ui/src/DrillSetup/DrillSetup.css',
+  'packages/ui/src/SequenceRun/SequenceRun.tsx': 'packages/ui/src/SequenceRun/SequenceRun.css',
+  'packages/ui/src/SequenceReview/SequenceReview.tsx': 'packages/ui/src/SequenceReview/SequenceReview.css',
+  'packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx': 'packages/ui/src/CalibrationCatalog/CalibrationCatalog.css'
 });
 
 export function lazyStyleSources() {

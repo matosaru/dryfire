@@ -1,3 +1,4 @@
+import './CustomDrillEditor.css';
 import type {FormEventHandler} from 'react';
 export type StepAction='up'|'down'|'remove';
 export type CustomDrillFieldsProps={title?:string;nameValue?:string;actionValue?:string;stepLabels?:string[];addDisabled?:boolean;saveDisabled?:boolean;onAdd?:()=>void;onCancel?:()=>void;onStep?:(index:number,action:StepAction)=>void};

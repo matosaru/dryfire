@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "ac8f926c1f1c681423c327dd9ac8ba17a902b557",
+  "sourceCommit": "38f0af0348bc4cf7515bdc82415e84b52cf4b799",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
@@ -76,7 +76,7 @@
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
     "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
-    "tools/style-sources.mjs": "afb53ebb0b32cf7c8f46d921029ac47547e85b5af04086e82085504b4139e2ec",
+    "tools/style-sources.mjs": "59824e7c84a3ddf9d4bcfb1a9eafbe8b78c4e5296a955b6df5812487d8d3012c",
     "vite.config.js": "7d100c0b7e5c8c43ff94a31a2729aa754083b7c873fbad0449b54cf13e86cec1",
     "tools/minify-html.mjs": "74d15e28f128e2ca19305ecea8a014b91d4a4fa4df0611880e4cb57afdb76f01",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
@@ -125,9 +125,9 @@
     "packages/ui/src/PracticeRun/index.ts": "f55f10e07db39a44c21d9938ddc251ceba7835ffcdc4032d160682187cdde8d4",
     "packages/ui/src/PracticeReview/PracticeReview.tsx": "f5dc349ba5782803f39b32e3792e0267b7d61205b668ef811368371a3621ddee",
     "packages/ui/src/PracticeReview/index.ts": "9c5505f720fbbb76719cc0e7d124cd40794a5126977c636dc3c795c5bebcd904",
-    "packages/ui/src/SequenceRun/SequenceRun.tsx": "20423e2f4c7a57e48961b9cc56fdda30c5d0716911db70bee8237080327c80df",
+    "packages/ui/src/SequenceRun/SequenceRun.tsx": "d9d03c55010fa3af336c14a7503da90a565861a04c31a4dae8417843285c9021",
     "packages/ui/src/SequenceRun/index.ts": "f320c4332689a07ed20a7a3b9223a65e5dc6a6149bba1758c14166f319b95701",
-    "packages/ui/src/SequenceReview/SequenceReview.tsx": "b6723e2fe002859120cb4f0bbf2bf3e1f8282fbac4bb4b83e3aae2812a0dc874",
+    "packages/ui/src/SequenceReview/SequenceReview.tsx": "16679aec2cab2230e08cf534bcee15a62d22500638b3dc003baa05673d6f551b",
     "packages/ui/src/SequenceReview/index.ts": "8a778eaff0f4799346ba6dc47b85bd0f04cf04079e49fa427fa3059af7332184"
   },
   "exports": [
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "48cbb002f4d0d216b5f36ef32aa37b30732c0b103182c9b6e6c742f79ef77943",
+      "sha256": "a67def5a8c6d12338ef525b7cc0c5d963a53b299937305302e6a5397912c4ce3",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "735a8f977a68d5d9f113ca5ab8d5f09014c4e3e352cbafcc6a7914c35d2d4f9e",
+      "sha256": "d09c5495c87c73f43022c76c51dbad1b7d928787c7e5566fcd458274d78eafca",
       "width": 358,
       "height": 1004
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "4c8ff1b27ed41f7b585a835abf7a96157dc0a5fcd77442f071f325b28daa229e",
+      "sha256": "13cc997d40b032242ebe10bcc80bb5b3a77947861adecdc984b210db345b927b",
       "width": 358,
       "height": 750
     },
