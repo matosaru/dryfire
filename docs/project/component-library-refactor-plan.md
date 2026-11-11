@@ -1,6 +1,6 @@
 # Component-library and CSS-ownership refactor plan
 
-Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. The `InformationCard` CL4 slice is accepted. The current bounded CL4 `DrillCard` slice passes local unit, public/preview build/artifact, visual and pinned timing checks. Exact candidate branch CI is outstanding. Visual design, behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
+Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. The `InformationCard` CL4 slice is accepted. The current bounded CL4 `DrillCard` slice passes local unit, public/preview build/artifact, visual and pinned timing checks. Exact candidate branch CI passed on `de51780` (run [42910052051](https://github.com/matosaru/dryfire/actions/runs/42910052051)). Continue CL4 with further small component slices. Visual design, behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
 
 ## Goal
 
@@ -14,7 +14,7 @@ Turn the existing `@dryfire/ui` package into a clearly layered internal componen
 | CL1 Architecture | Complete | Approved component and CSS ownership specification. |
 | CL2 Safety net | Complete | 182 Jest suites / 1,189 tests; public 105 and preview 82 Chromium tests pass (5 and 3 intentional skips); visual coverage records one canonical mobile Chromium capture per page type. |
 | CL3 Proof slice | Complete | `ProgressContent` imports its owned CSS; lazy Settings fallback keeps exact handoff pixels. Both editions pass optimized builds, artifact verification, actual startup-payload checks, and ten-pair Chromium/WebKit comparisons. |
-| CL4 Migration | In progress; InformationCard and DrillCard slices pass locally | Both components directly import their owned CSS; Vite routes these startup owner imports through the critical-style manifest so prerendered screens keep one emitted stylesheet. Component/ownership tests, public/preview builds/artifacts, payload limits, both edition visual suites and all four pinned timing comparisons pass. Run candidate branch CI before pushing; migrate further repeated primitives in separate slices. |
+| CL4 Migration | In progress; InformationCard and DrillCard slices accepted | Both components directly import their owned CSS; Vite routes these startup owner imports through the critical-style manifest so prerendered screens keep one emitted stylesheet. Component/ownership tests, public/preview builds/artifacts, payload limits, both edition visual suites, all four pinned timing comparisons and exact-commit CI pass. Migrate further repeated primitives in separate slices. |
 | CL5–CL11 | Not started | Continue shared product, feature/page, startup cleanup, review, acceptance and delivery after bounded migration slices pass. |
 
 ## Non-negotiable CSS contract
@@ -108,7 +108,7 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 - No duplicate component implementation or unused selector remains.
 - Public/preview functionality, saved data, minification, offline behavior, canonical visuals and original performance limits pass on the exact `b` candidate.
 
-## Latest acceptance evidence (2026-11-10)
+## Latest acceptance evidence (2026-11-11)
 
 - Unit/runtime: 182 suites, 1,192 tests; TypeScript, component/runtime lint, coverage ratchet, docs, architecture and visual-coverage checks pass.
 - Visual: complete public Chromium/WebKit suite: 175 passed / 38 intentionally skipped; complete preview suite: 157 passed / 6 intentionally skipped. Both Settings handoff captures pass after the preference-race fix.
@@ -123,5 +123,5 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 - Reconciled inventory from 50 to 51 total packages (30 shared UI, 5 feature, 14 pages, 2 public-site packages).
 - 1,192 Jest tests / 182 suites, coverage ratchet, typecheck, both lints, smoke, architecture, docs, public and preview builds/artifact verification, and both payload budgets pass locally.
 - Pinned Chromium Drills catalog/handoff tests pass (4/4); canonical public Drills screenshot is exact. Both light/dark Settings handoffs and the canonical Settings screenshot pass after fixing a pre-existing asynchronous preference read race. Preview canonical screenshots are intentionally shared with public.
-- The full browser suites and all four pinned timing comparisons pass on the final candidate, including the Settings preference-race fix. Focused SEO CI coverage is added. Branch CI has not run. The candidate is uncommitted and unpublished.
+- The full browser suites and all four pinned timing comparisons pass on the final candidate, including the Settings preference-race fix. The focused SEO test step and every job in GitHub run [42910052051](https://github.com/matosaru/dryfire/actions/runs/42910052051) pass. Commit [`de51780`](https://github.com/matosaru/dryfire/commit/de51780c6ea2332b6cf51ac381ff0de08ad71ee3) is pushed to `b`; `main` and `dev` remain unchanged.
 - Final artifact budgets after the Settings fix: public 50,097 gzip JS / 12,587 gzip CSS; preview 50,462 gzip JS / 12,587 gzip CSS. Both remain below their unchanged ceilings.
