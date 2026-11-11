@@ -1,3 +1,4 @@
+import './InfoFooter.css';
 import type { ReactNode } from 'react';
 export type InfoFooterProps = { notice?: ReactNode };
 

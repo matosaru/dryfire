@@ -49,7 +49,7 @@ test('private progress presentation styles load with their only runtime owner', 
 });
 
 test('component-owned startup CSS is resolved through the single critical stylesheet copy', () => {
-  for (const [name, marker] of [['InformationCard', 'about-card'], ['DrillCard', 'preset-card'], ['SoundCard', 'class-card'], ['RecognitionList', 'history-list'], ['PageHeading', 'section-head'], ['PreferenceToggle', 'preference-toggle'], ['GunContext', 'gun-context']]) {
+  for (const [name, marker] of [['InformationCard', 'about-card'], ['DrillCard', 'preset-card'], ['SoundCard', 'class-card'], ['RecognitionList', 'history-list'], ['PageHeading', 'section-head'], ['PreferenceToggle', 'preference-toggle'], ['GunContext', 'gun-context'], ['InfoFooter', 'copyright'], ['NumberInput', 'numeric-hint'], ['PracticeReview', '#practiceReview'], ['PracticeRun', 'practice-counters'], ['RepetitionResult', 'session-result-card']]) {
     const ownerPath = resolve(process.cwd(), `packages/ui/src/${name}/${name}.tsx`);
     const cssPath = `packages/ui/src/${name}/${name}.css`;
     const importPath = `./${name}.css`;
@@ -60,7 +60,7 @@ test('component-owned startup CSS is resolved through the single critical styles
     expect(startupCssOwnerPlugin().load(id)).toBe('export {};\n');
     expect(startupCssOwnerPlugin().resolveId(`${importPath}?direct`, `${ownerPath}?used`)).toBe(id);
     expect(startupCssOwnerPlugin().resolveId('./Other.css', ownerPath)).toBeNull();
-    expect(readFileSync(resolve(process.cwd(), cssPath), 'utf8')).toContain(`.${marker}`);
+    expect(readFileSync(resolve(process.cwd(), cssPath), 'utf8')).toContain(marker.startsWith('#') ? marker : `.${marker}`);
     expect(startupCssOwnerPlugin().resolveId(`../${cssPath}`, resolve(process.cwd(), 'src/styles.css'))).toBeNull();
   }
 });

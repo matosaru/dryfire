@@ -1,3 +1,4 @@
+import './PracticeReview.css';
 import type {ReactNode} from 'react';
 export type SessionReviewView={title:string;status:string;summary:{text:string;className:string}[];savedNote:string;retryHidden:boolean;retryDisabled:boolean;repeatDisabled:boolean};
 export type PracticeReviewProps={prefix?:string;onAction?:(id:string)=>void;view?:SessionReviewView;results?:ReactNode};

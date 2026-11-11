@@ -15,7 +15,12 @@ export const startupStyleOwners = Object.freeze({
   'packages/ui/src/RecognitionList/RecognitionList.tsx': 'packages/ui/src/RecognitionList/RecognitionList.css',
   'packages/ui/src/PageHeading/PageHeading.tsx': 'packages/ui/src/PageHeading/PageHeading.css',
   'packages/ui/src/PreferenceToggle/PreferenceToggle.tsx': 'packages/ui/src/PreferenceToggle/PreferenceToggle.css',
-  'packages/ui/src/GunContext/GunContext.tsx': 'packages/ui/src/GunContext/GunContext.css'
+  'packages/ui/src/GunContext/GunContext.tsx': 'packages/ui/src/GunContext/GunContext.css',
+  'packages/ui/src/InfoFooter/InfoFooter.tsx': 'packages/ui/src/InfoFooter/InfoFooter.css',
+  'packages/ui/src/NumberInput/NumberInput.tsx': 'packages/ui/src/NumberInput/NumberInput.css',
+  'packages/ui/src/PracticeReview/PracticeReview.tsx': 'packages/ui/src/PracticeReview/PracticeReview.css',
+  'packages/ui/src/PracticeRun/PracticeRun.tsx': 'packages/ui/src/PracticeRun/PracticeRun.css',
+  'packages/ui/src/RepetitionResult/RepetitionResult.tsx': 'packages/ui/src/RepetitionResult/RepetitionResult.css'
 });
 
 export function lazyStyleSources() {

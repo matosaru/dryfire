@@ -1,3 +1,4 @@
+import './NumberInput.css';
 export type NumberInputProps = {
   id: string;
   name?: string;
