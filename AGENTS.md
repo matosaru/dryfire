@@ -53,7 +53,6 @@ For a complete `b` candidate, use the repository's [candidate-acceptance skill](
 
 - Develop Free application changes on `b`.
 - Promote an accepted `b` candidate to `main` through a pull request. Never push application changes directly to `main`.
-- `dev` is outside the current work scope unless the user explicitly restores it.
 - The user configures Cloudflare. Prepare and validate repository code/configuration; do not claim live deployment without observing it.
 - Before committing or pushing, inspect the diff and run the complete applicable acceptance gate. Focused tests alone are insufficient.
 

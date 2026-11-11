@@ -19,7 +19,7 @@ Updated2026-10-25. The original acceptance gate remains unchanged. No timing all
 3. **Test the navigation-order hypothesis.** The unpublished candidate moved/skipped the explicit scroll reset. Handler speed improved but browser layout grew. Restore the original ordering only inside the diagnostic checkout first; compare layout/DOM/frame timings and identical output screenshots. Do not change application code merely because a hypothesis is plausible.
 4. **Make one evidenced correction.** If the controlled test supports it, preserve final scroll position, active view, preferences, data/capture/draft guards and page layout. Characterize final user behavior, rather than retaining an ordering test written solely around the unsuccessful optimization. If it does not help, capture targeted layout invalidation/trace evidence before another change.
 5. **Accept source and designs together.** Rebase the preserved candidate, restore its proposed canonical references in the candidate only, regenerate matching examples/fingerprints, then run units/coverage/integration, both builds, both pinned screenshot editions and all four original performance jobs. No timing-budget change or retry fishing.
-6. **Release b first.** Publish only after complete candidate acceptance. Main remains a checked PR promotion; dev is outside scope. H2automatic cache refresh and F2–F7 follow-up remain pending.
+6. **Release b first.** Publish only after complete candidate acceptance. `main` remains a checked PR promotion target. H2automatic cache refresh and F2–F7 follow-up remain pending.
 
 ## Preservation and reproducibility
 
@@ -42,7 +42,7 @@ A local system-Chromium four-sample block-shell counterfactual preserved Setting
 
 Next isolate the candidate's unrelated main.js optimizations from its header presentation: the advisory workflow can restore the exact production src/main.js only inside the third isolated checkout. Compare production, complete H1 and production-main H1 on the same runner. This is an ablation to identify responsibility, not a proposed release. Original acceptance is unchanged.
 
-Latest owner instruction: keep b and main up to date. This supersedes the assistant main freeze: promote tested b releases through PRs after complete acceptance; dev remains outside scope. Current failed checks still prevent promotion.
+Latest release policy: promote tested `b` releases to `main` through PRs after complete acceptance. Current failed checks still prevent promotion.
 
 Controlled pinned run [40271470299](https://github.com/matosaru/dryfire/actions/runs/40271470299) completed successfully as a diagnostic, not acceptance. Production/H1/production-main H1 first-frame medians were37/41/42ms; layout23.890/27.470/28.062ms. H1 and production-main H1 pixels were identical. Restoring production main.js does not resolve the cost; retain candidate runtime optimizations. Next isolate header/footer presentation changes from remaining candidate presentation/build changes, using a source ablation rather than more speculative layout fixes. H1 remains unpublished and original timing acceptance remains blocked.
 

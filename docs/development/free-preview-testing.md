@@ -1,4 +1,4 @@
-# Public Free and full development preview
+# Public Free and private Full preview
 
 CHG-032 / CHG-034 / CHG-035 · revision 2.2 · 2026-10-12. The user explicitly approved temporary public restrictions while retaining full feature code and existing saved-data access. Source implementation, test/image review, publication and deployment are separate in the [delivery tracker](../project/implementation-history.md).
 
@@ -34,7 +34,7 @@ npm run verify:dist -- --edition=public
 npm run preview -- --host 127.0.0.1
 ```
 
-The default build/server edition follows `build-profile.json`: public on b/main, private preview on dev. Explicit commands select an edition independently for local review. To run all retained features locally:
+The default build/server edition follows `build-profile.json` and remains public on `b`/`main`. Explicit commands select an edition independently for local review or a separately configured private preview. To run all retained features locally:
 
 ```bash
 npm run dev:preview
@@ -48,7 +48,7 @@ Both optimized builds use `dist/`; rebuilding replaces that output, not user dat
 
 ## Deployment boundary
 
-CHG-036 makes b/main default to **public** `minified-web-app` output and dev default to **preview** `private-preview-web-app` output. `build-profile.json` selects normal dev/build/verification; explicit build:public/build:preview remain for isolated checks. Both production/development deploy scripts verify public edition/source metadata before invoking Wrangler. An accidental full build cannot use these scripts. The private build runs on loopback and in isolated CI contexts. Its Free default/Full selector is implemented; [Access deployment](private-preview-deployment.md) is prepared for the requested host, but no hosted protection/deployment is claimed.
+CHG-036 makes `b`/`main` default to **public** `minified-web-app` output. Explicit `build:public`/`build:preview` commands produce isolated edition checks; preview output is not assigned to a Git branch. Both production/development deploy scripts verify public edition/source metadata before invoking Wrangler. An accidental full build cannot use these scripts. The private build runs on loopback and in isolated CI contexts. Its Free default/Full selector is implemented; [Access deployment](private-preview-deployment.md) is prepared for the requested host, but no hosted protection/deployment is claimed.
 
 Before hosting full preview, configure Cloudflare Access or equivalent authentication on the actual custom hostname **and every reachable Workers/preview/alias URL**. Disable unprotected aliases. Verify anonymous requests are denied, authorized staff can load the full app, and assets/service-worker paths have the same boundary. A hidden URL, noindex, local email comparison or an environment variable saying protection is enabled is not authentication. Then add a dedicated tested-preview artifact/deployment path through the existing PR and environment gates. Cloudflare credentials/live Access configuration are not available in this workspace; that external prerequisite remains unverified. No public full-preview deployment is performed.
 
@@ -70,7 +70,7 @@ Use the pinned renderer from [visual-test instructions](VISUAL_TESTS.md), not sy
 
 ## Later real subscription testing
 
-Accounts/cloud/billing remain paused. Future production Free/Pro tests require separate staff identities and audited server-controlled grants, plus a controlled purchase/refund check. No production browser override or fake payment secret is introduced now. Follow [Free b → main PR, b → dev synchronization and Full-only dev](../project/branching-strategy.md); production release remains separate.
+Accounts/cloud/billing remain paused. Future production Free/Pro tests require separate staff identities and audited server-controlled grants, plus a controlled purchase/refund check. No production browser override or fake payment secret is introduced now. Follow [the current `b` → `main` release policy](../project/branching-strategy.md); production release remains a checked PR.
 
 ## In-app tester switch and later production proposal
 
@@ -80,6 +80,6 @@ Default private testing to Free, show the active simulation clearly, and preserv
 
 For a later **production** switch, once authentication and backend entitlements exist, expose the selector only after the server confirms an explicitly allowlisted tester account. Ordinary users never see the selector. Switching calls an authenticated server endpoint; the server checks the tester role, target environment and ownership, then stores a short-lived override. Use a secure HttpOnly session cookie, CSRF protection, audited grants/expiry and deny-by-default authorization. A client flag or decoded role must never grant access. Enforce permissions on protected APIs/resources as well as visible controls.
 
-Free simulation means the actual public rules: two new guns, no new custom drills and no advanced graphs. Full simulation means the five-gun/custom/chart preview. Preserve existing local data and normal backup recovery in either mode; switching does not delete profiles or rewrite a subscription. Display the active testing mode and expiry to prevent confusion. On expiry or revoked tester access, restore the account's real permissions. Isolate test billing, secrets, storage and identities on dev; production override grants are limited to named staff and their own test data. Actual customer billing checks remain a separate controlled test.
+Free simulation means the actual public rules: two new guns, no new custom drills and no advanced graphs. Full simulation means the five-gun/custom/chart preview. Preserve existing local data and normal backup recovery in either mode; switching does not delete profiles or rewrite a subscription. Display the active testing mode and expiry to prevent confusion. On expiry or revoked tester access, restore the account's real permissions. Isolate test billing, secrets, storage and identities in the staging environment; production override grants are limited to named staff and their own test data. Actual customer billing checks remain a separate controlled test.
 
 Acceptance for that later feature: anonymous and ordinary accounts cannot request Full by revealing a control, calling its endpoint, changing a URL/localStorage value or replaying an expired/revoked grant; Free/Full/lapsed behavior has server and UI coverage; no grant exposes another person's data. The public repository and downloaded browser code remain inspectable. Authorization can protect hosted resources and private builds, but cannot make locally delivered features impossible to copy. No product login, tester API or production override is implemented in CHG-035.

@@ -16,6 +16,6 @@ export function resolveBuildEdition({ defaultEdition = 'public', explicit, mode 
 
 export function validateBranchProfile(branch, edition) {
   checkEdition(edition);
-  const required = { b: 'public', main: 'public', dev: 'preview' }[branch];
-  if (required && required !== edition) throw new Error(`Branch ${branch} requires ${required}, got ${edition}. Preserve the destination branch profile when synchronizing.`);
+  const required = { b: 'public', main: 'public' }[branch];
+  if (required && required !== edition) throw new Error(`Branch ${branch} requires ${required}, got ${edition}. Use a public profile for release branches.`);
 }

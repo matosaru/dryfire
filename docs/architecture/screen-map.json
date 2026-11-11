@@ -845,7 +845,7 @@
     "src/storage.js": "11e773d2cb7cabcfec920a03a2c1d1bfeba99c9262cb76bfe998763132f8aa14",
     "vite.config.js": "7d100c0b7e5c8c43ff94a31a2729aa754083b7c873fbad0449b54cf13e86cec1",
     "src/optional/previewTesting.js": "b3c5d35c8d140517d4fa89062553eebea131041b8d9e63c4bc1060698e1f797c",
-    "tools/build-profile.mjs": "61dfd9f986081a0c969b6a315c5aa3184dd41cf7059264ebd24c8fa5c060d5e9",
+    "tools/build-profile.mjs": "fae165eee81e9c1418e1888f1d6b5ef678b7e0b502052d8d283743ef8ac0f348",
     "src/pageDefinitions.js": "60371a98062e7ad4eb910d2ce9a9fc4cc29c5612cd195789594e2533d666e48b",
     "tools/page-templates.mjs": "4694abd1ed9bffa093fb4df005ce1f1c643298dd600855287e7e430e5cc3b4f2",
     "src/templates/view.html": "2396898da4681700ef4242a67cf1a86b62801457d814b42d88661e0b7749bcc4",

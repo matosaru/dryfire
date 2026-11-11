@@ -2,7 +2,7 @@ name: Test and build
 run-name: ${{ github.event_name == 'workflow_dispatch' && inputs.candidate_patch != '' && format('Pre-merge candidate {0}', inputs.candidate_patch) || format('Test and build · {0}', github.ref_name) }}
 on:
   push:
-    branches: [main, b, dev]
+    branches: [main, b]
   pull_request:
   workflow_dispatch:
     inputs:

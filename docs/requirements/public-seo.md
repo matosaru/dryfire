@@ -1,6 +1,6 @@
 # Public SEO and readable operational URLs — CHG-060/061
 
-CHG-061 corrects the released routing contract. The owner approved flat naming and explicitly instructed: “don't delete permanently marketing homepage, make it part of about page.” Work starts on b, with a fully checked PR to main after acceptance; dev remains untouched.
+CHG-061 corrects the released routing contract. The owner approved flat naming and explicitly instructed: “don't delete permanently marketing homepage, make it part of about page.” Work is published to `b`, with a fully checked PR to `main` after acceptance.
 
 - `/` is the actual app homepage on every host: first-use gun setup or the returning user's Home. The app requires JavaScript; provide a readable noscript notice. No separate marketing homepage replaces it.
 - Preserve and reuse marketing content in About: product introduction, simple practice routine, free/local-data promise, free-app action and four mode/manual links. Retain Beta feedback, local-data and safety information. Keep the historical marketing design in Git and the archived capture; do not delete the content.

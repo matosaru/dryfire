@@ -19,13 +19,13 @@ test.each(['', 'full', null, 'PUBLIC'])('invalid edition %s fails closed', inval
 test('an invalid committed default cannot be hidden by an override', () => {
   expect(() => resolveBuildEdition({ defaultEdition: 'full', explicit: 'public' })).toThrow('Unknown build edition');
 });
-test('b and main reject a Full profile while dev requires Full', () => {
+test('b and main require the public profile', () => {
   for (const branch of ['b', 'main']) {
     expect(() => validateBranchProfile(branch, 'public')).not.toThrow();
     expect(() => validateBranchProfile(branch, 'preview')).toThrow('requires public');
   }
-  expect(() => validateBranchProfile('dev', 'preview')).not.toThrow();
-  expect(() => validateBranchProfile('dev', 'public')).toThrow('requires preview');
+  expect(() => validateBranchProfile('feature/review', 'preview')).not.toThrow();
+  expect(() => validateBranchProfile('feature/review', 'public')).not.toThrow();
 });
 test('detached local reviews allow either valid profile', () => {
   expect(() => validateBranchProfile('', 'preview')).not.toThrow();

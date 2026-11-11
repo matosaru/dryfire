@@ -2,7 +2,7 @@
 
 CHG-048 · revision 1 · 2026-10-17 (Europe/Vilnius) · **Approved for autonomous implementation by CHG-049.**
 
-This document specifies the remaining refactor; [plan.md](plan.md) defines its execution order. The owner reviewed this revision and explicitly approved autonomous implementation in CHG-049. Execute its staged test, visual and performance gates on b and dev; the former planning pause is satisfied.
+This document specifies the remaining refactor; [plan.md](plan.md) defines its execution order. The owner reviewed this revision and explicitly approved autonomous implementation in CHG-049. Execute its staged test, visual and performance gates on `b`; production promotion remains a separate checked PR.
 
 ## Goal and boundaries
 
@@ -12,7 +12,7 @@ Functional behavior remains authoritative in [requirements](../../requirements/R
 
 ## Existing structure, inspected baseline
 
-Inspected Free source: main/b `6c38bff`, owner release [PR #24](https://github.com/matosaru/dryfire/pull/24). Full source: dev `a5b76e8`, containing that release plus its Full configuration and existing additions. Documentation publication will create later commits; these identifiers describe the measured application baseline.
+Inspected public Free source: commit `6c38bff`, owner release [PR #24](https://github.com/matosaru/dryfire/pull/24). The full-preview comparison source was commit `a5b76e8`, containing that release plus the Full configuration and existing additions. These identifiers describe historical measured baselines, not active Git branches.
 
 | Boundary | Existing implementation | Implication |
 | --- | --- | --- |
@@ -92,7 +92,7 @@ Dependencies flow from composition/pages to features, then shared UI and service
 | RF-06 | Preserve all six practice modes and ordered built-in/custom sequences. Keep readiness before countdown, early-Single failure, first fast click, cue suppression, automatic Single repeats, counters, STOP/meter, interruption and save/retry semantics. |
 | RF-07 | Audio acquisition remains tied to the existing explicit user action and safety gate. Strict Mode, double-start, slow/denied permission, cancellation, backgrounding and late async completion cannot leak or restart capture. Tests cannot establish physical microphone accuracy or beep loudness. |
 | RF-08 | Practice/Sequence live views and synthetic guide examples share one read-only presentation, with injected snapshots. Guides never acquire microphone resources or save detections; existing initial pause, scenarios, endpoints and return drafts remain. |
-| RF-09 | Public b/main retains two-gun new creation, no new custom creation/advanced graphs and old-data use/edit/restore. Full dev retains five-gun creation, custom creation, graphs, Full initial simulation and explicit remembered choices. Keep signed Access gating, compile-time exclusions and destination branch configs. |
+| RF-09 | Public builds retain two-gun new creation, no new custom creation/advanced graphs and old-data use/edit/restore. The separately selected Full preview retains five-gun creation, custom creation, graphs, Full initial simulation and explicit remembered choices. Keep signed Access gating, compile-time exclusions and public deployment configuration. |
 | RF-10 | Public offline refresh includes lazy assets and preserves IndexedDB. Private preview remains no-store and retires app-shell caches without deleting user data. No new persistence or upload policy. |
 | RF-11 | Preserve native semantics, accessible names, keyboard operation and safety-dialog behavior. A genuine pre-existing UX defect must be reported as a separate fix; a static-audit default does not authorize a visible behavior change. |
 | RF-12 | Preserve Vite minification, source-map exclusion, edition/source metadata, worklet/service-worker packaging and root commands. Compare lazy/initial bytes and loading behavior; do not claim that moving files improves speed. |
@@ -144,4 +144,4 @@ The generic strict UI audit reports **72 findings**: six native-select owner dec
 
 All 13 screen interiors and the single shell must have tested owners; no obsolete parallel HTML/DOM renderer or duplicate styling remains. CHG-051 retains consumer-audited progressive startup adapters as intentional first-entry/failure boundaries, with exclusive guarded React ownership after handoff; unconditional eager React startup is not required. See [decision001](../../architecture/decisions/001-progressive-react-startup.md). Original performance/visual/data/coverage gates remain unchanged. Pure/audio/storage implementations may keep their existing file locations when moving them has no value. Update ownership maps and remove obsolete code only after consumers and reference checks pass.
 
-Shared increments enter b, then synchronize into dev preserving Full configuration. Only a checked b → main PR promotes production. The owner manages Cloudflare. A merged PR, test success or prepared artifact is not evidence of live deployment. [plan.md](plan.md) specifies gates, rollback and status; CHG-049 authorizes implementation through its gates.
+Shared Free increments are delivered on `b`; only a checked `b` → `main` PR promotes production. Preview builds remain explicitly selected and independently protected. The owner manages Cloudflare. A merged PR, test success or prepared artifact is not evidence of live deployment. [plan.md](plan.md) specifies gates, rollback and status; CHG-049 authorizes implementation through its gates.

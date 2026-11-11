@@ -1,6 +1,6 @@
 # Security and performance review
 
-CHG-026 · initial read-only review · 2026-10-11 · baseline dev `d1754d81a891435ef4e42de976f185ec8b3f26bf`. Findings are preparation for focused fixes, not a completed penetration test or a claim that the deployed site was inspected.
+CHG-026 · initial read-only review · 2026-10-11 · baseline commit `d1754d81a891435ef4e42de976f185ec8b3f26bf`. Findings are preparation for focused fixes, not a completed penetration test or a claim that the deployed site was inspected.
 
 ## Observed dependency results
 

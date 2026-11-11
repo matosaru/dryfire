@@ -1,6 +1,6 @@
 # Live Listen readiness correction
 
-Requested 2026-10-22, queued after CHG-052 card acceptance. Scope is directly authorized: review intermittent availability, synchronize Home/Drills/bottom-navigation/capture entry states and visibly explain unavailable actions. Work stays on b; main/dev remain unchanged.
+Requested 2026-10-22, queued after CHG-052 card acceptance. Scope is directly authorized: review intermittent availability, synchronize Home/Drills/bottom-navigation/capture entry states and visibly explain unavailable actions. Work stays on `b`; `main` remains unchanged until a checked promotion PR.
 
 ## Observed cause
 
