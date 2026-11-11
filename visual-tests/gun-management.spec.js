@@ -136,7 +136,7 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   page.on('dialog',dialog=>dialog.accept());await restore(page);
   await page.locator('#settingsShortcut').click();
   await expect(page.locator('#settingsView')).not.toHaveAttribute('data-react-settings');
-  await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
+  await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);await expect(page.locator('#appearance')).toHaveValue(theme);
   await expect(page.locator('#noiseFilterStatus')).not.toHaveText('Checking browser support…');
   await expect(page.locator('#autoGainStatus')).not.toHaveText('Checking browser support…');
   await expect(page.locator('#vibrationStatus')).not.toHaveText('Checking browser support…');

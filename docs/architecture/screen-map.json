@@ -1049,7 +1049,7 @@
     "src/featureFormat.js": "52f7664d1727549cca22e033041fc6884be34a2a35a65e05eeee3a85ed5e72f2",
     "src/gunLibraryCoordinator.js": "20bf34efe04bb77cb4c77d06d5474763175d0ea729432a2c763ad24aa12806f4",
     "src/gunLibraryView.js": "4e7402f116792235dd024bc187e42cfb98fd404dbf034efad155be4e66cd2681",
-    "src/preferenceCoordinator.js": "91fa9447dd470548be156a4c125312475e37fbfd2fbe3b7b50f927363d16a49d",
+    "src/preferenceCoordinator.js": "fb17c835a2da919bffa7cd7101dbc4ac7e70fadf22fe82fec859a46adb9c1778",
     "src/serviceWorkerRegistration.js": "f7076270dac23f0d9d88e53e26f224741adef570bdda71027dc4eae43a16e07a",
     "apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx": "3e8a5cee943f911a5ff51f706cb8fb2fb0e8ef335f29310855fff9b29defe318",
     "apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx": "c9ed116bd419be71ba9222acd09a52432009cccea2711e449f702c6fff02eb9d",

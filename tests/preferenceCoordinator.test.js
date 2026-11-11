@@ -21,7 +21,7 @@ test('async preference owners save the value captured by the synchronous control
  const {state,ports,actions}=setup(),write=deferred();ports.saveDevice.mockReturnValue(write.promise);
  const pending=actions.appearance('light');ports.read.mockReturnValue({value:'dark'});
  expect(ports.saveDevice).toHaveBeenCalledWith('appearance','light');write.resolve();await pending;
- expect(state.theme).toBe('light');expect(ports.applyTheme).toHaveBeenCalledTimes(1);
+ expect(state.theme).toBe('light');expect(ports.applyTheme).toHaveBeenCalledTimes(1);expect(ports.render).toHaveBeenCalledTimes(1);
 });
 test('measurement units persist as a normalized device preference and refresh visible measurements',async()=>{
  const {state,ports,actions}=setup();expect(state.measurementSystem).toBe('metric');await actions.measurementSystem();

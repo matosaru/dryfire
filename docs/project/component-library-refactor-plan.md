@@ -1,6 +1,6 @@
 # Component-library and CSS-ownership refactor plan
 
-Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. CL4 component CSS ownership is in progress: the first seven owners were accepted at 0.8.4, five more at 0.8.5 ([CI 43079385391](https://github.com/matosaru/dryfire/actions/runs/43079385391)), and the eight shell owners at 0.8.6 ([CI 43082526382](https://github.com/matosaru/dryfire/actions/runs/43082526382)); both CI runs passed validation, screenshot suites and all four performance jobs. The decoded-RGBA Settings handoff assertion avoids flaky encoded-PNG hashes; no visual baseline or thresholds changed. Each separately accepted refactor increment bumps the app patch version. Product behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
+Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. CL4 component CSS ownership is in progress. Earlier accepted increments and CI evidence are recorded below and in the implementation history. The 0.8.8 candidate adds the next five direct owners and fixes a Settings appearance selector that could remain stale during asynchronous preference handoff. Local public and preview browser suites pass; exact-commit GitHub CI is pending. No visual tolerance or performance threshold changed. Each separately accepted refactor increment bumps the app patch version. Product behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
 
 ## Goal
 
@@ -14,7 +14,7 @@ Turn the existing `@dryfire/ui` package into a clearly layered internal componen
 | CL1 Architecture | Complete | Approved component and CSS ownership specification. |
 | CL2 Safety net | Complete | 182 Jest suites / 1,192 tests; public 105 and preview 82 Chromium tests pass (5 and 3 intentional skips); visual coverage records one canonical mobile Chromium capture per page type. |
 | CL3 Proof slice | Complete | `ProgressContent` imports its owned CSS; lazy Settings fallback keeps exact handoff pixels. Both editions pass optimized builds, artifact verification, actual startup-payload checks, and ten-pair Chromium/WebKit comparisons. |
-| CL4 Migration | In progress; 20 owners accepted through 0.8.6; five feature owners at 0.8.7 candidate | Exact `b` CI [43082526382](https://github.com/matosaru/dryfire/actions/runs/43082526382) passed validation, both screenshot suites and all four performance jobs. The current candidate gives direct ownership to CustomDrillEditor, DrillSetup, SequenceRun, SequenceReview and CalibrationCatalog through the single startup copy. Two aggregate UI styles will remain after this slice. |
+| CL4 Migration | In progress; prior owners accepted through 0.8.7; five feature owners and Settings selector fix at 0.8.8 candidate | Local public/preview browser suites pass on 0.8.8. Exact-commit GitHub validation, screenshots and four performance jobs remain acceptance gates. Current candidate gives direct ownership to CustomDrillEditor, DrillSetup, SequenceRun, SequenceReview and CalibrationCatalog through the single startup copy. Two aggregate UI styles will remain after this slice. |
 | CL5–CL11 | Not started | Continue shared product, feature/page, startup cleanup, review, acceptance and delivery after bounded migration slices pass. |
 
 ## Non-negotiable CSS contract
@@ -108,14 +108,14 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 - No duplicate component implementation or unused selector remains.
 - Public/preview functionality, saved data, minification, offline behavior, canonical visuals and original performance limits pass on the exact `b` candidate.
 
-## Latest acceptance evidence (2026-11-11)
+## Latest candidate evidence (2026-11-11, 0.8.8; exact branch CI pending)
 
 - Unit/runtime: 182 suites, 1,192 tests; TypeScript, component/runtime lint, coverage ratchet, docs, architecture and visual-coverage checks pass.
-- Visual: complete public Chromium/WebKit suite: 175 passed / 38 intentionally skipped; complete preview suite: 157 passed / 6 intentionally skipped. Both Settings handoff captures pass after the preference-race fix.
-- Payload: final CL4 public 50,097 gzip JS / 12,587 gzip CSS; preview 50,462 gzip JS / 12,587 gzip CSS. Both remain below unchanged ceilings; no duplicate `DrillCard` or `InformationCard` CSS chunk is emitted.
-- Timing: ten paired samples per metric for both editions in Chromium and WebKit. All four final candidate comparisons pass without a confirmed slowdown. Reports are in `/tmp/final-{public,preview}-{chromium,webkit}.json`; reproduce using [performance guidance](../development/PERFORMANCE.md).
+- Visual: complete public Chromium/WebKit suite: 175 passed / 38 intentionally skipped; complete preview suite: 157 passed / 6 intentionally skipped. Both Settings handoff captures pass after the appearance-control rerender fix.
+- Payload: public 50,093 gzip JS / 12,587 gzip CSS; preview 50,462 gzip JS / 12,587 gzip CSS. Both remain below unchanged ceilings; no duplicate `DrillCard` or `InformationCard` CSS chunk is emitted.
+- Performance: the prior accepted 0.8.7 exact-commit CI comparison passed all four edition/browser performance jobs. The new 0.8.8 candidate still needs exact-commit CI timing evidence.
 - The first CL4 `InformationCard` slice is accepted; the rest of CL4 and CL5–CL11 remain. The overall component-library migration is not complete.
-- Visual: the complete prior Chromium suites passed 105 public / 82 preview tests (5 / 3 intentional skips); after the CL4 change, public canonical About/Contact pixels and the five preview About/Contact functional routes passed. `visual:review` retains 26 canonical mobile page cases.
+- Visual: `visual:review` retains 26 canonical mobile page cases. About captures and source fingerprints are refreshed for 0.8.8.
 
 ### PageHeading, PreferenceToggle and GunContext CSS-ownership candidate (0.8.4; local checks complete, branch CI pending)
 
@@ -141,3 +141,7 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 - Pinned Chromium Drills catalog/handoff tests pass (4/4); canonical public Drills screenshot is exact. Both light/dark Settings handoffs and the canonical Settings screenshot pass after fixing a pre-existing asynchronous preference read race. Preview canonical screenshots are intentionally shared with public.
 - The full browser suites and all four pinned timing comparisons pass on the final candidate, including the Settings preference-race fix. The focused SEO test step and every job in GitHub run [42910052051](https://github.com/matosaru/dryfire/actions/runs/42910052051) pass. Commit [`de51780`](https://github.com/matosaru/dryfire/commit/de51780c6ea2332b6cf51ac381ff0de08ad71ee3) is pushed to `b`; Production on `main` remains unchanged until an approved promotion.
 - Final artifact budgets after the Settings fix: public 50,097 gzip JS / 12,587 gzip CSS; preview 50,462 gzip JS / 12,587 gzip CSS. Both remain below their unchanged ceilings.
+
+### Settings synchronization and feature CSS ownership candidate (0.8.8)
+
+Continued CL4 with direct CSS ownership for CustomDrillEditor, DrillSetup, SequenceRun, SequenceReview and CalibrationCatalog. Fixed the Appearance selector rerender at asynchronous preference handoff and covered selected value plus exact pixels in Chromium/WebKit. The version-derived About screens and source fingerprints were regenerated. Public and preview complete local visual suites pass (175/38 and 157/6 passed/intentional skips); exact branch CI and pinned performance gates remain pending before acceptance.

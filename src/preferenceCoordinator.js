@@ -2,7 +2,7 @@
 export function createPreferenceState(normalizeAudioPreferences){return {audio:normalizeAudioPreferences(),theme:'dark',measurementSystem:'metric',vibration:false,rejected:false,processing:null,pending:false};}
 export function createPreferenceActions(state,ports){
  const normalizeAudioPreferences=ports.normalizeAudioPreferences;
- async function appearance(value=ports.read('appearance').value){if(!['dark','light','system'].includes(value))return;try{await ports.saveDevice('appearance',value);state.theme=value;ports.applyTheme();}catch(error){ports.error(error);ports.render();}}
+ async function appearance(value=ports.read('appearance').value){if(!['dark','light','system'].includes(value))return;try{await ports.saveDevice('appearance',value);state.theme=value;ports.applyTheme();ports.render();}catch(error){ports.error(error);ports.render();}}
  async function measurementSystem(value=ports.read('measurementSystem').value){if(value!=='metric'&&value!=='imperial')return;const previous=state.measurementSystem;try{await ports.saveDevice('measurementSystem',value);state.measurementSystem=value;ports.applyMeasurements();ports.render();}catch(error){state.measurementSystem=previous;ports.error(error);ports.render();}}
  async function vibration(checked=ports.read('vibrationFeedback').checked){if(ports.locked()){ports.render();return;}try{state.vibration=checked;await ports.saveDevice('vibrationFeedback',state.vibration);ports.render();}catch(error){ports.error(error);await ports.reload();ports.render();}}
  async function audio(id,key,checked=ports.read(id).checked){
