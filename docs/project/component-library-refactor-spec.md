@@ -6,7 +6,7 @@ Status: approved for staged implementation on `b` (2026-11-09). This specificati
 
 - `@dryfire/ui` is a private source workspace with explicit subpath exports; component folders contain source, CSS, tests and an entry file.
 - `docs/architecture/component-map.json` indexes 50 page/component packages: 29 shared UI components, 5 feature components, 14 pages and 2 public-site components.
-- `src/styles.css` currently imports the design tokens, page/component CSS and ordered `legacy-before-*` / `legacy-after-*` compatibility styles. React TSX files do not import their own styles.
+- `src/styles.css` imports design tokens, page/component CSS and ordered `legacy-before-*` / `legacy-after-*` compatibility styles. Twenty UI package entries now directly declare their colocated stylesheet; the resolver routes those imports to the existing stylesheet source so native first paint retains one blocking copy. Seven aggregate UI styles remain without a direct package owner and are tracked as later migration work.
 - Native HTML templates render all screen containers before React ownership, so first paint and early navigation need the current blocking stylesheet and its cascade order.
 - Several CSS files have real ownership exceptions: private `ProgressContent` styles are injected by the lazy `progressView` owner; `NumberInput.css` styles a parent selector; `PracticeCatalog.css` is currently documentation-only; `TriggerProfileStatus.css` is read into a native template; some legacy-named files still contain active unrelated selectors.
 - Node `--import tsx` build renderers import the same React component graph as the browser. A browser-only `.css` import fails in these renderers unless the build path deliberately handles it.

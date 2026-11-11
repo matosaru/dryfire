@@ -49,7 +49,7 @@ test('private progress presentation styles load with their only runtime owner', 
 });
 
 test('component-owned startup CSS is resolved through the single critical stylesheet copy', () => {
-  for (const [name, marker] of [['InformationCard', 'about-card'], ['DrillCard', 'preset-card'], ['SoundCard', 'class-card'], ['RecognitionList', 'history-list'], ['PageHeading', 'section-head'], ['PreferenceToggle', 'preference-toggle'], ['GunContext', 'gun-context'], ['InfoFooter', 'copyright'], ['NumberInput', 'numeric-hint'], ['PracticeReview', '#practiceReview'], ['PracticeRun', 'practice-counters'], ['RepetitionResult', 'session-result-card']]) {
+  for (const [name, marker] of [['InformationCard', 'about-card'], ['DrillCard', 'preset-card'], ['SoundCard', 'class-card'], ['RecognitionList', 'history-list'], ['PageHeading', 'section-head'], ['PreferenceToggle', 'preference-toggle'], ['GunContext', 'gun-context'], ['InfoFooter', 'copyright'], ['NumberInput', 'numeric-hint'], ['PracticeReview', '#practiceReview'], ['PracticeRun', 'practice-counters'], ['RepetitionResult', 'session-result-card'], ['AppShell', 'app-shell'], ['BrandHeader', 'brand-home'], ['SafetyDisclosure', 'safety-card'], ['BottomNavigation', 'tabs'], ['EvaluationPanel', 'evaluation-panel'], ['GunSwitcher', 'gun-switcher'], ['SavedSessionList', 'saved-session-card'], ['SafetyDialog', 'safety-modal']]) {
     const ownerPath = resolve(process.cwd(), `packages/ui/src/${name}/${name}.tsx`);
     const cssPath = `packages/ui/src/${name}/${name}.css`;
     const importPath = `./${name}.css`;

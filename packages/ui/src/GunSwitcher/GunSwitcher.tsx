@@ -1,3 +1,4 @@
+import './GunSwitcher.css';
 export type GunSwitcherProps = {
   name?: string;
   type?: string;

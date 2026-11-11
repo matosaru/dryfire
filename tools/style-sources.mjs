@@ -20,7 +20,15 @@ export const startupStyleOwners = Object.freeze({
   'packages/ui/src/NumberInput/NumberInput.tsx': 'packages/ui/src/NumberInput/NumberInput.css',
   'packages/ui/src/PracticeReview/PracticeReview.tsx': 'packages/ui/src/PracticeReview/PracticeReview.css',
   'packages/ui/src/PracticeRun/PracticeRun.tsx': 'packages/ui/src/PracticeRun/PracticeRun.css',
-  'packages/ui/src/RepetitionResult/RepetitionResult.tsx': 'packages/ui/src/RepetitionResult/RepetitionResult.css'
+  'packages/ui/src/RepetitionResult/RepetitionResult.tsx': 'packages/ui/src/RepetitionResult/RepetitionResult.css',
+  'packages/ui/src/AppShell/AppShell.tsx': 'packages/ui/src/AppShell/AppShell.css',
+  'packages/ui/src/BrandHeader/BrandHeader.tsx': 'packages/ui/src/BrandHeader/BrandHeader.css',
+  'packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx': 'packages/ui/src/SafetyDisclosure/SafetyDisclosure.css',
+  'packages/ui/src/BottomNavigation/BottomNavigation.tsx': 'packages/ui/src/BottomNavigation/BottomNavigation.css',
+  'packages/ui/src/EvaluationPanel/EvaluationPanel.tsx': 'packages/ui/src/EvaluationPanel/EvaluationPanel.css',
+  'packages/ui/src/GunSwitcher/GunSwitcher.tsx': 'packages/ui/src/GunSwitcher/GunSwitcher.css',
+  'packages/ui/src/SavedSessionList/SavedSessionList.tsx': 'packages/ui/src/SavedSessionList/SavedSessionList.css',
+  'packages/ui/src/SafetyDialog/SafetyDialog.tsx': 'packages/ui/src/SafetyDialog/SafetyDialog.css'
 });
 
 export function lazyStyleSources() {

@@ -1,3 +1,4 @@
+import './AppShell.css';
 import type { ReactNode } from 'react';
 import { BrandHeader } from '../BrandHeader/index.ts';
 import { InfoFooter } from '../InfoFooter/index.ts';

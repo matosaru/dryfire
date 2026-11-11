@@ -1,3 +1,4 @@
+import './SafetyDialog.css';
 import type { Ref } from 'react';
 export type SafetyDialogProps = {
   ref?: Ref<HTMLDialogElement>;

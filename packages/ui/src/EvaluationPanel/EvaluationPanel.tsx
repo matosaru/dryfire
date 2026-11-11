@@ -1,3 +1,4 @@
+import './EvaluationPanel.css';
 export type Evaluation={verified:number;accuracy:string;falsePositive:string;actual:string[];predicted:string[];matrix:Record<string,Record<string,number>>};
 export function EvaluationPanel({value}:{value?:Evaluation}){return <div className="evaluation-panel" aria-live="polite">
 <h3>Retained recognition checks · verified events only</h3>

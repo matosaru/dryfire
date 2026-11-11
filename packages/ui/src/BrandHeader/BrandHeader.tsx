@@ -1,3 +1,4 @@
+import './BrandHeader.css';
 import type { MouseEvent, ReactNode } from 'react';
 
 export type BrandHeaderProps = {

@@ -1,3 +1,4 @@
+import './SafetyDisclosure.css';
 export type SafetyDisclosureProps = { confirmed?: boolean; onChange?: (confirmed: boolean) => void };
 
 export function SafetyDisclosure({ confirmed = false, onChange }: SafetyDisclosureProps) {

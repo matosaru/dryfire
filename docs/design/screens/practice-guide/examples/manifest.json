@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "1b1350cb90ef1c447636b28da3aff6462b84900b",
+  "sourceCommit": "ac8f926c1f1c681423c327dd9ac8ba17a902b557",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
@@ -76,7 +76,7 @@
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
     "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
-    "tools/style-sources.mjs": "aa9b6bf88fe5dae08ff328a47d2dbc491fa836bb08a7005677c6ed509efb60cc",
+    "tools/style-sources.mjs": "afb53ebb0b32cf7c8f46d921029ac47547e85b5af04086e82085504b4139e2ec",
     "vite.config.js": "7d100c0b7e5c8c43ff94a31a2729aa754083b7c873fbad0449b54cf13e86cec1",
     "tools/minify-html.mjs": "74d15e28f128e2ca19305ecea8a014b91d4a4fa4df0611880e4cb57afdb76f01",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "46bae0c1c54ac3d8c3bff034e0b303f35be0d10d986a00cdf3dcad5b4cc48ba5",
+      "sha256": "48cbb002f4d0d216b5f36ef32aa37b30732c0b103182c9b6e6c742f79ef77943",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "31ff6f8babe9716f7b02f1259c88921c2cd13a65c4b1ff0e1e211445b37e47fb",
+      "sha256": "735a8f977a68d5d9f113ca5ab8d5f09014c4e3e352cbafcc6a7914c35d2d4f9e",
       "width": 358,
       "height": 1004
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "5be9945d2029b9c7c9fd89326b2cd35d1da901497c960b61a4cd0d2d9f5386aa",
+      "sha256": "cebbf06e29ba8a68c23b46f91d50a30750e43e3231474c6cfd8d7283c82777e8",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "13cc997d40b032242ebe10bcc80bb5b3a77947861adecdc984b210db345b927b",
+      "sha256": "4c8ff1b27ed41f7b585a835abf7a96157dc0a5fcd77442f071f325b28daa229e",
       "width": 358,
       "height": 750
     },
