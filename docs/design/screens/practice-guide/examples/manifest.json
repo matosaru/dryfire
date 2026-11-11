@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "38f0af0348bc4cf7515bdc82415e84b52cf4b799",
+  "sourceCommit": "f7a7bed7fd660a1b3b2de0994a14ac8daa247e6d",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
@@ -76,7 +76,7 @@
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
     "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
-    "tools/style-sources.mjs": "59824e7c84a3ddf9d4bcfb1a9eafbe8b78c4e5296a955b6df5812487d8d3012c",
+    "tools/style-sources.mjs": "13a0a5bf907e59fa337923940c562379bdd733d1c94e9d0f88754e5217f7d56d",
     "vite.config.js": "7d100c0b7e5c8c43ff94a31a2729aa754083b7c873fbad0449b54cf13e86cec1",
     "tools/minify-html.mjs": "74d15e28f128e2ca19305ecea8a014b91d4a4fa4df0611880e4cb57afdb76f01",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
@@ -119,9 +119,9 @@
     "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
-    "packages/ui/src/RepetitionResult/RepetitionResult.tsx": "e5d3b13a8558e72f711c483de9f6021ca10647af4b28d78189041276ad94fc8c",
+    "packages/ui/src/RepetitionResult/RepetitionResult.tsx": "bf76bba81ac47be47f54de9613e0f81e49bce090f02760e55aefd3feb77e8233",
     "packages/ui/src/RepetitionResult/index.ts": "3ce259aabc5f6c35a147c068e686bfa5cf4719b7a382b4ce24fd51065dd43f5d",
-    "packages/ui/src/PracticeRun/PracticeRun.tsx": "bd15bdff3ae555a157c3b18fb87196a7e0be9cacbae493c6a41d57f2b6a9ee03",
+    "packages/ui/src/PracticeRun/PracticeRun.tsx": "0b6bc0f2366196cf90f5cddbd5bcd70b2c4361c7fc10c16a73dc940aa9908f09",
     "packages/ui/src/PracticeRun/index.ts": "f55f10e07db39a44c21d9938ddc251ceba7835ffcdc4032d160682187cdde8d4",
     "packages/ui/src/PracticeReview/PracticeReview.tsx": "f5dc349ba5782803f39b32e3792e0267b7d61205b668ef811368371a3621ddee",
     "packages/ui/src/PracticeReview/index.ts": "9c5505f720fbbb76719cc0e7d124cd40794a5126977c636dc3c795c5bebcd904",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "a67def5a8c6d12338ef525b7cc0c5d963a53b299937305302e6a5397912c4ce3",
+      "sha256": "5b2a0db20f2fefa7d0fc4d803e8d7caefbdfd982bdabbab8afc527cad76d5fb3",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "d09c5495c87c73f43022c76c51dbad1b7d928787c7e5566fcd458274d78eafca",
+      "sha256": "c2459d3d9310a6128a9f06b8125eb4cf6205b91f20f2953017fecca95f9943b4",
       "width": 358,
       "height": 1004
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "cebbf06e29ba8a68c23b46f91d50a30750e43e3231474c6cfd8d7283c82777e8",
+      "sha256": "84f2f03d8e8205eeed74ea472255268deca7118b98fc47cd4cb26b11652cc986",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "d192870c9e2ccb72a0be12842f694596e71541f36d7042694dbf6010fe5faa04",
+      "sha256": "4659c779a5276f69cb2d050c5ac8b57966773b7f33c78061b96293cffaa7c45d",
       "width": 358,
       "height": 750
     },

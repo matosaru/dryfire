@@ -39,7 +39,7 @@ if (!criticalStyle || cssAssets.find(({ path }) => `/${path.replaceAll('\\', '/'
   throw new Error('Private progress styles must not block application startup.');
 }
 const criticalCss = cssAssets.find(({ path }) => `/${path.replaceAll('\\', '/')}` === criticalStyle)?.css ?? '';
-for (const marker of ['.about-card', '.preset-card', '.class-card', '.history-list', '.section-head', '.preference-toggle', '.gun-context']) {
+for (const marker of ['.about-card', '.preset-card', '.class-card', '.history-list', '.section-head', '.preference-toggle', '.gun-context', '.practice-stop', '.session-result-card>summary']) {
   if (!criticalCss.includes(marker)) throw new Error(`Startup component styles are missing from the critical stylesheet: ${marker}`);
   if (cssAssets.some(({ path, css }) => `/${path.replaceAll('\\', '/')}` !== criticalStyle && css.includes(marker))) {
     throw new Error(`Startup component styles were emitted more than once: ${marker}`);

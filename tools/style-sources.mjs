@@ -19,8 +19,14 @@ export const startupStyleOwners = Object.freeze({
   'packages/ui/src/InfoFooter/InfoFooter.tsx': 'packages/ui/src/InfoFooter/InfoFooter.css',
   'packages/ui/src/NumberInput/NumberInput.tsx': 'packages/ui/src/NumberInput/NumberInput.css',
   'packages/ui/src/PracticeReview/PracticeReview.tsx': 'packages/ui/src/PracticeReview/PracticeReview.css',
-  'packages/ui/src/PracticeRun/PracticeRun.tsx': 'packages/ui/src/PracticeRun/PracticeRun.css',
-  'packages/ui/src/RepetitionResult/RepetitionResult.tsx': 'packages/ui/src/RepetitionResult/RepetitionResult.css',
+  'packages/ui/src/PracticeRun/PracticeRun.tsx': Object.freeze([
+    'packages/ui/src/PracticeRun/PracticeRun.css',
+    'packages/ui/src/PracticeRun/PracticeRun.meter.css'
+  ]),
+  'packages/ui/src/RepetitionResult/RepetitionResult.tsx': Object.freeze([
+    'packages/ui/src/RepetitionResult/RepetitionResult.css',
+    'packages/ui/src/RepetitionResult/RepetitionResult.details.css'
+  ]),
   'packages/ui/src/AppShell/AppShell.tsx': 'packages/ui/src/AppShell/AppShell.css',
   'packages/ui/src/BrandHeader/BrandHeader.tsx': 'packages/ui/src/BrandHeader/BrandHeader.css',
   'packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx': 'packages/ui/src/SafetyDisclosure/SafetyDisclosure.css',

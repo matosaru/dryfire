@@ -7,7 +7,7 @@ const VIRTUAL_PREFIX = '\0dryfire-startup-css-owner:';
  * lazy JS chunks from emitting a second copy of CSS required by native markup. */
 export function startupCssOwnerPlugin(root = process.cwd()) {
   const owners = new Map(Object.entries(startupStyleOwners).map(([owner, css]) => [
-    resolve(root, owner), resolve(root, css)
+    resolve(root, owner), new Set((Array.isArray(css) ? css : [css]).map(path => resolve(root, path)))
   ]));
   return {
     name: 'dryfire-startup-css-owner',
@@ -18,8 +18,8 @@ export function startupCssOwnerPlugin(root = process.cwd()) {
       const owner = resolve(cleanImporter), expected = owners.get(owner);
       if (!expected) return null;
       const requested = resolve(dirname(owner), cleanSource);
-      return requested === expected
-        ? `${VIRTUAL_PREFIX}${relative(root, expected)}.js`
+      return expected.has(requested)
+        ? `${VIRTUAL_PREFIX}${relative(root, requested)}.js`
         : null;
     },
     load(id) {

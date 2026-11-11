@@ -1,6 +1,6 @@
 # Component-library and CSS-ownership refactor plan
 
-Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. CL4 component CSS ownership is in progress. Earlier accepted increments and CI evidence are recorded below and in the implementation history. The 0.8.8 candidate adds the next five direct owners and fixes a Settings appearance selector that could remain stale during asynchronous preference handoff. Local public and preview browser suites pass; exact-commit GitHub CI is pending. No visual tolerance or performance threshold changed. Each separately accepted refactor increment bumps the app patch version. Product behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
+Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. CL4 component CSS ownership is in progress. The 0.8.8 candidate is accepted by exact `b` CI [43092852578](https://github.com/matosaru/dryfire/actions/runs/43092852578). Continue the refactor on `b` without intermediate version bumps; this entire component-library refactor is one feature/versioning unit. Bump once after all phases and acceptance gates are complete, then rerun the exact-candidate checks. Promotion to `main` requires the user's explicit approval. Product behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
 
 ## Goal
 
@@ -14,7 +14,7 @@ Turn the existing `@dryfire/ui` package into a clearly layered internal componen
 | CL1 Architecture | Complete | Approved component and CSS ownership specification. |
 | CL2 Safety net | Complete | 182 Jest suites / 1,192 tests; public 105 and preview 82 Chromium tests pass (5 and 3 intentional skips); visual coverage records one canonical mobile Chromium capture per page type. |
 | CL3 Proof slice | Complete | `ProgressContent` imports its owned CSS; lazy Settings fallback keeps exact handoff pixels. Both editions pass optimized builds, artifact verification, actual startup-payload checks, and ten-pair Chromium/WebKit comparisons. |
-| CL4 Migration | In progress; prior owners accepted through 0.8.7; five feature owners and Settings selector fix at 0.8.8 candidate | Local public/preview browser suites pass on 0.8.8. Exact-commit GitHub validation, screenshots and four performance jobs remain acceptance gates. Current candidate gives direct ownership to CustomDrillEditor, DrillSetup, SequenceRun, SequenceReview and CalibrationCatalog through the single startup copy. Two aggregate UI styles will remain after this slice. |
+| CL4 Migration | In progress; 25 component owners accepted at 0.8.8; multi-stylesheet resolver candidate in progress | Exact run [43092852578](https://github.com/matosaru/dryfire/actions/runs/43092852578) passed all jobs. Current local slice models the second existing stylesheet fragment owned by PracticeRun and RepetitionResult, preserving the aggregate stylesheet as the sole emitted copy. |
 | CL5–CL11 | Not started | Continue shared product, feature/page, startup cleanup, review, acceptance and delivery after bounded migration slices pass. |
 
 ## Non-negotiable CSS contract
@@ -57,7 +57,7 @@ Physical directory moves are optional. Package exports and dependency rules defi
 | CL7 Startup styles | Initial shell uses component-owned critical styles without flash or delay | Review startup/performance evidence |
 | CL8 Cleanup | Aggregate imports, duplicate selectors and proven-unused compatibility code removed | Inspect final ownership/cleanup map |
 | CL9–CL10 Review/acceptance | Independent review and complete exact-candidate test gate | Decide whether `b` is ready to publish |
-| CL11 Delivery | Push `b`, observe CI, promote only through the accepted release workflow | Live deployment remains separately observed |
+| CL11 Delivery | Bump version once after full feature acceptance; push the release candidate to `b`, observe exact CI, then await explicit user approval before PR merge to `main` | Live deployment remains separately observed |
 
 ## Plan for agents
 
@@ -108,12 +108,12 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 - No duplicate component implementation or unused selector remains.
 - Public/preview functionality, saved data, minification, offline behavior, canonical visuals and original performance limits pass on the exact `b` candidate.
 
-## Latest candidate evidence (2026-11-11, 0.8.8; exact branch CI pending)
+## Latest accepted candidate evidence (2026-11-11, 0.8.8)
 
 - Unit/runtime: 182 suites, 1,192 tests; TypeScript, component/runtime lint, coverage ratchet, docs, architecture and visual-coverage checks pass.
 - Visual: complete public Chromium/WebKit suite: 175 passed / 38 intentionally skipped; complete preview suite: 157 passed / 6 intentionally skipped. Both Settings handoff captures pass after the appearance-control rerender fix.
 - Payload: public 50,093 gzip JS / 12,587 gzip CSS; preview 50,462 gzip JS / 12,587 gzip CSS. Both remain below unchanged ceilings; no duplicate `DrillCard` or `InformationCard` CSS chunk is emitted.
-- Performance: the prior accepted 0.8.7 exact-commit CI comparison passed all four edition/browser performance jobs. The new 0.8.8 candidate still needs exact-commit CI timing evidence.
+- Performance: exact `b` run [43092852578](https://github.com/matosaru/dryfire/actions/runs/43092852578) passed all four pinned performance comparisons, both screenshot editions and validation.
 - The first CL4 `InformationCard` slice is accepted; the rest of CL4 and CL5–CL11 remain. The overall component-library migration is not complete.
 - Visual: `visual:review` retains 26 canonical mobile page cases. About captures and source fingerprints are refreshed for 0.8.8.
 
@@ -142,6 +142,10 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 - The full browser suites and all four pinned timing comparisons pass on the final candidate, including the Settings preference-race fix. The focused SEO test step and every job in GitHub run [42910052051](https://github.com/matosaru/dryfire/actions/runs/42910052051) pass. Commit [`de51780`](https://github.com/matosaru/dryfire/commit/de51780c6ea2332b6cf51ac381ff0de08ad71ee3) is pushed to `b`; Production on `main` remains unchanged until an approved promotion.
 - Final artifact budgets after the Settings fix: public 50,097 gzip JS / 12,587 gzip CSS; preview 50,462 gzip JS / 12,587 gzip CSS. Both remain below their unchanged ceilings.
 
-### Settings synchronization and feature CSS ownership candidate (0.8.8)
+### Settings synchronization and feature CSS ownership accepted (0.8.8)
 
-Continued CL4 with direct CSS ownership for CustomDrillEditor, DrillSetup, SequenceRun, SequenceReview and CalibrationCatalog. Fixed the Appearance selector rerender at asynchronous preference handoff and covered selected value plus exact pixels in Chromium/WebKit. The version-derived About screens and source fingerprints were regenerated. Public and preview complete local visual suites pass (175/38 and 157/6 passed/intentional skips); exact branch CI and pinned performance gates remain pending before acceptance.
+Continued CL4 with direct CSS ownership for CustomDrillEditor, DrillSetup, SequenceRun, SequenceReview and CalibrationCatalog. Fixed the Appearance selector rerender at asynchronous preference handoff and covered selected value plus exact pixels in Chromium/WebKit. Exact `b` run [43092852578](https://github.com/matosaru/dryfire/actions/runs/43092852578) passed validation, both screenshot editions and all four performance jobs. The component-library refactor remains in progress; no `main` promotion has occurred.
+
+### Current continuation at 0.8.8 (in progress)
+
+The next bounded CSS ownership task supports multiple direct stylesheet imports for one component and records those fragments in the generated component map. PracticeRun and RepetitionResult own their additional existing files; CSS declarations and cascade order remain unchanged. Continue commits on `b` at version 0.8.8 until the full component-library feature is finished; perform one version bump only at final release acceptance.

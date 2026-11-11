@@ -42,7 +42,7 @@ Model guidance: use a fast model for routine change screening, and escalate to a
 
 ## Refactor versioning
 
-Every accepted refactor increment bumps the application patch version in the root `package.json` and lockfile. About is the user-facing build-derived version display; keep that metadata as the single source rather than maintaining a second label. A version change updates About pixels, so refresh only the affected visual captures and their source manifests, inspect the rendered result, and include those checks in the normal exact-candidate acceptance run.
+Treat one approved feature as one versioning unit, even when it takes several commits or bounded refactor slices. Keep the current version while implementation commits go to `b`. Only after the full feature passes its acceptance gates on `b`, make one release-version bump in `package.json` and the lockfile, refresh the build-derived About evidence, and rerun the complete exact-candidate gates. Promote the green release to `main` through the protected PR process only after the user explicitly approves that feature's promotion. About remains the single build-derived version source; never maintain a second label.
 
 Use a frontier/high-reasoning model for security boundaries, destructive storage changes, audio races, nondeterministic cross-browser failures or architectural decisions with costly rollback. A mechanical code review can be cheap; a security or migration review cannot.
 

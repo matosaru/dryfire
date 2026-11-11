@@ -1,6 +1,6 @@
 # Branching and release strategy
 
-Revision 4.0 · current Free-product workflow · clarified 2026-11-11. The active Git branches are `b` for pre-production and `main` for production. Cloudflare setup remains owner-managed.
+Revision 4.1 · current Free-product workflow · clarified 2026-11-11. The active Git branches are `b` for pre-production and `main` for production. Cloudflare setup remains owner-managed.
 
 | Branch | Current role | Ownership |
 | --- | --- | --- |
@@ -11,10 +11,11 @@ There is no separate Git branch for the full preview. The explicitly selected `p
 
 ## Daily changes and releases
 
-1. Work on `b` for approved Free-product changes and fixes; feature branches are not required.
-2. Complete the required unit/coverage, integration, both-edition build/artifact, pinned browser/visual and unchanged performance acceptance before publishing a candidate.
-3. Push accepted changes to `b`. The owner promotes tested `b` changes to `main` through the protected release process. Do not claim an owner merge or deployment without observing it.
-4. Keep changes reversible, preserve user data, and avoid force-pushing or rewriting shared history. Cloudflare configuration remains owner-managed.
+1. Work on `b` for approved Free-product changes and fixes; feature branches are not required. All commits for an unfinished feature stay on `b`; keep `main` unchanged.
+2. Complete the required unit/coverage, integration, both-edition build/artifact, pinned browser/visual and unchanged performance acceptance for the full feature on `b`.
+3. Bump the application version exactly once per completed feature, after its acceptance passes on `b`; refresh version-derived About evidence and rerun full acceptance on that release candidate. Intermediate commits and refactor slices do not bump the version.
+4. Push the accepted release candidate to `b`. Merge `b` to `main` through the protected PR process only after the user explicitly approves that feature's promotion. Do not merge or deploy without observing the required approval and successful checks.
+5. Keep changes reversible, preserve user data, and avoid force-pushing or rewriting shared history. Cloudflare configuration remains owner-managed.
 
 ## Commercial work after Free completion
 

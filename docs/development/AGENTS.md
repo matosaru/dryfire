@@ -55,7 +55,7 @@ Offline-first Vite PWA, incrementally migrating from vanilla JavaScript to typed
 - Do not commit `node_modules/`, `dist/` or secrets.
 
 ## Delivery and deployments
-- Follow [branching-strategy.md](../project/branching-strategy.md): commit Free changes on `b` and promote accepted changes to `main` through a checked PR. Full-preview builds are selected explicitly and are not assigned to a Git branch. Preserve the committed build profile, Wrangler routing and all history/data. Cloudflare setup is owner-run; prepare/test code only. Record actual push/CI/PR/deployment separately.
+- Follow [branching-strategy.md](../project/branching-strategy.md): keep all in-progress feature commits on `b`; do not modify `main` during implementation. Bump the app version once per completed feature, as a release step after its acceptance gates pass on `b`; rerun those gates on the versioned candidate. Promote through a checked PR only after the user explicitly approves that feature's merge. Full-preview builds are selected explicitly and are not assigned to a Git branch. Preserve the committed build profile, Wrangler routing and all history/data. Cloudflare setup is owner-run; prepare/test code only. Record actual push/CI/PR/deployment separately.
 - CI should run `typecheck`, `lint:components`, `verify:architecture`, `docs:check`, smoke tests, Jest, production build, and `verify:dist`, plus pinned both-edition browser comparisons.
 - Cloudflare project: `dryfire`; `wrangler.jsonc` controls static asset deployment from `./dist`.
 - Never claim a GitHub push, Cloudflare deployment, or real-device verification succeeded without observing success.

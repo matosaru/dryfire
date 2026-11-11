@@ -5,7 +5,7 @@ description: Validate an exact Dry Fire With Ease b-branch candidate before comm
 
 # Dry Fire candidate acceptance
 
-Use this workflow when application, documentation, design evidence, build configuration or tests are ready to be committed or pushed on `b`.
+Use focused checks while developing intermediate commits on `b`. Use this complete workflow when a feature is finished and its one release-version bump is ready, or before asking the user to approve promotion to `main`.
 
 ## Preconditions
 
@@ -52,8 +52,8 @@ Run the unchanged browser performance comparison described in `docs/development/
 
 1. Update implementation history, the active plan and `docs/project/react-refactor/context.md` with observed results and remaining owner/device/deployment checks.
 2. Run `git diff --check` and inspect `git status --short`.
-3. Commit the exact accepted candidate to `b`; do not push application changes directly to `main`.
-4. Push `b` only after local acceptance. Observe branch CI. Cancelled, pending or stale runs are not green.
-5. Promote `b` to `main` only through the checked pull-request workflow required by root `AGENTS.md`.
+3. Keep the existing version during intermediate commits. For the completed feature, make one version bump after acceptance, refresh About evidence, then rerun this complete workflow on that exact versioned candidate.
+4. Commit/push feature work only to `b`; observe branch CI. Cancelled, pending or stale runs are not green.
+5. Request promotion only after the exact release candidate on `b` is green. Merge `b` to `main` through the checked PR workflow only after the user explicitly approves this feature's promotion.
 
 Never claim Cloudflare deployment, physical iPhone audio acceptance or classifier significance from repository tests alone.

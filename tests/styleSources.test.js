@@ -55,12 +55,34 @@ test('component-owned startup CSS is resolved through the single critical styles
     const importPath = `./${name}.css`;
     const id = startupCssOwnerPlugin().resolveId(importPath, ownerPath);
     expect(readFileSync(ownerPath, 'utf8')).toContain(`import '${importPath}';`);
-    expect(startupStyleOwners[`packages/ui/src/${name}/${name}.tsx`]).toBe(cssPath);
+    const ownedStyles = startupStyleOwners[`packages/ui/src/${name}/${name}.tsx`];
+    expect(Array.isArray(ownedStyles) ? ownedStyles : [ownedStyles]).toContain(cssPath);
     expect(styleSources()).toContain(cssPath);
     expect(startupCssOwnerPlugin().load(id)).toBe('export {};\n');
     expect(startupCssOwnerPlugin().resolveId(`${importPath}?direct`, `${ownerPath}?used`)).toBe(id);
     expect(startupCssOwnerPlugin().resolveId('./Other.css', ownerPath)).toBeNull();
     expect(readFileSync(resolve(process.cwd(), cssPath), 'utf8')).toContain(marker.startsWith('#') ? marker : `.${marker}`);
     expect(startupCssOwnerPlugin().resolveId(`../${cssPath}`, resolve(process.cwd(), 'src/styles.css'))).toBeNull();
+  }
+});
+
+test('component owners may resolve multiple colocated files already present in startup CSS',()=>{
+  for(const [name,paths] of [
+    ['PracticeRun',['PracticeRun.css','PracticeRun.meter.css']],
+    ['RepetitionResult',['RepetitionResult.css','RepetitionResult.details.css']]
+  ]){
+    const ownerPath=resolve(process.cwd(),`packages/ui/src/${name}/${name}.tsx`);
+    const expected=paths.map(path=>`packages/ui/src/${name}/${path}`);
+    expect(startupStyleOwners[`packages/ui/src/${name}/${name}.tsx`]).toEqual(expected);
+    expect(readFileSync(ownerPath,'utf8')).toContain(`import './${paths[0]}';`);
+    expect(readFileSync(ownerPath,'utf8')).toContain(`import './${paths[1]}';`);
+    for(const path of expected)expect(readFileSync(resolve(process.cwd(),path),'utf8').length).toBeGreaterThan(0);
+    for(const path of expected){
+      const importPath=`./${path.split('/').at(-1)}`;
+      const id=startupCssOwnerPlugin().resolveId(importPath,ownerPath);
+      expect(id).toContain(path);
+      expect(startupCssOwnerPlugin().load(id)).toBe('export {};\n');
+      expect(styleSources()).toContain(path);
+    }
   }
 });

@@ -18,10 +18,17 @@ for (const base of folders) {
   for (const entry of readdirSync(resolve(root, base), { withFileTypes: true }).filter(e => e.isDirectory())) {
     const path = `${base}/${entry.name}`, name = entry.name;
     components++;
-    packageRows.push({name,source:`${path}/${name}.tsx`,css:`${path}/${name}.css`,tests:`${path}/${name}.test.tsx`,entry:`${path}/index.ts`});
+    const source = read(`${path}/${name}.tsx`);
+    const row={name,source:`${path}/${name}.tsx`,css:`${path}/${name}.css`,tests:`${path}/${name}.test.tsx`,entry:`${path}/index.ts`};
+    const directCss=[...source.matchAll(/\bimport\s+['"]([^'"]+\.css)['"]/g)].map(match=>{
+      const resolved=resolve(root,path,match[1]);
+      return resolved.startsWith(resolve(root,'packages/ui/src')+'/') ? resolved.slice(root.length+1) : null;
+    }).filter(Boolean);
+    const extraCss=directCss.filter(css=>css!==row.css);
+    if(extraCss.length)row.cssFragments=extraCss;
+    packageRows.push(row);
     for (const suffix of ['.tsx', '.css', '.test.tsx']) require(existsSync(resolve(root, `${path}/${name}${suffix}`)), `${path}: missing ${name}${suffix}`);
     require(existsSync(resolve(root, `${path}/index.ts`)), `${path}: missing public entry`);
-    const source = read(`${path}/${name}.tsx`);
     if (base.startsWith('packages/ui')) {
       require(!imports(source).some(s => s.startsWith('@dryfire/web') || s.startsWith('.') && !resolve(root, path, s).startsWith(resolve(root, 'packages/ui/src') + '/')), `${path}: shared UI imports app/private implementation`);
       require(!/\b(?:getUserMedia|indexedDB|localStorage)\b/.test(source), `${path}: shared UI acquires platform services`);
