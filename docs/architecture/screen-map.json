@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-11-10",
+  "reviewedOn": "2026-11-11",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://easydryfire.com",
   "publicPaths": [
@@ -870,7 +870,7 @@
     "packages/ui/src/InformationCard/InformationCard.css": "5c866ea8582066954f298ce2e43ee6f474d85b11539e516cc615b7da27b97f0d",
     "packages/ui/src/InformationCard/index.ts": "542b7a435d68941a02393517e3da92be644d7c11f006ae8f373b8a9fda64c447",
     "packages/ui/src/InformationCard/InformationCard.tsx": "b7a72a6cbbb4ea4e77e62c1934815443a8bf84ed93e4ca48f123330e9233f87f",
-    "tools/style-sources.mjs": "173e9ab12caa273e617ac4814d2fb7366bc48ec278469ffd6e911e1f42de8d98",
+    "tools/style-sources.mjs": "702b13559fe3e8675943ea65128525748e1833f73dbd839119d745577782ed35",
     "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "b041999974ca3986bbf24f40f8bfe40a124c66b396ea47cf5aa3d2a554bbe40d",
     "apps/web/src/app/routeContext.ts": "8211be0b05a2947d3ea5d44bad6e57a0af63e32c426d744ba4de0d3e38c91f59",
     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
@@ -935,7 +935,7 @@
     "apps/web/src/app/settingsPage.tsx": "100967673fda84acff6dbeab4e4abe057e7e1af919cb4e6c02c60d103a670aff",
     "apps/web/src/pages/LearnPage/LearnPage.tsx": "af6b53d605edd552f7de55da63707c5bfd9d91d7477b7d1eddceeede6964f4ab",
     "apps/web/src/pages/LearnPage/LearnPage.css": "1be7874e8228e2159550a7d8f41ef0c0e6cd6bfe73b481eeffc8afdd3cb8da2d",
-    "packages/ui/src/SoundCard/SoundCard.tsx": "dd0f58c0245ea0148c5afc172d5f23d79eea2274521493bc4819cb5fd06014d2",
+    "packages/ui/src/SoundCard/SoundCard.tsx": "f4782597810d1f27c72d15c8ba279f5f5d47edd8a1990522145155f6b2fb7658",
     "packages/ui/src/SoundCard/SoundCard.css": "de9362726c2df6a620ee0f4e14cd7d8a1fac0c35bdbf000103ccf954c3358856",
     "apps/web/src/app/renderLearnPage.tsx": "da03c7af80d3dcb3a8c7cbab429c322bed539a71b9d7ed751ce30be043cd649f",
     "apps/web/src/app/learnPage.tsx": "81bc88568778051feabcf915320601736eb8d1fd0a3f44b40430218067326410",

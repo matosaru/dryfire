@@ -1,6 +1,6 @@
 {
-  "sourceCommit": "86a281792de2563e5ca49e2787d5e311c62aaff5",
-  "renderer": "local Chromium 145.0.7632.6",
+  "sourceCommit": "64f85ac0df6f4f6e7581129878688eae927d8229",
+  "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
@@ -76,7 +76,7 @@
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
     "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
-    "tools/style-sources.mjs": "173e9ab12caa273e617ac4814d2fb7366bc48ec278469ffd6e911e1f42de8d98",
+    "tools/style-sources.mjs": "702b13559fe3e8675943ea65128525748e1833f73dbd839119d745577782ed35",
     "vite.config.js": "7d100c0b7e5c8c43ff94a31a2729aa754083b7c873fbad0449b54cf13e86cec1",
     "tools/minify-html.mjs": "74d15e28f128e2ca19305ecea8a014b91d4a4fa4df0611880e4cb57afdb76f01",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "6dd9bfd4e6326f879e68d765972522949220a53cf1b0030d68decaa0ebab5af1",
+      "sha256": "0c02b1351f3e0a7d205e0cea73e21508dca63ee147a8359c28696c51fe681e76",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "d09c5495c87c73f43022c76c51dbad1b7d928787c7e5566fcd458274d78eafca",
+      "sha256": "68fc9bf245f03248d53bef33b778bea98d5f442091494b507e5e73ab82922ace",
       "width": 358,
       "height": 1004
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "2096990b9a0e967de032825d3765b0676f6d9eafa7e8e826e71a6b19359f4e46",
+      "sha256": "cebbf06e29ba8a68c23b46f91d50a30750e43e3231474c6cfd8d7283c82777e8",
       "width": 358,
       "height": 750
     },
@@ -190,7 +190,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-rack-trigger.gif",
-      "sha256": "991141876051cac840d6875d7bcdb9f4c9c90ef2e7013c5d88e4a38e6ae8153f",
+      "sha256": "11792e3cd4f828543c11d7be97bf931e818aa1d4dad9669d14739e623c40b3b4",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "46fc724b85f861be4a16f0a18aecb4c78f99ecbee6798f153dfff102b637b516",
+      "sha256": "d192870c9e2ccb72a0be12842f694596e71541f36d7042694dbf6010fe5faa04",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "482c3b1a0cac45f1d3f5069ac34af709b0f8ac78df556ca8bc4cc9398c9fe1d1",
+      "sha256": "4c8ff1b27ed41f7b585a835abf7a96157dc0a5fcd77442f071f325b28daa229e",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "161c9a98fbda347868dc72badd99907c3a28aeedf921edab3873a48fc14004a7",
+      "sha256": "f620d2c1808486f11c62f4de557c4ec3cf2c293f7ec01f13d548002fda299af1",
       "width": 358,
       "height": 750
     }

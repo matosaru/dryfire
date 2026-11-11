@@ -144,3 +144,5 @@ A change is done only when:
 - the exact accepted candidate is committed to `b` and observed CI is green before promotion.
 
 Keep [react-refactor/context.md](docs/project/react-refactor/context.md) concise and current after each completed increment. Record deployment and physical-device checks separately from source acceptance.
+
+For every accepted refactor increment, bump the application patch version in `package.json` and `package-lock.json`. About displays the build-derived package version as the single user-facing source; do not add a hand-maintained duplicate. Refresh the About visual evidence and source manifests when this visible version changes, then run the exact-candidate visual and full acceptance gates.

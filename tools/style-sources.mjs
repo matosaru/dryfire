@@ -10,7 +10,8 @@ export const lazyStyleOwners = Object.freeze({
  * emitted source while native prerendered content still needs immediate paint. */
 export const startupStyleOwners = Object.freeze({
   'packages/ui/src/InformationCard/InformationCard.tsx': 'packages/ui/src/InformationCard/InformationCard.css',
-  'packages/ui/src/DrillCard/DrillCard.tsx': 'packages/ui/src/DrillCard/DrillCard.css'
+  'packages/ui/src/DrillCard/DrillCard.tsx': 'packages/ui/src/DrillCard/DrillCard.css',
+  'packages/ui/src/SoundCard/SoundCard.tsx': 'packages/ui/src/SoundCard/SoundCard.css'
 });
 
 export function lazyStyleSources() {

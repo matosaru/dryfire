@@ -40,6 +40,10 @@ For every SEO-affecting implementation, include focused unit tests for the chang
 
 Model guidance: use a fast model for routine change screening, and escalate to a high-reasoning SEO/legal review when routes, domain consolidation, redirects, privacy, structured claims or indexing policy change. The repository documents this role and CI checks; the Codex coordinator must assign/run the specialist review because GitHub Actions does not have an authenticated model agent configured.
 
+## Refactor versioning
+
+Every accepted refactor increment bumps the application patch version in the root `package.json` and lockfile. About is the user-facing build-derived version display; keep that metadata as the single source rather than maintaining a second label. A version change updates About pixels, so refresh only the affected visual captures and their source manifests, inspect the rendered result, and include those checks in the normal exact-candidate acceptance run.
+
 Use a frontier/high-reasoning model for security boundaries, destructive storage changes, audio races, nondeterministic cross-browser failures or architectural decisions with costly rollback. A mechanical code review can be cheap; a security or migration review cannot.
 
 Validation and auto-fixing form a bounded loop: classify failure, apply one minimal fix, run focused proof, then rerun the complete affected gate. Set a retry limit before starting. Escalate repeated or nondeterministic failures rather than allowing agents to weaken thresholds, rewrite baselines or keep patching symptoms.
