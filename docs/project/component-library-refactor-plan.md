@@ -1,6 +1,6 @@
 # Component-library and CSS-ownership refactor plan
 
-Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. The `InformationCard` and `DrillCard` CL4 slices are accepted. The `SoundCard` slice now passes local unit, visual, payload, artifact and performance gates at app version 0.8.2; push it to `b` and observe exact-commit CI before recording branch acceptance. Every separately accepted refactor increment bumps the app patch version. Visual design, behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
+Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. The `InformationCard`, `DrillCard` and `SoundCard` CL4 slices are accepted; SoundCard is app version 0.8.2 and exact-commit CI passed in run [42968151416](https://github.com/matosaru/dryfire/actions/runs/42968151416). Every separately accepted refactor increment bumps the app patch version. Visual design, behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
 
 ## Goal
 
@@ -14,7 +14,7 @@ Turn the existing `@dryfire/ui` package into a clearly layered internal componen
 | CL1 Architecture | Complete | Approved component and CSS ownership specification. |
 | CL2 Safety net | Complete | 182 Jest suites / 1,189 tests; public 105 and preview 82 Chromium tests pass (5 and 3 intentional skips); visual coverage records one canonical mobile Chromium capture per page type. |
 | CL3 Proof slice | Complete | `ProgressContent` imports its owned CSS; lazy Settings fallback keeps exact handoff pixels. Both editions pass optimized builds, artifact verification, actual startup-payload checks, and ten-pair Chromium/WebKit comparisons. |
-| CL4 Migration | In progress; InformationCard and DrillCard accepted; SoundCard locally verified | All three directly import their owned CSS; Vite routes startup owner imports through the critical-style manifest so prerendered screens keep one emitted stylesheet. SoundCard version 0.8.2 passes 1,192 unit tests, both edition visual suites, payload/artifact checks and all four pinned ten-pair timing comparisons. Push and exact-commit CI remain. Migrate further repeated primitives in separate slices. |
+| CL4 Migration | In progress; InformationCard, DrillCard and SoundCard accepted | All three directly import their owned CSS; Vite routes startup owner imports through the critical-style manifest so prerendered screens keep one emitted stylesheet. SoundCard version 0.8.2 passes 1,192 unit tests, both edition visual suites, payload/artifact checks and all four pinned ten-pair timing comparisons. Exact-commit CI run 42968151416 passed. Migrate further repeated primitives in separate slices. |
 | CL5–CL11 | Not started | Continue shared product, feature/page, startup cleanup, review, acceptance and delivery after bounded migration slices pass. |
 
 ## Non-negotiable CSS contract
