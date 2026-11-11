@@ -1,3 +1,4 @@
+import './HistoryPage.css';
 import {GunContext} from '@dryfire/ui/GunContext';
 import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';

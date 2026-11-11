@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PAGE_DEFINITIONS } from '../src/pageDefinitions.js';
+import { externalStyleOwners, lazyStyleOwners, startupStyleOwners, styleSources } from './style-sources.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = path => readFileSync(resolve(root, path), 'utf8');
 const errors = [];
@@ -22,13 +23,31 @@ for (const base of folders) {
     const row={name,source:`${path}/${name}.tsx`,css:`${path}/${name}.css`,tests:`${path}/${name}.test.tsx`,entry:`${path}/index.ts`};
     const directCss=[...source.matchAll(/\bimport\s+['"]([^'"]+\.css)['"]/g)].map(match=>{
       const resolved=resolve(root,path,match[1]);
-      return resolved.startsWith(resolve(root,'packages/ui/src')+'/') ? resolved.slice(root.length+1) : null;
+      return resolved.startsWith(root+'/') ? resolved.slice(root.length+1) : null;
     }).filter(Boolean);
+    row.cssImports=directCss;
+    row.cssDelivery=Object.hasOwn(startupStyleOwners,row.source)?'aggregate':Object.hasOwn(externalStyleOwners,row.source)?'external':Object.values(lazyStyleOwners).flat().some(css=>css===row.css)?'lazy':'none';
     const extraCss=directCss.filter(css=>css!==row.css);
     if(extraCss.length)row.cssFragments=extraCss;
     packageRows.push(row);
     for (const suffix of ['.tsx', '.css', '.test.tsx']) require(existsSync(resolve(root, `${path}/${name}${suffix}`)), `${path}: missing ${name}${suffix}`);
     require(existsSync(resolve(root, `${path}/index.ts`)), `${path}: missing public entry`);
+    if(row.cssDelivery==='aggregate') {
+      const expected=startupStyleOwners[row.source];
+      for(const owned of (Array.isArray(expected)?expected:[expected])) require(directCss.includes(owned),`${path}: missing direct import for aggregate CSS owner ${owned}`);
+      require(styleSources().includes(row.css),`${path}: aggregate CSS is not present in the preserved stylesheet`);
+    } else if(row.cssDelivery==='external') {
+      const expected=externalStyleOwners[row.source];
+      require(directCss.includes(expected),`${path}: missing direct import for external CSS owner ${expected}`);
+      require(!styleSources().includes(expected),`${path}: separately delivered CSS must not be added to the application aggregate`);
+    } else if(row.cssDelivery==='lazy') {
+      require(directCss.includes(row.css),`${path}: lazy component must directly import its own stylesheet`);
+      require(Object.values(lazyStyleOwners).flat().includes(row.css),`${path}: lazy CSS source is not registered to a lazy owner`);
+    } else {
+      require(!directCss.length,`${path}: CSS imports need an explicit delivery owner`);
+      const css=read(row.css).replace(/\/\*[\s\S]*?\*\//g,'').trim();
+      require(!css,`${path}: active stylesheet has no declared delivery owner`);
+    }
     if (base.startsWith('packages/ui')) {
       require(!imports(source).some(s => s.startsWith('@dryfire/web') || s.startsWith('.') && !resolve(root, path, s).startsWith(resolve(root, 'packages/ui/src') + '/')), `${path}: shared UI imports app/private implementation`);
       require(!/\b(?:getUserMedia|indexedDB|localStorage)\b/.test(source), `${path}: shared UI acquires platform services`);

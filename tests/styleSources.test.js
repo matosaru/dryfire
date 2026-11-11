@@ -1,8 +1,8 @@
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
-import { styleSources, composedStyles, lazyStyleOwners, lazyStyleSources, startupStyleOwners } from '../tools/style-sources.mjs';
-import { startupCssOwnerPlugin } from '../tools/startup-css-owner.mjs';
+import { styleSources, composedStyles, externalStyleOwners, lazyStyleOwners, lazyStyleSources, startupStyleOwners } from '../tools/style-sources.mjs';
+import { componentCssOwnerPlugin } from '../tools/startup-css-owner.mjs';
 let root;
 beforeEach(() => { root = mkdtempSync(join(tmpdir(), 'dryfire-css-contract-')); mkdirSync(join(root, 'components')); });
 afterEach(() => rmSync(root, { recursive: true, force: true }));
@@ -39,13 +39,18 @@ test('the shipping stylesheet does not restore retired component selectors', () 
 
 test('private progress presentation styles load with their only runtime owner', () => {
   const path = 'packages/ui/src/ProgressContent/ProgressContent.css';
+  const deletePath = 'packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.css';
   expect(styleSources()).not.toContain(path);
-  expect(lazyStyleSources()).toEqual([path]);
+  expect(styleSources()).not.toContain(deletePath);
+  expect(lazyStyleSources()).toEqual([path, deletePath]);
   expect(lazyStyleOwners['src/optional/progressView.js']).toEqual([path]);
+  expect(lazyStyleOwners['packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.tsx']).toEqual([deletePath]);
   expect(readFileSync(resolve(process.cwd(), 'src/optional/progressView.js'), 'utf8'))
     .toContain("import '../../packages/ui/src/ProgressContent/ProgressContent.css';");
   expect(readFileSync(resolve(process.cwd(), 'packages/ui/src/ProgressContent/ProgressContent.tsx'), 'utf8'))
     .toContain("import './ProgressContent.css';");
+  expect(readFileSync(resolve(process.cwd(), 'packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.tsx'), 'utf8'))
+    .toContain("import './HistoryDeleteControl.css';");
 });
 
 test('component-owned startup CSS is resolved through the single critical stylesheet copy', () => {
@@ -53,16 +58,50 @@ test('component-owned startup CSS is resolved through the single critical styles
     const ownerPath = resolve(process.cwd(), `packages/ui/src/${name}/${name}.tsx`);
     const cssPath = `packages/ui/src/${name}/${name}.css`;
     const importPath = `./${name}.css`;
-    const id = startupCssOwnerPlugin().resolveId(importPath, ownerPath);
+    const id = componentCssOwnerPlugin().resolveId(importPath, ownerPath);
     expect(readFileSync(ownerPath, 'utf8')).toContain(`import '${importPath}';`);
     const ownedStyles = startupStyleOwners[`packages/ui/src/${name}/${name}.tsx`];
     expect(Array.isArray(ownedStyles) ? ownedStyles : [ownedStyles]).toContain(cssPath);
     expect(styleSources()).toContain(cssPath);
-    expect(startupCssOwnerPlugin().load(id)).toBe('export {};\n');
-    expect(startupCssOwnerPlugin().resolveId(`${importPath}?direct`, `${ownerPath}?used`)).toBe(id);
-    expect(startupCssOwnerPlugin().resolveId('./Other.css', ownerPath)).toBeNull();
+    expect(componentCssOwnerPlugin().load(id)).toBe('export {};\n');
+    expect(componentCssOwnerPlugin().resolveId(`${importPath}?direct`, `${ownerPath}?used`)).toBe(id);
+    expect(componentCssOwnerPlugin().resolveId('./Other.css', ownerPath)).toBeNull();
     expect(readFileSync(resolve(process.cwd(), cssPath), 'utf8')).toContain(marker.startsWith('#') ? marker : `.${marker}`);
-    expect(startupCssOwnerPlugin().resolveId(`../${cssPath}`, resolve(process.cwd(), 'src/styles.css'))).toBeNull();
+    expect(componentCssOwnerPlugin().resolveId(`../${cssPath}`, resolve(process.cwd(), 'src/styles.css'))).toBeNull();
+  }
+});
+
+test('each page composition declares its existing stylesheet without changing the startup cascade', () => {
+  const pages = ['AboutPage', 'ContactPage', 'DrillsPage', 'GunSetupPage', 'GunsPage', 'HistoryPage', 'HomePage', 'LearnPage', 'LiveListenPage', 'PracticeGuidePage', 'PracticePage', 'SequencePage', 'SettingsPage', 'SoundCheckPage'];
+  for (const name of pages) {
+    const owner = `apps/web/src/pages/${name}/${name}.tsx`;
+    const css = `apps/web/src/pages/${name}/${name}.css`;
+    const source = readFileSync(resolve(process.cwd(), owner), 'utf8');
+    expect(source).toContain(`import './${name}.css';`);
+    expect(startupStyleOwners[owner]).toBe(css);
+    expect(styleSources()).toContain(css);
+    const id = componentCssOwnerPlugin().resolveId(`./${name}.css`, resolve(process.cwd(), owner));
+    expect(componentCssOwnerPlugin().load(id)).toBe('export {};\n');
+    expect(styleSources().filter(path => path === css)).toHaveLength(1);
+  }
+});
+
+test('feature and public components declare the correct aggregate or separate CSS delivery', () => {
+  for (const [owner, css] of Object.entries(startupStyleOwners).filter(([owner]) => owner.includes('/features/') || owner.includes('/public-site/MarketingOverview/'))) {
+    const source = readFileSync(resolve(process.cwd(), owner), 'utf8');
+    const relative = `./${css.split('/').at(-1)}`;
+    expect(source).toContain(`import '${relative}';`);
+    const id = componentCssOwnerPlugin().resolveId(relative, resolve(process.cwd(), owner));
+    expect(componentCssOwnerPlugin().load(id)).toBe('export {};\n');
+    expect(styleSources().filter(path => path === css)).toHaveLength(1);
+  }
+  for (const [owner, css] of Object.entries(externalStyleOwners)) {
+    const source = readFileSync(resolve(process.cwd(), owner), 'utf8');
+    const relative = `./${css.split('/').at(-1)}`;
+    expect(source).toContain(`import '${relative}';`);
+    const id = componentCssOwnerPlugin().resolveId(relative, resolve(process.cwd(), owner));
+    expect(componentCssOwnerPlugin().load(id)).toBe('export {};\n');
+    expect(styleSources()).not.toContain(css);
   }
 });
 
@@ -79,9 +118,9 @@ test('component owners may resolve multiple colocated files already present in s
     for(const path of expected)expect(readFileSync(resolve(process.cwd(),path),'utf8').length).toBeGreaterThan(0);
     for(const path of expected){
       const importPath=`./${path.split('/').at(-1)}`;
-      const id=startupCssOwnerPlugin().resolveId(importPath,ownerPath);
+      const id=componentCssOwnerPlugin().resolveId(importPath,ownerPath);
       expect(id).toContain(path);
-      expect(startupCssOwnerPlugin().load(id)).toBe('export {};\n');
+      expect(componentCssOwnerPlugin().load(id)).toBe('export {};\n');
       expect(styleSources()).toContain(path);
     }
   }

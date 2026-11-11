@@ -1,3 +1,4 @@
+import './SoundCheckPage.css';
 import {GunContext} from '@dryfire/ui/GunContext';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import {distanceHelp,normalizeMeasurementSystem} from '../../../../../src/measurementUnits.js';

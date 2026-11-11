@@ -1,3 +1,4 @@
+import './GunSetupPage.css';
 import {useState,type FormEventHandler} from 'react';
 export type GunSetupPageProps={name?:string;type?:string;title?:string;description?:string;notice?:string;submitLabel?:string;cancelHidden?:boolean;saving?:boolean;onSubmit?:FormEventHandler<HTMLFormElement>;onCancel?:()=>void;onRestore?:()=>void};
 /** Name uses native form state; radio/hidden type share a React state owner. */

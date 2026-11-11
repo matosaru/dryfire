@@ -1,3 +1,4 @@
+import './HomePage.css';
 import {GunContext} from '@dryfire/ui/GunContext';
 export type HomePageProps={gunName?:string;contextHidden?:boolean;training?:string;events?:number;accuracy?:string;onNavigate?:(view:string)=>void};
 /** Stateless presentation; the existing feature retains gun-scoped reads and recognition readiness. */

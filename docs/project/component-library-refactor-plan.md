@@ -1,6 +1,6 @@
 # Component-library and CSS-ownership refactor plan
 
-Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. CL4 component CSS ownership is in progress. The 0.8.8 candidate is accepted by exact `b` CI [43092852578](https://github.com/matosaru/dryfire/actions/runs/43092852578). Continue the refactor on `b` without intermediate version bumps; this entire component-library refactor is one feature/versioning unit. Bump once after all phases and acceptance gates are complete, then rerun the exact-candidate checks. Promotion to `main` requires the user's explicit approval. Product behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
+Status: implementation is complete at version 0.8.9; the exact versioned candidate still needs post-bump CI and push to `b`. CL0–CL9 are complete. CL10 local acceptance passed at 0.8.8 and is being repeated after the required one-time version bump. CL11 is pending branch CI. This refactor is one feature/versioning unit. Promotion to `main` requires the user's explicit approval. Product behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
 
 ## Goal
 
@@ -14,8 +14,14 @@ Turn the existing `@dryfire/ui` package into a clearly layered internal componen
 | CL1 Architecture | Complete | Approved component and CSS ownership specification. |
 | CL2 Safety net | Complete | 182 Jest suites / 1,192 tests; public 105 and preview 82 Chromium tests pass (5 and 3 intentional skips); visual coverage records one canonical mobile Chromium capture per page type. |
 | CL3 Proof slice | Complete | `ProgressContent` imports its owned CSS; lazy Settings fallback keeps exact handoff pixels. Both editions pass optimized builds, artifact verification, actual startup-payload checks, and ten-pair Chromium/WebKit comparisons. |
-| CL4 Migration | In progress; 25 component owners accepted at 0.8.8; multi-stylesheet resolver candidate in progress | Exact run [43092852578](https://github.com/matosaru/dryfire/actions/runs/43092852578) passed all jobs. Current local slice models the second existing stylesheet fragment owned by PracticeRun and RepetitionResult, preserving the aggregate stylesheet as the sole emitted copy. |
-| CL5–CL11 | Not started | Continue shared product, feature/page, startup cleanup, review, acceptance and delivery after bounded migration slices pass. |
+| CL4 Shared UI migration | Complete | All 30 shared UI package owners are accounted for. Direct imports and multi-file ownership are verified in the generated component map. |
+| CL5 Shared product migration | Complete | Component stylesheet delivery is explicitly classified as `aggregate`, `lazy`, `external` or `none`; no duplicate component stylesheet is emitted. |
+| CL6 Feature/page migration | Complete | All 14 page compositions, five feature components, and both public-site owners directly declare their CSS dependencies. |
+| CL7 Startup styles | Complete | Kept the single ordered blocking CSS output as a compatibility entry for native first-paint templates. Components own/import their CSS in source; the resolver routes shared initial styles through that entry without duplicate rules or style flashes. |
+| CL8 Cleanup | Complete | Audited all 51 component/page packages. 45 styles are in the ordered startup entry, two are lazy, two have separate/template delivery, and two CSS files are comment-only with no active selectors. Build checks reject duplicate lazy/public stylesheet output. |
+| CL9 Review | Complete | Reviewed package isolation, CSS routes, cascade preservation, Vite/SSR loading, theme delivery, and generated ownership metadata. No behavior or design changes found. |
+| CL10 Acceptance | Local candidate passed | 182 Jest suites / 1,195 tests, smoke, SEO, typecheck, lint, coverage, architecture/docs, pinned public/preview visuals, both optimized builds and all four pinned performance comparisons passed at 0.8.8. Post-bump exact checks are running. |
+| CL11 Delivery | In progress | Version incremented once to 0.8.9. Push the exact candidate to `b`, wait for its GitHub checks, then stop before `main` promotion for the user's explicit approval. |
 
 ## Non-negotiable CSS contract
 
@@ -108,12 +114,12 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 - No duplicate component implementation or unused selector remains.
 - Public/preview functionality, saved data, minification, offline behavior, canonical visuals and original performance limits pass on the exact `b` candidate.
 
-## Latest accepted candidate evidence (2026-11-11, 0.8.8)
+## Latest accepted candidate evidence (2026-11-11, 0.8.8 baseline; one-time bump to 0.8.9 pending exact CI)
 
-- Unit/runtime: 182 suites, 1,192 tests; TypeScript, component/runtime lint, coverage ratchet, docs, architecture and visual-coverage checks pass.
+- Unit/runtime: 182 suites, 1,195 tests; TypeScript, component/runtime lint, coverage ratchet, docs, architecture and visual-coverage checks pass.
 - Visual: complete public Chromium/WebKit suite: 175 passed / 38 intentionally skipped; complete preview suite: 157 passed / 6 intentionally skipped. Both Settings handoff captures pass after the appearance-control rerender fix.
-- Payload: public 50,093 gzip JS / 12,587 gzip CSS; preview 50,462 gzip JS / 12,587 gzip CSS. Both remain below unchanged ceilings; no duplicate `DrillCard` or `InformationCard` CSS chunk is emitted.
-- Performance: exact `b` run [43092852578](https://github.com/matosaru/dryfire/actions/runs/43092852578) passed all four pinned performance comparisons, both screenshot editions and validation.
+- Payload: public 50,089 gzip JS / 12,587 gzip CSS; preview 50,465 gzip JS / 12,587 gzip CSS. Both remain below unchanged ceilings. `verify-dist` checks one lazy History stylesheet and one separate public SEO stylesheet.
+- Performance: local pinned comparisons against immutable version 0.8.0 passed all six measured metrics in public/preview Chromium and WebKit; no confirmed slowdown. Reports are in ignored `performance-results/refactor-*.json` files.
 - The first CL4 `InformationCard` slice is accepted; the rest of CL4 and CL5–CL11 remain. The overall component-library migration is not complete.
 - Visual: `visual:review` retains 26 canonical mobile page cases. About captures and source fingerprints are refreshed for 0.8.8.
 
@@ -146,6 +152,12 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 
 Continued CL4 with direct CSS ownership for CustomDrillEditor, DrillSetup, SequenceRun, SequenceReview and CalibrationCatalog. Fixed the Appearance selector rerender at asynchronous preference handoff and covered selected value plus exact pixels in Chromium/WebKit. Exact `b` run [43092852578](https://github.com/matosaru/dryfire/actions/runs/43092852578) passed validation, both screenshot editions and all four performance jobs. The component-library refactor remains in progress; no `main` promotion has occurred.
 
-### Current continuation at 0.8.8 (in progress)
+### Final CSS ownership candidate at 0.8.8 (local acceptance passed)
 
-The next bounded CSS ownership task supports multiple direct stylesheet imports for one component and records those fragments in the generated component map. PracticeRun and RepetitionResult own their additional existing files; CSS declarations and cascade order remain unchanged. Continue commits on `b` at version 0.8.8 until the full component-library feature is finished; perform one version bump only at final release acceptance.
+The final ownership pass supports multiple direct stylesheet imports per component and records every fragment in the generated component map. PracticeRun and RepetitionResult own their additional existing files; the ordered CSS cascade and browser output remain unchanged. Every active component stylesheet has a verified delivery path.
+
+### Page, feature and external CSS ownership candidate (0.8.8; locally accepted)
+
+Fourteen page components now directly import their page composition styles; five feature components and both public-site owners also declare their actual stylesheet. The generated component map records CSS imports and delivery (`aggregate`, `lazy`, `external` or `none`). `PublicPage.css` remains emitted as its separate SEO-page asset, `TriggerProfileStatus.css` remains inlined into the trusted native Learn template, two comment-only files are explicitly style-free, and HistoryDeleteControl/ProgressContent remain lazy CSS. Build/dev/preview scripts use Vite's native config loader with the existing Node CSS hook so server-side renderers can load component graphs without bundling CSS into Vite's config. The existing ordered app stylesheet remains the one source for aggregate styles. No selectors, DOM or interactions changed.
+
+Local pinned visuals pass (public 175 passed / 38 intentional skips; preview 157 passed / 6 intentional skips). Builds, artifact checks, size budgets and all four pinned performance comparisons pass. The one-time feature version bump is now 0.8.9; rerun tests and visuals against that exact build before pushing it to `b`. `main` remains unchanged.

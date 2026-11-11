@@ -1,3 +1,4 @@
+import './PracticeGuidePage.css';
 import {DrillSetupSteps} from '@dryfire/ui/DrillSetup';
 import type {ReactNode} from 'react';
 import {PageHeading} from '@dryfire/ui/PageHeading';

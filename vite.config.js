@@ -9,7 +9,7 @@ import { publicPagesPlugin } from './tools/public-pages.mjs';
 import {publicRoute,publicAssetPath} from './site/routes.js';
 import {isAppPath, offlineAppPaths, legacyPathRedirect, legacyRedirects} from './src/appPaths.js';
 import { minifyProductionHtml, prioritizeAppStyles } from './tools/minify-html.mjs';
-import { startupCssOwnerPlugin } from './tools/startup-css-owner.mjs';
+import { componentCssOwnerPlugin } from './tools/startup-css-owner.mjs';
 
 // Ship minified production code without exposing the readable src/ modules.
 // Worker entries also pass through Oxc, unlike files copied from public/.
@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
   // The optimized preview serves same-origin assets, like the production Worker.
   // Avoid development CORS Vary headers invalidating preloaded offline assets.
   preview: { host: '127.0.0.1', cors: false, ...(edition === 'preview' ? { headers: { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow, noarchive' } } : {}) },
-  plugins: [startupCssOwnerPlugin(), publicPagesPlugin(), { name: 'page-templates', transformIndexHtml: { order: 'pre', handler: renderPageTemplates },
+  plugins: [componentCssOwnerPlugin(), publicPagesPlugin(), { name: 'page-templates', transformIndexHtml: { order: 'pre', handler: renderPageTemplates },
     configurePreviewServer(server){server.middlewares.use((req,res,next)=>{
       const url=new URL(req.url,'http://localhost'),path=url.pathname,legacy=legacyPathRedirect(path);
       const target=legacy??(!path.endsWith('/')&&(isAppPath(path+'/')||publicRoute(path+'/'))?path+'/':null);

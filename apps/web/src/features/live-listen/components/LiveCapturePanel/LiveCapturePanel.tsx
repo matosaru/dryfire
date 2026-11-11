@@ -1,3 +1,4 @@
+import './LiveCapturePanel.css';
 import type {LiveListenPanelProps} from '../../index.ts';
 export function LiveCapturePanel({state,onAction,onChange}:LiveListenPanelProps){return <><div className="listen-panel">
         <div className="listen-visual" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>

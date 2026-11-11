@@ -2,13 +2,34 @@ import { readFileSync } from 'node:fs';
 import { resolve, relative, dirname } from 'node:path';
 
 export const lazyStyleOwners = Object.freeze({
-  'src/optional/progressView.js': Object.freeze(['packages/ui/src/ProgressContent/ProgressContent.css'])
+  'src/optional/progressView.js': Object.freeze(['packages/ui/src/ProgressContent/ProgressContent.css']),
+  'packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.tsx': Object.freeze(['packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.css'])
 });
 
 /** Component-owned styles already present in the startup compatibility sheet.
  * The owner import is an explicit dependency; the aggregate remains their sole
  * emitted source while native prerendered content still needs immediate paint. */
 export const startupStyleOwners = Object.freeze({
+  'apps/web/src/pages/AboutPage/AboutPage.tsx': 'apps/web/src/pages/AboutPage/AboutPage.css',
+  'apps/web/src/pages/ContactPage/ContactPage.tsx': 'apps/web/src/pages/ContactPage/ContactPage.css',
+  'apps/web/src/pages/DrillsPage/DrillsPage.tsx': 'apps/web/src/pages/DrillsPage/DrillsPage.css',
+  'apps/web/src/pages/GunSetupPage/GunSetupPage.tsx': 'apps/web/src/pages/GunSetupPage/GunSetupPage.css',
+  'apps/web/src/pages/GunsPage/GunsPage.tsx': 'apps/web/src/pages/GunsPage/GunsPage.css',
+  'apps/web/src/pages/HistoryPage/HistoryPage.tsx': 'apps/web/src/pages/HistoryPage/HistoryPage.css',
+  'apps/web/src/pages/HomePage/HomePage.tsx': 'apps/web/src/pages/HomePage/HomePage.css',
+  'apps/web/src/pages/LearnPage/LearnPage.tsx': 'apps/web/src/pages/LearnPage/LearnPage.css',
+  'apps/web/src/pages/LiveListenPage/LiveListenPage.tsx': 'apps/web/src/pages/LiveListenPage/LiveListenPage.css',
+  'apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx': 'apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css',
+  'apps/web/src/pages/PracticePage/PracticePage.tsx': 'apps/web/src/pages/PracticePage/PracticePage.css',
+  'apps/web/src/pages/SequencePage/SequencePage.tsx': 'apps/web/src/pages/SequencePage/SequencePage.css',
+  'apps/web/src/pages/SettingsPage/SettingsPage.tsx': 'apps/web/src/pages/SettingsPage/SettingsPage.css',
+  'apps/web/src/pages/SoundCheckPage/SoundCheckPage.tsx': 'apps/web/src/pages/SoundCheckPage/SoundCheckPage.css',
+  'apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.tsx': 'apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.css',
+  'apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.tsx': 'apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.css',
+  'apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.tsx': 'apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.css',
+  'apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx': 'apps/web/src/features/settings/components/SettingsAction/SettingsAction.css',
+  'apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx': 'apps/web/src/features/settings/components/SettingsSection/SettingsSection.css',
+  'apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx': 'apps/web/src/public-site/MarketingOverview/MarketingOverview.css',
   'packages/ui/src/InformationCard/InformationCard.tsx': 'packages/ui/src/InformationCard/InformationCard.css',
   'packages/ui/src/DrillCard/DrillCard.tsx': 'packages/ui/src/DrillCard/DrillCard.css',
   'packages/ui/src/SoundCard/SoundCard.tsx': 'packages/ui/src/SoundCard/SoundCard.css',
@@ -40,6 +61,12 @@ export const startupStyleOwners = Object.freeze({
   'packages/ui/src/SequenceRun/SequenceRun.tsx': 'packages/ui/src/SequenceRun/SequenceRun.css',
   'packages/ui/src/SequenceReview/SequenceReview.tsx': 'packages/ui/src/SequenceReview/SequenceReview.css',
   'packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx': 'packages/ui/src/CalibrationCatalog/CalibrationCatalog.css'
+});
+
+/** Direct component imports whose source is deliberately delivered elsewhere. */
+export const externalStyleOwners = Object.freeze({
+  'apps/web/src/public-site/PublicPage/PublicPage.tsx': 'apps/web/src/public-site/PublicPage/PublicPage.css',
+  'packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.tsx': 'packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.css'
 });
 
 export function lazyStyleSources() {

@@ -1,3 +1,4 @@
+import './ContactPage.css';
 import { PageHeading } from '@dryfire/ui/PageHeading';
 import { InformationCard } from '@dryfire/ui/InformationCard';
 import {EmailContact} from './EmailContact.tsx';

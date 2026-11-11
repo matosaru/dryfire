@@ -1,3 +1,4 @@
+import './GunsPage.css';
 export type GunProfile = {id:string;name?:string;type?:string;needsDetails?:boolean};
 export type GunLibraryRow = {gun:GunProfile;image:string;triggerReady:boolean;optionalReady:number;samples:number;presets:number};
 export type GunsPageProps = {
