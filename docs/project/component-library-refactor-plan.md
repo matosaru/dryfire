@@ -1,6 +1,6 @@
 # Component-library and CSS-ownership refactor plan
 
-Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. `InformationCard`, `DrillCard`, `SoundCard` and `RecognitionList` are accepted CL4 slices. RecognitionList version 0.8.3 passed exact-commit CI in [run 43059356827](https://github.com/matosaru/dryfire/actions/runs/43059356827). Every separately accepted refactor increment bumps the app patch version. Visual design, behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
+Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. `InformationCard`, `DrillCard`, `SoundCard` and `RecognitionList` are accepted CL4 slices. RecognitionList version 0.8.3 passed exact-commit CI in [run 43059356827](https://github.com/matosaru/dryfire/actions/runs/43059356827); a later rerun of unchanged 0.8.3 source reported a preview-Chromium returning-session slowdown in [run 43061631804](https://github.com/matosaru/dryfire/actions/runs/43061631804), so the branch is not currently fully green. Version 0.8.4 is a local CL4 candidate and remains pending exact branch CI. Every separately accepted refactor increment bumps the app patch version. Visual design, behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
 
 ## Goal
 
@@ -14,7 +14,7 @@ Turn the existing `@dryfire/ui` package into a clearly layered internal componen
 | CL1 Architecture | Complete | Approved component and CSS ownership specification. |
 | CL2 Safety net | Complete | 182 Jest suites / 1,189 tests; public 105 and preview 82 Chromium tests pass (5 and 3 intentional skips); visual coverage records one canonical mobile Chromium capture per page type. |
 | CL3 Proof slice | Complete | `ProgressContent` imports its owned CSS; lazy Settings fallback keeps exact handoff pixels. Both editions pass optimized builds, artifact verification, actual startup-payload checks, and ten-pair Chromium/WebKit comparisons. |
-| CL4 Migration | In progress; InformationCard, DrillCard, SoundCard and RecognitionList accepted | Version 0.8.3 declares RecognitionList's colocated CSS dependency, mapped through the startup-style owner so the aggregate remains the single emitted copy. Exact-commit run [43059356827](https://github.com/matosaru/dryfire/actions/runs/43059356827) passes validation, both screenshot suites and all four fixed performance jobs. CL4 still has additional reusable components to migrate. |
+| CL4 Migration | In progress; four accepted slices and a three-component 0.8.4 candidate | Candidate adds direct stylesheet ownership for PageHeading, PreferenceToggle and GunContext. Local functional, visual and payload checks pass; exact CI is pending. The unchanged 0.8.3 source had a later rerun fail preview-Chromium returning startup in [43061631804](https://github.com/matosaru/dryfire/actions/runs/43061631804), so exact performance acceptance must be re-established without relaxing the gate. |
 | CL5–CL11 | Not started | Continue shared product, feature/page, startup cleanup, review, acceptance and delivery after bounded migration slices pass. |
 
 ## Non-negotiable CSS contract
@@ -116,6 +116,14 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 - Timing: ten paired samples per metric for both editions in Chromium and WebKit. All four final candidate comparisons pass without a confirmed slowdown. Reports are in `/tmp/final-{public,preview}-{chromium,webkit}.json`; reproduce using [performance guidance](../development/PERFORMANCE.md).
 - The first CL4 `InformationCard` slice is accepted; the rest of CL4 and CL5–CL11 remain. The overall component-library migration is not complete.
 - Visual: the complete prior Chromium suites passed 105 public / 82 preview tests (5 / 3 intentional skips); after the CL4 change, public canonical About/Contact pixels and the five preview About/Contact functional routes passed. `visual:review` retains 26 canonical mobile page cases.
+
+### PageHeading, PreferenceToggle and GunContext CSS-ownership candidate (0.8.4; local checks complete, branch CI pending)
+
+- Each component imports its colocated CSS. The startup owner map resolves those imports to the existing aggregate source, preserving one emitted copy. `TriggerProfileStatus` remains excluded: its stylesheet is not in the aggregate and the component is unused; importing it would introduce styles that do not currently render.
+- App version advanced to 0.8.4. About references, the canonical mobile About baseline, source fingerprints and pinned practice-guide example GIFs/manifests were refreshed from the current implementation.
+- Local checks after a clean locked install: 182 Jest suites / 1,192 tests, typecheck, component/runtime lint, coverage, architecture, docs, visual-coverage, 23 SEO checks and 16 smoke checks pass. Public and preview optimized builds, distribution verification and gzip payload budgets pass. Public and preview Chromium suites pass 105 / 82 tests (5 / 3 intentional skips); WebKit passes 70 / 75 (33 / 3 intentional skips).
+- Local pinned preview-Chromium performance comparison (10 requested pairs, expanded to 20 after an initial signal) against the immutable 0.8.0 build passes all six metrics with no confirmed slowdown. Payload: public 50,101 gzip JS / 12,587 gzip CSS; preview 50,472 / 12,587.
+- CI run [43061631804](https://github.com/matosaru/dryfire/actions/runs/43061631804) reran unchanged 0.8.3 source. Validation and screenshot jobs passed; three performance jobs passed, while preview Chromium returning reported 32/40 slower pairs, +5.6 ms median, with a positive 99% interval of +2.5 to +7.5 ms. This blocks an overall-green claim. Candidate 0.8.4 needs exact branch CI and, if the failure recurs, further performance diagnosis; thresholds and baseline are unchanged.
 
 ### RecognitionList CSS-ownership increment (0.8.3 accepted)
 

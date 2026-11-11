@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "7ef3c221ad4065a4fee864a71efaf6a08cd93513",
+  "sourceCommit": "0dacc277724f5d6cd84157f03b4c3ca7dd192bee",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
@@ -76,7 +76,7 @@
     "packages/ui/src/SafetyDialog/SafetyDialog.css": "9fce4cb51ca13fd06dc417e38edd794a01fff18133ead32717822e7d7d14b1e7",
     "apps/web/src/styles/legacy-progress-filters.css": "c3dbdea426e0bd342260b00059c76062478424152c45a66108aefbb2cbce2dc0",
     "apps/web/src/styles/legacy-after-progress-content.css": "513939e49a9257f85c919cb28dcc747570b4ff8f383c87f6095d952a94b45cbd",
-    "tools/style-sources.mjs": "d1abe0022b619a4e4329b42b622c2d4ad24fc2b8a1ca14222d5593685db158e4",
+    "tools/style-sources.mjs": "b95e6d25401cca78ed7f3977fcf84f5773a6e20a8632f78515d3acc9a0e1cfd7",
     "vite.config.js": "7d100c0b7e5c8c43ff94a31a2729aa754083b7c873fbad0449b54cf13e86cec1",
     "tools/minify-html.mjs": "74d15e28f128e2ca19305ecea8a014b91d4a4fa4df0611880e4cb57afdb76f01",
     "tools/static-catalog.mjs": "f6874ada0ecf772e2f262c9c22c87e243dcd3998f90af7d2eafcf5775bfb7247",
@@ -104,7 +104,7 @@
     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "39e68450b650292de4523e345ba76388cfe50a5cb418a9704fac9ae7d2f570b8",
     "apps/web/src/pages/PracticeGuidePage/index.ts": "cbaa34b0c350d037b794d8112a741d5e4d191d0f19cf941e3a0a457d74665f52",
     "apps/web/src/app/renderSessionPages.tsx": "bb40f17e5f093adea9e217d194d38a641e34f5dc8b74397b37d9e849cd7d48c3",
-    "packages/ui/src/PageHeading/PageHeading.tsx": "195d0e242a8f2904235ba1349682002b8cb59b914420fdfdc318ce2e97acd809",
+    "packages/ui/src/PageHeading/PageHeading.tsx": "3f64ef227bdf41f6df32b77603e0c02eab41b46f2ad53c52a4ed1de183c5a058",
     "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
     "tools/page-templates.mjs": "4694abd1ed9bffa093fb4df005ce1f1c643298dd600855287e7e430e5cc3b4f2",
     "tools/export-guide-examples.mjs": "f8561c23e3c69f7dbdff61f4a504cde0a6b238b0b970e525445fee464323a6ab",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "1f6b651334e1ad9460e926bd2f5af9f144080f8e577a6a35d5cce46cfa6f4b34",
+      "sha256": "5ce8fec1611e26cb9350e477e0f59a1896db2e4e88ab1b1870853d4f06ad732c",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "4022984bd5f6c63bf24a61ec957f313c5657eeb2cbc3f1ae7b3bb760de150847",
+      "sha256": "7aaa0c330ddc73b5f20abd0aea7ea80cb73901be4fe117125afe379575beac45",
       "width": 358,
       "height": 1004
     },
@@ -154,7 +154,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "repeated.gif",
-      "sha256": "e118a87e77078b87f024fb09a00d53dd1097284f811570b9744dd4c5d8852dd9",
+      "sha256": "607a7d563047ca27657952a4d5417a9ae2900f11cf2ebdcf1ddfe5240fb1c3dd",
       "width": 358,
       "height": 949
     },
@@ -163,7 +163,7 @@
       "frames": 68,
       "frameMs": 200,
       "file": "par.gif",
-      "sha256": "a61221dbe3e9493bcf5c6c352e34b10172fd5597c0d10b003eaf1903f97278bd",
+      "sha256": "85e4a6152117be1d0c629c0f7aafd6572e9d5bd5cf0b2e27ba0d9e604fe2ebd6",
       "width": 358,
       "height": 1004
     },
@@ -172,7 +172,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "control.gif",
-      "sha256": "5aa8875f0b5e0e16f925f5724a549976825d5145a00d397be943d320ae0f3674",
+      "sha256": "607a7d563047ca27657952a4d5417a9ae2900f11cf2ebdcf1ddfe5240fb1c3dd",
       "width": 358,
       "height": 949
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "789abf82f5930641611cc119cef3c95c8d6b87520a5957b0b134cfb7b2ea561a",
+      "sha256": "cebbf06e29ba8a68c23b46f91d50a30750e43e3231474c6cfd8d7283c82777e8",
       "width": 358,
       "height": 750
     },
@@ -190,7 +190,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-rack-trigger.gif",
-      "sha256": "41575b16889c400b1719bf5f93b83eea50910eee254c87f27504fd854fff2071",
+      "sha256": "37f5d5ec1787bbbf3b4534f6a8e7cfe735e7e624aacb2da53913cee2a00bf2b3",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "3f4027e4e9752aab0615db1a7923a7bc3b8c7ff456d94cd5fe225496c02e1f2a",
+      "sha256": "d192870c9e2ccb72a0be12842f694596e71541f36d7042694dbf6010fe5faa04",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "bff27d94ebbfaaeabb256993a7788e343b1d44fac9b6da1b7ea324ee4125a6c4",
+      "sha256": "5f2ff38ef450492e7db09ee6a773d84fbd3d5299372b162bcb27774c238edd4a",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "f95b9d5e4257892f848b8eede692f750ccbbbeaac2a2a71eba659f9924619a24",
+      "sha256": "79a028537a635d4cf7d4bb11626c2a06bc4df371b80b1cf8b2a4daab39830078",
       "width": 358,
       "height": 750
     }

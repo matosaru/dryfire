@@ -864,13 +864,13 @@
     "apps/web/src/pages/ContactPage/ContactPage.tsx": "41cb6fce68ba160f8259c815686b16e1fff92511b4956f78b6887b14fbe751a6",
     "apps/web/src/pages/ContactPage/ContactPage.css": "48411add5890d908e191a4340ec2a2154fa4a328c578e4daf4b1240ed3775d71",
     "apps/web/src/pages/ContactPage/index.ts": "032b0e9e92fb4ede387783b85fdd297406f727e6cd1c7e969929e3231cd167c9",
-    "packages/ui/src/PageHeading/PageHeading.tsx": "195d0e242a8f2904235ba1349682002b8cb59b914420fdfdc318ce2e97acd809",
+    "packages/ui/src/PageHeading/PageHeading.tsx": "3f64ef227bdf41f6df32b77603e0c02eab41b46f2ad53c52a4ed1de183c5a058",
     "packages/ui/src/PageHeading/PageHeading.css": "17a188929d245b237da7e8832a3779beb7f3a3208acc7131d1433f3617225b5d",
     "packages/ui/src/PageHeading/index.ts": "b972cc0753d6c8d8b3e432fae0686a0c52448a05f1b98581ef2d986a0da48039",
     "packages/ui/src/InformationCard/InformationCard.css": "5c866ea8582066954f298ce2e43ee6f474d85b11539e516cc615b7da27b97f0d",
     "packages/ui/src/InformationCard/index.ts": "542b7a435d68941a02393517e3da92be644d7c11f006ae8f373b8a9fda64c447",
     "packages/ui/src/InformationCard/InformationCard.tsx": "b7a72a6cbbb4ea4e77e62c1934815443a8bf84ed93e4ca48f123330e9233f87f",
-    "tools/style-sources.mjs": "d1abe0022b619a4e4329b42b622c2d4ad24fc2b8a1ca14222d5593685db158e4",
+    "tools/style-sources.mjs": "b95e6d25401cca78ed7f3977fcf84f5773a6e20a8632f78515d3acc9a0e1cfd7",
     "apps/web/src/pages/AboutPage/AboutPage.copy.ts": "b041999974ca3986bbf24f40f8bfe40a124c66b396ea47cf5aa3d2a554bbe40d",
     "apps/web/src/app/routeContext.ts": "8211be0b05a2947d3ea5d44bad6e57a0af63e32c426d744ba4de0d3e38c91f59",
     "apps/web/src/app/renderPracticeCatalog.tsx": "57a77155dc06a2c65902a7413e4d1d1cde95f90ed023982ba7a28404097c2e95",
@@ -1056,8 +1056,8 @@
     "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.tsx": "2de4cbc42b8070da175c65170000215f99273b05997afaa8374ca5f06547e1f6",
     "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.tsx": "88a131cc62fab7dc499cb916c03456832e13c4f75a697758090374555af9feab",
     "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.tsx": "00f52031cd4f6b8c37b02a2bc3d1febcc68afe17f2cb93021afc5ec5b668840e",
-    "packages/ui/src/GunContext/GunContext.tsx": "14651a05fba5120f4342c7596c089bb0ff7f3721be61e94723e77e83614fdebc",
-    "packages/ui/src/PreferenceToggle/PreferenceToggle.tsx": "2f76dd27b3fd42247a4342c3124dcbb7475b8a16ed430a77eefb7100b934a934"
+    "packages/ui/src/GunContext/GunContext.tsx": "821e605ff5084c229fc2a36ede041776704d1fd21b68972a9ce408152be1b276",
+    "packages/ui/src/PreferenceToggle/PreferenceToggle.tsx": "2cff73bf98334b92ec3df70bd6a06ea914cec615ff1e49dfd7532e4c81f32ca7"
   },
   "implementationChanges": [
     "CHG-017",

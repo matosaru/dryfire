@@ -12,7 +12,10 @@ export const startupStyleOwners = Object.freeze({
   'packages/ui/src/InformationCard/InformationCard.tsx': 'packages/ui/src/InformationCard/InformationCard.css',
   'packages/ui/src/DrillCard/DrillCard.tsx': 'packages/ui/src/DrillCard/DrillCard.css',
   'packages/ui/src/SoundCard/SoundCard.tsx': 'packages/ui/src/SoundCard/SoundCard.css',
-  'packages/ui/src/RecognitionList/RecognitionList.tsx': 'packages/ui/src/RecognitionList/RecognitionList.css'
+  'packages/ui/src/RecognitionList/RecognitionList.tsx': 'packages/ui/src/RecognitionList/RecognitionList.css',
+  'packages/ui/src/PageHeading/PageHeading.tsx': 'packages/ui/src/PageHeading/PageHeading.css',
+  'packages/ui/src/PreferenceToggle/PreferenceToggle.tsx': 'packages/ui/src/PreferenceToggle/PreferenceToggle.css',
+  'packages/ui/src/GunContext/GunContext.tsx': 'packages/ui/src/GunContext/GunContext.css'
 });
 
 export function lazyStyleSources() {
