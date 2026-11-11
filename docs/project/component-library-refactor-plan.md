@@ -1,6 +1,6 @@
 # Component-library and CSS-ownership refactor plan
 
-Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. `InformationCard`, `DrillCard` and `SoundCard` are accepted CL4 slices. `RecognitionList` is the current 0.8.3 candidate, with local tests green and exact-commit CI pending. Every separately accepted refactor increment bumps the app patch version. Visual design, behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
+Status: approved for implementation on `b` (2026-11-09). CL0–CL3 are accepted. `InformationCard`, `DrillCard`, `SoundCard` and `RecognitionList` are accepted CL4 slices. RecognitionList version 0.8.3 passed exact-commit CI in [run 43059356827](https://github.com/matosaru/dryfire/actions/runs/43059356827). Every separately accepted refactor increment bumps the app patch version. Visual design, behavior, routes, storage formats and performance limits remain unchanged. See the detailed [component-library specification](component-library-refactor-spec.md).
 
 ## Goal
 
@@ -14,7 +14,7 @@ Turn the existing `@dryfire/ui` package into a clearly layered internal componen
 | CL1 Architecture | Complete | Approved component and CSS ownership specification. |
 | CL2 Safety net | Complete | 182 Jest suites / 1,189 tests; public 105 and preview 82 Chromium tests pass (5 and 3 intentional skips); visual coverage records one canonical mobile Chromium capture per page type. |
 | CL3 Proof slice | Complete | `ProgressContent` imports its owned CSS; lazy Settings fallback keeps exact handoff pixels. Both editions pass optimized builds, artifact verification, actual startup-payload checks, and ten-pair Chromium/WebKit comparisons. |
-| CL4 Migration | In progress; InformationCard, DrillCard and SoundCard accepted; RecognitionList candidate pending CI | Candidate 0.8.3 declares RecognitionList's colocated CSS dependency, mapped through the startup-style owner so the aggregate remains the single emitted copy. The full local unit/coverage, public and preview browser suites, docs, artifacts, and smoke/SEO checks pass. A short local WebKit sample flagged a possible warm-start slowdown; exact CI uses the full paired sample gate before acceptance. |
+| CL4 Migration | In progress; InformationCard, DrillCard, SoundCard and RecognitionList accepted | Version 0.8.3 declares RecognitionList's colocated CSS dependency, mapped through the startup-style owner so the aggregate remains the single emitted copy. Exact-commit run [43059356827](https://github.com/matosaru/dryfire/actions/runs/43059356827) passes validation, both screenshot suites and all four fixed performance jobs. CL4 still has additional reusable components to migrate. |
 | CL5–CL11 | Not started | Continue shared product, feature/page, startup cleanup, review, acceptance and delivery after bounded migration slices pass. |
 
 ## Non-negotiable CSS contract
@@ -117,12 +117,12 @@ Classify a failure before fixing it. Apply one minimal fix, run focused proof, t
 - The first CL4 `InformationCard` slice is accepted; the rest of CL4 and CL5–CL11 remain. The overall component-library migration is not complete.
 - Visual: the complete prior Chromium suites passed 105 public / 82 preview tests (5 / 3 intentional skips); after the CL4 change, public canonical About/Contact pixels and the five preview About/Contact functional routes passed. `visual:review` retains 26 canonical mobile page cases.
 
-### RecognitionList CSS-ownership increment (0.8.3 candidate)
+### RecognitionList CSS-ownership increment (0.8.3 accepted)
 
 - `RecognitionList.tsx` now imports its colocated `RecognitionList.css`; the startup owner map routes it to the existing critical stylesheet, with artifact verification and style-ownership tests guarding against a duplicate CSS copy.
 - Updated the version-derived About dark/light references, canonical dark About baseline and pinned guide-example source manifest. The guide GIFs were regenerated with the pinned Playwright renderer; the 10 scenario frame counts and intended flows remain intact.
 - Local checks pass: 1,192 tests across 182 suites; typecheck; component/runtime lint; coverage ratchet; 16 smoke checks; 23 SEO checks; architecture and docs checks; public build/artifact/payload; and public Chromium/WebKit (175 pass, 38 intentional skips) plus preview Chromium/WebKit (157 pass, 6 intentional skips).
-- A two-pair public performance diagnostic passed in Chromium but signaled a possible WebKit warm-start slowdown. This diagnostic is too small to accept or reject the slice; the exact `b` CI run must complete the fixed paired performance gate before this increment is accepted. `main` remains unchanged.
+- The short public WebKit diagnostic signaled a possible warm-start slowdown, but the full fixed-sample exact-commit comparisons passed in all four edition/browser combinations. Full run [43059356827](https://github.com/matosaru/dryfire/actions/runs/43059356827) is green across validation, public/preview screenshots and performance; `main` remains unchanged.
 
 ### DrillCard increment (local candidate; branch CI pending)
 
