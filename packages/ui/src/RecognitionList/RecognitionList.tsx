@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import './RecognitionList.css';
 import {HistoryDeleteControl} from '../HistoryDeleteControl';
 export type RecognitionRow={id:string;title:string;date:string;score:string;sequence?:string;actualLabel:string};
 export type RecognitionListProps={rows?:RecognitionRow[];options:{value:string;title:string}[];onVerify?:(id:string,value:string)=>void;onDelete?:(row:RecognitionRow)=>void;disabled?:boolean};

@@ -49,7 +49,7 @@ test('private progress presentation styles load with their only runtime owner', 
 });
 
 test('component-owned startup CSS is resolved through the single critical stylesheet copy', () => {
-  for (const [name, marker] of [['InformationCard', 'about-card'], ['DrillCard', 'preset-card'], ['SoundCard', 'class-card']]) {
+  for (const [name, marker] of [['InformationCard', 'about-card'], ['DrillCard', 'preset-card'], ['SoundCard', 'class-card'], ['RecognitionList', 'history-list']]) {
     const ownerPath = resolve(process.cwd(), `packages/ui/src/${name}/${name}.tsx`);
     const cssPath = `packages/ui/src/${name}/${name}.css`;
     const importPath = `./${name}.css`;

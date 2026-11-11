@@ -11,7 +11,8 @@ export const lazyStyleOwners = Object.freeze({
 export const startupStyleOwners = Object.freeze({
   'packages/ui/src/InformationCard/InformationCard.tsx': 'packages/ui/src/InformationCard/InformationCard.css',
   'packages/ui/src/DrillCard/DrillCard.tsx': 'packages/ui/src/DrillCard/DrillCard.css',
-  'packages/ui/src/SoundCard/SoundCard.tsx': 'packages/ui/src/SoundCard/SoundCard.css'
+  'packages/ui/src/SoundCard/SoundCard.tsx': 'packages/ui/src/SoundCard/SoundCard.css',
+  'packages/ui/src/RecognitionList/RecognitionList.tsx': 'packages/ui/src/RecognitionList/RecognitionList.css'
 });
 
 export function lazyStyleSources() {
