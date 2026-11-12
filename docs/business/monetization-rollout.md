@@ -19,7 +19,7 @@ Avoid selling “accuracy”, safe firearm status, aim, or movement analysis tha
 | Phase | Work | Exit evidence |
 | --- | --- | --- |
 | **0 — Validate Free product readiness** | Complete owner testing of trigger recognition, first-shot readiness, beep audibility, and recovery/export on the intended iPhone Safari/Home Screen environment. Review a new-user path from first gun to first useful repetition. Resolve contradictory gun-limit text and make recognition errors understandable. | Recorded device/browser/build and repeatable owner observations; issues triaged; no marketing claims exceed verified behavior. Automated tests are not microphone-accuracy evidence. |
-| **1 — Market and price research** | Complete a dated first-party comparison of direct microphone apps separately from laser/sensor hardware products. Verify store prices and paywall details in target markets where pages hide prices in apps. Interview/test with prospective users: what they expect from Free, why they would pay, and whether one annual offer is understandable. Build a net-revenue and storage/support cost model using actual provider terms. | First-party Dry Fire Pro Lithuanian App Store listing gives one useful local benchmark (€2.99/month, €22.99/year, “Pro Tier” €44.99; the tier's billing term still needs confirmation). Other app prices, willingness-to-pay and cost model remain open. Do not quote the analysis's €4.99/month or €49–€69 lifetime suggestions as verified. |
+| **1 — Market and price research** | Compare direct phone apps separately from laser/sensor hardware. Inspect in-app paywalls where public pages hide details; test Free/Pro comprehension and willingness-to-pay with target users; model country-specific net contribution with current provider contracts and measured service usage. | First-party Dry Fire Pro Lithuanian App Store listing gives a local anchor (€2.99/month, €22.99/year, “Pro Tier” €44.99; billing term still needs confirmation). Official Paddle public pricing and Cloudflare D1/R2 rates now provide scenario inputs, not accepted provider eligibility or full operating cost. Willingness-to-pay, actual backup sizes and contract terms remain open. |
 | **2 — Approve the commercial contract** | Decide the exact Free/Pro matrix, supported country list, one billing cadence, price/tax presentation, trial policy, renewal/cancellation/refund wording, support ownership, existing-user transition, offline behavior, and data export/deletion rights. Obtain Lithuanian accounting/legal review and written payment-provider eligibility for this firearm-related training product. | Versioned requirements and user-reviewed screens/copy; provider, tax, privacy, consumer, and operational decisions documented. No billing code or user data upload before this gate. |
 | **3 — Select account and recovery architecture** | Choose managed identity and storage after comparing Cloudflare D1/R2 with managed alternatives, regions, processor costs, backup size/retention and deletion behavior. Design optional account linking that preserves an anonymous local library. Build versioned, integrity-checked backups and explicit restore first. Keep normal local practice available during network failure. | Threat/data-flow review; isolated staging resources; tested link, account switch, restore, deletion/export, backup failure and old-schema compatibility. No background cross-device merge yet. |
 | **4 — Pilot recovery value before subscription** | If approved, run opt-in account/backup in a small private pilot without charging. Measure successful backup/restore, support requests, storage per account, recovery time, and whether users understand what is uploaded. Raw audio/video remains excluded unless separately specified and approved. | Restore succeeds after cleared browser data and on a second device; failure never replaces the last good copy; measured operational cost fits the offer. |
@@ -29,6 +29,15 @@ Avoid selling “accuracy”, safe firearm status, aim, or movement analysis tha
 | **8 — Expand only on evidence** | Consider conflict-aware ongoing sync, drill sharing, extra sound categories, and camera/sensor features separately. Keep one Pro plan; do not introduce Coach/Club or hardware scoring as launch scope. | Each feature has demonstrated demand, privacy/security/design requirements, cost and device coverage, plus separate approval. |
 
 Phases 0–2 can proceed as research and planning in parallel. Account/cloud implementation should not start until the offer and data policy are approved. Payment integration should follow tested recovery and provider/legal gates. This order minimizes the risk of charging before the product can recover customer data or reliably fulfill the offer.
+
+## Research conclusions and recommended decision path
+
+- **Packaging:** proceed with Free plus one annual Pro hypothesis. Keep basic practice and user data useful without signup. The €24/year candidate is close to one localized competitor price but remains unapproved; validate its affordability and contribution before showing it to customers.
+- **What to charge for:** prioritize *reliability and convenience* (opt-in cloud backup and restore) as a clear ongoing-value candidate. Custom creation, multiple-gun capacity and richer graphs are secondary candidates, not confirmed premium differentiators: Dry Fire Pro markets drill tools and statistics and advertises a similarly priced plan. Preserve Free's useful built-in practice and local/manual data portability. Existing users' saved profiles, sessions, drills and graphs must remain accessible/exportable through any tier transition.
+- **Payments:** eligibility is the first commercial blocker. Stripe's current restricted-business page places legal firearms in limited availability and directs businesses to sales; Lemon Squeezy lists weapons/ammunition as regulated; Paddle publicly targets SaaS and its current page has broad harm/violence restrictions while reserving judgment. None has approved this app. Ask for written, product-specific acceptance before building checkout; do not choose solely on advertised fee rates.
+- **Costs:** published Cloudflare D1/R2 rates suggest modest backup bytes may be inexpensive at small scale; they do not establish all-in costs. Measure real backup sizes and retention; include account service, Worker plan/requests, monitoring, payment fees, taxes, chargebacks/refunds, support and professional/accounting costs. Paddle public pricing is 5% + US$0.50 per checkout transaction, but that is not a quote or eligibility decision.
+- **Market/legal:** start with a deliberately selected, provider-supported country list rather than treating “Europe” as one tax market. The first source pass confirms EU OSS is available for qualifying cross-border sales and customer-country VAT can apply; Lithuanian accountant/legal advice must establish classification, registrations, checkout disclosures, cancellation/refund and privacy obligations.
+- **Research evidence quality:** public competitor descriptions and store prices are not hands-on testing or proof of local availability, purchase conversion or competitor quality. The next useful evidence is in-app paywall inspection and a small user research round, followed by provider written decisions and actual cost assumptions.
 
 ## Candidate Free / Pro allocation
 
@@ -63,14 +72,29 @@ Before paid launch, choose the transition behavior for owners who already use mo
 5. Maintain an export path and versioned recovery snapshots. Test data deletion, restore, account switching, backup expiry, entitlement lapse, refund and rollback before production launch.
 6. Add focused tests for pricing/entitlement state transitions, server webhook verification, owner isolation, data preservation and SEO metadata of new public commercial pages. Run full public/preview builds and visual/performance acceptance when product screens change.
 
+## Next decision research to close the open questions
+
+### Payment-provider eligibility request
+
+Before implementation, send each candidate an accurate product summary: EasyDryFire is browser/PWA software for dry-fire practice with a verified unloaded firearm, recognizes user-calibrated mechanical trigger sounds, includes timed practice/drills and does not sell, broker or facilitate firearm/ammunition purchases. Explain the planned web subscription and any public marketing claims. Ask in writing: (1) may this exact product and description be sold to consumers; (2) which countries, categories, ads and checkout wording are allowed; (3) does approval cover automatic renewal; (4) who is merchant/supplier of record and who handles each tax, invoice, refund, dispute and consumer cancellation duty; (5) exact transaction, currency conversion, payout, reserve, refund and chargeback costs; and (6) what review or notification is required if product features/marketing change. Save the response and policy version before selecting a vendor.
+
+### Customer and price validation
+
+Use short moderated sessions with people who dry-fire practice and a separate lightweight survey. Test whether people can explain the Free/Pro difference after one reading, whether Free feels useful without sign-in, whether cloud restore is valuable, whether the annual price is clear, and which existing-data transition would feel fair. Show one offer concept at a time in the product; use randomized price concepts only in research and label them as hypothetical. Record a price-sensitivity measure, objections, expected backup size/data concerns, and whether a participant would rather keep manual export. Treat stated intent as directional; actual voluntary purchases/renewals after a compliant launch are stronger evidence. Do not gate recovery or basic practice during this research.
+
+### Country rollout
+
+Do not treat Europe as one market. A prudent sequence is a private Lithuania-based pilot, then a published country list limited to countries accepted by the provider and covered by language, support, VAT and consumer-term readiness. Expand only after the accounting/legal review and support process works. This is a staged-risk recommendation, not a decision that EU-wide sales are legally unavailable.
+
 ## Required decisions before implementation
 
 1. One Pro billing cadence and a researched price.
 2. Exact supported launch countries and required language/currency disclosures.
 3. Final Free/Pro matrix and handling of existing over-limit guns, presets and graph history.
-4. Auth/storage/backup provider, regions, retention, quotas and account deletion/export.
-5. Payment provider with written category acceptance, fees, refund/dispute handling and tax ownership.
-6. Trial policy (default recommendation: no trial until cancellation, renewal and support flows are proven).
-7. Minimum pilot cohort, launch metrics, rollback trigger and named support/incident owner.
+4. Auth/storage/backup provider, regions, retention, quotas, measured backup-size limits and account deletion/export.
+5. Payment provider with written category acceptance, fees, payout/currency/refund/dispute handling and contract-defined tax/invoice responsibility.
+6. Lithuanian accounting/legal review of service/VAT classification, OSS, recurring billing, cancellation/withdrawal, privacy and consumer disclosures.
+7. Trial policy (default recommendation: no trial until cancellation, renewal and support flows are proven).
+8. Minimum pilot cohort, launch metrics, cost alerts, rollback trigger and named support/incident owner.
 
 The implementation stage begins only after these decisions are incorporated into approved requirements/designs. Until then, this document is a plan and the current public app behavior remains unchanged.
