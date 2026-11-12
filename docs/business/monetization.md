@@ -2,7 +2,7 @@
 
 CHG-032 current public availability is governed by [build editions](../requirements/build-editions.md): two-gun public creation under CHG-034, no new custom creation or advanced graphs publicly; full preview retains them. Existing data/preset editing/use/export/restore remain available. This overrides earlier all-free availability statements for these actions without implementing billing or deleting data. Publication/deployment are tracked separately.
 
-CHG-026 / CHG-073 · revision 2.1 · 2026-11-12 · **Planning only; no price, paid-feature allocation, provider, account/cloud behavior or implementation is approved by this analysis.** Business location: Lithuania. Initial markets: Europe; define the exact supported country list before launch. Native apps/store billing are deferred. Follow the staged [monetization rollout plan](monetization-rollout.md).
+CHG-026 / CHG-073 / CHG-074 · revision 2.2 · 2026-11-12 · **Planning only. CHG-074 identifies initial feature candidates; implementation, paywall allocation, price, payment provider and cloud/auth vendor remain unapproved.** Business location: Lithuania. Initial markets: Europe; define the exact supported country list before launch. Native apps/store billing are deferred. Follow the staged [monetization rollout plan](monetization-rollout.md).
 
 ## Review of the submitted product analysis
 
@@ -12,11 +12,9 @@ The current public build contract also differs from the analysis's broader featu
 
 Recommended order: validate the Free/iPhone experience; complete source-backed competitor and cost research; approve the feature/legacy-data/legal decisions; then implement opt-in account recovery and reliable backups before billing; finally add one server-authorized Pro offer and stage a small pilot. Keep cross-device conflict-aware sync, sharing, additional sound categories and camera analysis for later evidence-based decisions. These are recommendations and remain subject to owner approval.
 
-## One clear offer
+## Offer decisions deferred
 
-Recommend **Free plus one Pro plan**, initially one annual subscription offer. **€24/year remains a provisional test point**, close to Dry Fire Pro's €22.99/year Lithuanian App Store listing; it is not an approved price or evidence of EasyDryFire demand or viable cloud margins. Explain the full yearly charge rather than advertising a monthly equivalent that users cannot buy. Validate payment/storage/support costs and customer understanding before selecting a launch price. Do not offer multiple Pro tiers, add-ons or simultaneous lifetime access at launch.
-
-Free starts without sign-in and remains useful for basic dry-fire practice. Account creation/login and purchase recovery are available when needed; login itself is not a paid capability. Pro pays for convenience, recovery and deeper analysis, and needs a recoverable account. This replaces the earlier lifetime-unlock recommendation for the cloud-backed roadmap: a one-time fee creates indefinite hosted costs unless clearly bounded. Earlier illustrative prices were not market validation.
+The owner has deferred price, billing and the remaining commercial terms to a later plan. The prior **Free plus one annual Pro** and **€24/year** language is an earlier hypothesis only; it is not an active decision and must not appear in checkout or marketing. The current feature-planning scope is documented in [initial account, cloud and training features](initial-monetization-scope.md). Keep practice usable locally without account creation; offer sign-in only to provide the requested account-linked features. Do not implement purchase recovery, subscription status, paid gates or prices in this scope.
 
 ## Capability proposal and existing-user protection
 
@@ -33,7 +31,7 @@ Free starts without sign-in and remains useful for basic dry-fire practice. Acco
 | Extra gun-type sound categories | Existing types/Trigger remain usable | Later optional mechanical categories, after accuracy validation | Extra categories unimplemented |
 | Camera/sensor analysis | No promise of movement/aim grading | Later candidate with separate privacy/device/design scope | Unimplemented |
 
-The user supplied examples, not an approved final allocation. Existing multi-gun/custom/graph functionality must not be relabeled as a new implemented Pro feature. Before gating, specify grandfathering versus new-action limits, imported-backup handling, existing gun/preset use/editing, offline entitlement grace and lapse/cancellation. Preserve profiles/results and access/export; never silently delete data or make an old backup prove payment. A permanent legacy entitlement needs an explicit reliable policy, not a forgeable browser flag.
+CHG-074 now identifies cloud/account storage, five guns, graphical drill history, additional drill options to investigate, and drill analysis/suggestions as the initial feature candidates to prepare. This is not approval to implement, publish, gate or describe them as paid. Existing multi-gun/custom/graph functionality must not be relabeled as a new implemented Pro feature. Before gating, specify grandfathering versus new-action limits, imported-backup handling, existing gun/preset use/editing, offline entitlement grace and lapse/cancellation. Preserve profiles/results and access/export; never silently delete data or make an old backup prove payment. A permanent legacy entitlement needs an explicit reliable policy, not a forgeable browser flag.
 
 Use one **Upgrade to Pro** entry and one short comparison. Trigger training and Start remain primary; account/billing/backup controls are secondary. Avoid repeated sales prompts or mandatory optional-sound training. Review new screen designs and update requirements/architecture/baselines before code.
 
@@ -43,9 +41,9 @@ For the immediate public-versus-owner access question, [the pre-billing strategy
 
 ### Evidence and price hypothesis
 
-The [competitor research](competitor-analysis.md) now contains one current, localized software benchmark: Dry Fire Pro's Lithuanian App Store listing showed €2.99/month and €22.99/year on 2026-11-12. This is a native-store price, not a web subscription or a willingness-to-pay study. EasyDryFire's €24/year remains a candidate test point only; it is close to that benchmark, but has not been validated with users, provider fees, applicable VAT or support costs. The submitted €4.99/month and €49–€69 lifetime suggestions remain unverified.
+The [competitor research](competitor-analysis.md) records Dry Fire Pro's Lithuanian App Store listing (€2.99/month, €22.99/year) as a dated native-store benchmark. It does not establish a web subscription price or EasyDryFire willingness-to-pay. Previous €24/year, €4.99/month and €49–€69 lifetime values remain archived research notes only, deferred and not approved.
 
-For product simplicity, test **one annual Pro offer** first and show the total annual amount clearly. Do not display an unavailable monthly equivalent or add trial/lifetime choices until customer research shows they help. Test comprehension and payment intent with target users in Lithuania and selected launch countries; a store listing comparison alone is insufficient.
+When pricing work resumes, test a simple offer with target users and show the full recurring amount clearly. Do not display unapproved price/cadence in the current feature scope; a store listing comparison alone is insufficient.
 
 ### Cost model and payment-provider economics
 

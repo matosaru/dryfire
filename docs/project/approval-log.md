@@ -1,5 +1,12 @@
 # Requirements approval log
 
+## CHG-074 — Initial account, cloud and training-feature scope (2026-11-12)
+
+- **Direct instruction:** the owner selected cloud data storage, account creation (prefers Google sign-in if practical), a five-gun library, graphical drill history, research into more drill options, and drill analysis/suggestions as the initial monetization feature candidates. Price and other commercial/payment decisions are deferred to later planning.
+- **Authorized scope:** document implementation needs, research suitable identity/storage approaches and specify a staged plan on `feature/monetization-rollout-plan`. Keep `b` and `main` unchanged.
+- **Not authorized:** application implementation, account/provider/production setup, paid gating, changing current gun limits, payments/price/checkout, cloud upload of user data or deployment.
+- **Status:** added [initial feature implementation needs](../business/initial-monetization-scope.md), aligned the commercial requirements/roadmap and updated the cloud architecture analysis. Firebase Auth with Google, Firestore and Cloud Storage is the easiest integrated candidate researched, not a selected vendor. Cloud Storage requires Blaze billing; region, data flow, consent, migration, legacy data, retention and deletion need decisions. The first scope is backup/restore; continuous sync needs a separate conflict design. Drill options and rule-based suggestions require research/specification.
+
 ## CHG-073 — Monetization discovery and staged rollout planning (2026-11-12)
 
 - **Direct instruction:** after reviewing the supplied market/product analysis, the owner says: “Ok. Start work. Everything to be committed to new feature branch. We won’t rollout until feature is finished. B and main should stay unchanged.” The owner clarifies that no changes should be made to `b` or `main`.

@@ -9,7 +9,7 @@ Revision: 1.6 · Scope: approved including CHG-014/015 storage and CHG-017 reten
 | DATA-03 | Preserve compatible existing learned profiles, history and backups during upgrades. | Existing constraint |
 | DATA-04 | Do not erase session history through sound reset or ordinary recent-detection trimming/clearing. | Approved; CHG-014 |
 
-CHG-017 now caps new recordings at **10 per positive type and calibration category per gun**, while compatible older over-cap backups/profiles remain usable and restorable. New unknown/unmatched input is transient; previous unknown history remains intact. Recent recognized retention is the reviewed 1–500 range; session history is not trimmed. Schema 3, features 2 and backup format 4 remain unchanged. See [approved improvements](practice-improvements.md). The dated migration plans below preserve historical requirements, including their former recording cap.
+CHG-017 now caps new recordings at **10 per positive type and calibration category per gun**, while compatible older over-cap backups/profiles remain usable and restorable. New unknown/unmatched input is transient; previous unknown history remains intact. Recent recognized retention is the reviewed 1–500 range; session history is not trimmed. Schema 4, features 2 and backup format 4 remain unchanged. See [approved improvements](practice-improvements.md). The dated migration plans below preserve historical requirements, including their former recording cap.
 
 ## Current behavior and limits
 
