@@ -1,6 +1,6 @@
 # Review of the two Copilot architecture analyses
 
-Reviewed 2026-10-24 against local `b` revision `2cf044c`, application revision `5b8aeed`. The supplied analyses do not identify their source branch or commit; their observations cannot be assumed to describe the latest `b`. This is a review and proposed follow-up, not approval or implementation of another migration. Main/dev remain unchanged.
+Reviewed 2026-10-24 against local `b` revision `2cf044c`, application revision `5b8aeed`. The supplied analyses do not identify their source branch or commit; their observations cannot be assumed to describe the latest `b`. This is a review and proposed follow-up, not approval or implementation of another migration. `main` remains unchanged until a checked promotion PR.
 
 ## Verdict
 
@@ -43,7 +43,7 @@ The approved React refactor is complete within [ADR001](../../architecture/decis
 4. **Consolidate controller presentation where useful.** Extend existing models/ports while keeping engines and service lifecycles independent of React. Native startup and mounted React must consume the same decisions without two simultaneous writers.
 5. **Organize remaining domain files/CSS only where the previous slices reveal a real benefit.** Introduce public module entries and targeted selector scoping without a blanket rename, new routing library, provider hierarchy or duplicate shared folder.
 
-Each implementation slice needs characterization before extraction, unit/coverage and integration checks, public/preview minified builds, pinned Chromium/WebKit screenshot/workflow suites and unchanged original performance gates before b publication. Main/dev remain frozen unless the owner changes that instruction. These steps are recommendations, not started implementation.
+Each implementation slice needs characterization before extraction, unit/coverage and integration checks, public/preview minified builds, pinned Chromium/WebKit screenshot/workflow suites and unchanged original performance gates before b publication. Production remains unchanged unless the owner approves a checked promotion. These steps are recommendations, not started implementation.
 
 ## Verification and limits of this review
 
@@ -59,7 +59,7 @@ Owner asked why main/apps/web/src/pages contains only About/Contact and whether 
 
 Keep complete screen owners under apps/web/src/pages. Reusable layout templates for a specific workflow can live under apps/web/src/features/sessions/layouts, each with source/CSS/tests/export. Proposed names DrillSetupLayout, DrillRunLayout and DrillGuideLayout distinguish shared presentation from screens/routes and independent timing/capture controllers. Existing packages/ui/DrillSetup and live/example PracticeRun/SequenceRun components already provide substantial reuse; extend or compose them rather than adding equivalent second implementations. PracticeGuidePage already serves every supported mode and selected preset.
 
-Suggested relationship: PracticePage and SequencePage compose the shared setup/run templates with their distinct fields, counters, presentation and feature callbacks; PracticeGuidePage composes the guide template and the existing shared run/review example components. AppShell continues to own global header/footer/navigation. Setup/run/review remain states of existing screens; extracting templates does not require new routes or a single merged engine. Consolidate duplicated content where demonstrated; renaming folders alone is not reuse. This is architectural advice only, not authorization to implement or promote main/dev.
+Suggested relationship: PracticePage and SequencePage compose the shared setup/run templates with their distinct fields, counters, presentation and feature callbacks; PracticeGuidePage composes the guide template and the existing shared run/review example components. AppShell continues to own global header/footer/navigation. Setup/run/review remain states of existing screens; extracting templates does not require new routes or a single merged engine. Consolidate duplicated content where demonstrated; renaming folders alone is not reuse. This is architectural advice only, not authorization to implement or promote production.
 
 ## B-only page reuse assessment
 

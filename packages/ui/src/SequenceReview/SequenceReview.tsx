@@ -1,3 +1,4 @@
+import './SequenceReview.css';
 import type {ReactNode} from 'react';
 import type {SessionReviewView} from '../PracticeReview/PracticeReview.tsx';
 export type SequenceReviewProps={prefix?:string;onAction?:(id:string)=>void;view?:SessionReviewView;results?:ReactNode;withRetry?:boolean};

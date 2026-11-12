@@ -1,3 +1,4 @@
+import './LiveModePanel.css';
 import type {LiveListenPanelProps} from '../../index.ts';
 export function LiveModePanel({state,onAction,onChange}:LiveListenPanelProps){return <><section className="drill-panel" aria-labelledby="drill-heading">
         <div className="drill-panel-head">

@@ -1,3 +1,4 @@
+import './CalibrationCatalog.css';
 import { calibrationProgress } from './CalibrationCatalog.copy.ts';
 const categories = [
   { kind: 'reset', title: 'Trigger reset clicks', description: 'Examples of clicks that must not count as a shot.' },

@@ -1,6 +1,6 @@
 # Shared practice guidance and catalog accents — CHG-059
 
-Approved by the owner's direct instruction on 2026-10-23: implement the proposed About-this-practice control, use common layouts on practice guide pages, replace the old practiceGuideSequence styling, and use explicit group target colors. Publish accepted code on b only; main/dev remain frozen.
+Approved by the owner's direct instruction on 2026-10-23: implement the proposed About-this-practice control, use common layouts on practice guide pages, replace the old practiceGuideSequence styling, and use explicit group target colors. Publish accepted code on `b`; production on `main` is unchanged until the owner promotes it through the protected PR process.
 
 - Both trigger and sequence setup pages use one shared outlined secondary navigation control, `ⓘ About this practice`, after gun context and ordered sounds and before Setup. Keep a real link, minimum 44px target, no underline/arrow, visible keyboard focus, hover/pressed feedback and the existing hidden state during runs/reviews.
 - Keep all four trigger guides and built-in/custom sequence guides within the common app shell/PageHeading and existing shared run/review example components. The selected guide sequence uses the shared DrillSetup ordered-list markup and styles, not catalog preset chips or arrow text. Preserve the actual selected sound order and data-sound selectors in both startup and React ownership.

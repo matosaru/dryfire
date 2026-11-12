@@ -40,7 +40,7 @@ For future changes, keep each component's source/CSS/tests together; reuse share
 - [ ] Owner-managed Cloudflare deployment and live-version verification.
 - [ ] Physical iPhone Safari/Home Screen microphone recognition, start-beep and supported feedback acceptance.
 
-Only **b** is updated. Main and dev remain unchanged. No release PR, merge or manual deployment was performed. Commercial, cloud-account and native-app work remain outside this refactor.
+Only **b** was updated. Production on `main` remained unchanged. No release PR, merge or manual deployment was performed. Commercial, cloud-account and native-app work remain outside this refactor.
 
 ## Proposed follow-up
 

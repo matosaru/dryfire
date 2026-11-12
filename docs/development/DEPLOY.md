@@ -6,7 +6,7 @@ The repository holds **editable source**. Only `dist/` is deployed as the minifi
 
 ## Private tester preview — CHG-035
 
-The separate `dev-dryfire` Worker targets **https://dev-dryfire.matosaru.workers.dev**, with `matosaru@gmail.com` admitted through Cloudflare Access. The preview-only Free/Full selector is implemented; [private deployment setup](private-preview-deployment.md) provides the signed-token asset gate/config/commands and remaining live verification. b/main are Free; dev is the private complete preview. Cloudflare setup is owner-run. Missing Access issuer/audience fails closed; no live protection/deployment is inferred from a dry run.
+The optional private preview Worker is named `dev-dryfire` and targets **https://dev-dryfire.matosaru.workers.dev**, with `matosaru@gmail.com` admitted through Cloudflare Access. The preview-only Free/Full selector is implemented; [private deployment setup](private-preview-deployment.md) provides the signed-token asset gate/config/commands and remaining live verification. Git branches `b` and `main` contain the public Free build; the preview is selected explicitly and is not attached to a Git branch. Cloudflare setup is owner-run. Missing Access issuer/audience fails closed; no live protection/deployment is inferred from a dry run.
 
 ## Registered custom domains
 
@@ -14,11 +14,11 @@ The user reports `easydryfire.com` and `easydryfire.app` are registered on Cloud
 
 To serve the existing Worker, use Cloudflare **Workers & Pages → dryfire → Settings → Domains & Routes → Add → Custom Domain**, add the desired domain(s), and wait for Cloudflare's DNS/TLS setup to become active. Domain registration alone does not route traffic to the app. Choose a primary public app origin before updating canonical SEO/manifest information or adding redirects. Preserve the `workers.dev` address during migration so existing users can export their backups: IndexedDB belongs to its origin, and a new domain needs an explicit backup import to access that saved library. Deploying new code at the same origin preserves it.
 
-## Development and production branches
+## Git branches and build editions
 
-CHG-036 adopts [the branching strategy](../project/branching-strategy.md): direct Free changes on b, b → main production PR, b → dev synchronization; direct Full-only changes on dev. Default build/dev/verification follows `build-profile.json`: public on b/main, preview on dev. Use explicit `build:public` / `build:preview` for isolated edition checks. No feature branches are required.
+CHG-036 adopts [the branching strategy](../project/branching-strategy.md): `b` contains the public Free pre-production build and accepted changes are promoted through a checked PR to public production on `main`. The optional Full preview is built with the explicit `build:preview` command and is not tied to a Git branch. The default build profile on `b`/`main` remains public. Use `build:public` / `build:preview` for isolated edition checks.
 
-The owner reconfigures Cloudflare. Default public `wrangler.jsonc` targets dryfire with the existing Free pre-production `dev` environment (dryfire-dev); dev default routing is the signed private dev-dryfire Worker. [The branch guide](../project/branching-strategy.md) maps commands and optional Actions setup. The opt-in Actions public deploy workflow now accepts b/main only, exact checked public artifacts and explicit development/production environments; dev Full is never deployed by it. Prepared files do not activate deployment or server protection.
+The owner reconfigures Cloudflare. Default public `wrangler.jsonc` targets `dryfire` with the existing Free pre-production Cloudflare environment named `dev` (`dryfire-dev`); the optional private preview config routes through the signed asset gate for Worker `dev-dryfire`. These are Cloudflare names, not Git branches. [The branch guide](../project/branching-strategy.md) maps commands and optional Actions setup. The opt-in Actions workflow accepts `b`/`main` public artifacts only. Prepared files do not activate deployment or server protection.
 
 `npm run deploy:check` verifies the current default artifact/profile and packages its default Worker without uploading. Explicit public deploy commands reject Full output. `npm run private-preview:check` verifies preview output and packages the private gate; Access configuration remains fail-closed until owner-filled.
 

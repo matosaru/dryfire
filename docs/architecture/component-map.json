@@ -776,357 +776,565 @@
       "source": "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.tsx",
       "css": "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.css",
       "tests": "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.test.tsx",
-      "entry": "apps/web/src/features/live-listen/components/LiveCapturePanel/index.ts"
+      "entry": "apps/web/src/features/live-listen/components/LiveCapturePanel/index.ts",
+      "cssImports": [
+        "apps/web/src/features/live-listen/components/LiveCapturePanel/LiveCapturePanel.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "LiveModePanel",
       "source": "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.tsx",
       "css": "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.css",
       "tests": "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.test.tsx",
-      "entry": "apps/web/src/features/live-listen/components/LiveModePanel/index.ts"
+      "entry": "apps/web/src/features/live-listen/components/LiveModePanel/index.ts",
+      "cssImports": [
+        "apps/web/src/features/live-listen/components/LiveModePanel/LiveModePanel.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "LiveResultPanel",
       "source": "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.tsx",
       "css": "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.css",
       "tests": "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.test.tsx",
-      "entry": "apps/web/src/features/live-listen/components/LiveResultPanel/index.ts"
+      "entry": "apps/web/src/features/live-listen/components/LiveResultPanel/index.ts",
+      "cssImports": [
+        "apps/web/src/features/live-listen/components/LiveResultPanel/LiveResultPanel.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SettingsAction",
       "source": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.tsx",
       "css": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.css",
       "tests": "apps/web/src/features/settings/components/SettingsAction/SettingsAction.test.tsx",
-      "entry": "apps/web/src/features/settings/components/SettingsAction/index.ts"
+      "entry": "apps/web/src/features/settings/components/SettingsAction/index.ts",
+      "cssImports": [
+        "apps/web/src/features/settings/components/SettingsAction/SettingsAction.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SettingsSection",
       "source": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.tsx",
       "css": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.css",
       "tests": "apps/web/src/features/settings/components/SettingsSection/SettingsSection.test.tsx",
-      "entry": "apps/web/src/features/settings/components/SettingsSection/index.ts"
+      "entry": "apps/web/src/features/settings/components/SettingsSection/index.ts",
+      "cssImports": [
+        "apps/web/src/features/settings/components/SettingsSection/SettingsSection.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "AboutPage",
       "source": "apps/web/src/pages/AboutPage/AboutPage.tsx",
       "css": "apps/web/src/pages/AboutPage/AboutPage.css",
       "tests": "apps/web/src/pages/AboutPage/AboutPage.test.tsx",
-      "entry": "apps/web/src/pages/AboutPage/index.ts"
+      "entry": "apps/web/src/pages/AboutPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/AboutPage/AboutPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "ContactPage",
       "source": "apps/web/src/pages/ContactPage/ContactPage.tsx",
       "css": "apps/web/src/pages/ContactPage/ContactPage.css",
       "tests": "apps/web/src/pages/ContactPage/ContactPage.test.tsx",
-      "entry": "apps/web/src/pages/ContactPage/index.ts"
+      "entry": "apps/web/src/pages/ContactPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/ContactPage/ContactPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "DrillsPage",
       "source": "apps/web/src/pages/DrillsPage/DrillsPage.tsx",
       "css": "apps/web/src/pages/DrillsPage/DrillsPage.css",
       "tests": "apps/web/src/pages/DrillsPage/DrillsPage.test.tsx",
-      "entry": "apps/web/src/pages/DrillsPage/index.ts"
+      "entry": "apps/web/src/pages/DrillsPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/DrillsPage/DrillsPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "GunSetupPage",
       "source": "apps/web/src/pages/GunSetupPage/GunSetupPage.tsx",
       "css": "apps/web/src/pages/GunSetupPage/GunSetupPage.css",
       "tests": "apps/web/src/pages/GunSetupPage/GunSetupPage.test.tsx",
-      "entry": "apps/web/src/pages/GunSetupPage/index.ts"
+      "entry": "apps/web/src/pages/GunSetupPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/GunSetupPage/GunSetupPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "GunsPage",
       "source": "apps/web/src/pages/GunsPage/GunsPage.tsx",
       "css": "apps/web/src/pages/GunsPage/GunsPage.css",
       "tests": "apps/web/src/pages/GunsPage/GunsPage.test.tsx",
-      "entry": "apps/web/src/pages/GunsPage/index.ts"
+      "entry": "apps/web/src/pages/GunsPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/GunsPage/GunsPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "HistoryPage",
       "source": "apps/web/src/pages/HistoryPage/HistoryPage.tsx",
       "css": "apps/web/src/pages/HistoryPage/HistoryPage.css",
       "tests": "apps/web/src/pages/HistoryPage/HistoryPage.test.tsx",
-      "entry": "apps/web/src/pages/HistoryPage/index.ts"
+      "entry": "apps/web/src/pages/HistoryPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/HistoryPage/HistoryPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "HomePage",
       "source": "apps/web/src/pages/HomePage/HomePage.tsx",
       "css": "apps/web/src/pages/HomePage/HomePage.css",
       "tests": "apps/web/src/pages/HomePage/HomePage.test.tsx",
-      "entry": "apps/web/src/pages/HomePage/index.ts"
+      "entry": "apps/web/src/pages/HomePage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/HomePage/HomePage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "LearnPage",
       "source": "apps/web/src/pages/LearnPage/LearnPage.tsx",
       "css": "apps/web/src/pages/LearnPage/LearnPage.css",
       "tests": "apps/web/src/pages/LearnPage/LearnPage.test.tsx",
-      "entry": "apps/web/src/pages/LearnPage/index.ts"
+      "entry": "apps/web/src/pages/LearnPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/LearnPage/LearnPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "LiveListenPage",
       "source": "apps/web/src/pages/LiveListenPage/LiveListenPage.tsx",
       "css": "apps/web/src/pages/LiveListenPage/LiveListenPage.css",
       "tests": "apps/web/src/pages/LiveListenPage/LiveListenPage.test.tsx",
-      "entry": "apps/web/src/pages/LiveListenPage/index.ts"
+      "entry": "apps/web/src/pages/LiveListenPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/LiveListenPage/LiveListenPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "PracticeGuidePage",
       "source": "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx",
       "css": "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css",
       "tests": "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.test.tsx",
-      "entry": "apps/web/src/pages/PracticeGuidePage/index.ts"
+      "entry": "apps/web/src/pages/PracticeGuidePage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "PracticePage",
       "source": "apps/web/src/pages/PracticePage/PracticePage.tsx",
       "css": "apps/web/src/pages/PracticePage/PracticePage.css",
       "tests": "apps/web/src/pages/PracticePage/PracticePage.test.tsx",
-      "entry": "apps/web/src/pages/PracticePage/index.ts"
+      "entry": "apps/web/src/pages/PracticePage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/PracticePage/PracticePage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SequencePage",
       "source": "apps/web/src/pages/SequencePage/SequencePage.tsx",
       "css": "apps/web/src/pages/SequencePage/SequencePage.css",
       "tests": "apps/web/src/pages/SequencePage/SequencePage.test.tsx",
-      "entry": "apps/web/src/pages/SequencePage/index.ts"
+      "entry": "apps/web/src/pages/SequencePage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/SequencePage/SequencePage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SettingsPage",
       "source": "apps/web/src/pages/SettingsPage/SettingsPage.tsx",
       "css": "apps/web/src/pages/SettingsPage/SettingsPage.css",
       "tests": "apps/web/src/pages/SettingsPage/SettingsPage.test.tsx",
-      "entry": "apps/web/src/pages/SettingsPage/index.ts"
+      "entry": "apps/web/src/pages/SettingsPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/SettingsPage/SettingsPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SoundCheckPage",
       "source": "apps/web/src/pages/SoundCheckPage/SoundCheckPage.tsx",
       "css": "apps/web/src/pages/SoundCheckPage/SoundCheckPage.css",
       "tests": "apps/web/src/pages/SoundCheckPage/SoundCheckPage.test.tsx",
-      "entry": "apps/web/src/pages/SoundCheckPage/index.ts"
+      "entry": "apps/web/src/pages/SoundCheckPage/index.ts",
+      "cssImports": [
+        "apps/web/src/pages/SoundCheckPage/SoundCheckPage.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "MarketingOverview",
       "source": "apps/web/src/public-site/MarketingOverview/MarketingOverview.tsx",
       "css": "apps/web/src/public-site/MarketingOverview/MarketingOverview.css",
       "tests": "apps/web/src/public-site/MarketingOverview/MarketingOverview.test.tsx",
-      "entry": "apps/web/src/public-site/MarketingOverview/index.ts"
+      "entry": "apps/web/src/public-site/MarketingOverview/index.ts",
+      "cssImports": [
+        "apps/web/src/public-site/MarketingOverview/MarketingOverview.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "PublicPage",
       "source": "apps/web/src/public-site/PublicPage/PublicPage.tsx",
       "css": "apps/web/src/public-site/PublicPage/PublicPage.css",
       "tests": "apps/web/src/public-site/PublicPage/PublicPage.test.tsx",
-      "entry": "apps/web/src/public-site/PublicPage/index.ts"
+      "entry": "apps/web/src/public-site/PublicPage/index.ts",
+      "cssImports": [
+        "apps/web/src/public-site/PublicPage/PublicPage.css"
+      ],
+      "cssDelivery": "external"
     },
     {
       "name": "AppShell",
       "source": "packages/ui/src/AppShell/AppShell.tsx",
       "css": "packages/ui/src/AppShell/AppShell.css",
       "tests": "packages/ui/src/AppShell/AppShell.test.tsx",
-      "entry": "packages/ui/src/AppShell/index.ts"
+      "entry": "packages/ui/src/AppShell/index.ts",
+      "cssImports": [
+        "packages/ui/src/AppShell/AppShell.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "BottomNavigation",
       "source": "packages/ui/src/BottomNavigation/BottomNavigation.tsx",
       "css": "packages/ui/src/BottomNavigation/BottomNavigation.css",
       "tests": "packages/ui/src/BottomNavigation/BottomNavigation.test.tsx",
-      "entry": "packages/ui/src/BottomNavigation/index.ts"
+      "entry": "packages/ui/src/BottomNavigation/index.ts",
+      "cssImports": [
+        "packages/ui/src/BottomNavigation/BottomNavigation.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "BrandHeader",
       "source": "packages/ui/src/BrandHeader/BrandHeader.tsx",
       "css": "packages/ui/src/BrandHeader/BrandHeader.css",
       "tests": "packages/ui/src/BrandHeader/BrandHeader.test.tsx",
-      "entry": "packages/ui/src/BrandHeader/index.ts"
+      "entry": "packages/ui/src/BrandHeader/index.ts",
+      "cssImports": [
+        "packages/ui/src/BrandHeader/BrandHeader.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "CalibrationCatalog",
       "source": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.tsx",
       "css": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css",
       "tests": "packages/ui/src/CalibrationCatalog/CalibrationCatalog.test.tsx",
-      "entry": "packages/ui/src/CalibrationCatalog/index.ts"
+      "entry": "packages/ui/src/CalibrationCatalog/index.ts",
+      "cssImports": [
+        "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "CustomDrillEditor",
       "source": "packages/ui/src/CustomDrillEditor/CustomDrillEditor.tsx",
       "css": "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css",
       "tests": "packages/ui/src/CustomDrillEditor/CustomDrillEditor.test.tsx",
-      "entry": "packages/ui/src/CustomDrillEditor/index.ts"
+      "entry": "packages/ui/src/CustomDrillEditor/index.ts",
+      "cssImports": [
+        "packages/ui/src/CustomDrillEditor/CustomDrillEditor.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "DrillCard",
       "source": "packages/ui/src/DrillCard/DrillCard.tsx",
       "css": "packages/ui/src/DrillCard/DrillCard.css",
       "tests": "packages/ui/src/DrillCard/DrillCard.test.tsx",
-      "entry": "packages/ui/src/DrillCard/index.ts"
+      "entry": "packages/ui/src/DrillCard/index.ts",
+      "cssImports": [
+        "packages/ui/src/DrillCard/DrillCard.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "DrillSetup",
       "source": "packages/ui/src/DrillSetup/DrillSetup.tsx",
       "css": "packages/ui/src/DrillSetup/DrillSetup.css",
       "tests": "packages/ui/src/DrillSetup/DrillSetup.test.tsx",
-      "entry": "packages/ui/src/DrillSetup/index.ts"
+      "entry": "packages/ui/src/DrillSetup/index.ts",
+      "cssImports": [
+        "packages/ui/src/DrillSetup/DrillSetup.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "EvaluationPanel",
       "source": "packages/ui/src/EvaluationPanel/EvaluationPanel.tsx",
       "css": "packages/ui/src/EvaluationPanel/EvaluationPanel.css",
       "tests": "packages/ui/src/EvaluationPanel/EvaluationPanel.test.tsx",
-      "entry": "packages/ui/src/EvaluationPanel/index.ts"
+      "entry": "packages/ui/src/EvaluationPanel/index.ts",
+      "cssImports": [
+        "packages/ui/src/EvaluationPanel/EvaluationPanel.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "GunContext",
       "source": "packages/ui/src/GunContext/GunContext.tsx",
       "css": "packages/ui/src/GunContext/GunContext.css",
       "tests": "packages/ui/src/GunContext/GunContext.test.tsx",
-      "entry": "packages/ui/src/GunContext/index.ts"
+      "entry": "packages/ui/src/GunContext/index.ts",
+      "cssImports": [
+        "packages/ui/src/GunContext/GunContext.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "GunSwitcher",
       "source": "packages/ui/src/GunSwitcher/GunSwitcher.tsx",
       "css": "packages/ui/src/GunSwitcher/GunSwitcher.css",
       "tests": "packages/ui/src/GunSwitcher/GunSwitcher.test.tsx",
-      "entry": "packages/ui/src/GunSwitcher/index.ts"
+      "entry": "packages/ui/src/GunSwitcher/index.ts",
+      "cssImports": [
+        "packages/ui/src/GunSwitcher/GunSwitcher.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "HistoryDeleteControl",
       "source": "packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.tsx",
       "css": "packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.css",
       "tests": "packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.test.tsx",
-      "entry": "packages/ui/src/HistoryDeleteControl/index.ts"
+      "entry": "packages/ui/src/HistoryDeleteControl/index.ts",
+      "cssImports": [
+        "packages/ui/src/HistoryDeleteControl/HistoryDeleteControl.css"
+      ],
+      "cssDelivery": "lazy"
     },
     {
       "name": "InfoFooter",
       "source": "packages/ui/src/InfoFooter/InfoFooter.tsx",
       "css": "packages/ui/src/InfoFooter/InfoFooter.css",
       "tests": "packages/ui/src/InfoFooter/InfoFooter.test.tsx",
-      "entry": "packages/ui/src/InfoFooter/index.ts"
+      "entry": "packages/ui/src/InfoFooter/index.ts",
+      "cssImports": [
+        "packages/ui/src/InfoFooter/InfoFooter.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "InformationCard",
       "source": "packages/ui/src/InformationCard/InformationCard.tsx",
       "css": "packages/ui/src/InformationCard/InformationCard.css",
       "tests": "packages/ui/src/InformationCard/InformationCard.test.tsx",
-      "entry": "packages/ui/src/InformationCard/index.ts"
+      "entry": "packages/ui/src/InformationCard/index.ts",
+      "cssImports": [
+        "packages/ui/src/InformationCard/InformationCard.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "NumberInput",
       "source": "packages/ui/src/NumberInput/NumberInput.tsx",
       "css": "packages/ui/src/NumberInput/NumberInput.css",
       "tests": "packages/ui/src/NumberInput/NumberInput.test.tsx",
-      "entry": "packages/ui/src/NumberInput/index.ts"
+      "entry": "packages/ui/src/NumberInput/index.ts",
+      "cssImports": [
+        "packages/ui/src/NumberInput/NumberInput.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "PageHeading",
       "source": "packages/ui/src/PageHeading/PageHeading.tsx",
       "css": "packages/ui/src/PageHeading/PageHeading.css",
       "tests": "packages/ui/src/PageHeading/PageHeading.test.tsx",
-      "entry": "packages/ui/src/PageHeading/index.ts"
+      "entry": "packages/ui/src/PageHeading/index.ts",
+      "cssImports": [
+        "packages/ui/src/PageHeading/PageHeading.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "PracticeCatalog",
       "source": "packages/ui/src/PracticeCatalog/PracticeCatalog.tsx",
       "css": "packages/ui/src/PracticeCatalog/PracticeCatalog.css",
       "tests": "packages/ui/src/PracticeCatalog/PracticeCatalog.test.tsx",
-      "entry": "packages/ui/src/PracticeCatalog/index.ts"
+      "entry": "packages/ui/src/PracticeCatalog/index.ts",
+      "cssImports": [],
+      "cssDelivery": "none"
     },
     {
       "name": "PracticeReview",
       "source": "packages/ui/src/PracticeReview/PracticeReview.tsx",
       "css": "packages/ui/src/PracticeReview/PracticeReview.css",
       "tests": "packages/ui/src/PracticeReview/PracticeReview.test.tsx",
-      "entry": "packages/ui/src/PracticeReview/index.ts"
+      "entry": "packages/ui/src/PracticeReview/index.ts",
+      "cssImports": [
+        "packages/ui/src/PracticeReview/PracticeReview.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "PracticeRun",
       "source": "packages/ui/src/PracticeRun/PracticeRun.tsx",
       "css": "packages/ui/src/PracticeRun/PracticeRun.css",
       "tests": "packages/ui/src/PracticeRun/PracticeRun.test.tsx",
-      "entry": "packages/ui/src/PracticeRun/index.ts"
+      "entry": "packages/ui/src/PracticeRun/index.ts",
+      "cssImports": [
+        "packages/ui/src/PracticeRun/PracticeRun.css",
+        "packages/ui/src/PracticeRun/PracticeRun.meter.css"
+      ],
+      "cssDelivery": "aggregate",
+      "cssFragments": [
+        "packages/ui/src/PracticeRun/PracticeRun.meter.css"
+      ]
     },
     {
       "name": "PreferenceToggle",
       "source": "packages/ui/src/PreferenceToggle/PreferenceToggle.tsx",
       "css": "packages/ui/src/PreferenceToggle/PreferenceToggle.css",
       "tests": "packages/ui/src/PreferenceToggle/PreferenceToggle.test.tsx",
-      "entry": "packages/ui/src/PreferenceToggle/index.ts"
+      "entry": "packages/ui/src/PreferenceToggle/index.ts",
+      "cssImports": [
+        "packages/ui/src/PreferenceToggle/PreferenceToggle.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "ProgressContent",
       "source": "packages/ui/src/ProgressContent/ProgressContent.tsx",
       "css": "packages/ui/src/ProgressContent/ProgressContent.css",
       "tests": "packages/ui/src/ProgressContent/ProgressContent.test.tsx",
-      "entry": "packages/ui/src/ProgressContent/index.ts"
+      "entry": "packages/ui/src/ProgressContent/index.ts",
+      "cssImports": [
+        "packages/ui/src/ProgressContent/ProgressContent.css"
+      ],
+      "cssDelivery": "lazy"
     },
     {
       "name": "RecognitionList",
       "source": "packages/ui/src/RecognitionList/RecognitionList.tsx",
       "css": "packages/ui/src/RecognitionList/RecognitionList.css",
       "tests": "packages/ui/src/RecognitionList/RecognitionList.test.tsx",
-      "entry": "packages/ui/src/RecognitionList/index.ts"
+      "entry": "packages/ui/src/RecognitionList/index.ts",
+      "cssImports": [
+        "packages/ui/src/RecognitionList/RecognitionList.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "RepetitionResult",
       "source": "packages/ui/src/RepetitionResult/RepetitionResult.tsx",
       "css": "packages/ui/src/RepetitionResult/RepetitionResult.css",
       "tests": "packages/ui/src/RepetitionResult/RepetitionResult.test.tsx",
-      "entry": "packages/ui/src/RepetitionResult/index.ts"
+      "entry": "packages/ui/src/RepetitionResult/index.ts",
+      "cssImports": [
+        "packages/ui/src/RepetitionResult/RepetitionResult.css",
+        "packages/ui/src/RepetitionResult/RepetitionResult.details.css"
+      ],
+      "cssDelivery": "aggregate",
+      "cssFragments": [
+        "packages/ui/src/RepetitionResult/RepetitionResult.details.css"
+      ]
     },
     {
       "name": "RetainedNode",
       "source": "packages/ui/src/RetainedNode/RetainedNode.tsx",
       "css": "packages/ui/src/RetainedNode/RetainedNode.css",
       "tests": "packages/ui/src/RetainedNode/RetainedNode.test.tsx",
-      "entry": "packages/ui/src/RetainedNode/index.ts"
+      "entry": "packages/ui/src/RetainedNode/index.ts",
+      "cssImports": [],
+      "cssDelivery": "none"
     },
     {
       "name": "SafetyDialog",
       "source": "packages/ui/src/SafetyDialog/SafetyDialog.tsx",
       "css": "packages/ui/src/SafetyDialog/SafetyDialog.css",
       "tests": "packages/ui/src/SafetyDialog/SafetyDialog.test.tsx",
-      "entry": "packages/ui/src/SafetyDialog/index.ts"
+      "entry": "packages/ui/src/SafetyDialog/index.ts",
+      "cssImports": [
+        "packages/ui/src/SafetyDialog/SafetyDialog.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SafetyDisclosure",
       "source": "packages/ui/src/SafetyDisclosure/SafetyDisclosure.tsx",
       "css": "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css",
       "tests": "packages/ui/src/SafetyDisclosure/SafetyDisclosure.test.tsx",
-      "entry": "packages/ui/src/SafetyDisclosure/index.ts"
+      "entry": "packages/ui/src/SafetyDisclosure/index.ts",
+      "cssImports": [
+        "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SavedSessionList",
       "source": "packages/ui/src/SavedSessionList/SavedSessionList.tsx",
       "css": "packages/ui/src/SavedSessionList/SavedSessionList.css",
       "tests": "packages/ui/src/SavedSessionList/SavedSessionList.test.tsx",
-      "entry": "packages/ui/src/SavedSessionList/index.ts"
+      "entry": "packages/ui/src/SavedSessionList/index.ts",
+      "cssImports": [
+        "packages/ui/src/SavedSessionList/SavedSessionList.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SequenceReview",
       "source": "packages/ui/src/SequenceReview/SequenceReview.tsx",
       "css": "packages/ui/src/SequenceReview/SequenceReview.css",
       "tests": "packages/ui/src/SequenceReview/SequenceReview.test.tsx",
-      "entry": "packages/ui/src/SequenceReview/index.ts"
+      "entry": "packages/ui/src/SequenceReview/index.ts",
+      "cssImports": [
+        "packages/ui/src/SequenceReview/SequenceReview.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SequenceRun",
       "source": "packages/ui/src/SequenceRun/SequenceRun.tsx",
       "css": "packages/ui/src/SequenceRun/SequenceRun.css",
       "tests": "packages/ui/src/SequenceRun/SequenceRun.test.tsx",
-      "entry": "packages/ui/src/SequenceRun/index.ts"
+      "entry": "packages/ui/src/SequenceRun/index.ts",
+      "cssImports": [
+        "packages/ui/src/SequenceRun/SequenceRun.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "SoundCard",
       "source": "packages/ui/src/SoundCard/SoundCard.tsx",
       "css": "packages/ui/src/SoundCard/SoundCard.css",
       "tests": "packages/ui/src/SoundCard/SoundCard.test.tsx",
-      "entry": "packages/ui/src/SoundCard/index.ts"
+      "entry": "packages/ui/src/SoundCard/index.ts",
+      "cssImports": [
+        "packages/ui/src/SoundCard/SoundCard.css"
+      ],
+      "cssDelivery": "aggregate"
     },
     {
       "name": "TriggerProfileStatus",
       "source": "packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.tsx",
       "css": "packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.css",
       "tests": "packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.test.tsx",
-      "entry": "packages/ui/src/TriggerProfileStatus/index.ts"
+      "entry": "packages/ui/src/TriggerProfileStatus/index.ts",
+      "cssImports": [
+        "packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.css"
+      ],
+      "cssDelivery": "external"
     }
   ],
   "deferredAboutPreparation": {

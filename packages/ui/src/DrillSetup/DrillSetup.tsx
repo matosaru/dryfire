@@ -1,3 +1,4 @@
+import './DrillSetup.css';
 import type {MouseEventHandler,ReactNode} from 'react';
 export type DrillSetupProps={prefix:'practice'|'session';legend:string;children:ReactNode;footer:ReactNode};
 /** Shared configuration geometry; controllers retain native form ownership. */

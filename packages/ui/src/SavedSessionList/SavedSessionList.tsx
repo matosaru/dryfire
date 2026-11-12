@@ -1,3 +1,4 @@
+import './SavedSessionList.css';
 import {useState} from 'react';
 import {HistoryDeleteControl} from '../HistoryDeleteControl';
 /** Read-only saved-session presentation; storage and review navigation stay controller-owned. */

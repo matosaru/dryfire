@@ -1,3 +1,4 @@
+import './BottomNavigation.css';
 export type Destination = 'home' | 'learn' | 'drills' | 'history';
 export type BottomNavigationProps = { view?: string; disabled?: boolean; onNavigate?: (view: Destination) => void; hrefs?:Record<Destination,string> };
 const items = [

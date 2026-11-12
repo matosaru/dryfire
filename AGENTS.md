@@ -52,10 +52,11 @@ For a complete `b` candidate, use the repository's [candidate-acceptance skill](
 ## Current branch and delivery rules
 
 - Develop Free application changes on `b`.
-- Promote an accepted `b` candidate to `main` through a pull request. Never push application changes directly to `main`.
-- `dev` is outside the current work scope unless the user explicitly restores it.
+- Commit all ongoing feature work only to `b`; keep `main` unchanged while the feature is being built and validated.
+- Bump the app version once per completed feature, not once per commit or intermediate refactor slice. After the feature passes its full acceptance on `b`, make one release-version commit, refresh version-derived About evidence, and rerun the exact-candidate gates.
+- Promote the fully tested/released `b` feature to `main` only after the user explicitly approves that feature's promotion. Use the protected pull-request process; never merge or push application changes to `main` without that approval.
 - The user configures Cloudflare. Prepare and validate repository code/configuration; do not claim live deployment without observing it.
-- Before committing or pushing, inspect the diff and run the complete applicable acceptance gate. Focused tests alone are insufficient.
+- Before an in-progress commit to `b`, inspect the diff and run focused tests for the changed owners. CI must test each pushed candidate. Before the one feature version bump and any promotion request, run the complete acceptance gate on the versioned candidate; focused tests alone are insufficient for release.
 
 ## Working rules
 
@@ -144,3 +145,5 @@ A change is done only when:
 - the exact accepted candidate is committed to `b` and observed CI is green before promotion.
 
 Keep [react-refactor/context.md](docs/project/react-refactor/context.md) concise and current after each completed increment. Record deployment and physical-device checks separately from source acceptance.
+
+For a feature spanning multiple commits or refactor slices, keep one application version throughout work on `b`. Bump `package.json` and `package-lock.json` once when that complete feature is ready for release on `b`; refresh About's build-derived version evidence and rerun full acceptance on the bumped exact candidate. Do not bump for intermediate commits. Do not merge that release to `main` until the user explicitly approves promotion.

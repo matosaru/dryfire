@@ -1,3 +1,4 @@
+import './PracticePage.css';
 import {PreferenceToggle} from '@dryfire/ui/PreferenceToggle';
 import {GunContext} from '@dryfire/ui/GunContext';
 import {DrillSetup,DrillSetupField,DrillSetupDelayMode,DrillSetupDelayRange,DrillSetupCount,DrillSetupSteps,DrillGuideLink,DrillStartSoundTest} from '@dryfire/ui/DrillSetup';

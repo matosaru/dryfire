@@ -1,3 +1,4 @@
+import './LiveResultPanel.css';
 import type {LiveListenPanelProps} from '../../index.ts';
 export function LiveResultPanel({state,onAction,onChange}:LiveListenPanelProps){return <><div id="predictionEmpty" className={'prediction empty'+((state?.hidden?.predictionEmpty??false)?' hidden':'')}>{state?.texts?.['predictionEmpty']??'Your next recognition result will appear here.'}</div>
       <div id="predictionCard" className={'prediction'+((state?.hidden?.predictionCard??true)?' hidden':'')} aria-live="polite">

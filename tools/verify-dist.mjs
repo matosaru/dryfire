@@ -34,9 +34,24 @@ const cssAssets = await Promise.all(files.filter(path => path.endsWith('.css')).
 const progressStyles = cssAssets.filter(({ css }) => css.includes('.progress-stats'));
 if (expectedEdition === 'public' && progressStyles.length) throw new Error('Private progress styles leaked into the public build.');
 if (expectedEdition === 'preview' && (progressStyles.length !== 1 || !/assets[\\/]progressView-.*\.css$/.test(progressStyles[0].path))) throw new Error('Preview must emit one lazy progress stylesheet.');
+const historyDeleteStyles = cssAssets.filter(({ css }) => css.includes('.history-delete-button'));
+if (historyDeleteStyles.length !== 1 || !/assets[\\/]presentation-.*\.css$/.test(historyDeleteStyles[0]?.path ?? '')) {
+  throw new Error('History deletion controls must emit one presentation-owned lazy stylesheet.');
+}
+const publicPageStyles = cssAssets.filter(({ css }) => css.includes('.public-article>h1'));
+if (publicPageStyles.length !== 1 || !/assets[\\/]public-site-.*\.css$/.test(publicPageStyles[0]?.path ?? '')) {
+  throw new Error('Public SEO pages must emit exactly one separately delivered public-site stylesheet.');
+}
 const criticalStyle = html.match(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"/)?.[1];
 if (!criticalStyle || cssAssets.find(({ path }) => `/${path.replaceAll('\\', '/')}` === criticalStyle)?.css.includes('.progress-stats')) {
   throw new Error('Private progress styles must not block application startup.');
+}
+const criticalCss = cssAssets.find(({ path }) => `/${path.replaceAll('\\', '/')}` === criticalStyle)?.css ?? '';
+for (const marker of ['.about-card', '.preset-card', '.class-card', '.history-list', '.section-head', '.preference-toggle', '.gun-context', '.practice-stop', '.session-result-card>summary']) {
+  if (!criticalCss.includes(marker)) throw new Error(`Startup component styles are missing from the critical stylesheet: ${marker}`);
+  if (cssAssets.some(({ path, css }) => `/${path.replaceAll('\\', '/')}` !== criticalStyle && css.includes(marker))) {
+    throw new Error(`Startup component styles were emitted more than once: ${marker}`);
+  }
 }
 let progressStyleReferences = 0;
 for (const file of files.filter(path => path.endsWith('.js'))) {

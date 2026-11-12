@@ -2,7 +2,7 @@
 
 Prepared 2026-10-24 against `b` revision `2cf044c` / application `5b8aeed`. **F2–F7 and H2 accepted2026-10-27; H1 header icons resumed2026-10-27; WebKit investigation paused by owner.** The owner requested review of Copilot's analyses, reusable pages and then this consolidated plan. This is separate from the [completed P0–P8 React refactor](plan.md); it does not reopen that migration or authorize a new framework rewrite.
 
-Implementation starts on **b**. Latest owner direction (2026-10-26) authorizes automatic b → main PR promotion after complete acceptance, keeping both branches current. Dev is outside the active workflow. Cloudflare configuration remains owner-managed. Finish the Free product before reopening monetization planning.
+Implementation starts on `b`. After complete acceptance, the owner promotes changes to `main` through a protected PR. Cloudflare configuration remains owner-managed. Finish the Free product before reopening monetization planning.
 
 ## Result to achieve
 
@@ -133,7 +133,7 @@ Where pinned browser tooling is unavailable locally, use the existing review-onl
 
 Update component/ownership maps and relevant documentation after every slice. Keep the generated application sitemap/tree synchronized; update entry-point documentation if responsibilities move. Preserve approved requirements/designs and mark scope changes as proposals until explicitly authorized. Keep implementation history append-only and context concise.
 
-At F7: report final component map, entry point and service boundaries; list removed duplication/unused files, test/visual/performance evidence and any intentionally retained adapters. Keep dev unchanged; main promotion uses the fully checked b→main PR. Accounts, monetization, native apps, new public pages and functional redesign are outside this follow-up.
+At F7: report final component map, entry point and service boundaries; list removed duplication/unused files, test/visual/performance evidence and any intentionally retained adapters. Keep production on `main` unchanged until the fully checked `b`→`main` PR is approved. Accounts, monetization, native apps, new public pages and functional redesign are outside this follow-up.
 
 ## After the Free product is finished
 
@@ -156,6 +156,6 @@ The remaining safe optimization is to reduce the blocking resource itself. First
 
 ## Current status
 
-F2–F7, H1 and H2 are complete. `main` contains accepted CSS cleanup merge `63b5ceb` through PR #35; its production run `41226814425` passed every job. The [CSS ownership audit](css-ownership-audit.md) maps all shipping sources. Candidate run `41287832745` accepts the next split: private `ProgressContent.css` moves behind its existing lazy owner, reducing critical CSS by another 1,010 raw / 173 gzip bytes while preserving the History shell and every exact screenshot/performance contract. Apply that exact candidate to `b`, require the normal branch matrix, then promote through a checked `b`→`main` PR. Dev, commercial and native work remain outside scope.
+F2–F7, H1 and H2 are complete. `main` contains accepted CSS cleanup merge `63b5ceb` through PR #35; its production run `41226814425` passed every job. The [CSS ownership audit](css-ownership-audit.md) maps all shipping sources. Candidate run `41287832745` accepts the next split: private `ProgressContent.css` moves behind its existing lazy owner, reducing critical CSS by another 1,010 raw / 173 gzip bytes while preserving the History shell and every exact screenshot/performance contract. Apply that exact candidate to `b`, require the normal branch matrix, then promote through a checked `b`→`main` PR. Commercial and native work remain outside scope.
 
 [Copilot review](copilot-review.md) · [Completed refactor](plan.md) · [Architecture decision](../../architecture/decisions/001-progressive-react-startup.md) · [Current application sitemap](../../architecture/application-sitemap.md)

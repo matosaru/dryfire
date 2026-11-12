@@ -1,3 +1,4 @@
+import './AboutPage.css';
 import {MarketingOverview} from '../../public-site/MarketingOverview';
 import { PageHeading } from '@dryfire/ui/PageHeading';
 import { InformationCard } from '@dryfire/ui/InformationCard';

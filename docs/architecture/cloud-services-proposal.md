@@ -46,6 +46,6 @@ Choose a supported European data-location strategy where available and verify ac
 
 ## Separate environments and required tests
 
-Use separate dev/production databases, buckets, auth clients, callback URLs and billing/webhook secrets. Never copy real firearm/profile data into fixtures. Public staging is noindex and staff-only where appropriate; fake paid grants cannot enter production builds.
+Use separate staging/production databases, buckets, auth clients, callback URLs and billing/webhook secrets. Never copy real firearm/profile data into fixtures. Public staging is noindex and staff-only where appropriate; fake paid grants cannot enter production builds.
 
 Acceptance: A cannot enumerate/read/write B; revoked/expired tokens are denied; duplicate/reordered uploads are safe; a failed snapshot preserves the last good one; browser-data deletion followed by sign-in restores the correct complete library; account switching/concurrency never mixes owners; cancelled Pro preserves local records and disclosed restore access; deletion propagates. These tests are unrun until services exist. See [billing/QA requirements](../business/monetization.md).

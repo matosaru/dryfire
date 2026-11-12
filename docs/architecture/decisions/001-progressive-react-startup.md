@@ -21,6 +21,6 @@ Typed React components remain the source of page/shell structure, with colocated
 
 This is a progressive React architecture, not React-only runtime rendering. Some DOM construction remains in startup adapters; it is an intentional compatibility/performance boundary, not an untracked promise of later deletion. There is maintenance cost, protected by frozen native/React equivalence tests, component tests and pinned both-edition browser checks. Further consolidation is justified when it removes real duplication without changing behavior or exceeding budgets.
 
-CHG-051 replaces the plan's unconditional native-first-entry retirement objective with consumer-audited retention under these rules. It does not permit unrelated feature work, deployment, main/dev updates, new billing/auth features or baseline relaxation. Final acceptance still requires CI on the implementation revision; hardware iPhone microphone/beep validation remains separate.
+CHG-051 replaces the plan's unconditional native-first-entry retirement objective with consumer-audited retention under these rules. It does not permit unrelated feature work, deployment, production updates, new billing/auth features or baseline relaxation. Final acceptance still requires CI on the implementation revision; hardware iPhone microphone/beep validation remains separate.
 
 [Component registry](../component-map.json) · [Architecture guide](../application-structure.md) · [Refactor plan](../../project/react-refactor/plan.md)

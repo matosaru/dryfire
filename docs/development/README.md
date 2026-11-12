@@ -1,10 +1,10 @@
 # Dry Fire With Ease — trigger-first practice and optional sound learning
 
-Repository workflow: [b/main Free, dev Full, PR protection and test-gated builds](../project/branching-strategy.md).
+Repository workflow: [`b` pre-production and `main` production, protected PR promotion and test-gated builds](../project/branching-strategy.md).
 
 The [active refactor plan](../project/react-refactor/plan.md) and [application structure/entry-point guide](../architecture/application-structure.md) describe the 13 typed pages, 26 shared UI components, guarded lazy runtime owners and CHG-051 retained startup adapters. The requested structure article and first-party guidance have been reviewed in the [specification](../project/react-refactor/spec.md). [component-map.json](../architecture/component-map.json) is the authoritative source/controller/test registry; [migration architecture](../architecture/react-migration.md) retains historical increments. Consult the active plan for final CI acceptance rather than inferring it from structural completion.
 
-Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with dev/production verification.
+Current forward work: [web commercial roadmap](../project/web-commercial-plan.md) and [initial security/performance review](security-performance-review.md). CHG-026 defers native releases and prioritizes Contact/SEO, a simple Free/Pro offer and secure cloud recovery/billing with staging/production verification.
 
 [Public-Free/private-full-preview testing](free-preview-testing.md) documents the authorized two-gun public build and retained full preview. The private-preview Free/Full simulation and signed Access asset gate are implemented and tested; live Cloudflare Access policy/deployment remain owner-managed and separately verified. Broader billing/accounts/cloud work is still paused.
 

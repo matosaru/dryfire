@@ -2,7 +2,7 @@ name: Test and build
 run-name: ${{ github.event_name == 'workflow_dispatch' && inputs.candidate_patch != '' && format('Pre-merge candidate {0}', inputs.candidate_patch) || format('Test and build · {0}', github.ref_name) }}
 on:
   push:
-    branches: [main, b, dev]
+    branches: [main, b]
   pull_request:
   workflow_dispatch:
     inputs:
@@ -36,6 +36,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci --no-audit --no-fund
+      - name: Run focused SEO and canonical route tests
+        run: npm run test:seo
       - run: npm run verify:profile
       - run: npm run typecheck
       - run: npm run lint:components

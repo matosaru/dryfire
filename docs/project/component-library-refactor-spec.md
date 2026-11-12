@@ -5,11 +5,11 @@ Status: approved for staged implementation on `b` (2026-11-09). This specificati
 ## Current baseline
 
 - `@dryfire/ui` is a private source workspace with explicit subpath exports; component folders contain source, CSS, tests and an entry file.
-- `docs/architecture/component-map.json` indexes 50 page/component packages: 29 shared UI components, 5 feature components, 14 pages and 2 public-site components.
-- `src/styles.css` currently imports the design tokens, page/component CSS and ordered `legacy-before-*` / `legacy-after-*` compatibility styles. React TSX files do not import their own styles.
+- `docs/architecture/component-map.json` indexes 51 page/component packages: 30 shared UI components, 5 feature components, 14 pages and 2 public-site components.
+- `src/styles.css` imports design tokens, page/component CSS and ordered `legacy-before-*` / `legacy-after-*` compatibility styles. Active aggregate CSS owners directly import their stylesheet; two shared components also own a second CSS fragment. The component map records direct imports and one of `aggregate`, `lazy`, `external` or `none` CSS delivery. The current migration verifies page/feature owners and preserves the ordered aggregate as the sole application CSS source. Exact source ownership and import paths are indexed in [`component-map.json`](../architecture/component-map.json).
 - Native HTML templates render all screen containers before React ownership, so first paint and early navigation need the current blocking stylesheet and its cascade order.
-- Several CSS files have real ownership exceptions: private `ProgressContent` styles are injected by the lazy `progressView` owner; `NumberInput.css` styles a parent selector; `PracticeCatalog.css` is currently documentation-only; `TriggerProfileStatus.css` is read into a native template; some legacy-named files still contain active unrelated selectors.
-- Node `--import tsx` build renderers import the same React component graph as the browser. A browser-only `.css` import fails in these renderers unless the build path deliberately handles it.
+- Several CSS files have real ownership exceptions: `ProgressContent` styles load with the private lazy chart; `HistoryDeleteControl` styles load with the lazy presentation chunk; `NumberInput.css` includes a parent selector; `PracticeCatalog.css` and `RetainedNode.css` are comment-only; `TriggerProfileStatus.css` is read into the trusted native template; `PublicPage.css` is emitted separately for public SEO pages; some legacy-named files still contain active unrelated selectors.
+- Node `--import tsx` build renderers import the same React component graph as the browser. Component-owned CSS is handled by the registered Node CSS hook and Vite's `--configLoader native`; Vite's config bundler must not bundle CSS imports from its prerender graph.
 - `tools/public-pages.mjs` currently assumes it can identify one startup application stylesheet. It must select the stylesheet linked from the generated app HTML if lazy CSS assets are introduced.
 
 The detailed per-package paths and current source/test ownership remain generated in [`component-map.json`](../architecture/component-map.json). The baseline agent’s inspected owners include `src/styles.css`, `tools/page-templates.mjs`, `tools/public-pages.mjs`, `src/optional/progressView.js`, `tools/style-sources.mjs`, `tools/verify-dist.mjs`, `packages/ui/src/NumberInput/NumberInput.css`, and feature CSS under `apps/web/src/features`.
@@ -46,9 +46,9 @@ Shared UI must not import `apps`, runtime controllers, IndexedDB, microphone cap
 
 ## Build and loading design
 
-- The canonical owner stylesheet is imported with the component package entry and remains available to Vite’s CSS graph.
-- CL3 must prove that source-entry import plus the startup compatibility manifest emits each physical stylesheet once, preserves the original blocking app stylesheet, and does not create a late style flash for native HTML screens.
-- Node SSR/build helpers need a deliberate CSS import strategy. Preferred candidate: a build-only Node CSS module hook installed before Vite/config imports; it returns an empty module for CSS only in Node renderers, while Vite continues to process real browser CSS. The proof must include `page-templates.mjs`, public page prerendering, docs generation and Jest. If this is not robust, use a browser/server entry split without duplicating component logic.
+- The canonical owner stylesheet is imported with the component package entry and remains available to Vite’s CSS graph. The generated map and architecture verifier assert each active import's delivery path.
+- CL3 proved that source-entry imports plus the startup compatibility manifest emit each physical aggregate stylesheet once, preserve the original blocking app stylesheet, and do not create a late style flash for native HTML screens.
+- Node SSR/build helpers use the CSS module hook installed before Vite/config imports with `--configLoader native`; it returns an empty module in Node renderers while Vite continues to process real browser CSS. Keep `page-templates.mjs`, public page prerendering, docs generation and Jest in the acceptance gates.
 - `tools/public-pages.mjs` must select the app stylesheet from the generated HTML link, not the first arbitrary CSS asset, before code splitting can create multiple stylesheets.
 - Preserve the public standalone CSS and route metadata. Public pages remain fully styled without hydration.
 - Do not change `cssCodeSplit`, app style order, preload behavior, service-worker cache completeness or the exclusive Full preview asset boundary without measurements and corresponding tests.

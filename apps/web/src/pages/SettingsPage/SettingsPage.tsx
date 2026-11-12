@@ -1,3 +1,4 @@
+import './SettingsPage.css';
 import {PreferenceToggle} from '@dryfire/ui/PreferenceToggle';
 import {SettingsAction} from '../../features/settings/components/SettingsAction/index.ts';
 import {GunContext} from '@dryfire/ui/GunContext';

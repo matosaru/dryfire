@@ -1,3 +1,4 @@
+import './PublicPage.css';
 import {AppShell} from '@dryfire/ui/AppShell';
 import {MarketingOverview} from '../MarketingOverview';
 import {EmailContact} from '../../pages/ContactPage/EmailContact.tsx';

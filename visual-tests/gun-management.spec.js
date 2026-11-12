@@ -1,4 +1,3 @@
-import {createHash} from 'node:crypto';
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 const library=readFileSync(new URL('./fixtures/library.json',import.meta.url));
@@ -11,6 +10,19 @@ async function backup(page){
   await page.locator('#settingsShortcut').click();
   const pending=page.waitForEvent('download');await page.locator('#exportBtn').click();
   return JSON.parse(readFileSync(await (await pending).path(),'utf8'));
+}
+async function screenshotPixelHash(page,png){
+  return page.evaluate(async base64=>{
+    const binary=atob(base64),bytes=new Uint8Array(binary.length);
+    for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+    const bitmap=await createImageBitmap(new Blob([bytes],{type:'image/png'}));
+    const canvas=document.createElement('canvas');canvas.width=bitmap.width;canvas.height=bitmap.height;
+    const context=canvas.getContext('2d',{willReadFrequently:true});context.drawImage(bitmap,0,0);bitmap.close();
+    const pixels=context.getImageData(0,0,canvas.width,canvas.height).data;
+    const raw=pixels.buffer.slice(pixels.byteOffset,pixels.byteOffset+pixels.byteLength);
+    const digest=new Uint8Array(await crypto.subtle.digest('SHA-256',raw));
+    return `${canvas.width}x${canvas.height}:${Array.from(digest,value=>value.toString(16).padStart(2,'0')).join('')}`;
+  },png.toString('base64'));
 }
 
 test('editing a nonselected gun preserves selection and every owned record across refresh',async({page})=>{
@@ -124,7 +136,7 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   page.on('dialog',dialog=>dialog.accept());await restore(page);
   await page.locator('#settingsShortcut').click();
   await expect(page.locator('#settingsView')).not.toHaveAttribute('data-react-settings');
-  await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
+  await expect(page.locator('#appearance')).toBeEnabled();await page.locator('#appearance').selectOption(theme);await expect(page.locator('html')).toHaveAttribute('data-theme',theme);await expect(page.locator('#appearance')).toHaveValue(theme);
   await expect(page.locator('#noiseFilterStatus')).not.toHaveText('Checking browser support…');
   await expect(page.locator('#autoGainStatus')).not.toHaveText('Checking browser support…');
   await expect(page.locator('#vibrationStatus')).not.toHaveText('Checking browser support…');
@@ -144,5 +156,6 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
   await expect(page.locator('#soundResetSummary')).toContainText('12 learned samples');
   await page.evaluate(()=>document.activeElement?.blur());
-  expect(createHash('sha256').update(await page.locator('#settingsView').screenshot({animations:'disabled'})).digest('hex')).toBe(createHash('sha256').update(before).digest('hex'));
+  const after=await page.locator('#settingsView').screenshot({animations:'disabled'});
+  expect(await screenshotPixelHash(page,after)).toBe(await screenshotPixelHash(page,before));
 });

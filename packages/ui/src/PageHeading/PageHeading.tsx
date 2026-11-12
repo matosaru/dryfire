@@ -1,3 +1,5 @@
+import './PageHeading.css';
+
 export interface PageHeadingProps {
   id: string;
   title: string;

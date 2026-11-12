@@ -32,6 +32,18 @@ One coordinator owns the exact branch/commit and passes short, durable artifacts
 | 9. Post-deployment verification | Verify live version, smoke flows, SEO/cache behavior and rollback need | Fast model, medium; escalate incidents | Observed live evidence |
 | 10. Documentation/handoff | Update plan, history and concise active context | Fast model, low | Current status and remaining owner work |
 
+## Continuous SEO Analyst role
+
+The SEO Analyst is a persistent specialist in the development pipeline, including this component refactor and future product changes. It reviews every planned or implemented change that can affect crawlability, rendered public content, canonical URLs, titles/descriptions, structured data, internal links, redirects, robots/sitemap policy, performance signals or accessibility that affects content discovery. The role reports risks and specific improvements to Planning/Implementation before acceptance; it does not silently change product copy or route policy.
+
+For every SEO-affecting implementation, include focused unit tests for the changed contract (route identity, canonical/metadata output, structured data, links, redirect/status/robots/sitemap behavior, as applicable). `npm run test:seo` runs the focused public-site and routing contract tests on every GitHub push and pull request; the full test/coverage, build and visual gates remain required. Extend the focused suite whenever a new SEO contract is added so the analyst's findings are enforced by CI rather than relying only on a manual review. Browser/HTTP edge behavior still needs relevant integration checks; passing unit tests do not prove live indexing or Search Console status.
+
+Model guidance: use a fast model for routine change screening, and escalate to a high-reasoning SEO/legal review when routes, domain consolidation, redirects, privacy, structured claims or indexing policy change. The repository documents this role and CI checks; the Codex coordinator must assign/run the specialist review because GitHub Actions does not have an authenticated model agent configured.
+
+## Refactor versioning
+
+Treat one approved feature as one versioning unit, even when it takes several commits or bounded refactor slices. Keep the current version while implementation commits go to `b`. Only after the full feature passes its acceptance gates on `b`, make one release-version bump in `package.json` and the lockfile, refresh the build-derived About evidence, and rerun the complete exact-candidate gates. Promote the green release to `main` through the protected PR process only after the user explicitly approves that feature's promotion. About remains the single build-derived version source; never maintain a second label.
+
 Use a frontier/high-reasoning model for security boundaries, destructive storage changes, audio races, nondeterministic cross-browser failures or architectural decisions with costly rollback. A mechanical code review can be cheap; a security or migration review cannot.
 
 Validation and auto-fixing form a bounded loop: classify failure, apply one minimal fix, run focused proof, then rerun the complete affected gate. Set a retry limit before starting. Escalate repeated or nondeterministic failures rather than allowing agents to weaken thresholds, rewrite baselines or keep patching symptoms.

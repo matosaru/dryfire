@@ -1,3 +1,4 @@
+import './TriggerProfileStatus.css';
 export type TriggerProfileQuality={status:'needs-samples'|'variable'|'stable';title:string;message:string;sampleCount:number;needed:number;outlierIndexes:number[]};
 
 /** Read-only learning guidance; sample ownership and capture remain feature-owned. */

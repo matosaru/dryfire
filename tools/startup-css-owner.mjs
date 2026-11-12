@@ -1,16 +1,16 @@
 import { dirname, resolve, relative } from 'node:path';
-import { startupStyleOwners } from './style-sources.mjs';
+import { externalStyleOwners, startupStyleOwners } from './style-sources.mjs';
 
-const VIRTUAL_PREFIX = '\0dryfire-startup-css-owner:';
+const VIRTUAL_PREFIX = '\0dryfire-component-css-owner:';
 
 /** Resolve owner imports to the already-emitted startup style entry. This keeps
  * lazy JS chunks from emitting a second copy of CSS required by native markup. */
-export function startupCssOwnerPlugin(root = process.cwd()) {
-  const owners = new Map(Object.entries(startupStyleOwners).map(([owner, css]) => [
-    resolve(root, owner), resolve(root, css)
+export function componentCssOwnerPlugin(root = process.cwd()) {
+  const owners = new Map([...Object.entries(startupStyleOwners), ...Object.entries(externalStyleOwners)].map(([owner, css]) => [
+    resolve(root, owner), new Set((Array.isArray(css) ? css : [css]).map(path => resolve(root, path)))
   ]));
   return {
-    name: 'dryfire-startup-css-owner',
+    name: 'dryfire-component-css-owner',
     enforce: 'pre',
     resolveId(source, importer) {
       const cleanImporter = importer?.split('?')[0], cleanSource = source.split('?')[0];
@@ -18,8 +18,8 @@ export function startupCssOwnerPlugin(root = process.cwd()) {
       const owner = resolve(cleanImporter), expected = owners.get(owner);
       if (!expected) return null;
       const requested = resolve(dirname(owner), cleanSource);
-      return requested === expected
-        ? `${VIRTUAL_PREFIX}${relative(root, expected)}.js`
+      return expected.has(requested)
+        ? `${VIRTUAL_PREFIX}${relative(root, requested)}.js`
         : null;
     },
     load(id) {

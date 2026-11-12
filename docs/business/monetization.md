@@ -29,7 +29,7 @@ The user supplied examples, not an approved final allocation. Existing multi-gun
 
 Use one **Upgrade to Pro** entry and one short comparison. Trigger training and Start remain primary; account/billing/backup controls are secondary. Avoid repeated sales prompts or mandatory optional-sound training. Review new screen designs and update requirements/architecture/baselines before code.
 
-For the immediate public-versus-owner access question, [the pre-billing strategy](../development/free-preview-testing.md) proposes public Free and a full dev preview protected by Cloudflare Access. Define allocation and preserve existing data use/export first; staff production access comes later via backend entitlements. Preview is not a third public plan. The user's latest instruction pauses implementation and requests plans committed to a feature branch only.
+For the immediate public-versus-owner access question, [the pre-billing strategy](../development/free-preview-testing.md) proposes public Free and a full preview protected by Cloudflare Access. Define allocation and preserve existing data use/export first; staff production access comes later via backend entitlements. Preview is not a third public plan. Commercial implementation remains paused until separately authorized; follow the current `b` → protected `main` release policy for any approved code changes.
 
 ## Pricing and business model
 
@@ -64,7 +64,7 @@ Confirm the entity/trader, supported countries, payout/KYC and obligations with 
 
 Primary sources to verify: [Lithuanian tax authority](https://www.vmi.lt/), [Lithuanian data protection authority](https://vdai.lrv.lt/), [EU VAT](https://europa.eu/youreurope/business/taxation/vat/index_en.htm), [EU consumer contracts](https://europa.eu/youreurope/business/dealing-with-customers/consumer-contracts-guarantees/index_en.htm), [GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj), [Stripe restrictions](https://stripe.com/legal/restricted-businesses), [Stripe Checkout](https://docs.stripe.com/payments/checkout), [Paddle acceptable use](https://www.paddle.com/legal/acceptable-use-policy), [Lemon Squeezy prohibited products](https://docs.lemonsqueezy.com/help/getting-started/prohibited-products). These legal/provider pages were not retrieved here; current wording and product applicability remain verification tasks.
 
-## Free/Pro testing on dev and production
+## Free/Pro testing in staging and production
 
 | Environment | Identities and billing | Required evidence |
 | --- | --- | --- |

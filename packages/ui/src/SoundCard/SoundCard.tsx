@@ -1,3 +1,5 @@
+import './SoundCard.css';
+
 export type SoundCardProps={label:string;meta:{tone:string;title:string;description:string};count:number;maxExamples:number;minExamples:number;recommendedExamples:number;locked:boolean;optional?:boolean;enabled?:boolean;onRecord?:()=>void;onReplace?:()=>void;onReset?:()=>void;onToggle?:(enabled:boolean)=>void};
 /** Numeric features and capture/reset persistence remain owned by the learning feature. */
 export function SoundCard({label,meta,count,maxExamples,minExamples,recommendedExamples,locked,onRecord,onReplace,onReset,optional=false,enabled=false,onToggle}:SoundCardProps){
