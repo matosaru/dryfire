@@ -2,7 +2,15 @@
 
 CHG-032 current public availability is governed by [build editions](../requirements/build-editions.md): two-gun public creation under CHG-034, no new custom creation or advanced graphs publicly; full preview retains them. Existing data/preset editing/use/export/restore remain available. This overrides earlier all-free availability statements for these actions without implementing billing or deleting data. Publication/deployment are tracked separately.
 
-CHG-026 · revision 2.0 · 2026-10-11 · **Analysis requested; no price, paywall, provider or cloud retention rule approved/implemented.** Business location: Lithuania. Initial markets: Europe; define the exact EU/EEA/non-EU country list before launch. Native apps/store billing are deferred.
+CHG-026 / CHG-073 · revision 2.1 · 2026-11-12 · **Planning only; no price, paid-feature allocation, provider, account/cloud behavior or implementation is approved by this analysis.** Business location: Lithuania. Initial markets: Europe; define the exact supported country list before launch. Native apps/store billing are deferred. Follow the staged [monetization rollout plan](monetization-rollout.md).
+
+## Review of the submitted product analysis
+
+The analysis correctly recognizes user-trained sound profiles, microphone-based detection, local history and built-in/custom practice as existing product capabilities, and prioritizes device reliability and onboarding. It does not establish physical microphone accuracy, cross-device persistence or current paid conversion. Its market prices are not verified: the €4.99/month and €49–€69 lifetime figures are suggestions only. A fresh first-party page snapshot confirms that Dry Fire Pro also advertises ML trigger detection, so microphone-based timing alone should not be marketed as unique. See the evidence limits in [competitor research](competitor-analysis.md).
+
+The current public build contract also differs from the analysis's broader feature inventory: new gun creation is limited to two, new custom-drill creation is hidden, and advanced graphs are hidden; existing saved data and selected existing preset workflows remain accessible. Full preview retains expanded features. The submitted feature list must not be described as what every public user currently receives, nor automatically converted into a final paid allocation.
+
+Recommended order: validate the Free/iPhone experience; complete source-backed competitor and cost research; approve the feature/legacy-data/legal decisions; then implement opt-in account recovery and reliable backups before billing; finally add one server-authorized Pro offer and stage a small pilot. Keep cross-device conflict-aware sync, sharing, additional sound categories and camera analysis for later evidence-based decisions. These are recommendations and remain subject to owner approval.
 
 ## One clear offer
 
@@ -62,7 +70,14 @@ Confirm the entity/trader, supported countries, payout/KYC and obligations with 
 - **Operations:** tenant isolation, incident response, tested service and user recovery, key rotation, abuse/spend limits and access audits. Choose sustainable support/refund ownership; a contact email alone is not an incident/recovery process.
 - **Product/provider constraints:** check dry-fire software/marketing and target-country obligations; retain accurate safety/microphone limitations and avoid guaranteed accuracy/aim/legal-clearance claims. Payment acceptance does not establish IP/safety/consumer-law clearance.
 
-Primary sources to verify: [Lithuanian tax authority](https://www.vmi.lt/), [Lithuanian data protection authority](https://vdai.lrv.lt/), [EU VAT](https://europa.eu/youreurope/business/taxation/vat/index_en.htm), [EU consumer contracts](https://europa.eu/youreurope/business/dealing-with-customers/consumer-contracts-guarantees/index_en.htm), [GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj), [Stripe restrictions](https://stripe.com/legal/restricted-businesses), [Stripe Checkout](https://docs.stripe.com/payments/checkout), [Paddle acceptable use](https://www.paddle.com/legal/acceptable-use-policy), [Lemon Squeezy prohibited products](https://docs.lemonsqueezy.com/help/getting-started/prohibited-products). These legal/provider pages were not retrieved here; current wording and product applicability remain verification tasks.
+### Provider/legal source check — 2026-11-12
+
+- [Stripe restricted businesses](https://stripe.com/legal/restricted-businesses) was accessible and lists firearms (including rifles, shotguns and pistols) and regulated firearm parts among prohibited businesses. That wording makes written review of EasyDryFire's software-only training product a launch blocker. It does **not** establish whether Stripe would classify this app as prohibited; do not implement or plan around approval until Stripe provides a written product-specific decision.
+- [Lemon Squeezy prohibited products](https://docs.lemonsqueezy.com/help/getting-started/prohibited-products) was accessible and lists weapons/ammunition among regulated/prohibited categories. The page does not settle the classification of this software product; obtain written acceptance before relying on it.
+- The previously linked [Paddle acceptable-use URL](https://www.paddle.com/legal/acceptable-use-policy) returned 404 in this check. No Paddle eligibility conclusion is drawn; find the current official policy and request a product-specific decision.
+- Official [EU cross-border VAT guidance](https://europa.eu/youreurope/business/finance-and-tax/vat/cross-border-vat/index_en.htm), [EU consumer contract guidance](https://europa.eu/youreurope/business/selling-in-eu/consumer-contracts-guarantees/index_en.htm), the [GDPR text](https://eur-lex.europa.eu/eli/reg/2016/679/oj), [Lithuanian VMI](https://www.vmi.lt/evmi/), and [Lithuanian VDAI](https://vdai.lrv.lt/lt/) were reachable. They identify the right primary sources for later professional review; this planning pass does not determine the app's tax classification, VAT/OSS obligations, consumer withdrawal implementation, lawful bases, data-controller terms or transfer duties.
+
+Provider terms and applicable law change. Recheck the current official wording with Lithuanian accounting/legal advice before offering a purchase; do not infer safety/legal clearance from a provider checkout account or from a competitor's ability to sell.
 
 ## Free/Pro testing in staging and production
 
