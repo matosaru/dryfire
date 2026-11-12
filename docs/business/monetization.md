@@ -6,7 +6,7 @@ CHG-026 / CHG-073 · revision 2.1 · 2026-11-12 · **Planning only; no price, pa
 
 ## Review of the submitted product analysis
 
-The analysis correctly recognizes user-trained sound profiles, microphone-based detection, local history and built-in/custom practice as existing product capabilities, and prioritizes device reliability and onboarding. It does not establish physical microphone accuracy, cross-device persistence or current paid conversion. Its market prices are not verified: the €4.99/month and €49–€69 lifetime figures are suggestions only. A fresh first-party page snapshot confirms that Dry Fire Pro also advertises ML trigger detection, so microphone-based timing alone should not be marketed as unique. See the evidence limits in [competitor research](competitor-analysis.md).
+The analysis correctly recognizes user-trained sound profiles, microphone-based detection, local history and built-in/custom practice as existing product capabilities, and prioritizes device reliability and onboarding. It does not establish physical microphone accuracy, cross-device persistence or current paid conversion. Its €4.99/month and €49–€69 lifetime figures are suggestions, not verified prices. A first-party Dry Fire Pro site/App Store check confirms another product advertises ML trigger detection; its Lithuanian App Store listing showed €2.99 monthly and €22.99 yearly. This is a useful but narrow comparator, not willingness-to-pay evidence for EasyDryFire. Microphone timing alone should not be marketed as unique. See [competitor research](competitor-analysis.md).
 
 The current public build contract also differs from the analysis's broader feature inventory: new gun creation is limited to two, new custom-drill creation is hidden, and advanced graphs are hidden; existing saved data and selected existing preset workflows remain accessible. Full preview retains expanded features. The submitted feature list must not be described as what every public user currently receives, nor automatically converted into a final paid allocation.
 
@@ -14,7 +14,7 @@ Recommended order: validate the Free/iPhone experience; complete source-backed c
 
 ## One clear offer
 
-Recommend **Free plus one Pro plan**, initially one annual subscription offer. Candidate price: **€24/year**; this is an affordability/cost hypothesis, not a market-verified or approved selling price. Explain the full yearly charge rather than advertising a monthly equivalent that users cannot buy. If research supports another price/cadence, choose one clear launch offer; no multiple Pro tiers, add-ons or simultaneous lifetime offer.
+Recommend **Free plus one Pro plan**, initially one annual subscription offer. **€24/year remains a provisional test point**, close to Dry Fire Pro's €22.99/year Lithuanian App Store listing; it is not an approved price or evidence of EasyDryFire demand or viable cloud margins. Explain the full yearly charge rather than advertising a monthly equivalent that users cannot buy. Validate payment/storage/support costs and customer understanding before selecting a launch price. Do not offer multiple Pro tiers, add-ons or simultaneous lifetime access at launch.
 
 Free starts without sign-in and remains useful for basic dry-fire practice. Account creation/login and purchase recovery are available when needed; login itself is not a paid capability. Pro pays for convenience, recovery and deeper analysis, and needs a recoverable account. This replaces the earlier lifetime-unlock recommendation for the cloud-backed roadmap: a one-time fee creates indefinite hosted costs unless clearly bounded. Earlier illustrative prices were not market validation.
 
@@ -28,7 +28,7 @@ Free starts without sign-in and remains useful for basic dry-fire practice. Acco
 | Account/sign-in/purchase restore | Available when needed; anonymous practice remains possible | Account-linked Pro entitlement | Accounts/entitlements absent |
 | Custom drills | Built-ins available; preserve existing owned presets and readable/exportable data | Candidate paid custom creation/editing and saved presets | CHG-032: creation in full preview; existing preset editing/running in both |
 | Statistics | Useful timing/history text summaries | Candidate graphs, comparisons, filters and deeper analysis | CHG-032: text summaries in both; advanced graphs in full preview only; final paid allocation proposed |
-| Email support/contact | Available to all, without sign-in | Same public contact | Separate app Contact/mailto implemented; address `easydryfire@gmail.com`; public server route unimplemented |
+| Email support/contact | Available to all, without sign-in | Same public contact | App and public Contact pages are implemented; `easydryfire@gmail.com` uses mailto/copy. A server-backed contact form remains optional. |
 | Share drills | Not necessary to basic practice | Later candidate: share sanitized sequence definitions, not gun/audio/history data | Unimplemented |
 | Extra gun-type sound categories | Existing types/Trigger remain usable | Later optional mechanical categories, after accuracy validation | Extra categories unimplemented |
 | Camera/sensor analysis | No promise of movement/aim grading | Later candidate with separate privacy/device/design scope | Unimplemented |

@@ -5,7 +5,7 @@
 - **Direct instruction:** after reviewing the supplied market/product analysis, the owner says: “Ok. Start work. Everything to be committed to new feature branch. We won’t rollout until feature is finished. B and main should stay unchanged.” The owner clarifies that no changes should be made to `b` or `main`.
 - **Authorized scope:** review the analysis, perform bounded first-party competitor research, update the Free/Pro monetization and rollout plan, and commit planning documents only on `feature/monetization-rollout-plan`. Business jurisdiction remains Lithuania and initial target remains Europe. Native apps remain deferred.
 - **Not authorized by this change:** merging/publishing the feature branch, modifying `b`/`main`, app implementation, version bump, price/paid-feature approval, checkout, accounts, entitlements, cloud backup/sync, or uploading customer data.
-- **Status:** planning branch created from current `b`; research/roadmap documents in progress. All prices, provider choices, transition policy and feature allocation remain proposals pending a finished plan and explicit implementation authorization.
+- **Status:** planning branch created from current `b`; initial documentation commit `8b7ab8a` is pushed. First-party competitor/store evidence and the roadmap are being refined. All prices, provider choices, transition policy and feature allocation remain proposals pending a finished plan and explicit implementation authorization.
 
 ## CHG-072 — About page version display (2026-11-10)
 
