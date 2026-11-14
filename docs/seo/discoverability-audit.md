@@ -81,3 +81,32 @@ Use exact search terms naturally after query evidence is available. Candidate to
 ## Limits of this audit
 
 This is a source and documentation audit, not a guarantee of rankings or legal review. Search volume, competitor positions, current indexing, redirects and live response headers could not be independently verified from this environment. Search Console query data and a live post-deployment check are the evidence needed to choose content priorities confidently.
+
+## Seobility mobile report — owner-provided screenshots, 2026-11-14
+
+The report shows an on-page score of **66%**, metadata **97%**, page quality **36%**, page structure **57%**, links **66%**, server **100%**, and external factors **3%**. Its visible findings are useful diagnostics, but not every tool recommendation should be followed literally.
+
+### Source-confirmed opportunities
+
+- **Favicon link is missing from the root app document.** `index.html` declares the Apple touch icon but has no `rel="icon"`. The informational-page renderer includes `/favicon.ico`, while the root app-head path does not. The asset is served by the Worker, but it should also be explicitly linked in the root HTML head.
+- **Root page title and H1 do not align.** The production route title is “Dry Fire With Ease — Free Dry-Fire Practice App”; the root app's branded H1 is only “Dry Fire With Ease.” The `/about/` route is also titled and headed only “About,” despite containing the product overview. Improve the About page's title/H1/description as the product-focused search landing content while keeping `/` as the app.
+- **The root app document contains multiple app screens.** The app's shared initial document contains view templates for many screens, including hidden views and repeated interface labels. A crawler audit can count this as about 1,665 words, 53 headings and duplicate phrases even though these are not a deliberate long-form homepage. Decide whether to keep `/` indexable with a cleaner crawler-facing document or make `/about/` the primary indexable product page while `/` remains usable as the app. Preserve the existing UX and performance budgets in either solution.
+- **The server report says the charset is absent from the HTTP header.** `index.html` has `<meta charset="UTF-8">`, but `workers/publicSite.js` does not explicitly add `charset=utf-8` to successful HTML asset responses. Verify the deployed `Content-Type`; if the header really lacks a charset, set it explicitly for HTML responses and cover it in the Worker test.
+- **Internal-link count is low for the root page.** Much of the counted root content is application UI, not editorial navigation. Improve contextual links on `/about/` and `/practice-modes/` to the guides and Help instead of adding filler links to the trainer.
+- **The About page is the better candidate to resolve title/H1/content mismatches.** It already contains the marketing introduction and current product facts, but its generic page name makes the product intent less clear to a crawler and searcher.
+
+### Recommendations to treat carefully
+
+- **Empty `alt` values are not automatically defects.** Several app images are decorative (brand mark and gun-type art adjacent to visible labels) and correctly use `alt=""`. Keep empty alt for decorative images; add meaningful alt only to informative images. Inspect Seobility's five image URLs before changing them.
+- **Do not inflate word count or heading count.** The 53-heading/duplicate-text result likely reflects app templates and repeated controls in the root document. Add headings only where they organize real public explanatory content.
+- **No external links and few backlinks:** adding unrelated external links will not improve relevance. Backlinks require legitimate mentions from useful resources or communities; avoid paid/spam links. This is a long-term outreach/content task, not a source-code fix.
+- **Social sharing warning:** social buttons are optional and not a direct ranking factor. A well-designed Open Graph image and accurate share metadata are higher value and already partly implemented.
+- **Score and “critical” labels are vendor-specific.** Use the concrete finding and business impact rather than targeting 100% Seobility score.
+
+### Suggested implementation order from this report
+
+1. Add the missing root `rel="icon"`; verify the actual HTML response `Content-Type` includes UTF-8 and make the Worker set it explicitly if needed.
+2. Make `/about/` title, H1, description and visible copy consistently describe the current public dry-fire trainer; keep `/` as the app.
+3. Investigate whether root app templates should be excluded from crawler-facing markup or whether root should be `noindex` while About remains indexable. This is a product/indexing decision and must retain direct app usability; do not silently change it.
+4. Add helpful, descriptive cross-links among About, the practice-mode directory, mode guides, calibration guide and Help.
+5. Re-run Seobility and compare issue-level changes. Use Google Search Console to decide content and backlink priorities; do not treat a higher audit score alone as evidence of better organic discovery.
