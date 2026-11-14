@@ -1,6 +1,6 @@
 {
   "status": "reviewed local candidate; 26 canonical mobile Chromium page captures pass; footer readability adjustment included",
-  "expandedCSSSha256": "340db7bd25763aca21dcb98c1bbcd0072a320c23f264292b674d866c1f913e40",
+  "expandedCSSSha256": "90ef7bf1cdddcf5ac3abe179b1868f018ed7116979d5f64cc2217c72262aab95",
   "reviewedChanges": [
     "Trigger profile guidance card",
     "Shared Test start sound control",
