@@ -69,6 +69,7 @@ jobs:
         run: |
           npm run build:public
           npm run verify:dist -- --edition=public
+          node tools/verify-public-site.mjs
           npx --no-install wrangler deploy --config wrangler.public.jsonc --env "" --dry-run
           npx --no-install wrangler deploy --config wrangler.public.jsonc --env dev --dry-run
           npm run build:preview

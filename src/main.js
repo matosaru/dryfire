@@ -36,6 +36,10 @@ import {
 } from './storage/library.js';
 import {materializeStaticCatalog} from './staticCatalog.js';
 import { afterPaint } from './afterPaint.js';
+import { restoreDeferredAppViews } from './deferredAppViews.js';
+
+// Restore prerendered screens before any runtime controller queries the app DOM.
+restoreDeferredAppViews(document);
 
 const labelMeta = {
   draw: { title: 'Draw from holster', description: 'Holster release and presentation sounds', tone: 'blue' },
@@ -47,6 +51,7 @@ const $ = selectNode;
 const appURLs=isAppPath(location.pathname);
 let pendingEntry=appURLs?parseAppPath(location.pathname):null;
 let appStarted=false;
+let startupRoutePending=true;
 const canonicalLink=document.querySelector('link[rel=canonical]');
 let metadataPath=canonicalLink?.getAttribute('href')?.replace('https://easydryfire.com','');
 async function openEntry(){const entry=pendingEntry;pendingEntry=null;return openAppEntry(entry??{view:'home'});}
@@ -241,7 +246,10 @@ function renderListeningReadiness(counts = getCounts()) {
   const disabled = {listenBtn:!liveSession && !!view.reason,singleShotBtn:!!liveSession || !!view.reason};
   if(livePage)livePage.update({texts:{trainingSummary:text},disabled});
   else { setNodeText(summary,text); for(const[id,value]of Object.entries(disabled))setNodeDisabled($('#'+id),value); }
-  informationPages.setNavigationDisabled(view.entryDisabled);
+  // The first database read can outlive document load. Keep route controls
+  // inert until init has resolved the incoming URL and restored its state.
+  const readyForNavigation = typeof appStarted === 'undefined' || appStarted;
+  informationPages.setNavigationDisabled(!readyForNavigation || view.entryDisabled);
   const context = {gunName:activeGun?.name || 'No gun selected',contextHidden:!gunAvailable};
   const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
   if(homePage)homePage.update({...context,training});
@@ -565,7 +573,11 @@ function displayView(name) {
   }
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
   if (name === 'recognize') { liveValue("drillSelect",''); resetDrill(); }
-  const initialDisplay = document.body.dataset.view === 'loading';
+  // SEO prerendering marks the root route as Home so crawlers receive visible
+  // content. The first runtime route may still redirect to Gun Setup after
+  // local data loads; treat that first route as startup, not user navigation.
+  const initialDisplay = startupRoutePending || document.body.dataset.view === 'loading';
+  startupRoutePending=false;
   // Scroll APIs flush layout. Reset the already-painted old screen before any
   // view/style writes; a new document already starts at the top. Flushing after
   // changing data-view temporarily laid out the outgoing Home screen on startup.
@@ -1146,11 +1158,13 @@ async function init() {
   }
   setStatus('Ready');
   appStarted=true;
+  renderListeningReadiness();
   if (practiceController) afterPaint(practiceController.renderCatalog).catch(showError);
 }
 
 const informationPages = createInformationBridge({ onBack: () => goBack(), onError: showError, onNavigate: name => { if (screenNavigation) switchView(name); },
   canEnhance: () => !profileLocked() && !$('#safetyModal').open });
+informationPages.setNavigationDisabled(true);
 init().catch(showError);
 
 // HTTPS-hosted web builds can reopen offline after an initial successful load.

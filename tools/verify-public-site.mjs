@@ -1,9 +1,11 @@
 import{readFileSync}from'node:fs';import assert from'node:assert/strict';
+import{JSDOM}from'jsdom';
 import{PUBLIC_ROUTES,CANONICAL_ORIGIN,publicAssetPath,sitemapXML,robotsTXT}from'../site/routes.js';
 import{offlineAppPaths,isIndexableAppPath,legacyPathRedirect}from'../src/appPaths.js';
 import site from'../workers/publicSite.js';
 const dist=new URL('../dist/',import.meta.url);
 const read=path=>readFileSync(new URL('.'+path,dist),'utf8');
+function elementsIncludingTemplates(root,selector,out=[]){out.push(...root.querySelectorAll(selector));for(const template of root.querySelectorAll('template'))elementsIncludingTemplates(template.content,selector,out);return out;}
 const assets={fetch:async request=>{try{const path=new URL(request.url).pathname;return new Response(readFileSync(new URL('.'+path,dist)),{headers:{'Content-Type':path.endsWith('.html')?'text/html; charset=utf-8':'application/octet-stream'}});}catch{return new Response('Not found.',{status:404});}}};
 for(const route of PUBLIC_ROUTES){
  const html=read(publicAssetPath(route.path)),head=html.split('</head>')[0];
@@ -12,10 +14,22 @@ for(const route of PUBLIC_ROUTES){
  assert(head.includes(`href="${CANONICAL_ORIGIN}${route.path}"`));assert(!head.includes('workers.dev'));
  assert.equal(html.includes('type="module"'),!!route.appView,`Shared app entry: ${route.path}`);
  const json=JSON.parse(head.match(/application\/ld\+json">([^<]+)<\/script>/)[1]);assert.equal(json.url,CANONICAL_ORIGIN+route.path);
- assert.equal((html.match(/<h1(?:\s|>)/g)||[]).length,1);
+ const doc=new JSDOM(html).window.document;
+  assert.equal(doc.querySelectorAll('h1').length,1,`One crawlable H1 on ${route.path}`);
+ assert(elementsIncludingTemplates(doc,'img').every(image=>image.hasAttribute('alt')),`Every image declares its alternative on ${route.path}`);
+ assert([...doc.querySelectorAll('b,strong')].every(node=>node.textContent.trim()),`No empty emphasis placeholders on ${route.path}`);
+ const headings=[...doc.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(node=>node.textContent.trim().replace(/\s+/g,' ')).filter(Boolean);
+ assert.equal(new Set(headings).size,headings.length,`No duplicate crawlable headings on ${route.path}`);
+ assert([...doc.querySelectorAll('[title]')].every(node=>node.title.trim()!==node.textContent.trim()&&node.title.trim()!==node.getAttribute('aria-label')),`No redundant title tooltip on ${route.path}`);
+ if(route.appView){
+  const active=[...doc.querySelectorAll('#pageContent > .view')];
+  assert.equal(active.length,1,`Only the active screen is ordinary crawlable markup on ${route.path}`);
+  assert.equal(active[0].id,route.appView+'View',`Correct active screen on ${route.path}`);
+ }
  if(route.path==='/')assert(html.includes('id=gunSetupView')||html.includes('id="gunSetupView"'));
  else assert(html.includes(route.heading),`Missing prerendered content ${route.path}`);
- if(route.id==='about'){assert.match(head,/<title>Browser Dry-Fire Practice App \| Dry Fire With Ease<\/title>/);assert.match(html,/<h1>Browser dry-fire practice with sound recognition<\/h1>/);assert(html.includes(`Sound trainer · Beta · v${JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8')).version}`),'About must display the current app version.');assert(!html.includes('id="gunSetupView"'),'About must not ship the hidden app screen templates.');}
+ if(route.id==='home'){assert.match(head,/<title>Dry-Fire Practice App \| Dry Fire With Ease<\/title>/);assert.equal(doc.querySelector('h1')?.textContent,'Browser dry-fire practice app');assert(doc.querySelector('main')?.textContent.toLowerCase().includes('browser dry-fire practice app'),'Home copy must echo its title and H1 topic.');for(const path of ['/practice-modes/','/sequence-drills-guide/','/trigger-click-calibration-guide/'])assert([...doc.querySelectorAll('a[href]')].some(link=>link.getAttribute('href')===path),`Home links to ${path}`);}
+ if(route.id==='about'){assert.match(head,/<title>Browser Dry-Fire Practice App \| Dry Fire With Ease<\/title>/);assert.match(html,/<h1>Browser dry-fire practice with sound recognition<\/h1>/);assert(html.includes(`Sound trainer · Beta · v${JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8')).version}`),'About must display the current app version.');assert(!html.includes('id="gunSetupView"'),'About must not ship hidden app screens.');}
  const result=await site.fetch(new Request(CANONICAL_ORIGIN+route.path),{ASSETS:assets});assert.equal(result.status,200);assert.equal(result.headers.get('X-Robots-Tag'),null);assert.match(result.headers.get('Content-Type'),/text\/html;\s*charset=utf-8/i);assert.equal(await result.text(),html);
  for(const match of html.matchAll(/href=(?:"([^"]+)"|([^\s>]+))/g)){const target=match[1]??match[2];if(target.startsWith('/')){const res=await site.fetch(new Request(CANONICAL_ORIGIN+target),{ASSETS:assets});assert.equal(res.status,200,`Broken link ${target} in ${route.path}`);}}
 }

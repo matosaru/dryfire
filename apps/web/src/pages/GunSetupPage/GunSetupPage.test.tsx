@@ -8,6 +8,7 @@ test('name and illustrated type controls retain native validation and one hidden
  render(<GunSetupPage/>);const name=screen.getByRole('textbox',{name:'Gun name'});expect(name).toBeRequired();expect(name).toHaveAttribute('maxlength','80');
  expect((document.querySelector('#gunForm') as HTMLFormElement).checkValidity()).toBe(false);fireEvent.change(name,{target:{value:'Test'}});
  for(const type of ['Handguns','Rifles and Carbines','Shotguns']){fireEvent.click(screen.getByRole('radio',{name:type}));expect(document.querySelector('#gunType')).toHaveValue(type);expect(screen.getByRole('radio',{name:type})).toBeChecked();}
+ expect([...document.querySelectorAll<HTMLImageElement>('.gun-type-choice img')].map(image=>image.alt)).toEqual(['Illustration of a handgun','Illustration of a rifle','Illustration of a shotgun']);
  expect((document.querySelector('#gunForm') as HTMLFormElement).checkValidity()).toBe(true);expect(document.querySelectorAll('.gun-type-choice img')).toHaveLength(3);
 });
 test('editing preloads details and dispatches the supplied submit, cancel and restore actions',()=>{

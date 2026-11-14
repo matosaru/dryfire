@@ -40,7 +40,7 @@ export function BrandHeaderContent({ status = 'Loading…', view = 'home', links
       if(!onNavigate||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
       event.preventDefault();onNavigate('home');
     }}>
-    <img className="brand-logo" src="/logo.svg" width="47" height="47" alt="" />
+    <img className="brand-logo" src="/logo.svg" width="47" height="47" alt="Dry Fire With Ease logo" />
     <div className="hero-copy">
       <div className="brand-heading"><Heading className="brand-name" aria-label="Dry Fire With Ease"><span className="brand-eyebrow">DRY <span>FIRE</span></span><span className="brand-tagline">WITH EASE</span></Heading><span className="beta-badge" aria-label="Beta version">BETA</span></div>
     </div>

@@ -8,13 +8,34 @@ test('favicon is available at its conventional URL',async({request,browserName})
 test('public information is readable without JavaScript; the app root discloses its requirement',async({browser})=>{
  test.skip(edition!=='public','The generated no-JavaScript public pages are edition-independent.');
  const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});const page=await context.newPage();
- for(const route of PUBLIC_ROUTES){const response=await page.goto(route.path);await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://easydryfire.com'+route.path);if(route.id==='home'){expect(await response.text()).toContain('Enable JavaScript');}else if(route.appView){await expect(page.locator('#'+route.appView+'View')).toBeVisible();await expect(page.locator('#'+route.appView+'View')).toContainText(route.heading);}else await expect(page.locator('h1')).toHaveText(route.heading);if(route.id==='about')await expect(page.locator('.about-intro .muted.small')).toHaveText(`Sound trainer · Beta · v${appVersion}`);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(0);}
+ for(const route of PUBLIC_ROUTES){const response=await page.goto(route.path);await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://easydryfire.com'+route.path);if(route.id==='home'){expect(await response.text()).toContain('Enable JavaScript');await expect(page.locator('#home-title')).toHaveText(route.heading);await expect(page.locator('h1')).toHaveCount(1);await expect(page).toHaveTitle(route.title);}else if(route.appView){await expect(page.locator('#'+route.appView+'View')).toBeVisible();await expect(page.locator('#'+route.appView+'View')).toContainText(route.heading);}else await expect(page.locator('h1')).toHaveText(route.heading);if(route.id==='about')await expect(page.locator('.about-intro .muted.small')).toHaveText(`Sound trainer · Beta · v${appVersion}`);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(0);}
  await context.close();
+});
+test('mobile app header names are distinct and small brand and footer labels remain readable',async({page,browserName})=>{
+ test.skip(edition!=='public'||browserName!=='chromium','One mobile accessibility check covers the public shared app shell.');
+ await page.setViewportSize({width:390,height:844});await page.goto('/');
+ for(const name of ['About','Contact','Settings']){
+  const control=page.getByRole(name==='Settings'?'button':'link',{name,exact:true});
+  await expect(control).toBeVisible();await expect(control).not.toHaveAttribute('title');
+  await expect(control.locator('svg')).toHaveAttribute('aria-hidden','true');
+ }
+ const sizes=await page.evaluate(()=>Object.fromEntries(['.brand-tagline','.beta-badge','footer'].map(selector=>[selector,Number.parseFloat(getComputedStyle(document.querySelector(selector)).fontSize)])));
+ for(const [selector,size] of Object.entries(sizes))expect(size,`${selector} font size`).toBeGreaterThanOrEqual(12);
+});
+test('the app root exposes one active view to no-script crawlers and restores all views before runtime',async({browser,page,browserName})=>{
+ test.skip(edition!=='public'||browserName!=='chromium','The generated public root is the SEO crawl fixture.');
+ const crawler=await browser.newContext({javaScriptEnabled:false});const crawlerPage=await crawler.newPage();await crawlerPage.goto('/');
+ await expect(crawlerPage.locator('main > .view')).toHaveCount(1);
+ await expect(crawlerPage.locator('main > .view')).toHaveAttribute('id','homeView');
+ await expect(crawlerPage.locator('main h1')).toHaveCount(1);await crawler.close();
+ await page.goto('/');
+ await expect(page.locator('main > .view')).toHaveCount(14);
+ await expect(page.locator('#gunSetupView')).toBeVisible();
 });
 test('flat app routes preserve profile data, invalid drafts and browser history',async({page})=>{
  await restore(page,'/history/');await expect(page.locator('#historyView')).toBeVisible();
  await page.reload();await expect(page).toHaveURL(/\/history\/$/);await expect(page).toHaveTitle('History — Dry Fire With Ease');
- await page.goto('/');await expect(page.locator('#homeView')).toBeVisible();await expect(page.locator('#homeDrillsBtn')).toBeEnabled();await expect(page).toHaveTitle('Dry Fire With Ease — Free Dry-Fire Practice App');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');await expect(page.locator('#homeEvents')).toHaveText(String(library.events.filter(row=>row.gunId===library.activeGunId).length));
+ await page.goto('/');await expect(page.locator('#homeView')).toBeVisible();await expect(page.locator('#homeDrillsBtn')).toBeEnabled();await expect(page).toHaveTitle('Dry-Fire Practice App | Dry Fire With Ease');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');await expect(page.locator('#homeEvents')).toHaveText(String(library.events.filter(row=>row.gunId===library.activeGunId).length));
  await page.locator('.tab[data-view="drills"]').click();await expect(page).toHaveURL(/\/drills\/$/);await page.locator('[data-practice-mode="par"]').click();await expect(page).toHaveURL(/\/par-time-practice\/$/);await expect(page.locator('#practiceGuideLink')).toHaveAttribute('href','/par-time-practice-guide/');await page.locator('#practiceRepetitions').fill('');await page.locator('#practiceGuideLink').click();await expect(page).toHaveURL(/\/par-time-practice-guide\/$/);await page.locator('#practiceGuideBackBtn').click();await expect(page.locator('#practiceRepetitions')).toHaveValue('');await expect(page).toHaveURL(/\/par-time-practice\/$/);
  await page.reload();await expect(page.locator('#practiceConfigure')).toBeVisible();await expect(page.locator('#practice-title')).toHaveText('Par time practice');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
  await page.locator('#settingsShortcut').click();await expect(page).toHaveURL(/\/settings\/$/);await page.goBack();await expect(page.locator('#practiceConfigure')).toBeVisible();

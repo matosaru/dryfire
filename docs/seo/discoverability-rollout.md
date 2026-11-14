@@ -1,58 +1,40 @@
-# SEO and accessibility rollout plan
+# SEO audit remediation rollout
 
-**Working branch:** `feature/seo-discoverability-release`
-**Release path:** feature branch → `b` → `main` after verification  
-**Scope:** public discoverability and the accessibility findings in the owner-provided Seobility screenshots. Keep `/` as the usable app homepage. Do not include the separate monetization feature.
+**Working branch:** `feature/seo-audit-scroll-fix`
+**Base:** `main` at `d4f0026`; `b` has the same tree and is two merge commits behind. This worktree is isolated.
+**Release rule:** finish and verify on this branch, release to `b`, bump the app version once for the completed feature, then merge `b` to `main` only with owner approval.
 
-## Workflow and status
+## Acceptance steps and tickets
 
-| Step | Work | Status | Acceptance evidence |
-| --- | --- | --- | --- |
-| 1. Baseline and triage | Review Seobility screenshots, route source, generated pages, accessible labels, image alternatives and existing checks. Classify vendor warnings as code defects, product decisions or off-site work. | Done | `docs/seo/discoverability-audit.md` records evidence and cautions against score chasing. |
-| 2. Fix technical delivery | Link the existing favicon from the app entry document. Send UTF-8 charset on successful HTML responses. Preserve canonical URLs, route redirects, crawler directives and hashed-asset caching. | Done | Public-site tests and built-output verification. |
-| 3. Fix reported accessibility issues | Remove redundant `title` text when icon controls already have accessible names; make footer copy readable; assert both at component/browser-test level. | Done | BrandHeader unit test and page-layout visual assertions. |
-| 4. Make the public product page crawlable | Serve `/about/` as a focused static public page rather than the full app shell with hidden screens. Use a descriptive, accurate title, H1 and description. Keep the app at `/`. | Done | Route metadata tests and public HTML checks. |
-| 5. Verify and refresh visual evidence | Run unit, SEO/public-route, build, docs, public-site and mobile Chromium visual checks. Refresh only baselines changed by the accepted UI/accessibility or public-page changes. Use the pinned Playwright browser version. | Done locally; hosted CI rerun pending | 1,196/1,196 unit tests across 182 suites; 16/16 smoke tests; pinned Chromium + WebKit suite 175 passed / 38 skipped; screenshot baseline generation 105 passed / 5 skipped. Typecheck, component/runtime lint, build, public-site verification, documentation checks, payload budget and Wrangler dry-run pass. Footer text was raised to 12px on the legacy app and kept at 12.64px on the shared information footer to address the reported tiny text without broadly changing that layout. Screenshot fingerprints and guide animations were refreshed from current sources. |
-| 6. Release candidate | Review final diff and version policy, bump the app version once for the completed feature, commit and push the SEO branch. | In progress | Version is `0.8.10` (one patch above current `b`). The feature is based directly on latest `origin/b` and contains no monetization changes. PR #42 is open. Its first CI run passed validation, screenshots for both editions, public Chromium/WebKit performance, preview WebKit performance and Cloudflare preview build, but failed preview Chromium performance and a separate screenshot job. Updated footer CSS and reviewed visual evidence are ready for a new CI run. |
-| 7. Promote to `b` | Merge/cherry-pick only SEO feature changes onto `b`, run the full required CI checks there, and confirm the preview deployment. | Pending | `b` checks green and preview serves new HTML/headers. |
-| 8. Promote to `main` | After `b` is verified, promote the same SEO changes to `main`, run production CI and confirm production deployment. | Pending | `main` checks green; production canonical routes, HTML charset and favicon respond correctly. |
-| 9. Measure indexing | Submit/inspect sitemap and indexing in Search Console; re-run Seobility on the deployed canonical pages; compare issue-level findings. | Owner follow-up | Search Console and live audit evidence; do not infer ranking gains from a tool score. |
+| Step | Ticket | Acceptance | Status |
+|---|---:|---|---|
+| 1. Remove empty emphasis markup | [#44](https://github.com/matosaru/dryfire/issues/44) | No empty `<b>`/`<strong>` in crawlable public documents; route verification guards regressions. | Implemented; public-route verifier passes. |
+| 2. Isolate non-active app screens from crawlers | [#45](https://github.com/matosaru/dryfire/issues/45) | Each app URL emits only its selected screen as ordinary markup; other screens remain inert in templates and restore before controllers start. | Implemented; unit tests and both-edition browser suites pass. |
+| 3. Align Home metadata and copy | [#46](https://github.com/matosaru/dryfire/issues/46) | Root title, single H1 and visible copy describe browser dry-fire practice and include matching topic terms. | Implemented; all 14 public routes pass verification. |
+| 4. Add image alternatives | [#48](https://github.com/matosaru/dryfire/issues/48) | Images declare suitable alternatives; decorative illustrations do not duplicate spoken labels. | Implemented; component and route tests pass. |
+| 5. Enforce SEO/public-route invariants | [#49](https://github.com/matosaru/dryfire/issues/49) | Check metadata, H1s, headings, image alternatives, emphasis, active view, internal links, canonicals, sitemap, redirects and Worker responses. | Implemented; public and preview builds verify all 14 canonical routes. |
+| 6. Resolve accessibility findings | [#50](https://github.com/matosaru/dryfire/issues/50) | Remove redundant tooltips; make flagged small labels readable; retain keyboard-accessible names and navigation. | Implemented; component tests and reviewed mobile captures pass. |
+| 7. Add crawlable Home guide links | [#51](https://github.com/matosaru/dryfire/issues/51) | Home links contextually to public practice, sequence and calibration guides; link destinations are checked. | Implemented; Home test, route verifier and refreshed mobile capture pass. |
+| 8. Final acceptance and release | [#47](https://github.com/matosaru/dryfire/issues/47) | Full checks green; version bumped once; release follows the branch/approval rule. | Local checks are green. PR/release to `b` is pending; current version is `0.8.10`. The release version bump and owner-approved `main` promotion follow the established `b` release gate. |
 
-## Release gates
+## Current verification record
 
-Before committing or promoting, run:
+- Full Jest coverage: **1,201 passed across 183 suites**; statement/branch/function/line coverage is 76.92% / 74.71% / 78.77% / 79.30%.
+- Smoke: **16 passed**. Focused SEO routes: **25 passed**.
+- Public browser suite: **107 passed, 5 skipped**. Preview browser suite: **82 passed, 5 skipped**. The updated Home screenshot was then regenerated and passed independently.
+- Public and preview builds plus `verify:dist` pass. The local public-route verifier checks 14 canonical routes, sitemap/robots, metadata, links, redirects and local Worker responses.
+- Typecheck, component/runtime lint, architecture and payload checks pass. The coverage ratchet passes.
+- 26 mobile Chromium baselines were reviewed after refresh; the Home baseline was refreshed again for the contextual guide links.
+- Documentation checks pass after guide GIF exports and source fingerprints were regenerated: `docs:check` verifies 14 functional screens, one shared dialog, 95 current captures and the SEO proposal.
+- The public sitemap is generated and verified at `/sitemap.xml`; Search Console submission is an external action and is not verified here. Live site and Seobility could not be fetched from this environment (network proxy returned HTTP 403), so the deployed audit score needs a fresh external crawl after release.
+- The external backlink score and social-profile findings are not code-only fixes. Backlinks require outreach; social links need the owner’s actual profiles. These remain outside this app change.
+- No version bump, commit, push or deployment has been made. `b` and `main` are unchanged. Version remains `0.8.10` until release acceptance.
 
-1. `npm test -- --runInBand`
-2. `npm run test:smoke`
-3. `npm run typecheck`
-4. `npm run build`
-5. `node tools/verify-public-site.mjs`
-6. `npm run docs:check`
-7. `npm run test:visual:docker` (pinned Chromium; update snapshots only when the visual change is intentional and reviewed)
-8. The repository's CI checks for build, screenshots, performance and deployment profile.
+## Workflow
 
-No branch promotion occurs until the checks applicable to that branch are green. Report test status, branch SHAs and deployment status separately.
-
-## Step-by-step promotion workflow
-
-1. Finish the local validation gates above and inspect the complete diff, including generated screenshots, GIFs, route metadata and the single feature version bump.
-2. Push the reviewed candidate to the isolated SEO feature branch. Do not merge or copy changes into `b` while required checks are failing or pending.
-3. Review every required PR check. If a check fails, identify whether it is a product defect, visual baseline mismatch, or measurement variance; fix or explain it with reproducible evidence, then rerun the affected local and hosted gates.
-4. Merge the feature PR into `b` only after every required check is green. Verify the Cloudflare preview serves the new version, `/about/`, favicon, charset header, canonical metadata and sitemap.
-5. Promote the same tested `b` commit to `main` after the `b` deployment is verified; wait for the production workflow and required checks to finish.
-6. Verify production routes and response headers, then record the exact `b` and `main` SHAs and deployment check results. Search Console recrawl and third-party audit checks remain post-release follow-up.
-
-## Findings intentionally not “fixed” by code changes
-
-- Decorative images keep `alt=""`; this is correct accessibility behavior. Add descriptions only for informative images whose meaning is not already given by adjacent text.
-- Backlinks require relevant, genuine references from other sites. Do not add unrelated outbound links or buy links to silence a checker.
-- Social share buttons are optional. Existing accurate share metadata is retained; an editorial 1200×630 share card can be a separate design task.
-- The root app includes many screens and repeated interface labels. Do not hide the app from search or alter the homepage contract solely to improve a vendor's word-count/heading score. Review Search Console data before deciding whether the app document needs a separate crawler strategy.
-- Seobility's score and severity labels are vendor-specific. Acceptance is based on specific defects, crawlability and user accessibility, not a target score.
-
-## Manual post-release checklist
-
-- Fetch `https://easydryfire.com/`, `/about/`, `/favicon.ico`, `/robots.txt` and `/sitemap.xml`; confirm status, canonical tags and `Content-Type` values.
-- Confirm `.app` permanent redirect continues to `.com` and that public routes keep their paths.
-- In Search Console, submit `/sitemap.xml`, inspect `/` and `/about/`, and review coverage after recrawl.
-- Re-run the external audit on `/about/` and `/` separately; compare each issue rather than only the aggregate percentage.
+1. Complete code and unit coverage for tickets #44–#51.
+2. Build public and preview editions; verify route metadata, content, links, sitemap, robots and redirects.
+3. Run full unit, smoke, typecheck, lint, architecture, coverage, payload, docs and pinned browser checks; refresh only reviewed visual/media references.
+4. Review accessibility and mobile captures, then record evidence in the tickets and this file.
+5. Merge the verified feature to `b` after its PR checks pass; verify its deployment.
+6. Bump the app version once for the completed feature on `b`, rerun release checks, then merge `b` to `main` only after owner approval. Confirm deployment and request a fresh external SEO crawl.
