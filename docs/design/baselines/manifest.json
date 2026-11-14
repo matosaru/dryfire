@@ -16,134 +16,134 @@
   },
   "images": {
     "chromium/public/gun-setup/first-gun.dark.390.png": {
-      "sha256": "dbf6f50247286b18112f0a830388be04cd6f23f33cf06119bebbb1df47b7edb1",
+      "sha256": "039df9e38491399a6dd92d279958e7c03e28d90ce9334ea129fff25238b14890",
       "width": 390,
-      "height": 1163
+      "height": 1201
     },
     "chromium/public/home/overview.dark.390.png": {
-      "sha256": "096a54edec634af3b2c148372bc012e947f64177e32dcd0a7493371df04096d4",
+      "sha256": "7a237efb7260fb03ea9d0ba4a99fff403d54204540366b5325ceebe368fdc1d5",
       "width": 390,
-      "height": 1174
+      "height": 1212
     },
     "chromium/public/guns/library.dark.390.png": {
-      "sha256": "b99d60b8838ac31e2ccda7b683acd8c1dd72fcd1433a198d1dac3b4bae2ae75d",
+      "sha256": "c62b79d06c49ec605cec069ff966e2cbe9bdfa923f711a8193750fefabe27c4c",
       "width": 390,
-      "height": 1235
+      "height": 1273
     },
     "chromium/public/learn/overview.dark.390.png": {
-      "sha256": "5326e9b89a31d954b3bbe2b7551dbb3d5b5924bab65df67d75db5fc5f0a5c087",
+      "sha256": "69f810af09caf90d021281b99331efd3fcbf7e9c519d72ccf269d663e370a62b",
       "width": 390,
-      "height": 1662
+      "height": 1699
     },
     "chromium/public/sound-check/overview.dark.390.png": {
-      "sha256": "0017fab9c5ea93d04685b2c514abb7a4a018e193e82bfb70ac758f08c0497dce",
+      "sha256": "4865263928a61b32d38ec58bfd0e565c888444ea09c38200981c2cbb65cbb0a2",
       "width": 390,
-      "height": 1181
+      "height": 1219
     },
     "chromium/public/drills/catalog.dark.390.png": {
-      "sha256": "def2a23cd0ef0f244a9847934c8082560f9c299df8eb687e9e490992844a5465",
+      "sha256": "326990098db31c784ea8d48bd7a377b8a465f788ed96fb923582159f90d6d752",
       "width": 390,
-      "height": 1798
+      "height": 1836
     },
     "chromium/public/practice/configure-single.dark.390.png": {
-      "sha256": "8a4592e61f762d9c12086ff4f43a76cc75a536fb86dff6db359ba81da837d8ca",
+      "sha256": "2c6b9c73aec3b01e816cd87a351e3c3a4e9ea98b121c7c699d7d9501abe137c8",
       "width": 390,
-      "height": 1513
+      "height": 1551
     },
     "chromium/public/session/configure.dark.390.png": {
-      "sha256": "b7b4865fa3bb57e53ec7e49d6cf10cadfe1a7ca8ab0d77904ffbeced26c76707",
+      "sha256": "d7c1bce7a53eae6603b1143ebbe09d4c01aeef4361e5b5dd9d60ccf598c9c648",
       "width": 390,
-      "height": 1387
+      "height": 1424
     },
     "chromium/public/practice-guide/single.dark.390.png": {
-      "sha256": "dd672de08ed28d2e6c4b2301ee0fe1b5eefa90b0ae2e82a698aa5500778a08d0",
+      "sha256": "5a3b67752e80169f5dc4ac38bd04fcafc95ed691db2159f406e75d2764d31697",
       "width": 390,
-      "height": 2333
+      "height": 2371
     },
     "chromium/public/live-listen/ready.dark.390.png": {
-      "sha256": "2f2034bc71d2fc5d9f2b25f71ccfe9141ff5ccd8d35d04315b8dae3f79275e50",
+      "sha256": "bce339786ad3ff079dfa449e97d13590ccb254d003a6c0f4fdadb4a80c87b8fb",
       "width": 390,
-      "height": 1788
+      "height": 1826
     },
     "chromium/public/history/overview.dark.390.png": {
-      "sha256": "08f9be850b30ca246d14657cd9d3d9627b6389dec53df1ef2598af4ac43ea402",
+      "sha256": "a31b105f56f672635b3625ca1aecbf4db6692537e0944795ec9f930be2da7825",
       "width": 390,
-      "height": 2753
+      "height": 2790
     },
     "chromium/public/settings/overview.dark.390.png": {
-      "sha256": "df05fa51b68cfec6e239f8e7d46d081a189a49f3f943f879999f0a72a46523d4",
+      "sha256": "c1ed31f65bfad74b30fd7101732c38860093c879e4977388e9dda71b103f21e3",
       "width": 390,
-      "height": 2044
+      "height": 2082
     },
     "chromium/public/about/overview.dark.390.png": {
-      "sha256": "2dfadc9e6da6b0c4fab31057604c09dadc40b82a18967877e541e2cfb095d750",
+      "sha256": "3fedc44692cb9f73cf9df057d929c76a767738411ac0e5e5fbe7dbba88676e33",
       "width": 390,
-      "height": 2162
+      "height": 2200
     },
     "chromium/public/contact/overview.dark.390.png": {
-      "sha256": "c76dad1db173069d42b2259ceeb780c7e73a7f76cc35ced514ce88dad663cd8a",
+      "sha256": "70c074cf93ab8bbc76176704cbaaea08c51b4ed6188b1f041b6648d963325617",
       "width": 390,
       "height": 844
     },
     "chromium/public/shared/safety-modal.dark.390.png": {
-      "sha256": "3e482ed943e106e89be78b5fb45b024061bc0104c9251c5fc416dca4f9b1f9e8",
+      "sha256": "34f30ff137c25b39bbea4415824c18fd74d42fb1bbe4c207e466062927550598",
       "width": 390,
       "height": 844
     },
     "chromium/public/public-site/practice.dark.390.png": {
-      "sha256": "b9544b1743330e02d9a68a4dc8e6049f8bd0aad433cbae533f881f784aea064b",
+      "sha256": "a9ff48a86c79ad76f4f452418cf8e9ca251fa8bc72afb3ee02a4be836a605460",
       "width": 390,
-      "height": 1292
+      "height": 1330
     },
     "chromium/public/public-site/single.dark.390.png": {
-      "sha256": "9f9376de65f16d7444ff46189d7225c0f061d6f085805fca450469b817ab0b60",
+      "sha256": "cc05651c1c9a202cd17704a641c03288a428d662578ab458b1c85ae62e74492c",
       "width": 390,
-      "height": 2333
+      "height": 2371
     },
     "chromium/public/public-site/repeated.dark.390.png": {
-      "sha256": "7aae1535b5bf77710a38b9e62e1454b62763433acbb82711a66335a18a5d73a3",
+      "sha256": "7813cc8e13bc0d8fc488f6c6a2a07f9fd36cb09322104ee3b4b380d4f0be1f0d",
       "width": 390,
-      "height": 2078
+      "height": 2116
     },
     "chromium/public/public-site/par.dark.390.png": {
-      "sha256": "a28c9e9a478003dcf32b82bf8ac56d46c84e58ee6f46866590fb6223e2b5f30f",
+      "sha256": "1df9e9dcc8ebc36defa49c254844b5a4e9ba9539478ba2ac89003501b2287ab2",
       "width": 390,
-      "height": 2061
+      "height": 2099
     },
     "chromium/public/public-site/control.dark.390.png": {
-      "sha256": "5f7b38757db1d6ed175c9b99959392542e7174857e0d3d6acea65fb5f6655c71",
+      "sha256": "017d12b48bc13298690b16a69735bba2f10b4dc10777bde974ceaa3469c59b5d",
       "width": 390,
-      "height": 2078
+      "height": 2116
     },
     "chromium/public/public-site/sequence-rack-trigger.dark.390.png": {
-      "sha256": "a66996a37a97387356435470b0f11b266ad86ef7efe09a58c4e242d9e86b54da",
+      "sha256": "b9308afb28f8434c3de57c96ac26cde22ad66f026b861b1fa0378e4c9c4f66b3",
       "width": 390,
-      "height": 2080
+      "height": 2118
     },
     "chromium/public/public-site/sequence-mag-trigger.dark.390.png": {
-      "sha256": "bdd3f83546cd5926fdeaa039251b05e7f710c096a988e2dd8dff155da3c293d0",
+      "sha256": "7ae1dbbed5d4bc72139ab19b031eeba3193859d0ac66cae153ec54135fd8b838",
       "width": 390,
-      "height": 2080
+      "height": 2118
     },
     "chromium/public/public-site/sequence-draw-mag-trigger.dark.390.png": {
-      "sha256": "38550848724d08b34f2703cf175a9fd0377a7579d100cdfc0a5d8e70610d24ad",
+      "sha256": "2386480f2c95ccee15c35b8a8578f14395e7e8744ab272c04ddd5058d5db85e2",
       "width": 390,
-      "height": 2111
+      "height": 2149
     },
     "chromium/public/public-site/sequence.dark.390.png": {
-      "sha256": "2bebf6a45ca5d878242eed3fb6255c37f9b65314a2aaf1238fc6e142510e4481",
+      "sha256": "32b56cf0898ba06d3bc087ab0597211f849e08cd9972310eb5c7e836434322b2",
       "width": 390,
-      "height": 1518
+      "height": 1556
     },
     "chromium/public/public-site/calibration.dark.390.png": {
-      "sha256": "506de2f9d1e330104d2149f934071b56419ed88da2360e0df9b706016712ee9f",
+      "sha256": "0d8384ffe08fb57856ae87ca7b37cd221ae534d18515ba52f1ede04d0e6b7c3f",
       "width": 390,
-      "height": 1710
+      "height": 1748
     },
     "chromium/public/public-site/help.dark.390.png": {
-      "sha256": "c517eecb8a36a137677b4cf8a3aad16627bafa98f61d09b1549eed7d921e5bfd",
+      "sha256": "e4282c8aaca61e7109c35258953a147abc66c39fdfdd52719c336997e4adbb57",
       "width": 390,
-      "height": 2091
+      "height": 2129
     }
   }
 }
