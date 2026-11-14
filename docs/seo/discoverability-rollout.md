@@ -1,6 +1,6 @@
 # SEO and accessibility rollout plan
 
-**Working branch:** `feature/seo-discoverability`  
+**Working branch:** `feature/seo-discoverability-release`
 **Release path:** feature branch → `b` → `main` after verification  
 **Scope:** public discoverability and the accessibility findings in the owner-provided Seobility screenshots. Keep `/` as the usable app homepage. Do not include the separate monetization feature.
 
