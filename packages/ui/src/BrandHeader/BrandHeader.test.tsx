@@ -32,6 +32,7 @@ test('header information links share named decorative icons and real destination
   const {container,rerender}=render(<BrandHeader onNavigate={onNavigate}/>);
   const links=[screen.getByRole('link',{name:'About'}),screen.getByRole('link',{name:'Contact'}),screen.getByRole('button',{name:'Settings'})];
   expect(links.map(link=>link.getAttribute('aria-label'))).toEqual(['About','Contact','Settings']);
+  expect(links.every(link=>!link.hasAttribute('title'))).toBe(true);
   expect(links.map(link=>link.getAttribute('href'))).toEqual(['/about/','/contact/',null]);expect(links[2]).toHaveAttribute('type','button');
   expect(container.querySelectorAll('.header-link svg[aria-hidden="true"][focusable="false"]')).toHaveLength(3);
   await userEvent.setup().click(links[0]);expect(onNavigate).toHaveBeenCalledWith('about');expect(links[0]).not.toHaveAttribute('data-tip-off');

@@ -1,6 +1,6 @@
 {
-  "status": "reviewed local candidate; 26 canonical mobile Chromium page captures pass",
-  "expandedCSSSha256": "8842992a44558c7a48d897e4b81c2be93025b7317e576a5d85cdf8e6a0eea464",
+  "status": "reviewed local candidate; 26 canonical mobile Chromium page captures pass; footer readability adjustment included",
+  "expandedCSSSha256": "90ef7bf1cdddcf5ac3abe179b1868f018ed7116979d5f64cc2217c72262aab95",
   "reviewedChanges": [
     "Trigger profile guidance card",
     "Shared Test start sound control",
@@ -13,7 +13,8 @@
     "CHG-066 persisted Metric / Imperial measurement selector and Sound Check distance copy",
     "CHG-068 inline single-record deletion on History",
     "CHG-069 one canonical mobile Chromium screenshot per distinct page type",
-    "CHG-070 semantic token foundation and design-system documentation"
+    "CHG-070 semantic token foundation and design-system documentation",
+    "Accessible footer text sizing for readability"
   ],
   "physicalDeviceEvidence": false
 }

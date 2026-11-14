@@ -92,8 +92,9 @@ for (const width of [320, 390, 1024]) for (const theme of ['dark', 'light']) {
 
 test('header icon keyboard labels, focus tooltips and modified links preserve navigation',async({page})=>{
  await page.goto('/');await expect(page.locator('#gunSetupView')).toBeVisible();
+ expect(Number.parseFloat(await page.locator('footer').evaluate(node=>getComputedStyle(node).fontSize))).toBeGreaterThanOrEqual(12);
  const about=page.getByRole('banner').getByRole('link',{name:'About',exact:true});
- await expect(about).toHaveAttribute('title','About');await about.focus();await expect(about.locator('.header-tooltip')).toBeVisible();await about.locator('.header-tooltip').hover();await expect(about.locator('.header-tooltip')).toBeVisible();
+ await expect(about).not.toHaveAttribute('title');await about.focus();await expect(about.locator('.header-tooltip')).toBeVisible();await about.locator('.header-tooltip').hover();await expect(about.locator('.header-tooltip')).toBeVisible();
  await page.keyboard.press('Escape');await expect(about.locator('.header-tooltip')).not.toBeVisible();
  await page.keyboard.press('Tab');await expect(page.getByRole('banner').getByRole('link',{name:'Contact',exact:true})).toBeFocused();
  await page.keyboard.press('Enter');await expect(page).toHaveURL(/\/contact\/$/);

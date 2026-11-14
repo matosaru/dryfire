@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "b9fb2b12baab17e62137fe40319a6af6decf59db",
+  "sourceCommit": "e38ad68707bba4ebc2974de2c03d05fc34fa1b6e",
   "renderer": "local Chromium 145.0.7632.6",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
@@ -42,7 +42,7 @@
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
     "apps/web/src/features/settings/components/SettingsAction/SettingsAction.css": "cb71cc3f6a2be6e4a61c0b7b678abb557323520d16d0ec884bd98c6ae62b1e84",
-    "apps/web/src/styles/legacy-after-drill-cards.css": "69996bdd071d363ca685951e8cffc4a5cad4dc5e1b5dd691c4855f4bdea30de9",
+    "apps/web/src/styles/legacy-after-drill-cards.css": "caca8c980cb043aa0208b9fe8b03db85aa332d30305c48fbd16da1e19585bb9a",
     "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
     "packages/ui/src/GunContext/GunContext.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "e3daa948b2747ce84884f233680c36354462f13b7a0acad9aacc84964848a42a",
+      "sha256": "cfe7c1473f9f4f6b7ef7751fe003e015433fcc8452156d487cf964b80b2d01db",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "b30f399c17b5a19c0c1c8c4c46c4e91f30ead23fe96e9ae3731e87269fc49ae6",
+      "sha256": "d09c5495c87c73f43022c76c51dbad1b7d928787c7e5566fcd458274d78eafca",
       "width": 358,
       "height": 1004
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "75edad97dcb6821200d97ca05b6a6683d8419aee794f92f4ec4e1b7f9442e7f9",
+      "sha256": "ed29c8da799f04ba8eb73dc30c36d91a12ed5de3af069161718bbc5373fc3510",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "a1677cfc242e6e7a93b255809014d78b3ab19a4d3f59ece8346e161f7bcabbff",
+      "sha256": "08af62ebcf285ed8fe995f00688ebaeb529362207559168983d02696fc99730c",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "3512c237fd1e5fbaaa7e215327aa524508d6a0d7a12aa3fd879f1fef856a9b42",
+      "sha256": "13cc997d40b032242ebe10bcc80bb5b3a77947861adecdc984b210db345b927b",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "f620d2c1808486f11c62f4de557c4ec3cf2c293f7ec01f13d548002fda299af1",
+      "sha256": "8e3ead460416ce680560f62bbc58e555bbf9ac083f0bf413c1ff4642126fd4f3",
       "width": 358,
       "height": 750
     }
