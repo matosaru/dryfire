@@ -1,6 +1,6 @@
 # Search discoverability audit and rollout
 
-**Status:** analysis and proposed SEO work; no application behavior or public branch changed.  
+**Status:** SEO and accessibility implementation verified locally on `feature/seo-discoverability`; release to `b` and `main` is pending branch CI and promotion.
 **Scope:** canonical public site `https://easydryfire.com`; private/operational application paths stay out of search.  
 **Source review:** `site/routes.js`, `workers/publicSite.js`, `tools/public-pages.mjs`, `PublicPage`, `MarketingOverview`, SEO requirements and route inventory.  
 **Live verification:** not completed. This workspace's network policy blocks requests to `easydryfire.com`; no Search Console property or indexing report was available. Findings below distinguish source facts from things to verify after deployment.
@@ -18,7 +18,7 @@ The most valuable next work is to make the public content target clear search ne
 | P0 | Production indexing and canonical behavior have not been observed | The source config says `.com` is canonical and `.app` redirects, but this workspace could not fetch either domain. Search Console coverage and sitemap processing are unknown. A valid local sitemap does not prove Google can fetch or index it. |
 | P1 | The best product explanation is on `/about/`, but its search title and H1 are generic | `site/routes.js` uses title `About — Dry Fire With Ease` and heading `About`. `MarketingOverview` contains the useful explanation and mode links, but the page's main heading does not describe the product or search intent. `/` must remain the app as already specified. |
 | P1 | There is no evidenced keyword/query map | Routes describe practice modes and calibration, but no search-query or Search Console data was found. We should avoid guessing volume or building pages around unsupported demand. |
-| P1 | Existing public copy is inconsistent and some planning copy is stale | `docs/seo/public-copy.md` labels its proposed copy “not currently rendered,” although `MarketingOverview` is rendered on About. That draft also mentions removed Reload/Free modes and five guns while the public edition currently describes four trigger modes and a two-gun limit. This risks incorrect search snippets and content decisions. |
+| P1 | SEO copy must stay aligned with the generated About page | Resolved in this branch: `/about/` now has a product-specific title, H1 and description, and `docs/seo/public-copy.md` records the exact rendered search copy and current public-edition limits. |
 | P2 | Current pages may be too short for broad informational queries | The mode and calibration pages are useful task guides, but their content is intentionally concise. Improve only where Search Console queries or user questions show an unmet need; preserve accurate limitations and safety language. |
 | P2 | Share preview imagery is a generic square app icon | `tools/public-pages.mjs` uses `/icon-512.png` for Open Graph and Twitter cards. A purpose-designed 1200×630 brand card could improve link previews and sharing; it is a social-click-through improvement, not a direct ranking signal. |
 | P2 | Search success measurement is not documented as an operating routine | The docs mention submitting the sitemap but do not define a repeatable review of indexed pages, query impressions, clicks, CTR or landing-page performance. |
@@ -88,10 +88,10 @@ The report shows an on-page score of **66%**, metadata **97%**, page quality **3
 
 ### Source-confirmed opportunities
 
-- **Favicon link is missing from the root app document.** `index.html` declares the Apple touch icon but has no `rel="icon"`. The informational-page renderer includes `/favicon.ico`, while the root app-head path does not. The asset is served by the Worker, but it should also be explicitly linked in the root HTML head.
+- **Favicon link was missing from the root app document.** Fixed in this SEO branch: `index.html` now declares the existing `/favicon.ico`; informational pages already linked it.
 - **Root page title and H1 do not align.** The production route title is “Dry Fire With Ease — Free Dry-Fire Practice App”; the root app's branded H1 is only “Dry Fire With Ease.” The `/about/` route is also titled and headed only “About,” despite containing the product overview. Improve the About page's title/H1/description as the product-focused search landing content while keeping `/` as the app.
 - **The root app document contains multiple app screens.** The app's shared initial document contains view templates for many screens, including hidden views and repeated interface labels. A crawler audit can count this as about 1,665 words, 53 headings and duplicate phrases even though these are not a deliberate long-form homepage. Decide whether to keep `/` indexable with a cleaner crawler-facing document or make `/about/` the primary indexable product page while `/` remains usable as the app. Preserve the existing UX and performance budgets in either solution.
-- **The server report says the charset is absent from the HTTP header.** `index.html` has `<meta charset="UTF-8">`, but `workers/publicSite.js` does not explicitly add `charset=utf-8` to successful HTML asset responses. Verify the deployed `Content-Type`; if the header really lacks a charset, set it explicitly for HTML responses and cover it in the Worker test.
+- **The server report says the charset is absent from the HTTP header.** Fixed in this SEO branch: successful public/app HTML responses now explicitly set `Content-Type: text/html; charset=utf-8`; the Worker and built-site checks assert it. The deployed response still needs a post-release check.
 - **Internal-link count is low for the root page.** Much of the counted root content is application UI, not editorial navigation. Improve contextual links on `/about/` and `/practice-modes/` to the guides and Help instead of adding filler links to the trainer.
 - **The About page is the better candidate to resolve title/H1/content mismatches.** It already contains the marketing introduction and current product facts, but its generic page name makes the product intent less clear to a crawler and searcher.
 
@@ -103,10 +103,16 @@ The report shows an on-page score of **66%**, metadata **97%**, page quality **3
 - **Social sharing warning:** social buttons are optional and not a direct ranking factor. A well-designed Open Graph image and accurate share metadata are higher value and already partly implemented.
 - **Score and “critical” labels are vendor-specific.** Use the concrete finding and business impact rather than targeting 100% Seobility score.
 
-### Suggested implementation order from this report
+### Accessibility fixes included in this feature
 
-1. Add the missing root `rel="icon"`; verify the actual HTML response `Content-Type` includes UTF-8 and make the Worker set it explicitly if needed.
-2. Make `/about/` title, H1, description and visible copy consistently describe the current public dry-fire trainer; keep `/` as the app.
-3. Investigate whether root app templates should be excluded from crawler-facing markup or whether root should be `noindex` while About remains indexable. This is a product/indexing decision and must retain direct app usability; do not silently change it.
-4. Add helpful, descriptive cross-links among About, the practice-mode directory, mode guides, calibration guide and Help.
-5. Re-run Seobility and compare issue-level changes. Use Google Search Console to decide content and backlink priorities; do not treat a higher audit score alone as evidence of better organic discovery.
+- Removed redundant `title` attributes from the About, Contact and Settings icon controls. Their accessible names remain provided by `aria-label`, and the existing visible focus/hover tooltip remains available.
+- Increased the shared footer text from 0.68rem to 0.8rem (12.8px at the default 16px root size) so the privacy notice and copyright are easier to read. The relative unit still respects browser text zoom.
+- Added component and browser assertions that icon controls have no redundant title and footer text remains at least 12px. Refreshed the 26 mobile Chromium page captures; visual suite passes against those captures.
+
+### Implementation status from this report
+
+1. **Implemented on the feature branch:** add the root favicon declaration, set/verify UTF-8 HTML response headers, remove redundant icon `title` attributes, enlarge footer copy, add targeted checks and refresh mobile page screenshots.
+2. **Implemented on the feature branch:** make `/about/` a static crawlable product page with descriptive title, H1 and description; `/` remains the app.
+3. **Deferred pending search evidence:** consider crawler treatment for app templates at `/`. Do not change the homepage or noindex it solely for a vendor score.
+4. Existing descriptive cross-links among About, practice modes, mode guides, calibration and Help are retained; add new links only when they help users.
+5. **Post-release owner follow-up:** re-run Seobility and inspect Search Console. Use issue-level results and actual queries to set content/backlink priorities; a higher audit score alone does not establish better organic discovery.

@@ -22,6 +22,7 @@ export default {async fetch(request,env){
  if(production&&/^\/(?:favicon\.ico|logo\.svg|icon-192\.png|icon-512\.png|apple-touch-icon\.png)$/.test(path))indexable=true;
  const target=new URL(url);target.pathname=asset;target.search='';
  const response=await env.ASSETS.fetch(new Request(target,request)),headers=new Headers(response.headers);
+ if(response.status===200&&(route||app))headers.set('Content-Type','text/html; charset=utf-8');
  if(indexable&&response.status===200)headers.delete('X-Robots-Tag');else headers.set('X-Robots-Tag',noindex);
  headers.set('X-Content-Type-Options','nosniff');
  if(path==='/favicon.ico')headers.set('Content-Type','image/x-icon');

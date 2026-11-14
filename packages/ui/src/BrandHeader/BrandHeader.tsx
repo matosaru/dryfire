@@ -26,7 +26,7 @@ function HeaderLink({destination,view,href,onNavigate,action}:{destination:Heade
     onNavigate(destination);
   };
   const Control=action?'button':'a';
-  return <Control type={action?'button':undefined} id={destination==='settings'?'settingsShortcut':destination+'Btn'} className={`header-link${view===destination?' active':''}`} href={action?undefined:href} aria-label={label} title={label} aria-current={view===destination?'page':undefined} onClick={activate} onKeyDown={event=>{if(event.key==='Escape')event.currentTarget.dataset.tipOff='true';}} onBlur={event=>{delete event.currentTarget.dataset.tipOff;}} onPointerLeave={event=>{if(event.currentTarget.ownerDocument.activeElement!==event.currentTarget)delete event.currentTarget.dataset.tipOff;}}>
+  return <Control type={action?'button':undefined} id={destination==='settings'?'settingsShortcut':destination+'Btn'} className={`header-link${view===destination?' active':''}`} href={action?undefined:href} aria-label={label} aria-current={view===destination?'page':undefined} onClick={activate} onKeyDown={event=>{if(event.key==='Escape')event.currentTarget.dataset.tipOff='true';}} onBlur={event=>{delete event.currentTarget.dataset.tipOff;}} onPointerLeave={event=>{if(event.currentTarget.ownerDocument.activeElement!==event.currentTarget)delete event.currentTarget.dataset.tipOff;}}>
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{icons[destination]}</svg>
     <span className="header-tooltip" aria-hidden="true">{label}</span>
   </Control>;

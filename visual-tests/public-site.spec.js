@@ -2,12 +2,13 @@ import{test,expect}from'@playwright/test';import{readFileSync}from'node:fs';
 import{PUBLIC_ROUTES}from'../site/routes.js';import{edition}from'./catalog.js';
 import{DRILLS}from'../src/drills.js';import{appPathFor,guidePathFor}from'../src/appPaths.js';
 const library=JSON.parse(readFileSync(new URL('./fixtures/library.json',import.meta.url)));
+const appVersion=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8')).version;
 async function restore(page,path='/'){page.on('dialog',d=>d.accept());await page.goto(path);await expect(page.locator('#gunSetupView')).toBeVisible();await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(library))});}
 test('favicon is available at its conventional URL',async({request,browserName})=>{test.skip(edition!=='public'||browserName!=='chromium','One generated favicon is shared by editions and browsers.');const response=await request.get('/favicon.ico');expect(response.status()).toBe(200);expect((await response.body()).readUInt16LE(2)).toBe(1);});
 test('public information is readable without JavaScript; the app root discloses its requirement',async({browser})=>{
  test.skip(edition!=='public','The generated no-JavaScript public pages are edition-independent.');
  const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});const page=await context.newPage();
- for(const route of PUBLIC_ROUTES){const response=await page.goto(route.path);await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://easydryfire.com'+route.path);if(route.id==='home'){expect(await response.text()).toContain('Enable JavaScript');}else if(route.appView){await expect(page.locator('#'+route.appView+'View')).toBeVisible();await expect(page.locator('#'+route.appView+'View')).toContainText(route.heading);}else await expect(page.locator('h1')).toHaveText(route.heading);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(0);}
+ for(const route of PUBLIC_ROUTES){const response=await page.goto(route.path);await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://easydryfire.com'+route.path);if(route.id==='home'){expect(await response.text()).toContain('Enable JavaScript');}else if(route.appView){await expect(page.locator('#'+route.appView+'View')).toBeVisible();await expect(page.locator('#'+route.appView+'View')).toContainText(route.heading);}else await expect(page.locator('h1')).toHaveText(route.heading);if(route.id==='about')await expect(page.locator('.about-intro .muted.small')).toHaveText(`Sound trainer · Beta · v${appVersion}`);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(0);}
  await context.close();
 });
 test('flat app routes preserve profile data, invalid drafts and browser history',async({page})=>{
@@ -32,5 +33,5 @@ test('public guides read without a gun or microphone and return to their own set
 });
 test('legacy bookmarks redirect to flat routes and marketing remains inside About',async({page})=>{
  await page.goto('/app/history/?retained=1');await expect(page).toHaveURL(/\/history\/\?retained=1$/);await expect(page.locator('#gunSetupView')).toBeVisible();
- await page.goto('/welcome/');await expect(page).toHaveURL(/\/about\/$/);await expect(page.locator('#aboutView')).toContainText('Dry-fire practice,');await expect(page.getByRole('link',{name:'Open the free app'})).toBeVisible();await page.getByRole('link',{name:'Open the free app'}).click();await expect(page).toHaveURL(/\/$/);await expect(page.locator('#gunSetupView')).toBeVisible();
+ await page.goto('/welcome/');await expect(page).toHaveURL(/\/about\/$/);await expect(page.locator('#public-content')).toContainText('Dry-fire practice,');await expect(page.getByRole('link',{name:'Open the free app'})).toBeVisible();await page.getByRole('link',{name:'Open the free app'}).click();await expect(page).toHaveURL(/\/$/);await expect(page.locator('#gunSetupView')).toBeVisible();
 });

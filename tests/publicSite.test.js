@@ -3,8 +3,9 @@ import {PUBLIC_ROUTES,CANONICAL_ORIGIN,publicAssetPath,sitemapXML} from '../site
 const env=()=>({ASSETS:{fetch:async request=>new Response(new URL(request.url).pathname,{headers:{'Content-Type':'text/html'}})}});
 test('the application is the homepage on production and preview; About retains the editorial entry',async()=>{
  for(const origin of ['https://easydryfire.com','https://dryfire.matosaru.workers.dev']){const response=await site.fetch(new Request(origin+'/'),env());expect(await response.text()).toBe('/index.html');expect(response.headers.get('X-Robots-Tag')?.includes('noindex')??false).toBe(origin.includes('workers.dev'));}
- const about=await site.fetch(new Request(CANONICAL_ORIGIN+'/about/'),env());expect(await about.text()).toBe(publicAssetPath('/about/'));expect(about.headers.get('X-Robots-Tag')).toBeNull();
+ const about=await site.fetch(new Request(CANONICAL_ORIGIN+'/about/'),env());expect(await about.text()).toBe(publicAssetPath('/about/'));expect(about.headers.get('X-Robots-Tag')).toBeNull();expect(about.headers.get('Content-Type')).toBe('text/html; charset=utf-8');
  const app=await site.fetch(new Request(CANONICAL_ORIGIN+'/settings/'),env());expect(await app.text()).toBe('/index.html');expect(app.headers.get('X-Robots-Tag')).toContain('noindex');
+ expect(app.headers.get('Content-Type')).toBe('text/html; charset=utf-8');
 });
 test('legacy app and editorial links redirect to their clean equivalent while preserving queries',async()=>{
  for(const[path,target]of Object.entries({'/app/':'/','/app/learn/':'/learn/','/app/practice/par-time/':'/par-time-practice/','/practice/par-time/':'/par-time-practice-guide/','/app/sequence/':'/drills/','/welcome/':'/about/'})){
@@ -21,6 +22,9 @@ test('unknown/internal paths are real404s, canonical variants redirect once, HEA
 });
 test('sitemap contains canonical public content, including the app homepage and unique manuals, without private setup URLs',()=>{
  const xml=sitemapXML();expect(PUBLIC_ROUTES).toHaveLength(14);for(const route of PUBLIC_ROUTES)expect(xml).toContain(CANONICAL_ORIGIN+route.path);for(const path of ['/app/','/settings/','/history/','/rack-slide-trigger-pull/'])expect(xml).not.toContain('<loc>'+CANONICAL_ORIGIN+path+'</loc>');expect(new Set(PUBLIC_ROUTES.map(r=>r.title)).size).toBe(PUBLIC_ROUTES.length);
+});
+test('the About route is a focused crawlable product page with specific search metadata',()=>{
+ const about=PUBLIC_ROUTES.find(route=>route.id==='about');expect(about).toBeDefined();expect(about.appView).toBeUndefined();expect(about.title).toContain('Browser Dry-Fire Practice App');expect(about.heading).toContain('sound recognition');expect(about.description).toContain('device microphone');
 });
 test('content-hashed bundles are immutable while documents and stable release resources revalidate',async()=>{for(const path of ['/assets/entry-Abc123.js','/assets/theme-Abc123.css'])expect((await site.fetch(new Request(CANONICAL_ORIGIN+path),env())).headers.get('Cache-Control')).toBe('public, max-age=31536000, immutable');for(const path of ['/','/settings/','/about/','/sw.js','/edition.json','/pcm-capture.worklet.js','/logo.svg','/favicon.ico'])expect((await site.fetch(new Request(CANONICAL_ORIGIN+path),env())).headers.get('Cache-Control')).toBe('public, max-age=0, must-revalidate');});
 test('a missing hashed bundle never receives immutable caching',async()=>{const response=await site.fetch(new Request(CANONICAL_ORIGIN+'/assets/missing-Abc123.js'),{ASSETS:{fetch:async()=>new Response('Missing',{status:404})}});expect(response.status).toBe(404);expect(response.headers.get('Cache-Control')).not.toContain('immutable');});

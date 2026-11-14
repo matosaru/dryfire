@@ -6,19 +6,19 @@ The public introduction is currently rendered on `/about/` through `MarketingOve
 
 The public edition provides microphone-based trigger-click calibration, four trigger practice modes, built-in sequence drills, live listening, saved local history and manual backup/export. New public gun profiles are limited to two. No account is required. The app is in Beta. Details can change only with the shipped public edition; private preview functionality must not be represented as available publicly.
 
-## Proposed About-page search presentation
+## Current About-page search presentation
 
-These are copy recommendations for review before an application change:
+The following copy is rendered on the crawlable static `/about/` page. The app remains at `/`.
 
-**SEO title:** Dry Fire With Ease: Browser Dry-Fire Practice Timer
+**SEO title:** Browser Dry-Fire Practice App | Dry Fire With Ease
 
-**Description:** Practice trigger-click timing in your browser. Learn your firearm’s sound, choose a structured practice mode, and review detected results.
+**Description:** Learn how Dry Fire With Ease uses your device microphone to recognize learned trigger clicks, time practice repetitions and review results. Explore practice modes, safety limits and the free Beta app.
 
-**H1:** Browser dry-fire practice, made simple.
+**H1:** Browser dry-fire practice with sound recognition
 
-**Intro:** Dry Fire With Ease uses your device’s microphone to recognize learned trigger-click sounds, time practice repetitions and save results in this browser. Choose a trigger practice mode or a built-in sequence. Recognition can miss or misclassify sounds; it does not verify physical actions or firearm safety.
+**Intro heading:** Dry-fire practice, made simple.
 
-Retain visible Beta status, the current two-gun public limit, actual local-storage/backup details, the four current practice modes, and an Open app action. Avoid “guaranteed,” “accurate,” or safety-verification claims.
+The page describes the microphone-based practice routine, the current practice modes, local storage and backup, Beta status, the two-gun public limit and safety/recognition limitations. The app link opens `/`. Avoid “guaranteed,” “accurate,” or safety-verification claims.
 
 ## Topics to validate with Search Console before expanding content
 
