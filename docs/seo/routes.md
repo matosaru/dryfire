@@ -24,7 +24,7 @@ Canonical origin: **https://easydryfire.com**. Each page has useful prerendered 
 | [/sequence-drills-guide/](https://easydryfire.com/sequence-drills-guide/) | Sequence Drills Guide — Dry Fire With Ease | Yes |
 | [/trigger-click-calibration-guide/](https://easydryfire.com/trigger-click-calibration-guide/) | Trigger-Click Calibration — Dry Fire With Ease | Yes |
 | [/help/](https://easydryfire.com/help/) | Help and Browser Setup — Dry Fire With Ease | Yes |
-| [/about/](https://easydryfire.com/about/) | About — Dry Fire With Ease | Yes |
+| [/about/](https://easydryfire.com/about/) | Browser Dry-Fire Practice App | Dry Fire With Ease | Yes |
 | [/contact/](https://easydryfire.com/contact/) | Contact — Dry Fire With Ease | Yes |
 
 ## Operational app URLs

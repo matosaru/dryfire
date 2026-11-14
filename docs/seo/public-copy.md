@@ -1,49 +1,43 @@
-# Draft public product copy
+# Public product copy and SEO content backlog
 
-Proposed copy for a future visible product introduction/FAQ. Not currently rendered in the app. Preserve the existing approved brand and mobile experience when deciding its layout.
+The public introduction is currently rendered on `/about/` through `MarketingOverview`; this is product copy in use, not an unimplemented proposal. `/` remains the app. Keep marketing content on About unless the route decision is deliberately revisited.
 
-## Suggested heading and introduction
+## Current public copy to keep accurate
 
-**Dry Fire With Ease**
+The public edition provides microphone-based trigger-click calibration, four trigger practice modes, built-in sequence drills, live listening, saved local history and manual backup/export. New public gun profiles are limited to two. No account is required. The app is in Beta. Details can change only with the shipped public edition; private preview functionality must not be represented as available publicly.
 
-A dry-fire click timer and practice tracker for your browser.
+## Current About-page search presentation
 
-Calibrate the microphone to your firearm's trigger click, choose a practice mode, and track detected timing with saved sessions and progress charts. Start with trigger calibration; other mechanical sounds are optional unless your selected sequence needs them.
+The following copy is rendered on the crawlable static `/about/` page. The app remains at `/`.
 
-**Suggested action:** Open the app. This is proposed copy, not an implemented button or new route.
+**SEO title:** Browser Dry-Fire Practice App | Dry Fire With Ease
 
-## Features to explain visibly
+**Description:** Learn how Dry Fire With Ease uses your device microphone to recognize learned trigger clicks, time practice repetitions and review results. Explore practice modes, safety limits and the free Beta app.
 
-- Single trigger press, repeated presses, par-time, timing consistency, reload-event timing and free practice.
-- Fixed or random ready delays and an optional start beep.
-- Up to five gun profiles, each with its own learned numeric sound features, sequence presets and results.
-- Progress charts and comparable-session statistics, with a readable data table.
-- Local browser storage and exportable backups; compatible refreshes and deployments at the same app address retain data.
+**H1:** Browser dry-fire practice with sound recognition
 
-## FAQ draft
+**Intro heading:** Dry-fire practice, made simple.
 
-**How does trigger-click detection work?**
+The page describes the microphone-based practice routine, the current practice modes, local storage and backup, Beta status, the two-gun public limit and safety/recognition limitations. The app link opens `/`. Avoid “guaranteed,” “accurate,” or safety-verification claims.
 
-The microphone compares short mechanical sounds with your gun-specific calibration. Record at least three trigger examples; eight to ten are recommended. New recording is limited to ten examples per sound type per gun. Optional reset and background-noise calibration helps reject other sounds. Similar sounds can remain ambiguous, so check recognition using your own device and surroundings.
+## Topics to validate with Search Console before expanding content
 
-**Do I need to record every sound?**
+These are query hypotheses, not measured volumes or ranking promises:
 
-Trigger-based practice needs only trigger examples. Draw, rack and magazine sounds are optional; sequence and reload modes require the events they actually use. An external start beep requires its own compatible cue calibration.
+- Browser-based dry-fire timer and trigger-click timer.
+- Dry-fire practice drills, timing and par-time practice.
+- Calibrating microphone recognition for a trigger click.
+- Microphone setup and iPhone Safari dry-fire practice.
+- How to understand missed, false or duplicate sound detections.
 
-**Where is my data stored?**
+Improve an existing page when it answers the query well; create a new URL only for a distinct user need that can be maintained. Keep operational paths and user records non-indexable.
 
-Gun profiles, numeric calibration features, settings and results stay in this browser's local IndexedDB. Raw audio is not saved or uploaded by the app. Clearing browser storage removes local data; a different browser/device/address does not automatically share it. Export a backup for recovery.
+## Current feature explanations
 
-**Can I use an iPhone?**
+- Trigger practices: single trigger press, repeated trigger press, par-time practice and trigger control.
+- Sequence drills require the sounds in that specific sequence; other sound categories are optional outside those drills.
+- User history and preferences are stored locally in the browser; backups are manual. Clearing browser storage or moving domains does not synchronize data.
+- Timing reflects detected audio. Microphone position, noise and browser processing affect recognition. The app cannot verify an unloaded firearm, aim, movement or safe handling.
+- Before practice, users must verify the firearm is unloaded, remove live ammunition from the practice area and establish a safe direction and backstop.
 
-Open the HTTPS app in Safari, or add it to the Home Screen. Microphone permission is required for sound-based capture and the app must stay open. Audio/output behavior varies by device and needs physical testing. Vibration is available only when the browser exposes a working vibration capability.
-
-**What do the timing results mean?**
-
-They describe detected audio timing, not aim, safe handling or physical technique. Microphone position, noise and audio processing can affect recognition and timing. The app cannot verify whether a firearm is unloaded.
-
-**What should I do before practice?**
-
-Verify the firearm is unloaded, remove live ammunition from the practice area, and choose a safe direction and backstop. Confirm the app's safety check before recording or practice; microphone detection does not replace that check.
-
-Any later privacy/contact/legal pages must use real owner details and verified practices rather than invented company information. This copy is not a legal-clearance statement.
+Do not claim cloud sync, Google accounts, five-gun support, subscription access, paid feature entitlements, native app-store availability or camera/sensor analysis as current public functionality. Those are future planning topics only.
