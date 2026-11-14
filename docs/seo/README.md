@@ -1,7 +1,5 @@
 # Public SEO and routing
 
-For search discoverability findings and the staged improvement plan, see [the discoverability audit](discoverability-audit.md).
-
 CHG-061 corrects the homepage/URL contract after CHG-060. [History](../project/implementation-history.md) distinguishes approval, checks, push, merge and observed deployment. The owner reports `.app` → `.com` permanent redirects; public-origin HTTP access remains blocked by this workspace's proxy before origin.
 
 The [complete generated URL inventory](routes.md) lists every canonical/app path, redirect and static resource. `site/routes.js` owns14 canonical pages at https://easydryfire.com; `src/appPaths.js` owns flat app/guide identities. Root `/` is the actual trainer; marketing remains reusable content inside About. Seven public manuals and About/Contact prerender actual shared app screens. Informational content is readable without JavaScript/profile/microphone; the trainer needs JavaScript. Static Help/directory/overview pages share app chrome.

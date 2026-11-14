@@ -13,7 +13,7 @@ This is the single current functional index. Markdown requirements define behavi
 | [Live Listen availability](live-listen-readiness.md) | Consistent navigation, capture readiness and visible reasons | Implemented CHG-053; all eight post-push CI jobs passed on b |
 | [Shared drill setup](drill-setup-template.md) | Sequence-style form, numeric cards and sound list reused by four trigger modes | Implemented CHG-058; all eight pre-publication CI jobs passed, deployment separate |
 | [Guide layout and accents](guide-layout.md) | Shared guide navigation, ordered sound lists, explicit catalog group colors | Implemented CHG-059; all eight pre-publication CI jobs passed, live deployment separate |
-| [Public SEO and app URLs](public-seo.md) |14 public pages, per-page metadata/crawl files, readable guarded app paths and indexing policy | CHG-060/061 implemented in source; production indexing and live-edge verification remain external |
+| [Public SEO and app URLs](public-seo.md) |11 public pages, per-page metadata/crawl files, readable guarded app paths and indexing policy | CHG-060 candidate; full acceptance/publication tracked separately |
 | [Release asset updates](release-cache-updates.md) | Release identity, atomic offline updates, safe multi-tab activation and preservation of local data | H2 specified; implementation pending |
 | [Core](core.md) | Learning, recognition, safety, resets and navigation invariants | Implemented |
 | [Branding](branding.md) | Dry Fire With Ease display name, DF / WITH EASE lockup, BETA status and shared copyright | Implemented |
