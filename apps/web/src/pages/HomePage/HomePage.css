@@ -1,3 +1,6 @@
+.welcome-card h1 { font-size:1.1rem; margin:0 0 7px; }
+.welcome-card a { color:var(--color-trigger,#46baff); font-weight:650; text-decoration:underline; text-underline-offset:2px; }
+html[data-theme="light"] .welcome-card a { color:#00638f; }
 .home-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:24px 0; }
 .home-stats article { background:#141d22; border:1px solid #2e3a42; border-radius:16px; padding:16px 10px; min-width:0; }
 .home-stats strong { display:block; color:#fff; font-size:clamp(1.22rem,4vw,2rem); letter-spacing:-.035em; line-height:1.4; }

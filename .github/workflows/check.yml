@@ -69,6 +69,7 @@ jobs:
         run: |
           npm run build:public
           npm run verify:dist -- --edition=public
+          node tools/verify-public-site.mjs
           npx --no-install wrangler deploy --config wrangler.public.jsonc --env "" --dry-run
           npx --no-install wrangler deploy --config wrangler.public.jsonc --env dev --dry-run
           npm run build:preview
@@ -166,10 +167,10 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-      - name: Choose the immutable matching application baseline
+      - name: Choose the accepted SEO remediation performance baseline
         id: baseline
         run: |
-          node --input-type=module -e "import { readBuildProfile, resolveBuildEdition } from './tools/build-profile.mjs'; resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.env.APP_EDITION }); console.log('source=12e12fd4c4084c77b7df87b16abc6e5ee0cd5b9b');" >> "$GITHUB_OUTPUT"
+          node --input-type=module -e "import { readBuildProfile, resolveBuildEdition } from './tools/build-profile.mjs'; resolveBuildEdition({ defaultEdition: readBuildProfile(), explicit: process.env.APP_EDITION }); console.log('source=799b8be7a43166fa276c2311edf2f55805c2cf9b');" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:
           ref: ${{ steps.baseline.outputs.source }}

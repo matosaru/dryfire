@@ -22,7 +22,7 @@ export const mountChrome: ChromeFactory = ({ doc, initial, onNavigate }) => {
   const roots: Root[] = [];
   let mountFailure: unknown;
   let disposed = false;
-  const header = () => roots[0].render(<StrictMode><BrandHeaderContent view={state.view} status={state.status} onNavigate={onNavigate} /></StrictMode>);
+  const header = () => roots[0].render(<StrictMode><BrandHeaderContent view={state.view} status={state.status} brandHeading={state.view==='home'?'p':'h1'} onNavigate={onNavigate} /></StrictMode>);
   const navigation = () => roots[1].render(<StrictMode><BottomNavigationContent view={state.view} disabled={state.navigationDisabled} onNavigate={onNavigate} /></StrictMode>);
   try {
     regions.forEach(host => roots.push(createRoot(host, { onUncaughtError(error) { mountFailure = error; } })));

@@ -4,7 +4,7 @@ import {guidePathFor,appTitleFor} from '../src/appPaths.js';
 export const CANONICAL_ORIGIN='https://easydryfire.com';
 const manual=id=>{const guide=GUIDE_MANUALS.find(row=>row.id===id);return{id,path:guidePathFor(id),title:appTitleFor({view:'practiceGuide',guideId:id}),heading:DRILLS.find(drill=>id==='sequence-'+drill.id)?.title??guide.title,description:guide.purpose,guide,appView:'practiceGuide'};};
 export const PUBLIC_ROUTES=[
- {id:'home',path:'/',appView:'home',title:'Dry Fire With Ease — Free Dry-Fire Practice App',heading:'Dry Fire With Ease',description:'Learn your trigger click, choose a dry-fire practice mode and review timed repetitions. A free, microphone-based Beta app with local browser storage.'},
+ {id:'home',path:'/',appView:'home',title:'Dry-Fire Practice App | Dry Fire With Ease',heading:'Browser dry-fire practice app',description:'Use Dry Fire With Ease, a free browser dry-fire practice app, to learn your trigger click, time repetitions, and review detected results. Audio recognition depends on your device and environment.'},
  {id:'practice',path:'/practice-modes/',title:'Dry-Fire Practice Modes — Dry Fire With Ease',heading:'Choose your practice.',description:'Compare Single trigger press, Repeated trigger press, Par-time practice and Trigger control. Learn what each mode measures before you begin.'},
  manual('single'),
  manual('repeated'),

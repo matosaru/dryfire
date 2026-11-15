@@ -13,8 +13,8 @@ export type GunSwitcherProps = {
 export function GunSwitcher({ name = '', type = '', imageSrc = '/gun-types/unknown.svg', hidden = true, disabled = false, title, onSelect }: GunSwitcherProps) {
   return <button id="gunSwitcherBtn" className={`gun-switcher${hidden ? ' hidden' : ''}`} type="button" disabled={disabled} title={title}
     aria-label={name ? `Switch gun. Selected: ${name}, ${type || 'type not set'}` : 'Choose a gun'} onClick={onSelect}>
-    <img id="activeGunImage" className="gun-type-image gun-switcher-image" src={imageSrc} width="96" height="56" alt="" />
-    <span className="gun-switcher-copy"><span className="gun-switcher-label">Active gun</span><strong id="activeGunName">{name}</strong><span id="activeGunType">{type}</span></span>
+    <img id="activeGunImage" className="gun-type-image gun-switcher-image" src={imageSrc} width="96" height="56" alt={`Illustration of ${type||'gun'}`} />
+    <span className="gun-switcher-copy"><span className="gun-switcher-label">Active gun</span><span id="activeGunName" className="gun-switcher-name">{name}</span><span id="activeGunType">{type}</span></span>
     <span className="gun-switcher-action">Switch gun <span aria-hidden="true">⌄</span></span>
   </button>;
 }

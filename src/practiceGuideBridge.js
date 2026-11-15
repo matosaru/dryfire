@@ -3,7 +3,7 @@ function defaultGuideLoader() {
   let failed = false;
   return () => failed
     ? import('../apps/web/src/features/practice-guide/retryGuideModule.ts').then(module => module.retryGuideModule({
-      expectedDigest: typeof __BUILD_SOURCE_DIGEST__ === 'undefined' ? '' : __BUILD_SOURCE_DIGEST__,
+      expectedDigest: typeof __BUILD_SOURCE_DIGEST_PREFIX__ === 'undefined' ? '' : __BUILD_SOURCE_DIGEST_PREFIX__,
     }))
     : import('./practiceGuideController.js').catch(error => { failed = true; throw error; });
 }

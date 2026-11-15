@@ -9,6 +9,12 @@ test('Home presents selected gun and supplied training/accuracy summaries as tex
  expect(screen.getByText('<Test>')).toBeVisible();expect(document.querySelector('Test')).toBeNull();
  expect(screen.getByText('5 / 8 trigger')).toBeVisible();expect(screen.getByText('7')).toBeVisible();expect(screen.getByText('75%')).toBeVisible();
 });
+test('Home provides descriptive links to indexable practice guides',()=>{
+ render(<HomePage/>);
+ expect(screen.getByRole('link',{name:'practice modes'})).toHaveAttribute('href','/practice-modes/');
+ expect(screen.getByRole('link',{name:'sequence drill guide'})).toHaveAttribute('href','/sequence-drills-guide/');
+ expect(screen.getByRole('link',{name:'trigger click calibration guide'})).toHaveAttribute('href','/trigger-click-calibration-guide/');
+});
 test('Home actions dispatch one explicit main destination',()=>{
  const onNavigate=jest.fn();render(<HomePage onNavigate={onNavigate}/>);
  for(const name of ['Learn Sounds','Drills','History'])fireEvent.click(screen.getByRole('button',{name:new RegExp(name)}));

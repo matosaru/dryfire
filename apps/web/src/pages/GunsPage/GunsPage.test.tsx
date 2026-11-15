@@ -13,6 +13,7 @@ test('owned cards retain names, type image, selected state and measured readines
  expect(screen.getByText('Existing gun — add details')).toBeVisible();expect(screen.getByText('Choose gun type')).toBeVisible();
  expect(screen.getByText('Learn trigger · 0 optional sounds ready · 0 samples')).toBeVisible();
  expect(document.querySelector('img')).toHaveAttribute('src','/gun-types/handgun.svg');
+ expect(document.querySelector('img')).toHaveAttribute('alt','Illustration of Handguns');
 });
 test('select, edit, delete and backup invoke only their explicit callbacks',()=>{
  const onSelect=jest.fn(),onEdit=jest.fn(),onDelete=jest.fn(),onBackup=jest.fn();

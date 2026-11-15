@@ -24,3 +24,5 @@ P6 shared run/review source extraction retains all encoded GIF bytes by [input-e
 The subsequent [shared result-model review](../../../baselines/p6-result-presentation-review.json) retains the same encodings: native and prepared typed details reuse one pure formatting model, all original frame signatures remain unchanged, and both-edition pixel/workflow checks pass.
 
 CHG-055: current exports cover four trigger practices, early Single and five unchanged sequence examples. Removed modes have no current media. The retained animation frame signatures remain checked against their pre-removal characterization; catalog/header copy is outside these animation frames.
+
+The build now passes a 128-bit prefix of the full source digest to the retry-only guide recovery path, reducing startup JavaScript while the recovery module still validates the manifest's complete 256-bit digest. The guide rendering and styles are unchanged, so the reviewed GIF bytes remain identical; the manifest source fingerprints were refreshed for the two affected build/recovery files.
