@@ -1,5 +1,12 @@
 # Requirements approval log
 
+## CHG-073 — Sound-recognition capture recovery and main promotion (2026-11-15)
+
+- **Direct instruction:** The owner reported recognition stopping after several trigger recordings, Sound Check startup failure that persisted through an app restart, and no trigger detections in practice. The owner later instructed: “Finish all changes, merge with main,” and directed that every main release report its app version.
+- **Approved scope:** Prevent overlapping/pending Sound Check capture sessions, cancel and release microphone resources on stop/restart/disposal, detect microphone interruption/disconnection/mute/input loss, preserve existing classifier and saved profiles, add regression coverage, release as one versioned `b` candidate, and promote via a checked PR to `main`.
+- **Limits:** No classifier promotion, accuracy claim, raw-audio persistence/upload, schema change, or unobserved Cloudflare deployment.
+- **Status:** Implementation, versioned acceptance, PR/merge and deployment evidence are recorded in [implementation history](implementation-history.md) after observation.
+
 ## CHG-072 — About page version display (2026-11-10)
 
 - **Direct instruction:** “How can I verify a correct version? Can you increase version number displayed in about page?”

@@ -1,5 +1,11 @@
 # Implementation history and remaining plan
 
+## CHG-073 — Audio capture lifecycle recovery and release (2026-11-15)
+
+The owner reported that sound recognition stopped after several recorded trigger pulls, Sound Check occasionally did not start and remained unavailable after restart, and trigger practice then detected no clicks. The fix serializes Sound Check startup, aborts pending capture on stop/restart/disposal, releases late-arriving sessions, prevents duplicate microphone ownership, and surfaces actionable microphone interruption/disconnect/mute/input-loss errors. Existing classifiers, saved sound profiles and data formats remain unchanged.
+
+The exact versioned release candidate is **0.8.12**. Local acceptance passed 1,206 Jest tests across 183 suites, 16 smoke checks, typecheck, both lint suites, architecture, docs and coverage ratchet. Public and preview production builds, distribution checks, public sitemap/site validation and Wrangler dry-run passed. The pinned public mobile Chromium/WebKit screenshot run passed all 26 enabled cases (26 documented skips); its About version capture and reviewed fingerprints were refreshed. The earlier exact audio candidate passed all four pinned Chromium/WebKit public/preview performance comparisons in GitHub run [43740201933](https://github.com/matosaru/dryfire/actions/runs/43740201933). Final exact-candidate GitHub checks remain the release gate. The accepted commit, PR/merge and observed deployment are recorded after each succeeds. A physical iPhone check remains owner validation; automated audio tests do not prove recognition accuracy.
+
 ## CHG-072 — Build-derived About version (2026-11-10)
 
 Increment the root app version to 0.8.1. Vite injects that package version into the About Beta line; the page test reads the same version, preventing a stale manually hard-coded label. The About screenshot baseline and functional/design/deployment documentation are updated. Local acceptance passes: 1,191 tests / 182 suites, typecheck, component/runtime lint, architecture and coverage ratchets, docs validation, public minified build, distribution verification, and the About Chromium visual check. GitHub CI and production promotion remain pending.
