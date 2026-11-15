@@ -66,3 +66,26 @@ export function describeAmbientReadiness(result) {
   return 'Microphone ready · Listening before the signal';
 }
 
+/** Detects lost microphone input during an active, ready capture session. */
+export function monitorAudioCapture(context,stream,isReady,lastInputAt,onError,stop){
+ let stopped=false;
+ const report=message=>{if(!stopped){void stop();onError(new Error(message));}};
+ const onStateChange=()=>{
+  if(isReady()&&context.state!=='running')report('Microphone audio was interrupted. Restart the sound check or practice to reconnect.');
+ };
+ context.addEventListener?.('statechange',onStateChange);
+ const handlers=stream.getAudioTracks().map(track=>{
+  const onended=()=>report('Microphone disconnected. Restart the sound check or practice to reconnect.');
+  const onmute=()=>report('Microphone input was muted. Check microphone access, then restart the sound check or practice.');
+  track.onended=onended;track.onmute=onmute;
+  return{track,onended,onmute};
+ });
+ const timer=setInterval(()=>{
+  if(isReady()&&Date.now()-lastInputAt()>2500)report('Microphone input stopped arriving. Restart the sound check or practice to reconnect.');
+ },1000);
+ return{stop(){
+  if(stopped)return;stopped=true;clearInterval(timer);context.removeEventListener?.('statechange',onStateChange);
+  for(const{track,onended,onmute}of handlers){if(track.onended===onended)track.onended=null;if(track.onmute===onmute)track.onmute=null;}
+ }};
+}
+

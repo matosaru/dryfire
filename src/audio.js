@@ -245,9 +245,10 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   }
   const AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext;
   if (!AudioContextClass) throw new Error('Web Audio is unavailable on this device.');
-  const [{ createEventDetector }, { createAmbientReadinessEstimator, describeAmbientReadiness }] = await Promise.all([
+  const [{ createEventDetector }, readiness] = await Promise.all([
     import('./eventDetector.js'), import('./audioReadiness.js'),
   ]);
+  const {createAmbientReadinessEstimator,describeAmbientReadiness,monitorAudioCapture}=readiness;
   throwIfAborted(signal);
   const noiseMultiplier = { high: 3.5, normal: 5, low: 7 }[sensitivity] ?? 5;
   let stream, context, source, node, output;
@@ -258,8 +259,8 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   let pendingLevel = 0;
   let pendingActivity = false;
   let closePromise;
-  let watchdogTimer;
-  let lastInputAt = 0;
+  let lastInputAt = Date.now();
+  let healthMonitor;
   let detectionArmed = detectionEnabled !== false;
   let armedAfterFrame = 0;
   let suppressedFrames = null;
@@ -267,19 +268,6 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   let readinessResult;
   const inputWaiters = new Set();
   const onAbort = () => { void stop(); };
-  const onContextStateChange = () => {
-    if (!stopped && readinessResult?.ready && context?.state !== 'running') {
-      failCapture('Microphone audio was interrupted. Restart the sound check or practice to reconnect.');
-    }
-  };
-
-  function failCapture(message) {
-    if (stopped) return;
-    const error = new Error(message);
-    void stop();
-    onError(error);
-  }
-
   function waitForInput({ timeoutMs = 5000 } = {}) {
     if (stopped) return Promise.reject(Object.assign(new Error('Audio capture was cancelled.'), { name: 'AbortError' }));
     const current = readinessEstimator?.snapshot();
@@ -325,8 +313,8 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     running = false;
     for (const waiter of inputWaiters) waiter.finish(Object.assign(new Error('Audio capture was cancelled.'), { name: 'AbortError' }));
     signal?.removeEventListener('abort', onAbort);
-    clearInterval(watchdogTimer);
-    context?.removeEventListener?.('statechange', onContextStateChange);
+    healthMonitor?.stop();
+    healthMonitor = null;
     detector?.stop();
     if (node) {
       if ('onaudioprocess' in node) node.onaudioprocess = null;
@@ -335,7 +323,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     }
     if (source) { try { source.disconnect(); } catch {} }
     if (output) { try { output.disconnect(); } catch {} }
-    stream?.getTracks().forEach(track => { track.onended = null; track.onmute = null; track.stop(); });
+    stream?.getTracks().forEach(track => { track.onended = null; track.stop(); });
     closePromise = context && context.state !== 'closed' ? context.close().catch(() => {}) : Promise.resolve();
     await closePromise;
     return undefined;
@@ -431,17 +419,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     source.connect(node);
     node.connect(output);
     output.connect(context.destination);
-    stream.getAudioTracks().forEach(track => {
-      track.onended = () => failCapture('Microphone disconnected. Restart the sound check or practice to reconnect.');
-      track.onmute = () => failCapture('Microphone input was muted. Check microphone access, then restart the sound check or practice.');
-    });
-    context.addEventListener?.('statechange', onContextStateChange);
-    lastInputAt = Date.now();
-    watchdogTimer = setInterval(() => {
-      if (!stopped && readinessResult?.ready && Date.now() - lastInputAt > 2500) {
-        failCapture('Microphone input stopped arriving. Restart the sound check or practice to reconnect.');
-      }
-    }, 1000);
+    healthMonitor = monitorAudioCapture(context,stream,()=>readinessResult?.ready,()=>lastInputAt,onError,stop);
     throwIfAborted(signal);
     return { stop, armDetection, disarmDetection, suppressDetection, waitForInput, nowMs: () => context.currentTime * 1000 };
   } catch (error) {
