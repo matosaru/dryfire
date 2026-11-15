@@ -53,7 +53,7 @@ jobs:
       - uses: actions/checkout@v4
         if: ${{ !inputs.compare_production }}
         with:
-          ref: 6c38bff81662d30279d94d41ca5c949bdbbe1c6e
+          ref: 799b8be7a43166fa276c2311edf2f55805c2cf9b
           path: .performance-baseline
           persist-credentials: false
       - run: |
