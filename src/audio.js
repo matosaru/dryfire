@@ -245,9 +245,10 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   }
   const AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext;
   if (!AudioContextClass) throw new Error('Web Audio is unavailable on this device.');
-  const [{ createEventDetector }, { createAmbientReadinessEstimator, describeAmbientReadiness }] = await Promise.all([
+  const [{ createEventDetector }, readiness] = await Promise.all([
     import('./eventDetector.js'), import('./audioReadiness.js'),
   ]);
+  const {createAmbientReadinessEstimator,describeAmbientReadiness}=readiness;
   throwIfAborted(signal);
   const noiseMultiplier = { high: 3.5, normal: 5, low: 7 }[sensitivity] ?? 5;
   let stream, context, source, node, output;
@@ -258,6 +259,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   let pendingLevel = 0;
   let pendingActivity = false;
   let closePromise;
+  let lastInputAt = Date.now();
   let detectionArmed = detectionEnabled !== false;
   let armedAfterFrame = 0;
   let suppressedFrames = null;
@@ -265,7 +267,6 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   let readinessResult;
   const inputWaiters = new Set();
   const onAbort = () => { void stop(); };
-
   function waitForInput({ timeoutMs = 5000 } = {}) {
     if (stopped) return Promise.reject(Object.assign(new Error('Audio capture was cancelled.'), { name: 'AbortError' }));
     const current = readinessEstimator?.snapshot();
@@ -343,6 +344,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     output.gain.value = 0;
     const onChunk = (samples, startFrame) => {
       if (!running || !(samples instanceof Float32Array) || !samples.length || !Number.isFinite(startFrame)) return;
+      lastInputAt = Date.now();
       if (context.state === 'running') {
         if (!readinessResult?.ready) {
           readinessEstimator.push(samples);
@@ -414,9 +416,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     source.connect(node);
     node.connect(output);
     output.connect(context.destination);
-    stream.getAudioTracks().forEach(track => {
-      track.onended = () => { if (!stopped) { onError(new Error('Microphone disconnected.')); void stop(); } };
-    });
+    readiness.monitorAudioCapture(context,stream,()=>readinessResult?.ready,()=>lastInputAt,onError,stop);
     throwIfAborted(signal);
     return { stop, armDetection, disarmDetection, suppressDetection, waitForInput, nowMs: () => context.currentTime * 1000 };
   } catch (error) {

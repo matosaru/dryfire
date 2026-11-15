@@ -1,6 +1,6 @@
 # Audio recognition improvement plan
 
-Status: active on `feature/audio-recognition-v3` · CHG-063 · 2026-11-01
+Status: CHG-063 recognition improvements are in the Free release; CHG-073 capture lifecycle recovery is completing on `b` · updated 2026-11-15
 
 ## Constraints
 
@@ -95,6 +95,12 @@ The first development checkpoint can guide iteration; it cannot support a produc
 - [ ] Candidate spectral classifier evaluated on the owner-supplied unseen iPhone corpus.
 - [x] Help/manual, current captures and reviewed visual baselines updated; public and preview exact replays pass 454/454 Chromium/WebKit cases.
 - [ ] Physical iPhone checkpoint passed.
+
+## CHG-073 — Capture lifecycle recovery
+
+The owner reported that recognition stopped after several trigger recordings, Sound Check sometimes failed to start (and did not recover after an app restart), and trigger practice then detected no clicks. The recovery change serializes Sound Check startup, cancels pending microphone acquisition on Stop/restart/dispose, releases late sessions, prevents overlapping app capture sessions, and reports microphone interruption/disconnect/mute/no-input causes with an action. It keeps the current recognizers and learned data unchanged; it is not classifier tuning.
+
+The code and focused tests passed on commit `23189af` in GitHub run [43740201933](https://github.com/matosaru/dryfire/actions/runs/43740201933), including the four pinned public/preview Chromium/WebKit performance comparisons. The versioned exact candidate is 0.8.12; its final GitHub checks remain the release gate and promotion status is recorded in implementation history. Automated synthetic-audio checks do not confirm physical-device recognition. Owner iPhone testing remains required before claiming the symptoms are resolved in use.
 
 ## Local checkpoint · 2026-11-02
 

@@ -18,3 +18,29 @@ test('guided check waits for input, scores an attempt and exports JSON without P
  expect(controller.locked()).toBe(true);expect(document.getElementById('soundCheckAttemptBtn').disabled).toBe(false);document.getElementById('soundCheckAttemptBtn').click();onEvent(new Float32Array(48000).fill(.02),48000);await jest.advanceTimersByTimeAsync(2000);
  expect(document.getElementById('soundCheckReview')).not.toHaveClass('hidden');document.getElementById('soundCheckExportBtn').click();expect(download).toHaveBeenCalledTimes(1);expect(download.mock.calls[0][0]).not.toMatch(/pcm|samples/i);expect(session.stop).toHaveBeenCalled();controller.dispose();jest.useRealTimers();
 });
+
+test('sound check prevents duplicate microphone starts while permission is pending',async()=>{
+ const host=document.createElement('section');host.id='soundCheckView';document.body.append(host);render(createElement(SoundCheckPage),{container:host});
+ let resolveStart;const startContinuousListening=jest.fn(()=>new Promise(resolve=>{resolveStart=resolve;}));
+ const controller=createSoundCheckController({doc:document,startContinuousListening,examples:[],calibration:[],enabledLabels:['trigger'],audioPreferences:{},onError:jest.fn()});
+ const start=document.getElementById('soundCheckStartBtn');start.click();start.click();
+ expect(startContinuousListening).toHaveBeenCalledTimes(1);expect(start).toBeDisabled();expect(controller.locked()).toBe(true);
+ const session={stop:jest.fn(),waitForInput:jest.fn().mockResolvedValue({ready:true})};resolveStart(session);
+ await Promise.resolve();await Promise.resolve();await Promise.resolve();
+ expect(session.waitForInput).toHaveBeenCalledTimes(1);expect(start).toBeDisabled();
+ document.getElementById('soundCheckStopBtn').click();await Promise.resolve();
+ expect(session.stop).toHaveBeenCalledTimes(1);expect(start).toBeEnabled();expect(controller.locked()).toBe(false);
+ controller.dispose();host.remove();
+});
+
+test('stopping during pending microphone permission releases a late audio session',async()=>{
+ const host=document.createElement('section');host.id='soundCheckView';document.body.append(host);render(createElement(SoundCheckPage),{container:host});
+ let resolveStart;const startContinuousListening=jest.fn(()=>new Promise(resolve=>{resolveStart=resolve;}));
+ const controller=createSoundCheckController({doc:document,startContinuousListening,examples:[],calibration:[],enabledLabels:['trigger'],audioPreferences:{},onError:jest.fn()});
+ document.getElementById('soundCheckStartBtn').click();document.getElementById('soundCheckStopBtn').click();
+ const lateSession={stop:jest.fn(),waitForInput:jest.fn()};resolveStart(lateSession);
+ await Promise.resolve();await Promise.resolve();await Promise.resolve();
+ expect(lateSession.stop).toHaveBeenCalledTimes(1);expect(lateSession.waitForInput).not.toHaveBeenCalled();
+ expect(document.getElementById('soundCheckStartBtn')).toBeEnabled();expect(controller.locked()).toBe(false);
+ controller.dispose();host.remove();
+});

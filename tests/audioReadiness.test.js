@@ -1,4 +1,5 @@
-import { createAmbientReadinessEstimator, describeAmbientReadiness } from '../src/audioReadiness.js';
+import { jest } from '@jest/globals';
+import { createAmbientReadinessEstimator, describeAmbientReadiness, monitorAudioCapture } from '../src/audioReadiness.js';
 
 const rate = 8000;
 const constant = (seconds, amplitude) => new Float32Array(Math.round(rate * seconds)).fill(amplitude);
@@ -30,4 +31,27 @@ test('noisy rooms receive a plain-language corrective status', () => {
   expect(result).toMatchObject({ ready: true, status: 'noisy' });
   expect(describeAmbientReadiness(result)).toMatch(/room is noisy/i);
   expect(describeAmbientReadiness({ ready: false, status: 'preparing' })).toMatch(/preparing microphone/i);
+});
+
+test('capture loss stops listening with an actionable message and releases monitor handlers when closed', () => {
+  const listeners = new Map();
+  const context = {
+    state: 'running',
+    addEventListener: jest.fn((name, handler) => listeners.set(name, handler)),
+    removeEventListener: jest.fn(name => listeners.delete(name)),
+  };
+  const track = { onended: null, onmute: null };
+  const stop = jest.fn();
+  const onError = jest.fn();
+
+  monitorAudioCapture(context, { getAudioTracks: () => [track] }, () => true, () => Date.now(), onError, stop);
+  track.onmute();
+
+  expect(stop).toHaveBeenCalledTimes(1);
+  expect(onError.mock.calls[0][0].message).toMatch(/microphone muted.*check microphone access.*restart listening/i);
+  context.state = 'closed';
+  listeners.get('statechange')();
+  expect(context.removeEventListener).toHaveBeenCalledWith('statechange', expect.any(Function));
+  expect(track.onended).toBeNull();
+  expect(track.onmute).toBeNull();
 });

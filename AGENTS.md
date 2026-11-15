@@ -55,6 +55,7 @@ For a complete `b` candidate, use the repository's [candidate-acceptance skill](
 - Commit all ongoing feature work only to `b`; keep `main` unchanged while the feature is being built and validated.
 - Bump the app version once per completed feature, not once per commit or intermediate refactor slice. After the feature passes its full acceptance on `b`, make one release-version commit, refresh version-derived About evidence, and rerun the exact-candidate gates.
 - Promote the fully tested/released `b` feature to `main` only after the user explicitly approves that feature's promotion. Use the protected pull-request process; never merge or push application changes to `main` without that approval.
+- Whenever an application release reaches `main`, state the exact released app version in the completion/status report, alongside the merge commit or PR and the separately observed deployment status.
 - The user configures Cloudflare. Prepare and validate repository code/configuration; do not claim live deployment without observing it.
 - Before an in-progress commit to `b`, inspect the diff and run focused tests for the changed owners. CI must test each pushed candidate. Before the one feature version bump and any promotion request, run the complete acceptance gate on the versioned candidate; focused tests alone are insufficient for release.
 

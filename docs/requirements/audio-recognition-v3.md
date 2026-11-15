@@ -6,7 +6,7 @@ Revision 1.1 · CHG-063 · 2026-11-02
 
 Make trigger-click learning and recognition understandable, repeatable and measurable on real devices. The primary outcome is reliable trigger-click recall without increasing false shot counts. Other learned mechanical sounds remain optional.
 
-This work is developed on `feature/audio-recognition-v3` until the evidence gates in this document pass. It does not change production branches by itself.
+The original CHG-063 implementation was developed on `feature/audio-recognition-v3` and is now part of the Free release. Its shadow classifier still awaits real-device evidence. CHG-073 separately fixes microphone capture lifecycle failures on `b`/`main`; it does not promote the shadow classifier or claim recognition accuracy improvement.
 
 ## Approved scope
 
