@@ -71,17 +71,17 @@ export function monitorAudioCapture(context,stream,isReady,lastInputAt,onError,s
  let stopped=false;
  const report=message=>{if(!stopped){void stop();onError(new Error(message));}};
  const onStateChange=()=>{
-  if(isReady()&&context.state!=='running')report('Microphone audio was interrupted. Restart the sound check or practice to reconnect.');
+  if(isReady()&&context.state!=='running')report('Microphone audio interrupted. Restart the sound check or practice.');
  };
  context.addEventListener?.('statechange',onStateChange);
  const handlers=stream.getAudioTracks().map(track=>{
-  const onended=()=>report('Microphone disconnected. Restart the sound check or practice to reconnect.');
-  const onmute=()=>report('Microphone input was muted. Check microphone access, then restart the sound check or practice.');
+  const onended=()=>report('Microphone disconnected. Check access, then restart the sound check or practice.');
+  const onmute=()=>report('Microphone input muted. Check access, then restart the sound check or practice.');
   track.onended=onended;track.onmute=onmute;
   return{track,onended,onmute};
  });
  const timer=setInterval(()=>{
-  if(isReady()&&Date.now()-lastInputAt()>2500)report('Microphone input stopped arriving. Restart the sound check or practice to reconnect.');
+  if(isReady()&&Date.now()-lastInputAt()>2500)report('No microphone input. Check access, then restart the sound check or practice.');
  },1000);
  return{stop(){
   if(stopped)return;stopped=true;clearInterval(timer);context.removeEventListener?.('statechange',onStateChange);
