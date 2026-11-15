@@ -1,0 +1,21 @@
+{
+  "status": "SEO and accessibility remediation verified locally; release pending",
+  "basedOn": "CHG-063 reviewed stylesheet candidate",
+  "expandedCSSSha256": "a0d8f03430a6676772ecf683580900f98275702a6eb851ab2d80dad3a1aeeb86",
+  "changes": [
+    "Remove empty emphasis markup from crawlable public documents",
+    "Defer inactive app screens from crawlers and restore them before controllers start",
+    "Align Home page title, H1 and visible copy around browser dry-fire practice",
+    "Add descriptive, crawlable Home links to relevant practice guides",
+    "Add meaningful image alternatives and remove redundant accessible title text",
+    "Improve mobile brand, beta badge, copyright readability and flagged control labels",
+    "Add automated public route, SEO, accessibility and navigation startup checks"
+  ],
+  "visualChecks": [
+    "26 Chromium mobile page cases verified",
+    "Public browser suite passed 107 tests with 5 expected skips before final Home guide-link addition",
+    "Preview browser suite passed 82 tests with 5 expected skips before final Home guide-link addition",
+    "Regenerated Home screenshot passed after guide-link addition",
+    "Focused preview public-route browser suite passed 4 tests with 4 expected skips after guide-link addition"
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "e38ad68707bba4ebc2974de2c03d05fc34fa1b6e",
+  "sourceCommit": "d4f00264ce21898caf3a73ccb8a49a2a8a4e5c8a",
   "renderer": "local Chromium 145.0.7632.6",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
@@ -7,7 +7,7 @@
     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.css": "23ea6107bb58f6fa46fb2fa82421ad63ddac3e49fe9e97540382e384d5b37fba",
     "apps/web/src/styles/legacy-after-guide-page.css": "c0b09a02831cc6104a6e36dd7131901e73c70a23f0dbc6c09d0d4470bf62db4d",
     "packages/ui/src/AppShell/AppShell.css": "54bcc912cee34e862675a5d8bb7d6f73ab2a9ee073960a95c8f315713f2a24d7",
-    "packages/ui/src/BrandHeader/BrandHeader.css": "beabe3e119c023a2df16d829f27549540c5d26766ab33e142d4a7a99d36463a2",
+    "packages/ui/src/BrandHeader/BrandHeader.css": "24d1365b7346c90d8c0781525c16068cb2943a49eff096797847b8bc6ee901d2",
     "apps/web/src/styles/legacy-card-foundation.css": "80e3c7a80c373fe764f4cde19f02f26878133335fb798c1db7580a98eb02b74d",
     "packages/ui/src/SafetyDisclosure/SafetyDisclosure.css": "f7e523996aef9862a7b22f2814422601fd38a22f7361810d0aeba45d886c043f",
     "apps/web/src/styles/legacy-checkbox-foundation.css": "3ce8b38973f9e3c9c74d990a429b21a3316c6d14e88f86a163d89bc010530faa",
@@ -20,7 +20,7 @@
     "apps/web/src/styles/legacy-before-history-list.css": "f13587c5b6d6928dfc3bcce139e925529cce18f5a5b645445cb145bf3e163825",
     "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
     "apps/web/src/styles/legacy-after-history-list.css": "fcadfa3ceda88072b3008771d894c55ab2c6db4881616cde7ba29b055b3a8b7d",
-    "packages/ui/src/InfoFooter/InfoFooter.css": "c067b2816187a004a3168219ec42e6091b5517065faceeed7ff22beed70b6b9b",
+    "packages/ui/src/InfoFooter/InfoFooter.css": "bded8204424e66a907bf3d405ec72a9c049b7f947d01b1e14cf2a18b9df26c13",
     "apps/web/src/styles/legacy-info-visibility.css": "20364cba9bf4a2abdb5e25bf69477773b3f021a34c6c19b13fbc7895ee2ccf99",
     "apps/web/src/pages/AboutPage/AboutPage.css": "f461cfe293e1fec12d7a8bbbca835abd9a7495db77e1a5effa56241150b900b5",
     "apps/web/src/public-site/MarketingOverview/MarketingOverview.css": "835ecb53212b8b940f593c2108cb16cd8d737e3457eb14558130b61791eeeed3",
@@ -29,7 +29,7 @@
     "apps/web/src/styles/legacy-before-evaluation.css": "894976008e366a76806eb6b3f82711befb050a868cb29a85b11e6086c8a0fe96",
     "packages/ui/src/EvaluationPanel/EvaluationPanel.css": "a8663aaee9b9f8c1ddc06abcb178fb9c7dabc4b396d3cf55ce060f1f0b4fd3ae",
     "apps/web/src/styles/legacy-after-evaluation.css": "0989a333adf141fe1ab5eb6be5ea099b73ba2d04556dc4f60b546ff94fba00bc",
-    "apps/web/src/pages/HomePage/HomePage.css": "0a8cdf95133194679e1f87fee35abd230b77bd1a9aa2bd226bd6c7c89524225f",
+    "apps/web/src/pages/HomePage/HomePage.css": "3de3ca1df3c36b593d68a8440dd67640b8297e8811ce656e763b348284dd85ed",
     "apps/web/src/styles/legacy-before-settings.css": "d796631fab5158684181d488c644afeaae2d5bc8453d086c6098793e39e14426",
     "apps/web/src/features/settings/components/SettingsSection/SettingsSection.css": "91bc51702a8d004b6e0480ef14392690722bd7e08ad7864a5ba6884c8d28f898",
     "apps/web/src/pages/SettingsPage/SettingsPage.css": "9e3d21fcc81ecbfb94d1b2bddb69f885534b9813311787b81dd2fc9d053f6330",
@@ -42,9 +42,9 @@
     "apps/web/src/pages/DrillsPage/DrillsPage.css": "feb6b089447e868bc730042cfed73d9e6b9cdac472abd54a76305b635a40c0bb",
     "packages/ui/src/DrillCard/DrillCard.css": "923b1214eee270df3ba6d7198671abdf40e4d9b974a86bbfc37e2631c83b0c2f",
     "apps/web/src/features/settings/components/SettingsAction/SettingsAction.css": "cb71cc3f6a2be6e4a61c0b7b678abb557323520d16d0ec884bd98c6ae62b1e84",
-    "apps/web/src/styles/legacy-after-drill-cards.css": "caca8c980cb043aa0208b9fe8b03db85aa332d30305c48fbd16da1e19585bb9a",
-    "packages/ui/src/GunSwitcher/GunSwitcher.css": "fa61ad836a05706d81e38c9d07c95a627a78ad5a1d2cbbe77e0aaa56fcce6858",
-    "packages/ui/src/GunContext/GunContext.css": "6474fb99e0dd36156664a93e3459b4fbb5ac20d80d1f952ceb9746faaf817859",
+    "apps/web/src/styles/legacy-after-drill-cards.css": "2b75727f5bd9c4c7ce40d1969338bdbe5427f5c65ee127eb6975139c0233e3cc",
+    "packages/ui/src/GunSwitcher/GunSwitcher.css": "d03e8a502397a83c65cf15529ad9d80c5b33324400cf5232b41d1dae4deff141",
+    "packages/ui/src/GunContext/GunContext.css": "a68e4621c29fccea24e4163edf42adcb91acc25298ca8db50218a317bb6cf795",
     "apps/web/src/pages/GunSetupPage/GunSetupPage.css": "3e3931664bd99a0a8953afe777995fbbbc833531231895a2c05d5bec214d4ca9",
     "apps/web/src/styles/legacy-after-gun-setup.css": "10214881326191c474881e0ee8ea59607ab99552995ac44842f24b3400c753c4",
     "apps/web/src/pages/GunsPage/GunsPage.css": "11d33801cb8ea764286a3f389476b50c7de6f69912cb54ba92bb29e09f722021",
@@ -87,7 +87,7 @@
     "apps/web/src/features/sessions/phasePresentation.ts": "5c788b0f902338a4ec81352b69d8d3d1f1270203e23d0d29510098f583ad9836",
     "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
-    "src/main.js": "371ace3484485e02f9273c3c302ccd8e74b646bab4bac9815b46c73174422827",
+    "src/main.js": "92fb26f46181ee2fc84d381e7869b8fc60c7a482b1db13687588f2e648a3a519",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "cfe7c1473f9f4f6b7ef7751fe003e015433fcc8452156d487cf964b80b2d01db",
+      "sha256": "88d6b3960af7b37aaf900c7ab79514f70251e11a8ecdd53581f986e0ca41cc8a",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "d09c5495c87c73f43022c76c51dbad1b7d928787c7e5566fcd458274d78eafca",
+      "sha256": "59591c2cfc69423ca89d16799d85a07693e66c579f36c3571fab8dfba7064183",
       "width": 358,
       "height": 1004
     },
@@ -154,7 +154,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "repeated.gif",
-      "sha256": "607a7d563047ca27657952a4d5417a9ae2900f11cf2ebdcf1ddfe5240fb1c3dd",
+      "sha256": "a13d7ecc1e3e6446c735c019c7ae7cf17193525580623bf308d11c2e02ff481c",
       "width": 358,
       "height": 949
     },
@@ -163,7 +163,7 @@
       "frames": 68,
       "frameMs": 200,
       "file": "par.gif",
-      "sha256": "85e4a6152117be1d0c629c0f7aafd6572e9d5bd5cf0b2e27ba0d9e604fe2ebd6",
+      "sha256": "1f50422c669327d8df483b01b65f8554805e4af32e935e45f35fe8a145e819a1",
       "width": 358,
       "height": 1004
     },
@@ -172,7 +172,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "control.gif",
-      "sha256": "607a7d563047ca27657952a4d5417a9ae2900f11cf2ebdcf1ddfe5240fb1c3dd",
+      "sha256": "a13d7ecc1e3e6446c735c019c7ae7cf17193525580623bf308d11c2e02ff481c",
       "width": 358,
       "height": 949
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "ed29c8da799f04ba8eb73dc30c36d91a12ed5de3af069161718bbc5373fc3510",
+      "sha256": "79c6f2c2c952c5da12255e436e53825de80f0cfc499bd1b230bcf10c2fbb29f2",
       "width": 358,
       "height": 750
     },
@@ -190,7 +190,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-rack-trigger.gif",
-      "sha256": "11792e3cd4f828543c11d7be97bf931e818aa1d4dad9669d14739e623c40b3b4",
+      "sha256": "b7ba3b021971627914ab91dd387517740218e1d91b329a1485e625b5e0dc8315",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "08af62ebcf285ed8fe995f00688ebaeb529362207559168983d02696fc99730c",
+      "sha256": "bfafaa1831f076c903b0f932d59f9f055d6909645128c2b732d10a33de28b747",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "13cc997d40b032242ebe10bcc80bb5b3a77947861adecdc984b210db345b927b",
+      "sha256": "0b3fec48c9c26e587184cc33619b81a1b41c6297648d203b8080f3fc977477c8",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "8e3ead460416ce680560f62bbc58e555bbf9ac083f0bf413c1ff4642126fd4f3",
+      "sha256": "3ddb9170f61f7ad9bba7293a2e3e86166de77d6b45d95dd5bb867d2ab5c0e41e",
       "width": 358,
       "height": 750
     }

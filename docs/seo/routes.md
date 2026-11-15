@@ -12,7 +12,7 @@ Canonical origin: **https://easydryfire.com**. Each page has useful prerendered 
 
 | Canonical path | Page title | In XML sitemap |
 | --- | --- | --- |
-| [/](https://easydryfire.com/) | Dry Fire With Ease — Free Dry-Fire Practice App | Yes |
+| [/](https://easydryfire.com/) | Dry-Fire Practice App | Dry Fire With Ease | Yes |
 | [/practice-modes/](https://easydryfire.com/practice-modes/) | Dry-Fire Practice Modes — Dry Fire With Ease | Yes |
 | [/single-trigger-press-guide/](https://easydryfire.com/single-trigger-press-guide/) | Single trigger press guide — Dry Fire With Ease | Yes |
 | [/repeated-trigger-press-guide/](https://easydryfire.com/repeated-trigger-press-guide/) | Repeated trigger press guide — Dry Fire With Ease | Yes |

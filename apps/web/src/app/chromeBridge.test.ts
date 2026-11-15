@@ -109,7 +109,7 @@ test('header links preserve modified clicks and intercept ordinary nested-icon n
 test('native tooltip dismissal handles nested icons, focus changes and unrelated header events',()=>{
  const bridge=createChromeBridge(document,jest.fn()),link=document.querySelector<HTMLAnchorElement>('#aboutBtn')!;
  const icon=link.querySelector('svg')!;
- document.querySelector('h1')!.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+ document.querySelector('.hero')!.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
  icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));expect(link).not.toHaveAttribute('data-tip-off');
  icon.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));expect(link).toHaveAttribute('data-tip-off','true');
  icon.dispatchEvent(new FocusEvent('focusout',{bubbles:true,relatedTarget:link}));expect(link).toHaveAttribute('data-tip-off','true');

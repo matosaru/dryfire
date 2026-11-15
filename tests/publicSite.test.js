@@ -23,6 +23,9 @@ test('unknown/internal paths are real404s, canonical variants redirect once, HEA
 test('sitemap contains canonical public content, including the app homepage and unique manuals, without private setup URLs',()=>{
  const xml=sitemapXML();expect(PUBLIC_ROUTES).toHaveLength(14);for(const route of PUBLIC_ROUTES)expect(xml).toContain(CANONICAL_ORIGIN+route.path);for(const path of ['/app/','/settings/','/history/','/rack-slide-trigger-pull/'])expect(xml).not.toContain('<loc>'+CANONICAL_ORIGIN+path+'</loc>');expect(new Set(PUBLIC_ROUTES.map(r=>r.title)).size).toBe(PUBLIC_ROUTES.length);
 });
+test('homepage metadata and visible heading describe the same dry-fire practice app',()=>{
+ const home=PUBLIC_ROUTES.find(route=>route.id==='home');expect(home.title).toBe('Dry-Fire Practice App | Dry Fire With Ease');expect(home.heading).toBe('Browser dry-fire practice app');expect(home.description.toLowerCase()).toContain(home.heading.toLowerCase());
+});
 test('the About route is a focused crawlable product page with specific search metadata',()=>{
  const about=PUBLIC_ROUTES.find(route=>route.id==='about');expect(about).toBeDefined();expect(about.appView).toBeUndefined();expect(about.title).toContain('Browser Dry-Fire Practice App');expect(about.heading).toContain('sound recognition');expect(about.description).toContain('device microphone');
 });

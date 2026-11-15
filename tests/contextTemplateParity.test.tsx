@@ -36,7 +36,7 @@ test('the compiled shell includes the same context/dialog without extra wrappers
 });
 
 
-test('ordered CSS matches the reviewed CHG-063 local candidate',()=>{
- const proof=JSON.parse(readFileSync(new URL('../docs/design/proposals/chg-063/review.json',import.meta.url),'utf8'));
+test('ordered CSS matches the SEO remediation candidate',()=>{
+ const proof=JSON.parse(readFileSync(new URL('../docs/design/proposals/seo-audit-remediation/review.json',import.meta.url),'utf8'));
  expect(createHash('sha256').update(composedStyles().css).digest('hex')).toBe(proof.expandedCSSSha256);
 });
