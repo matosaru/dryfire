@@ -42,7 +42,9 @@ beforeEach(() => {
   globalThis.AudioContext = class {
     constructor() {
       Object.assign(this, { sampleRate: rate, currentTime: 1, state: 'running', destination: {},
-        close: jest.fn(async () => { this.state = 'closed'; }), resume: jest.fn(async () => { this.state = 'running'; }) });
+        close: jest.fn(async () => { this.state = 'closed'; }), resume: jest.fn(async () => { this.state = 'running'; }),
+        addEventListener: jest.fn((type, callback) => { if (type === 'statechange') this.onStateChange = callback; }),
+        removeEventListener: jest.fn((type, callback) => { if (type === 'statechange' && this.onStateChange === callback) this.onStateChange = null; }) });
       contexts.push(this);
     }
     createMediaStreamSource() { return node(); }
@@ -290,3 +292,13 @@ test('cue suppression retains an in-flight early onset and the first 200 ms clic
 });
 
 test('continuous permission denial reports an actionable error and closes audio resources',async()=>{mediaDevices.getUserMedia.mockRejectedValue(Object.assign(new Error('denied'),{name:'NotAllowedError'}));await expect(startContinuousListening({onEvent(){}})).rejects.toThrow('Microphone permission was denied.');expect(contexts.every(context=>context.close.mock.calls.length===1)).toBe(true);});
+
+test('audio-context interruption stops capture and reports an actionable recovery message',async()=>{
+ const onError=jest.fn();const session=await startContinuousListening({onEvent(){},onError,detectionEnabled:false});
+ const pcm=new Float32Array(rate*.6);
+ nodes[0].onaudioprocess({playbackTime:1.6,inputBuffer:{duration:.6,getChannelData:()=>pcm},outputBuffer:{numberOfChannels:1,getChannelData:()=>new Float32Array(pcm.length)}});
+ expect(await session.waitForInput()).toMatchObject({ready:true});
+ contexts[0].state='suspended';contexts[0].onStateChange();
+ expect(onError).toHaveBeenCalledWith(expect.objectContaining({message:expect.stringMatching(/interrupted.*restart/i)}));
+ expect(track.stop).toHaveBeenCalledTimes(1);expect(contexts[0].close).toHaveBeenCalledTimes(1);
+});
