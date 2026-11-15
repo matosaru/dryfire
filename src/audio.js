@@ -248,7 +248,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   const [{ createEventDetector }, readiness] = await Promise.all([
     import('./eventDetector.js'), import('./audioReadiness.js'),
   ]);
-  const {createAmbientReadinessEstimator,describeAmbientReadiness,monitorAudioCapture}=readiness;
+  const {createAmbientReadinessEstimator,describeAmbientReadiness}=readiness;
   throwIfAborted(signal);
   const noiseMultiplier = { high: 3.5, normal: 5, low: 7 }[sensitivity] ?? 5;
   let stream, context, source, node, output;
@@ -260,7 +260,6 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   let pendingActivity = false;
   let closePromise;
   let lastInputAt = Date.now();
-  let healthMonitor;
   let detectionArmed = detectionEnabled !== false;
   let armedAfterFrame = 0;
   let suppressedFrames = null;
@@ -313,8 +312,6 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     running = false;
     for (const waiter of inputWaiters) waiter.finish(Object.assign(new Error('Audio capture was cancelled.'), { name: 'AbortError' }));
     signal?.removeEventListener('abort', onAbort);
-    healthMonitor?.stop();
-    healthMonitor = null;
     detector?.stop();
     if (node) {
       if ('onaudioprocess' in node) node.onaudioprocess = null;
@@ -419,7 +416,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     source.connect(node);
     node.connect(output);
     output.connect(context.destination);
-    healthMonitor = monitorAudioCapture(context,stream,()=>readinessResult?.ready,()=>lastInputAt,onError,stop);
+    readiness.monitorAudioCapture(context,stream,()=>readinessResult?.ready,()=>lastInputAt,onError,stop);
     throwIfAborted(signal);
     return { stop, armDetection, disarmDetection, suppressDetection, waitForInput, nowMs: () => context.currentTime * 1000 };
   } catch (error) {
