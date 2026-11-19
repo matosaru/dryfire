@@ -1,1 +1,18 @@
-{}
+page:
+  title: About this practice
+back: Back to setup
+kind: PRACTICE GUIDE
+sequenceLabel: Selected sound order
+exampleGroup: Single practice example
+normalRepetitions: Normal repetitions
+earlyTrigger: Early trigger
+exampleDisclosure: SIMULATED EXAMPLE · NO LIVE MICROPHONE · NOTHING IS SAVED
+exampleAriaLabel: Silent simulated practice example
+exampleCaption: Silent example · 1× timing
+playExample: Play example
+measuresHeading: What it measures
+howHeading: How it works
+goodToKnowHeading: Good to know
+beforeStart: Before you start
+safetyReminder: Verify unloaded, remove live ammunition and use a safe direction and backstop.
+measurementDisclosure: The app measures detected sounds. It cannot verify unloaded status, aim or safe handling.

@@ -1,1 +1,21 @@
-{}
+microphone:
+  title: Microfoon en herkenning
+  body: Open de app via HTTPS, geef toegang tot de microfoon en leer het trekkerklikgeluid van het geselecteerde wapen. Voor het aftellen controleert de app de omgevingsgeluiden terwijl herkenning is uitgeschakeld. De app laat weten wanneer de microfoon klaar is. De opname stopt wanneer je een actieve oefening verlaat.
+  guideLink: Kalibratiehandleiding lezen
+soundCheck:
+  title: Geluidstest
+  body: Open na het leren van trekkerklikken Leren en kies Geluidstest uitvoeren. Label wat je daadwerkelijk gaat doen, start een poging van twee seconden en herhaal dit met trekkerklikken en gewone omgevingsgeluiden. Bekijk herkende, gemiste, foutieve en dubbele detecties. Je kunt een privacyvriendelijk JSON-rapport exporteren om testresultaten te delen. Audio wordt nooit opgenomen in het rapport.
+  learnLink: Leren openen
+startSound:
+  title: Startgeluid
+  body: Gebruik Test startgeluid op de instelpagina van een oefening en zet daarna het mediavolume van je telefoon goed. De app gebruikt een sterker kort signaal, maar kan het systeemvolume niet aanpassen. Een korte herkenningspauze voorkomt dat het signaal als een schot wordt herkend.
+iphone:
+  title: Beginscherm van iPhone
+  stepOne: Open easydryfire.com/ in Safari.
+  stepTwo: Tik op Deel en daarna op Zet op beginscherm.
+  stepThree: Open de geïnstalleerde app en geef toegang tot de microfoon wanneer je een opname start.
+  note: Ruisfilter, automatische versterking en trillen zijn afhankelijk van de mogelijkheden van je browser en apparaat. Instellingen legt uit welke opties niet worden ondersteund.
+backup:
+  title: Bewaar een reservekopie
+  body: Exporteer via Instellingen → Back-up exporteren een kopie voordat je browsergegevens wist, van apparaat wisselt of van domein verandert. Importeren vervangt na bevestiging de lokale bibliotheek. Een doorverwijzing verplaatst geen gegevens tussen .app, .com en workers.dev.
+  settingsLink: Instellingen openen

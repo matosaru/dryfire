@@ -1,1 +1,21 @@
-{}
+microphone:
+  title: Mikrofon und Erkennung
+  body: Öffne die App über HTTPS, erlaube den Mikrofonzugriff und lerne den Abzugsklick der ausgewählten Waffe. Vor dem Countdown prüft die App bei deaktivierter Erkennung die Umgebungsgeräusche und meldet, wenn das Mikrofon bereit ist. Die Aufnahme endet, wenn du eine aktive Übung verlässt.
+  guideLink: Kalibrierungsanleitung lesen
+soundCheck:
+  title: Klangtest
+  body: Öffne nach dem Lernen von Abzugsbeispielen den Bereich „Geräusche lernen“ und starte den Klangtest. Beschrifte die tatsächlich ausgeführte Aktion, beginne einen zweisekündigen Versuch und wiederhole ihn mit Abzugsklicks und gewöhnlichen Raumgeräuschen. Prüfe erkannte, verpasste, falsche und doppelte Ereignisse. Bei Bedarf kannst du einen datenschutzfreundlichen JSON-Bericht exportieren. Audiodaten sind darin nicht enthalten.
+  learnLink: Geräusche lernen öffnen
+startSound:
+  title: Startsignal
+  body: Verwende auf einer Übungseinrichtungsseite die Schaltfläche „Startsignal testen“ und stelle dann die Medienlautstärke des Telefons ein. Die App spielt ein stärkeres kurzes Signal ab, kann aber die Systemlautstärke nicht überschreiben. Eine kurze Erkennungssperre verhindert, dass der Signalton als Schuss erkannt wird.
+iphone:
+  title: iPhone-Home-Bildschirm
+  stepOne: Öffne easydryfire.com/ in Safari.
+  stepTwo: Tippe auf „Teilen“ und dann auf „Zum Home-Bildschirm“.
+  stepThree: Öffne die installierte App und erlaube den Mikrofonzugriff, wenn du eine Aufnahme startest.
+  note: Rauschunterdrückung, automatische Verstärkung und Vibration hängen von den Browser- und Gerätefunktionen ab. In den Einstellungen werden nicht unterstützte Optionen erklärt.
+backup:
+  title: Sicherungskopie behalten
+  body: Exportiere unter „Einstellungen → Sicherung exportieren“ eine Kopie, bevor du Browserdaten löschst, das Gerät wechselst oder die Domain änderst. Beim Import wird die lokale Bibliothek nach einer Bestätigung ersetzt. Eine Weiterleitung überträgt keine Daten zwischen .app, .com oder workers.dev.
+  settingsLink: Einstellungen öffnen

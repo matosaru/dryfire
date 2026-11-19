@@ -1,1 +1,21 @@
-{}
+microphone:
+  title: Microphone and recognition
+  body: Open the app over HTTPS, allow microphone permission and learn the selected gun’s trigger sound. Before a countdown, the app observes the room while detection is disarmed and reports when the microphone is ready. Capture stops when you leave an active practice.
+  guideLink: Read the calibration guide
+soundCheck:
+  title: Sound Check
+  body: After learning trigger examples, open Learn and choose Run Sound Check. Label what you will actually do, begin a two-second attempt, and repeat with trigger clicks and ordinary room sounds. Review matched, missed, false and duplicate detections, then export a privacy-safe JSON report if you want to share test evidence. Audio is never included.
+  learnLink: Open Learn
+startSound:
+  title: Start sound
+  body: Use Test start sound on a practice setup page, then set your phone’s media volume. The app uses a stronger short cue but cannot override the operating-system volume. A short detection guard prevents the cue from becoming a shot.
+iphone:
+  title: iPhone Home Screen
+  stepOne: Open easydryfire.com/ in Safari.
+  stepTwo: Tap Share, then Add to Home Screen.
+  stepThree: Open the installed app and allow microphone permission when starting capture.
+  note: Noise Filter, Auto Gain and vibration depend on browser/device capabilities. Settings explains unsupported controls.
+backup:
+  title: Keep a recovery copy
+  body: Use Settings → Export backup before clearing browser data, changing device or moving domain. Import replaces the current local library after confirmation. A redirect does not transfer data between .app, .com or workers.dev.
+  settingsLink: Open Settings

@@ -1,1 +1,18 @@
-{}
+page:
+  title: Über diese Übung
+back: Zurück zur Einrichtung
+kind: ÜBUNGSANLEITUNG
+sequenceLabel: Ausgewählte Geräuschfolge
+exampleGroup: Beispiel für eine einzelne Übung
+normalRepetitions: Normale Wiederholungen
+earlyTrigger: Früher Abzug
+exampleDisclosure: SIMULIERTES BEISPIEL · KEIN LIVE-MIKROFON · ES WIRD NICHTS GESPEICHERT
+exampleAriaLabel: Stilles simuliertes Übungsbeispiel
+exampleCaption: Stilles Beispiel · 1×-Timing
+playExample: Beispiel abspielen
+measuresHeading: Was gemessen wird
+howHeading: So funktioniert es
+goodToKnowHeading: Gut zu wissen
+beforeStart: Bevor du beginnst
+safetyReminder: Stelle sicher, dass die Waffe entladen ist, entferne scharfe Munition und verwende eine sichere Richtung und einen geeigneten Kugelfang.
+measurementDisclosure: Die App misst erkannte Geräusche. Sie kann den entladenen Zustand, das Zielen oder den sicheren Umgang nicht überprüfen.

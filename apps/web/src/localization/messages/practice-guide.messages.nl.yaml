@@ -1,1 +1,18 @@
-{}
+page:
+  title: Over deze oefening
+back: Terug naar instellen
+kind: OEFENINGSHANDLEIDING
+sequenceLabel: Geselecteerde geluidsvolgorde
+exampleGroup: Voorbeeld van een oefening
+normalRepetitions: Normale herhalingen
+earlyTrigger: Vroeg overhalen
+exampleDisclosure: GESIMULEERD VOORBEELD · GEEN LIVE MICROFOON · ER WORDT NIETS OPGESLAGEN
+exampleAriaLabel: Stil gesimuleerd oefenvoorbeeld
+exampleCaption: Stil voorbeeld · timing 1×
+playExample: Voorbeeld afspelen
+measuresHeading: Wat wordt gemeten
+howHeading: Zo werkt het
+goodToKnowHeading: Goed om te weten
+beforeStart: Voordat je begint
+safetyReminder: Controleer dat het wapen ongeladen is, verwijder scherpe munitie en gebruik een veilige richting en kogelvanger.
+measurementDisclosure: De app meet herkende geluiden. De app kan niet controleren of het wapen ongeladen is, of je goed richt of veilig handelt.
