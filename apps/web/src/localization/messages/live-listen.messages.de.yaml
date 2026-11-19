@@ -1,0 +1,61 @@
+page:
+  title: Gelernte Töne testen
+  eyebrow: LERNEN / ERKENNUNGSTEST
+gunContext:
+  prefix: "Gelernte Töne werden geprüft für "
+  suffix: .
+intro:
+  title: Prüfe deine gelernten Töne.
+  description: Auf dieser Seite kannst du prüfen, ob neue Mikrofonereignisse zu den unter Lernen aufgenommenen Klangprofilen passen. Es ist keine Zeitübung und es werden keine Übungseinheiten gespeichert.
+mode:
+  eyebrow: AKTUELLER MODUS
+  free: Freies Zuhören
+  badge: Freies Zuhören
+  training: Trainingsmodus
+  freeOption: Freies Zuhören · beliebige Geräusche erkennen
+  trigger: 1 · Abzugsdruck
+  rack: 2 · Verschluss bewegen → Abzugsdruck
+  magazine: 3 · Magazinwechsel → Abzugsdruck
+  draw: 4 · Ziehen → Magazinwechsel → Abzugsdruck
+  explanation: Ordne jedes einzelne Geräusch direkt zu.
+  change: Modus ändern / Übung wählen
+  steps: Erwarteter Geräuschablauf
+  completed: abgeschlossen
+  outOfOrder: in falscher Reihenfolge
+  unknown: unbekannt
+  reset: Übungszähler zurücksetzen
+  note: Eine abgeschlossene Übung bedeutet, dass die App den gewählten Ablauf in der richtigen Reihenfolge erkannt hat. Die tatsächlichen Handlungen werden nicht überprüft. Unbekannte Geräusche führen den Ablauf nicht fort.
+capture:
+  ready: Klangprofile werden geprüft…
+  gun: Wähle vor dem Zuhören eine Waffe.
+  loading: Klangprofile dieser Waffe werden geladen. Bitte warten.
+  busy: Schließe die aktuelle Aufnahme oder Prüfung ab, bevor du zuhörst.
+  saving: Einstellungen werden gespeichert. Bitte warten.
+  connecting: Mikrofon wird verbunden… Erlaube den Zugriff oder verlasse diese Seite zum Abbrechen.
+  unsaved: Speichere ausstehende Übungsergebnisse, bevor du zuhörst. Nutze „Erneut versuchen“ auf der Ergebnisseite.
+  session: Beende oder verlasse die aktive Übung, bevor du zuhörst.
+  training: Lerne mindestens {minimum} Abzugsgeräusche ({count}/{minimum}) für diese Waffe. Öffne Lernen, um sie aufzunehmen. Andere Geräusche sind optional.
+  start: Dauerhaftes Zuhören starten
+  single: Einzelnes Geräusch testen
+  sensitivity: Erkennungsempfindlichkeit
+  normal: Normal
+  high: Hoch (leisere Ereignisse)
+  low: Niedrig (lautere Umgebung)
+  inactive: Mikrofon inaktiv
+  meter: Live-Mikrofonpegel
+  continuousNote: Der Dauerbetrieb bleibt bei mehreren getrennten Handlungen aktiv. Mache kurze Pausen zwischen den Geräuschen und tippe zum Beenden auf Stopp. Der Einzeltest nimmt ein Geräusch auf und stoppt.
+  eventCounter: 0 erkannt · 0 verworfen
+  timeline: Erkannte Handlungen dieser Einheit (neueste zuerst)
+result:
+  empty: Das nächste Erkennungsergebnis erscheint hier.
+  latest: LETZTES ERGEBNIS
+  note: Werte und Ähnlichkeitsabstände sind experimentell und keine kalibrierten Wahrscheinlichkeiten. Prüfe Treffer selbst.
+  actual: Welches Geräusch hast du tatsächlich gemacht?
+  choose: Tatsächliches Geräusch wählen…
+  draw: Aus dem Holster ziehen
+  rack: Verschluss bewegen
+  trigger: Abzugsdruck
+  reload: Magazin wechseln
+  other: Anderes Geräusch / Hintergrundlärm
+  verify: Prüfen
+  verificationNote: Bestätigungen dienen zur Genauigkeitsbewertung und nicht zum automatischen Neutrainieren.

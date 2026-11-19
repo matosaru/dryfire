@@ -1,0 +1,41 @@
+page:
+  title: Over
+feedback:
+  title: Feedback welkom
+  description: Deze app is in bèta. Feedback en suggesties zijn welkom. Ga naar Contact om een idee te delen of een probleem te melden.
+saved:
+  title: Op dit apparaat opgeslagen
+  description: Je hebt geen account nodig. Je profielen, geleerde geluidskenmerken, oefeningen en geschiedenis blijven in deze browser. Gebruik Instellingen → Back-up exporteren om een kopie te bewaren voordat je van apparaat wisselt of browsergegevens wist.
+safety:
+  title: Oefen veilig
+  description: Voltooi de veiligheidscontrole voordat je opneemt of oefent. Geluidsherkenning is experimenteel. De app kan niet controleren of een vuurwapen ongeladen is, of je goed richt of veilig handelt en is geen gekalibreerd meetinstrument.
+intro:
+  version: Geluidstrainer · Bèta · v0.8.0
+  headlineOne: Droog oefenen,
+  headlineTwo: eenvoudig gemaakt.
+  description: Gebruik de microfoon van je apparaat om je aangeleerde trekkerklik te herkennen, herhalingen te timen en je voortgang te bekijken.
+routine:
+  title: Een eenvoudige oefenroutine
+  stepOne: Voeg een wapen toe en leer de trekkerklik ervan.
+  stepTwo: Kies een oefenmodus of oefening.
+  stepThree: Volg het startsignaal en bekijk je opgeslagen resultaten.
+  note: Je hebt geen account of betaalgegevens nodig. In de gratis app kun je maximaal twee wapens aanmaken en bestaande compatibele profielen blijven gebruiken.
+  openApp: Open de gratis app
+features:
+  free: Leer je trekkerklik, kies een ingebouwde oefenmodus en bekijk opgeslagen tijden. Andere geluiden zijn alleen nodig als je oefening ze gebruikt.
+  full: Beheer aparte profielen voor maximaal vijf wapens, maak eigen oefeningen en bekijk tijdtrends. Andere geluiden zijn alleen nodig als je oefening ze gebruikt.
+modes:
+  title: Vier manieren om te oefenen
+  readGuide: Lees de uitleg
+  single:
+    title: Eén trekkerbeweging
+    description: Meet de tijd tussen het startsignaal en één trekkerklik.
+  repeated:
+    title: Herhaalde trekkerbewegingen
+    description: Tel afzonderlijke trekkerklikken en meet de tussenpozen.
+  par:
+    title: Oefenen met een tijdslimiet
+    description: Herken een trekkerklik binnen de gekozen tijdslimiet.
+  control:
+    title: Trekkercontrole
+    description: Vergelijk hoe regelmatig de tussenpozen tussen trekkerklikken zijn.

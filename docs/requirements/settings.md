@@ -1,6 +1,6 @@
 # Audio, appearance and feedback settings
 
-Revision: 1.3 · Scope: approved including CHG-014 and CHG-030 Dark primary text · 2026-10-12; implementation/publication in the delivery tracker, physical-device/deployment verification separate
+Revision: 1.4 · Scope: approved including CHG-066 measurement units · 2026-11-07; implementation/publication in the delivery tracker, physical-device/deployment verification separate
 
 User evidence: **“after a publish, proceed with”** working browser controls; the subsequent implementation was published in `b19aa4d`. The user now explicitly replied **“proceed”** to the detailed settings/session proposal published in `ebac22b`, approving CHG-014 revision 1.0. This records GitHub publication, not Cloudflare deployment.
 
@@ -12,6 +12,7 @@ User evidence: **“after a publish, proceed with”** working browser controls;
 | SET-04 | Provide Vibration Feedback connected to actual device/browser support. | Approved; CHG-014 |
 | SET-05 | Persist preferences across refreshes and compatible app updates. Explain unsupported capabilities accurately rather than displaying nonfunctional controls. | Approved; CHG-014 |
 | SET-07 | Main text in resolved Dark mode uses `#FFFFFF` (`rgb(255, 255, 255)`) consistently across the app: headings, primary content and neutral control labels/values, including session/practice/history text. Muted secondary copy/footer disclosure and semantic accent/status/button ink retain their colors. CHG-031 / ABOUT-05 separately makes the About/Contact controls white in Dark. Light mode retains its existing palette; System follows the resolved theme. | Direct user instruction; CHG-030 |
+| SET-08 | Provide a device-wide **Measurement units** preference with Metric and Imperial choices. Existing installations and invalid/missing values default to Metric. Persist the choice, include it in whole-library backup/restore and use one shared formatter for every applicable distance label/help value. Unit changes never alter stable stored distance categories or delete data. | Direct user instruction; CHG-066 |
 
 ## Approved ownership, defaults and capability behavior
 
@@ -21,6 +22,7 @@ These choices are approved in the [immutable CHG-014 proposal](https://github.co
 - Clearly report unsupported controls or settings that the acquired audio track does not confirm, while keeping core capture usable. Explain that changing processing can affect recognition and may require fresh examples; preference changes themselves never delete samples.
 - Appearance is **device-wide**, with **Dark** initially, **Light** and **System**. System follows the device preference. All choices retain readable controls and persist through refresh.
 - Vibration Feedback is **device-wide**, initially **Off**. When enabled and supported, request a short vibration at **GO** and **repetition completion**. Mark unavailable when the API is absent or returns failure; do not claim iPhone support or physical verification from browser tests.
+- Measurement units are **device-wide**, initially **Metric**. The native Settings select offers Metric and Imperial. Sound Check renders one selected system at a time while retaining the compatible `close`, `practice` and `far` metadata values. Metric copy is Close under 30 cm, Normal 30 cm–1 m and Far over 1 m; Imperial copy is Close under 1 ft, Normal 1–3 ft and Far over 3 ft.
 - Include these preferences in whole-library backup/restore and retain same-origin persistence. Accounts/cloud synchronization remain outside this implementation.
 
 ## Acceptance criteria
@@ -31,6 +33,7 @@ These choices are approved in the [immutable CHG-014 proposal](https://github.co
 4. Approved feedback triggers obey the saved preference; unsupported vibration is not reported as successful.
 5. Existing sound data and history are retained when preferences change.
 6. Review Dark captures across the twelve screens/shared safety modal and both browser engines. Main text is pure white; muted/accent styles remain distinct. Light-mode colors/layout remain unchanged. Update the [shared design](../design/screens/shared/README.md), source/capture fingerprints and delivery history; screenshot checks prove repeatable rendering, not device microphone behavior.
+7. Metric/Imperial changes persist across refresh, update already-mounted measurement copy safely, survive backup/restore and never mix both systems in one selected view. Missing/invalid saved values render Metric.
 
 ## Explicit data reset — CHG-019
 

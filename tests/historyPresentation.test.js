@@ -15,6 +15,7 @@ function setup(){
  const render=vm.runInNewContext(source+'\nrenderHistory',context);return{context,render};
 }
 const row={id:'e',gunId:'one',label:'trigger',createdAt:1700000000000,confidence:.854,actualLabel:'trigger',drillId:'custom',drillTitle:'Original <title>',drillCompleted:true};
+test('native recognition deletion uses inline confirmation and delegates one row',async()=>{document.body.innerHTML='<div id="historyList"></div>';const onDelete=jest.fn();legacyHistoryRendererModule.renderHistoryList(document,[row],{labels:['trigger'],titleFor:label=>label,drillTitleFor:()=>undefined,onVerify:jest.fn(),onDelete,onError:jest.fn()});document.querySelector('[aria-label^="Delete recognition result"]').click();expect(document.querySelector('.history-delete-confirm').textContent).toContain('Delete this recognition result?');document.querySelector('[aria-label^="Cancel deleting recognition result"]').click();expect(onDelete).not.toHaveBeenCalled();document.querySelector('[aria-label^="Delete recognition result"]').click();document.querySelector('[aria-label^="Confirm deleting recognition result"]').click();expect(onDelete).toHaveBeenCalledWith(expect.objectContaining({id:'e'}));});
 test('recognition rows retain historical title, escaping, scores, verification and matrix semantics',async()=>{
  const {context,render}=setup();context.getEvents.mockResolvedValue([row,{...row,id:'other',label:'unknown',actualLabel:'other',score:91,drillCompleted:false,drillOutcome:'unknown'}]);await render();
  expect(document.querySelectorAll('.history-item')).toHaveLength(2);

@@ -17,7 +17,7 @@ const $ = selector => document.querySelector(selector);
 
 /** Dedicated timed sessions; free listening retains its own capture lifecycle. */
 export function createSessionController({ getContext, titleFor, ensureSafe, onNavigate, onBack,
-  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord, loadPresentation = () => import('./sessionPresentation.js') }) {
+  onChange, onError, onStatus, onProcessing, vibrationEnabled, onVibration, onPracticeRecord, onDeleteSaved, loadPresentation = () => import('./sessionPresentation.js') }) {
   let presentation;
   const preparePresentation = async () => presentation ??= await loadPresentation();
   let selection = null;
@@ -369,7 +369,9 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
       const button = node('button', `${new Date(record.startedAt).toLocaleString()} · ${count} · ${record.status}`, 'button secondary wide-action');
       button.type = 'button';
       button.addEventListener('click', () => openSavedRecord(record));
-      card.append(node('strong', record.drillTitle), button); host.append(card);
+      card.append(node('strong', record.drillTitle), button);
+      if(onDeleteSaved){const remove=node('button','Delete','history-delete-button');remove.type='button';remove.setAttribute('aria-label',`Delete ${record.drillTitle} session`);remove.addEventListener('click',()=>{const confirm=node('div','','history-delete-confirm');confirm.setAttribute('role','group');confirm.setAttribute('aria-label',`Delete ${record.drillTitle} session confirmation`);const yes=node('button','Delete','button danger'),cancel=node('button','Cancel','button secondary');yes.type=cancel.type='button';yes.setAttribute('aria-label',`Confirm deleting ${record.drillTitle} session`);cancel.setAttribute('aria-label',`Cancel deleting ${record.drillTitle} session`);yes.addEventListener('click',()=>Promise.resolve(onDeleteSaved(record)).catch(onError));cancel.addEventListener('click',()=>confirm.replaceWith(remove));confirm.append(node('span','Delete this saved session?'),yes,cancel);remove.replaceWith(confirm);});card.append(remove);}
+      host.append(card);
     }
     return records;
   }

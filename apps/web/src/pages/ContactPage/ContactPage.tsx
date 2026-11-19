@@ -1,16 +1,18 @@
 import { PageHeading } from '@dryfire/ui/PageHeading';
 import { InformationCard } from '@dryfire/ui/InformationCard';
-import {EmailContact} from './EmailContact.tsx';
+import {CONTACT_EMAIL,EmailContact} from './EmailContact.tsx';
+import {useLocaleMessages} from '../../localization/runtime.ts';
 
 export interface ContactPageProps { onBack?: () => void }
 
 export function ContactPage({ onBack }: ContactPageProps) {
+  const {t}=useLocaleMessages('contact');
   return <>
-    <PageHeading id="contact-title" title="Contact" backLabel="Back" onBack={onBack} />
-    <InformationCard id="contactEmailTitle" title="Get in touch" className="about-contact">
-      <p>Have a question, feedback or a bug to report? We'd like to hear from you.</p>
-      <EmailContact />
-      <p className="muted small">The email link opens your configured email app. Do not send private backups or raw recordings unless you deliberately choose to share them.</p>
+    <PageHeading id="contact-title" title={t('page.title')} backLabel={t('page.back')} onBack={onBack} />
+    <InformationCard id="contactEmailTitle" title={t('card.title')} className="about-contact">
+      <p>{t('card.description')}</p>
+      <EmailContact labels={{copy:t('email.copy'),copied:t('email.copied'),unavailable:t('email.unavailable',{email:CONTACT_EMAIL}),hint:t('email.hint')}} />
+      <p className="muted small">{t('privacy')}</p>
     </InformationCard>
   </>;
 }

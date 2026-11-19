@@ -1,6 +1,8 @@
 # Project delivery and change control
 
 - [Implementation history and remaining plan](implementation-history.md): delivered, pending, verified and published status after each request.
+- [Free application next-work plan](free-app-next-work-plan.md): active Free-product execution order, individual History deletion and the reduced page-level visual policy.
+- [Application localization refactor plan](localization-plan.md): proposed ticketed English/German/Dutch YAML localization, Settings language preference, localized SEO routes and test/release gates (planning only).
 - [React refactor specification](react-refactor/spec.md) and [execution plan](react-refactor/plan.md): current structure/article analysis, measured coverage gaps, unchanged design/functionality, performance/compression gates and staged migration. CHG-049 approves autonomous implementation through the gates; P0 is in progress and the first React increment is already released.
 - [Web commercial roadmap](web-commercial-plan.md): current Contact/SEO, security/performance, research, cloud recovery, single-plan billing and testing stages; native apps deferred.
 - [Approval log](approval-log.md): append-only evidence of user-authorized scope.

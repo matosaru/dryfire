@@ -1,0 +1,26 @@
+page:
+  title: Geluiden leren
+  eyebrow: 01 / GELUIDSPROFIELEN
+gunContext:
+  prefix: "Geleerde geluiden voor "
+  suffix: .
+intro:
+  before: Begin met
+  emphasis: 3 trekkeropnamen
+  after: (8–10 aanbevolen). Andere geluiden zijn optioneel. Elke opname begint met twee seconden aftellen, gevolgd door twee seconden opnemen.
+recognition:
+  title: Geleerde geluiden testen
+  description: Controleert aangeleerde geluiden. Geen oefening op tijd; er worden geen oefenresultaten opgeslagen.
+  action: Open herkenningstest →
+optional:
+  title: Optionele geluiden
+  summary: Voor handelingen en reeksoefeningen
+calibration:
+  title: Herkenning verbeteren
+  summary: Reset-, ruis- en extern signaal kalibreren
+  description: Optionele voorbeelden van andere geluiden kunnen foutieve tellingen verminderen. Zeer vergelijkbare trekker- en resetklikken kunnen onduidelijk blijven; controleer resultaten zelf. Voor een oefening met extern startsignaal zijn drie signaalopnamen nodig.
+privacy:
+  note: De animaties laten geluiden zien en zijn geen stapsgewijze handelinstructies. Als je één geluid wist, blijven de andere geluiden en geschiedenis van dit wapen en alle gegevens van andere wapens behouden.
+recordingTip:
+  label: "Opnametip:"
+  description: Gebruik tijdens het oefenen dezelfde positie voor je telefoon. Neem in een representatieve ruimte telkens één natuurlijke trekkerbeweging op. Ruwe audio wordt niet opgeslagen, alleen numerieke geluidskenmerken.

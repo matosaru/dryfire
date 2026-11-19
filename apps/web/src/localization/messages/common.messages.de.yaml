@@ -1,0 +1,18 @@
+navigation:
+  label: Hauptnavigation
+  home: Startseite
+  learn: Lernen
+  drills: Übungen
+  liveListen: Live hören
+  history: Verlauf
+header:
+  information: Informationen
+  home: Startseite — Dry Fire With Ease
+  beta: Beta-Version
+  about: Über uns
+  contact: Kontakt
+  settings: Einstellungen
+result:
+  repetitions:
+    one: "{{count}} Wiederholung abgeschlossen"
+    other: "{{count}} Wiederholungen abgeschlossen"

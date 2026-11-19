@@ -1,0 +1,19 @@
+page:
+  title: Übungen
+  eyebrow: 02 / ÜBUNGSVORLAGEN
+gunContext:
+  prefix: "Gespeicherte Vorlagen für "
+  suffix: .
+triggerGroup:
+  title: "Gruppe: Abzugsbetätigung"
+  description: Für diese Übungen brauchst du nur deine Abzugsbeispiele. Wähle eine Übung, richte sie ein und starte.
+sequenceGroup:
+  title: Ablaufübungen
+  description: Wähle eine integrierte oder gespeicherte Vorlage. Benötigt werden nur die Geräusche des jeweiligen Ablaufs.
+collection:
+  label: Übungssammlung
+  builtIn: Integrierte Übungen
+  custom: Eigene
+custom:
+  create: + Eigene Übung erstellen
+  empty: Für diese Waffe gibt es noch keine eigenen Übungen. Erstelle eine eigene Übung, um einen Ablauf hinzuzufügen.

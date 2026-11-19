@@ -19,7 +19,7 @@ export function renderEvaluation(doc,events){
   table.append(tbody);host.append(table);
 }
 
-export function renderHistoryList(doc,events,{labels,titleFor,drillTitleFor,onVerify,onError}){
+export function renderHistoryList(doc,events,{labels,titleFor,drillTitleFor,onVerify,onDelete,onError}){
   const host=doc.getElementById('historyList');host.replaceChildren();
   if(!events.length){const empty=doc.createElement('div');empty.className='empty-state';empty.textContent='No recognition events yet.';host.append(empty);return;}
   for(const row of recognitionRows(events,titleFor,drillTitleFor)){
@@ -27,6 +27,8 @@ export function renderHistoryList(doc,events,{labels,titleFor,drillTitleFor,onVe
     if(row.sequence){const description=doc.createElement('p');description.textContent=row.sequence;copy.append(description);}copy.append(title,date);
     const controls=doc.createElement('div'),actualLabel=doc.createElement('label'),actual=doc.createElement('select');controls.className='history-controls';actualLabel.textContent='Actual:';actual.setAttribute('aria-label',`Actual sound for ${row.date}`);
     for(const [value,label] of [['','Not verified'],...labels.map(key=>[key,titleFor(key)]),['other','Other / noise']]){const option=doc.createElement('option');option.value=value;option.textContent=label;actual.append(option);}actual.value=row.actualLabel??'';
-    actual.addEventListener('change',async()=>{try{await onVerify(row.id,actual.value);}catch(error){onError(error);}});controls.append(actualLabel,actual,score);item.append(copy,controls);host.append(item);
+    actual.addEventListener('change',async()=>{try{await onVerify(row.id,actual.value);}catch(error){onError(error);}});controls.append(actualLabel,actual,score);
+    if(onDelete){const remove=doc.createElement('button');remove.type='button';remove.className='history-delete-button';remove.textContent='Delete';remove.setAttribute('aria-label',`Delete recognition result from ${row.date}`);remove.addEventListener('click',()=>{const confirm=doc.createElement('div');confirm.className='history-delete-confirm';confirm.setAttribute('role','group');confirm.setAttribute('aria-label',`Delete recognition result from ${row.date} confirmation`);const text=doc.createElement('span'),yes=doc.createElement('button'),cancel=doc.createElement('button');text.textContent='Delete this recognition result?';yes.type=cancel.type='button';yes.className='button danger';cancel.className='button secondary';yes.textContent='Delete';cancel.textContent='Cancel';yes.setAttribute('aria-label',`Confirm deleting recognition result from ${row.date}`);cancel.setAttribute('aria-label',`Cancel deleting recognition result from ${row.date}`);yes.addEventListener('click',()=>Promise.resolve(onDelete(row)).catch(onError));cancel.addEventListener('click',()=>confirm.replaceWith(remove));confirm.append(text,yes,cancel);remove.replaceWith(confirm);});controls.append(remove);}
+    item.append(copy,controls);host.append(item);
   }
 }

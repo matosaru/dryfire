@@ -1,9 +1,10 @@
 /** @jest-environment jsdom */
 import "@testing-library/jest-dom";
 import { jest } from '@jest/globals';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContactPage } from './index.ts';
+import {loadLocale} from '../../localization/runtime.ts';
 
 test('Contact exposes the approved mailto address and a working Back action', async () => {
   const back = jest.fn(); render(<ContactPage onBack={back} />);
@@ -28,4 +29,12 @@ test('Contact keeps the address selectable when clipboard access is unavailable'
   await userEvent.click(screen.getByRole('button',{name:'Copy email'}));
   expect(screen.getByRole('status')).toHaveTextContent('Copy unavailable');
   expect(screen.getByRole('link',{name:'easydryfire@gmail.com'})).toBeVisible();
+});
+
+test('Contact labels and clipboard feedback follow Dutch',async()=>{
+ await act(async()=>{await loadLocale('nl');});const writeText=jest.fn(async(_text:string)=>{});Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText}});render(<ContactPage/>);
+ expect(screen.getByRole('heading',{name:'Contact'})).toBeVisible();
+ await userEvent.click(screen.getByRole('button',{name:'E-mailadres kopiëren'}));
+ expect(screen.getByRole('status')).toHaveTextContent('E-mailadres gekopieerd.');
+ await act(async()=>{await loadLocale('en');});
 });

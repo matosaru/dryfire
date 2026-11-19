@@ -11,6 +11,8 @@ import { getDrill, normalizeCustomDrill } from '../drills.js';
 import { recoverSessionRecord } from '../drillSession.js';
 import { recoverPracticeRecord } from '../practiceSession.js';
 import { normalizeCalibration, compatibleCalibration, CALIBRATION_KINDS } from '../calibration.js';
+import { normalizeMeasurementSystem } from '../measurementUnits.js';
+import { normalizeLocale } from '../locales.js';
 
 /** Recheck ownership inside the write so library replacement cannot race it. */
 function withOwnedTransaction(owner, storeName, action) {
@@ -55,14 +57,15 @@ export async function getLibraryOverview() {
     const result = {}; context.result = result;
     const guns = tx.objectStore(GUNS).getAll();
     guns.onsuccess = () => { result.guns = guns.result; };
-    for (const key of [ACTIVE_GUN, 'appearance', 'vibrationFeedback']) {
+    for (const key of [ACTIVE_GUN, 'appearance', 'vibrationFeedback', 'measurementSystem','language']) {
       const request = tx.objectStore(SETTINGS).get(key);
       request.onsuccess = () => { result[key] = request.result?.value; };
     }
   });
   const guns = orderGuns(rows.guns);
   return { guns, activeGun: rows[ACTIVE_GUN] ? guns.find(gun => gun.id === rows[ACTIVE_GUN]) ?? null : null,
-    devicePreferences: { appearance: rows.appearance ?? 'dark', vibrationFeedback: rows.vibrationFeedback ?? false } };
+    devicePreferences: { appearance: rows.appearance ?? 'dark', vibrationFeedback: rows.vibrationFeedback ?? false,
+      measurementSystem: normalizeMeasurementSystem(rows.measurementSystem),language:normalizeLocale(rows.language) } };
 }
 
 export async function getActiveGun() {
@@ -297,6 +300,12 @@ export async function clearEvents(gunId) {
   await clearOwnedRows(EVENTS, gunId);
 }
 
+export async function deleteEvent(id,gunId){
+ if(typeof id!=='string'||!id)throw new TypeError('Invalid recognition event ID.');
+ const owner=await resolveGunId(gunId,true);
+ return withOwnedTransaction(owner,EVENTS,(tx,context)=>{const store=tx.objectStore(EVENTS),request=store.get(id);request.onsuccess=()=>{if(!request.result||request.result.gunId!==owner){context.fail(new Error('Recognition event not found for this gun.'));return;}store.delete(id);};});
+}
+
 export async function trimEvents(maxResults, gunId) {
   const owner = await resolveGunId(gunId, true);
   const max = normalizeMaxResults(maxResults);
@@ -407,6 +416,12 @@ export async function getSessions(gunId) {
 
 export async function clearSessions(gunId) {
   await clearOwnedRows(SESSIONS, gunId);
+}
+
+export async function deleteSession(id,gunId){
+ if(typeof id!=='string'||!id)throw new TypeError('Invalid saved session ID.');
+ const owner=await resolveGunId(gunId,true);
+ return withOwnedTransaction(owner,SESSIONS,(tx,context)=>{const store=tx.objectStore(SESSIONS),request=store.get(id);request.onsuccess=()=>{if(!request.result||request.result.gunId!==owner){context.fail(new Error('Saved session not found for this gun.'));return;}store.delete(id);};});
 }
 
 export async function getSession(id, gunId) {

@@ -1,0 +1,14 @@
+page:
+  title: Verlauf
+  eyebrow: 04 / LOKALE DATEN
+gunContext:
+  prefix: "Gespeicherte Ergebnisse für "
+  suffix: .
+sessions:
+  title: Übungseinheiten
+  description: Öffne eine Einheit, um sie anzusehen, oder lösche sie einzeln. Alle Einheiten löschen entfernt die Übungs- und Ablaufresultate sowie Fortschrittsstatistiken dieser Waffe. Gelernte Töne und Erkennungsverlauf bleiben erhalten.
+  clear: Gespeicherte Einheiten löschen
+recognition:
+  title: Letzte Erkennungsergebnisse
+  description: Mit N wird der Erkennungsverlauf gekürzt; gelernte Töne und gespeicherte Übungen bleiben erhalten. Beschrifte Ergebnisse, um die Erkennung anhand deiner eigenen Geräusche zu bewerten.
+  clear: Erkennungsverlauf löschen

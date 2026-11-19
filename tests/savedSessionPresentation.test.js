@@ -8,7 +8,7 @@ function setup(){
   document.body.innerHTML='<div id="savedSessions"><p>Previous results</p></div>';
   const context={gun:{id:'one'}};
   const getSessions=jest.fn(),onPracticeRecord=jest.fn(),showRecord=jest.fn();
-  const bindings={getSessions,getContext:()=>context,$:selector=>document.querySelector(selector),onPracticeRecord,showRecord,
+  const bindings={getSessions,getContext:()=>context,$:selector=>document.querySelector(selector),onPracticeRecord,showRecord,onDeleteSaved:undefined,
     node:(tag,text,className='')=>{const item=document.createElement(tag);item.textContent=text;item.className=className;return item;}};
   const render=vm.runInNewContext(rendering+'\nrenderSavedSessions',bindings);
   return{render,context,getSessions,onPracticeRecord,showRecord,host:document.querySelector('#savedSessions')};

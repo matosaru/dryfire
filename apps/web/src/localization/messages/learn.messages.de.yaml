@@ -1,0 +1,26 @@
+page:
+  title: Töne lernen
+  eyebrow: 01 / KLANGPROFILE
+gunContext:
+  prefix: "Gelernte Töne für "
+  suffix: .
+intro:
+  before: Beginne mit
+  emphasis: 3 Abzugsbeispielen
+  after: (8–10 empfohlen). Andere Geräuscharten sind optional. Jede Aufnahme beginnt mit einem zweisekündigen Countdown und zeichnet anschließend zwei Sekunden auf.
+recognition:
+  title: Gelernte Töne testen
+  description: Prüft gelernte Töne. Keine Zeitübung; es werden keine Übungsergebnisse gespeichert.
+  action: Erkennungstest öffnen →
+optional:
+  title: Optionale Geräusche
+  summary: Für Handhabungs- und Ablaufübungen
+calibration:
+  title: Erkennung verbessern
+  summary: Reset-, Rausch- und externes Signal kalibrieren
+  description: Optionale Gegenbeispiele können falsche Schusszählungen reduzieren. Sehr ähnliche Abzugs- und Reset-Klicks können weiterhin uneindeutig sein; prüfe Treffer selbst. Für Übungen mit externem Signal sind drei Signalbeispiele nötig.
+privacy:
+  note: Die Animationen veranschaulichen Geräusche und sind keine Schritt-für-Schritt-Anleitung zur Handhabung. Beim Zurücksetzen eines Tons bleiben andere Töne und der Verlauf dieser Waffe sowie alle Daten anderer Waffen erhalten.
+recordingTip:
+  label: "Aufnahmetipp:"
+  description: Verwende dieselbe Position für dein Smartphone wie beim Üben. Nimm in einem passenden Raum jeweils einen natürlichen Abzugsdruck auf. Roh-Audio wird nicht gespeichert, nur numerische Klangmerkmale.

@@ -1,0 +1,24 @@
+welcome:
+  title: Trainiere nach Gehör.
+  lineOne: Entwickle schnellere und
+  lineTwo: konstantere Fähigkeiten.
+gunContext:
+  prefix: "Daten für "
+  suffix: " werden angezeigt."
+cards:
+  learn:
+    title: Töne lernen
+    lineOne: Lerne und erkenne
+    lineTwo: wichtige Aktionsgeräusche.
+  drills:
+    title: Übungen
+    lineOne: Kombiniere Geräusche zu
+    lineTwo: realistischen Abläufen.
+  history:
+    title: Verlauf
+    lineOne: Verfolge deinen Fortschritt
+    lineTwo: und deine Genauigkeit.
+stats:
+  samples: Trainingsbeispiele
+  events: Neue Erkennungen
+  accuracy: Bestätigte Genauigkeit

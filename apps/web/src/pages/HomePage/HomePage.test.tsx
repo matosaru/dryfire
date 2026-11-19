@@ -1,8 +1,9 @@
 /** @jest-environment jsdom */
 import '@dryfire/testing/setup';
-import {render,screen,fireEvent,cleanup} from '@testing-library/react';
+import {render,screen,fireEvent,cleanup,act} from '@testing-library/react';
 import {jest} from '@jest/globals';
 import {HomePage} from './HomePage.tsx';
+import {loadLocale} from '../../localization/runtime.ts';
 afterEach(cleanup);
 test('Home presents selected gun and supplied training/accuracy summaries as text',()=>{
  render(<HomePage gunName="<Test>" training="5 / 8 trigger" events={7} accuracy="75%"/>);
@@ -18,4 +19,11 @@ test('static defaults and no-gun context preserve the existing visible controls'
  const {rerender}=render(<HomePage/>);expect(screen.getByText('0 / 32')).toBeVisible();
  for(const name of ['Learn Sounds','Drills','History'])fireEvent.click(screen.getByRole('button',{name:new RegExp(name)}));
  rerender(<HomePage contextHidden/>);expect(document.querySelector('.gun-context')).toHaveClass('hidden');
+});
+test('home copy follows the selected German locale',async()=>{
+ await act(async()=>{await loadLocale('de');});render(<HomePage/>);
+ expect(screen.getByRole('heading',{name:'Trainiere nach Gehör.'})).toBeVisible();
+ expect(screen.getByRole('button',{name:/Töne lernen/})).toBeVisible();
+ expect(screen.getByText('Trainingsbeispiele')).toBeVisible();
+ await act(async()=>{await loadLocale('en');});
 });

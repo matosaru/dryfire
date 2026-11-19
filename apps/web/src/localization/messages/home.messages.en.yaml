@@ -1,0 +1,24 @@
+welcome:
+  title: Train by sound.
+  lineOne: Build faster, more consistent
+  lineTwo: mechanical skills.
+gunContext:
+  prefix: "Showing data for "
+  suffix: " only."
+cards:
+  learn:
+    title: Learn Sounds
+    lineOne: Learn and recognize
+    lineTwo: each core action sound.
+  drills:
+    title: Drills
+    lineOne: Combine sounds into
+    lineTwo: realistic sequences.
+  history:
+    title: History
+    lineOne: Track your progress
+    lineTwo: and accuracy.
+stats:
+  samples: Training samples
+  events: Recent detections
+  accuracy: Verified accuracy

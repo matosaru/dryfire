@@ -1,0 +1,12 @@
+page:
+  title: Kontakt
+  back: Zurück
+card:
+  title: Schreib uns
+  description: Hast du eine Frage, Feedback oder einen Fehler gefunden? Wir freuen uns auf deine Nachricht.
+email:
+  copy: E-Mail kopieren
+  copied: E-Mail kopiert.
+  unavailable: "Kopieren nicht möglich. Markiere die Adresse oben: {{email}}"
+  hint: Wenn sich kein E-Mail-Programm öffnet, kannst du die Adresse kopieren.
+privacy: Der E-Mail-Link öffnet dein eingerichtetes E-Mail-Programm. Sende keine privaten Sicherungen oder Rohaufnahmen, außer du möchtest sie ausdrücklich teilen.

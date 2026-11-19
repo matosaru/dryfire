@@ -6,6 +6,7 @@ import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import {mountChrome} from './chromePages.tsx';
 import {createChromeBridge, type ChromeRenderer, type ChromeSnapshot} from './chromeBridge.ts';
+import {loadLocale} from '../localization/runtime.ts';
 const fixture=readFileSync(new URL('../../../../tests/fixtures/legacy-shell.html',import.meta.url),'utf8');
 const initial={view:'home',status:'Ready',navigationDisabled:false};
 beforeEach(()=>{document.body.innerHTML=fixture.replace('{{pages}}','<input id="draft" value="saved" />');});
@@ -53,6 +54,15 @@ test('focused glyph buttons reconnect by route and missing mounts fail without r
   const header=document.querySelector('header.hero')!.innerHTML;
   expect(()=>mountChrome({doc:document,initial,onNavigate:jest.fn()})).toThrow('mounts are missing');
   expect(document.querySelector('header.hero')!.innerHTML).toBe(header);
+});
+
+test('localized chrome uses locale-prefixed links and translated accessible names',async()=>{
+ await act(async()=>{await loadLocale('de');});let renderer:ChromeRenderer;
+ act(()=>{renderer=mountChrome({doc:document,initial,onNavigate:jest.fn()});});
+ expect(screen.getByRole('link',{name:'Über uns'})).toHaveAttribute('href','/de/about/');
+ expect(screen.getByRole('link',{name:'Kontakt'})).toHaveAttribute('href','/de/contact/');
+ expect(screen.getByRole('button',{name:'Startseite'})).toBeInTheDocument();
+ act(()=>renderer.dispose());await act(async()=>{await loadLocale('en');});
 });
 
 test('a failed React commit restores native nodes, focus and fallback events for retry',async()=>{

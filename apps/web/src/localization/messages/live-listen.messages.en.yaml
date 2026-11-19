@@ -1,0 +1,61 @@
+page:
+  title: Test Learned Sounds
+  eyebrow: LEARN / RECOGNITION CHECK
+gunContext:
+  prefix: "Testing the learned sounds of "
+  suffix: .
+intro:
+  title: Check your learned sounds.
+  description: Use this page to confirm that new microphone events match the sound profiles you recorded in Learn. It is not a timed drill and does not save drill-session results.
+mode:
+  eyebrow: CURRENT MODE
+  free: Free listening
+  badge: Free listen
+  training: Training mode
+  freeOption: Free listen · recognize any sound
+  trigger: 1 · Trigger pull
+  rack: 2 · Rack slide → Trigger pull
+  magazine: 3 · Magazine change → Trigger pull
+  draw: 4 · Draw from holster → Magazine change → Trigger pull
+  explanation: Classify each separate sound as it happens.
+  change: Change mode / choose drill
+  steps: Expected sound sequence
+  completed: completed
+  outOfOrder: out of order
+  unknown: unknown
+  reset: Reset drill counters
+  note: A completed drill means the app detected the selected sequence in order, not that the actions were physically verified. Unknown sounds do not advance the sequence.
+capture:
+  ready: Checking sound profiles…
+  gun: Choose a gun before listening.
+  loading: Loading this gun’s sound profiles. Please wait.
+  busy: Finish recording or testing the current sound before listening.
+  saving: Saving preferences. Please wait.
+  connecting: Connecting microphone… Allow permission or leave this screen to cancel.
+  unsaved: Save the pending drill results before listening. Use Retry on the results page.
+  session: Finish or leave the active drill before listening.
+  training: Learn at least {minimum} trigger examples ({count}/{minimum}) for this gun. Open Learn to record them. Other sound types are optional.
+  start: Start continuous listening
+  single: Single sound test
+  sensitivity: Detection sensitivity
+  normal: Normal
+  high: High (quieter events)
+  low: Low (noisier rooms)
+  inactive: Microphone inactive
+  meter: Live microphone level
+  continuousNote: Continuous mode stays active through multiple separate actions. Pause briefly between sounds; tap Stop when finished. Single sound test records one sound and stops.
+  eventCounter: 0 detected · 0 discarded
+  timeline: Detected actions this session (newest first)
+result:
+  empty: Your next recognition result will appear here.
+  latest: LATEST RESULT
+  note: Scores and similarity distances are experimental and are not calibrated probabilities. Confirm matches yourself.
+  actual: What sound did you actually make?
+  choose: Choose actual sound…
+  draw: Draw from holster
+  rack: Rack slide
+  trigger: Trigger pull
+  reload: Change magazine
+  other: Other / background noise
+  verify: Verify
+  verificationNote: Verification labels are used for accuracy evaluation, not automatic retraining.

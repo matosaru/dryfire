@@ -1,0 +1,14 @@
+page:
+  title: History
+  eyebrow: 04 / LOCAL DATA
+gunContext:
+  prefix: "Saved results for "
+  suffix: .
+sessions:
+  title: Drill sessions
+  description: Open a session to review it, or delete one saved session. Clear saved sessions removes all this gun’s practice and sequence results and progress statistics; learned sounds and recognition history stay saved.
+  clear: Clear saved sessions
+recognition:
+  title: Recent recognition results
+  description: Changing N trims recent recognition history; learned sounds and saved drill sessions stay intact. Label each result to evaluate recognition on your own real-world samples.
+  clear: Clear recognition history

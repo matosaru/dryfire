@@ -1,5 +1,14 @@
 # Requirements approval log
 
+## CHG-070 — English, German and Dutch localization
+
+- Date: 2026-11-17.
+- Scope: complete YAML-owned application copy, English default, German and Dutch language selection in Settings, parameterized messages, preservation of local data, localized public routes/SEO, automated functional/accessibility/SEO coverage, and English-only visual tests. LOC-01–LOC-09 and remaining active-hour estimates are in [localization-plan.md](localization-plan.md).
+- Evidence: owner specified the language and YAML organization, Settings control, SEO and test requirements, then approved the staged plan with **“Looks good, proceed”** and directed: **“Proceed with next tickets, do not stop.”**
+- State: **Approved** for complete implementation on `b` under current repository policy. No prior localization ticket is counted complete solely from plan/approval work.
+- Constraints: no external machine-translation service or browser-language auto-detection; keep app-only routes noindex; do not translate stored user content or migrate/delete local data; do not add German/Dutch screenshot baselines. Human linguistic review remains distinct from automated completeness tests.
+- Implementation/validation/release: pending; approval is not evidence of code, green tests, versioning, GitHub publication or deployment.
+
 Recorded: 2026-10-10. This initial ledger records available conversation evidence and deliberately separates feature requests, design approval and implementation.
 
 ## CHG-001 — Reference design and existing behavior
@@ -718,3 +727,11 @@ Owner requests the next contact correction after current audio work: retain `mai
 ## CHG-066 — Measurement-unit preference (queued 2026-11-02)
 
 Owner queues the next separate task after the audio feature: add a persisted Metric / Imperial preference in Settings and make every applicable distance label, help text and behavior follow it. Specify one shared formatting/conversion source, migration/default behavior, accessibility copy and unit/integration/visual coverage before implementation. Do not mix this cross-app preference into CHG-063 owner testing.
+
+## CHG-068 — Delete individual History records (2026-11-07)
+
+Owner requests: **“additional possibility to clear history items one by one. Currently only full history can be cleared”** and directs adding this work to the plan. Queue individually confirmed deletion for saved session records and recognized-sound records owned by the selected gun. Preserve the existing bulk-clear actions, every unrelated record, learned sounds, gun profiles and presets. Requirements/design and implementation follow CHG-066; this request updates the plan and does not claim the control already exists.
+
+## CHG-069 — One mobile Chromium visual per page type (2026-11-07)
+
+Owner requests decreasing visual tests to **“a count of different page types. One visual test per page. Mobile screen size, one browser.”** Queue an audited reduction to one canonical 390 px Chromium screenshot for each distinct navigable page type. Remove duplicate theme, edition, engine and transient-state approved PNGs only after mapping them to retained page owners. Preserve semantic unit/integration/browser checks for behavior, themes, editions, responsive states, accessibility and WebKit-specific behavior; screenshot reduction is not permission to reduce functional coverage or accept unreviewed visual changes.

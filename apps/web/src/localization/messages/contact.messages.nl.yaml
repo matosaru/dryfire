@@ -1,0 +1,12 @@
+page:
+  title: Contact
+  back: Terug
+card:
+  title: Neem contact op
+  description: Heb je een vraag, feedback of een fout gevonden? We horen graag van je.
+email:
+  copy: E-mailadres kopiëren
+  copied: E-mailadres gekopieerd.
+  unavailable: "Kopiëren is niet beschikbaar. Selecteer het adres hierboven: {{email}}"
+  hint: Als er geen e-mailapp opent, kun je het adres kopiëren.
+privacy: De e-maillink opent je ingestelde e-mailapp. Stuur geen privéback-ups of ruwe opnamen, tenzij je die bewust wilt delen.

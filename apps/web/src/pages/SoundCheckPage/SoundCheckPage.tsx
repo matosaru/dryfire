@@ -1,7 +1,8 @@
 import {GunContext} from '@dryfire/ui/GunContext';
 import {PageHeading} from '@dryfire/ui/PageHeading';
+import {distanceHelp,normalizeMeasurementSystem} from '../../../../../src/measurementUnits.js';
 
-export function SoundCheckPage({gunName}:{gunName?:string}){return <>
+export function SoundCheckPage({gunName,measurementSystem='metric'}:{gunName?:string;measurementSystem?:string}){const distance=distanceHelp(normalizeMeasurementSystem(measurementSystem));return <>
  <PageHeading id="soundCheck-title" title="Sound Check" eyebrow="TRIGGER PROFILE CHECK" reactBack={false}/>
  <GunContext name={gunName} prefix="Check the learned trigger profile for " suffix="."/>
  <section id="soundCheckSetup" className="sound-check-card" aria-labelledby="soundCheckSetupTitle">
@@ -10,7 +11,7 @@ export function SoundCheckPage({gunName}:{gunName?:string}){return <>
   <label className="session-field" htmlFor="soundCheckActual"><span>Sound you will make</span><select id="soundCheckActual" defaultValue="trigger"><option value="trigger">Trigger pull</option><option value="other">Other / background sound</option><option value="rack">Rack slide</option><option value="reload">Change magazine</option><option value="draw">Draw from holster</option></select></label>
   <label className="session-field" htmlFor="soundCheckAttempts"><span>Attempts</span><input id="soundCheckAttempts" type="number" inputMode="numeric" min="1" max="50" step="1" defaultValue="10"/><small>1–50 · use a mix of trigger and non-trigger checks</small></label>
   <div className="sound-check-metadata"><label className="session-field" htmlFor="soundCheckRoom"><span>Room</span><select id="soundCheckRoom" defaultValue="normal"><option value="quiet">Quiet</option><option value="normal">Normal</option><option value="noisy">Noisy</option></select></label><label className="session-field" htmlFor="soundCheckDistance"><span>Phone distance</span><select id="soundCheckDistance" defaultValue="practice"><option value="close">Close</option><option value="practice">Normal</option><option value="far">Far</option></select></label></div>
-  <p className="muted small sound-check-distance-help"><strong>Close:</strong> under 30 cm / 1 ft · <strong>Normal:</strong> 30 cm–1 m / 1–3 ft · <strong>Far:</strong> over 1 m / 3 ft. Use your usual distance and keep it unchanged.</p>
+  <p className="muted small sound-check-distance-help"><strong>Close:</strong> {distance.close} · <strong>Normal:</strong> {distance.practice} · <strong>Far:</strong> {distance.far}. Use your usual distance and keep it unchanged.</p>
   <div className="session-review-actions"><button id="soundCheckStartBtn" type="button" className="button primary wide-action" disabled aria-describedby="soundCheckSetupHint">Start Sound Check</button></div>
   <p id="soundCheckSetupHint" className="muted small">Preparing the check controls… Safety confirmation and microphone permission follow.</p>
  </section>

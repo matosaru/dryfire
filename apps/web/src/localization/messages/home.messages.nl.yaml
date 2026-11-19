@@ -1,0 +1,24 @@
+welcome:
+  title: Train op geluid.
+  lineOne: Ontwikkel sneller en
+  lineTwo: consistenter je vaardigheden.
+gunContext:
+  prefix: "Gegevens voor "
+  suffix: " worden getoond."
+cards:
+  learn:
+    title: Geluiden leren
+    lineOne: Leer en herken
+    lineTwo: belangrijke actiegeluiden.
+  drills:
+    title: Oefeningen
+    lineOne: Combineer geluiden tot
+    lineTwo: realistische reeksen.
+  history:
+    title: Geschiedenis
+    lineOne: Volg je voortgang
+    lineTwo: en nauwkeurigheid.
+stats:
+  samples: Trainingsvoorbeelden
+  events: Recente detecties
+  accuracy: Bevestigde nauwkeurigheid

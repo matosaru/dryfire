@@ -1,0 +1,61 @@
+page:
+  title: Geleerde geluiden testen
+  eyebrow: LEREN / HERKENNINGSTEST
+gunContext:
+  prefix: "De geleerde geluiden testen van "
+  suffix: .
+intro:
+  title: Controleer je geleerde geluiden.
+  description: Gebruik deze pagina om te controleren of nieuwe microfoongeluiden overeenkomen met de profielen die je bij Leren hebt opgenomen. Dit is geen oefening op tijd en oefenresultaten worden niet opgeslagen.
+mode:
+  eyebrow: HUIDIGE MODUS
+  free: Vrij luisteren
+  badge: Vrij luisteren
+  training: Trainingsmodus
+  freeOption: Vrij luisteren · herken elk geluid
+  trigger: 1 · Trekkerbeweging
+  rack: 2 · Slede bewegen → Trekkerbeweging
+  magazine: 3 · Magazijnwissel → Trekkerbeweging
+  draw: 4 · Trekken → Magazijnwissel → Trekkerbeweging
+  explanation: Classificeer elk afzonderlijk geluid direct.
+  change: Modus wijzigen / oefening kiezen
+  steps: Verwachte geluidsreeks
+  completed: voltooid
+  outOfOrder: verkeerde volgorde
+  unknown: onbekend
+  reset: Oefentellers resetten
+  note: Een voltooide oefening betekent dat de app de gekozen reeks in de juiste volgorde heeft herkend; fysieke handelingen worden niet gecontroleerd. Onbekende geluiden gaan niet verder met de reeks.
+capture:
+  ready: Geluidsprofielen controleren…
+  gun: Kies een wapen voordat je luistert.
+  loading: Geluidsprofielen van dit wapen laden. Even wachten.
+  busy: Rond de huidige opname of test af voordat je luistert.
+  saving: Instellingen opslaan. Even wachten.
+  connecting: Microfoon verbinden… Geef toestemming of verlaat deze pagina om te annuleren.
+  unsaved: Sla openstaande oefenresultaten op voordat je luistert. Gebruik Opnieuw proberen op de resultatenpagina.
+  session: Rond de actieve oefening af of verlaat die voordat je luistert.
+  training: Leer minstens {minimum} trekkeropnamen ({count}/{minimum}) voor dit wapen. Open Leren om ze op te nemen. Andere geluiden zijn optioneel.
+  start: Continu luisteren starten
+  single: Eén geluid testen
+  sensitivity: Herkenningsgevoeligheid
+  normal: Normaal
+  high: Hoog (zachtere geluiden)
+  low: Laag (lawaaierige ruimtes)
+  inactive: Microfoon inactief
+  meter: Actueel microfoonniveau
+  continuousNote: Continu luisteren blijft actief bij meerdere afzonderlijke handelingen. Pauzeer kort tussen geluiden en tik op Stoppen wanneer je klaar bent. De test voor één geluid neemt één geluid op en stopt.
+  eventCounter: 0 herkend · 0 genegeerd
+  timeline: Gedetecteerde handelingen in deze sessie (nieuwste eerst)
+result:
+  empty: Het volgende herkenningsresultaat verschijnt hier.
+  latest: LAATSTE RESULTAAT
+  note: Scores en gelijkenisafstanden zijn experimenteel en geen gekalibreerde kansen. Controleer overeenkomsten zelf.
+  actual: Welk geluid maakte je echt?
+  choose: Kies het werkelijke geluid…
+  draw: Trekken uit holster
+  rack: Slede bewegen
+  trigger: Trekkerbeweging
+  reload: Magazijn wisselen
+  other: Ander geluid / achtergrondgeluid
+  verify: Controleren
+  verificationNote: Labels worden gebruikt om nauwkeurigheid te beoordelen, niet om automatisch opnieuw te trainen.

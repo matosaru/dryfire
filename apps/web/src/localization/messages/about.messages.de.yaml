@@ -1,0 +1,41 @@
+page:
+  title: Über die App
+feedback:
+  title: Feedback willkommen
+  description: Diese App befindet sich in der Beta. Feedback und Vorschläge sind willkommen. Über Kontakt kannst du eine Idee teilen oder ein Problem melden.
+saved:
+  title: Auf deinem Gerät gespeichert
+  description: Du brauchst kein Konto. Deine Profile, erlernten Klangmerkmale, Übungen und dein Verlauf bleiben in diesem Browser. Exportiere unter Einstellungen → Sicherung exportieren eine Kopie, bevor du das Gerät wechselst oder Browserdaten löschst.
+safety:
+  title: Sicher üben
+  description: Führe vor Aufnahmen oder Übungen die Sicherheitsprüfung durch. Die Tonerkennung ist experimentell. Sie kann weder bestätigen, dass eine Waffe entladen ist, noch Zielen oder sicheren Umgang überprüfen und ist kein kalibriertes Messinstrument.
+intro:
+  version: Soundtrainer · Beta · v0.8.0
+  headlineOne: Trockentraining,
+  headlineTwo: ganz einfach.
+  description: Nutze das Mikrofon deines Geräts, um deinen erlernten Abzugsklick zu erkennen, Wiederholungen zeitlich zu messen und deinen Fortschritt anzusehen.
+routine:
+  title: Ein einfacher Trainingsablauf
+  stepOne: Füge eine Waffe hinzu und lerne ihren Abzugsklick.
+  stepTwo: Wähle einen Übungsmodus oder eine Übung.
+  stepThree: Folge dem Startsignal und sieh dir die gespeicherten Ergebnisse an.
+  note: Du brauchst weder ein Konto noch Zahlungsdaten. In der kostenlosen App kannst du bis zu zwei Waffen anlegen und kompatible vorhandene Profile weiterverwenden.
+  openApp: Kostenlose App öffnen
+features:
+  free: Lerne deinen Abzugsklick, wähle einen integrierten Übungsmodus und sieh dir gespeicherte Zeitmessungen an. Andere Geräuscharten sind nur nötig, wenn deine Übung sie verwendet.
+  full: Verwalte getrennte Profile für bis zu fünf Waffen, erstelle eigene Übungen und sieh dir Zeitverläufe an. Andere Geräuscharten sind nur nötig, wenn deine Übung sie verwendet.
+modes:
+  title: Vier Übungsarten
+  readGuide: Anleitung lesen
+  single:
+    title: Einzelner Abzugsdruck
+    description: Miss die Zeit vom Startsignal bis zu einem Abzugsklick.
+  repeated:
+    title: Wiederholte Abzugsdrücke
+    description: Zähle einzelne Abzugsklicks und miss die Abstände dazwischen.
+  par:
+    title: Übung mit Zeitlimit
+    description: Erkenne einen Abzugsklick innerhalb des gewählten Zeitlimits.
+  control:
+    title: Abzugskontrolle
+    description: Vergleiche die Regelmäßigkeit der erkannten Abzugsklick-Abstände.

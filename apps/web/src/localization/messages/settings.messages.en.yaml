@@ -1,0 +1,66 @@
+page:
+  title: Settings
+  eyebrow: 05 / DEVICE & PRIVACY
+gunContext:
+  prefix: "Sound resets affect "
+  suffix: " only."
+installation:
+  summary: Install on your iPhone
+  badge: iOS · HOME SCREEN
+  title: Install on your iPhone
+  checking: Checking installation status…
+  stepOneBefore: "Open your deployed HTTPS address in "
+  safari: Safari
+  stepTwoBefore: "Tap the "
+  share: Share
+  stepTwoAfter: " button."
+  stepThreeBefore: Choose
+  addToHome: Add to Home Screen
+  stepThreeAfter: "."
+  stepFourBefore: Enable
+  openAsWebApp: Open as Web App
+  stepFourMiddle: " (if shown), then tap "
+  add: Add
+  stepFourAfter: "."
+  disclaimer: This installs a web app icon and standalone experience, not an App Store IPA. The microphone runs only when the app is open.
+learnedSounds:
+  title: Learned Sounds
+  description: For one sound, use Reset on its card in Learn. Full reset erases this gun's learned sounds and reset/noise/beep calibration. Its saved results and other guns' data stay intact.
+  reset: Reset all sounds for this gun
+backup:
+  title: Backup & Data
+  description: Export all gun profiles, learned numeric sound features, drill presets, recognition history, saved sessions and preferences. The backup contains no raw recordings. Keep this file private.
+  export: Export backup
+  import: Import backup
+  importNote: Import replaces saved guns, sounds, history, presets, sessions and preferences on this device. Older backups contain no saved sessions. Files from another device may perform differently.
+audio:
+  title: Audio processing · this gun
+  noiseFilter: Noise Filter
+  autoGain: Auto Gain
+  checking: Checking browser support…
+  note: Changes apply to the next capture. Audio processing may affect recognition and require fresh examples; it never deletes your learned sounds.
+preferences:
+  title: Appearance, units & feedback · this device
+  appearance: Appearance
+  dark: Dark
+  light: Light
+  system: System
+  units: Measurement units
+  metric: Metric
+  imperial: Imperial
+  vibration: Vibration Feedback
+  vibrationNote: When enabled and supported, vibration is requested at GO and repetition completion.
+  languageSection: Language · this device
+deleteData:
+  title: Delete local app data
+  description: Deletes every saved gun, learned sound, calibration, preset, setting and history on this browser. Export a backup first. This action cannot be undone without a backup.
+  action: Delete all guns & app data
+device:
+  title: Device information
+language:
+  section: Language · this device
+  label: Language
+  description: Choose the language used throughout the app.
+  english: English
+  german: Deutsch
+  dutch: Nederlands

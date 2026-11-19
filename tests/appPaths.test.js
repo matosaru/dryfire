@@ -1,4 +1,4 @@
-import {parseAppPath,appPathFor,isAppPath,offlineAppPaths,legacyPathRedirect,guidePathFor} from '../src/appPaths.js';
+import {parseAppPath,appPathFor,isAppPath,offlineAppPaths,legacyPathRedirect,guidePathFor,isIndexableAppPath} from '../src/appPaths.js';
 test('canonical application pages use flat paths with the application at root',()=>{
  for(const [view,path]of Object.entries({home:'/',guns:'/guns/',gunSetup:'/gun-setup/',learn:'/learn/',soundCheck:'/sound-check/',drills:'/drills/',recognize:'/live-listen/',history:'/history/',settings:'/settings/',about:'/about/',contact:'/contact/'})){
   expect(appPathFor({view})).toBe(path);expect(parseAppPath(path)).toEqual({view});
@@ -16,7 +16,7 @@ test('each practice and built-in sequence has a distinct restorable identity',()
  expect(new Set(paths).size).toBe(3);
 });
 test('offline path inventory is unique, flat and restricted to implemented screens',()=>{
- const paths=offlineAppPaths();expect(new Set(paths).size).toBe(paths.length);for(const path of paths){expect(isAppPath(path)).toBe(true);expect(path.split('/').filter(Boolean).length).toBeLessThanOrEqual(1);}expect(paths).toContain('/');
+ const paths=offlineAppPaths();expect(new Set(paths).size).toBe(paths.length);for(const path of paths){expect(isAppPath(path)).toBe(true);expect(path.split('/').filter(Boolean).filter(segment=>!['de','nl'].includes(segment)).length).toBeLessThanOrEqual(1);}expect(paths).toContain('/');
  expect(appPathFor({view:'session',preset:'private-preset-id',gunId:'private-gun'})).toBe('/custom-sequence/');expect(appPathFor({view:'unknown',gunId:'private'})).toBe('/');
 });
 test('legacy links preserve their meaning without the app prefix or a replacement marketing homepage',()=>{
@@ -30,3 +30,12 @@ test('URL-aware navigation preserves real transitions without redundant same-URL
 });
 
 test('ordinary-route fast lookup still rejects internal view keys that are not canonical URL slugs',()=>{for(const path of ['/home/','/recognize/','/gunSetup/','/settings-extra/','/settings',null,undefined,0,{},[]])expect(parseAppPath(path)).toBeNull();expect(parseAppPath('/gun-setup/')).toEqual({view:'gunSetup'});expect(parseAppPath('/live-listen/')).toEqual({view:'recognize'});});
+
+test('German and Dutch routes add explicit locale prefixes while English remains the stable default',()=>{
+ for(const locale of ['de','nl'])for(const view of ['home','learn','settings','history','about']){
+  const path=appPathFor({view,locale});expect(path).toBe(`/${locale}${view==='home'?'/':`/${view}/`}`);
+  expect(parseAppPath(path)).toEqual({view,locale});expect(isIndexableAppPath(path)).toBe(false);
+ }
+ expect(appPathFor({view:'settings',locale:'en'})).toBe('/settings/');expect(parseAppPath('/de/single-trigger-press/')).toEqual({view:'practice',mode:'single',locale:'de'});
+ expect(offlineAppPaths()).toContain('/nl/settings/');expect(offlineAppPaths()).toContain('/de/');
+});

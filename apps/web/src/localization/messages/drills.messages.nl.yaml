@@ -1,0 +1,19 @@
+page:
+  title: Oefeningen
+  eyebrow: 02 / OEFENINGEN
+gunContext:
+  prefix: "Opgeslagen oefeningen voor "
+  suffix: .
+triggerGroup:
+  title: Groep trekkerbeweging
+  description: Voor deze oefeningen heb je alleen je trekkeropnames nodig. Kies een oefening, stel die in en start.
+sequenceGroup:
+  title: Reeksoefeningen
+  description: Kies een ingebouwde of eerder opgeslagen reeks. Alleen de geluiden in de reeks zijn nodig.
+collection:
+  label: Oefeningencollectie
+  builtIn: Ingebouwde oefeningen
+  custom: Eigen
+custom:
+  create: + Eigen oefening maken
+  empty: Er zijn nog geen eigen oefeningen voor dit wapen. Maak een eigen oefening om een reeks toe te voegen.

@@ -19,11 +19,11 @@ export function guidePathFor(guideId){
  return pathFor(slug+'-guide');
 }
 /** Build-only inventory; do not eagerly allocate this list in the app entry. */
-export function offlineAppPaths(){return[
+export function offlineAppPaths(){const english=[
  ...Object.values(views).map(pathFor),...Object.values(modes).map(pathFor),...Object.values(sequences).map(pathFor),'/custom-sequence/',
  ...Object.keys(modes).map(guidePathFor),...Object.keys(sequences).map(id=>guidePathFor('sequence-'+id)),guidePathFor('sequence-custom'),
-];}
-export function parseAppPath(path){
+];return[...english,...['de','nl'].flatMap(locale=>english.map(path=>`/${locale}${path==='/'?'/':path}`))];}
+function parseUnprefixedAppPath(path){
  if(path==='/')return{view:'home'};
  if(typeof path!=='string')return null;
  const slug=path.slice(1,-1),view=Object.entries(views).find(([,value])=>value===slug)?.[0];
@@ -36,16 +36,24 @@ export function parseAppPath(path){
  if(path===guidePathFor('sequence-custom'))return{view:'practiceGuide',guideId:'sequence-custom'};
  return null;
 }
+export function parseAppPath(path){
+ if(typeof path!=='string')return null;
+ const localized=path.match(/^\/(de|nl)(\/.*)$/);
+ const route=parseUnprefixedAppPath(localized?localized[2]:path);
+ return route&&localized?{...route,locale:localized[1]}:route;
+}
 export function isAppPath(path){return parseAppPath(path)!==null;}
 export function appPathFor(route){
- if(route.view==='practice'){const mode=route.mode??String(route.context??'').split(':')[0];return pathFor(modes[mode]??modes.single);}
- if(route.view==='session')return pathFor(sequences[route.preset]??'custom-sequence');
- if(route.view==='practiceGuide')return guidePathFor(route.guideId);
- return pathFor(views[route.view]??'');
+ let path;
+ if(route.view==='practice'){const mode=route.mode??String(route.context??'').split(':')[0];path=pathFor(modes[mode]??modes.single);}
+ else if(route.view==='session')path=pathFor(sequences[route.preset]??'custom-sequence');
+ else if(route.view==='practiceGuide')path=guidePathFor(route.guideId);
+ else path=pathFor(views[route.view]??'');
+ return route.locale&&route.locale!=='en'?`/${route.locale}${path}`:path;
 }
 export function isIndexableAppPath(path){
  const route=parseAppPath(path);
- return !!route && (['home','about','contact'].includes(route.view)||route.view==='practiceGuide'&&!['sequence-custom','sequence-trigger-only'].includes(route.guideId));
+ return !!route && !route.locale && (['home','about','contact'].includes(route.view)||route.view==='practiceGuide'&&!['sequence-custom','sequence-trigger-only'].includes(route.guideId));
 }
 /** Compatibility redirects never guess which sequence a generic old URL meant. */
 export function legacyPathRedirect(path){

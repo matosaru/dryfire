@@ -13,6 +13,15 @@ Offline-first Vite PWA, incrementally migrating from vanilla JavaScript to typed
 - Keep requirement approval, implementation, validation and deployment status separate. Update specifications, design links and implementation status when relevant behavior changes. Do not mark a mockup as implemented.
 - After every user request that affects project work, update [implementation history and remaining plan](../project/implementation-history.md). Keep a concise per-request record of delivered scope, remaining work and next steps. Separate approval, code, tests, push and deployment; record only observed success, and preserve earlier history rather than implying every published design is a working feature.
 
+## Feature estimates and status reports
+
+- Before starting a feature, present its ticket list with an estimate for every ticket and a total feature estimate. Do this before implementation, even when the user says to proceed immediately; continue authorized independent work while preparing it.
+- Estimate active engineering hours, not calendar days. Include analysis, implementation, tests, integration, documentation, acceptance gates and release preparation in the relevant ticket/total. List user-owned manual testing and external review separately; do not count them as Codex work or imply that Codex performed them.
+- For each ticket, give a likely estimate and a reasonable low–high range, plus brief assumptions/dependencies when they materially affect the estimate. Sum the ranges and likely values into a feature total. Label uncertain or externally owned work clearly.
+- Track actual active time per ticket while working and update the plan/history as tickets finish. If actual time was not recorded, say “not tracked”; never invent precise retrospective time. If reconstructing a rough value from logs, mark it approximate and state the basis.
+- When the user asks for status, use a short bullet list in this order: **Done** tickets first, **Remaining** tickets second. Show each completed ticket's actual time (or “not tracked”) and each unfinished ticket's estimate. End with time spent, remaining estimate and original/current total forecast when available, plus any blocker and branch/release status. Avoid a long narrative unless requested.
+- Reforecast when scope or evidence materially changes; retain the original estimate and explain the variance briefly. A test failure does not count as time or work completed merely because a job was started.
+
 ## Documentation location and provenance
 
 - Keep full project documentation in its appropriate package under `docs/` as defined by the [documentation index](../README.md). CHG-018 supersedes the older all-under-`docs/design/` rule. Root README, AGENTS and REQUIREMENTS files are navigation entry points only.

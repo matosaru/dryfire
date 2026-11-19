@@ -1,0 +1,41 @@
+page:
+  title: About
+feedback:
+  title: Feedback welcome
+  description: This app is in beta. All feedback and suggestions are welcome. Visit Contact to share an idea or report a problem.
+saved:
+  title: Saved on your device
+  description: No account is required. Your profiles, learned sound features, drills and history stay in this browser. Use Settings → Export backup to keep a recovery copy before changing device or clearing browser data.
+safety:
+  title: Practice responsibly
+  description: Complete the safety check before recording or practice. Sound recognition is experimental. It cannot verify an unloaded firearm, aim or safe handling, and is not a calibrated measurement instrument.
+intro:
+  version: Sound trainer · Beta · v0.8.0
+  headlineOne: Dry-fire practice,
+  headlineTwo: made simple.
+  description: Use your device's microphone to recognize your learned trigger click, time your repetitions and review your progress.
+routine:
+  title: A simple practice routine
+  stepOne: Add a gun and learn its trigger click.
+  stepTwo: Choose a practice mode or drill.
+  stepThree: Follow the start signal and review your saved results.
+  note: No account or payment details are required. The free app creates up to two guns and keeps compatible existing profiles.
+  openApp: Open the free app
+features:
+  free: Learn your trigger click, choose a built-in practice mode and review saved timing results. Other sound categories are optional unless your drill uses them.
+  full: Keep separate profiles for up to five guns, create custom drills and view timing trends. Other sound categories are optional unless your drill uses them.
+modes:
+  title: Four ways to practice
+  readGuide: Read the guide
+  single:
+    title: Single trigger press
+    description: Measure the time from the start signal to one trigger click.
+  repeated:
+    title: Repeated trigger presses
+    description: Count distinct trigger clicks and measure the intervals between them.
+  par:
+    title: Par-time practice
+    description: Recognize a trigger click within your chosen time limit.
+  control:
+    title: Trigger control
+    description: Compare the consistency of detected trigger-click intervals.

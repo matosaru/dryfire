@@ -4,13 +4,14 @@ import {LiveModePanel} from '../../features/live-listen/components/LiveModePanel
 import {GunContext} from '@dryfire/ui/GunContext';
 import {PageHeading} from '@dryfire/ui/PageHeading';
 import type {LiveListenState} from '../../features/live-listen/index.ts';
+import {useLocaleMessages} from '../../localization/runtime.ts';
 export type {LiveListenState} from '../../features/live-listen/index.ts';
 export type LiveListenPageProps={state?:LiveListenState;onBack?:()=>void;onAction?:(id:string)=>void;onChange?:(id:string)=>void};
 /** Live presentation only: microphone, recognition, persistence and timing remain feature-owned. */
-export function LiveListenPage({state,onBack,onAction,onChange}:LiveListenPageProps){return <>
-<PageHeading id="recognize-title" title="Test Learned Sounds" eyebrow="LEARN / RECOGNITION CHECK" reactBack={false} onBack={onBack}/>
-      <GunContext name={state?.gunName} hidden={state?.contextHidden} prefix="Testing the learned sounds of " suffix="."/>
-      <div className="info-note"><strong>Check your learned sounds.</strong> Use this page to confirm that new microphone events match the sound profiles you recorded in Learn. It is not a timed drill and does not save drill-session results.</div>
+export function LiveListenPage({state,onBack,onAction,onChange}:LiveListenPageProps){const {t}=useLocaleMessages('live-listen');return <>
+<PageHeading id="recognize-title" title={t('page.title')} eyebrow={t('page.eyebrow')} reactBack={false} onBack={onBack}/>
+      <GunContext name={state?.gunName} hidden={state?.contextHidden} prefix={t('gunContext.prefix')} suffix={t('gunContext.suffix')}/>
+      <div className="info-note"><strong>{t('intro.title')}</strong> {t('intro.description')}</div>
       <LiveModePanel state={state} onAction={onAction} onChange={onChange}/>
 <LiveCapturePanel state={state} onAction={onAction} onChange={onChange}/>
 <LiveResultPanel state={state} onAction={onAction} onChange={onChange}/>

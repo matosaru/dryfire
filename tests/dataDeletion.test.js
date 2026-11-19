@@ -121,6 +121,16 @@ test('clearing recognition events preserves all sessions and the other gun’s e
   for (const key of ['guns', 'examples', 'sessions', 'gunSettings', 'settings']) expect(after[key]).toEqual(before[key]);
 });
 
+test('individual session and recognition deletion stays owner-scoped and preserves unrelated data',async()=>{
+ const {a,b}=await seed();const before=await storage.exportBackup();const event=before.events.find(row=>row.gunId===a.id),session=before.sessions.find(row=>row.gunId===a.id);
+ await storage.deleteEvent(event.id,a.id);await storage.deleteSession(session.id,a.id);const after=await storage.exportBackup();
+ expect(after.events).toEqual(before.events.filter(row=>row.id!==event.id));expect(after.sessions).toEqual(before.sessions.filter(row=>row.id!==session.id));
+ for(const key of ['guns','examples','gunSettings','settings'])expect(after[key]).toEqual(before[key]);
+ await expect(storage.deleteEvent(before.events.find(row=>row.gunId===b.id).id,a.id)).rejects.toThrow(/not found/i);
+ await expect(storage.deleteSession(before.sessions.find(row=>row.gunId===b.id).id,a.id)).rejects.toThrow(/not found/i);
+ expect(comparable(await storage.exportBackup())).toEqual(comparable(after));
+});
+
 test('an aborted session clear keeps all saved sessions and owned data intact', async () => {
   const { a } = await seed();
   const before = await storage.exportBackup();

@@ -1,0 +1,14 @@
+page:
+  title: Geschiedenis
+  eyebrow: 04 / LOKALE GEGEVENS
+gunContext:
+  prefix: "Opgeslagen resultaten voor "
+  suffix: .
+sessions:
+  title: Oefensessies
+  description: Open een sessie om die te bekijken of verwijder een sessie afzonderlijk. Alle sessies wissen verwijdert alle oefen- en reeksresultaten en voortgangsstatistieken van dit wapen. Geleerde geluiden en herkenningsgeschiedenis blijven bewaard.
+  clear: Opgeslagen sessies wissen
+recognition:
+  title: Recente herkenningsresultaten
+  description: N aanpassen beperkt de recente herkenningsgeschiedenis; geleerde geluiden en opgeslagen oefeningen blijven behouden. Label resultaten om herkenning met je eigen praktijkgeluiden te beoordelen.
+  clear: Herkenningsgeschiedenis wissen

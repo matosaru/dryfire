@@ -1,0 +1,18 @@
+navigation:
+  label: Hoofdnavigatie
+  home: Startpagina
+  learn: Leren
+  drills: Oefeningen
+  liveListen: Live luisteren
+  history: Geschiedenis
+header:
+  information: Informatie
+  home: Startpagina — Dry Fire With Ease
+  beta: Betaversie
+  about: Over
+  contact: Contact
+  settings: Instellingen
+result:
+  repetitions:
+    one: "{{count}} herhaling voltooid"
+    other: "{{count}} herhalingen voltooid"

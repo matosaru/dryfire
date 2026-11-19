@@ -72,7 +72,7 @@ if (edition === 'public') {
     await expect(page.locator('#progressSection')).not.toBeVisible();
     await expect(page.locator('.progress-chart')).toHaveCount(0);
     await expect(page.locator('#savedSessions .saved-session-card')).toHaveCount(5);
-    await page.locator('#savedSessions .saved-session-card').first().getByRole('button').click();
+    await page.locator('#savedSessions .saved-session-card').first().locator('button.button.secondary.wide-action').click();
     await expect(page.locator('#practiceReview')).toBeVisible();
     await expect(page.locator('#practiceSaved')).toHaveText('Saved on this device');
   });

@@ -1,0 +1,19 @@
+page:
+  title: Drills
+  eyebrow: 02 / PRACTICE PRESETS
+gunContext:
+  prefix: "Saved presets for "
+  suffix: .
+triggerGroup:
+  title: Trigger Press Group
+  description: Trigger-based modes need only your trigger samples. Choose a mode, configure it, then start.
+sequenceGroup:
+  title: Sequence drills
+  description: Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.
+collection:
+  label: Drill collection
+  builtIn: Built-in Drills
+  custom: Custom
+custom:
+  create: + Create Custom Drill
+  empty: No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.

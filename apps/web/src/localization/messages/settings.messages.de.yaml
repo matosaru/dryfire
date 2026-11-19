@@ -1,0 +1,66 @@
+page:
+  title: Einstellungen
+  eyebrow: 05 / GERÄT & DATENSCHUTZ
+gunContext:
+  prefix: "Zurücksetzen von Tönen betrifft nur "
+  suffix: "."
+installation:
+  summary: Auf deinem iPhone installieren
+  badge: iOS · STARTBILDSCHIRM
+  title: Auf deinem iPhone installieren
+  checking: Installationsstatus wird geprüft…
+  stepOneBefore: "Öffne die bereitgestellte HTTPS-Adresse in "
+  safari: Safari
+  stepTwoBefore: "Tippe auf die "
+  share: Teilen-Taste
+  stepTwoAfter: "."
+  stepThreeBefore: Wähle
+  addToHome: „Zum Home-Bildschirm“
+  stepThreeAfter: "."
+  stepFourBefore: Aktiviere
+  openAsWebApp: „Als Web-App öffnen“
+  stepFourMiddle: " (falls angezeigt) und tippe auf "
+  add: „Hinzufügen“
+  stepFourAfter: "."
+  disclaimer: Dadurch werden ein Web-App-Symbol und eine eigenständige Ansicht installiert, keine App-Store-App. Das Mikrofon ist nur aktiv, wenn die App geöffnet ist.
+learnedSounds:
+  title: Gelernte Töne
+  description: Setze einen einzelnen Ton über „Zurücksetzen“ auf seiner Karte unter Lernen zurück. Das vollständige Zurücksetzen löscht die gelernten Töne dieser Waffe sowie die Kalibrierung für Reset-, Geräusch- und Signalton. Gespeicherte Ergebnisse und Daten anderer Waffen bleiben erhalten.
+  reset: Alle Töne für diese Waffe zurücksetzen
+backup:
+  title: Sicherung & Daten
+  description: Exportiere alle Waffenprofile, numerischen Klangmerkmale, Übungsvorlagen, Erkennungsverlauf, gespeicherte Einheiten und Einstellungen. Die Sicherung enthält keine Rohaufnahmen. Bewahre diese Datei sicher auf.
+  export: Sicherung exportieren
+  import: Sicherung importieren
+  importNote: Der Import ersetzt Waffen, Töne, Verlauf, Vorlagen, Einheiten und Einstellungen auf diesem Gerät. Ältere Sicherungen enthalten keine gespeicherten Einheiten. Dateien von anderen Geräten können abweichend funktionieren.
+audio:
+  title: Audioverarbeitung · diese Waffe
+  noiseFilter: Rauschfilter
+  autoGain: Automatische Verstärkung
+  checking: Browserunterstützung wird geprüft…
+  note: Änderungen gelten für die nächste Aufnahme. Audioverarbeitung kann die Erkennung beeinflussen und neue Beispiele erfordern; gelernte Töne werden nicht gelöscht.
+preferences:
+  title: Darstellung, Einheiten & Feedback · dieses Gerät
+  appearance: Darstellung
+  dark: Dunkel
+  light: Hell
+  system: System
+  units: Maßeinheiten
+  metric: Metrisch
+  imperial: Imperial
+  vibration: Vibrationsfeedback
+  vibrationNote: Wenn aktiviert und unterstützt, wird bei GO und nach jeder Wiederholung eine Vibration angefordert.
+  languageSection: Sprache · dieses Gerät
+deleteData:
+  title: Lokale App-Daten löschen
+  description: Löscht alle gespeicherten Waffen, gelernten Töne, Kalibrierungen, Vorlagen, Einstellungen und den Verlauf in diesem Browser. Exportiere vorher eine Sicherung. Ohne Sicherung kann diese Aktion nicht rückgängig gemacht werden.
+  action: Alle Waffen & App-Daten löschen
+device:
+  title: Geräteinformationen
+language:
+  section: Sprache · dieses Gerät
+  label: Sprache
+  description: Wähle die Sprache für die gesamte App.
+  english: English
+  german: Deutsch
+  dutch: Nederlands

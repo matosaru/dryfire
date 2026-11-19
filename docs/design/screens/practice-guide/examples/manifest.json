@@ -1,6 +1,6 @@
 {
-  "sourceCommit": "80a5a7915aa394df1ac71dcbcba1d1487b35355d",
-  "renderer": "local Chromium 145.0.7632.6",
+  "sourceCommit": "86a281792de2563e5ca49e2787d5e311c62aaff5",
+  "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
@@ -18,7 +18,7 @@
     "apps/web/src/pages/SoundCheckPage/SoundCheckPage.css": "0c85827e2ec528e4d392f95189115150f7e36fda235ffbe041f0271c0c84c375",
     "packages/ui/src/SoundCard/SoundCard.css": "de9362726c2df6a620ee0f4e14cd7d8a1fac0c35bdbf000103ccf954c3358856",
     "apps/web/src/styles/legacy-before-history-list.css": "f13587c5b6d6928dfc3bcce139e925529cce18f5a5b645445cb145bf3e163825",
-    "packages/ui/src/RecognitionList/RecognitionList.css": "3b78ff50f331baa79f5dc0a3bbddc991b04c83666b3879a5db2da2cc55ff4a41",
+    "packages/ui/src/RecognitionList/RecognitionList.css": "cd88e6ecd041e3347a7aa85c6300e0cbb1aa1a97e1d2938c1b41ebce8af792f4",
     "apps/web/src/styles/legacy-after-history-list.css": "fcadfa3ceda88072b3008771d894c55ab2c6db4881616cde7ba29b055b3a8b7d",
     "packages/ui/src/InfoFooter/InfoFooter.css": "c067b2816187a004a3168219ec42e6091b5517065faceeed7ff22beed70b6b9b",
     "apps/web/src/styles/legacy-info-visibility.css": "20364cba9bf4a2abdb5e25bf69477773b3f021a34c6c19b13fbc7895ee2ccf99",
@@ -64,7 +64,7 @@
     "packages/ui/src/RepetitionResult/RepetitionResult.details.css": "5b6ac899b74b36ec7bd9ba67dd347abd99024c57177d8e8c5e4cdee07dc5bc27",
     "apps/web/src/styles/legacy-session-review-actions.css": "89addcb480760d6aea765aee8a238569b18c3d5d7ca9b95f438bca9af7914ba9",
     "apps/web/src/pages/HistoryPage/HistoryPage.css": "a0d9dcacae38c9a9d4edf0a561230439b72ae2331ca1a411b0219e053a223bd0",
-    "packages/ui/src/SavedSessionList/SavedSessionList.css": "f9a0c565ff87a62a2488e41cff9a05a0ef23a953cf1f153163d2cc6740ae67b1",
+    "packages/ui/src/SavedSessionList/SavedSessionList.css": "478fdb5069854f17371f38822dfc5bb7d0e7caf7b1cd07fa28abe3f224e80db7",
     "apps/web/src/styles/legacy-after-saved-sessions.css": "4da686ed0aaa1715961f0a5f8652896986400fc19eec8fbc941d0f3095a6a72c",
     "packages/ui/src/CalibrationCatalog/CalibrationCatalog.css": "540275a1d8e8edd8aff06cf4834bfbbf91ce9685ae770dbe4c01cb6046b21262",
     "apps/web/src/styles/legacy-practice-heading.css": "09ee606b68d63296e9a7c33d266cb6543696e6d9b7b7f9a24109a9a22b290513",
@@ -87,7 +87,7 @@
     "apps/web/src/features/sessions/phasePresentation.ts": "5c788b0f902338a4ec81352b69d8d3d1f1270203e23d0d29510098f583ad9836",
     "src/practiceGuideController.js": "7c86603547b026f9b1bbdf916156eb6a3b479924ae1d2ff9c3860a40990ddeaa",
     "src/practiceGuideBridge.js": "327d3d44c3cfd61662d416359c8690b2b4b661e4606d38019f073fcc00bdd6c8",
-    "src/main.js": "2f3390fa99a3fda2521add15abd37b3d15192f400a9612040c4b1552206eabb9",
+    "src/main.js": "5df136ae2b1d2a80a8d72a5905db66958f6a96ffc42fc91e8f79de1d433c1760",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "src/practiceGuideRendering.js": "70d9fa5cd1ed6bd08bb7be308440f2bb3fbe2c579734aba3ea2f0475e4064b45",
     "src/practiceGuideExamples.js": "fff7da773917103c34d613a796cdb60be80cf8410ffb5d06570abc9719aee5f1",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "cb68b7d0d7741bf5df58d4275fcedb9e904049de43021c5614ea6360d10bb131",
+      "sha256": "cdc62c9362e853a7b11dfa7276e5a5a41e14801554427c7999fdc1e42107aee8",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "470905368efe160484a915c58e0a8b3e5292f34d4b69b4c935625ac611ef4869",
+      "sha256": "151073dd4e8761edbbb4a4a12adb0043191627bafea3ad3b0c0abc4641c1b98c",
       "width": 358,
       "height": 1004
     },
@@ -163,7 +163,7 @@
       "frames": 68,
       "frameMs": 200,
       "file": "par.gif",
-      "sha256": "8bdbcdc97b34a5d31f13be3122978869098af72373bb2eb9e1f4920ed33ec7f7",
+      "sha256": "85e4a6152117be1d0c629c0f7aafd6572e9d5bd5cf0b2e27ba0d9e604fe2ebd6",
       "width": 358,
       "height": 1004
     },
@@ -190,7 +190,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-rack-trigger.gif",
-      "sha256": "da14a169af4193df3603ab4af4d65d5892ead65229bba25ddcf45dad6abfc259",
+      "sha256": "11792e3cd4f828543c11d7be97bf931e818aa1d4dad9669d14739e623c40b3b4",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "d76c866ab406b152054bc148eb474172aa8897a79f0c38264d7cc7235ebfab0f",
+      "sha256": "d192870c9e2ccb72a0be12842f694596e71541f36d7042694dbf6010fe5faa04",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "27e5d989de2f1c042fa2d56eb431b5fa517960d0c3d9b00d38b6b5b5cd819dc8",
+      "sha256": "13cc997d40b032242ebe10bcc80bb5b3a77947861adecdc984b210db345b927b",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "87f858030610677cd182995d476c555c2198619f67c4730be0152620eaec570c",
+      "sha256": "f620d2c1808486f11c62f4de557c4ec3cf2c293f7ec01f13d548002fda299af1",
       "width": 358,
       "height": 750
     }

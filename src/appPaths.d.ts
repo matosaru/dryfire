@@ -1,0 +1,12 @@
+export type AppLocale='en'|'de'|'nl';
+export type AppRoute={view:string;locale?:AppLocale;mode?:string;preset?:string;guideId?:string;context?:string;gunId?:string|null};
+export function parseAppPath(path:unknown):AppRoute|null;
+export function appPathFor(route:AppRoute):string;
+export function guidePathFor(guideId:string):string;
+export function setupForGuide(guideId:string):AppRoute|null;
+export function offlineAppPaths():string[];
+export function isAppPath(path:unknown):boolean;
+export function isIndexableAppPath(path:string):boolean;
+export function appTitleFor(route:AppRoute):string;
+export function legacyPathRedirect(path:string):string|null;
+export function legacyRedirects():Record<string,string|null>;

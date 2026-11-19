@@ -2,3 +2,6 @@
 .history-item { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:13px 15px; }
 .history-item p { margin:4px 0 0; font-size:.8rem; }
 .history-item span { color:#ff9b56; font-size:1.12rem; font-weight:800; }
+.history-controls { display:grid; justify-items:end; gap:6px; }
+.history-controls .history-delete-confirm { min-width:min(100%,270px); }
+@media(max-width:420px){.history-item{align-items:stretch;flex-direction:column}.history-controls{justify-items:stretch}.history-controls .history-delete-button{justify-self:end}}

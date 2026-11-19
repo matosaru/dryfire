@@ -17,7 +17,7 @@ export default defineConfig({
     ...(edition === 'preview' ? { storageState: { cookies: [], origins: [{ origin: 'http://127.0.0.1:4175', localStorage: [{ name: 'dryfire-private-preview-mode', value: 'full' }] }] } } : {}),
     locale: environment.locale, timezoneId: environment.timezoneId, colorScheme: 'dark', contextOptions: { reducedMotion: 'reduce' },
     serviceWorkers: 'block', trace: 'retain-on-failure', screenshot: 'only-on-failure' },
-  projects: [{ name: 'chromium', use: { browserName: 'chromium' } }, { name: 'webkit',
+  projects: [{ name: 'chromium', use: { browserName: 'chromium', ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? { launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE } } : {}) } }, { name: 'webkit',
     // Exact screenshots still cover every reviewed WebKit state. These tests
     // assert engine-independent DOM/layout contracts and run once in Chromium.
     testIgnore: ['**/drill-catalog.spec.js', '**/drill-setup-template.spec.js', '**/guide-layout.spec.js'],

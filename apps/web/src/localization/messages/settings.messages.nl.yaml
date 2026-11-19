@@ -1,0 +1,66 @@
+page:
+  title: Instellingen
+  eyebrow: 05 / APPARAAT & PRIVACY
+gunContext:
+  prefix: "Geluidreset is alleen van toepassing op "
+  suffix: "."
+installation:
+  summary: Installeren op je iPhone
+  badge: iOS · BEGINSCHERM
+  title: Installeren op je iPhone
+  checking: Installatiestatus controleren…
+  stepOneBefore: "Open het HTTPS-adres van de app in "
+  safari: Safari
+  stepTwoBefore: "Tik op de "
+  share: deelknop
+  stepTwoAfter: "."
+  stepThreeBefore: Kies
+  addToHome: 'Zet op beginscherm'
+  stepThreeAfter: "."
+  stepFourBefore: Schakel
+  openAsWebApp: 'Open als webapp'
+  stepFourMiddle: " in (indien getoond) en tik op "
+  add: 'Voeg toe'
+  stepFourAfter: "."
+  disclaimer: Hiermee installeer je een webapp-icoon en zelfstandige weergave, geen App Store-app. De microfoon werkt alleen wanneer de app is geopend.
+learnedSounds:
+  title: Aangeleerde geluiden
+  description: Gebruik Reset op de kaart onder Leren om één geluid te wissen. Een volledige reset wist de aangeleerde geluiden van dit wapen en de kalibratie voor reset-, ruis- en pieptonen. Opgeslagen resultaten en gegevens van andere wapens blijven behouden.
+  reset: Alle geluiden voor dit wapen wissen
+backup:
+  title: Back-up en gegevens
+  description: Exporteer alle wapenprofielen, aangeleerde numerieke geluidskenmerken, drillvoorinstellingen, herkenningsgeschiedenis, opgeslagen sessies en instellingen. De back-up bevat geen ruwe opnamen. Bewaar dit bestand privé.
+  export: Back-up exporteren
+  import: Back-up importeren
+  importNote: Importeren vervangt de opgeslagen wapens, geluiden, geschiedenis, voorinstellingen, sessies en instellingen op dit apparaat. Oudere back-ups bevatten geen opgeslagen sessies. Bestanden van een ander apparaat kunnen anders werken.
+audio:
+  title: Audioverwerking · dit wapen
+  noiseFilter: Ruisfilter
+  autoGain: Automatische versterking
+  checking: Browserondersteuning controleren…
+  note: Wijzigingen gelden voor de volgende opname. Audioverwerking kan herkenning beïnvloeden en nieuwe voorbeelden vereisen; aangeleerde geluiden worden niet gewist.
+preferences:
+  title: Weergave, eenheden en feedback · dit apparaat
+  appearance: Weergave
+  dark: Donker
+  light: Licht
+  system: Systeem
+  units: Maateenheden
+  metric: Metrisch
+  imperial: Imperiaal
+  vibration: Trilfeedback
+  vibrationNote: Indien ingeschakeld en ondersteund, vraagt de app om een trilling bij GO en na elke herhaling.
+  languageSection: Taal · dit apparaat
+deleteData:
+  title: Lokale appgegevens verwijderen
+  description: Verwijdert alle opgeslagen wapens, aangeleerde geluiden, kalibraties, voorinstellingen, instellingen en geschiedenis uit deze browser. Exporteer eerst een back-up. Zonder back-up kan dit niet ongedaan worden gemaakt.
+  action: Alle wapens en appgegevens verwijderen
+device:
+  title: Apparaatgegevens
+language:
+  section: Taal · dit apparaat
+  label: Taal
+  description: Kies de taal voor de hele app.
+  english: Engels
+  german: Duits
+  dutch: Nederlands
