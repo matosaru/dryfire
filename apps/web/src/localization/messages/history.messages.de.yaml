@@ -8,7 +8,38 @@ sessions:
   title: Übungseinheiten
   description: Öffne eine Einheit, um sie anzusehen, oder lösche sie einzeln. Alle Einheiten löschen entfernt die Übungs- und Ablaufresultate sowie Fortschrittsstatistiken dieser Waffe. Gelernte Töne und Erkennungsverlauf bleiben erhalten.
   clear: Gespeicherte Einheiten löschen
+  noSessions: Für diese Waffe gibt es noch keine gespeicherten Übungseinheiten.
+  shots: "{{count}} Schüsse · {{attempts}} Versuche"
+  repetitions: "{{completed}}/{{total}} Wiederholungen"
+  sessionConfirmation: Löschen der Einheit {{title}} bestätigen
+  sessionDelete: Einheit {{title}} löschen
+  sessionConfirmDelete: Löschen der Einheit {{title}} bestätigen
+  sessionCancelDelete: Löschen der Einheit {{title}} abbrechen
+  deleteSavedQuestion: Diese gespeicherte Einheit löschen?
+  deleteRecognitionQuestion: Dieses Erkennungsergebnis löschen?
 recognition:
   title: Letzte Erkennungsergebnisse
   description: Mit N wird der Erkennungsverlauf gekürzt; gelernte Töne und gespeicherte Übungen bleiben erhalten. Beschrifte Ergebnisse, um die Erkennung anhand deiner eigenen Geräusche zu bewerten.
   clear: Erkennungsverlauf löschen
+  noEvents: Noch keine Erkennungsereignisse vorhanden.
+  actual: "Tatsächlich:"
+  actualSound: Tatsächlicher Ton für {{date}}
+  resultConfirmation: Löschen des Erkennungsergebnisses vom {{date}} bestätigen
+  resultDelete: Erkennungsergebnis vom {{date}} löschen
+  resultConfirmDelete: Löschen des Erkennungsergebnisses vom {{date}} bestätigen
+  resultCancelDelete: Löschen des Erkennungsergebnisses vom {{date}} abbrechen
+actions:
+  delete: Löschen
+  cancel: Abbrechen
+  statusCompleted: abgeschlossen
+  statusInterrupted: unterbrochen
+  statusAbandoned: abgebrochen
+evaluation:
+  title: Beibehaltene Erkennungsprüfungen · nur bestätigte Ereignisse
+  verified: Bestätigt
+  accuracy: Genauigkeit
+  falsePositive: Falschmeldungen bei anderen Tönen
+  caption: Tatsächlicher Ton nach vorhergesagter Bezeichnung (Anzahl)
+  actualPredicted: Tatsächlich ↓ / Vorhergesagt →
+  verifyPrompt: Bestätige mindestens ein Ereignis unten, um die Verwechslungsmatrix anzuzeigen.
+  disclosure: Neue unbekannte Erkennungen werden nicht gespeichert. Diese Prüfungen umfassen nur manuell bestätigte gespeicherte Ereignisse; verpasste Töne oder eine allgemeine Falschmeldungsrate lassen sich damit nicht messen.

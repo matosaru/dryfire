@@ -1,1 +1,37 @@
-{}
+page:
+  title: Mijn wapens
+  description: Kies een wapen om de eigen geluiden en oefeningen ervan te openen.
+capacity:
+  unloaded: 0 van 5 wapens opgeslagen
+  saved:
+    one: 1 wapen opgeslagen
+    other: "{{count}} wapens opgeslagen"
+  full: "{{count}} van 5 wapens opgeslagen · Op dit apparaat opgeslagen"
+  maximum: 5 van 5 wapens opgeslagen
+profile:
+  existing: Bestaand wapen — gegevens toevoegen
+  chooseType: Kies wapentype
+  selected: Geselecteerd
+  triggerReady: Trekker gereed
+  learnTrigger: Trekker leren
+  optionalSounds: "{{count}} optionele geluiden gereed"
+  samples: "{{count}} voorbeelden"
+  presets: "{{count}} aangepaste reeksen"
+actions:
+  edit: Wapen bewerken
+  editNamed: "{{name}} bewerken"
+  delete: Wapen verwijderen
+  deleteNamed: "{{name}} verwijderen"
+  add: Wapen toevoegen
+  addTitle: Wapen toevoegen
+  addSymbol: "+"
+storage:
+  title: Op dit apparaat opgeslagen
+  description: Als je deze app op dit adres vernieuwt of opnieuw opent, blijven je gegevens behouden. Exporteer een back-up voordat je browseropslag wist.
+  backup: Back-up maken en herstellen
+notice:
+  public: In deze openbare versie kun je maximaal twee wapens toevoegen. Bestaande profielen blijven behouden.
+type:
+  Handguns: Handvuurwapens
+  "Rifles and Carbines": Geweren en karabijnen
+  Shotguns: Jachtgeweren

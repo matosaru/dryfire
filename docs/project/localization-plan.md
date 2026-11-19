@@ -1,9 +1,9 @@
 # Application localization refactor plan — CHG-070
 
-**Status:** In progress on `b`; LOC-02/03 are complete, LOC-01/04/05/08 are in progress, and LOC-06/07/09 remain not started. No release has been prepared.  
+**Status:** In progress on `codex/environment-recovery-2026-11-19`; `b` and `main` are unchanged. LOC-02/03 are complete, LOC-01/04/05/06/08 are in progress, LOC-07/09 remain not started, and no release has been prepared.
 **Scope requested:** English remains the default; add English, German and Dutch; put user-facing copy in page-and-language YAML files plus one shared common-message file; support parameterized messages; allow language selection in Settings; preserve correct SEO; require tests to pass. Visual tests are required for the English release only.
 
-## Updated remaining-effort forecast (2026-11-17)
+## Updated remaining-effort forecast (2026-11-19)
 
 These estimates are active Codex engineering hours, not elapsed calendar time. They include each ticket's implementation and focused tests; LOC-09 includes full integration/acceptance fixes and release preparation. They exclude fluent German/Dutch copy review by a human and the user's hands-on browser/device testing. Estimates assume the current route/build architecture remains usable and no data migration is required.
 
@@ -12,18 +12,15 @@ These estimates are active Codex engineering hours, not elapsed calendar time. T
 | LOC-01 Inventory | In progress | 2 h | 1–3 h | Per-message key assignment and source-scan gate |
 | LOC-02 Requirements and SEO schema | Done | 0 h | 0 h | Approved route, fallback, message, and SEO contract |
 | LOC-03 YAML catalogs and validation | Done | 0 h | 0 h | Compiler, schema parity, generated-file checks, and release completeness gate are in place |
-| LOC-01 Inventory | In progress | 2 h | 1–3 h | Per-message key assignment and source-scan gate |
-| LOC-02 Requirements and SEO schema | Done | 0 h | 0 h | Approved route, fallback, message, and SEO contract |
-| LOC-03 YAML catalogs and validation | Done | 0 h | 0 h | Compiler, schema parity, generated-file checks, and release completeness gate are in place |
 | LOC-04 Locale runtime and persistence | In progress | 2 h | 2–4 h | Complete back/forward and data-preservation acceptance |
 | LOC-05 Settings and shared chrome | In progress | 1.5 h | 1–3 h | Dynamic Settings statuses and remaining shared UI strings |
-| LOC-06 Page and feature localization | In progress | 24 h | 18–32 h | Nearly all screen namespaces are still empty; includes user help/manuals and terminology review |
+| LOC-06 Page and feature localization | In progress | 24 h | 18–32 h | Sound Check, History, Guns, and Gun Setup have initial EN/DE/NL catalogs; remaining pages/controllers and help/manuals dominate work |
 | LOC-07 Localized SEO routes | Not started | 8 h | 6–11 h | Static prerender, locale metadata, translated content, and sitemap integration |
 | LOC-08 Tests and accessibility/overflow checks | In progress | 7 h | 5–10 h | Complete route, a11y, long-copy, and SEO metadata coverage |
 | LOC-09 Full validation and release candidate | Not started | 7 h | 5–10 h | Full CI/browser/performance gates and remediation |
 | **Total remaining Codex effort** |  | **56.5 h** | **42–78 h** | Human linguistic review and manual device acceptance are separate |
 
-Actual time spent on implementation is **not tracked**. Earlier estimates understated the remaining copy migration: a release completeness run confirmed that only `common` and `settings` have meaningful content, while the other page namespaces are empty. The revised remaining forecast is 56.5 active Codex hours (42–78 h), excluding fluent DE/NL review and owner device acceptance. This estimate replaces the earlier 40.5 h estimate.
+Actual time spent on implementation is **not tracked**. Earlier estimates understated the remaining copy migration. Several namespaces now contain initial copy, but page/controller extraction remains incomplete and release completeness still fails. The current total forecast remains 56.5 active Codex hours (42–78 h), excluding fluent DE/NL review and owner device acceptance.
 
 ## Proposed behavior and technical decisions
 
@@ -142,7 +139,7 @@ Do not rename or move existing page components to introduce localization; the ne
 | LOC-03 | Deterministic YAML compilation, three-locale key/placeholder validation, HTML rejection, generated-file freshness checks, and a release-only non-empty-namespace gate are implemented. |
 | LOC-04 | Locale normalization, safe interpolation/plurals, formatting, device preference persistence, and switching are implemented; browser history/data-preservation acceptance remains. |
 | LOC-05 | The accessible Settings selector, static Settings copy, and shared header/navigation now use YAML; preference feedback statuses and other common UI strings remain. |
-| LOC-06 | Settings/common are migrated; all other 15 page namespaces remain empty, and user-facing copy is still mostly hardcoded. |
+| LOC-06 | Initial EN/DE/NL page catalogs and tests cover Sound Check, History, Guns, and Gun Setup plus the previously migrated surfaces; other page/controller copy, Help/manuals, feedback statuses, and source-scan coverage remain. |
 | LOC-07 | Locale-prefixed `/de/` and `/nl/` app paths are routable and noindex; translated public HTML, metadata, hreflang, and sitemap generation remain. |
 | LOC-08 | Catalog, preference, route, and localized Settings tests exist; broad three-locale, accessibility, long-copy, and SEO coverage remains. |
 | LOC-09 | No full acceptance run or release candidate exists; version bump and branch promotion are deferred until implementation is complete and tested. |
@@ -239,14 +236,14 @@ LOC-05 and LOC-06 can be split into page batches after LOC-04, but every batch m
 
 ## Current state
 
-Execution is authorized by the user's “Looks good, proceed” instruction and the follow-up to continue all remaining tickets. Work follows repository policy on `b`; all LOC tickets remain open until their acceptance criteria are met. Existing unrelated working-tree changes are user work and must be preserved.
+Execution is authorized by the user's “Looks good, proceed” instruction and the follow-up to continue all remaining tickets. The user directed feature work and plans to stay on a feature branch, with `b` and `main` unchanged; the current branch is `codex/environment-recovery-2026-11-19`. All LOC tickets remain open until their acceptance criteria are met. Preserve unrelated working-tree changes.
 
-## Latest validation checkpoint — 2026-11-17
+## Latest validation checkpoint — 2026-11-19
 
-**Done ticket summaries:** LOC-02 defines the approved locale/SEO contract; LOC-03 provides YAML compilation, locale/key/parameter checks, generated-output freshness validation and a release completeness command. LOC-04 has the runtime, locale preference persistence, and route-prefix foundation; LOC-05 has the Settings language selector and migrated Settings/shared-shell copy. LOC-01 has a screen-to-namespace inventory, but key-level extraction and a hardcoded-copy scan remain incomplete.
+**Done ticket summaries:** LOC-02 defines the approved locale/SEO contract; LOC-03 provides YAML compilation, locale/key/parameter checks, generated-output freshness validation and a release completeness command. LOC-04 has the runtime, locale preference persistence, and route-prefix foundation; LOC-05 has the Settings language selector and migrated Settings/shared-shell copy. LOC-06 has started Sound Check, History, Guns, and Gun Setup catalog migration with locale-switch tests. LOC-01 has a screen-to-namespace inventory, but key-level extraction and a hardcoded-copy scan remain incomplete.
 
-**Validation:** full Jest passes **181 suites / 1,200 tests**; component lint, runtime lint, TypeScript, architecture ownership, build, distribution verification, and 16/16 smoke checks have passed on this working tree. The release-only `localization:complete` gate currently fails because `home.messages.en.yaml` is empty (and most screen namespaces are empty). `docs:check` is still red due to stale design/GIF evidence, source fingerprints, and site-tree/SEO inventory; visual references have not yet been reviewed for this feature. These are open work, not accepted failures.
+**Validation:** full Jest passes **181 suites / 1,209 tests**; component lint, runtime lint, TypeScript, architecture ownership, build, distribution verification, and 16/16 smoke checks have passed on this working tree. Focused localization tests pass (15 tests across Guns, Gun Setup, and History); component/runtime lint and TypeScript pass after this increment. English mobile screenshots for History and Guns pass. The Sound Check screenshot still has an exact-pixel mismatch affecting 49 footer-text pixels and needs investigation; the screenshot run did not include Gun Setup or Sound Check from the canonical page catalog. The release-only `localization:complete` gate currently fails because `practice.messages.en.yaml` is empty and several namespaces remain blank. `docs:check` remains red due to stale design/GIF evidence, source fingerprints, and site-tree/SEO inventory; these are open work, not accepted failures.
 
 **Remaining ticket summaries:** LOC-01 (1–3 h) finish key-level source ownership and unowned-copy scan; LOC-04 (2–4 h) verify back/forward, locale switching and data preservation; LOC-05 (1–3 h) migrate remaining shared feedback/status copy; LOC-06 (18–32 h) migrate all remaining app/help/manual copy into complete EN/DE/NL YAML; LOC-07 (6–11 h) generate translated public pages and correct canonical/hreflang/sitemap output; LOC-08 (5–10 h) complete three-locale functional, accessibility, overflow and SEO test coverage; LOC-09 (5–10 h) complete docs/visual review, full CI acceptance and prepare the release candidate. Combined remaining forecast: **56.5 active Codex hours (42–78 h range)**, excluding human translation review and owner device testing. Actual time spent is not tracked.
 
-No version has been bumped, and there is no commit, push, merge, or deployment for CHG-070 yet. Do not publish localized SEO paths until LOC-06/07 prove their content complete; retain noindex for incomplete localized app routes.
+No version has been bumped and CHG-070 is not releasable. `b` and `main` remain unchanged. Do not publish localized SEO paths until LOC-06/07 prove their content complete; retain noindex for incomplete localized app routes.

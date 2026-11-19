@@ -6,7 +6,7 @@ import {GunSetupPage,type GunSetupPageProps} from '../pages/GunSetupPage/index.t
 export function mountGunSetupPage(doc:Document,initial:GunSetupPageProps){
  const host=doc.getElementById('gunSetupView');if(!host)throw new Error('Gun setup mount is missing.');
  const backup=[...host.childNodes],active=doc.activeElement as HTMLElement|null;
- let state={notice:doc.getElementById('gunCapacityNotice')?.textContent ?? undefined,...initial},epoch=0,disposed=false,failure:unknown;
+ let state={...initial},epoch=0,disposed=false,failure:unknown;
  const root=createRoot(host,{onUncaughtError(error){failure=error;}});
  const render=()=>{flushSync(()=>root.render(<StrictMode><GunSetupPage key={epoch} {...state}/></StrictMode>));if(failure)throw failure;};
  try{render();}catch(error){flushSync(()=>root.unmount());host.replaceChildren(...backup);active?.focus();throw error;}
@@ -14,6 +14,7 @@ export function mountGunSetupPage(doc:Document,initial:GunSetupPageProps){
   reset(next:GunSetupPageProps){if(disposed)return;state={...state,...next};epoch++;render();},
   setSaving(saving:boolean){if(disposed||state.saving===saving)return;state={...state,saving};render();},
   setNotice(notice:string){if(disposed||state.notice===notice)return;state={...state,notice};render();},
+  setNoticeMode(noticeMode:'limit'|'full'){if(disposed||state.noticeMode===noticeMode)return;state={...state,notice:undefined,noticeMode};render();},
   dispose(){if(disposed)return;disposed=true;flushSync(()=>root.unmount());},
  };
 }

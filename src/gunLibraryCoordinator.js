@@ -7,7 +7,8 @@ function openGunSetup(gun = null) {
   if (profileLocked()) return;
   if (!gun && state.guns.length >= state.capabilities.gunCreationLimit) { setMessage('This version cannot create another gun. Existing saved guns remain available.'); return; }
   setupGunId = gun?.id ?? null;
-  const props = {name:gun?.name ?? '',type:gun?.type ?? '',
+  const variant=gun?.needsDetails?'repair':gun?'edit':state.guns.length?'add':'first';
+  const props = {name:gun?.name ?? '',type:gun?.type ?? '',variant,noticeMode:state.capabilities.gunCreationLimit>=5?'full':'limit',
     title:gun?.needsDetails ? 'Name your existing gun' : gun ? 'Edit gun' : state.guns.length ? 'Add your gun' : 'Add your first gun',
     description:gun?.needsDetails ? 'Your learned sounds and recognition history have been preserved together. Add the name and type of the gun they belong to.'
       : gun ? 'Update the name or type. This gun’s learned sounds, presets and history stay saved.'
@@ -101,5 +102,5 @@ async function submitGun(event) {
   } catch (error) { showError(error); }
   finally { setBusy(false); setGunSaving(false); }
 }
-return{open:openGunSetup,render:renderGunLibrary,flush:flushLibraryWork,remove:deleteGunProfile,select:selectGunProfile,submit:submitGun,invalidate(){gunLibraryToken+=1;},syncLocked(){if(!gunLibraryPage)return false;gunLibraryPage.setLocked(profileLocked());return true;},setNotice(notice){if(gunSetupPage)gunSetupPage.setNotice(notice);else $('#gunCapacityNotice').textContent=notice;}};
+return{open:openGunSetup,render:renderGunLibrary,flush:flushLibraryWork,remove:deleteGunProfile,select:selectGunProfile,submit:submitGun,invalidate(){gunLibraryToken+=1;},syncLocked(){if(!gunLibraryPage)return false;gunLibraryPage.setLocked(profileLocked());return true;},setNotice(mode){if(gunSetupPage)gunSetupPage.setNoticeMode(mode==='full'?'full':'limit');else $('#gunCapacityNotice').textContent=mode==='full'?'You can save up to 5 guns.':'Create up to two gun profiles. Existing saved profiles remain available.';}};
 }

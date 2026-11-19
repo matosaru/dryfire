@@ -1,1 +1,37 @@
-{}
+page:
+  title: My Guns
+  description: Choose a gun to open its own sounds and drills.
+capacity:
+  unloaded: 0 of 5 guns saved
+  saved:
+    one: 1 saved gun
+    other: "{{count}} saved guns"
+  full: "{{count}} of 5 guns saved · Saved on this device"
+  maximum: 5 of 5 guns saved
+profile:
+  existing: Existing gun — add details
+  chooseType: Choose gun type
+  selected: Selected
+  triggerReady: Trigger ready
+  learnTrigger: Learn trigger
+  optionalSounds: "{{count}} optional sounds ready"
+  samples: "{{count}} samples"
+  presets: "{{count}} custom presets"
+actions:
+  edit: Edit gun
+  editNamed: Edit {{name}}
+  delete: Delete gun
+  deleteNamed: Delete {{name}}
+  add: Add gun
+  addTitle: Add Gun
+  addSymbol: "+"
+storage:
+  title: Saved on this device
+  description: Refreshing or updating at this app address keeps your saved data. Export a backup before clearing browser storage.
+  backup: Backup & restore
+notice:
+  public: This public version creates up to two guns. Existing saved profiles are kept.
+type:
+  Handguns: Handguns
+  "Rifles and Carbines": Rifles and Carbines
+  Shotguns: Shotguns

@@ -1,1 +1,68 @@
-{}
+page:
+  title: Klangtest
+  eyebrow: PRÜFUNG DES ABZUGSPROFILS
+gunContext:
+  prefix: "Prüfe das gelernte Abzugsprofil für "
+  suffix: "."
+setup:
+  title: Beschrifteten Test vorbereiten
+  description: Lege das Telefon an den üblichen Übungsort. Jeder Versuch öffnet ein zweisekündiges Hörfenster. Roh-Audio wird weder gespeichert noch exportiert.
+  soundLabel: Geräusch, das du erzeugst
+  attemptsLabel: Versuche
+  attemptsHelp: 1–50 · mische Abzugsgeräusche mit anderen Geräuschen
+  roomLabel: Raum
+  distanceLabel: Abstand zum Telefon
+  close: Nah
+  normal: Normal
+  far: Weit
+  distanceReminder: Verwende deinen üblichen Abstand und ändere ihn während des Tests nicht.
+  start: Klangtest starten
+  preparing: Teststeuerung wird vorbereitet…
+run:
+  eyebrow: AKTUELLER VERSUCH
+  title: Mikrofon wird vorbereitet
+  soundLabel: Geräusch für den nächsten Versuch
+  meter: Mikrofonpegel des Klangtests
+  attempt: Versuch starten
+  stop: Ohne Speichern beenden
+review:
+  eyebrow: TEST ABGESCHLOSSEN
+  title: Ergebnisse dieses Tests
+  matched: Erkannt
+  missed: Übersehen
+  falseShots: Falsche Treffer
+  duplicates: Doppelte Treffer
+  candidateNeedsSamples: Für den Kandidatenvergleich sind mindestens drei neue spektrale Abzugsproben erforderlich.
+  candidateComparison: "Kandidatenvergleich: {{matched}} erkannt, {{missed}} übersehen, {{falseShots}} falsch und {{duplicates}} doppelt."
+  disclosure: Diese Werte gelten nur für diesen beschrifteten Test. Sie belegen weder eine allgemeine Erkennungsgenauigkeit noch einen sicheren Umgang.
+  export: Datenschutzfreundlichen Bericht exportieren
+  again: Weiteren Test starten
+sound:
+  trigger: Abzug betätigen
+  other: Anderes / Hintergrundgeräusch
+  rack: Verschluss bewegen
+  reload: Magazin wechseln
+  draw: Aus dem Holster ziehen
+  quiet: Ruhig
+  noisy: Laut
+distance:
+  metric:
+    close: unter 30 cm
+    normal: 30 cm–1 m
+    far: über 1 m
+  imperial:
+    close: unter 1 ft
+    normal: 1–3 ft
+    far: über 3 ft
+status:
+  ready: Bereit. Sicherheitsbestätigung und Mikrofonberechtigung folgen.
+  requesting: Mikrofonzugriff wird angefordert…
+  preparing: Mikrofon wird vorbereitet…
+  roomNoisy: Raum ist laut · Gehe näher heran oder reduziere Hintergrundgeräusche
+  microphoneReady: Mikrofon bereit · Hört vor dem Signal zu
+  audioWorklet: Live-Erkennung (AudioWorklet)
+  compatibilityMode: Live-Erkennung (Kompatibilitätsmodus)
+  readyForAttempt: Mikrofon bereit. Starte, wenn du bereit bist.
+  attemptSaved: Versuch gespeichert. Wähle das nächste Geräusch und starte erneut.
+  listening: "Erfasse einen Ton: {{sound}}…"
+  analysisFailed: "Geräusch erkannt, aber Analyse fehlgeschlagen: {{message}}"

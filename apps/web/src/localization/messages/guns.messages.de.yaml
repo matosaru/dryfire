@@ -1,1 +1,37 @@
-{}
+page:
+  title: Meine Waffen
+  description: Wähle eine Waffe, um ihre eigenen Töne und Übungen zu öffnen.
+capacity:
+  unloaded: 0 von 5 Waffen gespeichert
+  saved:
+    one: 1 Waffe gespeichert
+    other: "{{count}} Waffen gespeichert"
+  full: "{{count}} von 5 Waffen gespeichert · Auf diesem Gerät gespeichert"
+  maximum: 5 von 5 Waffen gespeichert
+profile:
+  existing: Vorhandene Waffe — Angaben ergänzen
+  chooseType: Waffentyp auswählen
+  selected: Ausgewählt
+  triggerReady: Abzug bereit
+  learnTrigger: Abzug lernen
+  optionalSounds: "{{count}} optionale Töne bereit"
+  samples: "{{count}} Beispiele"
+  presets: "{{count}} eigene Abläufe"
+actions:
+  edit: Waffe bearbeiten
+  editNamed: "{{name}} bearbeiten"
+  delete: Waffe löschen
+  deleteNamed: "{{name}} löschen"
+  add: Waffe hinzufügen
+  addTitle: Waffe hinzufügen
+  addSymbol: "+"
+storage:
+  title: Auf diesem Gerät gespeichert
+  description: Beim Aktualisieren oder erneuten Öffnen dieser App-Adresse bleiben deine Daten erhalten. Exportiere eine Sicherung, bevor du den Browserspeicher löschst.
+  backup: Sichern und wiederherstellen
+notice:
+  public: In dieser öffentlichen Version kannst du bis zu zwei Waffen anlegen. Vorhandene Profile bleiben erhalten.
+type:
+  Handguns: Kurzwaffen
+  "Rifles and Carbines": Gewehre und Karabiner
+  Shotguns: Flinten

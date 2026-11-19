@@ -1,1 +1,68 @@
-{}
+page:
+  title: Geluidstest
+  eyebrow: CONTROLE VAN HET TREKKERPROFIEL
+gunContext:
+  prefix: "Controleer het aangeleerde trekkerprofiel voor "
+  suffix: "."
+setup:
+  title: Een gelabelde test voorbereiden
+  description: Leg de telefoon op de gebruikelijke oefenplek. Elke poging opent een luistervenster van twee seconden. Ruwe audio wordt nooit opgeslagen of geëxporteerd.
+  soundLabel: Geluid dat je maakt
+  attemptsLabel: Pogingen
+  attemptsHelp: 1–50 · wissel trekkerklikken af met andere geluiden
+  roomLabel: Ruimte
+  distanceLabel: Afstand tot de telefoon
+  close: Dichtbij
+  normal: Normaal
+  far: Veraf
+  distanceReminder: Gebruik je gebruikelijke afstand en houd die tijdens de test gelijk.
+  start: Geluidstest starten
+  preparing: De testbediening voorbereiden…
+run:
+  eyebrow: HUIDIGE POGING
+  title: Microfoon voorbereiden
+  soundLabel: Geluid voor de volgende poging
+  meter: Microfoonniveau van de geluidstest
+  attempt: Poging beginnen
+  stop: Stoppen zonder op te slaan
+review:
+  eyebrow: TEST VOLTOOID
+  title: Resultaten van deze test
+  matched: Herkend
+  missed: Gemist
+  falseShots: Valse detecties
+  duplicates: Dubbelen
+  candidateNeedsSamples: Vergelijking vereist minstens drie nieuw opgenomen spectrale trekkerklikken.
+  candidateComparison: "Vergelijking: {{matched}} herkend, {{missed}} gemist, {{falseShots}} onterecht en {{duplicates}} dubbel."
+  disclosure: Deze aantallen gelden alleen voor deze gelabelde test. Ze bewijzen geen algemene nauwkeurigheid en controleren geen veilig gebruik.
+  export: Privacyvriendelijk rapport exporteren
+  again: Nog een test uitvoeren
+sound:
+  trigger: Trekker overhalen
+  other: Ander / achtergrondgeluid
+  rack: Slede bewegen
+  reload: Magazijn wisselen
+  draw: Pistool uit holster trekken
+  quiet: Stil
+  noisy: Rumoerig
+distance:
+  metric:
+    close: minder dan 30 cm
+    normal: 30 cm–1 m
+    far: meer dan 1 m
+  imperial:
+    close: minder dan 1 ft
+    normal: 1–3 ft
+    far: meer dan 3 ft
+status:
+  ready: Klaar om te starten. Eerst volgt de veiligheidsbevestiging en microfoontoestemming.
+  requesting: Microfoontoegang aanvragen…
+  preparing: Microfoon voorbereiden…
+  roomNoisy: De ruimte is rumoerig · Ga dichterbij of verminder achtergrondgeluid
+  microphoneReady: Microfoon klaar · Luistert vóór het signaal
+  audioWorklet: Live luisteren (AudioWorklet)
+  compatibilityMode: Live luisteren (compatibiliteitsmodus)
+  readyForAttempt: Microfoon klaar. Begin wanneer je er klaar voor bent.
+  attemptSaved: Poging opgeslagen. Kies het volgende geluid en begin opnieuw.
+  listening: "Luistert naar één {{sound}}…"
+  analysisFailed: "Geluid gedetecteerd, maar analyseren is mislukt: {{message}}"

@@ -8,7 +8,38 @@ sessions:
   title: Drill sessions
   description: Open a session to review it, or delete one saved session. Clear saved sessions removes all this gun’s practice and sequence results and progress statistics; learned sounds and recognition history stay saved.
   clear: Clear saved sessions
+  noSessions: No saved drill sessions for this gun yet.
+  shots: "{{count}} shots · {{attempts}} attempts"
+  repetitions: "{{completed}}/{{total}} repetitions"
+  sessionConfirmation: Delete {{title}} session confirmation
+  sessionDelete: Delete {{title}} session
+  sessionConfirmDelete: Confirm deleting {{title}} session
+  sessionCancelDelete: Cancel deleting {{title}} session
+  deleteSavedQuestion: Delete this saved session?
+  deleteRecognitionQuestion: Delete this recognition result?
 recognition:
   title: Recent recognition results
   description: Changing N trims recent recognition history; learned sounds and saved drill sessions stay intact. Label each result to evaluate recognition on your own real-world samples.
   clear: Clear recognition history
+  noEvents: No recognition events yet.
+  actual: "Actual:"
+  actualSound: Actual sound for {{date}}
+  resultConfirmation: Delete recognition result from {{date}} confirmation
+  resultDelete: Delete recognition result from {{date}}
+  resultConfirmDelete: Confirm deleting recognition result from {{date}}
+  resultCancelDelete: Cancel deleting recognition result from {{date}}
+actions:
+  delete: Delete
+  cancel: Cancel
+  statusCompleted: completed
+  statusInterrupted: interrupted
+  statusAbandoned: abandoned
+evaluation:
+  title: Retained recognition checks · verified events only
+  verified: Verified
+  accuracy: Accuracy
+  falsePositive: Other-sound false positives
+  caption: Actual sound by predicted label (counts)
+  actualPredicted: Actual ↓ / Predicted →
+  verifyPrompt: Verify at least one event below to see the confusion matrix.
+  disclosure: New unknown detections are not saved. These checks cover manually verified retained events only; they cannot measure missed sounds or an overall false-count rate.

@@ -7,3 +7,5 @@ Review shows version-two matched triggers, misses, false shots and duplicates fo
 ![Sound Check setup](overview.dark.png)
 
 The shared header, footer, fixed navigation, active-gun context, safety confirmation and acoustic limitations follow [shared layout](../shared/README.md). Behavior is specified by [audio recognition v3](../../../requirements/audio-recognition-v3.md), [core safety and capture](../../../requirements/core.md), and [page layout](../../../requirements/page-layout.md).
+
+CHG-070 moves Sound Check labels, distance guidance and live attempt/result messages into `sound-check.messages.<locale>.yaml`. English, German and Dutch retain the same stable sound and distance identifiers; only their presentation changes. English remains the only visual-baseline locale; the other locales use semantic and accessibility tests.

@@ -1,1 +1,27 @@
-{}
+page:
+  firstTitle: Add your first gun
+  firstDescription: Give it a name and choose a type. Its sounds and drills stay separate.
+  addTitle: Add your gun
+  addDescription: Give this gun a name and type. Its learned sounds, presets and history will be saved separately on this device.
+  editTitle: Edit gun
+  editDescription: Update the name or type. This gun’s learned sounds, presets and history stay saved.
+  repairTitle: Name your existing gun
+  repairDescription: Your learned sounds and recognition history have been preserved together. Add the name and type of the gun they belong to.
+fields:
+  name: Gun name
+  namePlaceholder: e.g. My handgun
+  type: Gun type
+  Handguns: Handguns
+  "Rifles and Carbines": Rifles and Carbines
+  Shotguns: Shotguns
+notice:
+  full: You can save up to 5 guns.
+  limit: Create up to two gun profiles. Existing saved profiles remain available.
+storage:
+  title: Saved on this device
+  description: Gun profiles, learned sounds and drill presets stay here between visits. Use the same app address and browser.
+actions:
+  saveFirst: Save Gun & Continue
+  save: Save Changes
+  cancel: Cancel
+  restore: Restore from backup

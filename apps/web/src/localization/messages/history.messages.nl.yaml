@@ -6,9 +6,40 @@ gunContext:
   suffix: .
 sessions:
   title: Oefensessies
-  description: Open een sessie om die te bekijken of verwijder een sessie afzonderlijk. Alle sessies wissen verwijdert alle oefen- en reeksresultaten en voortgangsstatistieken van dit wapen. Geleerde geluiden en herkenningsgeschiedenis blijven bewaard.
+  description: Open een sessie om deze te bekijken of verwijder één opgeslagen sessie. Alle sessies wissen verwijdert de oefen- en volgorderesultaten en voortgangsstatistieken van dit wapen; aangeleerde geluiden en herkenningsgeschiedenis blijven bewaard.
   clear: Opgeslagen sessies wissen
+  noSessions: Er zijn nog geen opgeslagen oefensessies voor dit wapen.
+  shots: "{{count}} schoten · {{attempts}} pogingen"
+  repetitions: "{{completed}}/{{total}} herhalingen"
+  sessionConfirmation: Verwijderen van sessie {{title}} bevestigen
+  sessionDelete: Sessie {{title}} verwijderen
+  sessionConfirmDelete: Verwijderen van sessie {{title}} bevestigen
+  sessionCancelDelete: Verwijderen van sessie {{title}} annuleren
+  deleteSavedQuestion: Deze opgeslagen sessie verwijderen?
+  deleteRecognitionQuestion: Dit herkenningsresultaat verwijderen?
 recognition:
   title: Recente herkenningsresultaten
-  description: N aanpassen beperkt de recente herkenningsgeschiedenis; geleerde geluiden en opgeslagen oefeningen blijven behouden. Label resultaten om herkenning met je eigen praktijkgeluiden te beoordelen.
+  description: Met N beperk je de recente herkenningsgeschiedenis; aangeleerde geluiden en opgeslagen oefensessies blijven behouden. Label elk resultaat om herkenning met je eigen geluiden te beoordelen.
   clear: Herkenningsgeschiedenis wissen
+  noEvents: Er zijn nog geen herkenningsgebeurtenissen.
+  actual: "Werkelijk:"
+  actualSound: Werkelijk geluid voor {{date}}
+  resultConfirmation: Verwijderen van herkenningsresultaat van {{date}} bevestigen
+  resultDelete: Herkenningsresultaat van {{date}} verwijderen
+  resultConfirmDelete: Verwijderen van herkenningsresultaat van {{date}} bevestigen
+  resultCancelDelete: Verwijderen van herkenningsresultaat van {{date}} annuleren
+actions:
+  delete: Verwijderen
+  cancel: Annuleren
+  statusCompleted: voltooid
+  statusInterrupted: onderbroken
+  statusAbandoned: afgebroken
+evaluation:
+  title: Bewaarde herkenningscontroles · alleen geverifieerde gebeurtenissen
+  verified: Geverifieerd
+  accuracy: Nauwkeurigheid
+  falsePositive: Valse positieven bij andere geluiden
+  caption: Werkelijk geluid per voorspeld label (aantallen)
+  actualPredicted: Werkelijk ↓ / Voorspeld →
+  verifyPrompt: Verifieer hieronder minstens één gebeurtenis om de verwarringsmatrix te zien.
+  disclosure: Nieuwe onbekende detecties worden niet opgeslagen. Deze controles bevatten alleen handmatig geverifieerde bewaarde gebeurtenissen; gemiste geluiden of een algemeen percentage valse meldingen kunnen hiermee niet worden gemeten.

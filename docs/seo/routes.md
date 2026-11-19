@@ -29,7 +29,7 @@ Canonical origin: **https://easydryfire.com**. Each page has useful prerendered 
 
 ## Operational app URLs
 
-These 19 paths open the app with explicit noindex and stay out of the XML sitemap. Paths contain screen/mode identity only; gun names, recordings and saved-session identifiers remain local. Opening a URL preserves existing setup/training/safety/capture guards and never automatically starts recording. A missing source context may return to the corresponding selection/setup screen.
+These 77 paths open the app with explicit noindex and stay out of the XML sitemap. Paths contain screen/mode identity only; gun names, recordings and saved-session identifiers remain local. Opening a URL preserves existing setup/training/safety/capture guards and never automatically starts recording. A missing source context may return to the corresponding selection/setup screen.
 
 | Path | Screen | In XML sitemap |
 | --- | --- | --- |
@@ -52,6 +52,64 @@ These 19 paths open the app with explicit noindex and stay out of the XML sitema
 | `/custom-sequence/` | Custom sequence | No; noindex |
 | `/trigger-pull-sequence-guide/` | Trigger pull guide | No; noindex |
 | `/custom-sequence-guide/` | Custom sequence guide | No; noindex |
+| `/de/` | Dry Fire With Ease | No; noindex |
+| `/de/gun-setup/` | Gun setup | No; noindex |
+| `/de/guns/` | My Guns | No; noindex |
+| `/de/learn/` | Learn Sounds | No; noindex |
+| `/de/sound-check/` | Sound Check | No; noindex |
+| `/de/drills/` | Drills | No; noindex |
+| `/de/live-listen/` | Test Learned Sounds | No; noindex |
+| `/de/history/` | History | No; noindex |
+| `/de/settings/` | Settings | No; noindex |
+| `/de/about/` | About | No; noindex |
+| `/de/contact/` | Contact | No; noindex |
+| `/de/single-trigger-press/` | Single trigger press | No; noindex |
+| `/de/repeated-trigger-press/` | Repeated trigger press | No; noindex |
+| `/de/par-time-practice/` | Par time practice | No; noindex |
+| `/de/trigger-control/` | Trigger control | No; noindex |
+| `/de/rack-slide-trigger-pull/` | Rack slide → Trigger pull | No; noindex |
+| `/de/magazine-change-trigger-pull/` | Magazine change → Trigger pull | No; noindex |
+| `/de/draw-magazine-change-trigger-pull/` | Draw from holster → Magazine change → Trigger pull | No; noindex |
+| `/de/trigger-pull-sequence/` | Trigger pull | No; noindex |
+| `/de/custom-sequence/` | Custom sequence | No; noindex |
+| `/de/single-trigger-press-guide/` | Single trigger press guide | No; noindex |
+| `/de/repeated-trigger-press-guide/` | Repeated trigger press guide | No; noindex |
+| `/de/par-time-practice-guide/` | Par time practice guide | No; noindex |
+| `/de/trigger-control-guide/` | Trigger control guide | No; noindex |
+| `/de/rack-slide-trigger-pull-guide/` | Rack slide → Trigger pull guide | No; noindex |
+| `/de/magazine-change-trigger-pull-guide/` | Magazine change → Trigger pull guide | No; noindex |
+| `/de/draw-magazine-change-trigger-pull-guide/` | Draw from holster → Magazine change → Trigger pull guide | No; noindex |
+| `/de/trigger-pull-sequence-guide/` | Trigger pull guide | No; noindex |
+| `/de/custom-sequence-guide/` | Custom sequence guide | No; noindex |
+| `/nl/` | Dry Fire With Ease | No; noindex |
+| `/nl/gun-setup/` | Gun setup | No; noindex |
+| `/nl/guns/` | My Guns | No; noindex |
+| `/nl/learn/` | Learn Sounds | No; noindex |
+| `/nl/sound-check/` | Sound Check | No; noindex |
+| `/nl/drills/` | Drills | No; noindex |
+| `/nl/live-listen/` | Test Learned Sounds | No; noindex |
+| `/nl/history/` | History | No; noindex |
+| `/nl/settings/` | Settings | No; noindex |
+| `/nl/about/` | About | No; noindex |
+| `/nl/contact/` | Contact | No; noindex |
+| `/nl/single-trigger-press/` | Single trigger press | No; noindex |
+| `/nl/repeated-trigger-press/` | Repeated trigger press | No; noindex |
+| `/nl/par-time-practice/` | Par time practice | No; noindex |
+| `/nl/trigger-control/` | Trigger control | No; noindex |
+| `/nl/rack-slide-trigger-pull/` | Rack slide → Trigger pull | No; noindex |
+| `/nl/magazine-change-trigger-pull/` | Magazine change → Trigger pull | No; noindex |
+| `/nl/draw-magazine-change-trigger-pull/` | Draw from holster → Magazine change → Trigger pull | No; noindex |
+| `/nl/trigger-pull-sequence/` | Trigger pull | No; noindex |
+| `/nl/custom-sequence/` | Custom sequence | No; noindex |
+| `/nl/single-trigger-press-guide/` | Single trigger press guide | No; noindex |
+| `/nl/repeated-trigger-press-guide/` | Repeated trigger press guide | No; noindex |
+| `/nl/par-time-practice-guide/` | Par time practice guide | No; noindex |
+| `/nl/trigger-control-guide/` | Trigger control guide | No; noindex |
+| `/nl/rack-slide-trigger-pull-guide/` | Rack slide → Trigger pull guide | No; noindex |
+| `/nl/magazine-change-trigger-pull-guide/` | Magazine change → Trigger pull guide | No; noindex |
+| `/nl/draw-magazine-change-trigger-pull-guide/` | Draw from holster → Magazine change → Trigger pull guide | No; noindex |
+| `/nl/trigger-pull-sequence-guide/` | Trigger pull guide | No; noindex |
+| `/nl/custom-sequence-guide/` | Custom sequence guide | No; noindex |
 
 About, Contact and public manuals use one shared app screen at each canonical URL. Installation instructions are in Settings and the public /help/ page. Practice setup/run/review share their mode path; saved records do not get public URLs.
 

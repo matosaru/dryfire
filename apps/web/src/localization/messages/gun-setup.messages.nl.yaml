@@ -1,1 +1,27 @@
-{}
+page:
+  firstTitle: Voeg je eerste wapen toe
+  firstDescription: Geef het een naam en kies een type. De geluiden en oefeningen blijven gescheiden.
+  addTitle: Voeg je wapen toe
+  addDescription: Geef dit wapen een naam en type. Aangeleerde geluiden, reeksen en geschiedenis worden afzonderlijk op dit apparaat opgeslagen.
+  editTitle: Wapen bewerken
+  editDescription: Wijzig de naam of het type. De aangeleerde geluiden, reeksen en geschiedenis van dit wapen blijven bewaard.
+  repairTitle: Geef je bestaande wapen een naam
+  repairDescription: De aangeleerde geluiden en herkenningsgeschiedenis zijn samen bewaard. Voeg de naam en het type van het bijbehorende wapen toe.
+fields:
+  name: Wapennaam
+  namePlaceholder: bijv. Mijn handvuurwapen
+  type: Wapentype
+  Handguns: Handvuurwapens
+  "Rifles and Carbines": Geweren en karabijnen
+  Shotguns: Jachtgeweren
+notice:
+  full: Je kunt maximaal 5 wapens opslaan.
+  limit: Je kunt maximaal twee wapenprofielen aanmaken. Bestaande profielen blijven beschikbaar.
+storage:
+  title: Op dit apparaat opgeslagen
+  description: Wapenprofielen, aangeleerde geluiden en aangepaste reeksen blijven hier tussen bezoeken bewaard. Gebruik hetzelfde appadres en dezelfde browser.
+actions:
+  saveFirst: Wapen opslaan en doorgaan
+  save: Wijzigingen opslaan
+  cancel: Annuleren
+  restore: Herstellen vanaf back-up

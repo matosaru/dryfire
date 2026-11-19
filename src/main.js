@@ -203,7 +203,7 @@ function renderPreferences() {
 function reportAudioProcessing(report) { preferenceState.processing = report; renderPreferences(); }
 function reportVibration(result) { if (!result.supported || !result.accepted) { preferenceState.rejected = true; renderPreferences(); } }
 
-const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+id),locked:profileLocked,owner:ownerId,activeOwner:()=>activeGun?.id,saveDevice:setSetting,saveGun:setGunSetting,render:renderPreferences,refresh:()=>{renderLiveButton();renderClassCards();},applyTheme:applyAppearance,applyMeasurements:()=>soundCheckPage?.updateUnits(preferenceState.measurementSystem),applyLocale:async locale=>{await loadLocale(locale);if(screenNavigation)await screenNavigation.navigate(routeFor(activeView));},reload:loadDevicePreferences,error:showError,message:setMessage});
+const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+id),locked:profileLocked,owner:ownerId,activeOwner:()=>activeGun?.id,saveDevice:setSetting,saveGun:setGunSetting,render:renderPreferences,refresh:()=>{renderLiveButton();renderClassCards();},applyTheme:applyAppearance,applyMeasurements:()=>soundCheckPage?.updateUnits(preferenceState.measurementSystem),applyLocale:async locale=>{await loadLocale(locale);soundCheckController?.updateLocale?.();if(screenNavigation)await screenNavigation.navigate(routeFor(activeView));},reload:loadDevicePreferences,error:showError,message:setMessage});
 
 const gunLibraryCoordinator=createGunLibraryCoordinator({get guns(){return guns;},set guns(value){guns=value;},get gun(){return activeGun;},get capabilities(){return CAPABILITIES;},get loading(){return profileLoading;},set loading(value){profileLoading=value;},get events(){return eventQueue;},get session(){return sessionController;},get practice(){return practiceController;},get pendingEntry(){return pendingEntry;},get pages(){return profilePages;}},{getGuns,getExamples,getCustomDrills,deleteGun,setActiveGun,updateGun,createGun},{profileLocked,setMessage,switchView,loadProfilePages,showError,setBusy,loadActiveGun,setStatus,openEntry,renderGunControls,renderLiveButton,renderClassCards,gunImagePath,$,document,confirm:message=>confirm(message)});
 
@@ -1105,8 +1105,7 @@ async function init() {
     const applyPresentation = () => {
       const full = CAPABILITIES.advancedGraphs;
       document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
-      const notice = full ? 'You can save up to 5 guns.' : 'Create up to two gun profiles. Existing saved profiles remain available.';
-      gunLibraryCoordinator.setNotice(notice);
+      gunLibraryCoordinator.setNotice(full ? 'full' : 'public');
       const sequenceDescription=full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
       if(drillsPage)drillsPage.update({sequenceDescription});else $('#sequenceDescription').textContent=sequenceDescription;
       informationPages.setFull(full);

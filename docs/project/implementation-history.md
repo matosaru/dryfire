@@ -1,3 +1,7 @@
+# CHG-070 localization progress checkpoint — 2026-11-19
+
+LOC-06 now moves Sound Check, History, Guns, and Gun Setup presentation into English, German, and Dutch YAML catalogs, including localized History card actions/evaluation content and Guns setup/library copy. Locale-switch tests cover History, Guns, and Gun Setup; the full Jest suite passes 181 suites / 1,209 tests, focused suites pass 15 tests, and component/runtime lint plus TypeScript pass. Work remains on `codex/environment-recovery-2026-11-19`; `b` and `main` are unchanged. Localization completeness still fails on empty Practice catalogs, localized public SEO and full page copy remain incomplete, the Sound Check exact-pixel visual has a 49-pixel footer-text mismatch, and docs checks have stale evidence to resolve. Actual effort was not tracked; no release or version bump occurred.
+
 # Implementation history and remaining plan
 
 **CHG-070 execution authorization and remaining estimate, 2026-11-17:** the user approved execution with “Looks good, proceed” and asked to continue all remaining tickets; the plan now shows LOC-01–LOC-09 as not started and forecasts 48.5 active hours remaining (range 36–62). No localization ticket is complete yet; estimates will be reforecast after LOC-01 inventory. Work follows the repository policy on `b`; unrelated working-tree changes must be preserved. Actual time on this estimate update was not tracked; no tests were run because this was a planning-only edit.

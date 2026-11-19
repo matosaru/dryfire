@@ -1,8 +1,9 @@
 /** @jest-environment jsdom */
 import {jest} from '@jest/globals';
-import {render,screen,fireEvent,cleanup} from '@testing-library/react';
+import {render,screen,fireEvent,cleanup,act} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {GunsPage,type GunLibraryRow} from './GunsPage.tsx';
+import {loadLocale} from '../../localization/runtime.ts';
 afterEach(cleanup);
 const rows:GunLibraryRow[]=[{gun:{id:'a',name:'<My gun>',type:'Handguns'},image:'/gun-types/handgun.svg',triggerReady:true,optionalReady:1,samples:8,presets:2},{gun:{id:'b'},image:'/gun-types/unknown.svg',triggerReady:false,optionalReady:0,samples:0,presets:0}];
 test('owned cards retain names, type image, selected state and measured readiness',()=>{
@@ -38,3 +39,4 @@ test('empty, singular and maximum-capacity labels preserve existing copy',()=>{
 test('callbacks are optional for static markup',()=>{
  render(<GunsPage rows={rows.slice(0,1)} loaded/>);for(const selector of ['[data-gun-id]','[data-edit-gun-id]','[data-delete-gun-id]'])fireEvent.click(document.querySelector(selector)!);
 });
+test('gun library copy and gun types follow the selected locale',async()=>{await act(async()=>{await loadLocale('nl');});render(<GunsPage rows={[{...rows[0],gun:{...rows[0].gun,name:'PDP'}}]} loaded/>);expect(screen.getByRole('heading',{name:'Mijn wapens'})).toBeVisible();expect(screen.getByText('Handvuurwapens')).toBeVisible();expect(screen.getByRole('button',{name:'PDP verwijderen'})).toBeVisible();await act(async()=>{await loadLocale('en');});});

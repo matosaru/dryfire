@@ -5,6 +5,7 @@ import {render} from '@testing-library/react';
 import {createElement} from 'react';
 import {SoundCheckPage} from '../apps/web/src/pages/SoundCheckPage/SoundCheckPage.tsx';
 import {createSoundCheckController} from '../src/soundCheckController.js';
+import {loadLocale} from '../apps/web/src/localization/runtime.ts';
 
 test('guided check waits for input, scores an attempt and exports JSON without PCM',async()=>{
  jest.useFakeTimers();const host=document.createElement('section');host.id='soundCheckView';document.body.append(host);render(createElement(SoundCheckPage),{container:host});
@@ -43,4 +44,18 @@ test('stopping during pending microphone permission releases a late audio sessio
  expect(lateSession.stop).toHaveBeenCalledTimes(1);expect(lateSession.waitForInput).not.toHaveBeenCalled();
  expect(document.getElementById('soundCheckStartBtn')).toBeEnabled();expect(controller.locked()).toBe(false);
  controller.dispose();host.remove();
+});
+
+test('runtime Sound Check status follows locale changes while the check is open',async()=>{
+ await loadLocale('de');
+ const host=document.createElement('section');host.id='soundCheckView';document.body.append(host);render(createElement(SoundCheckPage),{container:host});
+ let captureOptions,resolveWait;const session={stop:jest.fn(),waitForInput:jest.fn(()=>new Promise(resolve=>{resolveWait=resolve;})),armDetection:jest.fn(),disarmDetection:jest.fn(),nowMs:()=>100};
+ const startContinuousListening=jest.fn(async options=>{captureOptions=options;options.onState('Requesting microphone access…');return session;});
+ const controller=createSoundCheckController({doc:document,startContinuousListening,examples:[],calibration:[],enabledLabels:['trigger'],audioPreferences:{},onError:jest.fn()});
+ expect(document.getElementById('soundCheckSetupHint')).toHaveTextContent('Bereit. Sicherheitsbestätigung und Mikrofonberechtigung folgen.');
+ document.getElementById('soundCheckStartBtn').click();await Promise.resolve();await Promise.resolve();await Promise.resolve();
+ expect(document.getElementById('soundCheckStatus')).toHaveTextContent('Mikrofonzugriff wird angefordert');
+ await loadLocale('nl');controller.updateLocale();
+ expect(document.getElementById('soundCheckStatus')).toHaveTextContent('Microfoontoegang aanvragen');
+ resolveWait({ready:true});await Promise.resolve();await Promise.resolve();controller.dispose();host.remove();await loadLocale('en');
 });

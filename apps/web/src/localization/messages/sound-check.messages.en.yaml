@@ -1,1 +1,68 @@
-{}
+page:
+  title: Sound Check
+  eyebrow: TRIGGER PROFILE CHECK
+gunContext:
+  prefix: "Check the learned trigger profile for "
+  suffix: "."
+setup:
+  title: Prepare a labelled check
+  description: Keep the phone in its practice position. Each attempt opens a two-second listening window. Raw audio is never saved or exported.
+  soundLabel: Sound you will make
+  attemptsLabel: Attempts
+  attemptsHelp: 1–50 · use a mix of trigger and non-trigger checks
+  roomLabel: Room
+  distanceLabel: Phone distance
+  close: Close
+  normal: Normal
+  far: Far
+  distanceReminder: Use your usual distance and keep it unchanged.
+  start: Start Sound Check
+  preparing: Preparing the check controls…
+run:
+  eyebrow: CURRENT ATTEMPT
+  title: Microphone preparation
+  soundLabel: Sound for next attempt
+  meter: Sound check microphone level
+  attempt: Begin attempt
+  stop: Stop without saving
+review:
+  eyebrow: CHECK COMPLETE
+  title: Results for this check
+  matched: Matched
+  missed: Missed
+  falseShots: False shots
+  duplicates: Duplicates
+  candidateNeedsSamples: Candidate comparison needs at least three new spectral trigger samples.
+  candidateComparison: "Candidate comparison: {{matched}} matched, {{missed}} missed, {{falseShots}} false and {{duplicates}} duplicate."
+  disclosure: These counts describe this labelled check only. They do not prove universal accuracy or verify safe handling.
+  export: Export privacy-safe report
+  again: Run another check
+sound:
+  trigger: Trigger pull
+  other: Other / background sound
+  rack: Rack slide
+  reload: Change magazine
+  draw: Draw from holster
+  quiet: Quiet
+  noisy: Noisy
+distance:
+  metric:
+    close: under 30 cm
+    normal: 30 cm–1 m
+    far: over 1 m
+  imperial:
+    close: under 1 ft
+    normal: 1–3 ft
+    far: over 3 ft
+status:
+  ready: Ready to start. Safety confirmation and microphone permission follow.
+  requesting: Requesting microphone access…
+  preparing: Preparing microphone…
+  roomNoisy: Room is noisy · Move closer or reduce background sound
+  microphoneReady: Microphone ready · Listening before the signal
+  audioWorklet: Live listening (AudioWorklet)
+  compatibilityMode: Live listening (compatibility mode)
+  readyForAttempt: Microphone ready. Begin when you are prepared.
+  attemptSaved: Attempt saved. Choose the next sound, then begin.
+  listening: "Listening for one {{sound}}…"
+  analysisFailed: "Sound detected but could not be analyzed: {{message}}"

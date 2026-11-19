@@ -1,1 +1,27 @@
-{}
+page:
+  firstTitle: Erste Waffe hinzufügen
+  firstDescription: Gib ihr einen Namen und wähle einen Typ. Ihre Töne und Übungen bleiben getrennt.
+  addTitle: Deine Waffe hinzufügen
+  addDescription: Gib dieser Waffe einen Namen und Typ. Gelernte Töne, Abläufe und Verlauf werden separat auf diesem Gerät gespeichert.
+  editTitle: Waffe bearbeiten
+  editDescription: Ändere den Namen oder Typ. Gelernte Töne, Abläufe und Verlauf dieser Waffe bleiben gespeichert.
+  repairTitle: Vorhandene Waffe benennen
+  repairDescription: Gelernte Töne und Erkennungsverlauf wurden zusammen bewahrt. Ergänze Name und Typ der zugehörigen Waffe.
+fields:
+  name: Waffenname
+  namePlaceholder: z. B. Meine Kurzwaffe
+  type: Waffentyp
+  Handguns: Kurzwaffen
+  "Rifles and Carbines": Gewehre und Karabiner
+  Shotguns: Flinten
+notice:
+  full: Du kannst bis zu 5 Waffen speichern.
+  limit: Du kannst bis zu zwei Waffenprofile anlegen. Vorhandene Profile bleiben verfügbar.
+storage:
+  title: Auf diesem Gerät gespeichert
+  description: Waffenprofile, gelernte Töne und eigene Abläufe bleiben hier zwischen deinen Besuchen gespeichert. Verwende dieselbe App-Adresse und denselben Browser.
+actions:
+  saveFirst: Waffe speichern und fortfahren
+  save: Änderungen speichern
+  cancel: Abbrechen
+  restore: Aus Sicherung wiederherstellen
