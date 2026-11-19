@@ -30,8 +30,8 @@ export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreferen
         <p className="small muted">{t('backup.importNote')}</p>
       </SettingsSection>
       <SettingsSection title={t('audio.title')} className="preference-group">
-        <PreferenceToggle id="noiseFilter" label={t('audio.noiseFilter')} description={t('audio.checking')} descriptionId="noiseFilterStatus" descriptionRole="status" onChange={event=>onPreference?.('noiseFilter',event.currentTarget.checked)}/>
-        <PreferenceToggle id="autoGainControl" label={t('audio.autoGain')} description={t('audio.checking')} descriptionId="autoGainStatus" descriptionRole="status" onChange={event=>onPreference?.('autoGainControl',event.currentTarget.checked)}/>
+        <PreferenceToggle id="noiseFilter" label={t('audio.noiseFilter')} description={state?.texts?.noiseFilterStatus??t('audio.checking')} descriptionId="noiseFilterStatus" descriptionRole="status" onChange={event=>onPreference?.('noiseFilter',event.currentTarget.checked)}/>
+        <PreferenceToggle id="autoGainControl" label={t('audio.autoGain')} description={state?.texts?.autoGainStatus??t('audio.checking')} descriptionId="autoGainStatus" descriptionRole="status" onChange={event=>onPreference?.('autoGainControl',event.currentTarget.checked)}/>
         <p className="muted small">{t('audio.note')}</p>
       </SettingsSection>
       <SettingsSection title={t('preferences.title')} className="preference-group">
@@ -39,7 +39,7 @@ export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreferen
         <label className="preference-select" htmlFor="measurementSystem"><span>{t('preferences.units')}</span><select id="measurementSystem" onChange={event=>onPreference?.('measurementSystem',event.currentTarget.value)}><option value="metric">{t('preferences.metric')}</option><option value="imperial">{t('preferences.imperial')}</option></select></label>
         <label className="preference-select" htmlFor="language"><span>{t('language.label')}</span><select id="language" value={state?.language??locale} aria-describedby="languageHelp" onChange={event=>onPreference?.('language',event.currentTarget.value)}><option value="en">{t('language.english')}</option><option value="de">{t('language.german')}</option><option value="nl">{t('language.dutch')}</option></select></label>
         <p id="languageHelp" className="muted small">{t('language.description')}</p>
-        <PreferenceToggle id="vibrationFeedback" label={t('preferences.vibration')} description={t('audio.checking')} descriptionId="vibrationStatus" descriptionRole="status" onChange={event=>onPreference?.('vibrationFeedback',event.currentTarget.checked)}/>
+        <PreferenceToggle id="vibrationFeedback" label={t('preferences.vibration')} description={state?.texts?.vibrationStatus??t('audio.checking')} descriptionId="vibrationStatus" descriptionRole="status" onChange={event=>onPreference?.('vibrationFeedback',event.currentTarget.checked)}/>
         <p className="muted small">{t('preferences.vibrationNote')}</p>
       </SettingsSection>
       <SettingsSection title={t('deleteData.title')}><p className="muted small">{t('deleteData.description')}</p><button id="resetLibraryBtn" disabled={state?.disabled?.resetLibraryBtn} onClick={()=>onAction?.('resetLibraryBtn')} className="button danger wide-action" type="button">{t('deleteData.action')}</button></SettingsSection>

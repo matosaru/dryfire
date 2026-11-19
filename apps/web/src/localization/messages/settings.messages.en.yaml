@@ -64,3 +64,16 @@ language:
   english: English
   german: Deutsch
   dutch: Nederlands
+audioStatus:
+  unsupported: Unsupported by this browser. Recording remains available.
+  confirmed: "Last capture: {{setting}}, confirmed by the audio track."
+  notApplied: "The last audio track did not apply the requested {{setting}} setting."
+  unconfirmed: The browser did not confirm this setting on the last audio track.
+  saved: "Saved {{setting}} · applies to the next capture."
+vibrationStatus:
+  unsupported: Vibration is unavailable in this browser.
+  rejected: The browser declined vibration. Visual feedback remains available.
+  active: "{{setting}} · requests vibration at GO and repetition completion. Device output is not verified."
+setting:
+  on: On
+  off: Off

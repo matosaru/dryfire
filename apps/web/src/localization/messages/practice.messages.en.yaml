@@ -1,1 +1,29 @@
-{}
+page:
+  title: Practice
+back: Back to previous screen
+gunContext:
+  prefix: "Practice for "
+  suffix: .
+steps:
+  label: Required sounds
+guideLink: About this practice
+learnMissing: Learn missing sounds
+timingNote: Timings describe detected audio. The app cannot verify physical actions, aim, movement or unloaded status.
+setup:
+  legend: Practice setup
+  start: Start Practice
+  repetitions: Repetitions
+  parTime: Par time (seconds)
+  startSignal: Start signal
+  appSignal: App signal
+  externalBeep: Calibrated external beep
+  delayMode: Start delay
+  fixed: Fixed
+  random: Random
+  delaySeconds: Delay in seconds
+  minimumSeconds: Minimum seconds
+  maximumSeconds: Maximum seconds
+  soundAtStart: Sound at start
+  practiceBeepDescription: Play a beep at each repetition start.
+  testStartSound: Test start sound
+  mediaVolumeHint: Uses your phone's media volume.

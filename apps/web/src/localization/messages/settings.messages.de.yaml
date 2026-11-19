@@ -64,3 +64,16 @@ language:
   english: English
   german: Deutsch
   dutch: Nederlands
+audioStatus:
+  unsupported: Dieser Browser unterstützt diese Funktion nicht. Aufnahmen sind weiterhin möglich.
+  confirmed: "Letzte Aufnahme: {{setting}}, durch die Audiospur bestätigt."
+  notApplied: "Die letzte Audiospur hat die angeforderte Einstellung {{setting}} nicht angewendet."
+  unconfirmed: Der Browser hat diese Einstellung für die letzte Audiospur nicht bestätigt.
+  saved: "{{setting}} gespeichert · gilt für die nächste Aufnahme."
+vibrationStatus:
+  unsupported: Vibration ist in diesem Browser nicht verfügbar.
+  rejected: Der Browser hat die Vibration abgelehnt. Visuelles Feedback bleibt verfügbar.
+  active: "{{setting}} · fordert bei GO und nach Abschluss einer Wiederholung eine Vibration an. Die Geräteausgabe wird nicht überprüft."
+setting:
+  on: Ein
+  off: Aus

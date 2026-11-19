@@ -1,1 +1,29 @@
-{}
+page:
+  title: Übung
+back: Zur vorherigen Seite
+gunContext:
+  prefix: "Übung für "
+  suffix: .
+steps:
+  label: Erforderliche Geräusche
+guideLink: Über diese Übung
+learnMissing: Fehlende Geräusche lernen
+timingNote: Zeiten beziehen sich auf erkannte Geräusche. Die App kann keine körperlichen Handlungen, das Zielen, Bewegungen oder einen entladenen Zustand überprüfen.
+setup:
+  legend: Übung einrichten
+  start: Übung starten
+  repetitions: Wiederholungen
+  parTime: Zeitlimit (Sekunden)
+  startSignal: Startsignal
+  appSignal: App-Signal
+  externalBeep: Kalibrierter externer Signalton
+  delayMode: Startverzögerung
+  fixed: Fest
+  random: Zufällig
+  delaySeconds: Verzögerung in Sekunden
+  minimumSeconds: Mindestsekunden
+  maximumSeconds: Höchstsekunden
+  soundAtStart: Signalton beim Start
+  practiceBeepDescription: Vor jedem Durchgang einen Signalton abspielen.
+  testStartSound: Startsignal testen
+  mediaVolumeHint: Verwendet die Medienlautstärke des Telefons.

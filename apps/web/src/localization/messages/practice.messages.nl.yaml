@@ -1,1 +1,29 @@
-{}
+page:
+  title: Oefening
+back: Terug naar de vorige pagina
+gunContext:
+  prefix: "Oefening voor "
+  suffix: .
+steps:
+  label: Vereiste geluiden
+guideLink: Over deze oefening
+learnMissing: Ontbrekende geluiden leren
+timingNote: Tijden beschrijven herkende audio. De app kan fysieke handelingen, richten, beweging of een ongeladen toestand niet controleren.
+setup:
+  legend: Oefening instellen
+  start: Oefening starten
+  repetitions: Herhalingen
+  parTime: Tijdslimiet (seconden)
+  startSignal: Startsigneel
+  appSignal: App-signaal
+  externalBeep: Gekalibreerde externe pieptoon
+  delayMode: Startvertraging
+  fixed: Vast
+  random: Willekeurig
+  delaySeconds: Vertraging in seconden
+  minimumSeconds: Minimumseconden
+  maximumSeconds: Maximumseconden
+  soundAtStart: Geluid bij start
+  practiceBeepDescription: Speel bij elke herhaling een pieptoon af.
+  testStartSound: Startgeluid testen
+  mediaVolumeHint: Gebruikt het mediavolume van je telefoon.

@@ -13,14 +13,14 @@ These estimates are active Codex engineering hours, not elapsed calendar time. T
 | LOC-02 Requirements and SEO schema | Done | 0 h | 0 h | Approved route, fallback, message, and SEO contract |
 | LOC-03 YAML catalogs and validation | Done | 0 h | 0 h | Compiler, schema parity, generated-file checks, and release completeness gate are in place |
 | LOC-04 Locale runtime and persistence | In progress | 2 h | 2–4 h | Complete back/forward and data-preservation acceptance |
-| LOC-05 Settings and shared chrome | In progress | 1.5 h | 1–3 h | Dynamic Settings statuses and remaining shared UI strings |
-| LOC-06 Page and feature localization | In progress | 24 h | 18–32 h | Sound Check, History, Guns, and Gun Setup have initial EN/DE/NL catalogs; remaining pages/controllers and help/manuals dominate work |
+| LOC-05 Settings and shared chrome | In progress | 1 h | 0.5–2 h | Dynamic Settings statuses are localized; remaining common controls and dialog feedback need review |
+| LOC-06 Page and feature localization | In progress | 22 h | 16–30 h | Practice/Sequence setup shells are now localized; controller-owned page copy, guides, help/manuals, and remaining runtime strings dominate work |
 | LOC-07 Localized SEO routes | Not started | 8 h | 6–11 h | Static prerender, locale metadata, translated content, and sitemap integration |
-| LOC-08 Tests and accessibility/overflow checks | In progress | 7 h | 5–10 h | Complete route, a11y, long-copy, and SEO metadata coverage |
+| LOC-08 Tests and accessibility/overflow checks | In progress | 6.5 h | 4–9 h | Complete route, a11y, long-copy, and SEO metadata coverage |
 | LOC-09 Full validation and release candidate | Not started | 7 h | 5–10 h | Full CI/browser/performance gates and remediation |
-| **Total remaining Codex effort** |  | **56.5 h** | **42–78 h** | Human linguistic review and manual device acceptance are separate |
+| **Total remaining Codex effort** |  | **48.5 h** | **34.5–69 h** | Human linguistic review and manual device acceptance are separate |
 
-Actual time spent on implementation is **not tracked**. Earlier estimates understated the remaining copy migration. Several namespaces now contain initial copy, but page/controller extraction remains incomplete and release completeness still fails. The current total forecast remains 56.5 active Codex hours (42–78 h), excluding fluent DE/NL review and owner device acceptance.
+Actual time spent on implementation is **not tracked**. The previous aggregate was arithmetically inconsistent with its ticket rows; this forecast corrects the total and accounts for completed work recorded below. Page/controller extraction remains incomplete and release completeness still fails. Current forecast is 48.5 active Codex hours (34.5–69 h), excluding fluent DE/NL review and owner device acceptance.
 
 ## Proposed behavior and technical decisions
 
@@ -138,11 +138,15 @@ Do not rename or move existing page components to introduce localization; the ne
 | LOC-02 | Approved locale defaults, route rules, YAML schema, SEO behavior, and exclusions are documented in the requirements and this plan. |
 | LOC-03 | Deterministic YAML compilation, three-locale key/placeholder validation, HTML rejection, generated-file freshness checks, and a release-only non-empty-namespace gate are implemented. |
 | LOC-04 | Locale normalization, safe interpolation/plurals, formatting, device preference persistence, and switching are implemented; browser history/data-preservation acceptance remains. |
-| LOC-05 | The accessible Settings selector, static Settings copy, and shared header/navigation now use YAML; preference feedback statuses and other common UI strings remain. |
-| LOC-06 | Initial EN/DE/NL page catalogs and tests cover Sound Check, History, Guns, and Gun Setup plus the previously migrated surfaces; other page/controller copy, Help/manuals, feedback statuses, and source-scan coverage remain. |
+| LOC-05 | The Settings selector, static Settings copy, shared header/navigation, and dynamic audio/vibration status strings use YAML. Remaining common controls/dialog feedback still need an inventory pass. |
+| LOC-06 | Initial EN/DE/NL catalogs/tests cover Sound Check, History, Guns, Gun Setup, and prior migrated surfaces. Practice and Sequence setup shells now localize labels, controls and safety/timing notes; controller-owned setup/run/review copy, guides, Help/manuals and source-scan coverage remain. |
 | LOC-07 | Locale-prefixed `/de/` and `/nl/` app paths are routable and noindex; translated public HTML, metadata, hreflang, and sitemap generation remain. |
 | LOC-08 | Catalog, preference, route, and localized Settings tests exist; broad three-locale, accessibility, long-copy, and SEO coverage remains. |
 | LOC-09 | No full acceptance run or release candidate exists; version bump and branch promotion are deferred until implementation is complete and tested. |
+
+## Implementation progress record — 2026-11-19
+
+Settings live audio/vibration feedback now uses parameterized EN/DE/NL YAML messages. The React Settings handoff carries status strings as state instead of mutating React-owned text nodes; regression coverage verifies status survives locale-driven rerenders. Shared Drill Setup primitives accept localized labels, and Practice/Sequence setup shells now use their respective EN/DE/NL catalogs. Locale-switch tests cover both pages. Full Jest passes **181 suites / 1,215 tests**; smoke passes **16 checks**; public build and `verify:dist` pass; component lint and typecheck pass. The English Chromium drill-setup workflow passes at 320 px and 390 px using system Chromium. The pinned Playwright Chromium executable is absent, so canonical pinned visual acceptance remains unverified. `localization:complete` still stops at the not-yet-migrated Practice Guide namespace; `docs:check` reports stale guide/source evidence predating this increment. Actual active time is not tracked. No version bump, merge, or deployment; work remains on the feature branch.
 
 Implementation time was not measured. Most recent full test run passed **1,200 tests across 181 suites**. `npm run lint:components`, `npm run lint:runtime`, `npm run typecheck`, and `npm run verify:architecture` pass. Build, `verify:dist`, and smoke (16/16) passed after Settings migration. `npm run localization:complete` fails as expected because `home.messages.en.yaml` and most other page catalogs are empty. `npm run docs:check` remains failing on stale visual/GIF evidence, source fingerprints, and site-tree/SEO inventories; those baselines have not been reviewed or regenerated for localization. No version bump, commit, push, merge, or deployment has occurred.
 

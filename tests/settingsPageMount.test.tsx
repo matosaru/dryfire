@@ -7,6 +7,7 @@ import {act,fireEvent} from '@testing-library/react';
 import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import {mountSettingsPage} from '../apps/web/src/app/settingsPage.tsx';
+import {loadLocale} from '../apps/web/src/localization/runtime.ts';
 const fixture=readFileSync(new URL('./fixtures/legacy-settings-page.html',import.meta.url),'utf8').replace('{{previewControls}}','');
 function setup(){document.body.innerHTML=`<section id="settingsView">${fixture}</section>`;return document.querySelector('#settingsView')!;}
 test('Settings handoff retains installation state, drafts, focus and file-input lifetime',()=>{
@@ -30,6 +31,19 @@ test('preference updates preserve saved/applied states, unsupported controls and
  act(()=>page.update({preferences}));expect(document.querySelector('#noiseFilter')).toBeChecked();expect(document.querySelector('#noiseFilter')).toBeDisabled();expect(document.querySelector('#appearance')).toHaveValue('light');expect(document.querySelector('#measurementSystem')).toHaveValue('imperial');expect(document.querySelector('#language')).toHaveValue('de');expect(document.querySelector('#vibrationStatus')).toHaveTextContent('Unavailable');
  act(()=>fireEvent.change(document.querySelector('#language')!,{target:{value:'nl'}}));expect(onPreference).toHaveBeenCalledWith('language','nl');
  act(()=>fireEvent.change(document.querySelector('#appearance')!,{target:{value:'system'}}));expect(onPreference).toHaveBeenCalledWith('appearance','system');act(()=>fireEvent.change(document.querySelector('#measurementSystem')!,{target:{value:'metric'}}));expect(onPreference).toHaveBeenCalledWith('measurementSystem','metric');act(()=>page.update({texts:{deviceCheck:'Updated device'}}));expect(document.querySelector('#appearance')).toHaveValue('system');act(()=>page.dispose());
+});
+test('localized live preference statuses survive locale-driven Settings rerenders',async()=>{
+ await loadLocale('de');
+ const host=setup();let page:ReturnType<typeof mountSettingsPage>;act(()=>{page=mountSettingsPage(host,{});});
+ const preferences={audio:[{inputId:'noiseFilter' as const,statusId:'noiseFilterStatus' as const,checked:true,disabled:false,status:'Letzte Aufnahme: Ein, durch die Audiospur bestätigt.'},{inputId:'autoGainControl' as const,statusId:'autoGainStatus' as const,checked:false,disabled:false,status:'Gespeichert Aus · gilt für die nächste Aufnahme.'}],appearance:{value:'dark',disabled:false},measurementSystem:{value:'metric',disabled:false},language:{value:'de' as const,disabled:false},vibration:{checked:true,disabled:false,status:'Vibration ist eingeschaltet.'}};
+ act(()=>page.update({preferences}));
+ expect(document.querySelector('#noiseFilterStatus')).toHaveTextContent('Letzte Aufnahme: Ein, durch die Audiospur bestätigt.');
+ expect(document.querySelector('#autoGainStatus')).toHaveTextContent('Gespeichert Aus · gilt für die nächste Aufnahme.');
+ expect(document.querySelector('#vibrationStatus')).toHaveTextContent('Vibration ist eingeschaltet.');
+ await act(async()=>{await loadLocale('nl');});
+ expect(document.querySelector('#noiseFilterStatus')).toHaveTextContent('Letzte Aufnahme: Ein, durch die Audiospur bestätigt.');
+ expect(document.querySelector('#vibrationStatus')).toHaveTextContent('Vibration ist eingeschaltet.');
+ act(()=>page.dispose());await loadLocale('en');
 });
 test('failed initial commit restores the native control nodes and listeners for retry',()=>{
  const host=setup(),file=document.querySelector('#importFile'),button=document.querySelector<HTMLButtonElement>('#exportBtn')!,clicked=jest.fn();button.addEventListener('click',clicked);button.focus();

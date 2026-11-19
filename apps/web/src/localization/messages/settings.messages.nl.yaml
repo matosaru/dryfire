@@ -64,3 +64,16 @@ language:
   english: Engels
   german: Duits
   dutch: Nederlands
+audioStatus:
+  unsupported: Deze browser ondersteunt dit niet. Opnemen blijft beschikbaar.
+  confirmed: "Laatste opname: {{setting}}, bevestigd door de audiotrack."
+  notApplied: "De laatste audiotrack heeft de gevraagde instelling {{setting}} niet toegepast."
+  unconfirmed: De browser heeft deze instelling niet bevestigd op de laatste audiotrack.
+  saved: "{{setting}} opgeslagen · geldt voor de volgende opname."
+vibrationStatus:
+  unsupported: Trillen is niet beschikbaar in deze browser.
+  rejected: De browser heeft trillen geweigerd. Visuele feedback blijft beschikbaar.
+  active: "{{setting}} · vraagt om een trilling bij GO en na voltooiing van een herhaling. De uitvoer van het apparaat wordt niet gecontroleerd."
+setting:
+  on: Aan
+  off: Uit

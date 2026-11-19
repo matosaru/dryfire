@@ -1,1 +1,28 @@
-{}
+page:
+  title: Übungseinheit
+back: Zur vorherigen Seite
+gunContext:
+  prefix: "Einheit für "
+  suffix: .
+steps:
+  label: Geordnete Geräuschfolge
+guideLink: Über diese Übung
+learnMissing: Fehlende Geräusche lernen
+timingNote: Zeiten beziehen sich auf erkannte Geräusche, nicht auf überprüfte körperliche Handlungen.
+setup:
+  legend: Einheit einrichten
+  checkingReadiness: Trainings- und Sicherheitsbereitschaft wird geprüft…
+  start: Einheit starten
+  repetitions: Wiederholungen
+  delayMode: Startverzögerung
+  fixed: Fest
+  random: Zufällig
+  delaySeconds: Verzögerung in Sekunden
+  minimumSeconds: Mindestsekunden
+  maximumSeconds: Höchstsekunden
+  freshDelay: Vor jeder Wiederholung wird eine neue Verzögerung gewählt.
+  soundAtStart: Signalton beim Start
+  sequenceBeepDescription: Signalton abspielen, wenn GO angezeigt wird.
+  testStartSound: Startsignal testen
+  mediaVolumeHint: Verwendet die Medienlautstärke des Telefons.
+  cueGuardNote: Wenn der Signalton eingeschaltet ist, wartet die Erkennung nach GO 0,3 Sekunden, um den Ton auszuschließen. Sehr schnelle Geräusche in diesem Zeitraum werden möglicherweise übersehen.

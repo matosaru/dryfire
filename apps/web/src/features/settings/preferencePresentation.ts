@@ -1,3 +1,4 @@
+import {translate} from '../../localization/runtime.ts';
 type AudioKey='noiseFilter'|'autoGain';
 export type PreferencePresentationInput={
  capabilities:Record<AudioKey,boolean>;audioPreferences:Record<AudioKey,boolean>;
@@ -10,15 +11,15 @@ export function preferencePresentation(input:PreferencePresentationInput){
  const audio=([['noiseFilter','noiseFilter','noiseFilterStatus'],['autoGain','autoGainControl','autoGainStatus']] as const).map(([key,inputId,statusId])=>{
   const report=input.processingReport?.[key];
   return{inputId,statusId,checked:input.audioPreferences[key],disabled:!input.gunAvailable||input.locked||!input.capabilities[key],
-   status:!input.capabilities[key]?'Unsupported by this browser. Recording remains available.'
-    :report?.status==='confirmed'?`Last capture: ${report.applied?'On':'Off'}, confirmed by the audio track.`
-    :report?.status==='not-applied'?`The last audio track did not apply the requested ${report.requested?'On':'Off'} setting.`
-    :report?.status==='unconfirmed'?'The browser did not confirm this setting on the last audio track.'
-    :`Saved ${input.audioPreferences[key]?'On':'Off'} · applies to the next capture.`};
+   status:!input.capabilities[key]?translate('settings','audioStatus.unsupported')
+    :report?.status==='confirmed'?translate('settings','audioStatus.confirmed',{setting:translate('settings',report.applied?'setting.on':'setting.off')})
+    :report?.status==='not-applied'?translate('settings','audioStatus.notApplied',{setting:translate('settings',report.requested?'setting.on':'setting.off')})
+    :report?.status==='unconfirmed'?translate('settings','audioStatus.unconfirmed')
+    :translate('settings','audioStatus.saved',{setting:translate('settings',input.audioPreferences[key]?'setting.on':'setting.off')})};
  });
  return{audio,appearance:{value:input.appearance,disabled:input.deviceLocked},measurementSystem:{value:input.measurementSystem,disabled:input.deviceLocked},language:{value:input.language,disabled:input.deviceLocked},
   vibration:{checked:input.vibrationFeedback,disabled:!input.vibrationSupported||input.vibrationRejected||input.locked,
-   status:!input.vibrationSupported?'Vibration is unavailable in this browser.'
-    :input.vibrationRejected?'The browser declined vibration. Visual feedback remains available.'
-    :`${input.vibrationFeedback?'On':'Off'} · requests vibration at GO and repetition completion. Device output is not verified.`}};
+   status:!input.vibrationSupported?translate('settings','vibrationStatus.unsupported')
+    :input.vibrationRejected?translate('settings','vibrationStatus.rejected')
+    :translate('settings','vibrationStatus.active',{setting:translate('settings',input.vibrationFeedback?'setting.on':'setting.off')})}};
 }

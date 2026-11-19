@@ -1,1 +1,28 @@
-{}
+page:
+  title: Trainingssessie
+back: Terug naar de vorige pagina
+gunContext:
+  prefix: "Sessie voor "
+  suffix: .
+steps:
+  label: Geordende geluidsreeks
+guideLink: Over deze oefening
+learnMissing: Ontbrekende geluiden leren
+timingNote: Tijden beschrijven herkende geluiden, niet geverifieerde fysieke handelingen.
+setup:
+  legend: Sessie instellen
+  checkingReadiness: Trainings- en veiligheidsstatus controleren…
+  start: Sessie starten
+  repetitions: Herhalingen
+  delayMode: Startvertraging
+  fixed: Vast
+  random: Willekeurig
+  delaySeconds: Vertraging in seconden
+  minimumSeconds: Minimumseconden
+  maximumSeconds: Maximumseconden
+  freshDelay: Voor elke herhaling wordt een nieuwe vertraging gekozen.
+  soundAtStart: Geluid bij start
+  sequenceBeepDescription: Speel een pieptoon af wanneer GO verschijnt.
+  testStartSound: Startgeluid testen
+  mediaVolumeHint: Gebruikt het mediavolume van je telefoon.
+  cueGuardNote: Als de pieptoon aanstaat, wacht de herkenning 0,3 seconden na GO om de toon uit te sluiten. Zeer snelle geluiden in dat venster worden mogelijk gemist.
