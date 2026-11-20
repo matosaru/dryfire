@@ -6,9 +6,12 @@ import {PracticeReviewContents,type PracticeReviewProps} from '@dryfire/ui/Pract
 import {SequenceRunContents,type SequenceRunProps} from '@dryfire/ui/SequenceRun';
 import {SequenceReviewContents,type SequenceReviewProps} from '@dryfire/ui/SequenceReview';
 import {RetainedNode} from '@dryfire/ui/RetainedNode';
+import {translate} from '../localization/runtime.ts';
 export type PracticeContents={kind:'practice';run:PracticeRunProps;review:PracticeReviewProps;meter:HTMLElement};
 export type SequenceContents={kind:'sequence';run:SequenceRunProps;review:SequenceReviewProps};
 export type SessionContents=PracticeContents|SequenceContents;
+const sessionUiKeys=['attempts','shots','left','stop','stopExample','stopPractice','microphoneInput','microphoneLevel','relativeLevel','waitingAudio','activeTime','pause','resume','nextRepetition','endPractice','practiceLatestEmpty','practiceReview','noAttempt','retrySaving','repeatPractice','backDrills','sessionProgress','completed','completedRepetitions','currentRepetition','microphoneInactive','latestRepetition','latestEmpty','endSession','pauseNote','sessionReview','savedDevice','repetitionResults','noRepetition','repeatSession','sessionTimingNote'] as const;
+const sessionUi=()=>Object.fromEntries(sessionUiKeys.map(key=>[key,translate('common',`sessionUi.${key}`)]));
 /** Explicit, synchronous two-host handoff. Feature controllers retain outer visibility and capture. */
 export function mountSessionContents(runHost:HTMLElement,reviewHost:HTMLElement,initial:SessionContents){
  let model=initial,epoch=0,disposed=false,failure:unknown;
@@ -23,9 +26,16 @@ export function mountSessionContents(runHost:HTMLElement,reviewHost:HTMLElement,
  const runRoot=createRoot(runHost,options),reviewRoot=createRoot(reviewHost,options);
  const render=()=>{
   const value=model;
+  const labels=sessionUi();
+  const meter=value.kind==='practice'?value.meter:null;
+  const meterLabel=meter?.querySelector('.practice-level-label span');if(meterLabel)meterLabel.textContent=labels.microphoneInput;
+  const meterValueLabel=meter?.querySelector('.practice-level-value span');if(meterValueLabel)meterValueLabel.textContent=labels.relativeLevel;
+  const meterInputLabel=meter?.querySelector('#practiceLevelMeter');meterInputLabel?.setAttribute('aria-label',labels.microphoneLevel);
+  const meterValue=meter?.querySelector('#practiceLevelMeter')?.getAttribute('aria-valuenow')??'0';meterInputLabel?.setAttribute('aria-valuetext',translate('common','sessionUi.relativeInputLevel',{count:meterValue}));
+  const meterState=meter?.querySelector('#practiceInputState');if(meterState&&['Waiting for audio input…','Warte auf Audioeingang…','Wachten op audio-invoer…'].includes(meterState.textContent??''))meterState.textContent=labels.waitingAudio;
   flushSync(()=>{
-   runRoot.render(<StrictMode>{value.kind==='practice'?<PracticeRunContents {...value.run} meter={<RetainedNode node={value.meter}/>} latest={<Fragment key={epoch}>{value.run.latest??(value.run.view?<p className="muted small">Recognized clicks and repetition outcomes appear here.</p>:null)}</Fragment>}/>:<SequenceRunContents {...value.run} latest={<Fragment key={epoch}>{value.run.latest??<p className="muted small">Your completed repetition will appear here.</p>}</Fragment>}/>}</StrictMode>);
-   reviewRoot.render(<StrictMode>{value.kind==='practice'?<PracticeReviewContents {...value.review} results={<Fragment key={epoch}>{value.review.results??(value.review.view?<p className="empty-state">No attempt completed.</p>:null)}</Fragment>}/>:<SequenceReviewContents {...value.review} results={<Fragment key={epoch}>{value.review.results??(value.review.view?<p className="empty-state">No repetition was completed before this session ended.</p>:null)}</Fragment>}/>}</StrictMode>);
+   runRoot.render(<StrictMode>{value.kind==='practice'?<PracticeRunContents {...value.run} labels={labels} meter={<RetainedNode node={value.meter}/>} latest={<Fragment key={epoch}>{value.run.latest??(value.run.view?<p className="muted small">{labels.practiceLatestEmpty}</p>:null)}</Fragment>}/>:<SequenceRunContents {...value.run} labels={labels} latest={<Fragment key={epoch}>{value.run.latest??<p className="muted small">{labels.latestEmpty}</p>}</Fragment>}/>}</StrictMode>);
+   reviewRoot.render(<StrictMode>{value.kind==='practice'?<PracticeReviewContents {...value.review} labels={labels} results={<Fragment key={epoch}>{value.review.results??(value.review.view?<p className="empty-state">{labels.noAttempt}</p>:null)}</Fragment>}/>:<SequenceReviewContents {...value.review} labels={labels} results={<Fragment key={epoch}>{value.review.results??(value.review.view?<p className="empty-state">{labels.noRepetition}</p>:null)}</Fragment>}/>}</StrictMode>);
   });
   if(failure)throw failure;
  };

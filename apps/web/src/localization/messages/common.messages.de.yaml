@@ -159,3 +159,41 @@ runtime:
     noModel: Kein kompatibles gelerntes Geräuschmodell verfügbar.
     cueUnavailable: Startsignal nicht verfügbar. Das visuelle GO-Signal bleibt aktiv.
     previewUnavailable: Startton nicht verfügbar. Überprüfe die Audioberechtigung des Browsers und die Medienlautstärke.
+sessionUi:
+  attempts: Versuche
+  shots: Klicks
+  left: Übrig
+  stop: STOPP
+  stopExample: Beispiel beenden
+  stopPractice: Übung beenden und Ergebnisse speichern
+  microphoneInput: MIKROFONEINGANG
+  microphoneLevel: Mikrofoneingangspegel
+  relativeLevel: relativer Pegel
+  waitingAudio: Warte auf Audioeingang …
+  activeTime: Aktive Zeit
+  pause: Pause
+  resume: Fortsetzen
+  nextRepetition: Nächste Wiederholung
+  endPractice: Übung beenden
+  practiceLatestEmpty: Erkannte Klicks und Wiederholungsergebnisse erscheinen hier.
+  practiceReview: Übungsübersicht
+  noAttempt: Kein Versuch abgeschlossen.
+  retrySaving: Ergebnisse erneut speichern
+  repeatPractice: Übung wiederholen
+  backDrills: Zurück zu den Übungen
+  sessionProgress: Sitzungsfortschritt
+  completed: Abgeschlossen
+  completedRepetitions: Abgeschlossene Wiederholungen
+  currentRepetition: Aktuelle Wiederholung
+  microphoneInactive: Mikrofon inaktiv
+  latestRepetition: Letzte Wiederholung
+  latestEmpty: Deine abgeschlossene Wiederholung erscheint hier.
+  endSession: Sitzung beenden
+  pauseNote: Beim Pausieren wird das Mikrofon getrennt. Beim Fortsetzen beginnt die unvollständige Wiederholung mit einem neuen Countdown.
+  sessionReview: Sitzungsübersicht
+  savedDevice: Auf diesem Gerät gespeichert
+  repetitionResults: Wiederholungsergebnisse
+  noRepetition: Vor dem Ende der Sitzung wurde keine Wiederholung abgeschlossen.
+  repeatSession: Sitzung wiederholen
+  sessionTimingNote: Die Zeiten zeigen die erkannten Geräusche, nicht überprüfte Handlungen. Die App kann weder körperliche Aktionen noch einen entladenen Zustand bestätigen.
+  relativeInputLevel: "{{count}} relativer Eingangspegel"

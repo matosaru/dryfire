@@ -159,3 +159,41 @@ runtime:
     noModel: Er is geen compatibel geleerd geluidsmodel beschikbaar.
     cueUnavailable: Startpieptoon niet beschikbaar. Het visuele GO-signaal blijft actief.
     previewUnavailable: Startgeluid niet beschikbaar. Controleer de audiotoestemming van de browser en het mediavolume.
+sessionUi:
+  attempts: Pogingen
+  shots: Klikken
+  left: Over
+  stop: STOPPEN
+  stopExample: Voorbeeld stoppen
+  stopPractice: Oefening stoppen en resultaten opslaan
+  microphoneInput: MICROFOONINGANG
+  microphoneLevel: Microfooningangsniveau
+  relativeLevel: relatief niveau
+  waitingAudio: Wachten op audio-invoer…
+  activeTime: Actieve tijd
+  pause: Pauzeren
+  resume: Hervatten
+  nextRepetition: Volgende herhaling
+  endPractice: Oefening beëindigen
+  practiceLatestEmpty: Herkende klikken en herhalingsresultaten verschijnen hier.
+  practiceReview: Oefeningsoverzicht
+  noAttempt: Geen poging voltooid.
+  retrySaving: Resultaten opnieuw opslaan
+  repeatPractice: Oefening herhalen
+  backDrills: Terug naar drills
+  sessionProgress: Voortgang van sessie
+  completed: Voltooid
+  completedRepetitions: Voltooide herhalingen
+  currentRepetition: Huidige herhaling
+  microphoneInactive: Microfoon inactief
+  latestRepetition: Laatste herhaling
+  latestEmpty: Je voltooide herhaling verschijnt hier.
+  endSession: Sessie beëindigen
+  pauseNote: Pauzeren schakelt de microfoon uit. Hervatten start de onvoltooide herhaling opnieuw met een nieuwe aftelling.
+  sessionReview: Sessieoverzicht
+  savedDevice: Op dit apparaat opgeslagen
+  repetitionResults: Herhalingsresultaten
+  noRepetition: Er was geen herhaling voltooid toen de sessie eindigde.
+  repeatSession: Sessie herhalen
+  sessionTimingNote: De tijden geven herkende geluiden weer, niet geverifieerde handelingen. De app kan fysieke acties of een ongeladen vuurwapen niet controleren.
+  relativeInputLevel: "{{count}} relatief ingangsniveau"

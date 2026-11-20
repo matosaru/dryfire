@@ -11,7 +11,7 @@ import { getGunSetting, setGunSetting, saveSession } from './storage/library.js'
 import { requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
 import {materializeStaticCatalog} from './staticCatalog.js';
-import {translate} from '../apps/web/src/localization/runtime.ts';
+import {formatLocaleNumber,translate} from '../apps/web/src/localization/runtime.ts';
 import {translateAudioStatus} from './localizedAudioStatus.js';
 
 const $ = id => document.getElementById(id);
@@ -43,7 +43,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const level = arriving ? inputLevel : 0;
     $('practiceLevelFill').style.width = `${level}%`;
     $('practiceLevelMeter').setAttribute('aria-valuenow', String(level));
-    $('practiceLevelMeter').setAttribute('aria-valuetext', `${level} relative input level`);
+    $('practiceLevelMeter').setAttribute('aria-valuetext', translate('common','sessionUi.relativeInputLevel',{count:formatLocaleNumber(level)}));
     $('practiceLevelValue').textContent = level;
     $('practiceInputState').textContent = arriving ? (level > 0 ? tr('inputDetected') : tr('inputQuiet'))
       : now - inputStartedAt > 1000 ? tr('inputMissing') : tr('inputWaiting');

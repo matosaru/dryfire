@@ -159,3 +159,41 @@ runtime:
     noModel: No compatible learned sound model is available.
     cueUnavailable: Start beep unavailable. Visual GO remains active.
     previewUnavailable: Start sound unavailable. Check browser audio permission and media volume.
+sessionUi:
+  attempts: Attempts
+  shots: Shots
+  left: Left
+  stop: STOP
+  stopExample: Stop example
+  stopPractice: Stop practice and save results
+  microphoneInput: MICROPHONE INPUT
+  microphoneLevel: Microphone input level
+  relativeLevel: relative level
+  waitingAudio: Waiting for audio input…
+  activeTime: Active time
+  pause: Pause
+  resume: Resume
+  nextRepetition: Next repetition
+  endPractice: End Practice
+  practiceLatestEmpty: Recognized clicks and repetition outcomes appear here.
+  practiceReview: Practice review
+  noAttempt: No attempt completed.
+  retrySaving: Retry saving results
+  repeatPractice: Repeat Practice
+  backDrills: Back to Drills
+  sessionProgress: Session progress
+  completed: Completed
+  completedRepetitions: Completed repetitions
+  currentRepetition: Current repetition
+  microphoneInactive: Microphone inactive
+  latestRepetition: Latest repetition
+  latestEmpty: Your completed repetition will appear here.
+  endSession: End Session
+  pauseNote: Pause releases the microphone and restarts the unfinished repetition with a fresh countdown on Resume.
+  sessionReview: Session review
+  savedDevice: Saved on this device
+  repetitionResults: Repetition results
+  noRepetition: No repetition was completed before this session ended.
+  repeatSession: Repeat Session
+  sessionTimingNote: Times reflect sound detection. The app cannot verify physical actions or whether a firearm is unloaded.
+  relativeInputLevel: "{{count}} relative input level"
