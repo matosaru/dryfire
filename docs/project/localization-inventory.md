@@ -121,3 +121,5 @@ Sound Check invalid-attempt and incomplete-export state guards now use `sound-ch
 The successful audio-processing preference save notice is now keyed as `settings.audio.savedNotice` in all supported languages. The preference coordinator returns the stable key; the app resolves it using the active locale before showing the notice.
 
 The native Live Listen selector's free-listening entry now uses `live-listen.mode.freeOption`. Empty gun context labels across app screens use the shared `common.runtimeMain.selectGun` message instead of English-only fallback text.
+
+The shared Contact email-copy control now consumes `contact.email.*` itself, so the localized app page and localized public SEO Contact route use the same translated button, hint, copied status and clipboard-unavailable fallback.
