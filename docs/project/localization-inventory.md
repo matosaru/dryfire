@@ -70,7 +70,7 @@ Live Listen panel controls, accessible names, distance fallback text, step count
 
 ## Newly audited History progress — 2026-11-20
 
-Progress chart timing summaries, comparison trends, empty states, metric names, SVG accessible text, date/number formatting, and accessible table labels/values now use the `history.progress.*` YAML catalog in both the pre-mount native fallback and lazy React chart. The UI package receives only a presentation model, preserving its app-independent boundary. The Practice latest-result fallback now accepts the shared `common.sessionUi.practiceLatestEmpty` message in both normal practice and the animated guide. Frozen English DOM parity remains exact; German and Dutch presentation/runtime tests cover locale formatting and both render paths. Broader LOC-01 source ownership scanning remains open.
+Progress chart timing summaries, comparison trends, empty states, metric names, SVG accessible text, date/number formatting, and accessible table labels/values now use the `history.progress.*` YAML catalog in both the pre-mount native fallback and lazy React chart. The History section heading, filter labels/options, chart disclosure, and retained-recognition limit label also use the locale catalogs. The UI package receives only a presentation model, preserving its app-independent boundary. The Practice latest-result fallback now accepts the shared `common.sessionUi.practiceLatestEmpty` message in both normal practice and the animated guide. Frozen English DOM parity remains exact; German and Dutch presentation/runtime tests cover locale formatting and both render paths. Broader LOC-01 source ownership scanning remains open.
 
 ## Newly audited shared footer and review empty states — 2026-11-20
 

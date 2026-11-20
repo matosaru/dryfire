@@ -19,6 +19,7 @@ sessions:
   deleteRecognitionQuestion: Dit herkenningsresultaat verwijderen?
 recognition:
   title: Recente herkenningsresultaten
+  limitLabel: Laatste N herkenningsresultaten bewaren
   description: Met N beperk je de recente herkenningsgeschiedenis; aangeleerde geluiden en opgeslagen oefensessies blijven behouden. Label elk resultaat om herkenning met je eigen geluiden te beoordelen.
   clear: Herkenningsgeschiedenis wissen
   noEvents: Er zijn nog geen herkenningsgebeurtenissen.
@@ -50,6 +51,14 @@ evaluation:
   verifyPrompt: Verifieer hieronder minstens één gebeurtenis om de verwarringsmatrix te zien.
   disclosure: Nieuwe onbekende detecties worden niet opgeslagen. Deze controles bevatten alleen handmatig geverifieerde bewaarde gebeurtenissen; gemiste geluiden of een algemeen percentage valse meldingen kunnen hiermee niet worden gemeten.
 progress:
+  title: Oefenvoortgang
+  compareLabel: Oefening / instellingen vergelijken
+  compareAriaLabel: Vergelijkbare oefening en instellingen
+  rangeLabel: Periode
+  rangeAll: Alle opgeslagen sessies
+  range7: Afgelopen 7 dagen
+  range30: Afgelopen 30 dagen
+  trendDisclosure: Trends tonen herkende tijdmetingen. Vergelijk vergelijkbare microfoonposities en omstandigheden; snellere tijden meten geen richten of beweging.
   empty: Voltooi oefensessies om hier je tijden en voortgang te bekijken.
   noSamples: Geen voltooide tijdmetingen in deze periode. Kies een groter bereik of voltooi nog een sessie.
   sessions: Sessies

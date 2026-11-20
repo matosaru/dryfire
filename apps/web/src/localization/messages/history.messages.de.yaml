@@ -19,6 +19,7 @@ sessions:
   deleteRecognitionQuestion: Dieses Erkennungsergebnis löschen?
 recognition:
   title: Letzte Erkennungsergebnisse
+  limitLabel: Letzte N Erkennungsergebnisse behalten
   description: Mit N wird der Erkennungsverlauf gekürzt; gelernte Töne und gespeicherte Übungen bleiben erhalten. Beschrifte Ergebnisse, um die Erkennung anhand deiner eigenen Geräusche zu bewerten.
   clear: Erkennungsverlauf löschen
   noEvents: Noch keine Erkennungsereignisse vorhanden.
@@ -50,6 +51,14 @@ evaluation:
   verifyPrompt: Bestätige mindestens ein Ereignis unten, um die Verwechslungsmatrix anzuzeigen.
   disclosure: Neue unbekannte Erkennungen werden nicht gespeichert. Diese Prüfungen umfassen nur manuell bestätigte gespeicherte Ereignisse; verpasste Töne oder eine allgemeine Falschmeldungsrate lassen sich damit nicht messen.
 progress:
+  title: Übungsfortschritt
+  compareLabel: Übung / Einstellungen vergleichen
+  compareAriaLabel: Vergleichbare Übung und Einstellungen
+  rangeLabel: Zeitraum
+  rangeAll: Alle gespeicherten Einheiten
+  range7: Letzte 7 Tage
+  range30: Letzte 30 Tage
+  trendDisclosure: Trends zeigen erkannte Zeitmessungen. Vergleiche ähnliche Mikrofonpositionen und Bedingungen; schnellere Zeiten messen weder Zielen noch Bewegung.
   empty: Absolviere Übungseinheiten, um Zeitmessungen und Fortschritte hier zu sehen.
   noSamples: In diesem Zeitraum gibt es keine abgeschlossenen Zeitmessungen. Wähle einen längeren Zeitraum oder beende eine weitere Übung.
   sessions: Einheiten

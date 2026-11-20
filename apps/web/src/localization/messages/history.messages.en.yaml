@@ -19,6 +19,7 @@ sessions:
   deleteRecognitionQuestion: Delete this recognition result?
 recognition:
   title: Recent recognition results
+  limitLabel: Keep last N recognition results
   description: Changing N trims recent recognition history; learned sounds and saved drill sessions stay intact. Label each result to evaluate recognition on your own real-world samples.
   clear: Clear recognition history
   noEvents: No recognition events yet.
@@ -50,6 +51,14 @@ evaluation:
   verifyPrompt: Verify at least one event below to see the confusion matrix.
   disclosure: New unknown detections are not saved. These checks cover manually verified retained events only; they cannot measure missed sounds or an overall false-count rate.
 progress:
+  title: Practice progress
+  compareLabel: Compare drill / settings
+  compareAriaLabel: Comparable drill and settings
+  rangeLabel: Time range
+  rangeAll: All saved sessions
+  range7: Last 7 days
+  range30: Last 30 days
+  trendDisclosure: Trends describe recognized audio timing. Compare similar microphone placement and conditions; faster timing does not measure aim or movement.
   empty: Complete practice sessions to see your timing and progress here.
   noSamples: No completed timing samples in this range. Choose a wider range or finish another session.
   sessions: Sessions
