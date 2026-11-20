@@ -135,6 +135,7 @@ runtimeErrors:
   calibrationLimit: The calibration sample limit for this category has been reached. Existing samples are unchanged.
   recordMissing: This history item is no longer available for the selected gun. Refresh History and try again.
   trainingDataInvalid: The learned sound profile is unavailable or invalid. Review training in Learn before continuing.
+  progressChartsUnavailable: Progress charts could not load. Your saved history is still available.
 runtime:
   practice:
     inputDetected: Microphone input detected.

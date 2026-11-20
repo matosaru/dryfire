@@ -8,9 +8,9 @@ export function createScreenNavigation({ history, events, initial, resolve, show
   const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
   const enqueue = work => { const task = queue.then(work); queue = task.catch(onError); return task; };
   async function leave() {
-    if (!canLeave()) { onError(new Error('Finish the current action or save results before leaving this screen.')); return false; }
+    if (!canLeave()) { onError(Object.assign(new Error('Finish the current action or save results before leaving this screen.'), {code: 'NAVIGATION_LOCKED'})); return false; }
     await beforeLeave();
-    if (!canLeave()) { onError(new Error('Results could not be saved. Retry saving before leaving.')); return false; }
+    if (!canLeave()) { onError(Object.assign(new Error('Results could not be saved. Retry saving before leaving.'), {code: 'PRACTICE_RESULTS_UNSAVED'})); return false; }
     return true;
   }
   events.addEventListener('popstate', event => {

@@ -577,7 +577,7 @@ function goBack(fallback = 'home') { return screenNavigation ? screenNavigation.
 function displayView(name) {
   if (busy || profileLoading || !PAGE_IDS.includes(name)) return;
   if (name !== 'practice' && practiceController?.hasUnsavedResults()) {
-    showError(new Error('Practice results are not saved. Keep this review open and retry.'));
+    showError(Object.assign(new Error('Practice results are not saved. Keep this review open and retry.'), {code:'PRACTICE_RESULTS_UNSAVED'}));
     return;
   }
   if ((!activeGun || activeGun.needsDetails) && !['gunSetup','guns','settings','about','contact'].includes(name) && !(name==='practiceGuide'&&practiceGuideController?.current()?.publicEntry)) { openGunSetup(activeGun); return; }
@@ -913,7 +913,7 @@ async function renderHistory() {
         progressView.render(sessions || [], gunId);
       }).catch(() => {
         if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;
-        showError(new Error('Progress charts failed. Your saved history is still available.'));
+        showError(Object.assign(new Error('Progress charts failed. Your saved history is still available.'), {code:'PROGRESS_CHARTS_UNAVAILABLE'}));
       });
     } else progressView?.render(sessions || [], gunId);
   } else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();

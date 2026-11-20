@@ -135,6 +135,7 @@ runtimeErrors:
   calibrationLimit: Das Kalibrierungslimit für diese Kategorie ist erreicht. Vorhandene Beispiele bleiben erhalten.
   recordMissing: Dieser Verlaufseintrag ist für die ausgewählte Waffe nicht mehr verfügbar. Aktualisiere den Verlauf und versuche es erneut.
   trainingDataInvalid: Das gelernte Klangprofil ist nicht verfügbar oder ungültig. Überprüfe das Training unter Töne lernen, bevor du fortfährst.
+  progressChartsUnavailable: Die Fortschrittsdiagramme konnten nicht geladen werden. Dein gespeicherter Verlauf ist weiterhin verfügbar.
 runtime:
   practice:
     inputDetected: Mikrofoneingang erkannt.

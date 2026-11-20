@@ -135,6 +135,7 @@ runtimeErrors:
   calibrationLimit: De kalibratielimiet voor deze categorie is bereikt. Bestaande voorbeelden blijven behouden.
   recordMissing: Dit geschiedenisitem is niet meer beschikbaar voor het geselecteerde wapen. Vernieuw de geschiedenis en probeer het opnieuw.
   trainingDataInvalid: Het geleerde geluidsprofiel is niet beschikbaar of ongeldig. Controleer de training bij Geluiden leren voordat je verdergaat.
+  progressChartsUnavailable: De voortgangsgrafieken konden niet worden geladen. Je opgeslagen geschiedenis is nog beschikbaar.
 runtime:
   practice:
     inputDetected: Microfooningang gedetecteerd.

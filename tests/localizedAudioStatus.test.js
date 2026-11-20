@@ -48,3 +48,12 @@ test('guide recovery failures use the active locale through a stable error code'
  await loadLocale('de');expect(translateApplicationError(error)).toBe('Die Übungsanleitung konnte nicht geladen werden. Deine Einstellungen sind unverändert. Überprüfe die Verbindung und lade die Seite erneut.');
  await loadLocale('nl');expect(translateApplicationError(error)).toBe('De oefengids kon niet worden geladen. Je instellingen zijn ongewijzigd. Controleer je verbinding en laad de pagina opnieuw.');
 });
+
+test('navigation, unsaved result and chart errors are localized by stable code',async()=>{
+ await loadLocale('de');
+ expect(translateApplicationError({code:'NAVIGATION_LOCKED'})).toContain('Beende die aktuelle Aktion');
+ expect(translateApplicationError({code:'PRACTICE_RESULTS_UNSAVED'})).toContain('Ergebnisse sind nicht gespeichert');
+ expect(translateApplicationError({code:'PROGRESS_CHARTS_UNAVAILABLE'})).toContain('Fortschrittsdiagramme konnten nicht geladen werden');
+ await loadLocale('nl');
+ expect(translateApplicationError({code:'PROGRESS_CHARTS_UNAVAILABLE'})).toContain('voortgangsgrafieken konden niet worden geladen');
+});

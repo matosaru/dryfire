@@ -6,7 +6,7 @@ function setup() {
     pushState(state) { entries.splice(index + 1); entries.push(state); index++; },
     go(n) { index += n; const event = new Event('popstate'); event.state = entries[index]; events.dispatchEvent(event); }, back() { this.go(-1); } };
   const nav = createScreenNavigation({ history, events, initial: { view: 'home' }, resolve: route => route.view === 'stale' ? { view: 'drills' } : route,
-    show: route => shown.push(route.view), canLeave: () => !blocked, beforeLeave: async () => cleanup.push('capture stopped/saved'), onError: error => errors.push(error.message) });
+    show: route => shown.push(route.view), canLeave: () => !blocked, beforeLeave: async () => cleanup.push('capture stopped/saved'), onError: error => errors.push(error) });
   return { nav, history, entries, shown, errors, cleanup, block: () => { blocked = true; } };
 }
 test('Back/Forward visit actual screens and repeated selection creates no duplicate', async () => {
@@ -17,6 +17,7 @@ test('Back/Forward visit actual screens and repeated selection creates no duplic
 test('unsaved/capture guard prevents navigation and restores browser position', async () => {
   const s = setup(); await s.nav.navigate({ view: 'practice' }); s.block(); s.history.back(); await s.nav.flush();
   expect(s.history.state.route.view).toBe('practice'); expect(s.shown).toEqual(['practice']); expect(s.errors).toHaveLength(1);
+  expect(s.errors[0]).toMatchObject({code:'NAVIGATION_LOCKED'});
 });
 test('stale context is resolved safely and a new route discards obsolete Forward entries', async () => {
   const s = setup(); await s.nav.navigate({ view: 'stale' }); expect(s.shown).toEqual(['drills']);
