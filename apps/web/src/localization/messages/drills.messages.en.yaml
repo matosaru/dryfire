@@ -10,6 +10,19 @@ triggerGroup:
 sequenceGroup:
   title: Sequence drills
   description: Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.
+modes:
+  singleDescription: Reaction time for one click after each start signal.
+  repeatedDescription: Count distinct clicks and the intervals between them.
+  parDescription: Recognize a click within your chosen time limit.
+  controlDescription: Compare the consistency of your detected click intervals.
+cards:
+  start: "▶ Start Drill"
+  singleSound: Practice single-sound recognition.
+  sequence: "{{count}}-action sound sequence."
+  builtInTitles:
+    rack: Rack slide → Trigger pull
+    magazine: Magazine change → Trigger pull
+    drawMagazine: Draw from holster → Magazine change → Trigger pull
 collection:
   label: Drill collection
   builtIn: Built-in Drills

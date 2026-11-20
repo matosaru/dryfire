@@ -9,7 +9,7 @@ const modes = [{id:'single',title:'Single trigger press',description:'One click 
   {id:'repeated',title:'Repeated trigger presses',description:'Click intervals.'}];
 test('ordered native choices delegate the selected identifier and remain controlled', async () => {
   const onSelect = jest.fn(), user = userEvent.setup();
-  const { rerender } = render(<PracticeCatalog modes={modes} onSelect={onSelect} />);
+  const { rerender } = render(<PracticeCatalog modes={modes} startLabel="▶ Start Drill" onSelect={onSelect} />);
   expect(screen.getAllByRole('button', { name: '▶ Start Drill' })).toHaveLength(2);
   expect(document.querySelectorAll('.preset-header .drill-target[aria-hidden="true"]')).toHaveLength(2);
   expect(document.querySelectorAll('.drill-description')).toHaveLength(2);
@@ -17,11 +17,11 @@ test('ordered native choices delegate the selected identifier and remain control
   await user.tab(); await user.keyboard('{Enter}');
   await user.click(screen.getAllByRole('button')[1]);
   expect(onSelect.mock.calls).toEqual([['single'],['repeated']]);
-  rerender(<PracticeCatalog modes={modes} disabled onSelect={onSelect} />);
+  rerender(<PracticeCatalog modes={modes} startLabel="▶ Start Drill" disabled onSelect={onSelect} />);
   await user.click(screen.getAllByRole('button')[0]);
   expect(onSelect).toHaveBeenCalledTimes(2);
-  rerender(<PracticeCatalog modes={modes} />);
+  rerender(<PracticeCatalog modes={modes} startLabel="▶ Start Drill" />);
   await user.click(screen.getAllByRole('button')[0]);
-  rerender(<PracticeCatalog modes={[]} />);
+  rerender(<PracticeCatalog modes={[]} startLabel="▶ Start Drill" />);
   expect(screen.queryAllByRole('button')).toHaveLength(0);
 });

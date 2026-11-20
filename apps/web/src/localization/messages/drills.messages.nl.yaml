@@ -10,6 +10,19 @@ triggerGroup:
 sequenceGroup:
   title: Reeksoefeningen
   description: Kies een ingebouwde of eerder opgeslagen reeks. Alleen de geluiden in de reeks zijn nodig.
+modes:
+  singleDescription: Reactietijd voor één klik na elk startsignaal.
+  repeatedDescription: Tel afzonderlijke klikken en de tijd ertussen.
+  parDescription: Herken een klik binnen de gekozen tijdslimiet.
+  controlDescription: Vergelijk hoe consistent de intervallen tussen klikken zijn.
+cards:
+  start: "▶ Oefening starten"
+  singleSound: Oefen het herkennen van één geluid.
+  sequence: "Geluidenreeks met {{count}} stappen."
+  builtInTitles:
+    rack: Slede doorladen → trekker overhalen
+    magazine: Magazijn wisselen → trekker overhalen
+    drawMagazine: Holster trekken → magazijn wisselen → trekker overhalen
 collection:
   label: Oefeningencollectie
   builtIn: Ingebouwde oefeningen

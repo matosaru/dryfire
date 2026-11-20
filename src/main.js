@@ -16,6 +16,7 @@ import { createPracticeGuideBridge } from './practiceGuideBridge.js';
 import { recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { DRILLS, SEQUENCE_DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
+import { PRACTICE_MODES } from './practiceModes.js';
 import {createCalibrationCatalogMessages,calibrationProgressMessage} from '../apps/web/src/features/learn/calibrationMessages.ts';
 import { soundCard, drillCard } from './uiComponents.js';
 import { readNumberInput } from './inputLimits.js';
@@ -39,6 +40,7 @@ import {
   getCalibrationExamples, addCalibrationExample, clearCalibrationExamples,
 } from './storage/library.js';
 import {materializeStaticCatalog} from './staticCatalog.js';
+import {renderLegacyPracticeCatalog as updateLegacyPracticeCatalog} from './optional/localizedDrillCatalog.js';
 import { afterPaint } from './afterPaint.js';
 import {formatLocaleDate,formatLocaleNumber,translate} from '../apps/web/src/localization/runtime.ts';
 import {translateAudioStatus} from './localizedAudioStatus.js';
@@ -357,10 +359,14 @@ function renderLegacyDrills(){
  if(activeView!=='drills'||drillsPage)return;
  legacyDrillsPending||=Promise.all([import('./optional/renderLegacyDrillCollection.js'),import('./optional/renderLegacyCustomCatalog.js')]).then(([collection,catalog])=>{
   if(activeView!=='drills'||drillsPage)return;
+  renderLegacyPracticeCatalog();
   const limited=!CAPABILITIES.customDrillCreation&&!customDrills.length;
   collection.renderLegacyDrillCollection(document,{custom:customDrillCollectionSelected,limited,creation:CAPABILITIES.customDrillCreation});
   catalog.renderLegacyCustomCatalog(document,customDrills,{drillCard,titleFor,onChoose:chooseDrill,onEdit:drill=>customEditor.open(drill)});
  }).catch(showError).finally(()=>{legacyDrillsPending=null;});
+}
+function renderLegacyPracticeCatalog(){
+ updateLegacyPracticeCatalog(document,{practiceModes:PRACTICE_MODES,translate});
 }
 function selectDrillCollection(custom,closeEditor=true){
  if(custom&&!CAPABILITIES.customDrillCreation&&!customDrills.length)custom=false;
@@ -543,11 +549,16 @@ async function replaceSoundProfile(label){
 
 function renderDrillCatalog() {
   if(drillsPage){drillsPage.update({builtIns:drillCards().builtIns});return;}
+  renderLegacyPracticeCatalog();
   const host = $('#drillCatalog');
   host.replaceChildren();
+  const titleKeys={'rack-trigger':'rack','mag-trigger':'magazine','draw-mag-trigger':'drawMagazine'};
   for (const item of SEQUENCE_DRILLS) {
+    const titleKey=titleKeys[item.id];
+    const drill=titleKey?{...item,title:translate('drills',`cards.builtInTitles.${titleKey}`)}:item;
     host.append(drillCard({
-      drill: item, titleFor,
+      drill, titleFor,
+      description:translate('drills','cards.sequence',{count:formatLocaleNumber(item.steps.length)}),startLabel:translate('drills','cards.start'),
       onChoose: () => chooseDrill(item.id)
     }));
   }

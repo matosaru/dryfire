@@ -92,7 +92,7 @@ export function soundCard({
   card.append(top);
   return card;
 }
-export function drillCard({ drill, onChoose }, doc = document) {
+export function drillCard({ drill, onChoose, description, startLabel }, doc = document) {
   const card = doc.createElement('article');
   card.className = 'preset-card';
   const heading = textNode(doc, 'h3', '', drill.title);
@@ -101,8 +101,8 @@ export function drillCard({ drill, onChoose }, doc = document) {
   const header = doc.createElement('div');
   header.className = 'preset-header';
   const copy=doc.createElement('div');copy.className='preset-copy';
-  copy.append(heading,textNode(doc, 'p', 'drill-description', drill.steps.length === 1 ? 'Practice single-sound recognition.' : `${drill.steps.length}-action sound sequence.`));
+  copy.append(heading,textNode(doc, 'p', 'drill-description', description));
   header.append(icon,copy);
-  card.append(header, actionButton({label:'▶ Start Drill',onClick:onChoose},doc));
+  card.append(header, actionButton({label:startLabel,onClick:onChoose},doc));
   return card;
 }

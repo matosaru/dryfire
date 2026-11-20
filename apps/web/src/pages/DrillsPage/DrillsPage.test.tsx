@@ -19,5 +19,23 @@ test('drill section copy follows Dutch while callbacks and identifiers remain st
  expect(screen.getByRole('heading',{name:'Groep trekkerbeweging'})).toBeVisible();
  fireEvent.click(screen.getByRole('button',{name:'Ingebouwde oefeningen'}));expect(onCollection).toHaveBeenCalledWith(false);
  expect(screen.getByRole('button',{name:'+ Eigen oefening maken'})).toBeVisible();
+ expect(screen.getByRole('heading',{name:'Een keer de trekker overhalen'})).toBeVisible();
+ expect(screen.getAllByRole('button',{name:'▶ Oefening starten'})).toHaveLength(4);
+ expect(screen.getByText('Reactietijd voor één klik na elk startsignaal.')).toBeVisible();
+ await act(async()=>{await loadLocale('en');});
+});
+
+test('built-in and saved drill cards localize actions while keeping saved names as user data',async()=>{
+ await act(async()=>{await loadLocale('nl');});
+ const builtIn={drill:{id:'rack-trigger',title:'Rack slide → Trigger pull',steps:['rack','trigger']}};
+ const saved={drill:{id:'custom-one',title:'My range sequence',steps:['draw','trigger']},onEdit:jest.fn()};
+ const view=render(<DrillsPage builtIns={[builtIn]} customs={[saved]} createHidden/>);
+ expect(screen.getByRole('heading',{name:'Slede doorladen → trekker overhalen'})).toBeVisible();
+ expect(screen.getAllByRole('button',{name:'▶ Oefening starten'})).toHaveLength(6);
+ view.rerender(<DrillsPage builtIns={[builtIn]} customs={[saved]} customSelected createHidden/>);
+ expect(screen.getByRole('heading',{name:'My range sequence'})).toBeVisible();
+ expect(screen.getAllByRole('button',{name:'▶ Oefening starten'})).toHaveLength(6);
+ expect(screen.getByRole('button',{name:'Reeks bewerken'})).toBeVisible();
+ expect(screen.getAllByText('Geluidenreeks met 2 stappen.')).toHaveLength(2);
  await act(async()=>{await loadLocale('en');});
 });

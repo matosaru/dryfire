@@ -59,3 +59,7 @@ Guide animation frame labels, simulated microphone states, countdown/results, co
 ## Newly audited Learn calibration cards — 2026-11-20
 
 Reset-click, noise/handling, and external-cue calibration labels, descriptions, localized sample counts, limit feedback, and Train/Reset actions are now owned by `learn.calibration.examples.*` and `learn.calibration.*`. The shared UI component accepts copy as props and has no application-locale dependency; the app provides the same translated values to both React and the retained native fallback. Changing the device language updates the card content without changing calibration IDs, counts, or reset ownership. German/Dutch tests cover both rendering paths. The global source scan remains open for other untranslated page and dialog copy.
+
+## Newly audited Drills catalog — 2026-11-20
+
+Trigger Press and Sequence card descriptions, built-in sequence titles, and Start Drill/Edit actions now use `drills.modes.*`, `drills.cards.*`, and `drills.custom.edit` message keys in English, German and Dutch. The React page and native fallback share the catalogs; UI package cards take copy through props and saved custom preset names remain user data. Locale-switch tests cover the page, and a native fallback test checks translated labels without changing practice-mode IDs. The global source scan remains open.

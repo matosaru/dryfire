@@ -10,6 +10,19 @@ triggerGroup:
 sequenceGroup:
   title: Ablaufübungen
   description: Wähle eine integrierte oder gespeicherte Vorlage. Benötigt werden nur die Geräusche des jeweiligen Ablaufs.
+modes:
+  singleDescription: Reaktionszeit für einen Klick nach jedem Startsignal.
+  repeatedDescription: Zähle einzelne Klicks und die Zeitabstände dazwischen.
+  parDescription: Erkenne einen Klick innerhalb des gewählten Zeitlimits.
+  controlDescription: Vergleiche die Konstanz der erkannten Klickabstände.
+cards:
+  start: "▶ Übung starten"
+  singleSound: Erkenne ein einzelnes Geräusch.
+  sequence: "Abfolge aus {{count}} Geräuschen."
+  builtInTitles:
+    rack: Durchladen → Abzug
+    magazine: Magazinwechsel → Abzug
+    drawMagazine: Ziehen → Magazinwechsel → Abzug
 collection:
   label: Übungssammlung
   builtIn: Integrierte Übungen

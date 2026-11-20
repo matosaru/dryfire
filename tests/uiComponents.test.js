@@ -52,6 +52,7 @@ describe('reusable UI factories', () => {
     const card=drillCard({
       drill:{id:'mag-trigger',title:'Mag then trigger',steps:['reload','trigger']},
       index:2,titleFor:l=>({reload:'Change magazine',trigger:'Trigger pull'})[l],
+      description:'2-action sound sequence.',startLabel:'▶ Start Drill',
       onChoose:choose
     },fakeDocument());
     const nodes=flatten(card);
@@ -74,7 +75,7 @@ test('reference design cards retain real actions without repeating sequence chip
   const doc = fakeDocument();
   const sound = soundCard({label:'draw',meta:{title:'Draw',description:'Draw',tone:'blue'},count:4,maxExamples:50,minExamples:3,recommendedExamples:10,locked:false,onRecord:()=>{},onReset:()=>{}},doc);
   expect(flatten(sound).find(n=>n.tag==='button').textContent).toBe('▶ Train');
-  const drill = drillCard({drill:{title:'Draw then trigger',steps:['draw','trigger']},index:0,titleFor:l=>l,onChoose:()=>{}},doc);
+  const drill = drillCard({drill:{title:'Draw then trigger',steps:['draw','trigger']},index:0,titleFor:l=>l,description:'2-action sound sequence.',startLabel:'▶ Start Drill',onChoose:()=>{}},doc);
   expect(flatten(drill).find(n=>n.tag==='button').textContent).toBe('▶ Start Drill');
   expect(flatten(drill).filter(n=>n.className==='preset-chip')).toHaveLength(0);
 });
