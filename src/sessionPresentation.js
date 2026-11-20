@@ -36,13 +36,13 @@ export function renderPracticeReview(record,{ $,node,state,savedRevision,saveErr
   $('practiceRepeatBtn').disabled=model.repeatDisabled;
 }
 
-export function renderPracticeRun({ $,state,mode,pending,clock,microphone,readConfig,interruption,closing,saving,inputFeedback,renderInput,details,node,present }){
+export function renderPracticeRun({ $,state,mode,pending,clock,microphone,readConfig,interruption,closing,saving,inputFeedback,renderInput,details,node,present,latestEmpty='Recognized clicks and repetition outcomes appear here.' }){
   const elapsed=state?practiceElapsed(state,clock()):0;
   const model=practiceRunPresentation({state,mode,pending,clock,microphone:!!microphone,readConfig,interruption:!!interruption,closing,saving,inputFeedback,elapsed,continuous:continuousPractice(mode)});
   $('practiceRun').dataset.phase=model.phase;
   if(present?.(model)){renderInput();return;}
   renderControls(model,$);renderInput();
-  $('practiceLatest').replaceChildren(model.latest?details(model.latest):node('p','Recognized clicks and repetition outcomes appear here.','muted small'));
+  $('practiceLatest').replaceChildren(model.latest?details(model.latest):node('p',latestEmpty,'muted small'));
 }
 
 export function sequenceResultDetails(row,{node,titleFor}){

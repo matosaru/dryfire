@@ -132,7 +132,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       renderReview(record); return;
     }
     if (!running) { configure(); return; }
-    presentation.renderPracticeRun({ $, state, mode, pending, clock, microphone, readConfig, interruption, closing, saving, inputFeedback, renderInput, details, node, present:presentRun });
+    presentation.renderPracticeRun({ $, state, mode, pending, clock, microphone, readConfig, interruption, closing, saving, inputFeedback, renderInput, details, node, latestEmpty:translate('common','sessionUi.practiceLatestEmpty'), present:presentRun });
   }
   async function persist() {
     if (!state) return;

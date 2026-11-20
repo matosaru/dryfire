@@ -13,14 +13,14 @@ for(const kind of ['practice-run','practice-review','session-run','session-revie
   if(practice&&run)host.dataset.phase='active';
   const before=semanticTree(host),input=jest.fn(),announce=jest.fn(),present=jest.fn(()=>accept),retry=s.node('button','Retry saving results');
   const common={$:practice?s.get:s.query,node:s.node,state,savedRevision:0,saveError:null,saving:false,pending:false,clock:()=>1000,microphone:{},readConfig:()=>config,titleFor:label=>label,locked:()=>false,getContext:()=>({gun:{id:'one'}}),present};
-  if(practice&&run)presentation.renderPracticeRun({...common,mode:'single',interruption:false,closing:false,inputFeedback:'Ready',renderInput:input,details:jest.fn()});
+  if(practice&&run)presentation.renderPracticeRun({...common,mode:'single',interruption:false,closing:false,inputFeedback:'Ready',renderInput:input,details:jest.fn(),latestEmpty:'Localized empty result'});
   else if(practice)presentation.renderPracticeReview(record,{...common,interruption:false,details:jest.fn()});
   else if(run)presentation.renderSequenceRun({...common,resultDetails:jest.fn(),announce});
   else presentation.renderSequenceReview(record,{...common,retrySaveButton:retry,resultDetails:jest.fn()});
   expect(present).toHaveBeenCalledTimes(1);
   expect(present.mock.calls[0][0]).toHaveProperty(run?'latest':'results');
   if(accept){expect(semanticTree(host)).toEqual(before);expect(announce).not.toHaveBeenCalled();}
-  else{expect(semanticTree(host)).not.toEqual(before);if(!practice&&run)expect(announce).toHaveBeenCalledWith('GO · awaiting trigger.');}
+  else{expect(semanticTree(host)).not.toEqual(before);if(!practice&&run)expect(announce).toHaveBeenCalledWith('GO · awaiting trigger.');if(practice&&run)expect(host.querySelector('#practiceLatest')?.textContent).toBe('Localized empty result');}
   if(practice&&run){expect(input).toHaveBeenCalledTimes(1);expect(host.dataset.phase).toBe('active');}
  });
 }

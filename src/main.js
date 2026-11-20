@@ -907,7 +907,7 @@ async function renderHistory() {
       // Saved text renders independently; a late chart may only paint its current owner.
       void import('./optional/progressView.js').then(({ createProgressView }) => {
         if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;
-        progressView ||= createProgressView(document, { enabled: () => CAPABILITIES.advancedGraphs, onError: showError });
+        progressView ||= createProgressView(document, { enabled: () => CAPABILITIES.advancedGraphs, onError: showError, message: (key,parameters) => translate('history',`progress.${key}`,parameters), locale: () => preferenceState.language });
         progressView.render(sessions || [], gunId);
       }).catch(() => {
         if (!isCurrent() || activeView !== 'history' || !CAPABILITIES.advancedGraphs) return;

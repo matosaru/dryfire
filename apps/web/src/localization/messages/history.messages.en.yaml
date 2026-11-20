@@ -49,3 +49,43 @@ evaluation:
   actualPredicted: Actual ↓ / Predicted →
   verifyPrompt: Verify at least one event below to see the confusion matrix.
   disclosure: New unknown detections are not saved. These checks cover manually verified retained events only; they cannot measure missed sounds or an overall false-count rate.
+progress:
+  empty: Complete practice sessions to see your timing and progress here.
+  noSamples: No completed timing samples in this range. Choose a wider range or finish another session.
+  sessions: Sessions
+  hitRate: Hit rate
+  hitsMisses: Hits / misses
+  medianHitTime: Median hit time
+  medianTiming: Median timing
+  meanTiming: Mean timing
+  timingVariation: Timing variation
+  moreSessions: More sessions needed for comparison · {{count}} of 4 comparable sessions available.
+  unchanged: Unchanged
+  steadier: Steadier intervals
+  variable: More variable intervals
+  higherHit: Higher hit rate
+  lowerHit: Lower hit rate
+  faster: Faster detected timing
+  slower: Slower detected timing
+  trend: "{{direction}}{{change}} · recent {{compared}} vs earlier {{compared}} sessions."
+  percentagePoints: percentage points
+  percent: "%"
+  metricAcross: "{{metric}} across {{count}} saved sessions; values are also listed in the table below."
+  chartNote: "One point per session, ordered by date · {{unit}}. Completed outcomes only; partial attempts are excluded."
+  tableSummary: View values and sample counts
+  sessionDate: Session date
+  timedSamples: Timed samples
+  externalBeep: External beep
+  appBeep: App beep
+  silentStart: Silent start
+  fixed: fixed
+  random: random
+  par: par
+  seconds: seconds
+  percentUnit: "%"
+  metric:
+    single: Median detected time
+    repeated: Median click interval
+    control: Interval variation
+    par: Hit rate
+    sequence: Median detected time

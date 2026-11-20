@@ -34,7 +34,7 @@ export function createGuideExampleRenderer(doc) {
       } else renderSequenceRun({ ...common, $: query, resultDetails, present:present('setSequenceRun'), announce: value => { get('sessionAnnouncement').textContent = value; } });
     } else if (review) {
       renderPracticeReview(toPracticeRecord(state), { ...common, $: get, details, interruption: false,reviewNote:tr('nothingSaved'),present:present('setPracticeReview') });
-    } else renderPracticeRun({ ...common, $: get, mode: guide.id, interruption: false, closing: false, details,present:present('setPracticeRun'),
+    } else renderPracticeRun({ ...common, $: get, mode: guide.id, interruption: false, closing: false, details,latestEmpty:translate('common','sessionUi.practiceLatestEmpty'),present:present('setPracticeRun'),
       inputFeedback: frame.beep ? tr('startSignalSilentIllustration') : '',
       renderInput: () => {
         const level = state ? frame.pulse ? 72 : 9 : 0;

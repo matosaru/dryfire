@@ -49,3 +49,43 @@ evaluation:
   actualPredicted: Tatsächlich ↓ / Vorhergesagt →
   verifyPrompt: Bestätige mindestens ein Ereignis unten, um die Verwechslungsmatrix anzuzeigen.
   disclosure: Neue unbekannte Erkennungen werden nicht gespeichert. Diese Prüfungen umfassen nur manuell bestätigte gespeicherte Ereignisse; verpasste Töne oder eine allgemeine Falschmeldungsrate lassen sich damit nicht messen.
+progress:
+  empty: Absolviere Übungseinheiten, um Zeitmessungen und Fortschritte hier zu sehen.
+  noSamples: In diesem Zeitraum gibt es keine abgeschlossenen Zeitmessungen. Wähle einen längeren Zeitraum oder beende eine weitere Übung.
+  sessions: Einheiten
+  hitRate: Trefferquote
+  hitsMisses: Treffer / Fehlschüsse
+  medianHitTime: Median der Trefferzeit
+  medianTiming: Medianzeit
+  meanTiming: Durchschnittszeit
+  timingVariation: Zeitabweichung
+  moreSessions: Für einen Vergleich sind weitere Einheiten nötig · {{count}} von 4 vergleichbaren Einheiten verfügbar.
+  unchanged: Unverändert
+  steadier: Gleichmäßigere Intervalle
+  variable: Unterschiedlichere Intervalle
+  higherHit: Höhere Trefferquote
+  lowerHit: Niedrigere Trefferquote
+  faster: Schnellere erkannte Zeit
+  slower: Langsamere erkannte Zeit
+  trend: "{{direction}}{{change}} · letzte {{compared}} gegenüber vorherigen {{compared}} Einheiten."
+  percentagePoints: Prozentpunkte
+  percent: "%"
+  metricAcross: "{{metric}} über {{count}} gespeicherte Einheiten; Werte stehen auch in der Tabelle darunter."
+  chartNote: "Ein Punkt pro Einheit, nach Datum sortiert · {{unit}}. Nur abgeschlossene Ergebnisse; unvollständige Versuche sind ausgeschlossen."
+  tableSummary: Werte und Stichproben anzeigen
+  sessionDate: Datum der Einheit
+  timedSamples: Zeitmessungen
+  externalBeep: Externer Signalton
+  appBeep: App-Signalton
+  silentStart: Stiller Start
+  fixed: fest
+  random: zufällig
+  par: Par-Zeit
+  seconds: Sekunden
+  percentUnit: Prozent
+  metric:
+    single: Median der erkannten Zeit
+    repeated: Median des Klickintervalls
+    control: Intervallabweichung
+    par: Trefferquote
+    sequence: Median der erkannten Zeit

@@ -49,3 +49,43 @@ evaluation:
   actualPredicted: Werkelijk ↓ / Voorspeld →
   verifyPrompt: Verifieer hieronder minstens één gebeurtenis om de verwarringsmatrix te zien.
   disclosure: Nieuwe onbekende detecties worden niet opgeslagen. Deze controles bevatten alleen handmatig geverifieerde bewaarde gebeurtenissen; gemiste geluiden of een algemeen percentage valse meldingen kunnen hiermee niet worden gemeten.
+progress:
+  empty: Voltooi oefensessies om hier je tijden en voortgang te bekijken.
+  noSamples: Geen voltooide tijdmetingen in deze periode. Kies een groter bereik of voltooi nog een sessie.
+  sessions: Sessies
+  hitRate: Trefferpercentage
+  hitsMisses: Treffers / missers
+  medianHitTime: Mediane trefferduur
+  medianTiming: Mediane tijd
+  meanTiming: Gemiddelde tijd
+  timingVariation: Tijdsvariatie
+  moreSessions: Meer sessies nodig voor vergelijking · {{count}} van 4 vergelijkbare sessies beschikbaar.
+  unchanged: Ongewijzigd
+  steadier: Regelmatiger intervallen
+  variable: Wisselvalliger intervallen
+  higherHit: Hoger trefferpercentage
+  lowerHit: Lager trefferpercentage
+  faster: Snellere herkende tijd
+  slower: Langzamere herkende tijd
+  trend: "{{direction}}{{change}} · laatste {{compared}} tegenover eerdere {{compared}} sessies."
+  percentagePoints: procentpunt
+  percent: "%"
+  metricAcross: "{{metric}} over {{count}} opgeslagen sessies; waarden staan ook in de tabel hieronder."
+  chartNote: "Eén punt per sessie, gesorteerd op datum · {{unit}}. Alleen voltooide uitkomsten; gedeeltelijke pogingen zijn uitgesloten."
+  tableSummary: Waarden en aantallen voorbeelden bekijken
+  sessionDate: Sessiedatum
+  timedSamples: Tijdmetingen
+  externalBeep: Externe pieptoon
+  appBeep: App-pieptoon
+  silentStart: Stille start
+  fixed: vast
+  random: willekeurig
+  par: par-tijd
+  seconds: seconden
+  percentUnit: procent
+  metric:
+    single: Mediane herkende tijd
+    repeated: Mediaan klikinterval
+    control: Intervalvariatie
+    par: Trefferpercentage
+    sequence: Mediane herkende tijd

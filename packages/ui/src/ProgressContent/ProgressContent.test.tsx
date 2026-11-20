@@ -10,6 +10,7 @@ import {createProgressView} from '../../../../tests/fixtures/legacy-progress-vie
 // @ts-expect-error Existing statistics remain the unchanged JavaScript domain boundary.
 import {progressGroups,progressSummary} from '../../../../src/practiceProgress.js';
 import {progressPresentation} from '../../../../apps/web/src/features/history/progressPresentation';
+import {loadLocale,translate} from '../../../../apps/web/src/localization/runtime.ts';
 import {ProgressContent} from './ProgressContent';
 afterEach(()=>{cleanup();document.body.replaceChildren();});
 const library=JSON.parse(readFileSync(new URL('../../../../visual-tests/fixtures/library.json',import.meta.url),'utf8'));
@@ -22,3 +23,4 @@ test.each(['single','repeated','control','par','sequence'])('%s chart DOM, value
  native.remove();expect(actual.getByRole('img')).toHaveAccessibleName(model.chart!.label);expect(actual.getByText('View values and sample counts')).toBeInTheDocument();native.remove();
 });
 test('blank, empty and no-sample models preserve their distinct shapes',()=>{const view=render(<ProgressContent model={{}}/>);expect(view.container).toBeEmptyDOMElement();view.rerender(<ProgressContent model={{empty:'Complete practice sessions to see your timing and progress here.'}}/>);expect(view.getByText(/Complete practice/)).toHaveClass('empty-state');view.rerender(<ProgressContent model={{timing:'Silent start',cards:[],trend:'More sessions needed',metric:'Median detected time',empty:'No completed timing samples in this range. Choose a wider range or finish another session.'}}/>);expect(view.queryByRole('img')).toBeNull();expect(view.getByText('Median detected time').tagName).toBe('H4');});
+test('history progress chart and accessible table render translated presentation copy',async()=>{await loadLocale('nl');try{const group=progressGroups(library.sessions,'qa-gun-a')[0],data=progressSummary(group);const model=progressPresentation(group,data,(key,parameters)=>translate('history',`progress.${key}`,parameters),'nl');const view=render(<ProgressContent model={model}/>);expect(view.getByText('Sessies')).toBeInTheDocument();expect(view.getByText('Waarden en aantallen voorbeelden bekijken')).toBeInTheDocument();expect(view.getByRole('columnheader',{name:'Sessiedatum'})).toBeInTheDocument();expect(view.getByRole('img')).toHaveAccessibleName(model.chart!.label);expect(view.queryByText('View values and sample counts')).toBeNull();}finally{await loadLocale('en');}});
