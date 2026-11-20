@@ -9,10 +9,11 @@ import german from '../localization/generated/catalog.de.ts';
 import dutch from '../localization/generated/catalog.nl.ts';
 
 const catalogs:Record<AppLocale,Catalog>={en:english,de:german,nl:dutch};
-const labelsFor=(catalog:Catalog)=>{const text=(key:string)=>{const value=catalog.common[key];if(typeof value!=='string')throw new Error(`Missing shared shell message: ${key}`);return value;};return{
+const labelsFor=(catalog:Catalog)=>{const text=(key:string,parameters:Record<string,string|number>={})=>{const value=catalog.common[key];if(typeof value!=='string')throw new Error(`Missing shared shell message: ${key}`);return value.replace(/\{\{(\w+)\}\}/g,(_match,name)=>String(parameters[name]??''));};return{
  header:{home:text('header.home'),about:text('header.about'),contact:text('header.contact'),settings:text('header.settings'),information:text('header.information'),beta:text('header.beta')},
  navigation:{home:text('navigation.home'),learn:text('navigation.learn'),drills:text('navigation.drills'),history:text('navigation.history')},
  navigationLabel:text('navigation.label'),
+ footer:{privacy:text('footer.dataDisclosure'),copyright:text('footer.copyright',{year:new Date().getFullYear()})},
  safetyDialog:{title:text('shellSafety.dialogTitle'),description:text('shellSafety.dialogDescription'),limitation:text('shellSafety.dialogLimitation'),acknowledgement:text('shellSafety.acknowledgement'),confirm:text('shellSafety.confirm'),cancel:text('shellSafety.cancel')},
  safetyDisclosure:{summary:text('shellSafety.summary'),confirmed:text('shellSafety.confirmed'),required:text('shellSafety.required'),heading:text('shellSafety.heading'),instructions:text('shellSafety.instructions'),acknowledgement:text('shellSafety.disclosureAcknowledgement')},
  gunSwitcher:{switchSelected:text('shellGun.switchSelected'),choose:text('shellGun.choose'),typeUnset:text('shellGun.typeUnset'),active:text('shellGun.active'),switch:text('shellGun.switch')},

@@ -36,14 +36,16 @@ test('the compiled shell includes the same context/dialog without extra wrappers
 });
 
 test.each([
- ['de','Sicherheitsprüfung','Aktive Waffe','Öffne deine gespeicherten Waffenprofile'],
- ['nl','Veiligheidscontrole','Actief wapen','Je opgeslagen wapenprofielen openen'],
-])('shared shell safety and gun labels use %s messages',async(locale,safety,gun,startup)=>{
+ ['de','Sicherheitsprüfung','Aktive Waffe','Öffne deine gespeicherten Waffenprofile','Alle Rechte vorbehalten'],
+ ['nl','Veiligheidscontrole','Actief wapen','Je opgeslagen wapenprofielen openen','Alle rechten voorbehouden'],
+])('shared shell safety, footer and gun labels use %s messages',async(locale,safety,gun,startup,copyright)=>{
  const {renderAppShell}=await import('../apps/web/src/app/renderAppShell.tsx');
  const rendered=parse(renderAppShell(locale as 'de'|'nl'));
  expect(rendered.querySelector('.safety-disclosure')?.textContent).toContain(safety);
  expect(rendered.querySelector('#activeGunName')?.parentElement?.textContent).toContain(gun);
  expect(rendered.querySelector('.startup-message')?.textContent).toContain(startup);
+ expect(rendered.querySelector('footer')?.textContent).toContain(copyright);
+ expect(rendered.querySelector('footer')?.textContent).not.toContain('All rights reserved.');
  expect(rendered.querySelector('#safetyModalTitle')?.textContent).not.toBe('Confirm safety before practice');
 });
 

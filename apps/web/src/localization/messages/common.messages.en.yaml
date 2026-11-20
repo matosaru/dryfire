@@ -300,3 +300,6 @@ shellGun:
   active: Active gun
   switch: Switch gun
 shellStartup: Opening your saved gun profiles…
+footer:
+  dataDisclosure: "Microphone access stops when you stop or pause capture, leave recognition or a drill session, or the page becomes hidden. Gun profiles, numeric learned features, custom drills, recognition results, saved sessions and preferences are stored in this browser's IndexedDB. No raw audio is saved or uploaded. Clearing browser storage erases local data."
+  copyright: "© {{year}} Dry Fire With Ease. All rights reserved."

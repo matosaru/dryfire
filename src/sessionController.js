@@ -112,7 +112,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   }
 
   const resultDetails = row => presentation.sequenceResultDetails(row, { node, titleFor });
-  const renderReview = record => presentation.renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails, present:presentReview });
+  const renderReview = record => presentation.renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails, noRepetition:translate('common','sessionUi.noRepetition'), present:presentReview });
 
   function announce(text) {
     if (text !== lastAnnouncement) {

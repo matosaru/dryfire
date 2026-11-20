@@ -30,10 +30,10 @@ export function createGuideExampleRenderer(doc) {
       getContext: () => ({ gun: { id: 'guide-example' } }) };
     if (sequence) {
       if (review) {
-        renderSequenceReview(toSessionRecord(state), { ...common, $: query, resultDetails, retrySaveButton: doc.createElement('button'), reviewNote:tr('nothingSaved'),present:present('setSequenceReview') });
+        renderSequenceReview(toSessionRecord(state), { ...common, $: query, resultDetails, retrySaveButton: doc.createElement('button'), reviewNote:tr('nothingSaved'),noRepetition:translate('common','sessionUi.noRepetition'),present:present('setSequenceReview') });
       } else renderSequenceRun({ ...common, $: query, resultDetails, present:present('setSequenceRun'), announce: value => { get('sessionAnnouncement').textContent = value; } });
     } else if (review) {
-      renderPracticeReview(toPracticeRecord(state), { ...common, $: get, details, interruption: false,reviewNote:tr('nothingSaved'),present:present('setPracticeReview') });
+      renderPracticeReview(toPracticeRecord(state), { ...common, $: get, details, interruption: false,reviewNote:tr('nothingSaved'),noAttempt:translate('common','sessionUi.noAttempt'),present:present('setPracticeReview') });
     } else renderPracticeRun({ ...common, $: get, mode: guide.id, interruption: false, closing: false, details,latestEmpty:translate('common','sessionUi.practiceLatestEmpty'),present:present('setPracticeRun'),
       inputFeedback: frame.beep ? tr('startSignalSilentIllustration') : '',
       renderInput: () => {

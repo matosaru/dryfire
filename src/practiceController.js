@@ -118,7 +118,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   }
   function renderSteps(labels){const steps=labels.map(label=>({text:titleFor(label),className:'drill-step'}));if(page)page.update({steps});else $('practiceSteps').replaceChildren(...steps.map(step=>node('li',step.text,step.className)));}
   const details = row => presentation.practiceResultDetails(row, { node, titleFor });
-  const renderReview = record => presentation.renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details, present:presentReview });
+  const renderReview = record => presentation.renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details, noAttempt:translate('common','sessionUi.noAttempt'), present:presentReview });
   function render() {
     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
     const running = pending || state && state.phase !== 'review';

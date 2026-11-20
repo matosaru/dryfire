@@ -300,3 +300,6 @@ shellGun:
   active: Actief wapen
   switch: Wapen wisselen
 shellStartup: Je opgeslagen wapenprofielen openen…
+footer:
+  dataDisclosure: "Microfoontoegang stopt wanneer je de opname stopt of pauzeert, herkenning of een oefensessie verlaat of de pagina verborgen wordt. Wapenprofielen, numerieke geleerde kenmerken, aangepaste oefeningen, herkenningsresultaten, opgeslagen sessies en voorkeuren worden opgeslagen in IndexedDB van deze browser. Ruwe audio wordt niet opgeslagen of geüpload. Als je browseropslag wist, worden de lokale gegevens verwijderd."
+  copyright: "© {{year}} Dry Fire With Ease. Alle rechten voorbehouden."

@@ -23,7 +23,7 @@ function renderControls(model,$){
   for(const [id,disabled]of Object.entries(model.disabled))$(id).disabled=disabled;
 }
 
-export function renderPracticeReview(record,{ $,node,state,savedRevision,saveError,saving,interruption,locked,getContext,details,present,reviewNote }){
+export function renderPracticeReview(record,{ $,node,state,savedRevision,saveError,saving,interruption,locked,getContext,details,present,reviewNote,noAttempt='No attempt completed.' }){
   const model=practiceReviewPresentation(record,{state,savedRevision,saveError:!!saveError,saving,interruption:!!interruption,locked:locked(),gunId:getContext().gun?.id,continuous:continuousPractice(record.practiceMode),stats:practiceStatistics(record)});
   if(reviewNote!==undefined)model.savedNote=reviewNote;
   if(present?.(model))return;
@@ -32,7 +32,7 @@ export function renderPracticeReview(record,{ $,node,state,savedRevision,saveErr
   $('practiceSaved').textContent=model.savedNote;
   $('practiceRetryBtn').classList.toggle('hidden',model.retryHidden);$('practiceRetryBtn').disabled=model.retryDisabled;
   $('practiceResults').replaceChildren(...model.results.map(details));
-  if(!model.results.length)$('practiceResults').append(node('p','No attempt completed.','empty-state'));
+  if(!model.results.length)$('practiceResults').append(node('p',noAttempt,'empty-state'));
   $('practiceRepeatBtn').disabled=model.repeatDisabled;
 }
 
@@ -49,14 +49,14 @@ export function sequenceResultDetails(row,{node,titleFor}){
   return resultDetailsNode(sequenceResultPresentation(row,titleFor),node);
 }
 
-export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails,present,reviewNote }){
+export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails,present,reviewNote,noRepetition='No repetition was completed before this session ended.' }){
   const model=sequenceReviewPresentation(record,{state,savedRevision,saveError:!!saveError,saving,pending,locked:locked(),gunId:getContext().gun?.id});
   if(reviewNote!==undefined)model.savedNote=reviewNote;
   if(present?.(model))return;
   $('#sessionReviewStatus').dataset.status=model.status;$('#sessionReviewStatus').textContent=model.title;
   $('#sessionReviewSummary').replaceChildren(...model.summary.map(row=>node('p',row.text,row.className)));
   const host=$('#sessionResultList');host.replaceChildren();
-  if(!model.results.length)host.append(node('p','No repetition was completed before this session ended.','empty-state'));
+  if(!model.results.length)host.append(node('p',noRepetition,'empty-state'));
   for(const row of model.results)host.append(resultDetails(row));
   $('#sessionReview .session-saved-note').textContent=model.savedNote;
   retrySaveButton.classList.toggle('hidden',model.retryHidden);retrySaveButton.disabled=model.retryDisabled;

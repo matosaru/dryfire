@@ -300,3 +300,6 @@ shellGun:
   active: Aktive Waffe
   switch: Waffe wechseln
 shellStartup: Öffne deine gespeicherten Waffenprofile…
+footer:
+  dataDisclosure: "Der Mikrofonzugriff endet, wenn du die Aufnahme stoppst oder pausierst, die Erkennung oder eine Übung verlässt oder die Seite ausgeblendet wird. Waffenprofile, numerische gelernte Merkmale, eigene Übungen, Erkennungsergebnisse, gespeicherte Einheiten und Einstellungen werden in der IndexedDB dieses Browsers gespeichert. Es werden keine Roh-Audiodaten gespeichert oder hochgeladen. Beim Löschen des Browserspeichers werden die lokalen Daten gelöscht."
+  copyright: "© {{year}} Dry Fire With Ease. Alle Rechte vorbehalten."

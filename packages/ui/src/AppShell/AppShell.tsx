@@ -5,7 +5,7 @@ import { BottomNavigation, type Destination } from '../BottomNavigation/index.ts
 export type ShellDestination = Destination | 'about' | 'contact' | 'settings';
 export type AppShellProps = {
   view?: string;
-  labels?:{header?:Partial<Record<'home'|'about'|'contact'|'settings'|'information'|'beta',string>>;navigation?:Partial<Record<Destination,string>>;navigationLabel?:string};
+  labels?:{header?:Partial<Record<'home'|'about'|'contact'|'settings'|'information'|'beta',string>>;navigation?:Partial<Record<Destination,string>>;navigationLabel?:string;footer?:{privacy:string;copyright:string}};
   links?:Record<Destination|'about'|'contact'|'settings',string>;
   status?: string;
   navigationDisabled?: boolean;
@@ -23,7 +23,7 @@ export function AppShell({ view, status, navigationDisabled, onNavigate, footerN
     <BrandHeader links={links} brandHeading={links?'p':'h1'} view={view} status={status} labels={labels?.header} onNavigate={onNavigate} />
     {safety}
     <main id="pageContent" className="page-content">{context}{children}</main>
-    <InfoFooter notice={footerNotice} />
+    <InfoFooter notice={footerNotice} messages={labels?.footer} />
     <BottomNavigation hrefs={links} view={view} disabled={navigationDisabled} onNavigate={onNavigate} labels={labels?.navigation} navigationLabel={labels?.navigationLabel} />
   </div>;
 }
