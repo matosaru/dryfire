@@ -19,6 +19,20 @@ calibration:
   title: Herkenning verbeteren
   summary: Reset-, ruis- en extern signaal kalibreren
   description: Optionele voorbeelden van andere geluiden kunnen foutieve tellingen verminderen. Zeer vergelijkbare trekker- en resetklikken kunnen onduidelijk blijven; controleer resultaten zelf. Voor een oefening met extern startsignaal zijn drie signaalopnamen nodig.
+  examples:
+    reset:
+      title: Trekker-resetklikken
+      description: Klikken die niet als schot mogen meetellen.
+    noise:
+      title: Ander geluid / handelingen
+      description: Achtergrondgeluiden en handelingen om te negeren.
+    cue:
+      title: Extern startsignaal
+      description: Alleen nodig voor de instelling met extern startsignaal.
+  progress: "{{description}} {{count}} / {{maximum}} voorbeelden."
+  limitReached: " Opnamelimiet bereikt; bestaande voorbeelden blijven behouden."
+  train: Trainen
+  reset: Resetten
 privacy:
   note: De animaties laten geluiden zien en zijn geen stapsgewijze handelinstructies. Als je één geluid wist, blijven de andere geluiden en geschiedenis van dit wapen en alle gegevens van andere wapens behouden.
 recordingTip:

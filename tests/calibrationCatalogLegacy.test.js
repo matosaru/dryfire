@@ -3,8 +3,8 @@ import { jest } from '@jest/globals';
 import {materializeStaticCatalog} from '../src/staticCatalog.js';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
-import { calibrationProgress } from '../packages/ui/src/CalibrationCatalog/CalibrationCatalog.copy.ts';
-import {translate} from '../apps/web/src/localization/runtime.ts';
+import {calibrationProgressMessage,createCalibrationCatalogMessages} from '../apps/web/src/features/learn/calibrationMessages.ts';
+import {loadLocale,translate} from '../apps/web/src/localization/runtime.ts';
 const fixture=readFileSync(new URL('./fixtures/legacy-calibration-catalog.html',import.meta.url),'utf8');
 const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const body=source.slice(source.indexOf('function renderCalibrationCards()'),source.indexOf('async function recordCalibration'));
@@ -13,7 +13,7 @@ function setup({locked=false,calibration=[]}={}) {
   document.body.innerHTML=fixture;
   for(const text of document.querySelectorAll('article p')) text.dataset.description=text.textContent.replace(' 0 / 10 samples.','');
   const recordCalibration=jest.fn(), clearCalibrationExamples=jest.fn(async()=>{}), setBusy=jest.fn(), confirm=jest.fn(()=>true);
-  const context={translate,materializeStaticCatalog,learnPage:null,document,calibrationProgress,$:selector=>document.querySelector(selector),MAX_EXAMPLES_PER_CLASS:10,calibration,
+  const context={translate,materializeStaticCatalog,learnPage:null,document,calibrationProgressMessage,createCalibrationCatalogMessages,$:selector=>document.querySelector(selector),MAX_EXAMPLES_PER_CLASS:10,calibration,
     profileLocked:()=>locked,recordCalibration,clearCalibrationExamples,ownerId:()=> 'gun-one',getCalibrationExamples:async()=>[],
     setBusy,confirm,showError:jest.fn(),renderClassCards:jest.fn()};
   const render=vm.runInNewContext(body+';bindCalibrationActions();renderCalibrationCards;',context);
@@ -37,4 +37,16 @@ test('a locked profile disables all calibration actions',()=>{
   const api=setup({locked:true,calibration:[{kind:'reset'}]});
   for(const button of document.querySelectorAll('button')) {expect(button.disabled).toBe(true);button.click();}
   expect(api.recordCalibration).not.toHaveBeenCalled();expect(api.clearCalibrationExamples).not.toHaveBeenCalled();
+});
+test.each([
+ ['de','Abzugs-Reset-Klicks','Trainieren','Zurücksetzen','1 / 10 Beispiele.'],
+ ['nl','Trekker-resetklikken','Trainen','Resetten','1 / 10 voorbeelden.'],
+])('native fallback calibration content follows locale %s',async(locale,title,train,reset,progress)=>{
+ await loadLocale(locale);
+ setup({calibration:[{kind:'reset'}]});
+ expect(document.querySelector('.calibration-card h3').textContent).toContain(title);
+ expect(document.querySelector('[data-calibration-kind="reset"]').textContent).toContain(train);
+ expect(document.querySelector('.calibration-card .secondary').textContent).toContain(reset);
+ expect(document.querySelector('.calibration-card p').textContent).toContain(progress);
+ await loadLocale('en');
 });

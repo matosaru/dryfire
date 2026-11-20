@@ -9,6 +9,8 @@ import {readFileSync} from 'node:fs';
 import {renderLearnPage} from '../apps/web/src/app/renderLearnPage.tsx';
 import {renderCalibrationCatalog} from '../apps/web/src/app/renderCalibrationCatalog.tsx';
 import {mountLearnPage} from '../apps/web/src/app/learnPage.tsx';
+import {createCalibrationCatalogMessages} from '../apps/web/src/features/learn/calibrationMessages.ts';
+import {loadLocale} from '../apps/web/src/localization/runtime.ts';
 const profileCss=readFileSync(new URL('../packages/ui/src/TriggerProfileStatus/TriggerProfileStatus.css',import.meta.url),'utf8').trim();
 const fixture=readFileSync(new URL('./fixtures/legacy-learn-page.html',import.meta.url),'utf8').replace('{{calibrationCatalog}}',renderCalibrationCatalog()).replace('{{profileCss}}',profileCss);
 function setup(){document.body.innerHTML=`<section id="learnView">${fixture}</section>`;return document.querySelector('#learnView')!;}
@@ -17,7 +19,7 @@ test('typed Learn source retains the complete frozen template with approved reco
 const card={label:'trigger',meta:{title:'Trigger pull',tone:'orange',description:'Dry click'},count:3,minExamples:3,recommendedExamples:8,maxExamples:10,locked:false};
 test('handoff preserves native notices, context, disclosures and focus while transferring actions once',()=>{
  const host=setup(),details=host.querySelectorAll('details');details[0].open=true;details[1].open=true;document.querySelector('.gun-context-name')!.textContent='Owned gun';document.querySelector('#modelNotice')!.textContent='Older features';document.querySelector('#modelNotice')!.classList.remove('hidden');const original=document.querySelector<HTMLButtonElement>('[data-calibration-kind="reset"]')!,native=jest.fn(),record=jest.fn();original.addEventListener('click',native);original.id='focused-calibration';original.disabled=false;original.focus();
- let page:ReturnType<typeof mountLearnPage>;act(()=>{page=mountLearnPage(host,{cards:[card],calibrationProps:{counts:{reset:3},locked:false,onRecord:record}});});expect(document.querySelector('.gun-context-name')).toHaveTextContent('Owned gun');expect(document.querySelector('#modelNotice')).toHaveTextContent('Older features');for(const detail of host.querySelectorAll('details'))expect(detail).toHaveAttribute('open');
+ let page:ReturnType<typeof mountLearnPage>;act(()=>{page=mountLearnPage(host,{cards:[card],calibrationProps:{messages:createCalibrationCatalogMessages(),counts:{reset:3},locked:false,onRecord:record}});});expect(document.querySelector('.gun-context-name')).toHaveTextContent('Owned gun');expect(document.querySelector('#modelNotice')).toHaveTextContent('Older features');for(const detail of host.querySelectorAll('details'))expect(detail).toHaveAttribute('open');
  act(()=>fireEvent.click(document.querySelector('[data-calibration-kind="reset"]')!));expect(record).toHaveBeenCalledWith('reset');expect(document.activeElement).toBe(document.querySelector('[data-calibration-kind="reset"]'));expect(native).not.toHaveBeenCalled();const current=document.querySelector('.record-example');act(()=>page.update({cards:[{...card,count:10}],noticeHidden:true}));expect(document.querySelector('.record-example')).toBe(current);expect(current).toBeDisabled();expect(document.querySelector('#modelNotice')).toHaveClass('hidden');
  act(()=>page.dispose());act(()=>page.dispose());act(()=>page.update({notice:'Ignored'}));expect(host.childNodes).toHaveLength(0);
 });
@@ -28,3 +30,20 @@ test('failed initial commit restores original nodes and event owner',()=>{
 
 test('handoff preserves semantic Back focus without a generated control id',()=>{const host=setup(),back=host.querySelector<HTMLButtonElement>('[data-back]')!;back.focus();let page:ReturnType<typeof mountLearnPage>;act(()=>{page=mountLearnPage(host,{});});expect(document.activeElement).toBe(host.querySelector('[data-back]'));act(()=>page.dispose());});
 test('unfocused handoff preserves another page control focus',()=>{const host=setup(),outside=document.createElement('input');document.body.append(outside);outside.focus();let page:ReturnType<typeof mountLearnPage>;act(()=>{page=mountLearnPage(host,{});});expect(document.activeElement).toBe(outside);act(()=>page.dispose());});
+
+test.each([
+ ['de','Abzugs-Reset-Klicks','Trainieren','Zurücksetzen'],
+ ['nl','Trekker-resetklikken','Trainen','Resetten'],
+])('calibration cards use %s text after the Learn page locale changes',async(locale,title,train,reset)=>{
+ const host=setup();let page:ReturnType<typeof mountLearnPage>;
+ act(()=>{page=mountLearnPage(host,{calibrationProps:{messages:createCalibrationCatalogMessages()}});});
+ await act(async()=>{await loadLocale(locale);});
+ act(()=>page.update({calibrationProps:{messages:createCalibrationCatalogMessages(),counts:{reset:10},locked:false}}));
+ expect(host.querySelector('.calibration-card h3')).toHaveTextContent(title);
+ expect(host.querySelector('[data-calibration-kind="reset"]')).toHaveTextContent(train);
+ expect(host.querySelector('.calibration-card .secondary')).toHaveTextContent(reset);
+ expect(host.querySelector('.calibration-card p')).toHaveTextContent(locale==='de'?'10 / 10 Beispiele.':'10 / 10 voorbeelden.');
+ expect(host.querySelector('.calibration-card p')).toHaveTextContent(locale==='de'?'Aufnahmelimit erreicht':'Opnamelimiet bereikt');
+ act(()=>page.dispose());
+ await act(async()=>{await loadLocale('en');});
+});

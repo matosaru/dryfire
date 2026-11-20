@@ -1,3 +1,4 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { CalibrationCatalog } from '@dryfire/ui/CalibrationCatalog';
-export const renderCalibrationCatalog = () => renderToStaticMarkup(<CalibrationCatalog />);
+import {createCalibrationCatalogMessages} from '../features/learn/calibrationMessages.ts';
+export const renderCalibrationCatalog = () => renderToStaticMarkup(<CalibrationCatalog messages={createCalibrationCatalogMessages()} />);

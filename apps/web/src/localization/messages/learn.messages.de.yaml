@@ -19,6 +19,20 @@ calibration:
   title: Erkennung verbessern
   summary: Reset-, Rausch- und externes Signal kalibrieren
   description: Optionale Gegenbeispiele können falsche Schusszählungen reduzieren. Sehr ähnliche Abzugs- und Reset-Klicks können weiterhin uneindeutig sein; prüfe Treffer selbst. Für Übungen mit externem Signal sind drei Signalbeispiele nötig.
+  examples:
+    reset:
+      title: Abzugs-Reset-Klicks
+      description: Klicks, die nicht als Schuss gezählt werden sollen.
+    noise:
+      title: Andere Geräusche / Handhabung
+      description: Hintergrund- und Handhabungsgeräusche, die ignoriert werden sollen.
+    cue:
+      title: Externes Startsignal
+      description: Nur für den Start mit externem Signal erforderlich.
+  progress: "{{description}} {{count}} / {{maximum}} Beispiele."
+  limitReached: " Aufnahmelimit erreicht; vorhandene Beispiele bleiben erhalten."
+  train: Trainieren
+  reset: Zurücksetzen
 privacy:
   note: Die Animationen veranschaulichen Geräusche und sind keine Schritt-für-Schritt-Anleitung zur Handhabung. Beim Zurücksetzen eines Tons bleiben andere Töne und der Verlauf dieser Waffe sowie alle Daten anderer Waffen erhalten.
 recordingTip:

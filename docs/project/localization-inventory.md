@@ -55,3 +55,7 @@ The create/edit form's titles, field labels, action-order accessibility name, ac
 ## Newly audited animated Practice Guide — 2026-11-20
 
 Guide animation frame labels, simulated microphone states, countdown/results, counters, captions, no-save disclosures, and play/pause/replay controls now use the `practice-guide.example.*` message keys in all supported locales. Sequence-step sound labels reuse `common.sound.*`; integer and decimal example values use locale formatting. The animation continues to simulate only presentation state and does not access audio or storage. German/Dutch tests cover representative frame states and number formatting; English frame parity remains covered separately. The overall scan for unowned user-facing text is still open.
+
+## Newly audited Learn calibration cards — 2026-11-20
+
+Reset-click, noise/handling, and external-cue calibration labels, descriptions, localized sample counts, limit feedback, and Train/Reset actions are now owned by `learn.calibration.examples.*` and `learn.calibration.*`. The shared UI component accepts copy as props and has no application-locale dependency; the app provides the same translated values to both React and the retained native fallback. Changing the device language updates the card content without changing calibration IDs, counts, or reset ownership. German/Dutch tests cover both rendering paths. The global source scan remains open for other untranslated page and dialog copy.

@@ -16,7 +16,7 @@ import { createPracticeGuideBridge } from './practiceGuideBridge.js';
 import { recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { DRILLS, SEQUENCE_DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
-import { calibrationProgress } from '@dryfire/ui/calibration-copy';
+import {createCalibrationCatalogMessages,calibrationProgressMessage} from '../apps/web/src/features/learn/calibrationMessages.ts';
 import { soundCard, drillCard } from './uiComponents.js';
 import { readNumberInput } from './inputLimits.js';
 import { createSafetyGate } from './safetyGate.js';
@@ -420,12 +420,13 @@ function getCounts() { return trainingCounts(examples); }
 function renderModelNotice(notice,noticeHidden){if(learnPage)learnPage.update({notice,noticeHidden});else{$('#modelNotice').textContent=notice;$('#modelNotice').classList.toggle('hidden',noticeHidden);}}
 function learningProps(){
   const counts=getCounts();
+  const calibrationMessages=createCalibrationCatalogMessages();
   const soundMessages={sampleProgress:(count,maximum,summary)=>translate('learn','soundCard.progress',{count:formatLocaleNumber(count),maximum:formatLocaleNumber(maximum),summary}),imageAlt:sound=>translate('learn','soundCard.imageAlt',{sound}),record:sound=>translate('learn','soundCard.record',{sound}),train:translate('learn','soundCard.train'),sampleLimit:translate('learn','soundCard.sampleLimit'),replace:sound=>translate('learn','soundCard.replace',{sound}),reset:sound=>translate('learn','soundCard.reset',{sound}),recognize:sound=>translate('learn','soundCard.recognize',{sound}),recognizeLabel:translate('learn','soundCard.recognizeLabel'),primary:translate('learn','soundCard.primary'),optional:translate('learn','soundCard.optional'),limitReached:translate('learn','soundCard.limitReached'),recommendedReached:translate('learn','soundCard.recommendedReached'),ready:translate('learn','soundCard.ready'),minimumRemaining:count=>translate('learn','soundCard.minimumRemaining',{count:formatLocaleNumber(count)}),replaceLabel:translate('learn','soundCard.replaceLabel'),resetLabel:translate('learn','soundCard.resetLabel')};
   return{locked:profileLocked(),triggerQuality:profileQuality?.assessTriggerProfile(examples),onSoundCheck:()=>{if(triggerReady())switchView('soundCheck');else setMessage(translate('common','runtimeMain.learnTriggerFirst',{count:MIN_EXAMPLES_PER_CLASS}));},cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
     label,meta:labelMetaFor(label),messages:soundMessages,count:counts[label],maxExamples:MAX_EXAMPLES_PER_CLASS,minExamples:MIN_EXAMPLES_PER_CLASS,recommendedExamples:RECOMMENDED_EXAMPLES_PER_CLASS,locked:profileLocked(),
     onRecord:()=>recordExample(label),onReplace:()=>replaceSoundProfile(label),onReset:()=>resetSoundProfile(label),optional:label!=='trigger',enabled:enabledSoundLabels.includes(label),onToggle:enabled=>toggleOptionalSound(label,enabled),
-  })),calibrationProps:{counts:Object.fromEntries(['reset','noise','cue'].map(kind=>[kind,calibration.filter(row=>row.kind===kind).length])),maximum:MAX_EXAMPLES_PER_CLASS,locked:profileLocked(),
-    onRecord:kind=>{if(!profileLocked())recordCalibration(kind);},onReset:kind=>resetCalibration(kind,{reset:'Trigger reset clicks',noise:'Other noise / handling',cue:'External start beep'}[kind]),
+  })),calibrationProps:{counts:Object.fromEntries(['reset','noise','cue'].map(kind=>[kind,calibration.filter(row=>row.kind===kind).length])),maximum:MAX_EXAMPLES_PER_CLASS,locked:profileLocked(),messages:calibrationMessages,
+    onRecord:kind=>{if(!profileLocked())recordCalibration(kind);},onReset:kind=>resetCalibration(kind,calibrationMessages.categories[kind].title),
   }};
 }
 function renderLearningLocks() {
@@ -480,11 +481,17 @@ async function toggleOptionalSound(label, enabled) {
 function renderCalibrationCards() {
   if(learnPage){learnPage.update({calibrationProps:learningProps().calibrationProps});return;}
   const host=$('#calibrationCards');materializeStaticCatalog(host);
+  const messages=createCalibrationCatalogMessages();
   for (const card of host.children) {
     const record = card.querySelector('[data-calibration-kind]');
+    const kind=record.dataset.calibrationKind;
     const count = calibration.filter(row => row.kind === record.dataset.calibrationKind).length;
     const text = card.querySelector('p');
-    text.textContent = calibrationProgress(text.dataset.description, count, MAX_EXAMPLES_PER_CLASS);
+    card.querySelector('h3').textContent=messages.categories[kind].title;
+    text.dataset.description=messages.categories[kind].description;
+    text.textContent=calibrationProgressMessage(kind, count, MAX_EXAMPLES_PER_CLASS);
+    record.textContent=messages.train;
+    card.querySelector('.secondary').textContent=messages.reset;
     record.disabled = profileLocked() || count >= MAX_EXAMPLES_PER_CLASS;
     card.querySelector('.secondary').disabled = profileLocked() || !count;
   }
