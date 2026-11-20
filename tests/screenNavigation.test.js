@@ -1,4 +1,5 @@
 import { createScreenNavigation } from '../src/screenNavigation.js';
+import {appPathFor} from '../src/appPaths.js';
 function setup() {
   const events = new EventTarget(), entries = []; let index = -1, blocked = false; const shown = [], errors = [], cleanup = [];
   const history = { get state() { return entries[index]; }, replaceState(state) { if (index < 0) index = 0; entries[index] = state; },
@@ -28,4 +29,13 @@ test('URL-aware navigation writes only resolved paths and keeps Back/Forward ser
  const history={get state(){return entries[index];},replaceState(state,_title,url){if(index<0)index=0;entries[index]=state;if(url)writes.push(url);},pushState(state,_title,url){entries.splice(index+1);entries.push(state);index++;writes.push(url);},go(n){index+=n;const event=new Event('popstate');event.state=entries[index];events.dispatchEvent(event);},back(){this.go(-1);}};
  const shown=[],nav=createScreenNavigation({history,events,initial:{view:'home'},resolve:r=>r.view==='stale'?{view:'drills'}:r,show:r=>shown.push(r.view),canLeave:()=>true,beforeLeave:async()=>{},onError:error=>{throw error;},urlFor:r=>'/app/'+r.view+'/'});
  await nav.navigate({view:'history'});await nav.navigate({view:'stale'});expect(writes).toEqual(['/app/history/','/app/drills/']);history.back();await nav.flush();expect(writes.at(-1)).toBe('/app/history/');expect(shown.at(-1)).toBe('history');
+});
+
+test('locale changes create restorable routes and Back/Forward reapplies the saved language',async()=>{
+ const events=new EventTarget(),entries=[],writes=[];let index=-1,locale='en';
+ const history={get state(){return entries[index];},replaceState(state,_title,url){if(index<0)index=0;entries[index]=state;if(url)writes.push(url);},pushState(state,_title,url){entries.splice(index+1);entries.push(state);index++;writes.push(url);},go(n){index+=n;const event=new Event('popstate');event.state=entries[index];events.dispatchEvent(event);},back(){this.go(-1);}};
+ const shown=[],nav=createScreenNavigation({history,events,initial:{view:'home'},resolve:route=>{locale=route.locale??'en';return route;},show:route=>shown.push(`${route.view}:${locale}`),canLeave:()=>true,beforeLeave:async()=>{},onError:error=>{throw error;},urlFor:appPathFor});
+ await nav.navigate({view:'home',locale:'de'});await nav.navigate({view:'learn',locale:'de'});history.back();await nav.flush();expect(locale).toBe('de');expect(shown.at(-1)).toBe('home:de');
+ history.back();await nav.flush();expect(locale).toBe('en');expect(shown.at(-1)).toBe('home:en');expect(writes).toEqual(['/de/','/de/learn/','/de/','/']);
+ history.go(1);await nav.flush();expect(locale).toBe('de');expect(shown.at(-1)).toBe('home:de');
 });

@@ -22,7 +22,7 @@ test('measurement units persist as a normalized device preference and refresh vi
  ports.read.mockReturnValue({value:'unknown'});await actions.measurementSystem();expect(ports.saveDevice).toHaveBeenCalledTimes(1);
 });
 test('language changes persist before applying the selected locale and roll back on failure',async()=>{
- const {state,ports,actions}=setup();await actions.language();expect(ports.saveDevice).toHaveBeenCalledWith('language','de');expect(ports.applyLocale).toHaveBeenCalledWith('de');expect(state.language).toBe('de');expect(ports.render).toHaveBeenCalledTimes(1);
+ const {state,ports,actions}=setup(),audio=state.audio;await actions.language();expect(ports.saveDevice).toHaveBeenCalledWith('language','de');expect(ports.applyLocale).toHaveBeenCalledWith('de');expect(state.language).toBe('de');expect(state.audio).toBe(audio);expect(ports.saveGun).not.toHaveBeenCalled();expect(ports.render).toHaveBeenCalledTimes(1);
  ports.read.mockReturnValue({value:'nl'});ports.applyLocale.mockRejectedValueOnce(Error('locale unavailable'));await actions.language();expect(state.language).toBe('de');expect(ports.saveDevice).toHaveBeenLastCalledWith('language','de');expect(ports.error).toHaveBeenCalledTimes(1);
  ports.read.mockReturnValue({value:'fr'});await actions.language();expect(ports.applyLocale).toHaveBeenCalledTimes(3);
 });
