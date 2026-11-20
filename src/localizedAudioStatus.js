@@ -46,7 +46,7 @@ export function translateAudioStatus(status) {
 }
 
 export function translateApplicationError(error) {
-  const errorKeys={INVALID_BACKUP:'invalidBackup',GUN_REQUIRED:'gunRequired',GUN_MISSING:'gunMissing',GUN_LIMIT:'gunLimit',SAMPLE_LIMIT:'sampleLimit',CALIBRATION_LIMIT:'calibrationLimit',EVENT_MISSING:'recordMissing',SESSION_MISSING:'recordMissing',TRAINING_DATA_INVALID:'trainingDataInvalid'};
+  const errorKeys={INVALID_BACKUP:'invalidBackup',GUN_REQUIRED:'gunRequired',GUN_MISSING:'gunMissing',GUN_LIMIT:'gunLimit',SAMPLE_LIMIT:'sampleLimit',CALIBRATION_LIMIT:'calibrationLimit',EVENT_MISSING:'recordMissing',SESSION_MISSING:'recordMissing',TRAINING_DATA_INVALID:'trainingDataInvalid',GUIDE_UNAVAILABLE:'guideUnavailable'};
   const key=errorKeys[error?.code];
   if(key)return translate('common',`runtimeErrors.${key}`);
   return translateAudioStatus(error?.message||String(error));

@@ -107,3 +107,5 @@ Backup validation now marks invalid-import errors with a stable error code while
 Gun-library write guards now also attach stable codes for a missing gun, missing selection, gun cap, sound-sample cap and calibration-sample cap. `showError` maps these to `common.runtimeErrors.*` catalog messages in all supported locales while the underlying diagnostic message remains available. Tests cover the guarded storage operations and translated feedback; other less common validation and stale-record errors remain part of the source scan.
 
 Stale event/session lookups and invalid training-data errors also now carry stable codes mapped to localized `common.runtimeErrors.*` text. The underlying English diagnostic remains attached for storage/debug callers. Focused persistence/localization tests cover missing records and translated training-data feedback. The broader audit of low-frequency controller, storage and validation errors remains open.
+
+Practice Guide lazy-load recovery now uses a stable `GUIDE_UNAVAILABLE` code routed through the shared common error catalog, rather than relying on exact English-message matching.

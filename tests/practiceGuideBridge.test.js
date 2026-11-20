@@ -26,7 +26,7 @@ test('only the latest explicit click can open a shared pending import',async()=>
  const s=setup(),a=s.bridge.open(s.resolve),b=s.bridge.open(s.resolve);s.pending.resolve(s.module);expect(await a).toBe(false);expect(await b).toBe(true);expect(s.onNavigate).toHaveBeenCalledTimes(1);
 });
 test('failed open retains setup, reports, and retries on a later click',async()=>{
- const s=setup(),open=s.bridge.open(s.resolve),error=new Error('chunk unavailable');s.pending.reject(error);expect(await open).toBe(false);expect(s.onError).toHaveBeenCalledWith(expect.objectContaining({cause:error,message:expect.stringContaining('Your setup is unchanged')}));expect(s.onNavigate).not.toHaveBeenCalled();
+ const s=setup(),open=s.bridge.open(s.resolve),error=new Error('chunk unavailable');s.pending.reject(error);expect(await open).toBe(false);expect(s.onError).toHaveBeenCalledWith(expect.objectContaining({code:'GUIDE_UNAVAILABLE',cause:error,message:expect.stringContaining('Your setup is unchanged')}));expect(s.onNavigate).not.toHaveBeenCalled();
  s.load.mockResolvedValue(s.module);expect(await s.bridge.open(s.resolve)).toBe(true);expect(s.load).toHaveBeenCalledTimes(2);
 });
 test('cancelled load errors never repaint a later route',async()=>{

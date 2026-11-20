@@ -26,7 +26,7 @@ export function createPracticeGuideBridge({ onBack, onNavigate, onError,
       const owned = current => current && current.gunId === original.gunId && current.routeKey === original.routeKey && current.type === original.type;
       try {
         const ready = await prepare().catch(error => {
-          throw new Error('Practice guide could not load. Your setup is unchanged. Check your connection and reload to try again.', { cause: error });
+          throw Object.assign(new Error('Practice guide could not load. Your setup is unchanged. Check your connection and reload to try again.', { cause: error }), { code: 'GUIDE_UNAVAILABLE' });
         });
         if (request !== generation) return false;
         const current = resolveContext();

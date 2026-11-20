@@ -40,3 +40,9 @@ test('gun library and training-capacity errors use actionable localized messages
  expect(translateApplicationError({code:'SESSION_MISSING',message:'Session missing.'})).toContain('Verlaufseintrag ist für die ausgewählte Waffe');
  expect(translateApplicationError({code:'TRAINING_DATA_INVALID',message:'Training data is invalid.'})).toContain('Klangprofil ist nicht verfügbar oder ungültig');
 });
+
+test('guide recovery failures use the active locale through a stable error code',async()=>{
+ const error=Object.assign(new Error('internal module fetch details'),{code:'GUIDE_UNAVAILABLE'});
+ await loadLocale('de');expect(translateApplicationError(error)).toBe('Die Übungsanleitung konnte nicht geladen werden. Deine Einstellungen sind unverändert. Überprüfe die Verbindung und lade die Seite erneut.');
+ await loadLocale('nl');expect(translateApplicationError(error)).toBe('De oefengids kon niet worden geladen. Je instellingen zijn ongewijzigd. Controleer je verbinding en laad de pagina opnieuw.');
+});
