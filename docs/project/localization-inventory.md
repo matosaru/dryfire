@@ -47,6 +47,8 @@ LOC-01 is complete when the ownership table, route/screen inventory and exclusio
 
 The Learn page and its `SoundCard` primitive previously retained English-only progress summaries, action labels, image alternative text, optional-sound controls, and trigger-profile status copy. These now belong to `learn.soundCard.*` and `learn.profile.*` in the English, German and Dutch YAML catalogs. The page adapts the profile's language-neutral status/count data at render time; the domain assessment in `src/profileQuality.js` remains responsible for classification only. A locale-switch test covers the German controls and incomplete-profile guidance. This increment does not complete the global key-level source inventory: run/review fragments, remaining legacy dialogs/controllers and practice-guide details still need systematic scanning.
 
+The trigger-profile assessment now returns only status, sample count, needed count and outlier indexes. The typed Learn component and native renderer receive title, message, eyebrow and action text from the `learn` catalog; neither the classifier nor the shared UI component owns English fallback copy. German coverage verifies native rendering.
+
 
 ## Newly audited Custom Drill Editor — 2026-11-20
 
