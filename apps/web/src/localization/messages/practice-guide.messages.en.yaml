@@ -187,3 +187,60 @@ runtime:
       Keep going until the target, then compare the recorded intervals in review.
     singleExpect: With this external-cue setup, trigger clicks before the calibrated cue are not counted as attempts. The early-failure example below demonstrates App signal mode.
     requirementSuffix: " Calibrated external-beep start needs three compatible cue examples."
+sequenceKind: ORDERED SEQUENCE GUIDE
+example:
+  preparing: Preparing microphone
+  connectBeforeCountdown: Connect microphone before countdown
+  waitingBeforeCountdown: Waiting for incoming audio before countdown
+  microphoneStopped: Microphone stopped
+  finishingEarlierAudio: Finishing earlier audio
+  microphoneConnectedAtGo: Mic connected · detection starts at GO
+  microphoneRecognitionPaused: Mic on · recognition paused
+  microphoneBeforeSignal: Listening before the signal
+  microphoneListening: Microphone listening
+  nextCountdownAutomatic: Next countdown · automatic
+  getReady: Get ready
+  nextCountdownAfterNext: Next countdown · after Next
+  selectedNext: You selected Next repetition
+  waitForSignal: Wait for the start signal
+  beepTimerStarts: BEEP · timer starts
+  followSelectedOrder: Follow the selected order
+  listeningForTriggerClicks: Listening for trigger clicks
+  stepProgress: "Step {{current}} / {{total}}: {{sound}}"
+  parLimit: "Par limit {{seconds}}"
+  separateClicks: One start beep · separate recognized clicks
+  firstTriggerEndsAttempt: First recognized trigger ends this attempt
+  earlyTriggerFailed: EARLY TRIGGER · failed
+  sequenceCompleted: Sequence completed
+  resultSelectNext: Result · select Next repetition
+  noShot: No shot
+  nextCountdownFollowsResult: Next countdown follows the result
+  resetThenNext: Reset when ready, then select Next
+  timeLimitReached: Time limit reached
+  finishingAudioBeforeDeadline: Finishing audio captured before the deadline
+  practiceComplete: Practice complete
+  targetReachedReview: Target reached · review the recorded outcomes
+  lastEarly: "Last attempt: failed before the beep · 0 shots"
+  lastMiss: "Last attempt: miss · no click within the par time"
+  lastInterval: "Last click interval: {{time}}"
+  lastResult: "Last result: {{time}}"
+  noResultYet: No result yet
+  examplePreparing: Example · preparing
+  clicksCounter: "Clicks {{completed}} / {{total}}"
+  attemptsCounter: "Attempts {{completed}} / {{total}}"
+  attemptsShotsCounter: "Attempts {{completed}} / {{total}} · Shots {{shots}}"
+  clicksCaption: EXAMPLE · 3 CLICKS · 1× TIMING
+  attemptsCaption: "EXAMPLE · {{count}} ATTEMPTS · 1× TIMING"
+  stopExample: Stop example
+  replayExample: Replay example
+  resumeExample: Resume example
+  playExample: Play example
+  pauseExample: Pause
+  earlyExampleAria: "Example: listening before the beep, early trigger fails with zero shots, then an automatic countdown and a successful trigger."
+  normalExampleAria: "{{title}}. {{stages}}. Synthetic example; no live microphone data."
+  note: "{{config}}. Safety already confirmed; microphone preparation time varies."
+  nothingSaved: Example only · nothing saved
+  startSignalSilentIllustration: Example start signal · silent illustration
+  simulatedInputLevel: "{{level}} simulated input level"
+  microphoneInputDetected: Microphone input detected.
+  waitingForAudio: Waiting for audio input…

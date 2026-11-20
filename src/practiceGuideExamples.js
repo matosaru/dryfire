@@ -2,14 +2,15 @@
 // detections. Hardware, classification and storage latency are not simulated.
 import { createPractice, tickPractice, detectPractice, nextPractice } from './practiceSession.js';
 import { createSession, tickSession, recordSessionDetection } from './drillSession.js';
+import {formatLocaleNumber,translate} from '../apps/web/src/localization/runtime.ts';
 
 export const FRAME_MS = 100;
 const READY_AT_MS = 1000; // Example preparation time; actual readiness varies.
 const gun = { id: 'guide-example', name: 'Example gun', type: 'Handguns' };
 const clock = monoNow => ({ monoNow, epochNow: 1800000000000 + monoNow, randomValue: monoNow <= READY_AT_MS ? .13 : .4 });
 const shotOffsets = { repeated: [500, 1300, 2100], control: [500, 1300, 2100] };
-const names = { draw: 'Draw', rack: 'Rack', reload: 'Magazine', trigger: 'Trigger' };
-const seconds = ms => `${(ms / 1000).toFixed(2)} s`;
+const tr=(key,parameters={})=>translate('practice-guide',`example.${key}`,parameters);
+const seconds = ms => `${formatLocaleNumber(ms / 1000,{minimumFractionDigits:2,maximumFractionDigits:2})} s`;
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 
 export function createScenario(manual, { early = false } = {}) {
@@ -76,44 +77,44 @@ export function createScenario(manual, { early = false } = {}) {
     }
 
     const phase = state?.phase ?? 'connecting';
-    let mic = 'Preparing microphone', micTone = 'amber', title = 'Preparing microphone', value = '—';
-    let detail = sequence ? 'Connect microphone before countdown' : 'Waiting for incoming audio before countdown';
+    let mic = tr('preparing'), micTone = 'amber', title = tr('preparing'), value = '—';
+    let detail = tr(sequence?'connectBeforeCountdown':'waitingBeforeCountdown');
     if (state) {
-      mic = phase === 'review' ? 'Microphone stopped' : phase === 'closing' ? 'Finishing earlier audio' : sequence && phase === 'countdown' ? 'Mic connected · detection starts at GO' : phase === 'result' ? 'Mic on · recognition paused' : phase === 'countdown' ? 'Listening before the signal' : 'Microphone listening';
+      mic = phase === 'review' ? tr('microphoneStopped') : phase === 'closing' ? tr('finishingEarlierAudio') : sequence && phase === 'countdown' ? tr('microphoneConnectedAtGo') : phase === 'result' ? tr('microphoneRecognitionPaused') : phase === 'countdown' ? tr('microphoneBeforeSignal') : tr('microphoneListening');
       micTone = phase === 'review' ? 'muted' : ['result', 'closing'].includes(phase) || (sequence && phase === 'countdown') ? 'amber' : 'green';
       if (phase === 'countdown') {
-        title = state.completed ? 'Next countdown · automatic' : 'Get ready';
-        if (id === 'par' && state.completed) title = 'Next countdown · after Next';
-        value = `${((state.countdownEndsAtMs - t) / 1000).toFixed(1)} s`;
-        detail = t - lastNextAt < 500 ? 'You selected Next repetition' : 'Wait for the start signal';
+        title = state.completed ? tr('nextCountdownAutomatic') : tr('getReady');
+        if (id === 'par' && state.completed) title = tr('nextCountdownAfterNext');
+        value = `${formatLocaleNumber((state.countdownEndsAtMs - t) / 1000,{minimumFractionDigits:1,maximumFractionDigits:1})} s`;
+        detail = t - lastNextAt < 500 ? tr('selectedNext') : tr('waitForSignal');
       } else if (phase === 'active') {
-        title = t - beepAt < 300 ? 'BEEP · timer starts' : sequence ? 'Follow the selected order' : 'Listening for trigger clicks';
+        title = t - beepAt < 300 ? tr('beepTimerStarts') : sequence ? tr('followSelectedOrder') : tr('listeningForTriggerClicks');
         value = seconds(t - state.goAtMs);
-        if (sequence) detail = `Step ${Math.min(state.current.stepIndex + 1, manual.sequence.length)} / ${manual.sequence.length}: ${names[manual.sequence[state.current.stepIndex]]}`;
-        else if (id === 'par') detail = `Par limit ${seconds(config.parSeconds * 1000)}`;
-        else if (['repeated', 'control'].includes(id)) detail = 'One start beep · separate recognized clicks';
-        else detail = 'First recognized trigger ends this attempt';
+        if (sequence) detail = tr('stepProgress',{current:formatLocaleNumber(Math.min(state.current.stepIndex + 1, manual.sequence.length)),total:formatLocaleNumber(manual.sequence.length),sound:translate('common',`sound.${manual.sequence[state.current.stepIndex]}`)});
+        else if (id === 'par') detail = tr('parLimit',{seconds:seconds(config.parSeconds * 1000)});
+        else if (['repeated', 'control'].includes(id)) detail = tr('separateClicks');
+        else detail = tr('firstTriggerEndsAttempt');
       } else if (phase === 'result') {
-        title = latest?.reason === 'early' ? 'EARLY TRIGGER · failed' : sequence ? 'Sequence completed' : 'Result · select Next repetition';
-        value = latest?.reason === 'early' ? 'No shot' : seconds(latest?.elapsedMs ?? 0);
-        detail = sequence ? 'Next countdown follows the result' : latest?.reason === 'early' ? 'The next countdown starts automatically' : 'Reset when ready, then select Next';
+        title = latest?.reason === 'early' ? tr('earlyTriggerFailed') : sequence ? tr('sequenceCompleted') : tr('resultSelectNext');
+        value = latest?.reason === 'early' ? tr('noShot') : seconds(latest?.elapsedMs ?? 0);
+        detail = sequence ? tr('nextCountdownFollowsResult') : latest?.reason === 'early' ? tr('nextCountdownAutomatic') : tr('resetThenNext');
       } else if (phase === 'closing') {
-        title = 'Time limit reached'; value = seconds(config.parSeconds * 1000);
-        detail = 'Finishing audio captured before the deadline';
+        title = tr('timeLimitReached'); value = seconds(config.parSeconds * 1000);
+        detail = tr('finishingAudioBeforeDeadline');
       } else if (phase === 'review') {
-        title = 'Practice complete'; value = `${state.completed} / ${config.repetitions}`;
-        detail = 'Target reached · review the recorded outcomes';
+        title = tr('practiceComplete'); value = `${formatLocaleNumber(state.completed)} / ${formatLocaleNumber(config.repetitions)}`;
+        detail = tr('targetReachedReview');
       }
     }
-    const last = latest?.reason === 'early' ? 'Last attempt: failed before the beep · 0 shots'
-      : latest?.status === 'miss' ? 'Last attempt: miss · no click within the par time'
-      : latest ? (['repeated', 'control'].includes(id) && latest.intervalMs != null ? `Last click interval: ${seconds(latest.intervalMs)}`
-        : `Last result: ${seconds(latest.elapsedMs)}`) : 'No result yet';
-    const counter = !state ? 'Example · preparing' : ['repeated', 'control'].includes(id) ? `Clicks ${state.completed} / ${config.repetitions}`
-      : `Attempts ${state.completed} / ${config.repetitions}${sequence ? '' : ` · Shots ${state.shots}`}`;
+    const last = latest?.reason === 'early' ? tr('lastEarly')
+      : latest?.status === 'miss' ? tr('lastMiss')
+      : latest ? (['repeated', 'control'].includes(id) && latest.intervalMs != null ? tr('lastInterval',{time:seconds(latest.intervalMs)})
+        : tr('lastResult',{time:seconds(latest.elapsedMs)})) : tr('noResultYet');
+    const counter = !state ? tr('examplePreparing') : ['repeated', 'control'].includes(id) ? tr('clicksCounter',{completed:formatLocaleNumber(state.completed),total:formatLocaleNumber(config.repetitions)})
+      : tr(sequence?'attemptsCounter':'attemptsShotsCounter',{completed:formatLocaleNumber(state.completed),total:formatLocaleNumber(config.repetitions),shots:formatLocaleNumber(state.shots??0)});
     frames.push({ state, config, atMs: t, phase, mic, micTone, title, value, detail, last, counter,
       pulse: t - lastEventAt < 300, failed: latest?.reason === 'early', beep: t - beepAt < 300,
-      example: ['repeated', 'control'].includes(id) ? 'EXAMPLE · 3 CLICKS · 1× TIMING' : `EXAMPLE · ${config.repetitions} ATTEMPTS · 1× TIMING` });
+      example: ['repeated', 'control'].includes(id) ? tr('clicksCaption') : tr('attemptsCaption',{count:formatLocaleNumber(config.repetitions)}) });
     if (posterIndex === null && ((early && latest?.reason === 'early')
       || (id === 'single' && state?.completed === 1 && phase === 'countdown')
       || (id === 'par' && state?.completed === 1 && phase === 'result')

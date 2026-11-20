@@ -1,6 +1,8 @@
 import { getPracticeGuide, guideSoundTitle } from './practiceGuides.js';
 import { createScenario, FRAME_MS } from './practiceGuideExamples.js';
 import { createGuideExampleRenderer } from './practiceGuideRendering.js';
+import {translate} from '../apps/web/src/localization/runtime.ts';
+const tr=(key,parameters={})=>translate('practice-guide',`example.${key}`,parameters);
 
 /** A read-only animation/guide; no audio, storage or capture API is used. */
 export function createPracticeGuideController({ onBack, document: doc = document }) {
@@ -14,7 +16,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
   // Demo statuses are read on demand; repeated animation frames must not flood
   // screen readers. Only the real session keeps live announcements.
   $('practiceGuideExample').querySelectorAll('[role="status"], [aria-live]').forEach(el => el.setAttribute('aria-live', 'off'));
-  $('example-practiceStopBtn').setAttribute('aria-label', 'Stop example');
+  $('example-practiceStopBtn').setAttribute('aria-label', tr('stopExample'));
   let guide = null, scenario = null, playing = false, position = 0, startedAt = 0, raf = null;
   let lastPainted = -1, early = false;
   const text = (id, value) => { $(id).textContent = value; };
@@ -27,7 +29,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
     if (playing) position = Math.min(scenario.durationMs, performance.now() - startedAt);
     playing = false; if (raf !== null) cancelAnimationFrame(raf); raf = null;
     $('practiceGuidePlayBtn').setAttribute('aria-pressed', 'false');
-    text('practiceGuidePlayBtn', scenario && position >= scenario.durationMs ? 'Replay example' : position ? 'Resume example' : 'Play example');
+    text('practiceGuidePlayBtn', scenario && position >= scenario.durationMs ? tr('replayExample') : position ? tr('resumeExample') : tr('playExample'));
   }
   function tick(now) {
     if (!playing) return;
@@ -41,15 +43,15 @@ export function createPracticeGuideController({ onBack, document: doc = document
     scenario = createScenario(guide, { early });
     position = 0; lastPainted = -1; paint(scenario.posterIndex);
     $('practiceGuideExample').setAttribute('aria-label', early
-      ? 'Example: listening before the beep, early trigger fails with zero shots, then an automatic countdown and a successful trigger.'
-      : `${guide.title}. ${guide.stages.join(' → ')}. Synthetic example; no live microphone data.`);
+      ? tr('earlyExampleAria')
+      : tr('normalExampleAria',{title:guide.title,stages:guide.stages.join(' → ')}));
     if(page)page.update({early});else{$('practiceGuideNormalBtn').setAttribute('aria-pressed',String(!early));$('practiceGuideEarlyBtn').setAttribute('aria-pressed',String(early));}
-    text('practiceGuidePlayBtn', 'Play example');
+    text('practiceGuidePlayBtn', tr('playExample'));
   }
   function open(context) {
     pause(); guide = getPracticeGuide(context);
     const showSteps=guide.kind==='sequence';
-    const manual={texts:{practiceGuideKind:guide.kind==='practice'?'PRACTICE GUIDE':'ORDERED SEQUENCE GUIDE',practiceGuideName:guide.title,practiceGuidePurpose:guide.purpose,practiceGuideCurrentSetup:guide.currentSetup,practiceGuideMeasures:guide.measures,practiceGuideExpect:guide.expect,practiceGuideRequires:guide.requires,practiceGuideExampleNote:`${guide.exampleConfig}. Safety already confirmed; microphone preparation time varies.`},steps:guide.steps,sequenceHidden:!showSteps,examplesHidden:guide.id!=='single',sequence:(showSteps?guide.sequence:[]).map(label=>({label,text:guideSoundTitle(label)}))};
+    const manual={texts:{practiceGuideKind:translate('practice-guide',guide.kind==='practice'?'kind':'sequenceKind'),practiceGuideName:guide.title,practiceGuidePurpose:guide.purpose,practiceGuideCurrentSetup:guide.currentSetup,practiceGuideMeasures:guide.measures,practiceGuideExpect:guide.expect,practiceGuideRequires:guide.requires,practiceGuideExampleNote:translate('practice-guide','example.note',{config:guide.exampleConfig})},steps:guide.steps,sequenceHidden:!showSteps,examplesHidden:guide.id!=='single',sequence:(showSteps?guide.sequence:[]).map(label=>({label,text:guideSoundTitle(label)}))};
     if(page)page.update(manual);else{
       for(const[id,value]of Object.entries(manual.texts))text(id,value);
       $('practiceGuideSteps').replaceChildren(...manual.steps.map(step=>{const li=doc.createElement('li');li.textContent=step;return li;}));
@@ -64,7 +66,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
     if (playing) { pause(); return; }
     if (position >= scenario.durationMs) position = 0;
     playing = true; startedAt = performance.now() - position;
-    text('practiceGuidePlayBtn', 'Pause'); $('practiceGuidePlayBtn').setAttribute('aria-pressed', 'true');
+    text('practiceGuidePlayBtn', tr('pauseExample')); $('practiceGuidePlayBtn').setAttribute('aria-pressed', 'true');
     lastPainted = -1; tick(performance.now());
   }
   $('practiceGuidePlayBtn').addEventListener('click', togglePlay);

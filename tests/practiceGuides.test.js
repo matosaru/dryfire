@@ -1,6 +1,6 @@
 import { getPracticeGuide, guideSoundTitle, isGuideContextCurrent, isPublicGuideContextCurrent } from '../src/practiceGuides.js';
 import { createScenario } from '../src/practiceGuideExamples.js';
-import { loadLocale } from '../apps/web/src/localization/runtime.ts';
+import {loadLocale,translate} from '../apps/web/src/localization/runtime.ts';
 const context = (mode, config = {}) => ({ type: 'practice', mode, gunId: 'gun-a', routeKey: 'setup-a', config });
 
 afterEach(async () => { await loadLocale('en'); });
@@ -39,6 +39,18 @@ test.each(['de', 'nl'])('%s external-cue and silent guide explanations are trans
   const silent = getPracticeGuide(context('single', { soundAtStart: false }));
   expect(silent.currentSetup).not.toMatch(/^Your setup/);
   expect(silent.currentSetup).not.toMatch(/^⟦/);
+});
+test.each([
+  ['de','ZU FRÜHER ABZUG · fehlgeschlagen','BEISPIEL · 2 VERSUCHE · ZEITRAFFER 1×'],
+  ['nl','TE VROEG OVERHALEN · mislukt','VOORBEELD · 2 POGINGEN · TIMING 1×'],
+])('%s localizes simulated guide frames, counters and decimal timing',async(locale,early,caption)=>{
+ await loadLocale(locale);const guide=getPracticeGuide(context('single')),normal=createScenario(guide),failed=createScenario(guide,{early:true});
+ const sequence=getPracticeGuide({type:'sequence',gunId:'gun-a',routeKey:'setup-sequence',drill:{id:'rack-trigger',title:'Rack slide → Trigger pull',steps:['rack','trigger']}}),sequenceExample=createScenario(sequence);
+ expect(sequenceExample.frames.find(frame=>frame.phase==='active'&&frame.detail.startsWith(locale==='de'?'Schritt':'Stap')).detail).toBe(`${locale==='de'?'Schritt':'Stap'} 1 / 2: ${translate('common','sound.rack')}`);
+ expect(failed.frames.find(frame=>frame.failed).title).toBe(early);
+ expect(normal.frames.at(-1).example).toBe(caption);
+ expect(normal.frames.some(frame=>/\d[,.]\d{2} s/.test(frame.value))).toBe(true);
+ expect(normal.frames.at(-1).title).not.toBe('Practice complete');
 });
 test.each([
   ['de', 'Ziehen → Magazin → Abzug', 'Abzugsdruck'],

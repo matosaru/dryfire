@@ -51,3 +51,7 @@ The Learn page and its `SoundCard` primitive previously retained English-only pr
 ## Newly audited Custom Drill Editor — 2026-11-20
 
 The create/edit form's titles, field labels, action-order accessibility name, action buttons, helper copy, unavailable/save feedback and sound option names are now owned by `drills.editor.*` and the shared `common.sound.*` keys. The stable app-owned editor host resolves the page/common catalogs and subscribes to locale changes; the shared UI package receives messages as props and remains independent of application localization. Controller/native fallback feedback also uses the drill catalog. Tests cover retained English markup, both render paths, dynamic German/Dutch changes while editing a saved sequence, and the existing native-form rollback contract. The key-level whole-repository source scan remains open.
+
+## Newly audited animated Practice Guide — 2026-11-20
+
+Guide animation frame labels, simulated microphone states, countdown/results, counters, captions, no-save disclosures, and play/pause/replay controls now use the `practice-guide.example.*` message keys in all supported locales. Sequence-step sound labels reuse `common.sound.*`; integer and decimal example values use locale formatting. The animation continues to simulate only presentation state and does not access audio or storage. German/Dutch tests cover representative frame states and number formatting; English frame parity remains covered separately. The overall scan for unowned user-facing text is still open.

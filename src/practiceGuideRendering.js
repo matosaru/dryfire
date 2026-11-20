@@ -3,6 +3,8 @@ import { renderPracticeRun, renderPracticeReview, practiceResultDetails, renderS
 import { toPracticeRecord } from './practiceSession.js';
 import { toSessionRecord } from './drillSession.js';
 import { guideSoundTitle } from './practiceGuides.js';
+import {translate} from '../apps/web/src/localization/runtime.ts';
+const tr=(key,parameters={})=>translate('practice-guide',`example.${key}`,parameters);
 
 /** The same templates and presentation used by a real session; only the input
  * model differs. This module has no capture, persistence or feedback API. */
@@ -28,19 +30,19 @@ export function createGuideExampleRenderer(doc) {
       getContext: () => ({ gun: { id: 'guide-example' } }) };
     if (sequence) {
       if (review) {
-        renderSequenceReview(toSessionRecord(state), { ...common, $: query, resultDetails, retrySaveButton: doc.createElement('button'), reviewNote:'Example only · nothing saved',present:present('setSequenceReview') });
+        renderSequenceReview(toSessionRecord(state), { ...common, $: query, resultDetails, retrySaveButton: doc.createElement('button'), reviewNote:tr('nothingSaved'),present:present('setSequenceReview') });
       } else renderSequenceRun({ ...common, $: query, resultDetails, present:present('setSequenceRun'), announce: value => { get('sessionAnnouncement').textContent = value; } });
     } else if (review) {
-      renderPracticeReview(toPracticeRecord(state), { ...common, $: get, details, interruption: false,reviewNote:'Example only · nothing saved',present:present('setPracticeReview') });
+      renderPracticeReview(toPracticeRecord(state), { ...common, $: get, details, interruption: false,reviewNote:tr('nothingSaved'),present:present('setPracticeReview') });
     } else renderPracticeRun({ ...common, $: get, mode: guide.id, interruption: false, closing: false, details,present:present('setPracticeRun'),
-      inputFeedback: frame.beep ? 'Example start signal · silent illustration' : '',
+      inputFeedback: frame.beep ? tr('startSignalSilentIllustration') : '',
       renderInput: () => {
         const level = state ? frame.pulse ? 72 : 9 : 0;
         get('practiceLevelFill').style.width = `${level}%`;
         get('practiceLevelMeter').setAttribute('aria-valuenow', String(level));
-        get('practiceLevelMeter').setAttribute('aria-valuetext', `${level} simulated input level`);
+        get('practiceLevelMeter').setAttribute('aria-valuetext', tr('simulatedInputLevel',{level}));
         get('practiceLevelValue').textContent = level;
-        get('practiceInputState').textContent = state ? 'Microphone input detected.' : 'Waiting for audio input…';
+        get('practiceInputState').textContent = state ? tr('microphoneInputDetected') : tr('waitingForAudio');
       } });
     doc.getElementById('practiceGuideExample').dataset.phase = frame.phase;
   };

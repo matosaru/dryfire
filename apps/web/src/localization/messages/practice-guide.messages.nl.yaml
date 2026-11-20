@@ -187,3 +187,60 @@ runtime:
       Ga door tot het doel en vergelijk daarna de geregistreerde intervallen.
     singleExpect: Bij deze instellingen met extern signaal tellen trekkerklikken vóór de gekalibreerde pieptoon niet als pogingen. Het voorbeeld voor een te vroege klik hieronder toont de appsignaalmodus.
     requirementSuffix: " Voor een start met een externe pieptoon zijn drie geschikte geluidsvoorbeelden nodig."
+sequenceKind: REEKSINSTRUCTIE
+example:
+  preparing: Microfoon voorbereiden
+  connectBeforeCountdown: Verbind de microfoon voordat het aftellen begint
+  waitingBeforeCountdown: Wachten op audio voordat het aftellen begint
+  microphoneStopped: Microfoon gestopt
+  finishingEarlierAudio: Eerder opgenomen audio verwerken
+  microphoneConnectedAtGo: Microfoon verbonden · herkenning begint bij GO
+  microphoneRecognitionPaused: Microfoon actief · herkenning gepauzeerd
+  microphoneBeforeSignal: Luisteren vóór het startsignaal
+  microphoneListening: Microfoon luistert
+  nextCountdownAutomatic: Volgende aftelling · automatisch
+  getReady: Maak je klaar
+  nextCountdownAfterNext: Volgende aftelling · na Volgende
+  selectedNext: Je koos Volgende herhaling
+  waitForSignal: Wacht op het startsignaal
+  beepTimerStarts: PIEP · tijdmeting begint
+  followSelectedOrder: Volg de gekozen volgorde
+  listeningForTriggerClicks: Luisteren naar trekkerklikken
+  stepProgress: "Stap {{current}} / {{total}}: {{sound}}"
+  parLimit: "Tijdslimiet {{seconds}}"
+  separateClicks: Eén startpiep · afzonderlijke herkende klikken
+  firstTriggerEndsAttempt: De eerste herkende trekkerklik beëindigt deze poging
+  earlyTriggerFailed: TE VROEG OVERHALEN · mislukt
+  sequenceCompleted: Reeks voltooid
+  resultSelectNext: Resultaat · kies Volgende herhaling
+  noShot: Geen schot
+  nextCountdownFollowsResult: Na het resultaat begint de volgende aftelling
+  resetThenNext: Reset wanneer je klaar bent en kies daarna Volgende
+  timeLimitReached: Tijdslimiet bereikt
+  finishingAudioBeforeDeadline: Audio verwerken die vóór de deadline is opgenomen
+  practiceComplete: Oefening voltooid
+  targetReachedReview: Doel bereikt · bekijk de resultaten
+  lastEarly: "Laatste poging: mislukt vóór de piep · 0 schoten"
+  lastMiss: "Laatste poging: gemist · geen klik binnen de par-tijd"
+  lastInterval: "Laatste klikinterval: {{time}}"
+  lastResult: "Laatste resultaat: {{time}}"
+  noResultYet: Nog geen resultaat
+  examplePreparing: Voorbeeld · voorbereiden
+  clicksCounter: "Klikken {{completed}} / {{total}}"
+  attemptsCounter: "Pogingen {{completed}} / {{total}}"
+  attemptsShotsCounter: "Pogingen {{completed}} / {{total}} · schoten {{shots}}"
+  clicksCaption: VOORBEELD · 3 KLIKKEN · TIMING 1×
+  attemptsCaption: "VOORBEELD · {{count}} POGINGEN · TIMING 1×"
+  stopExample: Voorbeeld stoppen
+  replayExample: Voorbeeld opnieuw afspelen
+  resumeExample: Voorbeeld hervatten
+  playExample: Voorbeeld afspelen
+  pauseExample: Pauzeren
+  earlyExampleAria: "Voorbeeld: de microfoon luistert. Te vroeg overhalen mislukt; daarna volgen een automatische aftelling en een geslaagde klik."
+  normalExampleAria: "{{title}}. {{stages}}. Gesimuleerd voorbeeld zonder live microfoon."
+  note: "{{config}}. Veiligheid is al bevestigd; de microfoon heeft per apparaat een andere voorbereidingstijd."
+  nothingSaved: Alleen een voorbeeld · niets opgeslagen
+  startSignalSilentIllustration: Startsigneel van voorbeeld · stille illustratie
+  simulatedInputLevel: "{{level}} gesimuleerd ingangsniveau"
+  microphoneInputDetected: Microfooningang gedetecteerd.
+  waitingForAudio: Wachten op audio…

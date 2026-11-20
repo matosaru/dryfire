@@ -187,3 +187,60 @@ runtime:
       Fahre bis zum Zielwert fort und vergleiche dann die aufgezeichneten Intervalle.
     singleExpect: Bei dieser Einrichtung mit externem Signalton zählen Abzugsklicks vor dem kalibrierten Signal nicht als Versuche. Das Beispiel für einen zu frühen Klick unten zeigt den App-Signalmodus.
     requirementSuffix: " Für einen Start mit externem Signalton werden drei passende Signalbeispiele benötigt."
+sequenceKind: ABLAUFANLEITUNG
+example:
+  preparing: Mikrofon wird vorbereitet
+  connectBeforeCountdown: Mikrofon vor dem Countdown verbinden
+  waitingBeforeCountdown: Warte vor dem Countdown auf eingehende Audiodaten
+  microphoneStopped: Mikrofon gestoppt
+  finishingEarlierAudio: Vorher erfasste Audiodaten werden verarbeitet
+  microphoneConnectedAtGo: Mikrofon verbunden · Erkennung startet bei GO
+  microphoneRecognitionPaused: Mikrofon aktiv · Erkennung pausiert
+  microphoneBeforeSignal: Warte auf das Startsignal
+  microphoneListening: Mikrofon hört zu
+  nextCountdownAutomatic: Nächster Countdown · automatisch
+  getReady: Mach dich bereit
+  nextCountdownAfterNext: Nächster Countdown · nach „Weiter“
+  selectedNext: Du hast „Nächste Wiederholung“ gewählt
+  waitForSignal: Warte auf das Startsignal
+  beepTimerStarts: PIEPTON · Zeitmessung startet
+  followSelectedOrder: Folge der ausgewählten Reihenfolge
+  listeningForTriggerClicks: Warte auf Abzugsgeräusche
+  stepProgress: "Schritt {{current}} / {{total}}: {{sound}}"
+  parLimit: "Zeitlimit {{seconds}}"
+  separateClicks: Ein Startsignal · einzelne erkannte Klicks
+  firstTriggerEndsAttempt: Der erste erkannte Abzug beendet diesen Versuch
+  earlyTriggerFailed: ZU FRÜHER ABZUG · fehlgeschlagen
+  sequenceCompleted: Ablauf abgeschlossen
+  resultSelectNext: Ergebnis · wähle „Nächste Wiederholung“
+  noShot: Kein Schuss
+  nextCountdownFollowsResult: Nach dem Ergebnis folgt der nächste Countdown
+  resetThenNext: Setze dich zurück und wähle dann „Weiter“
+  timeLimitReached: Zeitlimit erreicht
+  finishingAudioBeforeDeadline: Vor dem Zeitlimit erfasste Audiodaten werden verarbeitet
+  practiceComplete: Übung abgeschlossen
+  targetReachedReview: Ziel erreicht · Ergebnisse ansehen
+  lastEarly: "Letzter Versuch: vor dem Signal fehlgeschlagen · 0 Schüsse"
+  lastMiss: "Letzter Versuch: verfehlt · kein Klick innerhalb des Zeitlimits"
+  lastInterval: "Letzter Klickabstand: {{time}}"
+  lastResult: "Letztes Ergebnis: {{time}}"
+  noResultYet: Noch kein Ergebnis
+  examplePreparing: Beispiel · wird vorbereitet
+  clicksCounter: "Klicks {{completed}} / {{total}}"
+  attemptsCounter: "Versuche {{completed}} / {{total}}"
+  attemptsShotsCounter: "Versuche {{completed}} / {{total}} · Schüsse {{shots}}"
+  clicksCaption: BEISPIEL · 3 KLICKS · ZEITRAFFER 1×
+  attemptsCaption: "BEISPIEL · {{count}} VERSUCHE · ZEITRAFFER 1×"
+  stopExample: Beispiel stoppen
+  replayExample: Beispiel wiederholen
+  resumeExample: Beispiel fortsetzen
+  playExample: Beispiel abspielen
+  pauseExample: Pause
+  earlyExampleAria: "Beispiel: Das Mikrofon hört zu. Ein Abzug vor dem Signal schlägt fehl, danach folgen ein automatischer Countdown und ein erfolgreicher Abzug."
+  normalExampleAria: "{{title}}. {{stages}}. Simuliertes Beispiel ohne Live-Mikrofon."
+  note: "{{config}}. Die Sicherheitsbestätigung liegt bereits vor; die Mikrofonvorbereitung kann unterschiedlich lange dauern."
+  nothingSaved: Nur ein Beispiel · nichts gespeichert
+  startSignalSilentIllustration: Beispiel-Startsignal · stille Darstellung
+  simulatedInputLevel: "{{level}} simulierter Eingangspegel"
+  microphoneInputDetected: Mikrofoneingang erkannt.
+  waitingForAudio: Warte auf Audiodaten…
