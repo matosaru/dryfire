@@ -49,7 +49,7 @@ test('new or empty legacy databases require a named first gun before writes', as
   expect(await getActiveGun()).toBeNull();
   expect(await getExamples()).toEqual([]);
   expect(await getEvents()).toEqual([]);
-  await expect(addExample('draw', features)).rejects.toThrow(/select|gun/i);
+  await expect(addExample('draw', features)).rejects.toMatchObject({code:'GUN_REQUIRED',message:expect.stringMatching(/select|gun/i)});
   await expect(addEvent({ label: 'draw', score: 55 })).rejects.toThrow(/select|gun/i);
   await removeDb();
   await seedLegacy({ settings: [{ key: 'maxResults', value: 25 }] });

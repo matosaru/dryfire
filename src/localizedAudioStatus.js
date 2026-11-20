@@ -46,6 +46,8 @@ export function translateAudioStatus(status) {
 }
 
 export function translateApplicationError(error) {
-  if(error?.code==='INVALID_BACKUP')return translate('common','runtimeErrors.invalidBackup');
+  const errorKeys={INVALID_BACKUP:'invalidBackup',GUN_REQUIRED:'gunRequired',GUN_MISSING:'gunMissing',GUN_LIMIT:'gunLimit',SAMPLE_LIMIT:'sampleLimit',CALIBRATION_LIMIT:'calibrationLimit'};
+  const key=errorKeys[error?.code];
+  if(key)return translate('common',`runtimeErrors.${key}`);
   return translateAudioStatus(error?.message||String(error));
 }

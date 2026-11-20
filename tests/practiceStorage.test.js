@@ -72,8 +72,8 @@ test('older over-cap profiles and calibration restore and export intact while ne
   await restoreBackup(backup);
   expect(await getExamples(gun.id)).toHaveLength(12);
   expect(await getCalibrationExamples(gun.id)).toHaveLength(12);
-  await expect(addExample('trigger', Array(15).fill(.4), gun.id)).rejects.toThrow(/maximum|limit/i);
-  await expect(addCalibrationExample('reset', Array(15).fill(.4), gun.id)).rejects.toThrow(/maximum|limit/i);
+  await expect(addExample('trigger', Array(15).fill(.4), gun.id)).rejects.toMatchObject({code:'SAMPLE_LIMIT',message:expect.stringMatching(/maximum|limit/i)});
+  await expect(addCalibrationExample('reset', Array(15).fill(.4), gun.id)).rejects.toMatchObject({code:'CALIBRATION_LIMIT',message:expect.stringMatching(/maximum|limit/i)});
   const exported = await exportBackup();
   expect(exported.examples).toHaveLength(12);
   expect(exported.gunSettings.find(row => row.key === 'calibrationExamples').value).toHaveLength(12);

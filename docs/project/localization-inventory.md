@@ -103,3 +103,5 @@ Client-side application titles now resolve from the current locale catalog for a
 ## Backup validation feedback — 2026-11-20
 
 Backup validation now marks invalid-import errors with a stable error code while preserving detailed English messages for storage-level diagnostics and existing tests. The Settings import flow displays a localized, actionable compatibility message from `common.runtimeErrors.invalidBackup` for all validation failures. English, German and Dutch feedback are covered; database replacement still begins only after full validation.
+
+Gun-library write guards now also attach stable codes for a missing gun, missing selection, gun cap, sound-sample cap and calibration-sample cap. `showError` maps these to `common.runtimeErrors.*` catalog messages in all supported locales while the underlying diagnostic message remains available. Tests cover the guarded storage operations and translated feedback; other less common validation and stale-record errors remain part of the source scan.

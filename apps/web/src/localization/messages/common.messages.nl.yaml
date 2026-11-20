@@ -128,6 +128,11 @@ runtimeErrors:
   inputStopped: Er komt geen audio meer binnen. Start de geluidstest of oefening opnieuw.
   guideUnavailable: De oefengids kon niet worden geladen. Je instellingen zijn ongewijzigd. Controleer je verbinding en laad de pagina opnieuw.
   invalidBackup: Deze back-up is ongeldig of niet compatibel. Kies een back-up die met Dry Fire With Ease is geëxporteerd.
+  gunRequired: Selecteer of voeg een wapen toe voordat je deze gegevens opslaat.
+  gunMissing: Dit wapenprofiel is niet meer beschikbaar. Vernieuw de app en selecteer een opgeslagen profiel.
+  gunLimit: Deze versie heeft de limiet voor wapenprofielen bereikt. Selecteer een bestaand profiel.
+  sampleLimit: De limiet voor voorbeelden van dit geluid is bereikt. Bestaande voorbeelden blijven behouden.
+  calibrationLimit: De kalibratielimiet voor deze categorie is bereikt. Bestaande voorbeelden blijven behouden.
 runtime:
   practice:
     inputDetected: Microfooningang gedetecteerd.

@@ -128,6 +128,11 @@ runtimeErrors:
   inputStopped: Microphone input stopped arriving. Restart the sound check or practice to reconnect.
   guideUnavailable: Practice guide could not load. Your setup is unchanged. Check your connection and reload to try again.
   invalidBackup: This backup is invalid or incompatible. Choose a backup exported by Dry Fire With Ease.
+  gunRequired: Select or add a gun before saving this data.
+  gunMissing: This gun profile is no longer available. Refresh the app and select a saved gun.
+  gunLimit: This version has reached its gun profile limit. Select an existing gun to continue.
+  sampleLimit: The sample limit for this sound has been reached. Existing samples are unchanged.
+  calibrationLimit: The calibration sample limit for this category has been reached. Existing samples are unchanged.
 runtime:
   practice:
     inputDetected: Microphone input detected.

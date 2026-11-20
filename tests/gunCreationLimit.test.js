@@ -9,7 +9,7 @@ test('public creation allows two and rejects a third atomically with selection/d
   await storage.saveCustomDrill({ id: 'custom-existing', title: 'Saved press', steps: ['trigger'] }, gun.id);
   await storage.createGun(details('Second'), { maxGuns: 2 });
   const before = await storage.exportBackup();
-  await expect(storage.createGun(details('Third'), { maxGuns: 2 })).rejects.toThrow('two guns');
+  await expect(storage.createGun(details('Third'), { maxGuns: 2 })).rejects.toMatchObject({code:'GUN_LIMIT',message:expect.stringContaining('two guns')});
   const after = await storage.exportBackup();
   expect({ ...after, exportedAt: before.exportedAt }).toEqual(before);
 });
@@ -24,7 +24,7 @@ test('legacy multi-gun backups restore, edit and export even when new public cre
   await storage.createGun(details('C'));
   const backup = await storage.exportBackup(); await storage.resetLibrary(); await storage.restoreBackup(backup);
   await storage.updateGun(first.id, details('Renamed')); await storage.setActiveGun(first.id);
-  await expect(storage.createGun(details('D'), { maxGuns: 2 })).rejects.toThrow('two guns');
+  await expect(storage.createGun(details('D'), { maxGuns: 2 })).rejects.toMatchObject({code:'GUN_LIMIT',message:expect.stringContaining('two guns')});
   const result = await storage.exportBackup();
   expect(result.guns).toHaveLength(3); expect(result.guns.find(gun => gun.id === first.id).name).toBe('Renamed');
   expect(result.activeGunId).toBe(first.id);

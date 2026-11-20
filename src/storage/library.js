@@ -3,6 +3,8 @@ import {normalizeMaxResults,validGunDetails,validFeatures,validatePracticeSettin
 import {validateSession} from './sessionValidation.js';
 import {STORES,EXAMPLES,EVENTS,SETTINGS,GUNS,GUN_SETTINGS,SESSIONS,openDb,withTransaction} from './database.js';
 export {MAX_EXAMPLES_PER_CLASS,MAX_GUNS,GUN_TYPES,normalizeMaxResults};
+
+const storageError=(code,message)=>Object.assign(new Error(message),{code});
 import { FEATURE_VERSION } from '../featureFormat.js';
 import { parseNumberInput } from '../inputLimits.js';
 import { labels } from '../classifier.js';
@@ -19,7 +21,7 @@ function withOwnedTransaction(owner, storeName, action) {
   return withTransaction([GUNS, ...(Array.isArray(storeName) ? storeName : [storeName])], 'readwrite', (tx, context) => {
     const request = tx.objectStore(GUNS).get(owner);
     request.onsuccess = () => {
-      if (!request.result) { context.fail(new Error('Gun profile no longer exists. Retry with the current library.')); return; }
+      if (!request.result) { context.fail(storageError('GUN_MISSING','Gun profile no longer exists. Retry with the current library.')); return; }
       try { action(tx, context); }
       catch (error) { context.fail(error); }
     };
@@ -83,7 +85,7 @@ export async function createGun({ name, type } = {}, { maxGuns = MAX_GUNS } = {}
     request.onsuccess = () => {
       if (request.result >= maxGuns) {
         const limit = ['one gun', 'two guns', 'three guns', 'four guns'][maxGuns - 1];
-        context.fail(new Error(maxGuns === MAX_GUNS ? 'Maximum five guns saved. Select an existing gun.' : `This version allows creating ${limit}. Existing saved guns remain available.`)); return;
+        context.fail(storageError('GUN_LIMIT',maxGuns === MAX_GUNS ? 'Maximum five guns saved. Select an existing gun.' : `This version allows creating ${limit}. Existing saved guns remain available.`)); return;
       }
       store.put(row);
       tx.objectStore(SETTINGS).put({ key: ACTIVE_GUN, value: row.id });
@@ -98,7 +100,7 @@ export async function updateGun(id, { name, type } = {}) {
     const store = tx.objectStore(GUNS);
     const request = store.get(id);
     request.onsuccess = () => {
-      if (!request.result) { context.fail(new Error('Gun profile not found.')); return; }
+      if (!request.result) { context.fail(storageError('GUN_MISSING','Gun profile not found.')); return; }
       try {
         const details = validGunDetails(name ?? request.result.name, type ?? request.result.type);
         const row = { ...request.result, ...details, needsDetails: false };
@@ -116,7 +118,7 @@ export async function deleteGun(id) {
     const store = tx.objectStore(GUNS);
     const request = store.getAll();
     request.onsuccess = () => {
-      if (!request.result.some(gun => gun.id === id)) { context.fail(new Error('Gun profile not found.')); return; }
+      if (!request.result.some(gun => gun.id === id)) { context.fail(storageError('GUN_MISSING','Gun profile not found.')); return; }
       const remaining = request.result.filter(gun => gun.id !== id)
         .sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id));
       const settings = tx.objectStore(SETTINGS);
@@ -147,7 +149,7 @@ export async function setActiveGun(id) {
   return withTransaction([GUNS, SETTINGS], 'readwrite', (tx, context) => {
     const request = tx.objectStore(GUNS).get(id);
     request.onsuccess = () => {
-      if (!request.result) { context.fail(new Error('Gun profile not found.')); return; }
+      if (!request.result) { context.fail(storageError('GUN_MISSING','Gun profile not found.')); return; }
       tx.objectStore(SETTINGS).put({ key: ACTIVE_GUN, value: id });
       context.result = request.result;
     };
@@ -157,10 +159,10 @@ export async function setActiveGun(id) {
 async function resolveGunId(gunId, required = false) {
   const id = gunId === undefined ? (await getActiveGun())?.id : gunId;
   if (id == null) {
-    if (required) throw new Error('Select or add a gun before saving its data.');
+    if (required) throw storageError('GUN_REQUIRED','Select or add a gun before saving its data.');
     return null;
   }
-  if (typeof id !== 'string' || !id || !await getRow(GUNS, id)) throw new Error('Gun profile not found.');
+  if (typeof id !== 'string' || !id || !await getRow(GUNS, id)) throw storageError('GUN_MISSING','Gun profile not found.');
   return id;
 }
 
@@ -186,7 +188,7 @@ export async function addExample(label, features, gunId, {spectralFeatures} = {}
     const request = store.index('gunId').getAll(owner);
     request.onsuccess = () => {
       if (request.result.filter(e => currentExample(e) && e.label === label).length >= MAX_EXAMPLES_PER_CLASS) {
-        context.fail(new Error(`Maximum ${MAX_EXAMPLES_PER_CLASS} examples per sound reached.`)); return;
+        context.fail(storageError('SAMPLE_LIMIT',`Maximum ${MAX_EXAMPLES_PER_CLASS} examples per sound reached.`)); return;
       }
       store.put(row);
       context.result = row;
@@ -361,7 +363,7 @@ export async function addCalibrationExample(kind, features, gunId, {spectralFeat
     request.onsuccess = () => {
       try {
         const previous = normalizeCalibration(request.result?.value ?? []);
-        if (previous.filter(item => item.kind === kind).length >= MAX_EXAMPLES_PER_CLASS) throw new Error(`Maximum ${MAX_EXAMPLES_PER_CLASS} calibration examples per category reached.`);
+        if (previous.filter(item => item.kind === kind).length >= MAX_EXAMPLES_PER_CLASS) throw storageError('CALIBRATION_LIMIT',`Maximum ${MAX_EXAMPLES_PER_CLASS} calibration examples per category reached.`);
         const rows = normalizeCalibration([...previous, row]);
         store.put({ gunId: owner, key: 'calibrationExamples', value: rows }); context.result = row;
       } catch (error) { context.fail(error); }

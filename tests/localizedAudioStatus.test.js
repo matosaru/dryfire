@@ -29,3 +29,12 @@ test('invalid backup validation errors are localized without changing their stor
  await loadLocale('de');expect(translateApplicationError(error)).toBe('Diese Sicherung ist ungültig oder inkompatibel. Wähle eine mit Dry Fire With Ease exportierte Sicherung.');
  await loadLocale('nl');expect(translateApplicationError(error)).toBe('Deze back-up is ongeldig of niet compatibel. Kies een back-up die met Dry Fire With Ease is geëxporteerd.');
 });
+
+test('gun library and training-capacity errors use actionable localized messages',async()=>{
+ await loadLocale('de');
+ expect(translateApplicationError({code:'GUN_REQUIRED',message:'Select or add a gun before saving its data.'})).toContain('Wähle eine Waffe aus');
+ expect(translateApplicationError({code:'GUN_MISSING',message:'Gun profile not found.'})).toContain('Waffenprofil ist nicht mehr verfügbar');
+ expect(translateApplicationError({code:'GUN_LIMIT',message:'Maximum five guns saved.'})).toContain('maximale Anzahl an Waffenprofilen');
+ expect(translateApplicationError({code:'SAMPLE_LIMIT',message:'Maximum examples reached.'})).toContain('Limit für Beispiele dieses Tons');
+ expect(translateApplicationError({code:'CALIBRATION_LIMIT',message:'Maximum calibration examples reached.'})).toContain('Kalibrierungslimit');
+});

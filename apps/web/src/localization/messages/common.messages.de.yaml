@@ -128,6 +128,11 @@ runtimeErrors:
   inputStopped: Es kommt kein Audio mehr an. Starte Sound Check oder die Übung neu.
   guideUnavailable: Die Übungsanleitung konnte nicht geladen werden. Deine Einstellungen sind unverändert. Überprüfe die Verbindung und lade die Seite erneut.
   invalidBackup: Diese Sicherung ist ungültig oder inkompatibel. Wähle eine mit Dry Fire With Ease exportierte Sicherung.
+  gunRequired: Wähle eine Waffe aus oder füge eine hinzu, bevor du diese Daten speicherst.
+  gunMissing: Dieses Waffenprofil ist nicht mehr verfügbar. Aktualisiere die App und wähle ein gespeichertes Profil.
+  gunLimit: Diese Version hat die maximale Anzahl an Waffenprofilen erreicht. Wähle ein vorhandenes Profil aus.
+  sampleLimit: Das Limit für Beispiele dieses Tons ist erreicht. Vorhandene Beispiele bleiben erhalten.
+  calibrationLimit: Das Kalibrierungslimit für diese Kategorie ist erreicht. Vorhandene Beispiele bleiben erhalten.
 runtime:
   practice:
     inputDetected: Mikrofoneingang erkannt.
