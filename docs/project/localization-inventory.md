@@ -132,6 +132,14 @@ The shared Contact email-copy control now consumes `contact.email.*` itself, so 
 
 Sound Check now delegates microphone/readiness statuses to the common audio-status translator. Its locale-refresh logic stores the current source status and translates it again on language changes instead of matching English status sentences to a duplicate Sound Check key map.
 
+## Microphone capture recovery status codes — 2026-11-20
+
+Microphone interruption, track disconnect/mute and stopped-input recovery errors now carry stable codes and resolve to the existing `common.runtimeErrors.*` YAML messages. Their English error text remains diagnostic context only; localized display no longer depends on matching that exact wording. Monitoring reports only the first recovery failure before teardown, so the silence timer cannot emit duplicate errors after the stream has already failed. EN/DE/NL mapping and each capture failure source have focused tests.
+
+Sound Check attempt-count validation now also attaches a stable error code and uses localized guidance in all three catalogs. Invalid input remains a `RangeError` for programmatic callers; the UI error path resolves its displayed text from `sound-check.status.invalidAttempts` instead of exposing the English diagnostic.
+
+Sound Check analysis failures now retain only their stable error code in controller state. The active locale translates known audio-analysis failures each time the status is rendered; unrecognized causes use a localized retry message rather than exposing raw English exception text. The app-level error presenter likewise preserves mapped status/error text but uses a localized generic message for unknown failures, while `showError` retains the original exception in the console for diagnosis.
+
 ## Newly audited History evaluation matrix — 2026-11-20
 
 React History now formats the matrix's stable sound IDs with the same common sound and History noise labels as the native renderer. Matrix lookups and correct-cell logic continue to use the unchanged IDs. Focused component coverage and delayed-handoff pixel parity pass in Chromium and WebKit; the reviewed English mobile History baseline now reflects the readable labels. The repository-wide source scan remains open; remaining English strings in shared UI package defaults are reviewed as app fallbacks separately from live YAML-owned app copy.

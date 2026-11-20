@@ -5,17 +5,20 @@ import {recognitionOptions} from './calibration.js';
 import {analyzeRecording} from './audio.js';
 import {extractSpectralFeatures} from './spectralFeatures.js';
 import {translate} from '../apps/web/src/localization/runtime.ts';
-import {translateAudioStatus} from './localizedAudioStatus.js';
+import {translateApplicationError,translateAudioStatus} from './localizedAudioStatus.js';
 
 const soundKeys={trigger:'trigger',other:'other',rack:'rack',reload:'reload',draw:'draw'};
+const analysisErrorCodes=new Set(['AUDIO_TOO_SHORT','AUDIO_NO_CLEAR_SOUND','AUDIO_DISTORTED']);
+export function localizedSoundCheckAnalysisError(code){const message=analysisErrorCodes.has(code)?translateApplicationError({code}):translate('sound-check','status.unknownAnalysisFailure');return translate('sound-check','status.analysisFailed',{message});}
 export function createSoundCheckController({doc=document,startContinuousListening,examples,calibration,enabledLabels,audioPreferences,onError,download,startGuard=action=>action()}){
  const $=id=>doc.getElementById(id),setup=$('soundCheckSetup'),run=$('soundCheckRun'),review=$('soundCheckReview');
  let check,session,timer,disposed=false,ready=false,starting=false,startAbort=null,operation=0;
  const show=(node,visible)=>node.classList.toggle('hidden',!visible);
- let statusMessage={key:'status.ready',parameters:{},audioStatus:null};
- const say=(key,parameters={})=>{statusMessage={key,parameters,audioStatus:null};$('soundCheckStatus').textContent=translate('sound-check',key,parameters);};
+ let statusMessage={key:'status.ready',parameters:{},audioStatus:null,analysisErrorCode:null};
+ const say=(key,parameters={})=>{statusMessage={key,parameters,audioStatus:null,analysisErrorCode:null};$('soundCheckStatus').textContent=translate('sound-check',key,parameters);};
  const soundTitle=label=>translate('sound-check',`sound.${soundKeys[label]??'other'}`);
- const refreshStatus=()=>{$('soundCheckStatus').textContent=statusMessage.audioStatus===null?translate('sound-check',statusMessage.key,statusMessage.parameters):translateAudioStatus(statusMessage.audioStatus);};
+ const refreshStatus=()=>{if(statusMessage.analysisErrorCode){$('soundCheckStatus').textContent=localizedSoundCheckAnalysisError(statusMessage.analysisErrorCode);return;}$('soundCheckStatus').textContent=statusMessage.audioStatus===null?translate('sound-check',statusMessage.key,statusMessage.parameters):translateAudioStatus(statusMessage.audioStatus);};
+ const sayAnalysisFailure=error=>{statusMessage={key:'status.analysisFailed',parameters:{},audioStatus:null,analysisErrorCode:error?.code||'UNKNOWN_ANALYSIS_ERROR'};refreshStatus();};
  function updateStartControl(){
   const button=$('soundCheckStartBtn');
   if(button)button.disabled=starting||!!session||disposed;
@@ -41,7 +44,7 @@ export function createSoundCheckController({doc=document,startContinuousListenin
    const acquired=await startContinuousListening({detectionEnabled:false,audioPreferences,signal:startAbort.signal,
     onState:text=>{if(token===operation&&!ready){statusMessage={audioStatus:text};refreshStatus();}},
     onLevel:level=>{if(token!==operation)return;const fill=$('soundCheckLevel');fill.style.width=`${level}%`;fill.parentElement.setAttribute('aria-valuenow',String(level));},
-    onEvent:(pcm,sampleRate)=>{if(token!==operation||!check?.active)return;let v2=null,v3=null,features={};try{const options=recognitionOptions(calibration,enabledLabels),analysis=analyzeRecording(pcm,sampleRate);features={v2:analysis.features,v3:extractSpectralFeatures(pcm,sampleRate)};v2=recognizeRecording(examples,pcm,sampleRate,options);v3=recognizeRecordingV3(examples,pcm,sampleRate,options);}catch(error){say('status.analysisFailed',{message:error.message});}check=recordSoundCheckDetection(check,v2,v3,session?.nowMs(),features);},
+    onEvent:(pcm,sampleRate)=>{if(token!==operation||!check?.active)return;let v2=null,v3=null,features={};try{const options=recognitionOptions(calibration,enabledLabels),analysis=analyzeRecording(pcm,sampleRate);features={v2:analysis.features,v3:extractSpectralFeatures(pcm,sampleRate)};v2=recognizeRecording(examples,pcm,sampleRate,options);v3=recognizeRecordingV3(examples,pcm,sampleRate,options);}catch(error){sayAnalysisFailure(error);}check=recordSoundCheckDetection(check,v2,v3,session?.nowMs(),features);},
     onError:error=>{if(token!==operation)return;void stop().then(()=>reset());onError(error);},
    });
    if(token!==operation||disposed){await acquired.stop();return;}

@@ -24,6 +24,7 @@ test('detections outside an open attempt are ignored and reports reject unfinish
  const check=createSoundCheck({attempts:1});
  expect(recordSoundCheckDetection(check,{label:'trigger'},null,10)).toBe(check);
  expect(()=>buildSoundCheckReport(check)).toThrow(expect.objectContaining({code:'SOUND_CHECK_INCOMPLETE'}));
- expect(()=>createSoundCheck({attempts:0})).toThrow(RangeError);
+ let error;try{createSoundCheck({attempts:0});}catch(caught){error=caught;}
+ expect(error).toBeInstanceOf(RangeError);expect(error).toHaveProperty('code','SOUND_CHECK_ATTEMPTS_INVALID');
  expect(()=>finishSoundCheckAttempt(check,{actualLabel:'invalid'})).toThrow(TypeError);
 });

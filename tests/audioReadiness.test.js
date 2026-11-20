@@ -1,4 +1,5 @@
-import { createAmbientReadinessEstimator, describeAmbientReadiness } from '../src/audioReadiness.js';
+import {expect, jest, test} from '@jest/globals';
+import { createAmbientReadinessEstimator, describeAmbientReadiness, monitorAudioCapture } from '../src/audioReadiness.js';
 
 const rate = 8000;
 const constant = (seconds, amplitude) => new Float32Array(Math.round(rate * seconds)).fill(amplitude);
@@ -30,4 +31,40 @@ test('noisy rooms receive a plain-language corrective status', () => {
   expect(result).toMatchObject({ ready: true, status: 'noisy' });
   expect(describeAmbientReadiness(result)).toMatch(/room is noisy/i);
   expect(describeAmbientReadiness({ ready: false, status: 'preparing' })).toMatch(/preparing microphone/i);
+});
+
+test.each([
+  ['interrupted context', 'MICROPHONE_INTERRUPTED', ({context}) => { context.state = 'suspended'; context.onstatechange?.(); }],
+  ['disconnected track', 'MICROPHONE_DISCONNECTED', ({track}) => track.onended()],
+  ['muted track', 'MICROPHONE_MUTED', ({track}) => track.onmute()],
+])('capture %s failures carry a stable localization code', (_name, code, trigger) => {
+  const context = {state: 'running', addEventListener: (_type, listener) => { context.onstatechange = listener; }, removeEventListener: jest.fn()};
+  const track = {};
+  const stop = jest.fn();
+  const onError = jest.fn();
+  const monitor = monitorAudioCapture(context, {getAudioTracks: () => [track]}, () => true, () => Date.now(), onError, stop);
+
+  trigger({context, track});
+
+  expect(onError).toHaveBeenCalledWith(expect.objectContaining({code}));
+  expect(stop).toHaveBeenCalledTimes(1);
+  monitor.stop();
+});
+
+test('capture timeout reports a stable code when microphone frames stop arriving', () => {
+  jest.useFakeTimers();
+  try {
+    const now = Date.now();
+    const stop = jest.fn();
+    const onError = jest.fn();
+    const monitor = monitorAudioCapture({state: 'running'}, {getAudioTracks: () => []}, () => true, () => now, onError, stop);
+    jest.advanceTimersByTime(3000);
+    expect(onError).toHaveBeenCalledWith(expect.objectContaining({code: 'MICROPHONE_INPUT_STOPPED'}));
+    expect(stop).toHaveBeenCalledTimes(1);
+    jest.advanceTimersByTime(3000);
+    expect(onError).toHaveBeenCalledTimes(1);
+    monitor.stop();
+  } finally {
+    jest.useRealTimers();
+  }
 });

@@ -140,6 +140,7 @@ runtimeErrors:
   databaseUnavailable: Local storage is unavailable in this browser or device. Enable site storage and reload.
   databaseBlocked: Another app tab is updating local storage. Close other tabs and retry.
   databaseTransactionFailed: A local data update did not finish. Your saved data was not replaced; reload and retry.
+  unexpected: Something went wrong. Please try again.
 runtime:
   practice:
     inputDetected: Microphone input detected.

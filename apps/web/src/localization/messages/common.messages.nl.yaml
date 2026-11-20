@@ -139,6 +139,7 @@ runtimeErrors:
   databaseUnavailable: Lokale opslag is niet beschikbaar in deze browser of op dit apparaat. Schakel siteopslag in en laad de pagina opnieuw.
   databaseBlocked: Een ander app-tabblad werkt de lokale opslag bij. Sluit andere tabbladen en probeer het opnieuw.
   databaseTransactionFailed: Een lokale gegevenswijziging is niet voltooid. Je opgeslagen gegevens zijn niet vervangen. Laad de pagina opnieuw en probeer het opnieuw.
+  unexpected: Er is iets misgegaan. Probeer het opnieuw.
   progressChartsUnavailable: De voortgangsgrafieken konden niet worden geladen. Je opgeslagen geschiedenis is nog beschikbaar.
 runtime:
   practice:

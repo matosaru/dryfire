@@ -1,5 +1,5 @@
 import {afterEach,test,expect} from '@jest/globals';
-import {loadLocale} from '../apps/web/src/localization/runtime.ts';
+import {loadLocale,translate} from '../apps/web/src/localization/runtime.ts';
 import {translateAudioStatus,translateApplicationError} from '../src/localizedAudioStatus.js';
 
 afterEach(async()=>loadLocale('en'));
@@ -70,4 +70,24 @@ test('local database and saved-session conflicts have actionable translated feed
 test('invalid Sound Check states use its translated status copy',async()=>{
  await loadLocale('de');expect(translateApplicationError({code:'SOUND_CHECK_NOT_READY'})).toContain('Klangtest ist noch nicht');
  await loadLocale('nl');expect(translateApplicationError({code:'SOUND_CHECK_INCOMPLETE'})).toContain('Voltooi alle pogingen');
+ await loadLocale('de');expect(translateApplicationError({code:'SOUND_CHECK_ATTEMPTS_INVALID',message:'different diagnostic'})).toBe(translate('sound-check','status.invalidAttempts'));
+ await loadLocale('nl');expect(translateApplicationError({code:'SOUND_CHECK_ATTEMPTS_INVALID',message:'different diagnostic'})).toBe(translate('sound-check','status.invalidAttempts'));
+});
+
+test('unrecognized application failures show localized fallback while raw status translation remains unchanged',async()=>{
+ const error=Object.assign(new Error('Untranslated low-level diagnostic'),{code:'UNMAPPED_ERROR'});
+ await loadLocale('de');expect(translateApplicationError(error)).toBe(translate('common','runtimeErrors.unexpected'));
+ await loadLocale('nl');expect(translateApplicationError(error)).toBe(translate('common','runtimeErrors.unexpected'));
+ expect(translateAudioStatus('Unmapped application status')).toBe('Unmapped application status');
+});
+
+test.each([
+ ['MICROPHONE_INTERRUPTED','microphoneInterrupted'],
+ ['MICROPHONE_DISCONNECTED','microphoneDisconnected'],
+ ['MICROPHONE_MUTED','microphoneMuted'],
+ ['MICROPHONE_INPUT_STOPPED','inputStopped'],
+])('microphone recovery error %s resolves by code rather than diagnostic wording',async(code,key)=>{
+ const error=Object.assign(new Error('diagnostic text may change'),{code});
+ await loadLocale('de');expect(translateApplicationError(error)).toBe(translate('common',`runtimeErrors.${key}`));
+ await loadLocale('nl');expect(translateApplicationError(error)).toBe(translate('common',`runtimeErrors.${key}`));
 });

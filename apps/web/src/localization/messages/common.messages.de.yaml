@@ -139,6 +139,7 @@ runtimeErrors:
   databaseUnavailable: Der lokale Speicher ist in diesem Browser oder auf diesem Gerät nicht verfügbar. Aktiviere den Website-Speicher und lade die Seite neu.
   databaseBlocked: Ein anderer App-Tab aktualisiert gerade den lokalen Speicher. Schließe andere Tabs und versuche es erneut.
   databaseTransactionFailed: Eine lokale Datenänderung wurde nicht abgeschlossen. Gespeicherte Daten wurden nicht ersetzt. Lade die Seite neu und versuche es erneut.
+  unexpected: Ein Fehler ist aufgetreten. Bitte versuche es erneut.
   progressChartsUnavailable: Die Fortschrittsdiagramme konnten nicht geladen werden. Dein gespeicherter Verlauf ist weiterhin verfügbar.
 runtime:
   practice:

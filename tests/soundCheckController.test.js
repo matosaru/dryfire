@@ -1,10 +1,10 @@
 /** @jest-environment jsdom */
 import '@dryfire/testing/setup';
 import {jest} from '@jest/globals';
-import {render} from '@testing-library/react';
+import {act,render} from '@testing-library/react';
 import {createElement} from 'react';
 import {SoundCheckPage} from '../apps/web/src/pages/SoundCheckPage/SoundCheckPage.tsx';
-import {createSoundCheckController} from '../src/soundCheckController.js';
+import {createSoundCheckController,localizedSoundCheckAnalysisError} from '../src/soundCheckController.js';
 import {loadLocale} from '../apps/web/src/localization/runtime.ts';
 
 test('guided check waits for input, scores an attempt and exports JSON without PCM',async()=>{
@@ -47,7 +47,7 @@ test('stopping during pending microphone permission releases a late audio sessio
 });
 
 test('runtime Sound Check status follows locale changes while the check is open',async()=>{
- await loadLocale('de');
+ await act(async()=>{await loadLocale('de');});
  const host=document.createElement('section');host.id='soundCheckView';document.body.append(host);render(createElement(SoundCheckPage),{container:host});
  let captureOptions,resolveWait;const session={stop:jest.fn(),waitForInput:jest.fn(()=>new Promise(resolve=>{resolveWait=resolve;})),armDetection:jest.fn(),disarmDetection:jest.fn(),nowMs:()=>100};
  const startContinuousListening=jest.fn(async options=>{captureOptions=options;options.onState('Requesting microphone access…');return session;});
@@ -55,7 +55,23 @@ test('runtime Sound Check status follows locale changes while the check is open'
  expect(document.getElementById('soundCheckSetupHint')).toHaveTextContent('Bereit. Sicherheitsbestätigung und Mikrofonberechtigung folgen.');
  document.getElementById('soundCheckStartBtn').click();await Promise.resolve();await Promise.resolve();await Promise.resolve();
  expect(document.getElementById('soundCheckStatus')).toHaveTextContent('Mikrofonzugriff wird angefordert');
- await loadLocale('nl');controller.updateLocale();
+ await act(async()=>{await loadLocale('nl');});controller.updateLocale();
  expect(document.getElementById('soundCheckStatus')).toHaveTextContent('Microfoontoegang aanvragen');
- resolveWait({ready:true});await Promise.resolve();await Promise.resolve();controller.dispose();host.remove();await loadLocale('en');
+ resolveWait({ready:true});await Promise.resolve();await Promise.resolve();controller.dispose();host.remove();await act(async()=>{await loadLocale('en');});
+});
+
+test('analysis feedback localizes coded failures instead of showing the English diagnostic',async()=>{
+ await act(async()=>{await loadLocale('de');});
+ const host=document.createElement('section');host.id='soundCheckView';document.body.append(host);render(createElement(SoundCheckPage),{container:host});
+ let captureOptions;const session={stop:jest.fn(),waitForInput:jest.fn().mockResolvedValue({ready:true}),armDetection:jest.fn(),disarmDetection:jest.fn(),nowMs:()=>100};
+ const startContinuousListening=jest.fn(async options=>{captureOptions=options;return session;});
+ const controller=createSoundCheckController({doc:document,startContinuousListening,examples:[],calibration:[],enabledLabels:['trigger'],audioPreferences:{},onError:jest.fn()});
+ document.getElementById('soundCheckAttempts').value='1';document.getElementById('soundCheckStartBtn').click();await Promise.resolve();await Promise.resolve();
+ document.getElementById('soundCheckAttemptBtn').click();captureOptions.onEvent(new Float32Array(10),48000);
+ expect(document.getElementById('soundCheckStatus')).toHaveTextContent('Die Aufnahme ist zu kurz für eine Analyse.');
+ expect(document.getElementById('soundCheckStatus')).not.toHaveTextContent('Recording is too short to analyse.');
+ await act(async()=>{await loadLocale('nl');});controller.updateLocale();
+ expect(document.getElementById('soundCheckStatus')).toHaveTextContent('De opname is te kort om te analyseren.');
+ expect(localizedSoundCheckAnalysisError('UNKNOWN_ANALYSIS_ERROR')).toContain('Controleer de opname en probeer het opnieuw.');
+ controller.dispose();host.remove();await act(async()=>{await loadLocale('en');});
 });

@@ -12,7 +12,7 @@ const summaryFor=(attempts,key)=>attempts.reduce((summary,attempt)=>{
 },{expectedTriggers:0,matchedTriggers:0,misses:0,falseShots:0,duplicates:0});
 
 export function createSoundCheck({attempts=10,metadata={}}={}){
- if(!Number.isInteger(attempts)||attempts<1||attempts>50)throw new RangeError('Sound check attempts must be a whole number from 1 to 50.');
+ if(!Number.isInteger(attempts)||attempts<1||attempts>50)throw Object.assign(new RangeError('Sound check attempts must be a whole number from 1 to 50.'),{code:'SOUND_CHECK_ATTEMPTS_INVALID'});
  return Object.freeze({targetAttempts:attempts,metadata:{...metadata},attempts:Object.freeze([]),pending:Object.freeze([])});
 }
 

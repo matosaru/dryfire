@@ -66,5 +66,7 @@ status:
   attemptSaved: Attempt saved. Choose the next sound, then begin.
   listening: "Listening for one {{sound}}…"
   analysisFailed: "Sound detected but could not be analyzed: {{message}}"
+  unknownAnalysisFailure: Check the recording and try again.
   attemptNotReady: Sound Check is not ready for another attempt.
   incompleteExport: Complete every Sound Check attempt before exporting.
+  invalidAttempts: Enter a whole number of attempts from 1 to 50.

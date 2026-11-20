@@ -68,20 +68,20 @@ export function describeAmbientReadiness(result) {
 
 /** Detects lost microphone input during an active, ready capture session. */
 export function monitorAudioCapture(context,stream,isReady,lastInputAt,onError,stop){
- let stopped=false;
- const report=message=>{if(!stopped){void stop();onError(new Error(message));}};
+ let stopped=false,reported=false;
+ const report=(code,message)=>{if(!stopped&&!reported){reported=true;void stop();onError(Object.assign(new Error(message),{code}));}};
  const onStateChange=()=>{
-  if(isReady()&&context.state!=='running')report('Microphone audio was interrupted. Restart the sound check or practice to reconnect.');
+  if(isReady()&&context.state!=='running')report('MICROPHONE_INTERRUPTED','Microphone audio was interrupted. Restart the sound check or practice to reconnect.');
  };
  context.addEventListener?.('statechange',onStateChange);
  const handlers=stream.getAudioTracks().map(track=>{
-  const onended=()=>report('Microphone disconnected. Restart the sound check or practice to reconnect.');
-  const onmute=()=>report('Microphone input was muted. Check microphone access, then restart the sound check or practice.');
+  const onended=()=>report('MICROPHONE_DISCONNECTED','Microphone disconnected. Restart the sound check or practice to reconnect.');
+  const onmute=()=>report('MICROPHONE_MUTED','Microphone input was muted. Check microphone access, then restart the sound check or practice.');
   track.onended=onended;track.onmute=onmute;
   return{track,onended,onmute};
  });
  const timer=setInterval(()=>{
-  if(isReady()&&Date.now()-lastInputAt()>2500)report('Microphone input stopped arriving. Restart the sound check or practice to reconnect.');
+  if(isReady()&&Date.now()-lastInputAt()>2500)report('MICROPHONE_INPUT_STOPPED','Microphone input stopped arriving. Restart the sound check or practice to reconnect.');
  },1000);
  return{stop(){
   if(stopped)return;stopped=true;clearInterval(timer);context.removeEventListener?.('statechange',onStateChange);

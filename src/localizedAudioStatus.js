@@ -46,13 +46,16 @@ export function translateAudioStatus(status) {
 }
 
 export function translateApplicationError(error) {
-  const errorKeys={INVALID_BACKUP:'invalidBackup',GUN_REQUIRED:'gunRequired',GUN_MISSING:'gunMissing',GUN_LIMIT:'gunLimit',SAMPLE_LIMIT:'sampleLimit',CALIBRATION_LIMIT:'calibrationLimit',EVENT_MISSING:'recordMissing',SESSION_MISSING:'recordMissing',SESSION_DATA_CONFLICT:'sessionDataConflict',DATABASE_UNAVAILABLE:'databaseUnavailable',DATABASE_OPEN_FAILED:'databaseUnavailable',DATABASE_BLOCKED:'databaseBlocked',DATABASE_TRANSACTION_FAILED:'databaseTransactionFailed',TRAINING_DATA_INVALID:'trainingDataInvalid',GUIDE_UNAVAILABLE:'guideUnavailable',AUDIO_TOO_SHORT:'audioTooShort',AUDIO_NO_CLEAR_SOUND:'audioNoClearSound',AUDIO_DISTORTED:'audioDistorted',MICROPHONE_SECURE_CONTEXT:'microphoneSecureContext',WEB_AUDIO_UNAVAILABLE:'webAudioUnavailable',PCM_UNAVAILABLE:'pcmUnavailable',NO_MICROPHONE_AUDIO:'noMicrophoneAudio',MICROPHONE_DENIED:'microphoneDenied',NO_AUDIO_INPUT:'noInput',LISTENING_STOPPED:'listeningStopped',RECORDER_UNAVAILABLE:'recorderUnavailable'};
-  const key=errorKeys[error?.code];
+  const codeKeys={INVALID_BACKUP:'invalidBackup',GUN_REQUIRED:'gunRequired',GUN_MISSING:'gunMissing',GUN_LIMIT:'gunLimit',SAMPLE_LIMIT:'sampleLimit',CALIBRATION_LIMIT:'calibrationLimit',EVENT_MISSING:'recordMissing',SESSION_MISSING:'recordMissing',SESSION_DATA_CONFLICT:'sessionDataConflict',DATABASE_UNAVAILABLE:'databaseUnavailable',DATABASE_OPEN_FAILED:'databaseUnavailable',DATABASE_BLOCKED:'databaseBlocked',DATABASE_TRANSACTION_FAILED:'databaseTransactionFailed',TRAINING_DATA_INVALID:'trainingDataInvalid',GUIDE_UNAVAILABLE:'guideUnavailable',AUDIO_TOO_SHORT:'audioTooShort',AUDIO_NO_CLEAR_SOUND:'audioNoClearSound',AUDIO_DISTORTED:'audioDistorted',MICROPHONE_SECURE_CONTEXT:'microphoneSecureContext',WEB_AUDIO_UNAVAILABLE:'webAudioUnavailable',PCM_UNAVAILABLE:'pcmUnavailable',NO_MICROPHONE_AUDIO:'noMicrophoneAudio',MICROPHONE_DENIED:'microphoneDenied',NO_AUDIO_INPUT:'noInput',LISTENING_STOPPED:'listeningStopped',RECORDER_UNAVAILABLE:'recorderUnavailable',MICROPHONE_INTERRUPTED:'microphoneInterrupted',MICROPHONE_DISCONNECTED:'microphoneDisconnected',MICROPHONE_MUTED:'microphoneMuted',MICROPHONE_INPUT_STOPPED:'inputStopped'};
+  const key=codeKeys[error?.code];
   if(key)return translate('common',`runtimeErrors.${key}`);
   if(error?.code==='NAVIGATION_LOCKED')return translate('common','runtimeMain.navigationLocked');
   if(error?.code==='PRACTICE_RESULTS_UNSAVED')return translate('common','sessionUi.practiceSaveRetry');
   if(error?.code==='PROGRESS_CHARTS_UNAVAILABLE')return translate('common','runtimeErrors.progressChartsUnavailable');
   if(error?.code==='SOUND_CHECK_NOT_READY')return translate('sound-check','status.attemptNotReady');
   if(error?.code==='SOUND_CHECK_INCOMPLETE')return translate('sound-check','status.incompleteExport');
-  return translateAudioStatus(error?.message||String(error));
+  if(error?.code==='SOUND_CHECK_ATTEMPTS_INVALID')return translate('sound-check','status.invalidAttempts');
+  const message=error?.message||String(error);
+  if(statusKeys.has(message)||errorKeys.has(message)||/^Get ready… \d+$/.test(message))return translateAudioStatus(message);
+  return translate('common','runtimeErrors.unexpected');
 }
