@@ -135,6 +135,10 @@ runtimeErrors:
   calibrationLimit: Das Kalibrierungslimit für diese Kategorie ist erreicht. Vorhandene Beispiele bleiben erhalten.
   recordMissing: Dieser Verlaufseintrag ist für die ausgewählte Waffe nicht mehr verfügbar. Aktualisiere den Verlauf und versuche es erneut.
   trainingDataInvalid: Das gelernte Klangprofil ist nicht verfügbar oder ungültig. Überprüfe das Training unter Töne lernen, bevor du fortfährst.
+  sessionDataConflict: Die gespeicherten Übungsdaten haben sich unerwartet geändert. Vorhandene Ergebnisse bleiben erhalten. Aktualisiere den Verlauf und versuche es erneut.
+  databaseUnavailable: Der lokale Speicher ist in diesem Browser oder auf diesem Gerät nicht verfügbar. Aktiviere den Website-Speicher und lade die Seite neu.
+  databaseBlocked: Ein anderer App-Tab aktualisiert gerade den lokalen Speicher. Schließe andere Tabs und versuche es erneut.
+  databaseTransactionFailed: Eine lokale Datenänderung wurde nicht abgeschlossen. Gespeicherte Daten wurden nicht ersetzt. Lade die Seite neu und versuche es erneut.
   progressChartsUnavailable: Die Fortschrittsdiagramme konnten nicht geladen werden. Dein gespeicherter Verlauf ist weiterhin verfügbar.
 runtime:
   practice:

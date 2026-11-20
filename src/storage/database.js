@@ -11,6 +11,7 @@ export const GUN_SETTINGS = 'gunSettings';
 export const SESSIONS = 'sessions';
 
 export const STORES = [EXAMPLES, EVENTS, SETTINGS, GUNS, GUN_SETTINGS, SESSIONS];
+const databaseError = (code, message, cause) => Object.assign(new Error(message, cause ? {cause} : undefined), {code});
 
 export function legacyGun() {
   return { id: crypto.randomUUID(), name: '', type: null, needsDetails: true, createdAt: Date.now() };
@@ -67,7 +68,7 @@ function migratePracticeCatalog(tx) {
 }
 
 export function openDb() {
-  if (!globalThis.indexedDB) return Promise.reject(new Error('IndexedDB is unavailable on this device.'));
+  if (!globalThis.indexedDB) return Promise.reject(databaseError('DATABASE_UNAVAILABLE', 'IndexedDB is unavailable on this device.'));
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
     request.onupgradeneeded = event => {
@@ -102,8 +103,8 @@ export function openDb() {
       request.result.onversionchange = () => request.result.close();
       resolve(request.result);
     };
-    request.onerror = () => reject(request.error);
-    request.onblocked = () => reject(new Error('Local database is blocked by another app tab. Close other tabs and retry.'));
+    request.onerror = () => reject(databaseError('DATABASE_OPEN_FAILED', 'The local database could not be opened.', request.error));
+    request.onblocked = () => reject(databaseError('DATABASE_BLOCKED', 'Local database is blocked by another app tab. Close other tabs and retry.'));
   });
 }
 
@@ -115,8 +116,8 @@ export function withTransaction(storeNames, mode, action) {
       fail(error) { this.error = error; tx.abort(); },
     };
     tx.oncomplete = () => resolve(context.result);
-    tx.onerror = () => reject(context.error || tx.error);
-    tx.onabort = () => reject(context.error || tx.error || new Error('Database transaction aborted.'));
+    tx.onerror = () => reject(context.error || databaseError('DATABASE_TRANSACTION_FAILED', 'A local data update did not finish.', tx.error));
+    tx.onabort = () => reject(context.error || databaseError('DATABASE_TRANSACTION_FAILED', 'A local data update did not finish.', tx.error));
     try { action(tx, context); }
     catch (error) { context.fail(error); }
   }).finally(() => db.close()));

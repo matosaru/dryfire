@@ -113,3 +113,5 @@ Practice Guide lazy-load recovery now uses a stable `GUIDE_UNAVAILABLE` code rou
 Microphone and recording failures now attach stable codes for too-short, unclear or distorted samples; secure-context, Web Audio, PCM recorder and input availability; denied permission; and stopped capture. The shared error translator maps these codes into the existing common YAML messages. Focused audio lifecycle tests preserve the expected diagnostic strings and resource cleanup behavior.
 
 App navigation guards, unsaved Practice review handling, and History chart-load fallback errors now use stable codes mapped to the existing shared `runtimeMain`/`sessionUi` messages or a new common error message. This keeps failure feedback consistent across route entry points and current locale.
+
+Local database unavailable/blocked/open/transaction failures and saved-session revision/data conflicts now carry stable codes and use actionable common YAML copy. Browser-provided low-level causes remain attached where present for diagnostics.

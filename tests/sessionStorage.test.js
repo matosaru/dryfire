@@ -138,7 +138,7 @@ test('save snapshots are detached and stale revisions cannot overwrite completed
   const stale = session(gun, { revision: 1 });
   expect(await saveSession(stale, gun.id)).toEqual(final);
   expect(await getSession(final.id, gun.id)).toEqual(final);
-  await expect(saveSession({ ...final, revision: 3, drillTitle: 'Changed' }, gun.id)).rejects.toThrow(/snapshot|change|immutable/i);
+  await expect(saveSession({ ...final, revision: 3, drillTitle: 'Changed' }, gun.id)).rejects.toMatchObject({code:'SESSION_DATA_CONFLICT',message:expect.stringMatching(/snapshot|change|immutable/i)});
   expect(await getSession(final.id, gun.id)).toEqual(final);
 });
 

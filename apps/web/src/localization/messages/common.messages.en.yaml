@@ -136,6 +136,10 @@ runtimeErrors:
   recordMissing: This history item is no longer available for the selected gun. Refresh History and try again.
   trainingDataInvalid: The learned sound profile is unavailable or invalid. Review training in Learn before continuing.
   progressChartsUnavailable: Progress charts could not load. Your saved history is still available.
+  sessionDataConflict: Saved session data changed unexpectedly. Existing results were kept; refresh History and retry.
+  databaseUnavailable: Local storage is unavailable in this browser or device. Enable site storage and reload.
+  databaseBlocked: Another app tab is updating local storage. Close other tabs and retry.
+  databaseTransactionFailed: A local data update did not finish. Your saved data was not replaced; reload and retry.
 runtime:
   practice:
     inputDetected: Microphone input detected.

@@ -444,15 +444,15 @@ export async function saveSession(record, gunId) {
     request.onsuccess = () => {
       const previous = request.result;
       if (previous) {
-        if (previous.gunId !== owner) { context.fail(new Error('Saved session belongs to another gun.')); return; }
+        if (previous.gunId !== owner) { context.fail(storageError('SESSION_DATA_CONFLICT','Saved session belongs to another gun.')); return; }
         const immutable = ['kind', 'practiceMode', 'gunName', 'gunType', 'drillId', 'drillTitle', 'drillSteps', 'config', 'startedAt'];
         if (immutable.some(key => JSON.stringify(previous[key]) !== JSON.stringify(row[key]))) {
-          context.fail(new Error('A saved session snapshot cannot be changed.')); return;
+          context.fail(storageError('SESSION_DATA_CONFLICT','A saved session snapshot cannot be changed.')); return;
         }
         if (row.revision <= previous.revision) { context.result = previous; return; }
         if (TERMINAL_SESSION_STATUSES.includes(previous.status) || row.completed < previous.completed ||
             previous.repetitions.some((attempt, index) => JSON.stringify(attempt) !== JSON.stringify(row.repetitions[index]))) {
-          context.fail(new Error('Saved session results cannot be rewritten or reopened.')); return;
+          context.fail(storageError('SESSION_DATA_CONFLICT','Saved session results cannot be rewritten or reopened.')); return;
         }
       }
       store.put(row);

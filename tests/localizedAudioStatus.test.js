@@ -57,3 +57,12 @@ test('navigation, unsaved result and chart errors are localized by stable code',
  await loadLocale('nl');
  expect(translateApplicationError({code:'PROGRESS_CHARTS_UNAVAILABLE'})).toContain('voortgangsgrafieken konden niet worden geladen');
 });
+
+test('local database and saved-session conflicts have actionable translated feedback',async()=>{
+ await loadLocale('de');
+ expect(translateApplicationError({code:'DATABASE_UNAVAILABLE'})).toContain('Der lokale Speicher ist');
+ expect(translateApplicationError({code:'DATABASE_BLOCKED'})).toContain('anderer App-Tab');
+ expect(translateApplicationError({code:'DATABASE_TRANSACTION_FAILED'})).toContain('lokale Datenänderung wurde nicht abgeschlossen');
+ expect(translateApplicationError({code:'SESSION_DATA_CONFLICT'})).toContain('gespeicherten Übungsdaten haben sich unerwartet geändert');
+ await loadLocale('nl');expect(translateApplicationError({code:'DATABASE_UNAVAILABLE'})).toContain('Lokale opslag is niet beschikbaar');
+});
