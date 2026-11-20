@@ -20,6 +20,7 @@ const LocalizationContext=createContext<{locale:AppLocale;catalog:Catalog}|null>
 const subscribe=(listener:()=>void)=>{listeners.add(listener);return()=>listeners.delete(listener);};
 const snapshot=()=>locale;
 const publish=()=>listeners.forEach(listener=>listener());
+export function subscribeLocale(listener:()=>void){listeners.add(listener);return()=>listeners.delete(listener);}
 export const normalizeLocale=(value:unknown):AppLocale=>normalizeSupportedLocale(value);
 
 export async function loadLocale(value:unknown):Promise<AppLocale>{

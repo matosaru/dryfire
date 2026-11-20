@@ -5,7 +5,7 @@ import {RetainedNode} from '@dryfire/ui/RetainedNode';
 import type {SavedSessionSummary} from '@dryfire/ui/SavedSessionList';
 import {HistoryPage,type HistoryState} from '../pages/HistoryPage';
 import {recognitionRows,evaluationPresentation,type RetainedEvent,type EvaluationStats} from '../features/history/presentation';
-import {translate} from '../localization/runtime.ts';
+import {subscribeLocale,translate} from '../localization/runtime.ts';
 type Data={rows:RetainedEvent[];sessions:SavedSessionSummary[];stats:EvaluationStats;gunId:string|undefined};
 type Actions={onBack:()=>void;onAction:(id:string)=>void;onOpen:(record:SavedSessionSummary)=>void;onVerify:(id:string,value:string,gunId:string|undefined)=>void;onDeleteSession:(record:SavedSessionSummary,gunId:string|undefined)=>void;onDeleteEvent:(row:{id:string},gunId:string|undefined)=>void;titleFor:(label:string)=>string;drillTitleFor:(id:string|undefined)=>string|undefined;labels:string[];actual:string[];predicted:string[]};
 /** History owns result presentation; exact numeric drafts and optional graph/filter lifetimes are retained. */
@@ -19,16 +19,17 @@ export function mountHistoryPage(host:Element,initial:Data,actions:Actions){
  const initialDisabled=Object.fromEntries(['clearHistoryBtn','clearSessionsBtn'].map(id=>[id,(get(id) as HTMLButtonElement).disabled]));
  const updateLabels=()=>{const label=limit.querySelector('label');if(label)label.textContent=translate('history','recognition.limitLabel');const staticLabels=[['progressTitle','progress.title'],['progressGroupLabel','progress.compareLabel'],['progressRangeLabel','progress.rangeLabel'],['progressDisclosure','progress.trendDisclosure']] as const;for(const[id,key]of staticLabels){const node=progress?.querySelector<HTMLElement>(`#${id}`);if(node)node.textContent=translate('history',key);}const compare=progress?.querySelector<HTMLSelectElement>('#progressGroup');if(compare)compare.setAttribute('aria-label',translate('history','progress.compareAriaLabel'));const range=progress?.querySelector<HTMLSelectElement>('#progressRange');if(range)for(const[value,key]of [['0','rangeAll'],['7','range7'],['30','range30']] as const){const option=range.querySelector<HTMLOptionElement>(`option[value="${value}"]`);if(option)option.textContent=translate('history',`progress.${key}`);}};
  updateLabels();
+ const unsubscribeLocale=subscribeLocale(updateLabels);
  let state:HistoryState={gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),texts:Object.fromEntries(['historyClearOutcome','sessionsClearOutcome'].map(id=>[id,get(id).textContent!])),disabled:{...initialDisabled,historyRecordActions:false},options:[{value:'',title:translate('history','recognition.notVerified')},...actions.labels.map(value=>({value,title:actions.titleFor(value)})),{value:'other',title:translate('history','recognition.otherNoise')}]};
  const results=(data:Data)=>({sessions:data.sessions,rows:recognitionRows(data.rows,actions.titleFor,actions.drillTitleFor),evaluation:evaluationPresentation(data.stats,actions.actual,actions.predicted)});
  state={...state,...results(initial)};
  const root=createRoot(host,{onUncaughtError(error){failure=error;}});
  const render=()=>{flushSync(()=>root.render(<StrictMode><HistoryPage state={state} limit={<RetainedNode node={limit}/>} progress={<RetainedNode node={progress}/>} onBack={actions.onBack} onAction={actions.onAction} onOpen={actions.onOpen} onVerify={(id,value)=>actions.onVerify(id,value,owner)} onDeleteSession={record=>actions.onDeleteSession(record,owner)} onDeleteEvent={row=>actions.onDeleteEvent(row,owner)}/></StrictMode>));if(failure)throw failure;};
  try{render();host.setAttribute('data-react-history','');const selects=[...host.querySelectorAll<HTMLSelectElement>('select[aria-label^="Actual sound for "]')];selections.forEach((value,index)=>{if(selects[index])selects[index].value=value;});if(active&&host.contains(active))active.focus();else if(selectIndex>=0)selects[selectIndex]?.focus();}
- catch(error){flushSync(()=>root.unmount());host.replaceChildren(...backup);active?.focus();throw error;}
+ catch(error){unsubscribeLocale();flushSync(()=>root.unmount());host.replaceChildren(...backup);active?.focus();throw error;}
  return{
   update(next:HistoryState){if(disposed)return;state={...state,...next,texts:{...state.texts,...next.texts},disabled:{...state.disabled,...next.disabled}};render();},
   setResults(data:Data){if(disposed)return;owner=data.gunId;state={...state,...results(data)};render();},
-  dispose(){if(disposed)return;disposed=true;host.removeAttribute('data-react-history');flushSync(()=>root.unmount());},
+  dispose(){if(disposed)return;disposed=true;unsubscribeLocale();host.removeAttribute('data-react-history');flushSync(()=>root.unmount());},
  };
 }
