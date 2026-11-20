@@ -13,7 +13,7 @@ import { renderCalibrationCatalog } from '../apps/web/src/app/renderCalibrationC
 import { renderAppShell } from '../apps/web/src/app/renderAppShell.tsx';
 import { renderNumberInput } from '../apps/web/src/app/renderNumberInput.tsx';
 import { renderPracticeCatalog } from '../apps/web/src/app/renderPracticeCatalog.tsx';
-import { PRACTICE_MODES } from '../src/practiceModes.js';
+import { PRACTICE_MODE_IDS } from '../src/practiceModes.js';
 import { PAGE_DEFINITIONS } from '../src/pageDefinitions.js';
 
 const read = name => readFileSync(new URL(`../src/templates/${name}.html`, import.meta.url), 'utf8');
@@ -35,7 +35,7 @@ const numberInputs = Object.fromEntries([
   ['sessionMaxDelay', '5', 'maxDelay'],
   ['maxResults', '50']
 ].map(([id, value, name]) => [id + 'Input', renderNumberInput(id, value, name)]));
-const fragments = { ...numberInputs, calibrationCatalog: deferStaticCatalog(renderCalibrationCatalog()), practiceCatalog: deferStaticCatalog(renderPracticeCatalog(PRACTICE_MODES)) };
+const fragments = { ...numberInputs, calibrationCatalog: deferStaticCatalog(renderCalibrationCatalog()), practiceCatalog: deferStaticCatalog(renderPracticeCatalog(PRACTICE_MODE_IDS)) };
 function content(id) {
   switch(id) {
     case 'practice': case 'session': case 'practiceGuide': return fill(renderSessionPage(id),fragments);

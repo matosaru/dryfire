@@ -16,7 +16,7 @@ import { createPracticeGuideBridge } from './practiceGuideBridge.js';
 import { recordFeatureVector, startContinuousListening } from './audio.js';
 import { recognizeRecording } from './recognition.js';
 import { DRILLS, SEQUENCE_DRILLS, advanceDrill, createDrillState, getDrill } from './drills.js';
-import { PRACTICE_MODES } from './practiceModes.js';
+import { PRACTICE_MODE_IDS } from './practiceModes.js';
 import {createCalibrationCatalogMessages,calibrationProgressMessage} from '../apps/web/src/features/learn/calibrationMessages.ts';
 import { soundCard, drillCard } from './uiComponents.js';
 import { readNumberInput } from './inputLimits.js';
@@ -366,7 +366,7 @@ function renderLegacyDrills(){
  }).catch(showError).finally(()=>{legacyDrillsPending=null;});
 }
 function renderLegacyPracticeCatalog(){
- updateLegacyPracticeCatalog(document,{practiceModes:PRACTICE_MODES,translate});
+ updateLegacyPracticeCatalog(document,{practiceModes:PRACTICE_MODE_IDS,translate});
 }
 function selectDrillCollection(custom,closeEditor=true){
  if(custom&&!CAPABILITIES.customDrillCreation&&!customDrills.length)custom=false;

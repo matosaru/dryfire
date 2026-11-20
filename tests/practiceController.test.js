@@ -9,6 +9,7 @@ import { controllerPage, deferred, clickPcm } from './helpers/controllerDom.js';
 import { PRACTICE_MODES } from '../src/practiceModes.js';
 import {mountPracticePage} from '../apps/web/src/app/practicePage.tsx';
 import {mountPracticeContents} from '../apps/web/src/app/practiceContents.tsx';
+import { translate } from '../apps/web/src/localization/runtime.ts';
 
 const audio = await import('../src/audio.js');
 const capture = jest.fn(), save = jest.fn(), set = jest.fn(), get = jest.fn();
@@ -110,8 +111,8 @@ test('the four catalog choices preserve copy/order and configure exactly once wi
   controller.renderCatalog(); controller.renderCatalog();
   const buttons = [...document.querySelectorAll('#practiceCatalog button')];
   expect(buttons.map(button => button.dataset.practiceMode)).toEqual(PRACTICE_MODES.map(mode => mode.id));
-  expect([...document.querySelectorAll('#practiceCatalog h3')].map(node => node.textContent)).toEqual(PRACTICE_MODES.map(mode => mode.title));
-  expect([...document.querySelectorAll('#practiceCatalog p')].map(node => node.textContent)).toEqual(PRACTICE_MODES.map(mode => mode.description));
+  expect([...document.querySelectorAll('#practiceCatalog h3')].map(node => node.textContent)).toEqual(PRACTICE_MODES.map(mode => translate('practice-guide',`manuals.${mode.id}.title`)));
+  expect([...document.querySelectorAll('#practiceCatalog p')].map(node => node.textContent)).toEqual(PRACTICE_MODES.map(mode => translate('drills',`modes.${mode.id}Description`)));
   for (const [index, button] of buttons.entries()) {
     const configured = deferred();
     callbacks.onNavigate.mockImplementationOnce(() => configured.resolve());

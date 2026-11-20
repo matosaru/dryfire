@@ -13,7 +13,7 @@ This inventory maps every maintained UI/page family and its source owner to one 
 | Learn Sounds and calibration | `learn` | `apps/web/src/pages/LearnPage/**`; calibration copy/presentation and capture guidance |
 | Sound Check | `sound-check` | `apps/web/src/pages/SoundCheckPage/**`; `src/soundCheckController.js`; Sound Check evaluation/report labels |
 | Settings, including language, units, appearance, audio and backup | `settings` | `apps/web/src/pages/SettingsPage/**`; `apps/web/src/features/settings/**`; `apps/web/src/app/settingsPage.tsx`; `src/preferenceCoordinator.js`; Settings/data action copy in `src/main.js` |
-| Built-in and saved drill catalog | `drills` | `apps/web/src/pages/DrillsPage/**`; `src/drills.js`; `src/practiceModes.js`; drill card/preset presentation |
+| Built-in and saved drill catalog | `drills` | `apps/web/src/pages/DrillsPage/**`; `src/drills.js`; `src/practiceModes.js` (stable IDs; legacy titles only for validating saved records); drill card/preset presentation |
 | Trigger-practice configure/run/review | `practice` | `apps/web/src/pages/PracticePage/**`; `apps/web/src/app/practiceContents.tsx`; `src/practiceController.js`; practice state/result presentation |
 | Sequence configure/run/review | `sequence` | `apps/web/src/pages/SequencePage/**`; `apps/web/src/app/sequenceContents.tsx`; `src/sessionController.js`; session result/presentation copy |
 | About this practice, all built-in guide variants and custom guide | `practice-guide` | `apps/web/src/pages/PracticeGuidePage/**`; `src/practiceGuideManuals.js` (structural IDs/kinds/sound order only); `src/practiceGuides.js`; `src/practiceGuideExamples.js`; guide content/presentation |
@@ -73,6 +73,8 @@ Reset-click, noise/handling, and external-cue calibration labels, descriptions, 
 ## Newly audited Drills catalog — 2026-11-20
 
 Trigger Press and Sequence card descriptions, built-in sequence titles, and Start Drill/Edit actions now use `drills.modes.*`, `drills.cards.*`, and `drills.custom.edit` message keys in English, German and Dutch. The React page and native fallback share the catalogs; UI package cards take copy through props and saved custom preset names remain user data. Locale-switch tests cover the page, and a native fallback test checks translated labels without changing practice-mode IDs. The global source scan remains open.
+
+Built-in Trigger Press card titles/descriptions were removed from the current mode-ID module. Build-time and live card rendering resolve these labels from YAML. The English titles in the saved-record validator remain solely for backward compatibility with existing stored records; they are not the current display source.
 
 ## Newly audited Live Listen and shared shell — 2026-11-20
 

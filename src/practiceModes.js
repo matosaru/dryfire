@@ -1,6 +1,6 @@
-// Engine/controllers need only identity and titles. Keep the complete public
-// catalog for build-time presentation without shipping its unused descriptions.
-const definitions = Object.freeze([
+// Persisted records keep their original English title for compatibility.
+// Current titles and descriptions are sourced from locale catalogs.
+const storedDefinitions = Object.freeze([
   {
     "id": "single",
     "title": "Single trigger press"
@@ -18,17 +18,10 @@ const definitions = Object.freeze([
     "title": "Trigger control"
   }
 ]);
-const descriptions = {
-  "single": "Reaction time for one click after each start signal.",
-  "repeated": "Count distinct clicks and the intervals between them.",
-  "par": "Recognize a click within your chosen time limit.",
-  "control": "Compare the consistency of your detected click intervals."
-};
-export const PRACTICE_MODES = /* @__PURE__ */ Object.freeze(
-  /* @__PURE__ */ definitions.map(mode => ({ ...mode, description: descriptions[mode.id] }))
-);
+export const PRACTICE_MODES = Object.freeze(storedDefinitions.map(({id})=>Object.freeze({id})));
+export const PRACTICE_MODE_IDS = PRACTICE_MODES;
 export const practiceMode = id => PRACTICE_MODES.find(mode => mode.id === id);
-export const practiceDefinition = id => definitions.find(mode => mode.id === id);
+export const practiceDefinition = id => storedDefinitions.find(mode => mode.id === id);
 
 // Preserve immutable titles in supported sessions saved before the catalog copy update.
 const previousTitles = { repeated: 'Repeated trigger presses', par: 'Par-time practice' };

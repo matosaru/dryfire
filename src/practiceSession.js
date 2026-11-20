@@ -1,5 +1,5 @@
 import { practiceDefinition, matchesPracticeTitle } from './practiceModes.js';
-export { PRACTICE_MODES, practiceMode, practiceDefinition } from './practiceModes.js';
+export { PRACTICE_MODES, PRACTICE_MODE_IDS, practiceMode, practiceDefinition } from './practiceModes.js';
 
 const LABELS = ['draw', 'rack', 'trigger', 'reload'];
 const TYPES = ['Handguns', 'Rifles and Carbines', 'Shotguns'];
