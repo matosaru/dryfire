@@ -24,3 +24,12 @@ test('plain text interpolation and plural selection use the selected locale',asy
  expect(translateWithLocale(catalogs.en,'en','common','missing.key')).toBe('⟦common.missing.key⟧');
  await loadLocale('de');expect(formatLocaleNumber(1234.5)).toBe('1.234,5');await loadLocale('en');
 });
+
+test('free listening and empty gun context use localized catalog copy',async()=>{
+ const catalogs=await loadMessageCatalogs();
+ expect(translateWithLocale(catalogs.en,'en','live-listen','mode.freeOption')).toBe('Free listen · recognize any sound');
+ expect(translateWithLocale(catalogs.de,'de','live-listen','mode.freeOption')).toBe('Freies Zuhören · beliebige Geräusche erkennen');
+ expect(translateWithLocale(catalogs.nl,'nl','live-listen','mode.freeOption')).toBe('Vrij luisteren · herken elk geluid');
+ expect(translateWithLocale(catalogs.de,'de','common','runtimeMain.selectGun')).toBe('Wähle eine Waffe');
+ expect(translateWithLocale(catalogs.nl,'nl','common','runtimeMain.selectGun')).toBe('Kies een wapen');
+});

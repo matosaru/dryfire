@@ -119,3 +119,5 @@ Local database unavailable/blocked/open/transaction failures and saved-session r
 Sound Check invalid-attempt and incomplete-export state guards now use `sound-check.status.*` messages in the active locale.
 
 The successful audio-processing preference save notice is now keyed as `settings.audio.savedNotice` in all supported languages. The preference coordinator returns the stable key; the app resolves it using the active locale before showing the notice.
+
+The native Live Listen selector's free-listening entry now uses `live-listen.mode.freeOption`. Empty gun context labels across app screens use the shared `common.runtimeMain.selectGun` message instead of English-only fallback text.
