@@ -1,6 +1,8 @@
 /** @jest-environment jsdom */
 import { createPreviewTesting } from '../src/optional/previewTesting.js';
+import { loadLocale, translate } from '../apps/web/src/localization/runtime.ts';
 const PREVIEW_MODE_KEY = 'dryfire-private-preview-mode';
+afterEach(async () => { await loadLocale('en'); });
 
 function controls() {
   document.body.innerHTML = '<h3 id="previewTestingTitle"></h3><label><span id="previewTestAs"></span><select id="previewTestMode" aria-describedby="previewModeStatus"><option value="free"></option><option value="full"></option></select></label><p id="previewModeBadge"></p><p id="previewModeStatus"></p><p id="previewTestDataNote"></p>';
@@ -33,5 +35,10 @@ test('rebound controls preserve lock rejection and restore the displayed mode', 
   select(current, 'free');
   expect(current.value).toBe('full');
   expect(state.changes).toHaveLength(0); expect(state.writes).toHaveLength(0); expect(state.messages).toHaveLength(1);
-  expect(document.getElementById('previewModeStatus').textContent).toMatch(/Finish active work/);
+  expect(state.messages).toEqual([translate('settings','preview.locked')]);
+});
+
+test('blocked mode changes report a localized explanation', async () => {
+  await loadLocale('de'); controls(); const state = setup(); const current = document.getElementById('previewTestMode'); state.lock(); select(current, 'free');
+  expect(state.messages).toEqual([translate('settings','preview.locked')]);
 });

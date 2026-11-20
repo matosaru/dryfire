@@ -25,7 +25,7 @@ export function createPreviewTesting({ doc, storage, locked, onChange, onMessage
   const simulation = createPreviewSimulation({ storage, locked, onChange });
   let select;
   function change(event) {
-    if (!simulation.select(event.currentTarget.value)) onMessage('Finish recording, practice or pending results before changing test mode.');
+    if (!simulation.select(event.currentTarget.value)) onMessage(translate('settings','preview.locked'));
     render();
   }
   function render() {

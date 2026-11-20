@@ -23,7 +23,7 @@ function renderControls(model,$){
   for(const [id,disabled]of Object.entries(model.disabled))$(id).disabled=disabled;
 }
 
-export function renderPracticeReview(record,{ $,node,state,savedRevision,saveError,saving,interruption,locked,getContext,details,present,reviewNote,noAttempt='No attempt completed.' }){
+export function renderPracticeReview(record,{ $,node,state,savedRevision,saveError,saving,interruption,locked,getContext,details,present,reviewNote,noAttempt }){
   const model=practiceReviewPresentation(record,{state,savedRevision,saveError:!!saveError,saving,interruption:!!interruption,locked:locked(),gunId:getContext().gun?.id,continuous:continuousPractice(record.practiceMode),stats:practiceStatistics(record)});
   if(reviewNote!==undefined)model.savedNote=reviewNote;
   if(present?.(model))return;
@@ -36,7 +36,7 @@ export function renderPracticeReview(record,{ $,node,state,savedRevision,saveErr
   $('practiceRepeatBtn').disabled=model.repeatDisabled;
 }
 
-export function renderPracticeRun({ $,state,mode,pending,clock,microphone,readConfig,interruption,closing,saving,inputFeedback,renderInput,details,node,present,latestEmpty='Recognized clicks and repetition outcomes appear here.' }){
+export function renderPracticeRun({ $,state,mode,pending,clock,microphone,readConfig,interruption,closing,saving,inputFeedback,renderInput,details,node,present,latestEmpty }){
   const elapsed=state?practiceElapsed(state,clock()):0;
   const model=practiceRunPresentation({state,mode,pending,clock,microphone:!!microphone,readConfig,interruption:!!interruption,closing,saving,inputFeedback,elapsed,continuous:continuousPractice(mode)});
   $('practiceRun').dataset.phase=model.phase;
@@ -49,7 +49,7 @@ export function sequenceResultDetails(row,{node,titleFor}){
   return resultDetailsNode(sequenceResultPresentation(row,titleFor),node);
 }
 
-export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails,present,reviewNote,noRepetition='No repetition was completed before this session ended.',retryLabel='Retry saving results' }){
+export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails,present,reviewNote,noRepetition,retryLabel }){
   const model=sequenceReviewPresentation(record,{state,savedRevision,saveError:!!saveError,saving,pending,locked:locked(),gunId:getContext().gun?.id});
   if(reviewNote!==undefined)model.savedNote=reviewNote;
   if(present?.(model))return;
@@ -64,7 +64,7 @@ export function renderSequenceReview(record,{ $,node,state,savedRevision,saveErr
   $('#repeatSessionBtn').disabled=model.repeatDisabled;
 }
 
-export function renderSequenceRun({ $,state,pending,clock,microphone,readConfig,savedRevision,titleFor,resultDetails,announce,node,present,latestEmpty='Your completed repetition will appear here.' }){
+export function renderSequenceRun({ $,state,pending,clock,microphone,readConfig,savedRevision,titleFor,resultDetails,announce,node,present,latestEmpty }){
   const model=sequenceRunPresentation({state,pending,clock,microphone:!!microphone,readConfig,savedRevision,titleFor});
   if(present?.(model))return;
   const get=id=>$('#'+id);renderControls(model,get);

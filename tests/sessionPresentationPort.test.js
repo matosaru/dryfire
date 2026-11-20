@@ -13,7 +13,7 @@ for(const kind of ['practice-run','practice-review','session-run','session-revie
   const s=setup(kind),run=kind.endsWith('run'),practice=kind.startsWith('practice'),host=document.body.firstElementChild;
   if(practice&&run)host.dataset.phase='active';
   const before=semanticTree(host),input=jest.fn(),announce=jest.fn(),present=jest.fn(()=>accept),retry=s.node('button','Retry saving results');
-  const common={$:practice?s.get:s.query,node:s.node,state,savedRevision:0,saveError:null,saving:false,pending:false,clock:()=>1000,microphone:{},readConfig:()=>config,titleFor:label=>label,locked:()=>false,getContext:()=>({gun:{id:'one'}}),present};
+  const common={$:practice?s.get:s.query,node:s.node,state,savedRevision:0,saveError:null,saving:false,pending:false,clock:()=>1000,microphone:{},readConfig:()=>config,titleFor:label=>label,locked:()=>false,getContext:()=>({gun:{id:'one'}}),present,noAttempt:translate('common','sessionUi.noAttempt'),noRepetition:translate('common','sessionUi.noRepetition'),retryLabel:translate('common','sessionUi.retrySaving'),latestEmpty:translate('common','sessionUi.latestEmpty'),practiceLatestEmpty:translate('common','sessionUi.practiceLatestEmpty')};
   if(practice&&run)presentation.renderPracticeRun({...common,mode:'single',interruption:false,closing:false,inputFeedback:'Ready',renderInput:input,details:jest.fn(),latestEmpty:'Localized empty result'});
   else if(practice)presentation.renderPracticeReview(record,{...common,interruption:false,details:jest.fn()});
   else if(run)presentation.renderSequenceRun({...common,resultDetails:jest.fn(),announce});
@@ -32,7 +32,7 @@ test('sequence native run and retry fallback copy follow the selected locale',as
   const run=setup('session-run');presentation.renderSequenceRun({$:run.query,node:run.node,state:null,pending:true,clock:()=>0,microphone:false,readConfig:()=>config,savedRevision:0,titleFor:label=>label,resultDetails:()=>run.node('p',''),announce:()=>{},latestEmpty:translate('common','sessionUi.latestEmpty')});
   expect(run.get('sessionLatestResult').textContent).toBe('Deine abgeschlossene Wiederholung erscheint hier.');
   const review=setup('session-review'),retry=review.node('button','');review.query('.session-review-card').append(retry);
-  presentation.renderSequenceReview({status:'completed',completed:0,remaining:1,gunId:'one',startedAt:0,config,repetitions:[],drillSteps:['trigger']},{$:review.query,node:review.node,state:null,savedRevision:null,saveError:null,saving:false,pending:false,retrySaveButton:retry,locked:()=>false,getContext:()=>({gun:{id:'one'}}),resultDetails:()=>review.node('p',''),retryLabel:translate('common','sessionUi.retrySaving')});
+  presentation.renderSequenceReview({status:'completed',completed:0,remaining:1,gunId:'one',startedAt:0,config,repetitions:[],drillSteps:['trigger']},{$:review.query,node:review.node,state:null,savedRevision:null,saveError:null,saving:false,pending:false,retrySaveButton:retry,locked:()=>false,getContext:()=>({gun:{id:'one'}}),resultDetails:()=>review.node('p',''),noRepetition:translate('common','sessionUi.noRepetition'),retryLabel:translate('common','sessionUi.retrySaving')});
   expect(retry.textContent).toBe('Ergebnisse erneut speichern');
  }finally{await loadLocale('en');}
 });

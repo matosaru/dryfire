@@ -56,6 +56,10 @@ The create/edit form's titles, field labels, action-order accessibility name, ac
 
 Guide animation frame labels, simulated microphone states, countdown/results, counters, captions, no-save disclosures, and play/pause/replay controls now use the `practice-guide.example.*` message keys in all supported locales. Sequence-step sound labels reuse `common.sound.*`; integer and decimal example values use locale formatting. The animation continues to simulate only presentation state and does not access audio or storage. German/Dutch tests cover representative frame states and number formatting; English frame parity remains covered separately. The overall scan for unowned user-facing text is still open.
 
+## Run/review and private preview fallback copy — 2026-11-20
+
+Practice and Sequence native run/review fallback labels no longer carry duplicate English defaults in `src/sessionPresentation.js`; controllers supply `common.sessionUi.*` values. The private preview locked-state notice also uses `settings.preview.locked`. Tests verify the renderer inputs and German preview notice. Static fixture/template strings remain English test baselines; the global scan of app/public and legacy surfaces is still open.
+
 ## Practice Guide catalog ownership cleanup — 2026-11-20
 
 Removed the duplicate English manual prose from `src/practiceGuideManuals.js`; that module now contains only stable guide IDs, guide kinds and example sound order. `src/practiceGuides.js` resolves all displayed manual fields from the `practice-guide` YAML catalogs. A source-ownership regression test protects this boundary, while the guide tests verify localized values still populate the returned manual. This is one completed source-audit slice; LOC-01 remains open for the repository-wide scan.
