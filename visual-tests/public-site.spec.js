@@ -1,5 +1,5 @@
 import{test,expect}from'@playwright/test';import{readFileSync}from'node:fs';
-import{PUBLIC_ROUTES}from'../site/routes.js';import{edition}from'./catalog.js';
+import{PUBLIC_ROUTES,ALL_PUBLIC_ROUTES,CANONICAL_ORIGIN}from'../site/routes.js';import{edition}from'./catalog.js';
 import{DRILLS}from'../src/drills.js';import{appPathFor,guidePathFor}from'../src/appPaths.js';
 const library=JSON.parse(readFileSync(new URL('./fixtures/library.json',import.meta.url)));
 async function restore(page,path='/'){page.on('dialog',d=>d.accept());await page.goto(path);await expect(page.locator('#gunSetupView')).toBeVisible();await page.locator('#restoreGunBackupBtn').click();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(library))});}
@@ -9,6 +9,34 @@ test('public information is readable without JavaScript; the app root discloses 
  const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});const page=await context.newPage();
  for(const route of PUBLIC_ROUTES){const response=await page.goto(route.path);await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href','https://easydryfire.com'+route.path);if(route.id==='home'){expect(await response.text()).toContain('Enable JavaScript');}else if(route.appView){await expect(page.locator('#'+route.appView+'View')).toBeVisible();await expect(page.locator('#'+route.appView+'View')).toContainText(route.heading);}else await expect(page.locator('h1')).toHaveText(route.heading);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBeLessThanOrEqual(0);}
  await context.close();
+});
+test('German and Dutch public routes are complete, indexable and fit mobile without JavaScript',async({browser})=>{
+ test.skip(edition!=='public','Localized SEO routes are generated in the public edition.');
+ const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});const page=await context.newPage();
+ for(const route of ALL_PUBLIC_ROUTES.filter(row=>row.locale!=='en')){
+  const response=await page.goto(route.path);expect(response?.status(),route.path).toBe(200);
+  expect(await page.locator('html').getAttribute('lang'),route.path).toBe(route.locale);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href',CANONICAL_ORIGIN+route.path);
+  await expect(page).toHaveTitle(route.title);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content',route.description);
+  await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content',route.locale==='de'?'de_DE':'nl_NL');
+  await expect(page.locator('h1')).toHaveText(route.heading);
+  expect(await page.locator('link[rel="alternate"]').count(),route.path).toBe(4);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth),route.path).toBeLessThanOrEqual(0);
+ }
+ await context.close();
+});
+test('changing Settings language preserves local gun/history data and the matching app route',async({page})=>{
+ await restore(page);const expectedEvents=library.events.filter(row=>row.gunId===library.activeGunId).length;
+ await expect(page.locator('#homeView')).toBeVisible();await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
+ await page.locator('#settingsShortcut').click();await expect(page).toHaveURL(/\/settings\/$/);
+ await page.locator('#language').selectOption('de');await expect(page).toHaveURL(/\/de\/settings\/$/);
+ await expect(page.locator('html')).toHaveAttribute('lang','de');await expect(page.locator('#settings-title')).toHaveText('Einstellungen');
+ await expect(page.locator('#language')).toHaveValue('de');await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
+ await page.locator('.tab[data-view="history"]').click();await expect(page).toHaveURL(/\/de\/history\/$/);await expect(page.locator('html')).toHaveAttribute('lang','de');
+ await expect(page.locator('#history-title')).toHaveText('Verlauf');await expect(page.locator('#historyList .history-item')).toHaveCount(expectedEvents);
+ await page.reload();await expect(page.locator('html')).toHaveAttribute('lang','de');await expect(page.locator('#history-title')).toHaveText('Verlauf');
+ await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
 });
 test('flat app routes preserve profile data, invalid drafts and browser history',async({page})=>{
  await restore(page,'/history/');await expect(page.locator('#historyView')).toBeVisible();

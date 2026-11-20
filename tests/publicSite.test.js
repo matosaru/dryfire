@@ -1,5 +1,5 @@
 import site from '../workers/publicSite.js';
-import {PUBLIC_ROUTES,CANONICAL_ORIGIN,publicAssetPath,sitemapXML} from '../site/routes.js';
+import {PUBLIC_ROUTES,ALL_PUBLIC_ROUTES,CANONICAL_ORIGIN,publicAssetPath,sitemapXML} from '../site/routes.js';
 const env=()=>({ASSETS:{fetch:async request=>new Response(new URL(request.url).pathname,{headers:{'Content-Type':'text/html'}})}});
 test('the application is the homepage on production and preview; About retains the editorial entry',async()=>{
  for(const origin of ['https://easydryfire.com','https://dryfire.matosaru.workers.dev']){const response=await site.fetch(new Request(origin+'/'),env());expect(await response.text()).toBe('/index.html');expect(response.headers.get('X-Robots-Tag')?.includes('noindex')??false).toBe(origin.includes('workers.dev'));}
@@ -21,6 +21,23 @@ test('unknown/internal paths are real404s, canonical variants redirect once, HEA
 });
 test('sitemap contains canonical public content, including the app homepage and unique manuals, without private setup URLs',()=>{
  const xml=sitemapXML();expect(PUBLIC_ROUTES).toHaveLength(14);for(const route of PUBLIC_ROUTES)expect(xml).toContain(CANONICAL_ORIGIN+route.path);for(const path of ['/app/','/settings/','/history/','/rack-slide-trigger-pull/'])expect(xml).not.toContain('<loc>'+CANONICAL_ORIGIN+path+'</loc>');expect(new Set(PUBLIC_ROUTES.map(r=>r.title)).size).toBe(PUBLIC_ROUTES.length);
+});
+test('localized public routes have translated metadata and reciprocal canonical alternates',()=>{
+ expect(ALL_PUBLIC_ROUTES).toHaveLength(42);
+ for(const route of ALL_PUBLIC_ROUTES){
+  expect(route.locale).toMatch(/^(en|de|nl)$/);
+  expect(route.title).not.toMatch(/^⟦/);
+  expect(route.description).not.toMatch(/^⟦/);
+  const englishPath=route.locale==='en'?route.path:route.path.replace(/^\/(de|nl)(?=\/)/,'');
+  expect(route.path).toBe(route.locale==='en'?englishPath:`/${route.locale}${englishPath==='/'?'/':englishPath}`);
+  if(route.locale!=='en')expect(route.appView).toBeUndefined();
+ }
+ const xml=sitemapXML();expect((xml.match(/<loc>/g)||[]).length).toBe(42);
+ for(const route of PUBLIC_ROUTES){
+  const en=CANONICAL_ORIGIN+route.path;
+  for(const language of ['en','de','nl'])expect(xml).toContain(`hreflang="${language}" href="${CANONICAL_ORIGIN}${language==='en'?route.path:`/${language}${route.path==='/'?'/':route.path}`}"`);
+  expect(xml).toContain(`hreflang="x-default" href="${en}"`);
+ }
 });
 test('content-hashed bundles are immutable while documents and stable release resources revalidate',async()=>{for(const path of ['/assets/entry-Abc123.js','/assets/theme-Abc123.css'])expect((await site.fetch(new Request(CANONICAL_ORIGIN+path),env())).headers.get('Cache-Control')).toBe('public, max-age=31536000, immutable');for(const path of ['/','/settings/','/about/','/sw.js','/edition.json','/pcm-capture.worklet.js','/logo.svg','/favicon.ico'])expect((await site.fetch(new Request(CANONICAL_ORIGIN+path),env())).headers.get('Cache-Control')).toBe('public, max-age=0, must-revalidate');});
 test('a missing hashed bundle never receives immutable caching',async()=>{const response=await site.fetch(new Request(CANONICAL_ORIGIN+'/assets/missing-Abc123.js'),{ASSETS:{fetch:async()=>new Response('Missing',{status:404})}});expect(response.status).toBe(404);expect(response.headers.get('Cache-Control')).not.toContain('immutable');});

@@ -29,13 +29,13 @@ modes:
   readGuide: Read the guide
   single:
     title: Single trigger press
-    description: Measure the time from the start signal to one trigger click.
+    description: Reaction time for one click after each start signal.
   repeated:
-    title: Repeated trigger presses
-    description: Count distinct trigger clicks and measure the intervals between them.
+    title: Repeated trigger press
+    description: Count distinct clicks and the intervals between them.
   par:
-    title: Par-time practice
-    description: Recognize a trigger click within your chosen time limit.
+    title: Par time practice
+    description: Recognize a click within your chosen time limit.
   control:
     title: Trigger control
-    description: Compare the consistency of detected trigger-click intervals.
+    description: Compare the consistency of your detected click intervals.

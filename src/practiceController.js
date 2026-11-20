@@ -11,6 +11,8 @@ import { getGunSetting, setGunSetting, saveSession } from './storage/library.js'
 import { requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
 import {materializeStaticCatalog} from './staticCatalog.js';
+import {translate} from '../apps/web/src/localization/runtime.ts';
+import {translateAudioStatus} from './localizedAudioStatus.js';
 
 const $ = id => document.getElementById(id);
 
@@ -26,6 +28,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   let clock = () => 0, queue = Promise.resolve(), configQueue = Promise.resolve();
   let routeKey = null, view = null, page = null, runModel, reviewModel;
   const actions = new Map();
+  const tr=(key,parameters={})=>translate('common',`runtime.practice.${key}`,parameters);
   const bind = (id, handler) => { actions.set(id,handler); $(id).addEventListener('click',handler); };
   const presentRun = model => { runModel=model; if(!view)return false; view.setRun(model); return true; };
   const presentReview = model => { reviewModel=model; if(!view)return false; view.setReview(model); return true; };
@@ -42,8 +45,8 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     $('practiceLevelMeter').setAttribute('aria-valuenow', String(level));
     $('practiceLevelMeter').setAttribute('aria-valuetext', `${level} relative input level`);
     $('practiceLevelValue').textContent = level;
-    $('practiceInputState').textContent = arriving ? (level > 0 ? 'Microphone input detected.' : 'Listening · low or quiet input.')
-      : now - inputStartedAt > 1000 ? 'No audio input arriving. Check microphone permission.' : 'Waiting for audio input…';
+    $('practiceInputState').textContent = arriving ? (level > 0 ? tr('inputDetected') : tr('inputQuiet'))
+      : now - inputStartedAt > 1000 ? tr('inputMissing') : tr('inputWaiting');
   }
   function resetInput() {
     inputLevel = 0; inputSeen = false; inputAt = 0; holdLevelUntil = 0; inputStartedAt = performance.now();
@@ -66,7 +69,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const number = (id, key, used = true) => {
       if (!used) return defaults[key];
       const text = $(id).value.trim();
-      if (!text) throw new TypeError('Complete the visible practice settings.');
+      if (!text) throw new TypeError(tr('completeSettings'));
       return readNumberInput($(id));
     };
     return normalizePracticeConfig({
@@ -95,22 +98,22 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       $(id).querySelectorAll('input, select').forEach(input => { input.disabled = !visible; });
     }
     $('practiceStartSoundTest').classList.toggle('hidden', external);
-    $('practiceCountLabel').textContent = continuousPractice(mode) ? 'Click target' : 'Repetitions';
+    $('practiceCountLabel').textContent = continuousPractice(mode) ? translate('common','runtimeMain.clickTarget') : translate('common','runtimeMain.repetitions');
     const context = getContext();
     let message = '', config;
-    try { config = readConfig(); } catch (error) { message = error.message; }
+    try { config = readConfig(); } catch { message = tr('completeSettings'); }
     const required = practiceLabels();
     const counts = trainingCounts(context.examples);
     const missing = required.filter(label => counts[label] < MIN_EXAMPLES_PER_CLASS);
     const missingCue = external && compatibleCalibration(context.calibration || []).filter(row => row.kind === 'cue').length < MIN_EXAMPLES_PER_CLASS;
-    if (missing.length) message = `Learn 3 compatible examples of ${missing.map(titleFor).join(', ')}. Other sounds are optional.`;
-    else if (missingCue) message = 'Learn 3 external-beep examples under Improve recognition in Learn.';
-    else if (!message) message = !$('safetyAck').checked ? 'Sounds ready. Start opens safety confirmation.' : 'Required sounds ready. Start when you are ready.';
+    if (missing.length) message = tr('learnExamples',{labels:missing.map(titleFor).join(', ')});
+    else if (missingCue) message = tr('learnCue');
+    else if (!message) message = !$('safetyAck').checked ? tr('soundsReadySafety') : tr('soundsReady');
     $('practiceReadiness').textContent = message;
     $('practiceLearnBtn').classList.toggle('hidden', !missing.length && !missingCue);
     $('practiceStartBtn').disabled = locked() || context.available === false || missing.length > 0 || missingCue || !config || !context.gun || context.gun.needsDetails;
-    $('practiceCueNote').textContent = external ? 'Waiting for your calibrated beep starts the acoustic timer. The app does not play a second cue.'
-      : $('practiceStartSound').checked ? `Microphone ready before countdown. ${mode === 'single' ? 'A trigger before the beep fails the attempt. ' : ''}Set your device media volume for the start sound. The first ${(PRACTICE_CUE_GUARD_MS / 1000).toFixed(2)} s after GO is excluded to reject the cue.` : 'Microphone ready before countdown. Silent start uses the on-screen signal; Single triggers before it fail the attempt.';
+    $('practiceCueNote').textContent = external ? tr('cueExternal')
+      : $('practiceStartSound').checked ? tr('cueBeep',{earlyTrigger:mode==='single'?tr('earlyTrigger'):'' ,seconds:(PRACTICE_CUE_GUARD_MS/1000).toFixed(2)}) : tr('cueSilent');
     renderSteps(required);
   }
   function renderSteps(labels){const steps=labels.map(label=>({text:titleFor(label),className:'drill-step'}));if(page)page.update({steps});else $('practiceSteps').replaceChildren(...steps.map(step=>node('li',step.text,step.className)));}
@@ -119,7 +122,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   function render() {
     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
     const running = pending || state && state.phase !== 'review';
-    const parent={guideHref:guidePathFor(mode),guideHidden:!!running||!!record,title:practiceDefinition(record?.practiceMode||mode)?.title||'Practice'};
+    const parent={guideHref:guidePathFor(mode),guideHidden:!!running||!!record,title:translate('practice',`modes.${record?.practiceMode||mode}`)};
     if(page)page.update(parent);else{$('practiceGuideLink').setAttribute('href',parent.guideHref);$('practiceGuideLink').classList.toggle('hidden',parent.guideHidden);$('practice-title').textContent=parent.title;}
     $('practiceConfigure').classList.toggle('hidden', !!running || !!record);
     $('practiceRun').classList.toggle('hidden', !running); $('practiceReview').classList.toggle('hidden', !!running || !record);
@@ -168,13 +171,13 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
         if (before?.phase === 'countdown') microphone?.suppressDetection({ guardMs });
         else microphone?.armDetection({ guardMs });
         render();
-        if (state.config.soundAtStart && !cue?.play()) onError(new Error('Start beep unavailable. STOP and the microphone indicator mark the start.'));
+        if (state.config.soundAtStart && !cue?.play()) onError(new Error(tr('beepUnavailable')));
       }
       vibrate('go');
     } else if (!['countdown', 'active', 'closing', 'await-cue'].includes(state.phase)) microphone?.disarmDetection();
     changed(); await persist();
     if (state.completed > (before?.completed ?? 0)) vibrate('completion');
-    if (state.phase === 'review') { await release(); closing = false; changed(); onStatus('Practice saved'); }
+    if (state.phase === 'review') { await release(); closing = false; changed(); onStatus(tr('saved')); }
   }
   function startTimer() {
     stopTimer(); timer = setInterval(() => {
@@ -189,7 +192,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const session = await startContinuousListening({ sensitivity: context.sensitivity, audioPreferences: context.audioPreferences, onProcessing,
       onLevel: level => { if (capture === captureToken) receiveLevel(level); },
       signal: abortCapture.signal, detectionEnabled: false,
-      onState: status => { if (capture === captureToken) onStatus(status); },
+      onState: status => { if (capture === captureToken) onStatus(translateAudioStatus(status)); },
       onError: error => { if (capture === captureToken) interrupt('microphone-failure').then(() => onError(error)).catch(onError); },
       onEvent: (pcm, sampleRate, timing) => {
         enqueue(async () => {
@@ -200,14 +203,14 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
               const cueResult = selectRecognition(recognitionFeatures(pcm, sampleRate).map(features => classifyExternalCue(classify, context.examples, context.calibration, features)));
               prediction = { label: cueResult?.label ? 'cue' : 'unknown', score: cueResult?.score || 0 };
             } else prediction = recognizeRecording(context.examples, pcm, sampleRate, { enabledLabels: state.drillSteps, negativeExamples: compatibleCalibration(context.calibration) });
-          } catch { inputFeedback = 'Sound heard, but too quiet or unclear to match. Check your samples in Learn.'; changed(); return; }
+          } catch { inputFeedback = translate('practice','feedback.unclear'); changed(); return; }
           if (!prediction) return;
-          inputFeedback = prediction.label ? (prediction.label === 'cue' ? 'Start beep recognized.' : `${titleFor(prediction.label)} recognized.`)
-            : prediction.rejectedNegative ? 'Sound heard and excluded by learned profiles. Check Trigger and reset samples in Learn.'
-              : 'Sound heard, but no reliable match. Add clear samples in Learn.';
+          inputFeedback = prediction.label ? (prediction.label === 'cue' ? translate('practice','feedback.cueRecognized') : translate('practice','feedback.recognized',{sound:titleFor(prediction.label)}))
+            : prediction.rejectedNegative ? translate('practice','feedback.excluded')
+              : translate('practice','feedback.noMatch');
           const next = detectPractice(state, { label: prediction.label, score: prediction.score,
             detectedAtMs: Number.isFinite(timing?.onsetMs) ? timing.onsetMs : clock() }, times());
-          if (next !== state && next.repetitions.at(-1)?.reason === 'early') inputFeedback = 'Early trigger · failed attempt. Wait for the next signal.';
+          if (next !== state && next.repetitions.at(-1)?.reason === 'early') inputFeedback = translate('practice','feedback.early');
           await apply(next);
         }).catch(() => {});
       },
@@ -230,7 +233,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     const preparing = config.startSource === 'app' && config.soundAtStart ? cue.prepare() : Promise.resolve(true);
     try {
       await configQueue;
-      if (!await preparing && token === operation) onError(new Error('Start beep unavailable. STOP and the microphone indicator mark the start.'));
+      if (!await preparing && token === operation) onError(new Error(tr('beepUnavailable')));
       if (token !== operation || !await connect(context, token) || token !== operation) return;
       pending = false;
       startTimer();
@@ -256,7 +259,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       await enqueue(async () => {
         const ready = await preparing;
         if (token !== operation || state?.phase !== 'result') return;
-        if (!ready) onError(new Error('Start beep unavailable. STOP and the microphone indicator mark the start.'));
+        if (!ready) onError(new Error(tr('beepUnavailable')));
         await apply(nextPractice(state, times()));
       });
       if (token === operation) startTimer();
@@ -321,7 +324,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
   $('practiceBackBtn').addEventListener('click', () => onBack());
   bind('practiceDoneBtn', () => { if (!locked()) onNavigate('drills'); });
   $('practiceLearnBtn').addEventListener('click', () => onNavigate('learn'));
-  bind('practiceTestStartSound', async () => { if (!await presentation.playStartCuePreview()) onError(new Error('Start sound unavailable. Check browser audio permission and media volume.')); });
+  bind('practiceTestStartSound', async () => { if (!await presentation.playStartCuePreview()) onError(new Error(tr('previewUnavailable'))); });
   bind('practiceRepeatBtn', () => { const record = state ? toPracticeRecord(state) : review; if (record) open(record.practiceMode, record.config).catch(onError); });
   bind('practiceRetryBtn', () => { enqueue(persist).then(changed).catch(onError); });
   $('safetyAck').addEventListener('change', () => { if (!state && !review) configure(); });

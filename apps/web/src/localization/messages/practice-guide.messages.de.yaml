@@ -16,3 +16,174 @@ goodToKnowHeading: Gut zu wissen
 beforeStart: Bevor du beginnst
 safetyReminder: Stelle sicher, dass die Waffe entladen ist, entferne scharfe Munition und verwende eine sichere Richtung und einen geeigneten Kugelfang.
 measurementDisclosure: Die App misst erkannte Geräusche. Sie kann den entladenen Zustand, das Zielen oder den sicheren Umgang nicht überprüfen.
+manuals:
+  single:
+    title: Einzelner Abzugsdruck
+    purpose: Misst die Zeit vom Startsignal bis zum ersten erkannten Abzugsklick.
+    measures: Reaktionszeit pro Versuch sowie abgeschlossene und fehlgeschlagene Versuche.
+    steps: |
+      Lege die Wiederholungszahl und eine feste oder zufällige Bereitschaftsverzögerung fest.
+      Starte, beobachte den Countdown und warte vor einem einzelnen Abzugsdruck auf das Signal.
+      Lies das Ergebnis. Bis zum Ziel startet automatisch ein neuer Countdown.
+    expect: Ein erkannter Abzugsklick vor dem App-Signal lässt den Versuch scheitern. Pro Versuch wird ein Klick gewertet.
+    requires: Lerne den Abzugsklick für die ausgewählte Waffe. Andere Geräuscharten sind optional.
+    stages: |
+      Mikrofon bereit
+      2,4 s Countdown → Signalton
+      Klick nach 0,50 s
+      Automatischer 3,2 s Countdown → zweiter Signalton → Klick nach 0,60 s
+    exampleConfig: 2 Versuche · zufällige Verzögerung 2–5 s · App-Signal ein
+  repeated:
+    title: Wiederholte Abzugsdrücke
+    purpose: Zählt einzelne erkannte Abzugsklicks und zeigt die Zeitabstände dazwischen.
+    measures: Anzahl gewerteter Klicks und Abstände zwischen aufeinanderfolgenden Klicks.
+    steps: |
+      Wähle die Anzahl der Klicks und die Bereitschaftsverzögerung.
+      Führe nach einem Startsignal einzelne Abzugsdrücke aus, soweit es deine Ausrüstung erlaubt.
+      Die Erkennung läuft ohne neuen Signalton für jeden Klick weiter. Die Auswertung erscheint beim Zielwert.
+    expect: Rückstell- und Handhabungsgeräusche sollten nicht als Schüsse zählen. Pause stoppt die Aufnahme; Fortsetzen berücksichtigt die Pausenzeit nicht.
+    requires: Lerne den Abzugsklick. Optionale Rückstell- oder Störgeräusche können helfen, andere Klicks auszuschließen.
+    stages: |
+      Mikrofon bereit
+      2,4 s Countdown → ein Signalton
+      Drei Klicks: 0,50 / 1,30 / 2,10 s
+      Zwei Abstände: 0,80 / 0,80 s
+    exampleConfig: 3 Klicks · zufällige Verzögerung 2–5 s · App-Signal ein
+  par:
+    title: Training mit Zeitlimit
+    purpose: Prüft, ob ein erkannter Abzugsklick innerhalb des gewählten Zeitlimits erfolgt.
+    measures: Zeit vom Startsignal bis zum Klick und ob er rechtzeitig erkannt wurde.
+    steps: |
+      Lege ein Zeitlimit, Wiederholungen und die Bereitschaftsverzögerung fest.
+      Warte auf das Signal und betätige den Abzug einmal innerhalb des Zeitlimits.
+      Lies das Ergebnis und wähle „Nächste Wiederholung“, wenn du für den nächsten Countdown bereit bist.
+    expect: Ohne gewerteten Klick bis zum Ablauf gilt der Versuch als verpasst. Die App verarbeitet möglicherweise noch kurz Audiodaten, die vor Ablauf aufgenommen wurden.
+    requires: "Lerne den Abzugsklick. Beispiel: Ein Klick nach 0,64 s liegt innerhalb eines Limits von 1,50 s."
+    stages: |
+      Mikrofon bereit
+      Countdown → Signalton → Treffer nach 0,60 s innerhalb von 1,50 s
+      Nutzer wählt „Nächste Wiederholung“
+      Neuer Countdown → Signalton → kein Klick → verpasst
+    exampleConfig: 2 Versuche · zufällige Verzögerung 2–5 s · App-Signal ein
+  control:
+    title: Abzugskontrolle
+    purpose: Vergleicht, wie gleichmäßig die Zeitabstände zwischen erkannten Abzugsklicks sind.
+    measures: Klickabstände und deren Schwankung. Waffenbewegungen werden nicht gemessen.
+    steps: |
+      Wähle ein Klickziel und die Bereitschaftsverzögerung.
+      Führe nach dem Startsignal einzelne Drücke in einem angenehmen, gleichmäßigen Tempo aus.
+      Übe bis zum Zielwert und vergleiche danach die aufgezeichneten Abstände.
+    expect: Ein Signal startet die fortlaufende Erkennung. Ein Mikrofon kann Zielen, Bewegung oder Abzugstechnik nicht bewerten.
+    requires: Lerne den Abzugsklick. Eine optionale Rückstell- oder Störgeräuschkalibrierung kann die Unterscheidung verbessern.
+    stages: |
+      Mikrofon bereit
+      2,4 s Countdown → ein Signalton
+      Drei einzelne Klicks
+      0,80 s Abstände → Auswertung
+    exampleConfig: 3 Klicks · zufällige Verzögerung 2–5 s · App-Signal ein
+  sequence-trigger-only:
+    title: Abzugsklick-Abfolge
+    purpose: Schließe eine geordnete Übung mit einem Schritt ab, indem du nach dem Signal das gelernte Abzugsgeräusch ausführst.
+    measures: Zeit vom Signal bis zum Klick für jede abgeschlossene Wiederholung.
+    steps: |
+      Wähle die Wiederholungszahl und die Bereitschaftsverzögerung der Ablaufübung.
+      Betätige nach dem Startsignal einmal den Abzug für den angezeigten Schritt.
+      Lies das Ergebnis. Bis zum Ziel startet automatisch ein neuer Countdown.
+    expect: Dies ist der ältere geordnete Ablauf, nicht die Einzelübung. Klicks vor dem Signal gelten hier nicht als fehlgeschlagene Einzelversuche.
+    requires: Lerne den Abzugsklick. Die ersten 0,30 s nach dem App-Signal werden ausgeblendet, um den Signalton zu verwerfen.
+    stages: |
+      Mikrofon verbunden
+      2,4 s Countdown → Signalton
+      Abzug
+      Ergebnis → automatischer 3,2 s Countdown → Wiederholung
+    exampleConfig: 2 Versuche · zufällige Verzögerung 2–5 s · App-Signal ein
+  sequence-rack-trigger:
+    title: Verschluss spannen → Abzug betätigen
+    purpose: Führe die gelernten Geräusche zum Spannen und Abzug in der angezeigten Reihenfolge aus.
+    measures: Zeit vom Startsignal bis zum Abschluss der Abfolge sowie die Zeit jedes erkannten Schritts.
+    steps: |
+      Lerne beide angezeigten Geräusche und wähle dann Wiederholungen und Bereitschaftsverzögerung.
+      Führe nach dem Signal zuerst das Spannen und dann den Abzugsdruck aus.
+      Lies das Ergebnis der erkannten Schritte. Für die nächste Wiederholung startet automatisch ein neuer Countdown.
+    expect: Nur erkannte Geräusche in der angezeigten Reihenfolge schließen eine Wiederholung ab. „Sitzung beenden“ stoppt die Aufnahme und speichert die Ergebnisse.
+    requires: Lerne das Spannen und den Abzugsklick. Die ersten 0,30 s nach dem App-Signal werden ausgeblendet.
+    stages: |
+      Mikrofon verbunden
+      2,4 s Countdown → Signalton
+      Spannen → Abzug
+      Ergebnis → automatischer 3,2 s Countdown → Wiederholung
+    exampleConfig: 2 Versuche · zufällige Verzögerung 2–5 s · App-Signal ein
+  sequence-mag-trigger:
+    title: Magazin wechseln → Abzug betätigen
+    purpose: Führe die gelernten Geräusche für Magazinwechsel und Abzug in der angezeigten Reihenfolge aus.
+    measures: Zeit vom Startsignal bis zum Abschluss und erkannte Zeiten der einzelnen Schritte.
+    steps: |
+      Lerne Magazinwechsel und Abzugsklick und lege Wiederholungen sowie Bereitschaftsverzögerung fest.
+      Führe nach dem Signal zuerst den Magazinwechsel und dann den Abzugsdruck aus.
+      Lies das Ergebnis. Die nächste Wiederholung beginnt automatisch mit einem neuen Countdown.
+    expect: Ein Magazinwechsel zählt nicht als Schuss. Die Wiederholung endet erst, wenn die Geräusche in der richtigen Reihenfolge erkannt wurden.
+    requires: Lerne Magazinwechsel und Abzugsklick. Die ersten 0,30 s nach dem App-Signal werden ausgeblendet.
+    stages: |
+      Mikrofon verbunden
+      2,4 s Countdown → Signalton
+      Magazinwechsel → Abzug
+      Ergebnis → automatischer 3,2 s Countdown → Wiederholung
+    exampleConfig: 2 Versuche · zufällige Verzögerung 2–5 s · App-Signal ein
+  sequence-draw-mag-trigger:
+    title: Ziehen → Magazin → Abzug
+    purpose: Führe die drei gelernten Geräusche in einer geordneten Abfolge aus.
+    measures: Zeit vom Signal bis zum erkannten Abzugsklick sowie die Zeiten der einzelnen Schritte.
+    steps: |
+      Lerne alle drei angezeigten Geräusche und wähle Wiederholungen und Bereitschaftsverzögerung.
+      Führe nach dem Signal die angezeigte Reihenfolge aus: Ziehen, Magazinwechsel, Abzug.
+      Lies das Ergebnis. Für die nächste Wiederholung startet automatisch ein neuer Countdown.
+    expect: Die Erkennung bestätigt nur eine akustische Reihenfolge. Sie kann nicht überprüfen, wie eine körperliche Handlung ausgeführt wurde.
+    requires: Lerne Ziehen, Magazinwechsel und Abzugsklick. Die ersten 0,30 s nach dem App-Signal werden ausgeblendet.
+    stages: |
+      Mikrofon verbunden
+      2,4 s Countdown → Signalton
+      Ziehen → Magazinwechsel → Abzug
+      Ergebnis → automatischer 3,2 s Countdown → Wiederholung
+    exampleConfig: 2 Versuche · zufällige Verzögerung 2–5 s · App-Signal ein
+  sequence-custom:
+    title: Deine gespeicherte Abfolge
+    purpose: Führe die Geräusche deiner ausgewählten gespeicherten Übung in der festgelegten Reihenfolge aus.
+    measures: Zeit vom Startsignal bis zum Abschluss und erkannte Zeiten der einzelnen Schritte dieser Vorlage.
+    steps: |
+      Prüfe die tatsächlichen Schritte der ausgewählten Vorlage und lerne jedes benötigte Geräusch.
+      Wähle Wiederholungen und Verzögerung und folge nach dem Signal der angezeigten Reihenfolge.
+      Eine passende Abfolge schließt eine Wiederholung ab; danach startet automatisch der nächste Countdown.
+    expect: Nur erkannte Geräusche in der angezeigten Reihenfolge dieser gespeicherten Vorlage schließen eine Wiederholung ab.
+    requires: Lerne nur die Geräusche, die in dieser Vorlage vorkommen. Neue eigene Vorlagen sind weiterhin nur in der Vollversion verfügbar.
+    stages: |
+      Mikrofon verbunden
+      2,4 s Countdown → Signalton
+      Durchladen → Abzug → Abzug
+      Ergebnis → automatischer 3,2 s Countdown → Wiederholung
+    exampleConfig: 2 Versuche · zufällige Verzögerung 2–5 s · App-Signal ein
+runtime:
+  customExampleConfig: "{{attempts}} Beispielversuche · zufällige Verzögerung 2–5 s · App-Signal ein"
+  setup:
+    publicEntry: Beispielwerte werden angezeigt. Gehe zurück zur Einrichtung, um Anzahl und Zeit einzustellen.
+    externalCue: "Deine Einrichtung verwendet einen kalibrierten externen Signalton: kein App-Countdown und kein App-Signalton. Die Illustration zeigt die Option mit App-Signal."
+    silentStart: "Deine Einrichtung verwendet ein stilles visuelles Startsignal. Warte auf das Signal auf dem Bildschirm; die Illustration zeigt den optionalen App-Signalton."
+    appSignal: Deine Einrichtung verwendet das App-Signal. Deine gewählten Anzahlen und Zeiten bleiben erhalten, wenn du zur Einrichtung zurückkehrst.
+  externalCue:
+    singleSteps: |
+      Lege die Anzahl der Wiederholungen und den kalibrierten externen Signalton fest.
+      Starte und warte vor einem Abzugsklick auf den externen Signalton.
+      Lies das Ergebnis. Bis zum Ziel startet automatisch ein neuer Versuch.
+    repeatedSteps: |
+      Lege die Anzahl der Klicks und die Bereitschaftsverzögerung fest.
+      Führe nach dem kalibrierten externen Signalton einzelne Abzugsdrücke aus, soweit es deine Ausrüstung zulässt.
+      Das Mikrofon hört ohne Signalton vor jedem Klick weiter zu. Die Auswertung erscheint beim Zielwert.
+    parSteps: |
+      Lege Zeitlimit, Wiederholungen und Bereitschaftsverzögerung fest.
+      Warte auf den kalibrierten externen Signalton und drücke dann innerhalb des Zeitlimits einmal den Abzug.
+      Lies das Ergebnis. Wähle Nächste Wiederholung, wenn du für einen weiteren Versuch bereit bist.
+    controlSteps: |
+      Lege die Klickanzahl und die Bereitschaftsverzögerung fest.
+      Führe nach dem kalibrierten externen Signalton einzelne Abzugsdrücke in einem gleichmäßigen, angenehmen Tempo aus.
+      Fahre bis zum Zielwert fort und vergleiche dann die aufgezeichneten Intervalle.
+    singleExpect: Bei dieser Einrichtung mit externem Signalton zählen Abzugsklicks vor dem kalibrierten Signal nicht als Versuche. Das Beispiel für einen zu frühen Klick unten zeigt den App-Signalmodus.
+    requirementSuffix: " Für einen Start mit externem Signalton werden drei passende Signalbeispiele benötigt."

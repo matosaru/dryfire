@@ -11,6 +11,8 @@ import {
 import { getGunSetting, setGunSetting, saveSession, getSessions } from './storage/library.js';
 import { requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
+import {formatLocaleDate,formatLocaleNumber,translate} from '../apps/web/src/localization/runtime.ts';
+import {translateAudioStatus} from './localizedAudioStatus.js';
 
 const $ = selector => document.querySelector(selector);
 
@@ -43,6 +45,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   let lastAnnouncement = '';
   let routeKey = null, view = null, page = null, runModel, reviewModel;
   const actions = new Map();
+  const tr=(key,parameters={})=>translate('common',`runtime.session.${key}`,parameters);
+  const soundLabel=label=>translate('common',`sound.${label}`);
   const bind = (id, handler) => { actions.set(id,handler); $('#'+id).addEventListener('click',handler); };
   const presentRun = model => { runModel=model; if(!view)return false; view.setRun(model); return true; };
   const presentReview = model => { reviewModel=model; if(!view)return false; view.setReview(model); return true; };
@@ -59,7 +63,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   function readConfig() {
     const numeric = selector => {
       const value = $(selector).value.trim();
-      if (!value) throw new TypeError('Enter the repetition count and valid start delays.');
+      if (!value) throw new TypeError(tr('enterConfig'));
       return readNumberInput($(selector));
     };
     return normalizeSessionConfig({
@@ -88,10 +92,10 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     const counts = trainingCounts(context.examples);
     const missing = [...new Set(selection.steps)].filter(label => counts[label] < MIN_EXAMPLES_PER_CLASS);
     let invalid = '';
-    try { readConfig(); } catch (error) { invalid = error.message; }
+    try { readConfig(); } catch { invalid = tr('enterConfig'); }
     $('#sessionReadiness').textContent = missing.length
-      ? `Train at least ${MIN_EXAMPLES_PER_CLASS} examples of ${missing.map(titleFor).join(', ')} for this gun.`
-      : invalid || (!$('#safetyAck').checked ? 'Sounds ready. Start opens safety confirmation.' : 'Sounds trained and safety confirmed. Ready to start.');
+      ? tr('trainExamples',{count:MIN_EXAMPLES_PER_CLASS,labels:missing.map(soundLabel).join(', ')})
+      : invalid || (!$('#safetyAck').checked ? tr('readySafety') : tr('ready'));
     $('#sessionLearnBtn').classList.toggle('hidden', !missing.length);
     $('#sessionStartBtn').disabled = pending || locked() || missing.length > 0 || !!invalid || !context.gun || context.gun.needsDetails;
     const random = $('#sessionDelayMode').value === 'random';
@@ -103,7 +107,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   function renderSequence(record) {
     const steps = record?.drillSteps || selection?.steps || [];
     const rows=steps.map((label,index)=>({text:titleFor(label),className:'drill-step'+(state?.phase==='active'?(index<state.current.stepIndex?' done':index===state.current.stepIndex?' current':''):'')}));
-    const presetName=`${steps.length} sound action${steps.length===1?'':'s'} · ${record?'Saved session':'Session setup'}`;
+    const presetName=tr(steps.length===1?'presetOne':'presetOther',{count:steps.length,state:record?tr('saved'):tr('setup')});
     if(page)page.update({steps:rows,presetName});else{const host=$('#sessionSteps');host.replaceChildren(...rows.map(row=>node('li',row.text,row.className)));$('#sessionPresetName').textContent=presetName;}
   }
 
@@ -187,13 +191,13 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if (state.phase === 'active' && before?.phase !== 'active') {
       microphone?.armDetection({ guardMs: state.config.soundAtStart ? 300 : 0 });
       render(); // Display GO when the cue is scheduled, before durable writes.
-      if (state.config.soundAtStart && !cue?.play()) onError(new Error('Start beep unavailable. Visual GO remains active.'));
+    if (state.config.soundAtStart && !cue?.play()) onError(new Error(tr('cueUnavailable')));
       vibrate('go');
     } else if (state.phase !== 'active') microphone?.disarmDetection();
     changed();
     await persist(); // A result cannot advance to the next countdown before saving.
     if (next.completed > (before?.completed ?? 0)) vibrate('completion');
-    if (terminalTransition) { await release(); finishing = false; changed(); onStatus('Session saved'); }
+    if (terminalTransition) { await release(); finishing = false; changed(); onStatus(tr('saved')); }
   }
 
   function startTimer() {
@@ -215,7 +219,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
       onProcessing,
       signal: abortCapture.signal,
       detectionEnabled: false,
-      onState: status => { if (capture === captureToken) onStatus(status); },
+      onState: status => { if (capture === captureToken) onStatus(translateAudioStatus(status)); },
       onError: error => { if (capture === captureToken) void interrupt('microphone-failure').then(() => onError(error)); },
       onEvent: (pcm, sampleRate, timing) => {
         const detectedAtMs = timing?.onsetMs;
@@ -223,7 +227,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
           if (capture !== captureToken || pending || state?.phase !== 'active') return;
           let prediction;
           try { prediction = recognizeRecording(context.examples, pcm, sampleRate, { enabledLabels: [...new Set(state.drillSteps)], negativeExamples: context.calibration || [] }); } catch { return; }
-          if (!prediction) throw new Error('No compatible learned sound model is available.');
+          if (!prediction) throw new Error(tr('noModel'));
           await apply(recordSessionDetection(state, { label: prediction.label, score: prediction.score,
             detectedAtMs: Number.isFinite(detectedAtMs) ? detectedAtMs : clock() }, times()));
         }).catch(() => {});
@@ -251,7 +255,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     const cueReady = config.soundAtStart ? cue.prepare() : Promise.resolve(true); // Explicit Start/Resume gesture.
     changed();
     try {
-      if (!await cueReady && token === operation) onError(new Error('Start beep unavailable. The session can still use visual GO.'));
+      if (!await cueReady && token === operation) onError(new Error(tr('cueUnavailable')));
       if (token !== operation) return;
       await configQueue;
       if (token !== operation) return;
@@ -314,7 +318,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
         }
         await interruptedCue?.close();
         if (cue === interruptedCue) cue = null;
-        onStatus(state ? 'Session saved' : 'Session cancelled before starting');
+        onStatus(state ? tr('saved') : tr('cancelled'));
       });
     })();
     interruption = ending.finally(() => {
@@ -362,15 +366,16 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if(!paint)return records;
     const host = $('#savedSessions');
     host.replaceChildren();
-    if (!records.length) host.append(node('p', 'No saved drill sessions for this gun yet.', 'empty-state'));
+    if (!records.length) host.append(node('p', translate('history','sessions.noSessions'), 'empty-state'));
     for (const record of records) {
       const card = node('article', '', 'saved-session-card');
-      const count = record.kind === 'practice' ? `${record.shots} shots · ${record.completed} attempts` : `${record.completed}/${record.config.repetitions}`;
-      const button = node('button', `${new Date(record.startedAt).toLocaleString()} · ${count} · ${record.status}`, 'button secondary wide-action');
+      const count = record.kind === 'practice' ? translate('history','sessions.shots',{count:formatLocaleNumber(record.shots),attempts:formatLocaleNumber(record.completed)}) : translate('history','sessions.repetitions',{completed:formatLocaleNumber(record.completed),total:formatLocaleNumber(record.config.repetitions)});
+      const statusKey=record.status==='completed'?'statusCompleted':record.status==='interrupted'?'statusInterrupted':'statusAbandoned';
+      const button = node('button', `${formatLocaleDate(record.startedAt,{year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'2-digit',second:'2-digit'})} · ${count} · ${translate('history',`actions.${statusKey}`)}`, 'button secondary wide-action');
       button.type = 'button';
       button.addEventListener('click', () => openSavedRecord(record));
       card.append(node('strong', record.drillTitle), button);
-      if(onDeleteSaved){const remove=node('button','Delete','history-delete-button');remove.type='button';remove.setAttribute('aria-label',`Delete ${record.drillTitle} session`);remove.addEventListener('click',()=>{const confirm=node('div','','history-delete-confirm');confirm.setAttribute('role','group');confirm.setAttribute('aria-label',`Delete ${record.drillTitle} session confirmation`);const yes=node('button','Delete','button danger'),cancel=node('button','Cancel','button secondary');yes.type=cancel.type='button';yes.setAttribute('aria-label',`Confirm deleting ${record.drillTitle} session`);cancel.setAttribute('aria-label',`Cancel deleting ${record.drillTitle} session`);yes.addEventListener('click',()=>Promise.resolve(onDeleteSaved(record)).catch(onError));cancel.addEventListener('click',()=>confirm.replaceWith(remove));confirm.append(node('span','Delete this saved session?'),yes,cancel);remove.replaceWith(confirm);});card.append(remove);}
+      if(onDeleteSaved){const title=record.drillTitle;const remove=node('button',translate('history','actions.delete'),'history-delete-button');remove.type='button';remove.setAttribute('aria-label',translate('history','sessions.sessionDelete',{title}));remove.addEventListener('click',()=>{const confirmation=node('div','','history-delete-confirm');confirmation.setAttribute('role','group');confirmation.setAttribute('aria-label',translate('history','sessions.sessionConfirmation',{title}));const yes=node('button',translate('history','actions.delete'),'button danger'),cancel=node('button',translate('history','actions.cancel'),'button secondary');yes.type=cancel.type='button';yes.setAttribute('aria-label',translate('history','sessions.sessionConfirmDelete',{title}));cancel.setAttribute('aria-label',translate('history','sessions.sessionCancelDelete',{title}));yes.addEventListener('click',()=>Promise.resolve(onDeleteSaved(record)).catch(onError));cancel.addEventListener('click',()=>confirmation.replaceWith(remove));confirmation.append(node('span',translate('history','sessions.deleteSavedQuestion')),yes,cancel);remove.replaceWith(confirmation);});card.append(remove);}
       host.append(card);
     }
     return records;
@@ -401,7 +406,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   $('#sessionBackBtn').addEventListener('click', () => onBack());
   bind('backToDrillsBtn', () => onNavigate('drills'));
   $('#sessionLearnBtn').addEventListener('click', () => onNavigate('learn'));
-  bind('sessionTestStartSound', async () => { if (!await presentation.playStartCuePreview()) onError(new Error('Start sound unavailable. Check browser audio permission and media volume.')); });
+  bind('sessionTestStartSound', async () => { if (!await presentation.playStartCuePreview()) onError(new Error(tr('previewUnavailable'))); });
   bind('repeatSessionBtn', () => {
     const record = state ? toSessionRecord(state) : review;
     if (record) open({ id: record.drillId, title: record.drillTitle, steps: record.drillSteps }, record.config).catch(onError);

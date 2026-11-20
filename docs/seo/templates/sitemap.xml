@@ -1,17 +1,297 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://easydryfire.com/</loc></url>
-  <url><loc>https://easydryfire.com/practice-modes/</loc></url>
-  <url><loc>https://easydryfire.com/single-trigger-press-guide/</loc></url>
-  <url><loc>https://easydryfire.com/repeated-trigger-press-guide/</loc></url>
-  <url><loc>https://easydryfire.com/par-time-practice-guide/</loc></url>
-  <url><loc>https://easydryfire.com/trigger-control-guide/</loc></url>
-  <url><loc>https://easydryfire.com/rack-slide-trigger-pull-guide/</loc></url>
-  <url><loc>https://easydryfire.com/magazine-change-trigger-pull-guide/</loc></url>
-  <url><loc>https://easydryfire.com/draw-magazine-change-trigger-pull-guide/</loc></url>
-  <url><loc>https://easydryfire.com/sequence-drills-guide/</loc></url>
-  <url><loc>https://easydryfire.com/trigger-click-calibration-guide/</loc></url>
-  <url><loc>https://easydryfire.com/help/</loc></url>
-  <url><loc>https://easydryfire.com/about/</loc></url>
-  <url><loc>https://easydryfire.com/contact/</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://easydryfire.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/practice-modes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/practice-modes/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/practice-modes/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/practice-modes/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/practice-modes/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/practice-modes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/practice-modes/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/practice-modes/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/practice-modes/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/practice-modes/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/practice-modes/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/practice-modes/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/practice-modes/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/practice-modes/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/practice-modes/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/single-trigger-press-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/single-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/single-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/single-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/single-trigger-press-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/single-trigger-press-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/single-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/single-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/single-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/single-trigger-press-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/single-trigger-press-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/single-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/single-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/single-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/single-trigger-press-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/repeated-trigger-press-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/repeated-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/repeated-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/repeated-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/repeated-trigger-press-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/repeated-trigger-press-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/repeated-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/repeated-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/repeated-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/repeated-trigger-press-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/repeated-trigger-press-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/repeated-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/repeated-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/repeated-trigger-press-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/repeated-trigger-press-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/par-time-practice-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/par-time-practice-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/par-time-practice-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/par-time-practice-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/par-time-practice-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/par-time-practice-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/par-time-practice-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/par-time-practice-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/par-time-practice-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/par-time-practice-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/par-time-practice-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/par-time-practice-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/par-time-practice-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/par-time-practice-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/par-time-practice-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/trigger-control-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/trigger-control-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/trigger-control-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/trigger-control-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/trigger-control-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/trigger-control-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/trigger-control-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/trigger-control-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/trigger-control-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/trigger-control-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/trigger-control-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/trigger-control-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/trigger-control-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/trigger-control-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/trigger-control-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/rack-slide-trigger-pull-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/rack-slide-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/rack-slide-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/rack-slide-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/rack-slide-trigger-pull-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/rack-slide-trigger-pull-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/rack-slide-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/rack-slide-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/rack-slide-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/rack-slide-trigger-pull-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/rack-slide-trigger-pull-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/rack-slide-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/rack-slide-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/rack-slide-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/rack-slide-trigger-pull-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/magazine-change-trigger-pull-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/magazine-change-trigger-pull-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/magazine-change-trigger-pull-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/magazine-change-trigger-pull-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/magazine-change-trigger-pull-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/magazine-change-trigger-pull-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/draw-magazine-change-trigger-pull-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/draw-magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/draw-magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/draw-magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/draw-magazine-change-trigger-pull-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/draw-magazine-change-trigger-pull-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/draw-magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/draw-magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/draw-magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/draw-magazine-change-trigger-pull-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/draw-magazine-change-trigger-pull-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/draw-magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/draw-magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/draw-magazine-change-trigger-pull-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/draw-magazine-change-trigger-pull-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/sequence-drills-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/sequence-drills-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/sequence-drills-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/sequence-drills-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/sequence-drills-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/sequence-drills-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/sequence-drills-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/sequence-drills-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/sequence-drills-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/sequence-drills-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/sequence-drills-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/sequence-drills-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/sequence-drills-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/sequence-drills-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/sequence-drills-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/trigger-click-calibration-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/trigger-click-calibration-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/trigger-click-calibration-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/trigger-click-calibration-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/trigger-click-calibration-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/trigger-click-calibration-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/trigger-click-calibration-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/trigger-click-calibration-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/trigger-click-calibration-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/trigger-click-calibration-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/trigger-click-calibration-guide/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/trigger-click-calibration-guide/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/trigger-click-calibration-guide/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/trigger-click-calibration-guide/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/trigger-click-calibration-guide/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/help/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/help/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/help/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/help/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/help/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/help/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/help/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/help/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/help/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/help/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/help/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/help/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/help/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/help/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/help/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/about/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/about/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/about/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/about/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/about/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/about/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/about/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/about/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/about/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/about/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/about/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/about/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/contact/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/contact/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/contact/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/de/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/contact/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/contact/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/contact/" />
+  </url>
+  <url>
+    <loc>https://easydryfire.com/nl/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://easydryfire.com/contact/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://easydryfire.com/de/contact/" />
+    <xhtml:link rel="alternate" hreflang="nl" href="https://easydryfire.com/nl/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://easydryfire.com/contact/" />
+  </url>
 </urlset>

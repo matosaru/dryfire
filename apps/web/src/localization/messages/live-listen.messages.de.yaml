@@ -34,22 +34,36 @@ capture:
   connecting: Mikrofon wird verbunden… Erlaube den Zugriff oder verlasse diese Seite zum Abbrechen.
   unsaved: Speichere ausstehende Übungsergebnisse, bevor du zuhörst. Nutze „Erneut versuchen“ auf der Ergebnisseite.
   session: Beende oder verlasse die aktive Übung, bevor du zuhörst.
-  training: Lerne mindestens {minimum} Abzugsgeräusche ({count}/{minimum}) für diese Waffe. Öffne Lernen, um sie aufzunehmen. Andere Geräusche sind optional.
+  training: Lerne mindestens {{minimum}} Abzugsgeräusche ({{count}}/{{minimum}}) für diese Waffe. Öffne Lernen, um sie aufzunehmen. Andere Geräusche sind optional.
+  trainedSummary: "Bereit zum Testen · {{labels}}"
   start: Dauerhaftes Zuhören starten
+  stop: Zuhören beenden
   single: Einzelnes Geräusch testen
   sensitivity: Erkennungsempfindlichkeit
   normal: Normal
   high: Hoch (leisere Ereignisse)
   low: Niedrig (lautere Umgebung)
   inactive: Mikrofon inaktiv
+  activeIndicator: Mikrofon aktiv · wartet auf das nächste Geräusch
   meter: Live-Mikrofonpegel
   continuousNote: Der Dauerbetrieb bleibt bei mehreren getrennten Handlungen aktiv. Mache kurze Pausen zwischen den Geräuschen und tippe zum Beenden auf Stopp. Der Einzeltest nimmt ein Geräusch auf und stoppt.
   eventCounter: 0 erkannt · 0 verworfen
+  eventCounts: "{{detected}} erkannt · {{discarded}} verworfen"
+  stoppedNote: Mikrofon gestoppt. Diese Sitzung ist beendet. Starte erneut, um eine weitere Sequenz zu erfassen.
+  activeNote: Das Zuhören wird nach jeder Erkennung fortgesetzt. Trenne Aktionen durch eine kurze Pause; überlappende Geräusche können verschmelzen. Tippe auf „Beenden“, wenn du fertig bist.
   timeline: Erkannte Handlungen dieser Einheit (neueste zuerst)
 result:
   empty: Das nächste Erkennungsergebnis erscheint hier.
   latest: LETZTES ERGEBNIS
   note: Werte und Ähnlichkeitsabstände sind experimentell und keine kalibrierten Wahrscheinlichkeiten. Prüfe Treffer selbst.
+  unknown: Unbekannt / unklar
+  closestMatch: Ähnlichstes gelerntes Profil; überprüfe die Übereinstimmung selbst.
+  noReliableMatch: Keine zuverlässige Übereinstimmung. Versuche ein anderes Ereignis oder füge markierte Beispiele hinzu.
+timeline:
+  event: "Nr. {{count}} · {{score}}/100 · {{time}}"
+  drillCompleted: " · ✓ Übung abgeschlossen"
+  drillOutOfOrder: " · {{outcome}}"
+  drillMatched: " · erkannt"
   actual: Welches Geräusch hast du tatsächlich gemacht?
   choose: Tatsächliches Geräusch wählen…
   draw: Aus dem Holster ziehen

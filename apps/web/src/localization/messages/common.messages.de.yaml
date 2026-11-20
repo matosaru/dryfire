@@ -16,3 +16,146 @@ result:
   repetitions:
     one: "{{count}} Wiederholung abgeschlossen"
     other: "{{count}} Wiederholungen abgeschlossen"
+sound:
+  draw: Ziehen aus dem Holster
+  rack: Durchladen
+  trigger: Abzugsdruck
+  reload: Magazinwechsel
+  unknown: Unbekanntes Geräusch
+soundDescription:
+  draw: Geräusche beim Lösen aus dem Holster und beim Präsentieren
+  rack: Bewegung und Rücklauf des Verschlusses
+  trigger: Trockener Abzugs-Klick
+  reload: Herausnehmen und Einsetzen des Magazins
+  unknown: Nicht zugeordnetes Geräusch
+runtimeAudio:
+  requestRecordingPermission: Mikrofonberechtigung wird angefordert…
+  getReady: Mach dich bereit… {{count}}
+  recordingSound: Aufnahme… jetzt ein Geräusch erzeugen
+  analyzing: Geräusch wird analysiert…
+  requestMicrophoneAccess: Mikrofonzugriff wird angefordert…
+  preparingMicrophone: Mikrofon wird vorbereitet…
+  roomNoisy: Raum ist laut · Gehe näher heran oder reduziere Hintergrundgeräusche
+  microphoneReady: Mikrofon bereit · Warte vor dem Signal
+  liveWorklet: Live-Hören (AudioWorklet)
+  compatibility: Live-Hören (Kompatibilitätsmodus)
+runtimeMain:
+  navigationLocked: Beende die aktuelle Aktion oder speichere die Ergebnisse, bevor du diese Seite verlässt.
+  sequenceUnavailable: Diese Sequenz ist für die ausgewählte Waffe nicht verfügbar. Wähle eine Übung.
+  learnTriggerFirst: Nimm zuerst mindestens {{count}} Abzugsbeispiele auf.
+  removeCalibration: Kalibrierung „{{title}}“ für diese Waffe entfernen? Gelernte Aktionsgeräusche und der gesamte Verlauf bleiben erhalten.
+  calibrationSaved: Kalibrierung gespeichert
+  resetSoundProfile: Nur die gelernten Geräusche „{{sound}}“ zurücksetzen? Andere Geräusche und der Erkennungsverlauf bleiben erhalten.
+  soundProfileReset: "{{sound}} zurückgesetzt"
+  soundExamplesRemoved: "Beispiele für {{sound}} für {{gun}} entfernt. Andere Geräusche, Waffen und der Verlauf bleiben erhalten."
+  backupPrepared: Sicherung vorbereitet. Bewahre die heruntergeladene JSON-Datei geschützt auf.
+  backupLocked: Beende die Aufnahme oder stoppe das Zuhören, bevor du eine Sicherung importierst.
+  backupTooLarge: Die Sicherung ist zu groß (maximal 10 MB).
+  replaceBackup: Die gesamte Waffenbibliothek, gelernte Geräusche, benutzerdefinierte Abläufe, Einstellungen, Erkennungsverlauf und gespeicherte Übungseinheiten durch diese Sicherung ersetzen? Ältere Sicherungen enthalten keine Einheiten und entfernen vorhandene gespeicherte Einheiten.
+  backupRestored: "{{guns}} Waffenprofile, {{examples}} Geräuschbeispiele, {{events}} Erkennungsergebnisse und {{sessions}} gespeicherte Übungseinheiten wiederhergestellt."
+  chooseActualSound: Wähle vor der Überprüfung aus, was tatsächlich passiert ist.
+  verificationSaved: Überprüfung gespeichert. Die Genauigkeitsstatistik findest du im Verlauf.
+  confirmSoundReset: Alle gelernten Geräusche sowie die Kalibrierung für Rückstellung, Umgebungsgeräusche und Signalton für {{gun}} zurücksetzen? Waffenprofile, Abläufe, gespeicherte Einheiten, Erkennungsverlauf und andere Waffen bleiben erhalten.
+  soundsReset: Alle gelernten Geräusche zurückgesetzt
+  soundResetMessage: Alle gelernten Geräusche für {{gun}} wurden zurückgesetzt. Andere Waffen und der Erkennungsverlauf bleiben erhalten.
+  soundResetOutcome: Alle gelernten Geräusche und Kalibrierungen für {{gun}} wurden zurückgesetzt. Gespeicherte Waffen, Abläufe und der Verlauf bleiben erhalten.
+  confirmDeleteData: ALLE Waffen und App-Daten aus diesem Browser löschen? Dadurch werden alle Waffen, gelernten Geräusche, Kalibrierungen, Abläufe, Einstellungen, Erkennungsergebnisse und gespeicherten Übungseinheiten entfernt. Erstelle zuerst eine Sicherung. Ohne Sicherung kann diese Aktion nicht rückgängig gemacht werden.
+  confirmClearHistory: Erkennungsverlauf für {{gun}} löschen? Gespeicherte Übungseinheiten, Fortschrittsstatistiken, gelernte Geräusche und andere Waffen bleiben erhalten.
+  confirmClearSessions: ALLE gespeicherten Übungs- und Sequenzeinheiten für {{gun}} löschen? Ergebnisse und Fortschrittsstatistiken werden gelöscht. Gelernte Geräusche, eigene Übungen, Einstellungen, Erkennungsverlauf und andere Waffen bleiben erhalten. Erstelle zuerst eine Sicherung; ohne sie kann dies nicht rückgängig gemacht werden.
+  historyEventDeleted: Ein Erkennungsergebnis wurde gelöscht.
+  sessionDeleted: Eine gespeicherte Einheit wurde gelöscht. Die Fortschrittsstatistik wurde aktualisiert.
+  safetyConfirmed: Für diese Sitzung bestätigt
+  safetyRequired: Vor der Aufnahme erforderlich
+  historyCleared: Erkennungsverlauf gelöscht
+  historyClearedOutcome: "Der Erkennungsverlauf für {{gun}} wurde gelöscht. Gespeicherte Einheiten und gelernte Geräusche bleiben erhalten."
+  sessionsCleared: Gespeicherte Einheiten gelöscht
+  sessionsClearedOutcome: "Gespeicherte Einheiten und Fortschrittsstatistiken für {{gun}} wurden gelöscht. Gelernte Geräusche und der Erkennungsverlauf bleiben erhalten."
+  switchGunBlocked: Beende die Aufnahme oder stoppe das Zuhören, bevor du die Waffe wechselst.
+  switchGun: Andere Waffe auswählen
+  attention: Aufmerksamkeit erforderlich
+  sampleSaved: "{{sound}} gespeichert"
+  liveListening: Hören · Mikrofon aktiv
+  matchedSound: "Erkannt: {{sound}}"
+  unknownSound: Unbekannt / unklar
+  ready: Bereit
+  learnRequired: Lerne zuerst mindestens {{count}} Beispiele für den Abzug. Andere Geräusche sind optional.
+  clickTarget: Klickziel
+  repetitions: Wiederholungen
+  secureConnection: Sichere Verbindung
+  insecureConnection: Unsichere Verbindung — Mikrofon möglicherweise gesperrt
+  microphoneApiAvailable: Mikrofon-API verfügbar
+  microphoneApiUnavailable: Mikrofon-API nicht verfügbar
+  localStorageOnly: Nur lokaler Speicher
+  gunLimit: In dieser Version kann keine weitere Waffe angelegt werden. Vorhandene Waffen bleiben verfügbar.
+  gunPlaceholder: Waffe
+  triggerTrainingCount: "{{count}} / {{target}} Abzug"
+  selectGun: Wähle eine Waffe
+  switchGunAria: "Waffe wechseln. Ausgewählt: {{name}}, {{type}}"
+  gunTypeUnset: Typ nicht angegeben
+  gunNameFallback: Deine Waffe
+  gunDetailsPrompt: Profildetails hinzufügen
+  resetSamplesSummary: "{{samples}} gelernte Beispiele · {{calibration}} Kalibrierungsbeispiele für {{gun}}"
+  resetSamplesChooseGun: Wähle eine Waffe, bevor du ihre gelernten Geräusche zurücksetzt.
+  outdatedSamples: "{{count}} ältere Trainingsbeispiele verwenden ein inkompatibles Merkmalsformat und werden ignoriert. Setze die Geräusche dieser Waffe zurück und nimm für das aktualisierte Modell neue Beispiele auf."
+  installStatusInstalled: "Installiert: Du verwendest die App vom Home-Bildschirm."
+  installStatusNotInstalled: Noch nicht installiert. Folge diesen Schritten, um die App zum Home-Bildschirm hinzuzufügen.
+  saveUnsentSession: Die Übungsergebnisse wurden nicht gespeichert. Wiederhole den Speichervorgang, bevor du Daten löschst.
+  deleteGun: "{{gun}} und ALLE zugehörigen Daten löschen? Dadurch werden gelernte Geräusche, Kalibrierungen, eigene Übungen, Einstellungen, der Erkennungsverlauf und gespeicherte Übungs- und Sequenzeinheiten entfernt. Andere Waffen bleiben erhalten. Erstelle zuerst eine Sicherung; ohne sie kann dies nicht rückgängig gemacht werden."
+  gunDeleted: Waffe gelöscht
+  gunDeletedOther: "{{gun}} und alle zugehörigen Daten wurden gelöscht. Andere Waffen bleiben erhalten."
+  gunDeletedFinal: "{{gun}} und alle zugehörigen Daten wurden gelöscht. Füge eine neue Waffe hinzu, um fortzufahren."
+  enterGunName: Gib einen Waffennamen ein.
+  gunSaved: Waffe gespeichert
+  replaceSamplesConfirm: "Nimm ein neues Beispiel für {{sound}} auf und ersetze anschließend alle vorhandenen Beispiele für {{sound}} für diese Waffe? Andere Geräusche und der Verlauf bleiben erhalten."
+  soundProfileReplaced: "Profil für {{sound}} ersetzt"
+  samplesReplaceSuccess: "Vorhandene Beispiele für {{sound}} wurden erst ersetzt, nachdem die neue Aufnahme erfolgreich war."
+runtimeErrors:
+  audioTooShort: Die Aufnahme ist zu kurz für eine Analyse.
+  audioNoClearSound: Kein klares Geräusch erkannt. Gehe näher ans Mikrofon oder suche einen ruhigeren Raum.
+  audioDistorted: Der Ton war verzerrt. Vergrößere den Abstand zwischen Mikrofon und Geräuschquelle.
+  secureContext: Der Mikrofonzugriff erfordert HTTPS oder localhost und einen kompatiblen Browser.
+  webAudioUnavailable: Web Audio ist auf diesem Gerät nicht verfügbar.
+  pcmUnavailable: Diese WebView unterstützt keine PCM-Aufnahme. Native Audioaufnahme ist erforderlich.
+  noMicrophoneAudio: Es ist kein Audio vom Mikrofon eingegangen.
+  microphoneDenied: Mikrofonberechtigung verweigert. Aktiviere sie in den Browser- oder App-Einstellungen.
+  microphoneSecureContext: Das Mikrofon benötigt HTTPS oder localhost sowie eine Berechtigung.
+  noInput: Kein Audioeingang. Überprüfe die Mikrofonberechtigung und versuche es erneut.
+  listeningStopped: Zuhören beendet.
+  recorderUnavailable: Weder AudioWorklet noch der Kompatibilitätsrekorder sind verfügbar.
+  microphoneInterrupted: Die Mikrofonaufnahme wurde unterbrochen. Starte Sound Check oder die Übung neu.
+  microphoneDisconnected: Das Mikrofon wurde getrennt. Starte Sound Check oder die Übung neu.
+  microphoneMuted: Der Mikrofoneingang wurde stummgeschaltet. Überprüfe den Mikrofonzugriff und starte neu.
+  inputStopped: Es kommt kein Audio mehr an. Starte Sound Check oder die Übung neu.
+  guideUnavailable: Die Übungsanleitung konnte nicht geladen werden. Deine Einstellungen sind unverändert. Überprüfe die Verbindung und lade die Seite erneut.
+runtime:
+  practice:
+    inputDetected: Mikrofoneingang erkannt.
+    inputQuiet: Höre zu · leiser oder sehr leiser Eingang.
+    inputMissing: Kein Audioeingang. Überprüfe die Mikrofonberechtigung.
+    inputWaiting: Warte auf Audioeingang…
+    completeSettings: Vervollständige die sichtbaren Übungseinstellungen.
+    learnExamples: Lerne 3 passende Beispiele für {{labels}}. Andere Geräusche sind optional.
+    learnCue: Lerne unter „Erkennung verbessern“ in „Lernen“ 3 Beispiele für externe Signaltöne.
+    soundsReadySafety: Geräusche bereit. „Starten“ öffnet die Sicherheitsbestätigung.
+    soundsReady: Erforderliche Geräusche sind bereit. Starte, wenn du bereit bist.
+    cueExternal: Der akustische Timer startet, wenn dein kalibrierter Signalton erkannt wird. Die App spielt keinen zweiten Signalton.
+    cueBeep: Mikrofon vor dem Countdown bereit. {{earlyTrigger}}Stelle die Medienlautstärke deines Geräts für den Startton ein. Die ersten {{seconds}} s nach GO werden zum Herausfiltern des Tons ausgeschlossen.
+    earlyTrigger: Ein Abzugsgeräusch vor dem Signalton lässt den Versuch scheitern.
+    cueSilent: Mikrofon vor dem Countdown bereit. Der stille Start verwendet das Signal auf dem Bildschirm; ein Abzugsgeräusch davor lässt den Einzelversuch scheitern.
+    saved: Übung gespeichert
+    beepUnavailable: Startsignal nicht verfügbar. STOP und die Mikrofonanzeige markieren den Start.
+    startSoundUnavailable: Startsignal nicht verfügbar. Überprüfe die Audioberechtigung des Browsers und die Medienlautstärke.
+    previewUnavailable: Startton nicht verfügbar. Überprüfe die Audioberechtigung des Browsers und die Medienlautstärke.
+  session:
+    enterConfig: Gib die Wiederholungszahl und gültige Startverzögerungen ein.
+    trainExamples: Lerne für diese Waffe mindestens {{count}} Beispiele für {{labels}}.
+    readySafety: Geräusche bereit. „Starten“ öffnet die Sicherheitsbestätigung.
+    ready: Geräusche sind gelernt und die Sicherheitsbestätigung liegt vor. Du kannst starten.
+    presetOne: 1 Geräuschaktion · {{state}}
+    presetOther: "{{count}} Geräuschaktionen · {{state}}"
+    setup: Einheit einrichten
+    saved: Einheit gespeichert
+    cancelled: Einheit vor dem Start abgebrochen
+    noModel: Kein kompatibles gelerntes Geräuschmodell verfügbar.
+    cueUnavailable: Startsignal nicht verfügbar. Das visuelle GO-Signal bleibt aktiv.
+    previewUnavailable: Startton nicht verfügbar. Überprüfe die Audioberechtigung des Browsers und die Medienlautstärke.

@@ -33,12 +33,19 @@ export function assessTriggerProfile(examples) {
   return { status: 'stable', sampleCount, needed: 0, outlierIndexes: [], title: 'Stable profile', message: 'Your trigger examples are consistent. Run a sound check before practice.' };
 }
 
-export function renderTriggerProfile(examples, root = document) {
+export function renderTriggerProfile(examples, root = document, translate = null) {
   const quality=assessTriggerProfile(examples),status=root.querySelector('#triggerProfileStatus');
   status.className=`trigger-profile-status is-${quality.status}`;
   root.querySelector('#triggerProfileSymbol').textContent=quality.status==='stable'?'✓':quality.status==='variable'?'!':'…';
-  root.querySelector('#triggerProfileTitle').textContent=quality.title;
-  root.querySelector('#triggerProfileMessage').textContent=quality.message;
-  const check=root.querySelector('#runSoundCheckBtn');if(check)check.disabled=quality.status==='needs-samples';
+  const key=quality.status==='needs-samples'?'needsSamples':quality.status==='variable'?'variable':'stable';
+  root.querySelector('#triggerProfileTitle').textContent=translate?translate(`profile.${key}`):quality.title;
+  root.querySelector('#triggerProfileMessage').textContent=translate
+    ? quality.status==='needs-samples'
+      ? translate(quality.needed===1?'profile.oneSample':'profile.needsSamplesMessage',{count:quality.needed})
+      : translate(quality.status==='variable'?'profile.variableMessage':'profile.stableMessage')
+    : quality.message;
+  const eyebrow=root.querySelector('#triggerProfileStatus .eyebrow');if(eyebrow&&translate)eyebrow.textContent=translate('profile.eyebrow');
+  const button=root.querySelector('#runSoundCheckBtn');if(button&&translate)button.textContent=translate('profile.soundCheck');
+  if(button)button.disabled=quality.status==='needs-samples';
 }
 

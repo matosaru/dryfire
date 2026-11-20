@@ -1,1 +1,120 @@
-{}
+navigation:
+  aria: Öffentliche Seiten
+  home: Startseite
+  practiceModes: Übungsmodi
+  help: Hilfe
+kicker:
+  guide: ÜBUNGSANLEITUNG
+  beta: DRY FIRE WITH EASE · BETA
+practice:
+  title: Vier Übungsarten
+  configure: Diese Übung einrichten
+  configurationNote: Vor dem Üben fragt die App nach einer Waffe und passenden Abzugsbeispielen. Beim Öffnen dieser Anleitung wird das Mikrofon nicht gestartet.
+guide:
+  measures: Was gemessen wird
+  example: Stille animierte Beispielansicht
+  exampleNote: Synthetische Erkennungen mit 1×-Timing; kein Live-Mikrofon. Das exportierte Beispiel endet bei der Auswertung.
+  how: So funktioniert es
+  goodToKnow: Gut zu wissen
+sequence:
+  builtIn: Integrierte Abläufe
+  rackTrigger: Verschluss spannen → Abzug betätigen
+  magazineTrigger: Magazin wechseln → Abzug betätigen
+  drawMagazineTrigger: Aus dem Holster ziehen → Magazin wechseln → Abzug betätigen
+  distinctSounds: Lerne alle unterschiedlichen Geräusche, die der ausgewählte Ablauf benötigt. Andere Geräuscharten bleiben optional.
+  repetition: Ablauf einer Wiederholung
+  stepOne: Wähle einen Ablauf, die Wiederholungszahl und eine feste oder zufällige Bereitschaftsverzögerung.
+  stepTwo: Bestätige die Sicherheit, warte auf das Startsignal und führe den Ablauf aus.
+  stepThree: Die App fährt nur bei erkannten Geräuschen in der erwarteten Reihenfolge fort, speichert jedes Ergebnis und startet den nächsten Countdown.
+  timing: Die Zeitangaben beziehen sich auf erkannte Audiosignale, nicht auf überprüfte körperliche Handlungen. Ist der Startsignalton aktiv, werden die ersten 0,30 Sekunden nach GO ausgeblendet, um den Signalton herauszufiltern.
+  choose: Ablauf auswählen
+calibration:
+  record: Aussagekräftige Beispiele aufnehmen
+  stepOne: Stelle sicher, dass die Waffe entladen ist, und schließe die Sicherheitsprüfung der App ab.
+  stepTwo: Lege das Telefon an den Platz, an dem es beim Üben bleiben soll. Nimm unter „Lernen“ jeweils einen natürlichen Abzugsklick auf. Drei passende Beispiele sind erforderlich; 8–10 werden empfohlen, zehn sind maximal möglich.
+  stepThree: Prüfe den Status des Abzugsprofils. Ersetze ein uneinheitliches Beispiel, statt unpassende Geräusche hinzuzufügen.
+  stepFour: Teste unbekannte Klicks im tatsächlichen Raum und an der vorgesehenen Telefonposition. Optionale Rückstell- oder Störgeräusche können helfen, ähnliche Nicht-Abzugsgeräusche auszuschließen.
+  before: Vor jeder Übung
+  beforeBody: Vor dem Countdown hört die App kurz auf Umgebungsgeräusche. Warte auf „Mikrofon bereit“. Wird „Raum ist laut“ angezeigt, verringere Hintergrundgeräusche oder bringe das Telefon näher und versuche es erneut. Die Erkennung ist experimentell und kann Geräusche übersehen oder falsch einordnen.
+  missed: Wenn Klicks nicht erkannt werden
+  missedBody: Prüfe die Mikrofonberechtigung und beobachte den Live-Pegel. Lass das Telefon an derselben Stelle. Lerne Beispiele nach größeren Änderungen an Raum, Abstand oder Audioverarbeitung neu. Ähnlichkeitswerte sind keine Wahrscheinlichkeiten.
+  openLearn: Lernen öffnen
+about:
+  feedback: Feedback willkommen
+  feedbackBody: Dry Fire With Ease ist ein Beta-Klangtrainer. Feedback und Vorschläge sind willkommen.
+  contact: Kontakt
+  included: Was die kostenlose App bietet
+  includedBody: Abzugsklick-Kalibrierung, vier Abzugsübungen, integrierte Abläufe, Live-Erkennung, lokaler Verlauf und manuelle Sicherungen. Ein Konto ist nicht erforderlich.
+  limits: Neue öffentliche Waffenprofile sind auf zwei begrenzt. Bereits gespeicherte Daten bleiben verfügbar; erweiterte Funktionen richten sich nach der aktuellen öffentlichen Version.
+contact:
+  email: E-Mail-Support
+  prompt: "Sende Fragen, Vorschläge oder einen Fehlerbericht an:"
+  privacy: Sende keine privaten Sicherungen oder Rohaufnahmen, es sei denn, du möchtest sie bewusst teilen.
+responsibility:
+  title: Verantwortungsbewusst üben
+  body: Stelle sicher, dass die Waffe entladen ist, entferne scharfe Munition aus dem Übungsbereich und lege eine sichere Richtung sowie einen geeigneten Kugelfang fest. Das Mikrofon kann weder den entladenen Zustand noch Zielen, Bewegung oder sicheren Umgang überprüfen.
+related:
+  aria: Weitere Anleitungen
+  sequence: Ablaufübungen
+  calibration: Kalibrierung
+routes:
+  home:
+    title: Dry Fire With Ease — Kostenlose App für das Trockentraining
+    heading: Dry Fire With Ease
+    description: Lerne deinen Abzugsklick, wähle eine Trockentrainingsübung und werte deine Zeiten aus. Kostenlose Beta-App mit Mikrofonerkennung und lokalem Browserspeicher.
+  practice:
+    title: Trockentrainingsübungen — Dry Fire With Ease
+    heading: Wähle deine Übung.
+    description: Vergleiche Einzelabzug, wiederholte Abzüge, Training mit Zeitlimit und Abzugskontrolle. Erfahre vor dem Start, was jede Übung misst.
+  single:
+    title: "Anleitung: Einzelner Abzugsdruck — Dry Fire With Ease"
+    heading: Einzelner Abzugsdruck
+    description: Erfahre, wie die Übung mit einzelnem Abzugsdruck deine Reaktion auf jedes Startsignal misst.
+  repeated:
+    title: "Anleitung: Wiederholte Abzugsdrücke — Dry Fire With Ease"
+    heading: Wiederholte Abzugsdrücke
+    description: Erfahre, wie wiederholte Abzugsdrücke einzelne Klicks zählen und ihre Zeitabstände messen.
+  par:
+    title: "Anleitung: Training mit Zeitlimit — Dry Fire With Ease"
+    heading: Training mit Zeitlimit
+    description: Erfahre, wie diese Übung prüft, ob ein Abzugsklick innerhalb deines Zeitlimits erkannt wird.
+  control:
+    title: "Anleitung: Abzugskontrolle — Dry Fire With Ease"
+    heading: Abzugskontrolle
+    description: Erfahre, wie die Abzugskontrolle Zeitabstände zwischen erkannten Abzugsklicks vergleicht.
+  sequence-trigger-only:
+    title: "Anleitung: Abzugsklick-Abfolge — Dry Fire With Ease"
+    heading: Abzugsklick-Abfolge
+    description: Erfahre, wie eine Abzugsübung erkannte Klicks während jeder Wiederholung erfasst.
+  sequence-rack-trigger:
+    title: "Anleitung: Verschluss spannen und Abzug betätigen — Dry Fire With Ease"
+    heading: Verschluss spannen → Abzug betätigen
+    description: Erfahre, wie diese Übung zuerst ein erkanntes Geräusch beim Spannen und danach einen Abzugsklick erwartet.
+  sequence-mag-trigger:
+    title: "Anleitung: Magazin wechseln und Abzug betätigen — Dry Fire With Ease"
+    heading: Magazin wechseln → Abzug betätigen
+    description: Erfahre, wie diese Übung zuerst ein erkanntes Magazinwechselgeräusch und danach einen Abzugsklick erwartet.
+  sequence-draw-mag-trigger:
+    title: "Anleitung: Ziehen, Magazinwechsel und Abzug — Dry Fire With Ease"
+    heading: Ziehen → Magazin → Abzug
+    description: Erfahre, wie diese Übung erkannte Geräusche beim Ziehen, Magazinwechsel und Abzug in dieser Reihenfolge prüft.
+  sequence:
+    title: Anleitung zu Ablaufübungen — Dry Fire With Ease
+    heading: Übe eine Geräuschabfolge.
+    description: Erfahre mehr über integrierte Ablaufübungen, benötigte Geräusche und die Zeitmessung erkannter Ereignisse in der richtigen Reihenfolge.
+  calibration:
+    title: Abzugsklick kalibrieren — Dry Fire With Ease
+    heading: Lerne deinen Abzugsklick.
+    description: Kalibriere die Mikrofonerkennung für deine Waffe, teste einzelne Abzugsklicks und vermeide Verwechslungen mit Rückstell- und Handhabungsgeräuschen.
+  help:
+    title: Hilfe und Browsereinrichtung — Dry Fire With Ease
+    heading: Richte deine Übung ein.
+    description: Hilfe zu Mikrofonberechtigungen, Safari-Installation, Erkennung, Startsignalen und lokalen Sicherungen.
+  about:
+    title: Über Dry Fire With Ease
+    heading: Über uns
+    description: Dry Fire With Ease ist ein Beta-Klangtrainer für Abzugsklick-Übungen und zeitgesteuerte Abläufe. Erfahre, wie es funktioniert, und sende uns Feedback.
+  contact:
+    title: Kontakt — Dry Fire With Ease
+    heading: Kontakt
+    description: "Kontaktiere Dry Fire With Ease mit Feedback, Vorschlägen oder einem Fehlerbericht. E-Mail: easydryfire@gmail.com."

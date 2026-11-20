@@ -5,6 +5,7 @@ import {RetainedNode} from '@dryfire/ui/RetainedNode';
 import type {SavedSessionSummary} from '@dryfire/ui/SavedSessionList';
 import {HistoryPage,type HistoryState} from '../pages/HistoryPage';
 import {recognitionRows,evaluationPresentation,type RetainedEvent,type EvaluationStats} from '../features/history/presentation';
+import {translate} from '../localization/runtime.ts';
 type Data={rows:RetainedEvent[];sessions:SavedSessionSummary[];stats:EvaluationStats;gunId:string|undefined};
 type Actions={onBack:()=>void;onAction:(id:string)=>void;onOpen:(record:SavedSessionSummary)=>void;onVerify:(id:string,value:string,gunId:string|undefined)=>void;onDeleteSession:(record:SavedSessionSummary,gunId:string|undefined)=>void;onDeleteEvent:(row:{id:string},gunId:string|undefined)=>void;titleFor:(label:string)=>string;drillTitleFor:(id:string|undefined)=>string|undefined;labels:string[];actual:string[];predicted:string[]};
 /** History owns result presentation; exact numeric drafts and optional graph/filter lifetimes are retained. */
@@ -16,7 +17,7 @@ export function mountHistoryPage(host:Element,initial:Data,actions:Actions){
  const selections=[...host.querySelectorAll<HTMLSelectElement>('select[aria-label^="Actual sound for "]')].map(node=>node.value);
  let owner=initial.gunId,disposed=false,failure:unknown;
  const initialDisabled=Object.fromEntries(['clearHistoryBtn','clearSessionsBtn'].map(id=>[id,(get(id) as HTMLButtonElement).disabled]));
- let state:HistoryState={gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),texts:Object.fromEntries(['historyClearOutcome','sessionsClearOutcome'].map(id=>[id,get(id).textContent!])),disabled:{...initialDisabled,historyRecordActions:false},options:[{value:'',title:'Not verified'},...actions.labels.map(value=>({value,title:actions.titleFor(value)})),{value:'other',title:'Other / noise'}]};
+ let state:HistoryState={gunName:host.querySelector('.gun-context-name')!.textContent!,contextHidden:host.querySelector('.gun-context')!.classList.contains('hidden'),texts:Object.fromEntries(['historyClearOutcome','sessionsClearOutcome'].map(id=>[id,get(id).textContent!])),disabled:{...initialDisabled,historyRecordActions:false},options:[{value:'',title:translate('history','recognition.notVerified')},...actions.labels.map(value=>({value,title:actions.titleFor(value)})),{value:'other',title:translate('history','recognition.otherNoise')}]};
  const results=(data:Data)=>({sessions:data.sessions,rows:recognitionRows(data.rows,actions.titleFor,actions.drillTitleFor),evaluation:evaluationPresentation(data.stats,actions.actual,actions.predicted)});
  state={...state,...results(initial)};
  const root=createRoot(host,{onUncaughtError(error){failure=error;}});

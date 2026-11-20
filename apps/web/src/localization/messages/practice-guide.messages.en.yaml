@@ -16,3 +16,174 @@ goodToKnowHeading: Good to know
 beforeStart: Before you start
 safetyReminder: Verify unloaded, remove live ammunition and use a safe direction and backstop.
 measurementDisclosure: The app measures detected sounds. It cannot verify unloaded status, aim or safe handling.
+manuals:
+  single:
+    title: Single trigger press
+    purpose: Measure the time from each start signal to your first recognized trigger click.
+    measures: Reaction time per attempt, plus completed and failed attempts.
+    steps: |
+      Choose repetitions and a fixed or random ready delay.
+      Start, watch the countdown and wait for the signal before one trigger press.
+      Read the result. A fresh countdown starts automatically until the target is reached.
+    expect: A recognized trigger before the app signal fails that attempt. Each attempt accepts one click.
+    requires: Learn Trigger pull for the selected gun. Other sound types are optional.
+    stages: |
+      Microphone ready
+      2.4 s countdown → beep
+      Click at 0.50 s
+      Automatic 3.2 s countdown → second beep → 0.60 s click
+    exampleConfig: 2 attempts · random 2–5 s delay · app beep on
+  repeated:
+    title: Repeated trigger press
+    purpose: Count separate recognized trigger clicks and see the time between them.
+    measures: Accepted click count and the intervals between consecutive clicks.
+    steps: |
+      Choose the number of clicks and your ready delay.
+      After one start signal, perform separate trigger presses as your equipment permits.
+      Listening continues without a new beep for every click. Review appears at the target.
+    expect: Reset and handling sounds should not count as shots. Pause stops capture; Resume excludes paused time.
+    requires: Learn Trigger pull. Optional reset/noise examples can help reject other clicks.
+    stages: |
+      Microphone ready
+      2.4 s countdown → one beep
+      Three clicks: 0.50 / 1.30 / 2.10 s
+      Two intervals: 0.80 / 0.80 s
+    exampleConfig: 3 clicks · random 2–5 s delay · app beep on
+  par:
+    title: Par time practice
+    purpose: Check whether a recognized trigger click arrives within your chosen time limit.
+    measures: Time from the start signal to a click, with an in-time or missed outcome.
+    steps: |
+      Set a par time, repetitions and ready delay.
+      Wait for the signal, then make one trigger press within the limit.
+      Read the result, then select Next repetition when ready for another countdown.
+    expect: No accepted click by the deadline is a miss. The app may briefly finish processing audio captured before the deadline.
+    requires: "Learn Trigger pull. Example: a 0.64 s click is in time for a 1.50 s limit."
+    stages: |
+      Microphone ready
+      Countdown → beep → 0.60 s hit within 1.50 s
+      User selects Next repetition
+      Fresh countdown → beep → no click → miss
+    exampleConfig: 2 attempts · random 2–5 s delay · app beep on
+  control:
+    title: Trigger control
+    purpose: Compare how consistent the timing is between your recognized trigger clicks.
+    measures: Click intervals and their timing spread. It does not measure firearm movement.
+    steps: |
+      Choose a click target and ready delay.
+      After the start signal, perform separate presses at a comfortable, repeatable pace.
+      Keep going until the target, then compare the recorded intervals in review.
+    expect: One signal starts continuous listening. A microphone cannot grade aim, movement or trigger technique.
+    requires: Learn Trigger pull. Optional reset/noise calibration can improve discrimination.
+    stages: |
+      Microphone ready
+      2.4 s countdown → one beep
+      Three distinct clicks
+      0.80 s intervals → review
+    exampleConfig: 3 clicks · random 2–5 s delay · app beep on
+  sequence-trigger-only:
+    title: Trigger pull sequence
+    purpose: Complete a one-step ordered drill by matching the learned trigger sound after the signal.
+    measures: Signal-to-click time for each completed sequence repetition.
+    steps: |
+      Choose repetitions and the sequence runner's ready delay.
+      After the start signal, make one trigger press for the displayed Trigger pull step.
+      Read the result. The sequence runner begins a new countdown until the target is reached.
+    expect: This is the legacy ordered runner, not Single practice. It does not mark pre-signal clicks as failed Single attempts.
+    requires: Learn Trigger pull. Sounds in the initial 0.30 s after the app beep are excluded to reject the cue.
+    stages: |
+      Microphone connected
+      2.4 s countdown → beep
+      trigger
+      Result → automatic 3.2 s countdown → repeat
+    exampleConfig: 2 attempts · random 2–5 s delay · app beep on
+  sequence-rack-trigger:
+    title: Rack slide → Trigger pull
+    purpose: Complete the learned Rack slide and Trigger pull sounds in the displayed order.
+    measures: Time from the start signal to sequence completion, plus the time at each matched step.
+    steps: |
+      Learn both listed sounds, then choose repetitions and ready delay.
+      After the signal, complete Rack slide followed by Trigger pull.
+      Read the matched-step result. A fresh countdown begins automatically for the next repetition.
+    expect: Only recognized sounds in the displayed order complete a repetition. End Session stops capture and saves results.
+    requires: Learn Rack slide and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep.
+    stages: |
+      Microphone connected
+      2.4 s countdown → beep
+      rack → trigger
+      Result → automatic 3.2 s countdown → repeat
+    exampleConfig: 2 attempts · random 2–5 s delay · app beep on
+  sequence-mag-trigger:
+    title: Magazine change → Trigger pull
+    purpose: Complete the learned magazine-change and trigger sounds in the displayed order.
+    measures: Signal-to-completion time and the detected timing of each sequence step.
+    steps: |
+      Learn Change magazine and Trigger pull, then set repetitions and ready delay.
+      After the signal, complete Magazine change followed by Trigger pull.
+      Read the result. The next repetition starts with a fresh countdown automatically.
+    expect: A magazine sound does not count as a shot. A repetition completes only when its ordered sounds match.
+    requires: Learn Change magazine and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep.
+    stages: |
+      Microphone connected
+      2.4 s countdown → beep
+      reload → trigger
+      Result → automatic 3.2 s countdown → repeat
+    exampleConfig: 2 attempts · random 2–5 s delay · app beep on
+  sequence-draw-mag-trigger:
+    title: Draw → Magazine → Trigger
+    purpose: Match the three learned sounds in one ordered sequence.
+    measures: Time from the signal to the final recognized trigger, plus detected step timings.
+    steps: |
+      Learn all three listed sounds, then choose repetitions and ready delay.
+      After the signal, complete the displayed Draw, Magazine change and Trigger pull sequence.
+      Read the result. The runner automatically starts a fresh countdown for the next repetition.
+    expect: Sound matching confirms an acoustic order only. It cannot verify how a physical action was performed.
+    requires: Learn Draw, Change magazine and Trigger pull. The first 0.30 s after the app beep is ignored to reject the beep.
+    stages: |
+      Microphone connected
+      2.4 s countdown → beep
+      draw → reload → trigger
+      Result → automatic 3.2 s countdown → repeat
+    exampleConfig: 2 attempts · random 2–5 s delay · app beep on
+  sequence-custom:
+    title: Your saved sequence
+    purpose: Match the sounds in your selected saved drill, in the order you defined.
+    measures: Signal-to-completion time and detected timings for the steps in this preset.
+    steps: |
+      Check the selected preset's actual steps and learn each required sound.
+      Choose repetitions and delay, then follow that displayed order after the signal.
+      A matching sequence completes a repetition; the next countdown starts automatically.
+    expect: Only recognized sounds in the displayed order of this saved preset complete a repetition.
+    requires: Learn only the sounds referenced by this preset. Creating a new custom preset remains a Full-only feature.
+    stages: |
+      Microphone connected
+      2.4 s countdown → beep
+      rack → trigger → trigger
+      Result → automatic 3.2 s countdown → repeat
+    exampleConfig: 2 attempts · random 2–5 s delay · app beep on
+runtime:
+  customExampleConfig: "{{attempts}} example attempts · random 2–5 s delay · app beep on"
+  setup:
+    publicEntry: Example settings shown. Return to setup to choose your counts and timing.
+    externalCue: "Your setup uses a calibrated external beep: no app countdown or app beep. The illustration below demonstrates the app-signal option."
+    silentStart: "Your setup uses a silent visual start. Wait for the on-screen signal; the illustration demonstrates the optional app beep."
+    appSignal: App-signal example. Your chosen counts and timing stay unchanged when you return to setup.
+  externalCue:
+    singleSteps: |
+      Choose your repetition target and calibrated external beep.
+      Start and wait for the external beep before one trigger press.
+      Read the result. A fresh attempt begins automatically until the target is reached.
+    repeatedSteps: |
+      Choose the number of clicks and your ready delay.
+      After the calibrated external beep, perform separate trigger presses as your equipment permits.
+      Listening continues without a new beep for every click. Review appears at the target.
+    parSteps: |
+      Set a par time, repetitions and ready delay.
+      Wait for the calibrated external beep, then make one trigger press within the limit.
+      Read the result, then select Next repetition when ready for another attempt.
+    controlSteps: |
+      Choose a click target and ready delay.
+      After the calibrated external beep, perform separate presses at a comfortable, repeatable pace.
+      Keep going until the target, then compare the recorded intervals in review.
+    singleExpect: With this external-cue setup, trigger clicks before the calibrated cue are not counted as attempts. The early-failure example below demonstrates App signal mode.
+    requirementSuffix: " Calibrated external-beep start needs three compatible cue examples."

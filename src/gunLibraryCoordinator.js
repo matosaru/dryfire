@@ -1,19 +1,18 @@
 /** Gun workflows keep one epoch and page cache; application/transaction owners stay explicit ports. */
+import {translate} from '../apps/web/src/localization/runtime.ts';
 export function createGunLibraryCoordinator(state,store,ui){
 let setupGunId=null,gunLibraryPage,gunSetupPage,gunLibraryToken=0;
 const {getGuns,deleteGun,setActiveGun,updateGun,createGun}=store;
 const {profileLocked,setMessage,switchView,showError,setBusy,loadActiveGun,setStatus,openEntry,renderGunControls,renderLiveButton,renderClassCards,$,document,confirm}=ui;
 function openGunSetup(gun = null) {
   if (profileLocked()) return;
-  if (!gun && state.guns.length >= state.capabilities.gunCreationLimit) { setMessage('This version cannot create another gun. Existing saved guns remain available.'); return; }
+  if (!gun && state.guns.length >= state.capabilities.gunCreationLimit) { setMessage(translate('common','runtimeMain.gunLimit')); return; }
   setupGunId = gun?.id ?? null;
   const variant=gun?.needsDetails?'repair':gun?'edit':state.guns.length?'add':'first';
   const props = {name:gun?.name ?? '',type:gun?.type ?? '',variant,noticeMode:state.capabilities.gunCreationLimit>=5?'full':'limit',
-    title:gun?.needsDetails ? 'Name your existing gun' : gun ? 'Edit gun' : state.guns.length ? 'Add your gun' : 'Add your first gun',
-    description:gun?.needsDetails ? 'Your learned sounds and recognition history have been preserved together. Add the name and type of the gun they belong to.'
-      : gun ? 'Update the name or type. This gun’s learned sounds, presets and history stay saved.'
-      : 'Give this gun a name and type. Its learned sounds, presets and history will be saved separately on this device.',
-    submitLabel:gun ? 'Save Changes' : 'Save Gun & Continue',cancelHidden:!state.gun || !!state.gun.needsDetails};
+    title:translate('gun-setup',gun?.needsDetails?'page.repairTitle':gun?'page.editTitle':state.guns.length?'page.addTitle':'page.firstTitle'),
+    description:translate('gun-setup',gun?.needsDetails?'page.repairDescription':gun?'page.editDescription':state.guns.length?'page.addDescription':'page.firstDescription'),
+    submitLabel:translate('gun-setup',gun?'actions.save':'actions.saveFirst'),cancelHidden:!state.gun || !!state.gun.needsDetails};
   if (state.pages) {
     if(gunSetupPage)gunSetupPage.reset(props);
     else gunSetupPage=state.pages.mountGunSetupPage(document,{...props,onSubmit:event=>{submitGun(event).catch(showError);},onCancel:()=>switchView('guns'),onRestore:()=>switchView('settings')});
@@ -41,11 +40,11 @@ async function flushLibraryWork() {
   await state.session?.flush();
   await state.practice?.flush();
   if (state.session?.hasUnsavedResults() || state.practice?.hasUnsavedResults()) {
-    throw new Error('Session results are not saved. Retry saving before deleting data.');
+    throw new Error(translate('common','runtimeMain.saveUnsentSession'));
   }
 }
 async function deleteGunProfile(gun) {
-  if (profileLocked() || !confirm(`Delete ${gun.name || 'this gun'} and ALL its data? This removes its learned sounds, calibration, custom drills, settings, recognition history and saved practice/sequence sessions. Other guns stay saved. Export a backup first; this cannot be undone without one.`)) return;
+  if (profileLocked() || !confirm(translate('common','runtimeMain.deleteGun',{gun:gun.name||'this gun'}))) return;
   const wasSelected = state.gun?.id === gun.id;
   setBusy(true);
   gunLibraryToken += 1;
@@ -60,8 +59,8 @@ async function deleteGunProfile(gun) {
     setBusy(false);
     if (!state.gun || state.gun.needsDetails) openGunSetup(state.gun);
     else { switchView('guns'); await renderGunLibrary(); }
-    setStatus('Gun deleted');
-    setMessage(`${gun.name || 'Gun'} and all its data were deleted. ${state.gun ? 'Other guns were kept.' : 'Add a new gun to continue.'}`);
+    setStatus(translate('common','runtimeMain.gunDeleted'));
+    setMessage(translate('common',state.gun?'runtimeMain.gunDeletedOther':'runtimeMain.gunDeletedFinal',{gun:gun.name||translate('common','runtimeMain.gunPlaceholder')}));
   } finally { setBusy(false); }
 }
 async function selectGunProfile(id) {
@@ -87,7 +86,7 @@ async function submitGun(event) {
   if (profileLocked()) return;
   const name = $('#gunName').value.trim();
   const type = $('#gunType').value;
-  if (!name) { setMessage('Enter a gun name.'); $('#gunName').focus(); return; }
+  if (!name) { setMessage(translate('common','runtimeMain.enterGunName')); $('#gunName').focus(); return; }
   setBusy(true);
   setGunSaving(true);
   try {
@@ -98,9 +97,9 @@ async function submitGun(event) {
     await loadActiveGun();
     setBusy(false);
     if(state.pendingEntry&&!editing)await openEntry();else switchView(editing && !completingLegacy ? 'guns' : 'home');
-    setStatus('Gun saved');
+    setStatus(translate('common','runtimeMain.gunSaved'));
   } catch (error) { showError(error); }
   finally { setBusy(false); setGunSaving(false); }
 }
-return{open:openGunSetup,render:renderGunLibrary,flush:flushLibraryWork,remove:deleteGunProfile,select:selectGunProfile,submit:submitGun,invalidate(){gunLibraryToken+=1;},syncLocked(){if(!gunLibraryPage)return false;gunLibraryPage.setLocked(profileLocked());return true;},setNotice(mode){if(gunSetupPage)gunSetupPage.setNoticeMode(mode==='full'?'full':'limit');else $('#gunCapacityNotice').textContent=mode==='full'?'You can save up to 5 guns.':'Create up to two gun profiles. Existing saved profiles remain available.';}};
+return{open:openGunSetup,render:renderGunLibrary,flush:flushLibraryWork,remove:deleteGunProfile,select:selectGunProfile,submit:submitGun,invalidate(){gunLibraryToken+=1;},syncLocked(){if(!gunLibraryPage)return false;gunLibraryPage.setLocked(profileLocked());return true;},setNotice(mode){const key=mode==='full'?'notice.full':'notice.limit';if(gunSetupPage)gunSetupPage.setNoticeMode(mode==='full'?'full':'limit');else $('#gunCapacityNotice').textContent=translate('gun-setup',key);}};
 }

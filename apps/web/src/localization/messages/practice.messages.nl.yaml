@@ -9,6 +9,18 @@ steps:
 guideLink: Over deze oefening
 learnMissing: Ontbrekende geluiden leren
 timingNote: Tijden beschrijven herkende audio. De app kan fysieke handelingen, richten, beweging of een ongeladen toestand niet controleren.
+modes:
+  single: Enkele trekkerklik
+  repeated: Herhaalde trekkerklikken
+  par: Oefening met tijdslimiet
+  control: Trekkercontrole
+feedback:
+  unclear: Geluid gehoord, maar te zacht of onduidelijk om te herkennen. Controleer je voorbeelden in Leren.
+  cueRecognized: Startpieptoon herkend.
+  recognized: "{{sound}} herkend."
+  excluded: Geluid gehoord en uitgesloten door geleerde profielen. Controleer je trekker- en resetvoorbeelden in Leren.
+  noMatch: Geluid gehoord, maar geen betrouwbare overeenkomst. Voeg duidelijke voorbeelden toe in Leren.
+  early: Te vroeg overgehaald · poging mislukt. Wacht op het volgende signaal.
 setup:
   legend: Oefening instellen
   start: Oefening starten

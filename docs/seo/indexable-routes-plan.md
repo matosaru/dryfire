@@ -9,7 +9,7 @@ Canonical origin: **https://easydryfire.com**. The owner configured `.app` perma
 - Flat `/learn/`, `/drills/`, `/live-listen/`, `/history/`, `/settings/`, `/guns/`, `/gun-setup/` operational paths. No `/app` prefix.
 - `/single-trigger-press/`, `/repeated-trigger-press/`, `/par-time-practice/`, `/trigger-control/` configure the four retained modes.
 - `/rack-slide-trigger-pull/`, `/magazine-change-trigger-pull/`, `/draw-magazine-change-trigger-pull/` restore the exact named sequence on direct entry/refresh. Matching `-guide/` URLs read the actual shared manual screens.
-- About, Contact, Help, mode directory, seven current manuals and two overview guides join the root in the 14-entry XML sitemap. Canonical initial content/metadata is generated at build time. Operational paths remain noindex; preview hosts remain noindex even for public content.
+- About, Contact, Help, mode directory, seven current manuals and two overview guides join the root as 14 route identities, each in English, German and Dutch, for 42 entries in the XML sitemap. Canonical initial content/metadata is generated at build time. Operational paths remain noindex; preview hosts remain noindex even for public content.
 - Custom sequence IDs, gun names and saved results remain local. `/custom-sequence/` can restore only the selected gun's saved selected custom preset; missing context returns to Drills with an explanation. Legacy trigger-only remains compatible but is not public catalog/sitemap content.
 
 [Complete generated URL inventory](routes.md) is authoritative for exact names, titles, redirects and static resources. [Requirements](../requirements/public-seo.md) and [screen tree](../architecture/site-tree.md) own behavior/layout coverage.

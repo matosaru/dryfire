@@ -1,1 +1,120 @@
-{}
+navigation:
+  aria: Openbare pagina's
+  home: Home
+  practiceModes: Oefenvormen
+  help: Hulp
+kicker:
+  guide: OEFENGIDS
+  beta: DRY FIRE WITH EASE · BÈTA
+practice:
+  title: Vier manieren om te oefenen
+  configure: Deze oefening instellen
+  configurationNote: Voor je begint vraagt de app om een wapen en passende trekkerklikken. Als je deze gids opent, wordt de microfoon niet gestart.
+guide:
+  measures: Wat wordt gemeten
+  example: Bekijk het stille voorbeeld
+  exampleNote: Gesimuleerde detecties op 1×-tempo; geen live microfoon. Het geëxporteerde voorbeeld stopt bij het resultaat.
+  how: Zo werkt het
+  goodToKnow: Goed om te weten
+sequence:
+  builtIn: Ingebouwde volgordes
+  rackTrigger: Slede doorladen → trekker overhalen
+  magazineTrigger: Magazijn wisselen → trekker overhalen
+  drawMagazineTrigger: Uit holster trekken → magazijn wisselen → trekker overhalen
+  distinctSounds: Leer elk afzonderlijk geluid dat de gekozen volgorde nodig heeft. Andere geluidscategorieën zijn optioneel.
+  repetition: Zo werkt een herhaling
+  stepOne: Kies een volgorde, het aantal herhalingen en een vaste of willekeurige vertraging.
+  stepTwo: Bevestig de veiligheidscontrole, wacht op het startsignaal en voer de volgorde uit.
+  stepThree: De app gaat alleen verder bij herkende geluiden in de juiste volgorde, slaat elk resultaat op en start de volgende aftelling.
+  timing: De tijden gaan over herkende audio en bevestigen geen fysieke handelingen. Als de startpiep aanstaat, worden de eerste 0,30 seconden na GO uitgesloten om de piep te negeren.
+  choose: Kies een volgorde
+calibration:
+  record: Bruikbare voorbeelden opnemen
+  stepOne: Controleer dat het wapen ongeladen is en voer de veiligheidscontrole van de app uit.
+  stepTwo: Zet de telefoon op de plek waar je hem tijdens het oefenen gebruikt. Neem bij Leren telkens één natuurlijke trekkerklik op. Er zijn drie passende voorbeelden nodig; 8–10 worden aanbevolen en tien is het maximum.
+  stepThree: Bekijk de status van het trekkerprofiel. Vervang een wisselend voorbeeld in plaats van andere geluiden toe te voegen.
+  stepFour: Test nieuwe klikken in de echte ruimte en vanaf de vaste telefoonpositie. Optionele reset- en ruisvoorbeelden kunnen helpen vergelijkbare niet-trekkerklikken uit te sluiten.
+  before: Voor elke oefening
+  beforeBody: Voor de aftelling luistert de app kort naar omgevingsgeluid. Wacht tot Microfoon gereed verschijnt. Staat er Ruimte is lawaaierig, verminder dan achtergrondgeluid of zet de telefoon dichterbij en probeer het opnieuw. Herkenning is experimenteel en kan geluiden missen of verkeerd herkennen.
+  missed: Als klikken worden gemist
+  missedBody: Controleer de microfoontoestemming en bekijk de live niveaumeter. Houd de telefoon op dezelfde plek. Leer voorbeelden opnieuw na grote veranderingen in ruimte, afstand of audioverwerking. Overeenkomstscores zijn geen kansen.
+  openLearn: Leren openen
+about:
+  feedback: Feedback welkom
+  feedbackBody: Dry Fire With Ease is een bèta-geluidstrainer. Alle feedback en suggesties zijn welkom.
+  contact: Neem contact op
+  included: Wat de gratis app biedt
+  includedBody: Trekkerklikken kalibreren, vier trekker-oefenvormen, ingebouwde volgordes, live luisteren, lokale geschiedenis en handmatige back-ups. Een account is niet nodig.
+  limits: Er kunnen maximaal twee nieuwe openbare wapenprofielen worden gemaakt. Bestaande gegevens blijven beschikbaar; geavanceerde functies volgen de huidige openbare versie.
+contact:
+  email: E-mailondersteuning
+  prompt: "Stuur vragen, suggesties of een bugmelding naar:"
+  privacy: Stuur geen privéback-ups of ruwe opnames mee, tenzij je die bewust wilt delen.
+responsibility:
+  title: Oefen verantwoord
+  body: Controleer dat het wapen ongeladen is, verwijder scherpe munitie uit de oefenruimte en zorg voor een veilige richting en kogelvanger. De microfoon kan niet controleren of het wapen ongeladen is, of je goed richt, beweegt of veilig handelt.
+related:
+  aria: Meer gidsen
+  sequence: Volgordeoefeningen
+  calibration: Kalibratie
+routes:
+  home:
+    title: Dry Fire With Ease — Gratis app voor droog oefenen
+    heading: Dry Fire With Ease
+    description: Leer je trekkerklik, kies een droog-oefenvorm en bekijk je tijden. Een gratis bèta-app met microfoonherkenning en lokale browseropslag.
+  practice:
+    title: Oefenvormen voor droog oefenen — Dry Fire With Ease
+    heading: Kies je oefening.
+    description: Vergelijk een enkele trekkerklik, herhaalde klikken, oefenen met een tijdslimiet en trekkerbeheersing. Lees wat elke vorm meet voordat je begint.
+  single:
+    title: Gids voor een enkele trekkerklik — Dry Fire With Ease
+    heading: Een keer de trekker overhalen
+    description: Lees hoe deze oefenvorm je reactie vanaf elk startsignaal meet.
+  repeated:
+    title: Gids voor herhaalde trekkerklikken — Dry Fire With Ease
+    heading: Herhaald de trekker overhalen
+    description: Lees hoe deze oefening afzonderlijke klikken telt en de tijd ertussen meet.
+  par:
+    title: Gids voor oefenen met een tijdslimiet — Dry Fire With Ease
+    heading: Oefenen met een tijdslimiet
+    description: Lees hoe deze oefening controleert of een trekkerklik binnen de gekozen tijdslimiet wordt herkend.
+  control:
+    title: Gids voor trekkerbeheersing — Dry Fire With Ease
+    heading: Trekkercontrole
+    description: Lees hoe deze oefening de intervallen tussen herkende trekkerklikken vergelijkt.
+  sequence-trigger-only:
+    title: Gids voor de trekkerklikvolgorde — Dry Fire With Ease
+    heading: Trekkerklikvolgorde
+    description: Lees hoe een volgordeoefening herkende klikken tijdens elke herhaling registreert.
+  sequence-rack-trigger:
+    title: Gids voor slede doorladen en trekker overhalen — Dry Fire With Ease
+    heading: Slede doorladen → trekker overhalen
+    description: Lees hoe deze oefening eerst een herkend sledegeluid en daarna een trekkerklik verwacht.
+  sequence-mag-trigger:
+    title: Gids voor magazijn wisselen en trekker overhalen — Dry Fire With Ease
+    heading: Magazijn wisselen → trekker overhalen
+    description: Lees hoe deze oefening eerst een herkend magazijnwisselgeluid en daarna een trekkerklik verwacht.
+  sequence-draw-mag-trigger:
+    title: Gids voor trekken, magazijn wisselen en trekker overhalen — Dry Fire With Ease
+    heading: Trekken → magazijn → trekker
+    description: Lees hoe deze oefening herkende geluiden van trekken, magazijn wisselen en de trekker in die volgorde controleert.
+  sequence:
+    title: Gids voor volgordeoefeningen — Dry Fire With Ease
+    heading: Oefen met een geluidsvolgorde.
+    description: Ontdek ingebouwde volgordeoefeningen, de benodigde geluiden en hoe de app herkende gebeurtenissen in de juiste volgorde timet.
+  calibration:
+    title: Trekkerklik kalibreren — Dry Fire With Ease
+    heading: Leer je trekkerklik.
+    description: Kalibreer de microfoonherkenning voor je wapen, test afzonderlijke klikken en voorkom verwarring met reset- en bedieningsgeluiden.
+  help:
+    title: Hulp en browserinstellingen — Dry Fire With Ease
+    heading: Stel je oefening in.
+    description: Hulp bij microfoontoestemming, Safari-installatie, herkenning, startsignalen en lokale back-ups.
+  about:
+    title: Over Dry Fire With Ease
+    heading: Over de app
+    description: Dry Fire With Ease is een bèta-geluidstrainer voor trekkerklik-oefeningen en oefeningen met tijdsmeting. Lees hoe de app werkt en stuur feedback.
+  contact:
+    title: Contact — Dry Fire With Ease
+    heading: Contact
+    description: "Neem contact op met Dry Fire With Ease voor feedback, suggesties of een bugmelding. E-mail: easydryfire@gmail.com."

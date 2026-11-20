@@ -1,1 +1,120 @@
-{}
+navigation:
+  aria: Public pages
+  home: Home
+  practiceModes: Practice modes
+  help: Help
+kicker:
+  guide: PRACTICE GUIDE
+  beta: DRY FIRE WITH EASE · BETA
+practice:
+  title: Four ways to practice
+  configure: Configure this practice
+  configurationNote: The app asks for a gun and compatible trigger examples before practice. Opening this guide never starts your microphone.
+guide:
+  measures: What it measures
+  example: View the silent animated example
+  exampleNote: Synthetic detections at 1× timing; no live microphone. Opens the exported example, which stops at Review.
+  how: How it works
+  goodToKnow: Good to know
+sequence:
+  builtIn: Built-in sequences
+  rackTrigger: Rack slide → Trigger pull
+  magazineTrigger: Magazine change → Trigger pull
+  drawMagazineTrigger: Draw from holster → Magazine change → Trigger pull
+  distinctSounds: Learn each distinct sound required by the selected sequence. Other sound categories remain optional.
+  repetition: How a repetition works
+  stepOne: Choose a sequence, repetitions and fixed or random ready delay.
+  stepTwo: Confirm safety, wait for the start signal and perform the sequence.
+  stepThree: The app advances only on recognized sounds in the expected order, saves each result and starts the next countdown.
+  timing: Timings describe detected audio, not verified physical actions. With the sequence start beep on, the first 0.30 seconds after GO are excluded to reject the cue.
+  choose: Choose a sequence
+calibration:
+  record: Record useful examples
+  stepOne: Confirm the firearm is unloaded and complete the app safety check.
+  stepTwo: Put the phone where it will stay during practice. In Learn, record one natural Trigger pull at a time. Three compatible examples are required; 8–10 are recommended and ten is the limit.
+  stepThree: Read the Trigger profile status. Replace a variable example instead of adding unrelated sounds.
+  stepFour: Test unseen clicks in the real room and phone position. Optional reset/noise examples can help reject similar non-trigger events.
+  before: Before every practice
+  beforeBody: The app listens to a short ambient window before starting the countdown. Wait for Microphone ready. If Room is noisy appears, reduce background sound or move the phone closer, then retry. Recognition remains experimental and can miss or misclassify sounds.
+  missed: If clicks are missed
+  missedBody: Confirm microphone permission and watch the live level meter. Keep the phone position consistent. Relearn examples after a major room, distance or audio-processing change. Match scores describe similarity and are not probabilities.
+  openLearn: Open Learn
+about:
+  feedback: Feedback welcome
+  feedbackBody: Dry Fire With Ease is a Beta sound trainer. All feedback and suggestions are welcome.
+  contact: Contact us
+  included: What the free app includes
+  includedBody: Trigger-click calibration, four trigger practice modes, built-in sequences, live listening, local history and manual backups. No account is required.
+  limits: New public gun profiles are limited to two. Existing saved data remains available; advanced feature availability follows the current public version.
+contact:
+  email: Email support
+  prompt: "Send questions, suggestions or a bug report to:"
+  privacy: Do not send private backups or raw recordings unless you deliberately choose to share them.
+responsibility:
+  title: Practice responsibly
+  body: Verify the firearm is unloaded, remove live ammunition from the practice area and establish a safe direction and backstop. The microphone cannot verify unloaded status, aim, movement or safe handling.
+related:
+  aria: More guides
+  sequence: Sequence drills
+  calibration: Calibration
+routes:
+  home:
+    title: Dry Fire With Ease — Free Dry-Fire Practice App
+    heading: Dry Fire With Ease
+    description: Learn your trigger click, choose a dry-fire practice mode and review timed repetitions. A free, microphone-based Beta app with local browser storage.
+  practice:
+    title: Dry-Fire Practice Modes — Dry Fire With Ease
+    heading: Choose your practice.
+    description: Compare Single trigger press, Repeated trigger press, Par-time practice and Trigger control. Learn what each mode measures before you begin.
+  single:
+    title: Single Trigger Press Guide — Dry Fire With Ease
+    heading: Single trigger press
+    description: Understand how single trigger press practice measures your response to each start signal.
+  repeated:
+    title: Repeated Trigger Press Guide — Dry Fire With Ease
+    heading: Repeated trigger press
+    description: Learn how repeated trigger press practice counts distinct clicks and measures their intervals.
+  par:
+    title: Par-Time Practice Guide — Dry Fire With Ease
+    heading: Par time practice
+    description: Learn how par-time practice checks for a recognized trigger click within your chosen time limit.
+  control:
+    title: Trigger Control Guide — Dry Fire With Ease
+    heading: Trigger control
+    description: Learn how trigger control practice compares intervals between recognized trigger clicks.
+  sequence-trigger-only:
+    title: Trigger Pull Sequence Guide — Dry Fire With Ease
+    heading: Trigger pull sequence
+    description: Learn how a trigger-only sequence drill records recognized clicks across each repetition.
+  sequence-rack-trigger:
+    title: Rack Slide and Trigger Pull Guide — Dry Fire With Ease
+    heading: Rack slide → Trigger pull
+    description: Learn how this sequence drill waits for a recognized rack-slide sound followed by a trigger click.
+  sequence-mag-trigger:
+    title: Magazine Change and Trigger Pull Guide — Dry Fire With Ease
+    heading: Magazine change → Trigger pull
+    description: Learn how this sequence drill waits for a recognized magazine-change sound followed by a trigger click.
+  sequence-draw-mag-trigger:
+    title: Draw, Magazine Change and Trigger Pull Guide — Dry Fire With Ease
+    heading: Draw from holster → Magazine change → Trigger pull
+    description: Learn how the drill checks for recognized draw, magazine-change and trigger sounds in order.
+  sequence:
+    title: Sequence Drills Guide — Dry Fire With Ease
+    heading: Practice a sound sequence.
+    description: Understand built-in sequence drills, the sounds they need and how the app times recognized events in order.
+  calibration:
+    title: Trigger-Click Calibration — Dry Fire With Ease
+    heading: Learn your trigger click.
+    description: Calibrate microphone recognition for your selected gun, test separate trigger clicks and reduce confusion with reset and handling sounds.
+  help:
+    title: Help and Browser Setup — Dry Fire With Ease
+    heading: Set up your practice.
+    description: Get help with microphone permissions, Safari Home Screen installation, recognition, start beeps and local backup recovery.
+  about:
+    title: About — Dry Fire With Ease
+    heading: About
+    description: Dry Fire With Ease is a Beta sound trainer for trigger-click practice and timed sequences. Learn how it works, explore the four practice modes and send feedback.
+  contact:
+    title: Contact — Dry Fire With Ease
+    heading: Contact
+    description: Contact Dry Fire With Ease with feedback, suggestions or a bug report. Email easydryfire@gmail.com.

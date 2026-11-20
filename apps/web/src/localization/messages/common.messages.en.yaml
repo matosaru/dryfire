@@ -16,3 +16,146 @@ result:
   repetitions:
     one: "{{count}} repetition complete"
     other: "{{count}} repetitions complete"
+sound:
+  draw: Draw from holster
+  rack: Rack slide
+  trigger: Trigger pull
+  reload: Change magazine
+  unknown: Unknown sound
+soundDescription:
+  draw: Holster release and presentation sounds
+  rack: Slide movement and return
+  trigger: Dry trigger click
+  reload: Magazine removal and insertion
+  unknown: Unclassified sound
+runtimeAudio:
+  requestRecordingPermission: Requesting microphone permission…
+  getReady: Get ready… {{count}}
+  recordingSound: Recording… one sound now
+  analyzing: Analysing sound…
+  requestMicrophoneAccess: Requesting microphone access…
+  preparingMicrophone: Preparing microphone…
+  roomNoisy: Room is noisy · Move closer or reduce background sound
+  microphoneReady: Microphone ready · Listening before the signal
+  liveWorklet: Live listening (AudioWorklet)
+  compatibility: Live listening (compatibility mode)
+runtimeMain:
+  navigationLocked: Finish the current action or save results before leaving this screen.
+  sequenceUnavailable: This sequence is not available for the selected gun. Choose a drill.
+  learnTriggerFirst: Record at least {{count}} trigger examples first.
+  removeCalibration: Remove {{title}} calibration for this gun? Learned action sounds and all history stay saved.
+  calibrationSaved: Calibration saved
+  resetSoundProfile: Reset learned {{sound}} sounds only? Other sounds and recognition history will be kept.
+  soundProfileReset: "{{sound}} reset"
+  soundExamplesRemoved: "{{sound}} examples removed for {{gun}}. Other sounds, guns and history were kept."
+  backupPrepared: Backup prepared. Keep the downloaded JSON file private.
+  backupLocked: Finish recording or stop listening before importing a backup.
+  backupTooLarge: Backup is too large (maximum 10 MB).
+  replaceBackup: Replace the complete gun library, learned sounds, custom presets, preferences, recognition history and saved drill sessions with this backup? Older backups contain no sessions and will remove current saved sessions.
+  backupRestored: Restored {{guns}} gun profiles, {{examples}} sound examples, {{events}} recognition results and {{sessions}} saved drill sessions.
+  chooseActualSound: Select what actually happened before verifying.
+  verificationSaved: Verification saved. See History for accuracy statistics.
+  confirmSoundReset: Reset all learned sounds and reset/noise/beep calibration for {{gun}}? Gun profiles, presets, saved sessions, recognition history and other guns will be kept.
+  soundsReset: All learned sounds reset
+  soundResetMessage: All learned sounds for {{gun}} were reset. Other guns and recognition history were kept.
+  soundResetOutcome: All learned sounds and calibration for {{gun}} were reset. Saved guns, presets and history were kept.
+  confirmDeleteData: Delete ALL guns and app data from this browser? This removes every gun, learned sound, calibration, preset, setting, recognition result and saved session. Export a backup first. This cannot be undone without a backup.
+  confirmClearHistory: Clear recognition history for {{gun}}? Saved drill sessions, progress statistics, learned sounds and other guns will be kept.
+  confirmClearSessions: Clear ALL saved practice and sequence sessions for {{gun}}? Their results and progress statistics will be deleted. Learned sounds, custom drills, settings, recognition history and other guns will be kept. Export a backup first; this cannot be undone without one.
+  historyEventDeleted: One recognition result was deleted.
+  sessionDeleted: One saved session was deleted. Progress statistics were updated.
+  safetyConfirmed: Confirmed for this session
+  safetyRequired: Required before recording
+  historyCleared: Recognition history cleared
+  historyClearedOutcome: "Recognition history for {{gun}} was cleared. Saved sessions and learned sounds were kept."
+  sessionsCleared: Saved sessions cleared
+  sessionsClearedOutcome: "Saved sessions and progress statistics for {{gun}} were cleared. Learned sounds and recognition history were kept."
+  switchGunBlocked: Finish recording or stop listening before switching guns.
+  switchGun: Choose another gun
+  attention: Attention needed
+  sampleSaved: "{{sound}} saved"
+  liveListening: Listening · microphone active
+  matchedSound: "Matched {{sound}}"
+  unknownSound: Unknown / unclear
+  ready: Ready
+  learnRequired: Learn at least {{count}} trigger examples first. Other sounds are optional.
+  clickTarget: Click target
+  repetitions: Repetitions
+  secureConnection: Secure connection
+  insecureConnection: Insecure connection — microphone may be blocked
+  microphoneApiAvailable: Microphone API available
+  microphoneApiUnavailable: Microphone API unavailable
+  localStorageOnly: Local storage only
+  gunLimit: This version cannot create another gun. Existing saved guns remain available.
+  gunPlaceholder: Gun
+  triggerTrainingCount: "{{count}} / {{target}} trigger"
+  selectGun: Choose a gun
+  switchGunAria: "Switch gun. Selected: {{name}}, {{type}}"
+  gunTypeUnset: type not set
+  gunNameFallback: Your gun
+  gunDetailsPrompt: Add profile details
+  resetSamplesSummary: "{{samples}} learned samples · {{calibration}} calibration samples for {{gun}}"
+  resetSamplesChooseGun: Choose a gun before resetting its learned sounds.
+  outdatedSamples: "{{count}} older training sample(s) use an incompatible feature format and are ignored. Reset this gun's sounds and record new samples for the updated model."
+  installStatusInstalled: "Installed: you are using the Home Screen app."
+  installStatusNotInstalled: Not yet installed. Follow these steps to put it on your Home Screen.
+  saveUnsentSession: Session results are not saved. Retry saving before deleting data.
+  deleteGun: "Delete {{gun}} and ALL its data? This removes its learned sounds, calibration, custom drills, settings, recognition history and saved practice/sequence sessions. Other guns stay saved. Export a backup first; this cannot be undone without one."
+  gunDeleted: Gun deleted
+  gunDeletedOther: "{{gun}} and all its data were deleted. Other guns were kept."
+  gunDeletedFinal: "{{gun}} and all its data were deleted. Add a new gun to continue."
+  enterGunName: Enter a gun name.
+  gunSaved: Gun saved
+  replaceSamplesConfirm: "Record one new {{sound}} sample, then replace all existing {{sound}} samples for this gun? Other sounds and history stay saved."
+  soundProfileReplaced: "{{sound}} profile replaced"
+  samplesReplaceSuccess: "Existing {{sound}} samples were replaced only after the new capture succeeded."
+runtimeErrors:
+  audioTooShort: Recording is too short to analyse.
+  audioNoClearSound: No clear sound detected. Move closer to the microphone or try a quieter room.
+  audioDistorted: Audio was distorted. Move the microphone farther from the source.
+  secureContext: Microphone access requires HTTPS or localhost and a compatible browser.
+  webAudioUnavailable: Web Audio is unavailable on this device.
+  pcmUnavailable: This WebView does not support PCM recording. Native audio capture is required.
+  noMicrophoneAudio: No audio arrived from the microphone.
+  microphoneDenied: Microphone permission was denied. Enable it in browser or app settings.
+  microphoneSecureContext: Microphone requires HTTPS/localhost and permission.
+  noInput: No audio input arriving. Check microphone permission and try again.
+  listeningStopped: Listening stopped.
+  recorderUnavailable: Neither AudioWorklet nor the compatibility recorder is available.
+  microphoneInterrupted: Microphone audio was interrupted. Restart the sound check or practice to reconnect.
+  microphoneDisconnected: Microphone disconnected. Restart the sound check or practice to reconnect.
+  microphoneMuted: Microphone input was muted. Check microphone access, then restart the sound check or practice.
+  inputStopped: Microphone input stopped arriving. Restart the sound check or practice to reconnect.
+  guideUnavailable: Practice guide could not load. Your setup is unchanged. Check your connection and reload to try again.
+runtime:
+  practice:
+    inputDetected: Microphone input detected.
+    inputQuiet: Listening · low or quiet input.
+    inputMissing: No audio input arriving. Check microphone permission.
+    inputWaiting: Waiting for audio input…
+    completeSettings: Complete the visible practice settings.
+    learnExamples: Learn 3 compatible examples of {{labels}}. Other sounds are optional.
+    learnCue: Learn 3 external-beep examples under Improve recognition in Learn.
+    soundsReadySafety: Sounds ready. Start opens safety confirmation.
+    soundsReady: Required sounds ready. Start when you are ready.
+    cueExternal: Waiting for your calibrated beep starts the acoustic timer. The app does not play a second cue.
+    cueBeep: Microphone ready before countdown. {{earlyTrigger}}Set your device media volume for the start sound. The first {{seconds}} s after GO is excluded to reject the cue.
+    earlyTrigger: A trigger before the beep fails the attempt.
+    cueSilent: Microphone ready before countdown. Silent start uses the on-screen signal; Single triggers before it fail the attempt.
+    saved: Practice saved
+    beepUnavailable: Start beep unavailable. STOP and the microphone indicator mark the start.
+    startSoundUnavailable: Start sound unavailable. Check browser audio permission and media volume.
+    previewUnavailable: Start sound unavailable. Check browser audio permission and media volume.
+  session:
+    enterConfig: Enter the repetition count and valid start delays.
+    trainExamples: Train at least {{count}} examples of {{labels}} for this gun.
+    readySafety: Sounds ready. Start opens safety confirmation.
+    ready: Sounds trained and safety confirmed. Ready to start.
+    presetOne: 1 sound action · {{state}}
+    presetOther: "{{count}} sound actions · {{state}}"
+    setup: Session setup
+    saved: Session saved
+    cancelled: Session cancelled before starting
+    noModel: No compatible learned sound model is available.
+    cueUnavailable: Start beep unavailable. Visual GO remains active.
+    previewUnavailable: Start sound unavailable. Check browser audio permission and media volume.

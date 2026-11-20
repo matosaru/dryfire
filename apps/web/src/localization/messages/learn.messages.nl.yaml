@@ -24,3 +24,31 @@ privacy:
 recordingTip:
   label: "Opnametip:"
   description: Gebruik tijdens het oefenen dezelfde positie voor je telefoon. Neem in een representatieve ruimte telkens één natuurlijke trekkerbeweging op. Ruwe audio wordt niet opgeslagen, alleen numerieke geluidskenmerken.
+soundCard:
+  progress: "{{count}} / {{maximum}} voorbeelden · {{summary}}"
+  imageAlt: Illustratie van het geluid {{sound}}
+  record: Voorbeeld van {{sound}} opnemen
+  train: "▶ Trainen"
+  sampleLimit: Maximumaantal voorbeelden bereikt
+  replace: Geleerde geluiden voor {{sound}} vervangen
+  reset: Geleerde geluiden voor {{sound}} wissen
+  recognize: "{{sound}} herkennen na training"
+  recognizeLabel: Herkennen na training
+  primary: PRIMAIR GELUID
+  optional: OPTIONEEL GELUID
+  limitReached: Limiet bereikt · bestaande voorbeelden blijven behouden
+  recommendedReached: Aanbevolen aantal bereikt
+  ready: Klaar voor herkenning
+  minimumRemaining: "{{count}} tot het minimum"
+  replaceLabel: Vervangen
+  resetLabel: Wissen
+profile:
+  eyebrow: TREKKERPROFIEL
+  needsSamples: Meer voorbeelden nodig
+  needsSamplesMessage: "Neem nog {{count}} natuurlijke trekkerbewegingen op."
+  oneSample: Neem nog één natuurlijke trekkerbeweging op.
+  variable: Wisselende voorbeelden
+  variableMessage: De voorbeelden verschillen. Gebruik dezelfde ruimte en telefoonpositie; wis ze en neem opnieuw op als de verschillen blijven.
+  stable: Stabiel profiel
+  stableMessage: Je trekkerbewegingen zijn consistent. Voer vóór het oefenen een geluidstest uit.
+  soundCheck: Geluidstest uitvoeren

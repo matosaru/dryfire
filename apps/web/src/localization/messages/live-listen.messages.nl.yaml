@@ -34,22 +34,36 @@ capture:
   connecting: Microfoon verbinden… Geef toestemming of verlaat deze pagina om te annuleren.
   unsaved: Sla openstaande oefenresultaten op voordat je luistert. Gebruik Opnieuw proberen op de resultatenpagina.
   session: Rond de actieve oefening af of verlaat die voordat je luistert.
-  training: Leer minstens {minimum} trekkeropnamen ({count}/{minimum}) voor dit wapen. Open Leren om ze op te nemen. Andere geluiden zijn optioneel.
+  training: Leer minstens {{minimum}} trekkeropnamen ({{count}}/{{minimum}}) voor dit wapen. Open Leren om ze op te nemen. Andere geluiden zijn optioneel.
+  trainedSummary: "Klaar om te testen · {{labels}}"
   start: Continu luisteren starten
+  stop: Stoppen met luisteren
   single: Eén geluid testen
   sensitivity: Herkenningsgevoeligheid
   normal: Normaal
   high: Hoog (zachtere geluiden)
   low: Laag (lawaaierige ruimtes)
   inactive: Microfoon inactief
+  activeIndicator: Microfoon actief · luistert naar het volgende geluid
   meter: Actueel microfoonniveau
   continuousNote: Continu luisteren blijft actief bij meerdere afzonderlijke handelingen. Pauzeer kort tussen geluiden en tik op Stoppen wanneer je klaar bent. De test voor één geluid neemt één geluid op en stopt.
   eventCounter: 0 herkend · 0 genegeerd
+  eventCounts: "{{detected}} herkend · {{discarded}} genegeerd"
+  stoppedNote: Microfoon gestopt. Deze sessie is beëindigd; start opnieuw voor een nieuwe reeks.
+  activeNote: Na elke detectie blijft de app luisteren. Houd een korte stilte tussen acties; overlappende geluiden kunnen samenvallen. Tik op Stoppen als je klaar bent.
   timeline: Gedetecteerde handelingen in deze sessie (nieuwste eerst)
 result:
   empty: Het volgende herkenningsresultaat verschijnt hier.
   latest: LAATSTE RESULTAAT
   note: Scores en gelijkenisafstanden zijn experimenteel en geen gekalibreerde kansen. Controleer overeenkomsten zelf.
+  unknown: Onbekend / onduidelijk
+  closestMatch: Dit is het meest vergelijkbare geleerde profiel; controleer de herkenning zelf.
+  noReliableMatch: Geen betrouwbare overeenkomst. Probeer een ander geluid of voeg gelabelde voorbeelden toe.
+timeline:
+  event: "Nr. {{count}} · {{score}}/100 · {{time}}"
+  drillCompleted: " · ✓ oefening voltooid"
+  drillOutOfOrder: " · {{outcome}}"
+  drillMatched: " · herkend"
   actual: Welk geluid maakte je echt?
   choose: Kies het werkelijke geluid…
   draw: Trekken uit holster

@@ -1,12 +1,58 @@
-import { getPracticeGuide, isGuideContextCurrent, isPublicGuideContextCurrent } from '../src/practiceGuides.js';
+import { getPracticeGuide, guideSoundTitle, isGuideContextCurrent, isPublicGuideContextCurrent } from '../src/practiceGuides.js';
 import { createScenario } from '../src/practiceGuideExamples.js';
+import { loadLocale } from '../apps/web/src/localization/runtime.ts';
 const context = (mode, config = {}) => ({ type: 'practice', mode, gunId: 'gun-a', routeKey: 'setup-a', config });
+
+afterEach(async () => { await loadLocale('en'); });
 
 test.each(['single', 'repeated', 'par', 'control'])('%s has its own short manual and an engine-checked example', mode => {
   const guide = getPracticeGuide(context(mode));
   expect(guide.steps).toHaveLength(3);
   expect(guide.measures.length).toBeGreaterThan(20);
   expect(createScenario(guide).frames.at(-1)).toMatchObject({ phase: 'review', mic: 'Microphone stopped' });
+});
+test.each([
+  ['de', 'single', 'Einzelner Abzugsdruck'],
+  ['de', 'repeated', 'Wiederholte Abzugsdrücke'],
+  ['de', 'par', 'Training mit Zeitlimit'],
+  ['de', 'control', 'Abzugskontrolle'],
+  ['nl', 'single', 'Een keer de trekker overhalen'],
+  ['nl', 'repeated', 'Herhaald de trekker overhalen'],
+  ['nl', 'par', 'Oefenen met een tijdslimiet'],
+  ['nl', 'control', 'Trekkercontrole'],
+])('%s %s practice guide uses translated manual content', async (locale, mode, expectedTitle) => {
+  await loadLocale(locale);
+  const guide = getPracticeGuide(context(mode));
+  expect(guide.title).toBe(expectedTitle);
+  expect(guide.steps).toHaveLength(3);
+  expect(guide.steps.join(' ')).not.toMatch(/Choose repetitions|Choose the number|Set a par time|Choose a click target/);
+  expect(guide.purpose).not.toMatch(/^⟦/);
+  expect(guide.stages).toHaveLength(4);
+});
+test.each(['de', 'nl'])('%s external-cue and silent guide explanations are translated', async locale => {
+  await loadLocale(locale);
+  const external = getPracticeGuide(context('single', { startSource: 'external' }));
+  expect(external.currentSetup).not.toMatch(/^Your setup/);
+  expect(external.steps.join(' ')).not.toMatch(/Choose your|Start and wait|trigger press/);
+  expect(external.expect).not.toMatch(/With this external|early-failure example/);
+  expect(external.requires).not.toMatch(/Calibrated external-beep/);
+  const silent = getPracticeGuide(context('single', { soundAtStart: false }));
+  expect(silent.currentSetup).not.toMatch(/^Your setup/);
+  expect(silent.currentSetup).not.toMatch(/^⟦/);
+});
+test.each([
+  ['de', 'Ziehen → Magazin → Abzug', 'Abzugsdruck'],
+  ['nl', 'Trekken → magazijn → trekker', 'Trekker overhalen'],
+])('%s translates built-in sequence manuals and sound labels', async (locale, expectedTitle, expectedTrigger) => {
+  await loadLocale(locale);
+  const guide = getPracticeGuide({
+    type: 'sequence', gunId: 'gun-a', routeKey: 'setup-a',
+    drill: { id: 'draw-mag-trigger', title: 'Draw from holster → Magazine change → Trigger pull', steps: ['draw', 'reload', 'trigger'] },
+  });
+  expect(guide.title).toBe(expectedTitle);
+  expect(guide.purpose).not.toMatch(/^⟦/);
+  expect(guide.stages[2]).not.toBe('draw → reload → trigger');
+  expect(guideSoundTitle('trigger')).toBe(expectedTrigger);
 });
 test('Single accepts a first half-second click and automatically starts another countdown', () => {
   const example = createScenario(getPracticeGuide(context('single')));

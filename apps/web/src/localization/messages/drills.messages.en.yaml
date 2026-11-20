@@ -17,3 +17,4 @@ collection:
 custom:
   create: + Create Custom Drill
   empty: No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.
+  edit: Edit sequence

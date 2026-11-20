@@ -4,7 +4,7 @@ Generated from [screen-map.json](screen-map.json). Reviewed 2026-11-07; applicat
 
 ## Public site
 
-Canonical production origin: `https://easydryfire.com/`. **14 implemented public routes**, generated with initial HTML/metadata, sitemap and robots from site/routes.js. The app opens at / on every host. Operational screens have flat paths and noindex; About, Contact and seven public manuals reuse the app shell with readable initial HTML. Personal records are not public sitemap entries. [SEO routing](../seo/indexable-routes-plan.md) records implementation and production acceptance separately.
+Canonical production origin: `https://easydryfire.com/`. **42 localized canonical pages across 14 route identities**, generated with initial HTML/metadata, sitemap and robots from site/routes.js. The app opens at / on every host. Operational screens have flat paths and noindex; personal records are not public sitemap entries. [SEO routing](../seo/indexable-routes-plan.md) records implementation and production acceptance separately.
 
 ## App hierarchy
 

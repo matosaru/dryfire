@@ -16,3 +16,174 @@ goodToKnowHeading: Goed om te weten
 beforeStart: Voordat je begint
 safetyReminder: Controleer dat het wapen ongeladen is, verwijder scherpe munitie en gebruik een veilige richting en kogelvanger.
 measurementDisclosure: De app meet herkende geluiden. De app kan niet controleren of het wapen ongeladen is, of je goed richt of veilig handelt.
+manuals:
+  single:
+    title: Een keer de trekker overhalen
+    purpose: Meet de tijd tussen elk startsignaal en de eerste herkende trekkerklik.
+    measures: Reactietijd per poging en het aantal geslaagde en mislukte pogingen.
+    steps: |
+      Kies het aantal herhalingen en een vaste of willekeurige vertraging.
+      Start, bekijk het aftellen en wacht op het signaal voordat je de trekker een keer overhaalt.
+      Bekijk het resultaat. Tot het doel is bereikt start automatisch een nieuw aftellen.
+    expect: Een herkende trekkerklik vóór het app-signaal laat de poging mislukken. Per poging telt één klik.
+    requires: Leer de trekkerklik van het geselecteerde wapen. Andere geluiden zijn optioneel.
+    stages: |
+      Microfoon klaar
+      2,4 s aftellen → pieptoon
+      Klik na 0,50 s
+      Automatisch 3,2 s aftellen → tweede pieptoon → klik na 0,60 s
+    exampleConfig: 2 pogingen · willekeurige vertraging 2–5 s · app-signaal aan
+  repeated:
+    title: Herhaald de trekker overhalen
+    purpose: Telt afzonderlijke herkende trekkerklikken en toont de tijd ertussen.
+    measures: Het aantal geaccepteerde klikken en de intervallen tussen opeenvolgende klikken.
+    steps: |
+      Kies het aantal klikken en de vertraging.
+      Maak na één startsignaal afzonderlijke trekkerklikken, voor zover je uitrusting dat toelaat.
+      De herkenning blijft luisteren zonder voor elke klik een nieuwe pieptoon. De resultaten verschijnen bij het doel.
+    expect: Reset- en bedieningsgeluiden mogen niet als schoten tellen. Pauzeren stopt de opname; hervatten sluit de pauzetijd uit.
+    requires: Leer de trekkerklik. Optionele reset- en ruisvoorbeelden kunnen helpen andere klikken uit te sluiten.
+    stages: |
+      Microfoon klaar
+      2,4 s aftellen → één pieptoon
+      Drie klikken: 0,50 / 1,30 / 2,10 s
+      Twee intervallen: 0,80 / 0,80 s
+    exampleConfig: 3 klikken · willekeurige vertraging 2–5 s · app-signaal aan
+  par:
+    title: Oefenen met een tijdslimiet
+    purpose: Controleert of een herkende trekkerklik binnen de gekozen tijdslimiet valt.
+    measures: De tijd van het startsignaal tot een klik en of die op tijd of gemist was.
+    steps: |
+      Stel een tijdslimiet, aantal herhalingen en vertraging in.
+      Wacht op het signaal en haal de trekker één keer over binnen de limiet.
+      Bekijk het resultaat en kies Volgende herhaling wanneer je klaar bent voor een nieuw aftellen.
+    expect: Geen geaccepteerde klik vóór de deadline betekent dat de poging is gemist. De app kan audio verwerken die vóór de deadline is opgenomen.
+    requires: "Leer de trekkerklik. Voorbeeld: een klik na 0,64 s is op tijd bij een limiet van 1,50 s."
+    stages: |
+      Microfoon klaar
+      Aftellen → pieptoon → treffer na 0,60 s binnen 1,50 s
+      De gebruiker kiest Volgende herhaling
+      Nieuw aftellen → pieptoon → geen klik → gemist
+    exampleConfig: 2 pogingen · willekeurige vertraging 2–5 s · app-signaal aan
+  control:
+    title: Trekkercontrole
+    purpose: Vergelijkt hoe gelijkmatig de tijd tussen herkende trekkerklikken is.
+    measures: Klikintervallen en de spreiding daarvan. Wapenbeweging wordt niet gemeten.
+    steps: |
+      Kies een klikdoel en vertraging.
+      Maak na het startsignaal afzonderlijke klikken in een prettig, gelijkmatig tempo.
+      Ga door tot het doel en vergelijk daarna de opgenomen intervallen.
+    expect: Eén signaal start continu luisteren. Een microfoon kan richten, bewegen of trekkertechniek niet beoordelen.
+    requires: Leer de trekkerklik. Optionele reset- of ruiscalibratie kan onderscheid verbeteren.
+    stages: |
+      Microfoon klaar
+      2,4 s aftellen → één pieptoon
+      Drie afzonderlijke klikken
+      Intervallen van 0,80 s → resultaten
+    exampleConfig: 3 klikken · willekeurige vertraging 2–5 s · app-signaal aan
+  sequence-trigger-only:
+    title: Trekkerklikvolgorde
+    purpose: Rond een geordende oefening met één stap af door na het signaal het geleerde trekkerklikgeluid te maken.
+    measures: Tijd van het signaal tot de klik voor elke voltooide herhaling.
+    steps: |
+      Kies het aantal herhalingen en de startvertraging van de volgordeoefening.
+      Haal na het startsignaal één keer de trekker over voor de getoonde stap.
+      Bekijk het resultaat. De volgordeoefening start automatisch een nieuwe aftelling tot het doel is bereikt.
+    expect: Dit is de oudere geordende oefening, niet de oefening met één trekkerklik. Klikken vóór het signaal gelden hier niet als mislukte pogingen van die oefening.
+    requires: Leer de trekkerklik. De eerste 0,30 s na de app-pieptoon worden uitgesloten om het signaal te negeren.
+    stages: |
+      Microfoon verbonden
+      2,4 s aftellen → pieptoon
+      trekkerklik
+      Resultaat → automatisch 3,2 s aftellen → opnieuw
+    exampleConfig: 2 pogingen · willekeurige vertraging 2–5 s · app-signaal aan
+  sequence-rack-trigger:
+    title: Slede doorladen → trekker overhalen
+    purpose: Maak de geleerde geluiden voor de slede en trekker in de getoonde volgorde.
+    measures: Tijd vanaf het startsignaal tot de voltooide volgorde en de timing van elke herkende stap.
+    steps: |
+      Leer beide getoonde geluiden en kies daarna het aantal herhalingen en de vertraging.
+      Maak na het signaal eerst het geluid van de slede en haal daarna de trekker over.
+      Bekijk het resultaat van de herkende stappen. Voor de volgende herhaling start automatisch een nieuwe aftelling.
+    expect: Een herhaling is alleen voltooid als de geluiden in de getoonde volgorde worden herkend. Sessie beëindigen stopt de opname en slaat de resultaten op.
+    requires: Leer het sledegeluid en de trekkerklik. De eerste 0,30 s na de app-pieptoon worden uitgesloten.
+    stages: |
+      Microfoon verbonden
+      2,4 s aftellen → pieptoon
+      slede → trekkerklik
+      Resultaat → automatisch 3,2 s aftellen → opnieuw
+    exampleConfig: 2 pogingen · willekeurige vertraging 2–5 s · app-signaal aan
+  sequence-mag-trigger:
+    title: Magazijn wisselen → trekker overhalen
+    purpose: Maak de geleerde geluiden voor het magazijn en de trekker in de getoonde volgorde.
+    measures: Tijd vanaf het startsignaal tot voltooiing en de herkende timing van elke stap.
+    steps: |
+      Leer het magazijnwisselgeluid en de trekkerklik en kies het aantal herhalingen en de vertraging.
+      Maak na het signaal eerst het geluid van de magazijnwissel en haal daarna de trekker over.
+      Bekijk het resultaat. De volgende herhaling begint automatisch met een nieuwe aftelling.
+    expect: Een magazijnwissel telt niet als schot. De herhaling is pas voltooid als de geluiden in de juiste volgorde worden herkend.
+    requires: Leer het magazijnwisselgeluid en de trekkerklik. De eerste 0,30 s na de app-pieptoon worden uitgesloten.
+    stages: |
+      Microfoon verbonden
+      2,4 s aftellen → pieptoon
+      magazijnwissel → trekkerklik
+      Resultaat → automatisch 3,2 s aftellen → opnieuw
+    exampleConfig: 2 pogingen · willekeurige vertraging 2–5 s · app-signaal aan
+  sequence-draw-mag-trigger:
+    title: Trekken → magazijn → trekker
+    purpose: Maak de drie geleerde geluiden in één geordende volgorde.
+    measures: Tijd vanaf het signaal tot de herkende trekkerklik en de timing van de tussenstappen.
+    steps: |
+      Leer de drie getoonde geluiden en kies het aantal herhalingen en de vertraging.
+      Voer na het signaal de getoonde volgorde uit: trekken, magazijn wisselen en de trekker overhalen.
+      Bekijk het resultaat. De volgende herhaling begint automatisch met een nieuwe aftelling.
+    expect: Geluidsherkenning bevestigt alleen een akoestische volgorde. De app kan niet controleren hoe een fysieke handeling is uitgevoerd.
+    requires: Leer trekken, magazijn wisselen en de trekkerklik. De eerste 0,30 s na de app-pieptoon worden uitgesloten.
+    stages: |
+      Microfoon verbonden
+      2,4 s aftellen → pieptoon
+      trekken → magazijn wisselen → trekkerklik
+      Resultaat → automatisch 3,2 s aftellen → opnieuw
+    exampleConfig: 2 pogingen · willekeurige vertraging 2–5 s · app-signaal aan
+  sequence-custom:
+    title: Je opgeslagen volgorde
+    purpose: Maak de geluiden van de geselecteerde opgeslagen oefening af in de volgorde die je hebt ingesteld.
+    measures: Tijd van het startsignaal tot voltooiing en de herkende tijden van de stappen in deze preset.
+    steps: |
+      Controleer de stappen van de geselecteerde preset en leer elk benodigd geluid.
+      Kies het aantal herhalingen en de vertraging en volg na het signaal de getoonde volgorde.
+      Een herkende volgorde voltooit een herhaling; daarna start automatisch een nieuwe aftelling.
+    expect: Alleen herkende geluiden in de getoonde volgorde van deze opgeslagen preset voltooien een herhaling.
+    requires: Leer alleen de geluiden die in deze preset voorkomen. Nieuwe eigen presets maken blijft een functie van de volledige versie.
+    stages: |
+      Microfoon verbonden
+      2,4 s aftellen → pieptoon
+      Grendel bedienen → trekker → trekker
+      Resultaat → automatisch 3,2 s aftellen → opnieuw
+    exampleConfig: 2 pogingen · willekeurige vertraging 2–5 s · appsignaal aan
+runtime:
+  customExampleConfig: "{{attempts}} voorbeeldpogingen · willekeurige vertraging 2–5 s · appsignaal aan"
+  setup:
+    publicEntry: Dit zijn voorbeeldinstellingen. Ga terug naar de instellingen om het aantal en de timing te kiezen.
+    externalCue: "Je instellingen gebruiken een gekalibreerde externe pieptoon: geen aftelling of pieptoon van de app. De illustratie toont de optie met een appsignaal."
+    silentStart: "Je instellingen gebruiken een stil visueel startsignaal. Wacht op het signaal op het scherm; de illustratie toont de optionele pieptoon van de app."
+    appSignal: Je instellingen gebruiken het appsignaal. Je gekozen aantal en timing blijven behouden als je teruggaat naar de instellingen.
+  externalCue:
+    singleSteps: |
+      Kies het aantal herhalingen en de gekalibreerde externe pieptoon.
+      Start en wacht op de externe pieptoon voordat je de trekker één keer overhaalt.
+      Bekijk het resultaat. Tot het doel begint automatisch een nieuwe poging.
+    repeatedSteps: |
+      Kies het aantal klikken en de startvertraging.
+      Haal na de gekalibreerde externe pieptoon de trekker afzonderlijk over, voor zover je uitrusting dat toelaat.
+      De microfoon blijft luisteren zonder voor elke klik opnieuw te piepen. De resultaten verschijnen bij het doel.
+    parSteps: |
+      Stel een tijdslimiet, herhalingen en startvertraging in.
+      Wacht op de gekalibreerde externe pieptoon en haal de trekker daarna binnen de limiet één keer over.
+      Bekijk het resultaat. Kies Volgende herhaling als je klaar bent voor een nieuwe poging.
+    controlSteps: |
+      Kies het aantal klikken en de startvertraging.
+      Haal na de gekalibreerde externe pieptoon de trekker afzonderlijk en in een comfortabel, gelijkmatig tempo over.
+      Ga door tot het doel en vergelijk daarna de geregistreerde intervallen.
+    singleExpect: Bij deze instellingen met extern signaal tellen trekkerklikken vóór de gekalibreerde pieptoon niet als pogingen. Het voorbeeld voor een te vroege klik hieronder toont de appsignaalmodus.
+    requirementSuffix: " Voor een start met een externe pieptoon zijn drie geschikte geluidsvoorbeelden nodig."

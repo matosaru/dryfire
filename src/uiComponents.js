@@ -18,7 +18,7 @@ export function actionButton({ label, className = 'button primary', disabled = f
 }
 export function soundCard({
   label, meta, count, maxExamples, minExamples, recommendedExamples, locked,
-  onRecord, onReplace, onReset, optional = false, enabled = false, onToggle
+  onRecord, onReplace, onReset, optional = false, enabled = false, onToggle, messages
 }, doc = document) {
   const card = doc.createElement('article');
   card.className = `class-card tone-${meta.tone}`;
@@ -28,7 +28,7 @@ export function soundCard({
   preview.className = 'class-preview';
   const animation = doc.createElement('img');
   animation.src = `/motions/${label}.svg`;
-  animation.alt = `Illustrative sound preview for ${meta.title}`;
+  animation.alt = messages?.imageAlt?.(meta.title)??`Illustrative sound preview for ${meta.title}`;
   animation.width = 240;
   animation.height = 140;
   animation.loading = 'lazy';
@@ -41,16 +41,16 @@ export function soundCard({
 
   const info = doc.createElement('div');
   info.className = 'class-info';
-  info.append(textNode(doc, 'p', 'eyebrow', optional ? 'OPTIONAL SOUND' : 'PRIMARY SOUND'), textNode(doc, 'h3', '', meta.title), textNode(doc, 'p', '', meta.description));
+  info.append(textNode(doc, 'p', 'eyebrow', optional ? (messages?.optional??'OPTIONAL SOUND') : (messages?.primary??'PRIMARY SOUND')), textNode(doc, 'h3', '', meta.title), textNode(doc, 'p', '', meta.description));
   const top = doc.createElement('div');
   top.className = 'class-card-top';
   top.append(preview, info);
 
-  const summary = count >= maxExamples ? 'limit reached · existing samples kept' : count >= recommendedExamples
-    ? 'recommended amount reached'
-    : count >= minExamples ? 'ready to recognize'
-      : `${Math.max(0, minExamples - count)} to minimum`;
-  const progress = textNode(doc, 'p', 'progress-label', `${count} / ${maxExamples} samples · ${summary}`);
+  const summary = count >= maxExamples ? (messages?.limitReached??'limit reached · existing samples kept') : count >= recommendedExamples
+    ? (messages?.recommendedReached??'recommended amount reached')
+    : count >= minExamples ? (messages?.ready??'ready to recognize')
+      : messages?.minimumRemaining?.(Math.max(0,minExamples-count))??`${Math.max(0, minExamples - count)} to minimum`;
+  const progress = textNode(doc, 'p', 'progress-label', messages?.sampleProgress?.(count,maxExamples,summary)??`${count} / ${maxExamples} samples · ${summary}`);
   const bar = doc.createElement('div');
   bar.className = 'progress-track';
   const fill = doc.createElement('span');
@@ -61,24 +61,24 @@ export function soundCard({
   actions.className = 'class-actions';
   actions.append(
     actionButton({
-      label: count >= maxExamples ? 'Sample limit reached' : '▶ Train',
+      label: count >= maxExamples ? (messages?.sampleLimit??'Sample limit reached') : (messages?.train??'▶ Train'),
       className: 'button primary record-example',
       disabled: locked || count >= maxExamples,
-      ariaLabel: `Record ${meta.title} sample`,
+      ariaLabel: messages?.record?.(meta.title)??`Record ${meta.title} sample`,
       onClick: onRecord
     }, doc),
     actionButton({
-      label: 'Replace',
+      label: messages?.replaceLabel??'Replace',
       className: 'button secondary replace-class',
       disabled: locked || count === 0,
-      ariaLabel: `Replace learned ${meta.title} sounds`,
+      ariaLabel: messages?.replace?.(meta.title)??`Replace learned ${meta.title} sounds`,
       onClick: onReplace
     }, doc),
     actionButton({
-      label: 'Reset',
+      label: messages?.resetLabel??'Reset',
       className: 'button secondary reset-class',
       disabled: locked || count === 0,
-      ariaLabel: `Reset learned ${meta.title} sounds`,
+      ariaLabel: messages?.reset?.(meta.title)??`Reset learned ${meta.title} sounds`,
       onClick: onReset
     }, doc)
   );
@@ -86,8 +86,8 @@ export function soundCard({
   if (optional && onToggle) {
     const control = textNode(doc, 'label', 'optional-sound-control', '');
     const input = doc.createElement('input'); input.type = 'checkbox'; input.checked = enabled; input.disabled = locked;
-    input.setAttribute('aria-label', `Recognize ${meta.title} when trained`);
-    input.addEventListener('change', () => onToggle(input.checked)); control.append(input, textNode(doc, 'span', '', 'Recognize when trained')); info.append(control);
+    input.setAttribute('aria-label', messages?.recognize?.(meta.title)??`Recognize ${meta.title} when trained`);
+    input.addEventListener('change', () => onToggle(input.checked)); control.append(input, textNode(doc, 'span', '', messages?.recognizeLabel??'Recognize when trained')); info.append(control);
   }
   card.append(top);
   return card;

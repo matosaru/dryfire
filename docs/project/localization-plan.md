@@ -1,9 +1,9 @@
 # Application localization refactor plan — CHG-070
 
-**Status:** In progress on `codex/environment-recovery-2026-11-19`; `b` and `main` are unchanged. LOC-02/03 are complete, LOC-01/04/05/06/08 are in progress, LOC-07/09 remain not started, and no release has been prepared.
+**Status:** In progress on `codex/environment-recovery-2026-11-19`; `b` and `main` are unchanged. LOC-02/03/07 are implemented; LOC-01/04/05/06/08/09 remain in progress, and no release has been prepared. English, German and Dutch catalog key/parameter completeness passes. Public localized SEO output is generated and locally verified, but documentation and visual evidence gates remain incomplete.
 **Scope requested:** English remains the default; add English, German and Dutch; put user-facing copy in page-and-language YAML files plus one shared common-message file; support parameterized messages; allow language selection in Settings; preserve correct SEO; require tests to pass. Visual tests are required for the English release only.
 
-## Updated remaining-effort forecast (2026-11-19)
+## Updated remaining-effort forecast (2026-11-20)
 
 These estimates are active Codex engineering hours, not elapsed calendar time. They include each ticket's implementation and focused tests; LOC-09 includes full integration/acceptance fixes and release preparation. They exclude fluent German/Dutch copy review by a human and the user's hands-on browser/device testing. Estimates assume the current route/build architecture remains usable and no data migration is required.
 
@@ -12,15 +12,15 @@ These estimates are active Codex engineering hours, not elapsed calendar time. T
 | LOC-01 Inventory | In progress | 2 h | 1–3 h | Per-message key assignment and source-scan gate |
 | LOC-02 Requirements and SEO schema | Done | 0 h | 0 h | Approved route, fallback, message, and SEO contract |
 | LOC-03 YAML catalogs and validation | Done | 0 h | 0 h | Compiler, schema parity, generated-file checks, and release completeness gate are in place |
-| LOC-04 Locale runtime and persistence | In progress | 2 h | 2–4 h | Complete back/forward and data-preservation acceptance |
-| LOC-05 Settings and shared chrome | In progress | 1 h | 0.5–2 h | Dynamic Settings statuses are localized; remaining common controls and dialog feedback need review |
-| LOC-06 Page and feature localization | In progress | 21 h | 15–29 h | Practice/Sequence setup shells, Practice Guide shared shell, and public Help body are localized; controller-owned content, remaining public pages and runtime strings dominate work |
-| LOC-07 Localized SEO routes | Not started | 8 h | 6–11 h | Static prerender, locale metadata, translated content, and sitemap integration |
-| LOC-08 Tests and accessibility/overflow checks | In progress | 6 h | 3.5–8 h | Complete route, a11y, long-copy, and SEO metadata coverage |
-| LOC-09 Full validation and release candidate | Not started | 7 h | 5–10 h | Full CI/browser/performance gates and remediation |
-| **Total remaining Codex effort** |  | **47 h** | **33–67 h** | Human linguistic review and manual device acceptance are separate |
+| LOC-04 Locale runtime and persistence | In progress | 1 h | 0.5–2 h | Browser history, locale switching and data-preservation acceptance |
+| LOC-05 Settings and shared chrome | In progress | 1 h | 0.5–2 h | Complete common-message source audit and interaction coverage |
+| LOC-06 Page and feature localization | In progress | 15 h | 9–20 h | Remaining controller/runtime copy, manuals and app/public surfaces need migration |
+| LOC-07 Localized SEO routes | Implemented; acceptance pending | 1 h | 0.5–2 h | Public build/artifact checks pass; docs/source review remains |
+| LOC-08 Tests and accessibility/overflow checks | In progress | 4 h | 2–7 h | Finish locale, accessibility, overflow coverage and rerun visual suite |
+| LOC-09 Full validation and release candidate | Blocked | 3 h | 2–6 h | Docs/visual review and full release checks; pinned Chromium download is blocked by HTTP 403 |
+| **Total remaining Codex effort** |  | **28 h** | **15.5–42 h** | Fluent DE/NL review and owner device acceptance are separate |
 
-Actual time spent on implementation is **not tracked**. The previous aggregate was arithmetically inconsistent with its ticket rows; this forecast corrects the total and accounts for completed work recorded below. Page/controller extraction remains incomplete and release completeness still fails. Current forecast is 47 active Codex hours (33–67 h), excluding fluent DE/NL review and owner device acceptance.
+Actual time spent on implementation is **not tracked**. Catalog completeness, public route generation and SEO artifact validation pass. Remaining effort covers source-copy inventory/migration, locale persistence acceptance, accessibility/overflow coverage, documentation/screenshot review, and final release validation. Current forecast is 28 active Codex hours (15.5–42 h), excluding fluent DE/NL review and owner device acceptance. Visual validation is blocked in this environment until the pinned Playwright Chromium can be installed; its CDN returned HTTP 403. The system Chromium can run functional flows, but its screenshot differs from the pinned baseline and is not accepted as a replacement.
 
 ## Proposed behavior and technical decisions
 
@@ -140,9 +140,15 @@ Do not rename or move existing page components to introduce localization; the ne
 | LOC-04 | Locale normalization, safe interpolation/plurals, formatting, device preference persistence, and switching are implemented; browser history/data-preservation acceptance remains. |
 | LOC-05 | The Settings selector, static Settings copy, shared header/navigation, and dynamic audio/vibration status strings use YAML. Remaining common controls/dialog feedback still need an inventory pass. |
 | LOC-06 | Initial EN/DE/NL catalogs/tests cover Sound Check, History, Guns, Gun Setup, and prior migrated surfaces. Practice and Sequence setup shells, Practice Guide shared labels, and public Help body now use YAML. Controller-owned setup/run/review and guide details, other public pages, Help/manual completion, and source-scan coverage remain. |
-| LOC-07 | Locale-prefixed `/de/` and `/nl/` app paths are routable and noindex; translated public HTML, metadata, hreflang, and sitemap generation remain. |
-| LOC-08 | Catalog, preference, route, and localized Settings tests exist; broad three-locale, accessibility, long-copy, and SEO coverage remains. |
-| LOC-09 | No full acceptance run or release candidate exists; version bump and branch promotion are deferred until implementation is complete and tested. |
+| LOC-07 | Public English/German/Dutch pages, locale metadata, self-canonicals, reciprocal hreflang and sitemap are generated; public build and `verify:dist` pass. Live edge behavior is not verified. |
+| LOC-08 | Catalog, locale-specific History, Live Listen, public-page and controller tests exist; broad overflow/accessibility review and pinned visual acceptance remain. |
+| LOC-09 | Jest, typecheck, lint, architecture, smoke, public build and distribution/SEO checks pass. Docs and visual evidence remain blocked; no version bump or release candidate yet. |
+
+Learn Sounds now also localizes SoundCard progress summaries, controls, accessible names/alt text and trigger-profile guidance in both the React page and its retained native fallback. German runtime tests cover the translated controls and profile message. This migrates that surface but does not close LOC-01's full source-copy inventory.
+
+## Implementation progress record — 2026-11-20
+
+Localized Live Listen readiness/controller status copy and saved-session/history date, number, status and deletion copy; History verification options now respond to the active locale; additional common gun/setup/sample messages and custom-drill catalog labels use YAML. Public SEO now prerenders 42 canonical pages across 14 routes (English, German and Dutch), with locale metadata, reciprocal hreflang and sitemap entries. `localization:complete` passes. Full Jest passes **182 suites / 1,238 tests**; typecheck, runtime/component lint, architecture verification, smoke (**16/16**), public build and `verify:dist` pass. The visual suite cannot launch because the pinned Chromium executable is absent; `npx playwright install chromium` received HTTP 403 from the browser CDN. `docs:check` remains blocked by stale GIF exports and source/screen evidence that needs deliberate visual review; assets were not regenerated blindly. `git diff --check` passes. Actual time not tracked. No version bump, commit, push, merge or deployment; work remains limited to the feature branch.
 
 ## Implementation progress record — 2026-11-19
 

@@ -32,7 +32,10 @@ test('typed cards match the existing controller DOM without changing selectors o
  const source=readFileSync(new URL('../../../../src/sessionController.js',import.meta.url),'utf8');
  const rendering=source.slice(source.indexOf('  function openSavedRecord('),source.indexOf('  const retrySaveButton'));
  const native=document.createElement('div');
- const renderNative=vm.runInNewContext(rendering+'\nrenderSavedSessions',{getSessions:async()=>records,getContext:()=>({gun:{id:'one'}}),$:()=>native,onPracticeRecord:jest.fn(),showRecord:jest.fn(),onDeleteSaved:undefined,node:(tag:string,text:string,className='')=>{const item=document.createElement(tag);item.textContent=text;item.className=className;return item;}});
+ const renderNative=vm.runInNewContext(rendering+'\nrenderSavedSessions',{getSessions:async()=>records,getContext:()=>({gun:{id:'one'}}),$:()=>native,onPracticeRecord:jest.fn(),showRecord:jest.fn(),onDeleteSaved:undefined,
+  translate:(_namespace:string,key:string,parameters:Record<string,string|number>={})=>{const copy:Record<string,string>={'sessions.noSessions':'No saved drill sessions for this gun yet.','sessions.shots':`${parameters.count} shots · ${parameters.attempts} attempts`,'sessions.repetitions':`${parameters.completed}/${parameters.total}`,'actions.statusCompleted':'completed','actions.statusInterrupted':'interrupted','actions.statusAbandoned':'abandoned'};return copy[key]??key;},
+  formatLocaleDate:(value:number,options:Intl.DateTimeFormatOptions)=>new Date(value).toLocaleString(undefined,options),formatLocaleNumber:(value:number)=>String(value),
+  node:(tag:string,text:string,className='')=>{const item=document.createElement(tag);item.textContent=text;item.className=className;return item;}});
  await renderNative('one');
  const actual=render(<SavedSessionList records={records} onOpen={jest.fn()}/>);
  expect([...actual.container.childNodes].map((node,index)=>node.isEqualNode(native.childNodes[index]))).toEqual([true,true]);

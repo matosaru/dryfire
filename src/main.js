@@ -40,13 +40,16 @@ import {
 } from './storage/library.js';
 import {materializeStaticCatalog} from './staticCatalog.js';
 import { afterPaint } from './afterPaint.js';
+import {formatLocaleDate,formatLocaleNumber,translate} from '../apps/web/src/localization/runtime.ts';
+import {translateAudioStatus} from './localizedAudioStatus.js';
 
 const labelMeta = {
-  draw: { title: 'Draw from holster', description: 'Holster release and presentation sounds', tone: 'blue' },
-  rack: { title: 'Rack slide', description: 'Slide movement and return', tone: 'green' },
-  trigger: { title: 'Trigger pull', description: 'Dry trigger click', tone: 'orange' },
-  reload: { title: 'Change magazine', description: 'Magazine removal and insertion', tone: 'purple' },
+  draw: { tone: 'blue' },
+  rack: { tone: 'green' },
+  trigger: { tone: 'orange' },
+  reload: { tone: 'purple' },
 };
+const labelMetaFor=label=>({title:translate('common',`sound.${label}`),description:translate('common',`soundDescription.${label}`),...labelMeta[label]});
 const $ = selectNode;
 const appURLs=isAppPath(location.pathname);
 let pendingEntry=appURLs?parseAppPath(location.pathname):null;
@@ -55,7 +58,7 @@ const canonicalLink=document.querySelector('link[rel=canonical]');
 let metadataPath=canonicalLink?.getAttribute('href')?.replace('https://easydryfire.com','');
 async function openEntry(){const entry=pendingEntry;pendingEntry=null;return openAppEntry(entry??{view:'home'});}
 async function applyRouteLocale(entry){if(typeof preferenceState==='undefined')return;const routeLocale=entry.locale??'en';if(preferenceState.language!==routeLocale){preferenceState.language=routeLocale;await setSetting('language',routeLocale);await loadLocale(routeLocale);}}
-async function missingSequence(){await switchView('drills');setMessage('This sequence is not available for the selected gun. Choose a drill.');}
+async function missingSequence(){await switchView('drills');setMessage(translate('common','runtimeMain.sequenceUnavailable'));}
 async function openAppEntry(entry){
   await applyRouteLocale(entry);
   if(entry.view==='practiceGuide' && entry.guideId) return openPublicGuide(entry.guideId);
@@ -91,7 +94,7 @@ function navigateAppLink(event){
   const url=new URL(link.href,location.href),entry=url.origin===location.origin?parseAppPath(url.pathname):null;
   if(!entry)return;
   event.preventDefault();
-  if(profileLocked()||practiceController?.hasUnsavedResults()||sessionController?.hasUnsavedResults()){showError(new Error('Finish the current action or save results before leaving this screen.'));return;}
+  if(profileLocked()||practiceController?.hasUnsavedResults()||sessionController?.hasUnsavedResults()){showError(new Error(translate('common','runtimeMain.navigationLocked')));return;}
   openAppEntry(entry).catch(showError);
 }
 const gunTypeImages = { Handguns: 'handgun', 'Rifles and Carbines': 'rifle', Shotguns: 'shotgun' };
@@ -132,7 +135,7 @@ let soundCheckController,soundCheckPage,soundCheckPending;
 let legacyHistoryRenderer;
 let livePage,livePageModule,livePagePending;
 let drillsPage,legacyDrillsPending,customDrillCollectionSelected=false;
-let historyPage, historyOwner, historyRows=[], historySessions=[];
+let historyPage, historyPagePending, historyOwner, historyRows=[], historySessions=[];
 const preparePageModule=createModulePreparation(showError);
 let profileQuality;
 const guideHandlers=new Map();
@@ -140,6 +143,11 @@ const historyHandlers=new Map();
 function historyDisabled(id,disabled){if(historyPage)historyPage.update({disabled:{[id]:disabled}});else setNodeDisabled($('#'+id),disabled);}
 function historyText(id,text){if(historyPage)historyPage.update({texts:{[id]:text}});else setNodeText($('#'+id),text);}
 function bindHistory(id,handler){historyHandlers.set(id,handler);$('#'+id).addEventListener('click',handler);}
+function mountHistoryPage(module){
+  if(historyPage||activeView!=='history'||historyOwner!==activeGun?.id||profileLocked()||$('#safetyModal').open)return;
+  try{historyPage=module.mountHistoryPage($('#historyView'),{rows:historyRows,sessions:historySessions,stats:evaluateEvents(historyRows),gunId:historyOwner},{onBack:()=>goBack(),onAction:id=>historyHandlers.get(id)?.(),onOpen:record=>sessionController.openSavedRecord(record),onVerify:async(id,value,gunId)=>{try{await verifyEvent(id,value||null,gunId);await renderHistory();}catch(error){showError(error);}},onDeleteEvent:async(row,gunId)=>{try{await deleteEvent(row.id,gunId);await renderHistory();historyText('historyClearOutcome',translate('common','runtimeMain.historyEventDeleted'));}catch(error){showError(error);}},onDeleteSession:async(record,gunId)=>{try{await deleteSession(record.id,gunId);await renderHistory();historyText('sessionsClearOutcome',translate('common','runtimeMain.sessionDeleted'));}catch(error){showError(error);}},titleFor,drillTitleFor:id=>currentDrill(id)?.title,labels,actual:ACTUAL_CLASSES,predicted:PREDICTED_CLASSES});}
+  catch(error){showError(error);}
+}
 const liveHandlers=new Map();
 const settingsHandlers = new Map();
 function liveText(id,text){if(livePage)livePage.update({texts:{[id]:text}});else setNodeText($('#'+id),text);}
@@ -203,7 +211,7 @@ function renderPreferences() {
 function reportAudioProcessing(report) { preferenceState.processing = report; renderPreferences(); }
 function reportVibration(result) { if (!result.supported || !result.accepted) { preferenceState.rejected = true; renderPreferences(); } }
 
-const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+id),locked:profileLocked,owner:ownerId,activeOwner:()=>activeGun?.id,saveDevice:setSetting,saveGun:setGunSetting,render:renderPreferences,refresh:()=>{renderLiveButton();renderClassCards();},applyTheme:applyAppearance,applyMeasurements:()=>soundCheckPage?.updateUnits(preferenceState.measurementSystem),applyLocale:async locale=>{await loadLocale(locale);soundCheckController?.updateLocale?.();if(screenNavigation)await screenNavigation.navigate(routeFor(activeView));},reload:loadDevicePreferences,error:showError,message:setMessage});
+const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+id),locked:profileLocked,owner:ownerId,activeOwner:()=>activeGun?.id,saveDevice:setSetting,saveGun:setGunSetting,render:renderPreferences,refresh:()=>{renderLiveButton();renderClassCards();},applyTheme:applyAppearance,applyMeasurements:()=>soundCheckPage?.updateUnits(preferenceState.measurementSystem),applyLocale:async locale=>{await loadLocale(locale);renderDeviceCheck();renderSafetySummary();soundCheckController?.updateLocale?.();if(screenNavigation)await screenNavigation.navigate(routeFor(activeView));},reload:loadDevicePreferences,error:showError,message:setMessage});
 
 const gunLibraryCoordinator=createGunLibraryCoordinator({get guns(){return guns;},set guns(value){guns=value;},get gun(){return activeGun;},get capabilities(){return CAPABILITIES;},get loading(){return profileLoading;},set loading(value){profileLoading=value;},get events(){return eventQueue;},get session(){return sessionController;},get practice(){return practiceController;},get pendingEntry(){return pendingEntry;},get pages(){return profilePages;}},{getGuns,getExamples,getCustomDrills,deleteGun,setActiveGun,updateGun,createGun},{profileLocked,setMessage,switchView,loadProfilePages,showError,setBusy,loadActiveGun,setStatus,openEntry,renderGunControls,renderLiveButton,renderClassCards,gunImagePath,$,document,confirm:message=>confirm(message)});
 
@@ -222,14 +230,14 @@ function renderListeningReadiness(counts = getCounts()) {
     timed:!!sessionController?.locked() || !!practiceController?.locked()});
   const summary = $('#trainingSummary');
   const text = view.reason
-    ? summary.getAttribute('data-reason-' + view.reason).replaceAll('{minimum}',MIN_EXAMPLES_PER_CLASS).replaceAll('{count}',counts.trigger)
-    : `Ready to test · ${labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')}`;
+    ? translate('live-listen',`capture.${view.reason}`,{minimum:MIN_EXAMPLES_PER_CLASS,count:counts.trigger})
+    : translate('live-listen','capture.trainedSummary',{labels:labels.map(label => `${titleFor(label)}: ${counts[label]}`).join(' · ')});
   const disabled = {listenBtn:!liveSession && !!view.reason,singleShotBtn:!!liveSession || !!view.reason};
   if(livePage)livePage.update({texts:{trainingSummary:text},disabled});
   else { setNodeText(summary,text); for(const[id,value]of Object.entries(disabled))setNodeDisabled($('#'+id),value); }
   informationPages.setNavigationDisabled(view.entryDisabled);
-  const context = {gunName:activeGun?.name || 'No gun selected',contextHidden:!gunAvailable};
-  const training = `${counts.trigger} / ${RECOMMENDED_EXAMPLES_PER_CLASS} trigger`;
+  const context = {gunName:activeGun?.name || translate('common','runtimeMain.gunPlaceholder'),contextHidden:!gunAvailable};
+  const training = translate('common','runtimeMain.triggerTrainingCount',{count:counts.trigger,target:RECOMMENDED_EXAMPLES_PER_CLASS});
   if(homePage)homePage.update({...context,training});
   else setNodeText($('#homeExamples'),training);
   if(learnPage)learnPage.update({...context,listenDisabled:view.entryDisabled});
@@ -240,15 +248,15 @@ function renderGunControls() {
   renderListeningReadiness();
   $('#gunSwitcherBtn').disabled = profileLocked();
   $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
-  $('#gunSwitcherBtn').title = profileLocked() ? 'Finish recording or stop listening before switching guns.' : 'Choose another gun';
-  $('#gunSwitcherBtn').setAttribute('aria-label', activeGun?.name ? `Switch gun. Selected: ${activeGun.name}, ${activeGun.type || 'type not set'}` : 'Choose a gun');
-  setNodeText($('#activeGunName'),activeGun?.name || 'Your gun');
-  setNodeText($('#activeGunType'),activeGun?.type || 'Add profile details');
+  $('#gunSwitcherBtn').title = profileLocked() ? translate('common','runtimeMain.switchGunBlocked') : translate('common','runtimeMain.switchGun');
+  $('#gunSwitcherBtn').setAttribute('aria-label', activeGun?.name ? translate('common','runtimeMain.switchGunAria',{name:activeGun.name,type:activeGun.type||translate('common','runtimeMain.gunTypeUnset')}) : translate('common','runtimeMain.selectGun'));
+  setNodeText($('#activeGunName'),activeGun?.name || translate('common','runtimeMain.gunNameFallback'));
+  setNodeText($('#activeGunType'),activeGun?.type || translate('common','runtimeMain.gunDetailsPrompt'));
   const gunImage = $('#activeGunImage'), imagePath = gunImagePath(activeGun?.type);
   if (gunImage.getAttribute('src') !== imagePath) gunImage.src = imagePath;
   settingsText('soundResetSummary',activeGun && !activeGun.needsDetails
-    ? `${examples.length} learned samples · ${calibration.length} calibration samples for ${activeGun.name}`
-    : 'Choose a gun before resetting its learned sounds.');
+    ? translate('common','runtimeMain.resetSamplesSummary',{samples:formatLocaleNumber(examples.length),calibration:formatLocaleNumber(calibration.length),gun:activeGun.name})
+    : translate('common','runtimeMain.resetSamplesChooseGun'));
   settingsDisabled('resetLibraryBtn',profileLocked());
   if (!gunLibraryCoordinator.syncLocked()) {
     $('#addGunBtn').disabled = profileLocked() || guns.length >= CAPABILITIES.gunCreationLimit;
@@ -279,7 +287,7 @@ function initializeTimedControllers() {
   sessionController ||=  createSessionController({
     getContext: practiceContext,
     titleFor, ensureSafe, onNavigate: switchView, onBack: () => goBack('drills'), onError: showError, onStatus: setStatus,
-    onChange: () => renderLiveButton(), onDeleteSaved:async record=>{await deleteSession(record.id,ownerId());await renderHistory();historyText('sessionsClearOutcome','One saved session was deleted. Progress statistics were updated.');},
+    onChange: () => renderLiveButton(), onDeleteSaved:async record=>{await deleteSession(record.id,ownerId());await renderHistory();historyText('sessionsClearOutcome',translate('common','runtimeMain.sessionDeleted'));},
     onProcessing: reportAudioProcessing, vibrationEnabled: () => preferenceState.vibration && !preferenceState.rejected,
     onVibration: reportVibration,
     onPracticeRecord: record => practiceController.showRecord(record),
@@ -301,7 +309,7 @@ async function loadActiveGun(overview) {
   examples = id ? await getExamples(id) : [];
   customDrills = id ? await getCustomDrills(id) : [];
   const legacy = id ? await getOutdatedExampleCount(id) : 0;
-  renderModelNotice(`${legacy} older training sample(s) use an incompatible feature format and are ignored. Reset this gun's sounds and record new samples for the updated model.`,legacy===0);
+  renderModelNotice(translate('common','runtimeMain.outdatedSamples',{count:formatLocaleNumber(legacy)}),legacy===0);
   const preferences=id?startGunPreferenceReads(id,getGunSetting,getCalibrationExamples):null;
   $('#maxResults').value = id ? normalizeMaxResults(await preferences[0]()) : 50;
   liveValue("sensitivity",id ? await preferences[1]() : 'normal');
@@ -390,12 +398,14 @@ async function saveEditedCustomDrill(drill, gunId) {
   renderCustomCatalog(); resetDrill();
 }
 
-function titleFor(label) { return labelMeta[label]?.title ?? 'Unknown sound'; }
-function setStatus(text) { informationPages.setStatus(text); }
+function titleFor(label) { return labelMeta[label] ? translate('common',`sound.${label}`) : translate('common','sound.unknown'); }
+function setStatus(text) { informationPages.setStatus(translateAudioStatus(text)); }
 function setMessage(text = '') {
   $('#appMessage').textContent = text;
   $('#appMessage').classList.toggle('hidden', !text);
 }
+function renderDeviceCheck(){const secure=window.isSecureContext,microphone=!!navigator.mediaDevices?.getUserMedia;$('#deviceCheck').textContent=`${translate('common',secure?'runtimeMain.secureConnection':'runtimeMain.insecureConnection')} · ${translate('common',microphone?'runtimeMain.microphoneApiAvailable':'runtimeMain.microphoneApiUnavailable')} · ${translate('common','runtimeMain.localStorageOnly')}`;}
+function renderSafetySummary(){$('#safetySummaryState').textContent=$('#safetyAck').checked?translate('common','runtimeMain.safetyConfirmed'):translate('common','runtimeMain.safetyRequired');}
 function ensureSafe(action) { return safetyGate.ensure(action); }
 function setBusy(next) {
   busy = next;
@@ -410,8 +420,9 @@ function getCounts() { return trainingCounts(examples); }
 function renderModelNotice(notice,noticeHidden){if(learnPage)learnPage.update({notice,noticeHidden});else{$('#modelNotice').textContent=notice;$('#modelNotice').classList.toggle('hidden',noticeHidden);}}
 function learningProps(){
   const counts=getCounts();
-  return{locked:profileLocked(),triggerQuality:profileQuality?.assessTriggerProfile(examples),onSoundCheck:()=>{if(triggerReady())switchView('soundCheck');else setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples first.`);},cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
-    label,meta:labelMeta[label],count:counts[label],maxExamples:MAX_EXAMPLES_PER_CLASS,minExamples:MIN_EXAMPLES_PER_CLASS,recommendedExamples:RECOMMENDED_EXAMPLES_PER_CLASS,locked:profileLocked(),
+  const soundMessages={sampleProgress:(count,maximum,summary)=>translate('learn','soundCard.progress',{count:formatLocaleNumber(count),maximum:formatLocaleNumber(maximum),summary}),imageAlt:sound=>translate('learn','soundCard.imageAlt',{sound}),record:sound=>translate('learn','soundCard.record',{sound}),train:translate('learn','soundCard.train'),sampleLimit:translate('learn','soundCard.sampleLimit'),replace:sound=>translate('learn','soundCard.replace',{sound}),reset:sound=>translate('learn','soundCard.reset',{sound}),recognize:sound=>translate('learn','soundCard.recognize',{sound}),recognizeLabel:translate('learn','soundCard.recognizeLabel'),primary:translate('learn','soundCard.primary'),optional:translate('learn','soundCard.optional'),limitReached:translate('learn','soundCard.limitReached'),recommendedReached:translate('learn','soundCard.recommendedReached'),ready:translate('learn','soundCard.ready'),minimumRemaining:count=>translate('learn','soundCard.minimumRemaining',{count:formatLocaleNumber(count)}),replaceLabel:translate('learn','soundCard.replaceLabel'),resetLabel:translate('learn','soundCard.resetLabel')};
+  return{locked:profileLocked(),triggerQuality:profileQuality?.assessTriggerProfile(examples),onSoundCheck:()=>{if(triggerReady())switchView('soundCheck');else setMessage(translate('common','runtimeMain.learnTriggerFirst',{count:MIN_EXAMPLES_PER_CLASS}));},cards:['trigger',...labels.filter(label=>label!=='trigger')].map(label=>({
+    label,meta:labelMetaFor(label),messages:soundMessages,count:counts[label],maxExamples:MAX_EXAMPLES_PER_CLASS,minExamples:MIN_EXAMPLES_PER_CLASS,recommendedExamples:RECOMMENDED_EXAMPLES_PER_CLASS,locked:profileLocked(),
     onRecord:()=>recordExample(label),onReplace:()=>replaceSoundProfile(label),onReset:()=>resetSoundProfile(label),optional:label!=='trigger',enabled:enabledSoundLabels.includes(label),onToggle:enabled=>toggleOptionalSound(label,enabled),
   })),calibrationProps:{counts:Object.fromEntries(['reset','noise','cue'].map(kind=>[kind,calibration.filter(row=>row.kind===kind).length])),maximum:MAX_EXAMPLES_PER_CLASS,locked:profileLocked(),
     onRecord:kind=>{if(!profileLocked())recordCalibration(kind);},onReset:kind=>resetCalibration(kind,{reset:'Trigger reset clicks',noise:'Other noise / handling',cue:'External start beep'}[kind]),
@@ -439,17 +450,17 @@ function renderClassCards() {
     for (const label of ['trigger', ...labels.filter(label => label !== 'trigger')]) {
       const count = counts[label];
       (label === 'trigger' ? host : optionalHost).append(soundCard({
-        label, meta: labelMeta[label], count,
+        label, meta: labelMetaFor(label), count,
         maxExamples: MAX_EXAMPLES_PER_CLASS,
         minExamples: MIN_EXAMPLES_PER_CLASS,
         recommendedExamples: RECOMMENDED_EXAMPLES_PER_CLASS,
-        locked: profileLocked(),
+        locked: profileLocked(),messages:{sampleProgress:(amount,maximum,summary)=>translate('learn','soundCard.progress',{count:formatLocaleNumber(amount),maximum:formatLocaleNumber(maximum),summary}),imageAlt:sound=>translate('learn','soundCard.imageAlt',{sound}),record:sound=>translate('learn','soundCard.record',{sound}),train:translate('learn','soundCard.train'),sampleLimit:translate('learn','soundCard.sampleLimit'),replace:sound=>translate('learn','soundCard.replace',{sound}),reset:sound=>translate('learn','soundCard.reset',{sound}),recognize:sound=>translate('learn','soundCard.recognize',{sound}),recognizeLabel:translate('learn','soundCard.recognizeLabel'),primary:translate('learn','soundCard.primary'),optional:translate('learn','soundCard.optional'),limitReached:translate('learn','soundCard.limitReached'),recommendedReached:translate('learn','soundCard.recommendedReached'),ready:translate('learn','soundCard.ready'),minimumRemaining:amount=>translate('learn','soundCard.minimumRemaining',{count:formatLocaleNumber(amount)}),replaceLabel:translate('learn','soundCard.replaceLabel'),resetLabel:translate('learn','soundCard.resetLabel')},
         onRecord: () => recordExample(label), onReplace:()=>replaceSoundProfile(label),
         onReset: () => resetSoundProfile(label), optional: label !== 'trigger', enabled: enabledSoundLabels.includes(label),
         onToggle: enabled => toggleOptionalSound(label, enabled)
       }));
     }
-    profileQuality?.renderTriggerProfile(examples);
+    profileQuality?.renderTriggerProfile(examples,document,(key,parameters)=>translate('learn',key,parameters));
     renderCalibrationCards();
   }
   renderListeningReadiness(counts);
@@ -490,7 +501,7 @@ function bindCalibrationActions() {
   });
 }
 async function resetCalibration(kind,title){
-  if(profileLocked() || !confirm(`Remove ${title} calibration for this gun? Learned action sounds and all history stay saved.`))return;
+  if(profileLocked() || !confirm(translate('common','runtimeMain.removeCalibration',{title})))return;
   setBusy(true);
   try{await clearCalibrationExamples(kind,ownerId());calibration=await getCalibrationExamples(ownerId());}
   catch(error){showError(error);}finally{setBusy(false);renderClassCards();}
@@ -500,20 +511,20 @@ async function recordCalibration(kind) {
   await capture(async () => {
     const sample=await recordProfileFeature();
     await addCalibrationExample(kind,sample.features,gunId,{spectralFeatures:sample.spectralFeatures}); calibration = await getCalibrationExamples(gunId);
-    setStatus('Calibration saved'); renderClassCards();
+    setStatus(translate('common','runtimeMain.calibrationSaved')); renderClassCards();
   });
 }
 
 async function resetSoundProfile(label) {
   if (profileLocked() || !labels.includes(label)) return;
-  if (!confirm(`Reset learned ${titleFor(label)} sounds only? Other sounds and recognition history will be kept.`)) return;
+  if (!confirm(translate('common','runtimeMain.resetSoundProfile',{sound:titleFor(label)}))) return;
   setBusy(true);
   try {
     const gunId = ownerId();
     await clearExamplesForLabel(label, gunId);
     examples = await getExamples(gunId);
-    setStatus(`${titleFor(label)} reset`);
-    setMessage(`${titleFor(label)} examples removed for ${activeGun.name}. Other sounds, guns and history were kept.`);
+    setStatus(translate('common','runtimeMain.soundProfileReset',{sound:titleFor(label)}));
+    setMessage(translate('common','runtimeMain.soundExamplesRemoved',{sound:titleFor(label),gun:activeGun.name}));
   } catch(error) {showError(error);}
   finally {setBusy(false);renderClassCards();}
 }
@@ -617,14 +628,12 @@ function displayView(name) {
     renderClassCards();
   }
   if(name==='soundCheck'){
-    if(!triggerReady()){switchView('learn');setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples before running Sound Check.`);return;}
+    if(!triggerReady()){switchView('learn');setMessage(translate('common','runtimeMain.learnTriggerFirst',{count:MIN_EXAMPLES_PER_CLASS}));return;}
     if(!soundCheckController&&!soundCheckPending&&!profileLocked())soundCheckPending=Promise.all([import('../apps/web/src/app/soundCheckPage.tsx'),import('./soundCheckController.js')]).then(([pageModule,module])=>{if(activeView!=='soundCheck'||profileLocked()||soundCheckController)return;soundCheckPage ||= pageModule.mountSoundCheckPage($('#soundCheckView'),activeGun?.name,preferenceState.measurementSystem);soundCheckController=module.createSoundCheckController({doc:document,startContinuousListening,examples,calibration,enabledLabels:enabledSoundLabels,audioPreferences:preferenceState.audio,onError:showError,startGuard:action=>ensureSafe(action)});}).catch(showError).finally(()=>{soundCheckPending=null;});
   }
   if(name==='history'){
     const historyModule=preparePageModule('history',()=>import('../apps/web/src/app/historyPage.tsx'));
-    if(!historyPage && historyModule && historyOwner===activeGun?.id && !profileLocked() && !$('#safetyModal').open){
-      try{historyPage=historyModule.mountHistoryPage($('#historyView'),{rows:historyRows,sessions:historySessions,stats:evaluateEvents(historyRows),gunId:historyOwner},{onBack:()=>goBack(),onAction:id=>historyHandlers.get(id)?.(),onOpen:record=>sessionController.openSavedRecord(record),onVerify:async(id,value,gunId)=>{try{await verifyEvent(id,value||null,gunId);await renderHistory();}catch(error){showError(error);}},onDeleteEvent:async(row,gunId)=>{try{await deleteEvent(row.id,gunId);await renderHistory();historyText('historyClearOutcome','One recognition result was deleted.');}catch(error){showError(error);}},onDeleteSession:async(record,gunId)=>{try{await deleteSession(record.id,gunId);await renderHistory();historyText('sessionsClearOutcome','One saved session was deleted. Progress statistics were updated.');}catch(error){showError(error);}},titleFor,drillTitleFor:id=>currentDrill(id)?.title,labels,actual:ACTUAL_CLASSES,predicted:PREDICTED_CLASSES});}catch(error){showError(error);}
-    }
+    if(historyModule)mountHistoryPage(historyModule);
     if(historyPage && !profileLocked() && !$('#safetyModal').open){try{progressView?.prepare();}catch(error){showError(error);}}
     renderHistory().catch(showError);
   }
@@ -674,8 +683,8 @@ function recordDrillPrediction(result) {
 
 function showError(error) {
   console.error(error);
-  setStatus('Attention needed');
-  setMessage(error?.message || String(error));
+  setStatus(translate('common','runtimeMain.attention'));
+  setMessage(translateAudioStatus(error?.message || String(error)));
 }
 
 async function capture(action) {
@@ -698,7 +707,7 @@ async function recordExample(label) {
     const sample=await recordProfileFeature();
     await addExample(label,sample.features,gunId,{spectralFeatures:sample.spectralFeatures});
     examples = await getExamples(gunId);
-    setStatus(`${titleFor(label)} saved`);
+    setStatus(translate('common','runtimeMain.sampleSaved',{sound:titleFor(label)}));
   });
 }
 
@@ -708,11 +717,11 @@ function showRecognition(result, event) {
   liveDisabled("latestActual",!event);
   liveHidden("predictionEmpty",true);
   liveHidden("predictionCard",false);
-  liveText("predictionLabel",result.label ? titleFor(result.label) : 'Unknown / unclear');
+  liveText("predictionLabel",result.label ? titleFor(result.label) : translate('live-listen','result.unknown'));
   liveText("predictionConfidence",result.label
-    ? 'Closest learned profile; check the match yourself.'
-    : 'No reliable match. Try another event or add labeled examples.');
-  liveText("predictionScore",`${result.score}/100`);
+    ? translate('live-listen','result.closestMatch')
+    : translate('live-listen','result.noReliableMatch'));
+  liveText("predictionScore",`${formatLocaleNumber(result.score)}/100`);
   liveValue("latestActual",'');
   renderDistances(result.distances);
 }
@@ -730,18 +739,23 @@ async function savePrediction(features, token = null, gunId = ownerId(), predict
   if (token !== null && token !== liveToken) return;
   if (drillMatch) { drillState = drillMatch.after; renderDrill(); }
   showRecognition(result, event);
-  setStatus(token !== null ? 'Listening · microphone active' : (result.label ? `Matched ${titleFor(result.label)}` : 'Unknown / unclear'));
+  setStatus(token !== null ? translate('common','runtimeMain.liveListening') : (result.label ? translate('common','runtimeMain.matchedSound',{sound:titleFor(result.label)}) : translate('common','runtimeMain.unknownSound')));
   if (token !== null) {
     if (!event) {
       ignoredEventCount += 1;
-      liveText("eventCounter",`${sessionEventCount} detected · ${ignoredEventCount} discarded`);
+      liveText("eventCounter",translate('live-listen','capture.eventCounts',{detected:formatLocaleNumber(sessionEventCount),discarded:formatLocaleNumber(ignoredEventCount)}));
       return;
     }
     sessionEventCount += 1;
-    liveText("eventCounter",`${sessionEventCount} detected · ${ignoredEventCount} discarded`);
-    const nameText=result.label?titleFor(result.label):'Unknown / unclear';
-    let detailText=`#${sessionEventCount} · ${result.score}/100 · ${new Date(event.createdAt).toLocaleTimeString()}`;
-    if(drillMatch)detailText+=drillMatch.completed?' · ✓ drill completed':` · ${drillMatch.outcome.replace('incorrect','out of order')}`;
+    liveText("eventCounter",translate('live-listen','capture.eventCounts',{detected:formatLocaleNumber(sessionEventCount),discarded:formatLocaleNumber(ignoredEventCount)}));
+    const nameText=result.label?titleFor(result.label):translate('live-listen','result.unknown');
+    let detailText=translate('live-listen','timeline.event',{count:formatLocaleNumber(sessionEventCount),score:formatLocaleNumber(result.score),time:formatLocaleDate(event.createdAt,{hour:'numeric',minute:'2-digit'})});
+    if(drillMatch){
+      if(drillMatch.outcome==='completed')detailText+=translate('live-listen','timeline.drillCompleted');
+      else if(drillMatch.outcome==='incorrect')detailText+=translate('live-listen','timeline.drillOutOfOrder',{outcome:translate('live-listen','mode.outOfOrder')});
+      else if(drillMatch.outcome==='unknown')detailText+=translate('live-listen','timeline.drillOutOfOrder',{outcome:translate('live-listen','mode.unknown')});
+      else if(drillMatch.outcome==='matched')detailText+=translate('live-listen','timeline.drillMatched');
+    }
     if(livePage)livePage.prepend({name:nameText,detail:detailText});
     else{const list=$('#sessionTimeline'),row=document.createElement('li'),name=document.createElement('strong'),detail=document.createElement('span');name.textContent=nameText;detail.textContent=detailText;row.append(name,detail);list.prepend(row);while(list.children.length>12)list.lastElementChild.remove();}
   }
@@ -763,8 +777,8 @@ async function recognize() {
 function renderLiveButton(refreshPractice = true) {
   const listening = !!liveSession;
   const timed = !!sessionController?.locked() || !!practiceController?.locked();
-  liveText("listenBtn",listening ? 'Stop listening' : 'Start continuous listening');
-  liveText("listeningIndicator",listening ? '● Microphone active — listening for the next sound' : (livePendingStart ? 'Connecting microphone…' : 'Microphone inactive'));
+  liveText("listenBtn",translate('live-listen',listening?'capture.stop':'capture.start'));
+  liveText("listeningIndicator",listening ? translate('live-listen','capture.activeIndicator') : (livePendingStart ? translate('live-listen','capture.connecting') : translate('live-listen','capture.inactive')));
   liveClass("listeningIndicator","is-live",listening);
   liveClass("listenBtn","listening",listening);
   liveDisabled("sensitivity",listening || livePendingStart || profileLoading || timed);
@@ -786,9 +800,9 @@ async function stopLive() {
   livePendingStart = false;
   renderLiveButton();
   liveLevel('0%');
-  liveText("listenNote",'Microphone stopped. This session has ended; start again for another sequence.');
+  liveText("listenNote",translate('live-listen','capture.stoppedNote'));
   if (running) await running.stop();
-  setStatus('Ready');
+  setStatus(translate('common','runtimeMain.ready'));
   renderClassCards();
 }
 
@@ -797,7 +811,7 @@ async function toggleLive() {
   if (profileLocked() || !activeGun || activeGun.needsDetails || !ensureSafe(() => toggleLive())) return;
   if (!triggerReady()) {
     switchView('learn');
-    setMessage(`Learn at least ${MIN_EXAMPLES_PER_CLASS} trigger examples first. Other sounds are optional.`);
+    setMessage(translate('common','runtimeMain.learnRequired',{count:MIN_EXAMPLES_PER_CLASS}));
     return;
   }
   const token = ++liveToken;
@@ -807,7 +821,7 @@ async function toggleLive() {
   ignoredEventCount = 0;
   resetDrill();
   clearLiveTimeline();
-  liveText("eventCounter",'0 detected · 0 discarded');
+  liveText("eventCounter",translate('live-listen','capture.eventCounter'));
   setMessage();
   renderLiveButton();
   try {
@@ -829,7 +843,7 @@ async function toggleLive() {
           try { prediction = recognizeRecording(examples, pcm, sampleRate, recognitionOptions(calibration, enabledSoundLabels)); }
           catch {
             ignoredEventCount += 1;
-            liveText("eventCounter",`${sessionEventCount} detected · ${ignoredEventCount} discarded`);
+            liveText("eventCounter",translate('live-listen','capture.eventCounts',{detected:formatLocaleNumber(sessionEventCount),discarded:formatLocaleNumber(ignoredEventCount)}));
             return;
           } // Ignore clipped/unclear candidate transients without stopping.
           await savePrediction(null, token, gunId, prediction);
@@ -840,8 +854,8 @@ async function toggleLive() {
     });
     if (token !== liveToken) { await session.stop(); return; }
     liveSession = session;
-    liveText("listenNote",'Still listening after every detection. Separate actions with a brief quiet gap; overlapping sounds may merge. Tap Stop when finished.');
-    setStatus('Listening · microphone active');
+    liveText("listenNote",translate('live-listen','capture.activeNote'));
+    setStatus(translate('common','runtimeMain.liveListening'));
   } catch (error) {
     if (token === liveToken) showError(error);
   } finally {
@@ -884,7 +898,14 @@ async function renderHistory() {
     } else progressView?.render(sessions || [], gunId);
   } else if(progressView)progressView.clear();else $('#progressContent').replaceChildren();
   historyRows=rows;historySessions=sessions||[];historyOwner=gunId;
-  if(!historyPage&&activeView==='history'){const module=legacyHistoryRenderer||=await import('./optional/renderLegacyHistory.js');module.renderEvaluation(document,rows);module.renderHistoryList(document,rows,{labels,titleFor,drillTitleFor:id=>currentDrill(id)?.title,onVerify:async(id,value)=>{await verifyEvent(id,value||null,gunId);await renderHistory();},onDelete:async row=>{await deleteEvent(row.id,gunId);await renderHistory();historyText('historyClearOutcome','One recognition result was deleted.');},onError:showError});}
+  if(!historyPage&&activeView==='history'&&historyOwner===activeGun?.id&&!profileLocked()&&!$('#safetyModal').open){
+    const pending=historyPagePending??=import('../apps/web/src/app/historyPage.tsx');
+    void pending.then(module=>{
+      if(historyPagePending===pending)historyPagePending=null;
+      if(isCurrent()&&activeView==='history'&&historyOwner===activeGun?.id&&!profileLocked()&&!$('#safetyModal').open)mountHistoryPage(module);
+    }).catch(error=>{if(historyPagePending===pending)historyPagePending=null;showError(error);});
+  }
+  if(!historyPage&&activeView==='history'){const module=legacyHistoryRenderer||=await import('./optional/renderLegacyHistory.js');module.renderEvaluation(document,rows);module.renderHistoryList(document,rows,{labels,titleFor,drillTitleFor:id=>currentDrill(id)?.title,onVerify:async(id,value)=>{await verifyEvent(id,value||null,gunId);await renderHistory();},onDelete:async row=>{await deleteEvent(row.id,gunId);await renderHistory();historyText('historyClearOutcome',translate('common','runtimeMain.historyEventDeleted'));},onError:showError});}
   if(homePage)homePage.update({events:rows.length}); else $('#homeEvents').textContent = String(rows.length);
   if(historyPage){historyPage.setResults({rows,sessions:historySessions,stats:evaluateEvents(rows),gunId});return;}
 }
@@ -938,7 +959,7 @@ async function init() {
   $('#homeLearnBtn').addEventListener('click', () => switchView('learn'));
   $('#homeDrillsBtn').addEventListener('click', () => switchView('drills'));
   $('#homeHistoryBtn').addEventListener('click', () => switchView('history'));
-  $('#runSoundCheckBtn').addEventListener('click',()=>{if(triggerReady())switchView('soundCheck');else setMessage(`Record at least ${MIN_EXAMPLES_PER_CLASS} trigger examples first.`);});
+  $('#runSoundCheckBtn').addEventListener('click',()=>{if(triggerReady())switchView('soundCheck');else setMessage(translate('common','runtimeMain.learnTriggerFirst',{count:MIN_EXAMPLES_PER_CLASS}));});
   $('#learnListenBtn').addEventListener('click', () => switchView('recognize'));
   bindLive('changeDrillBtn','click', () => switchView('drills'));
   renderDrillCatalog();
@@ -961,16 +982,16 @@ async function init() {
       anchor.click();
       anchor.remove();
       setTimeout(() => URL.revokeObjectURL(url), 2000);
-      setMessage('Backup prepared. Keep the downloaded JSON file private.');
+      setMessage(translate('common','runtimeMain.backupPrepared'));
     } catch (error) { showError(error); }
   });
   $('#importFile').addEventListener('change', async (event) => {
     const file = event.target.files?.[0];
     event.target.value = '';
     if (!file) return;
-    if (profileLocked()) { setMessage('Finish recording or stop listening before importing a backup.'); return; }
-    if (file.size > 10 * 1024 * 1024) { setMessage('Backup is too large (maximum 10 MB).'); return; }
-    if (!confirm('Replace the complete gun library, learned sounds, custom presets, preferences, recognition history and saved drill sessions with this backup? Older backups contain no sessions and will remove current saved sessions.')) return;
+    if (profileLocked()) { setMessage(translate('common','runtimeMain.backupLocked')); return; }
+    if (file.size > 10 * 1024 * 1024) { setMessage(translate('common','runtimeMain.backupTooLarge')); return; }
+    if (!confirm(translate('common','runtimeMain.replaceBackup'))) return;
     setBusy(true);
     try {
       await eventQueue;
@@ -983,7 +1004,7 @@ async function init() {
       setBusy(false);
       if (!activeGun || activeGun.needsDetails) openGunSetup(activeGun);
       else if(pendingEntry&&pendingEntry.view!=='home')await openEntry();else {pendingEntry=null;switchView('home');}
-      setMessage(`Restored ${result.guns} gun profiles, ${result.examples} sound examples, ${result.events} recognition results and ${result.sessions} saved drill sessions.`);
+      setMessage(translate('common','runtimeMain.backupRestored',result));
     } catch (error) { showError(error); }
     finally { setBusy(false); renderClassCards(); }
   });
@@ -991,12 +1012,12 @@ async function init() {
   bindLive('verifyLatestBtn','click', async () => {
     const actual = $('#latestActual').value;
     if (!latestEventId || !ACTUAL_CLASSES.includes(actual)) {
-      setMessage('Select what actually happened before verifying.');
+      setMessage(translate('common','runtimeMain.chooseActualSound'));
       return;
     }
     try {
       await verifyEvent(latestEventId, actual, ownerId());
-      setMessage('Verification saved. See History for accuracy statistics.');
+      setMessage(translate('common','runtimeMain.verificationSaved'));
     } catch (error) { showError(error); }
   });
   document.addEventListener('visibilitychange', () => {
@@ -1012,23 +1033,23 @@ async function init() {
     if (soundCheckController?.locked?.()) soundCheckController.stop().catch(() => {});
   });
   $('#safetyAck').addEventListener('change', () => {
-    $('#safetySummaryState').textContent = $('#safetyAck').checked ? 'Confirmed for this session' : 'Required before recording';
+    renderSafetySummary();
     if (!$('#safetyAck').checked && (liveSession || livePendingStart)) void stopLive();
     if (!$('#safetyAck').checked && sessionController?.locked()) sessionController.interrupt('safety-check').catch(showError);
     if (!$('#safetyAck').checked && practiceController?.locked()) practiceController.interrupt('safety-check').catch(showError);
     if (!$('#safetyAck').checked && soundCheckController?.locked?.()) soundCheckController.stop().catch(showError);
   });
   bindSettings('resetModelBtn','click', async () => {
-    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Reset all learned sounds and reset/noise/beep calibration for ${activeGun.name}? Gun profiles, presets, saved sessions, recognition history and other guns will be kept.`)) return;
+    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(translate('common','runtimeMain.confirmSoundReset',{gun:activeGun?.name??''}))) return;
     setBusy(true);
     try {
       await clearExamples(ownerId());
       examples = [];
       calibration = [];
       if(learnPage)learnPage.update({noticeHidden:true});else $('#modelNotice').classList.add('hidden');
-      setStatus('All learned sounds reset');
-      setMessage(`All learned sounds for ${activeGun.name} were reset. Other guns and recognition history were kept.`);
-      settingsText('soundResetOutcome',`All learned sounds and calibration for ${activeGun.name} were reset. Saved guns, presets and history were kept.`);
+      setStatus(translate('common','runtimeMain.soundsReset'));
+      setMessage(translate('common','runtimeMain.soundResetMessage',{gun:activeGun.name}));
+      settingsText('soundResetOutcome',translate('common','runtimeMain.soundResetOutcome',{gun:activeGun.name}));
       renderDrillCatalog();
       renderCustomCatalog();
       await renderHome();
@@ -1036,7 +1057,7 @@ async function init() {
     finally { setBusy(false); renderClassCards(); }
   });
   bindSettings('resetLibraryBtn','click', async () => {
-    if (profileLocked() || !confirm('Delete ALL guns and app data from this browser? This removes every gun, learned sound, calibration, preset, setting, recognition result and saved session. Export a backup first. This cannot be undone without a backup.')) return;
+    if (profileLocked() || !confirm(translate('common','runtimeMain.confirmDeleteData'))) return;
     setBusy(true);
     try {
       await eventQueue;
@@ -1048,7 +1069,7 @@ async function init() {
     } catch (error) { showError(error); setBusy(false); }
   });
   bindHistory('clearHistoryBtn', async () => {
-    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Clear recognition history for ${activeGun.name}? Saved drill sessions, progress statistics, learned sounds and other guns will be kept.`)) return;
+    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(translate('common','runtimeMain.confirmClearHistory',{gun:activeGun?.name??''}))) return;
     const gunId = ownerId();
     setBusy(true);
     historyRenderToken += 1;
@@ -1062,18 +1083,18 @@ async function init() {
       liveHidden("predictionCard",true);
       liveHidden("predictionEmpty",false);
       clearLiveTimeline();
-      liveText("eventCounter",'0 detected · 0 discarded');
+      liveText("eventCounter",translate('live-listen','capture.eventCounter'));
       resetDrill();
       await renderHistory();
       await renderHome();
-      setStatus('Recognition history cleared');
-      historyText('historyClearOutcome',`Recognition history for ${activeGun.name} was cleared. Saved sessions and learned sounds were kept.`);
+      setStatus(translate('common','runtimeMain.historyCleared'));
+      historyText('historyClearOutcome',translate('common','runtimeMain.historyClearedOutcome',{gun:activeGun.name}));
     }
     catch (error) { showError(error); }
     finally { setBusy(false); }
   });
   bindHistory('clearSessionsBtn', async () => {
-    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(`Clear ALL saved practice and sequence sessions for ${activeGun.name}? Their results and progress statistics will be deleted. Learned sounds, custom drills, settings, recognition history and other guns will be kept. Export a backup first; this cannot be undone without one.`)) return;
+    if (profileLocked() || !activeGun || activeGun.needsDetails || !confirm(translate('common','runtimeMain.confirmClearSessions',{gun:activeGun?.name??''}))) return;
     const gunId = ownerId();
     setBusy(true);
     historyRenderToken += 1;
@@ -1083,8 +1104,8 @@ async function init() {
       sessionController?.reset();
       practiceController?.reset();
       await renderHistory();
-      setStatus('Saved sessions cleared');
-      historyText('sessionsClearOutcome',`Saved sessions and progress statistics for ${activeGun.name} were cleared. Learned sounds and recognition history were kept.`);
+      setStatus(translate('common','runtimeMain.sessionsCleared'));
+      historyText('sessionsClearOutcome',translate('common','runtimeMain.sessionsClearedOutcome',{gun:activeGun.name}));
     } catch (error) { showError(error); }
     finally { setBusy(false); }
   });
@@ -1094,10 +1115,8 @@ async function init() {
     catch (error) { showError(error); }
   });
   const standalone = window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true;
-  $('#installStatus').textContent = standalone
-    ? 'Installed: you are using the Home Screen app.'
-    : 'Not yet installed. Follow these steps to put it on your Home Screen.';
-  $('#deviceCheck').textContent = `${window.isSecureContext ? 'Secure connection' : 'Insecure connection — microphone may be blocked'} · ${navigator.mediaDevices?.getUserMedia ? 'Microphone API available' : 'Microphone API unavailable'} · Local storage only`;
+  $('#installStatus').textContent = translate('common',standalone?'runtimeMain.installStatusInstalled':'runtimeMain.installStatusNotInstalled');
+  renderDeviceCheck();
   if (previewPreparation) {
     const { createPreviewTesting } = await previewPreparation;
     let storage;
@@ -1131,7 +1150,7 @@ async function init() {
     if (recoveredForGun.kind === 'practice') await practiceController.showRecord(recoveredForGun);
     else await sessionController.showRecord(recoveredForGun);
   }
-  setStatus('Ready');
+  setStatus(translate('common','runtimeMain.ready'));
   appStarted=true;
   if (practiceController) afterPaint(practiceController.renderCatalog).catch(showError);
 }

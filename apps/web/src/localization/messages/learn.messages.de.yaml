@@ -24,3 +24,31 @@ privacy:
 recordingTip:
   label: "Aufnahmetipp:"
   description: Verwende dieselbe Position für dein Smartphone wie beim Üben. Nimm in einem passenden Raum jeweils einen natürlichen Abzugsdruck auf. Roh-Audio wird nicht gespeichert, nur numerische Klangmerkmale.
+soundCard:
+  progress: "{{count}} / {{maximum}} Beispiele · {{summary}}"
+  imageAlt: Veranschaulichung des Geräuschs {{sound}}
+  record: Beispiel für {{sound}} aufnehmen
+  train: "▶ Trainieren"
+  sampleLimit: Probenlimit erreicht
+  replace: Gelernte {{sound}}-Geräusche ersetzen
+  reset: Gelernte {{sound}}-Geräusche zurücksetzen
+  recognize: "{{sound}} nach dem Lernen erkennen"
+  recognizeLabel: Nach dem Lernen erkennen
+  primary: HAUPTGERÄUSCH
+  optional: OPTIONALER TON
+  limitReached: Limit erreicht · vorhandene Beispiele bleiben erhalten
+  recommendedReached: Empfohlene Anzahl erreicht
+  ready: Erkennung möglich
+  minimumRemaining: "{{count}} bis zum Minimum"
+  replaceLabel: Ersetzen
+  resetLabel: Zurücksetzen
+profile:
+  eyebrow: ABZUGSPROFIL
+  needsSamples: Beispiele benötigt
+  needsSamplesMessage: "Nimm {{count}} weitere natürliche Abzugsgeräusche auf."
+  oneSample: Nimm ein weiteres natürliches Abzugsgeräusch auf.
+  variable: Unterschiedliche Beispiele
+  variableMessage: Die Beispiele unterscheiden sich. Verwende denselben Raum und dieselbe Smartphone-Position; setze sie zurück und nimm sie erneut auf, wenn die Unterschiede bleiben.
+  stable: Stabiles Profil
+  stableMessage: Deine Abzugsbeispiele sind gleichmäßig. Führe vor dem Üben einen Klangtest durch.
+  soundCheck: Klangtest starten

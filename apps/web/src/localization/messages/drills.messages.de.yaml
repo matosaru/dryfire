@@ -17,3 +17,4 @@ collection:
 custom:
   create: + Eigene Übung erstellen
   empty: Für diese Waffe gibt es noch keine eigenen Übungen. Erstelle eine eigene Übung, um einen Ablauf hinzuzufügen.
+  edit: Ablauf bearbeiten

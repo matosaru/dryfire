@@ -9,6 +9,18 @@ steps:
 guideLink: About this practice
 learnMissing: Learn missing sounds
 timingNote: Timings describe detected audio. The app cannot verify physical actions, aim, movement or unloaded status.
+modes:
+  single: Single trigger press
+  repeated: Repeated trigger press
+  par: Par time practice
+  control: Trigger control
+feedback:
+  unclear: Sound heard, but too quiet or unclear to match. Check your samples in Learn.
+  cueRecognized: Start beep recognized.
+  recognized: "{{sound}} recognized."
+  excluded: Sound heard and excluded by learned profiles. Check Trigger and reset samples in Learn.
+  noMatch: Sound heard, but no reliable match. Add clear samples in Learn.
+  early: Early trigger · failed attempt. Wait for the next signal.
 setup:
   legend: Practice setup
   start: Start Practice

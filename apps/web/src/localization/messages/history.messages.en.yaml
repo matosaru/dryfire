@@ -28,6 +28,12 @@ recognition:
   resultDelete: Delete recognition result from {{date}}
   resultConfirmDelete: Confirm deleting recognition result from {{date}}
   resultCancelDelete: Cancel deleting recognition result from {{date}}
+  notVerified: Not verified
+  otherNoise: Other / noise
+  sequenceRecognized: "{{title}} · Sequence recognized ✓"
+  outOfOrder: "{{title}} · Out of order"
+  unknownSequenceSound: "{{title}} · Unknown sound"
+  stepDetected: "{{title}} · Step detected"
 actions:
   delete: Delete
   cancel: Cancel

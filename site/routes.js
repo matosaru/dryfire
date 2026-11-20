@@ -1,11 +1,15 @@
 import {DRILLS} from '../src/drills.js';
 import {GUIDE_MANUALS} from '../src/practiceGuideManuals.js';
 import {guidePathFor,appTitleFor} from '../src/appPaths.js';
+import {publicMessage} from './locales.js';
+
 export const CANONICAL_ORIGIN='https://easydryfire.com';
+export const PUBLIC_LOCALES=Object.freeze(['en','de','nl']);
+const prefixPath=(path,locale)=>locale==='en'?path:`/${locale}${path==='/'?'/':path}`;
 const manual=id=>{const guide=GUIDE_MANUALS.find(row=>row.id===id);return{id,path:guidePathFor(id),title:appTitleFor({view:'practiceGuide',guideId:id}),heading:DRILLS.find(drill=>id==='sequence-'+drill.id)?.title??guide.title,description:guide.purpose,guide,appView:'practiceGuide'};};
-export const PUBLIC_ROUTES=[
- {id:'home',path:'/',appView:'home',title:'Dry Fire With Ease — Free Dry-Fire Practice App',heading:'Dry Fire With Ease',description:'Learn your trigger click, choose a dry-fire practice mode and review timed repetitions. A free, microphone-based Beta app with local browser storage.'},
- {id:'practice',path:'/practice-modes/',title:'Dry-Fire Practice Modes — Dry Fire With Ease',heading:'Choose your practice.',description:'Compare Single trigger press, Repeated trigger press, Par-time practice and Trigger control. Learn what each mode measures before you begin.'},
+const sourceRoutes=[
+ {id:'home',path:'/',appView:'home'},
+ {id:'practice',path:'/practice-modes/'},
  manual('single'),
  manual('repeated'),
  manual('par'),
@@ -13,13 +17,49 @@ export const PUBLIC_ROUTES=[
  manual('sequence-rack-trigger'),
  manual('sequence-mag-trigger'),
  manual('sequence-draw-mag-trigger'),
- {id:'sequence',path:'/sequence-drills-guide/',title:'Sequence Drills Guide — Dry Fire With Ease',heading:'Practice a sound sequence.',description:'Understand built-in sequence drills, the sounds they need and how the app times recognized events in order.'},
- {id:'calibration',path:'/trigger-click-calibration-guide/',title:'Trigger-Click Calibration — Dry Fire With Ease',heading:'Learn your trigger click.',description:'Calibrate microphone recognition for your selected gun, test separate trigger clicks and reduce confusion with reset and handling sounds.'},
- {id:'help',path:'/help/',title:'Help and Browser Setup — Dry Fire With Ease',heading:'Set up your practice.',description:'Get help with microphone permissions, Safari Home Screen installation, recognition, start beeps and local backup recovery.'},
- {id:'about',path:'/about/',appView:'about',title:'About — Dry Fire With Ease',heading:'About',description:'Dry Fire With Ease is a Beta sound trainer for trigger-click practice and timed sequences. Learn how it works, explore the four practice modes and send feedback.'},
- {id:'contact',path:'/contact/',appView:'contact',title:'Contact — Dry Fire With Ease',heading:'Contact',description:'Contact Dry Fire With Ease with feedback, suggestions or a bug report. Email easydryfire@gmail.com.'},
+ {id:'sequence',path:'/sequence-drills-guide/'},
+ {id:'calibration',path:'/trigger-click-calibration-guide/'},
+ {id:'help',path:'/help/'},
+ {id:'about',path:'/about/',appView:'about'},
+ {id:'contact',path:'/contact/',appView:'contact'},
 ];
-export const publicRoute=path=>PUBLIC_ROUTES.find(route=>route.path===path);
+
+function translatedRoute(route,locale){
+ const key=`routes.${route.id}`;
+ const guide=route.guide?{
+  ...route.guide,
+  title:publicMessage(locale,'practice-guide',`manuals.${route.id}.title`),
+  purpose:publicMessage(locale,'practice-guide',`manuals.${route.id}.purpose`),
+  measures:publicMessage(locale,'practice-guide',`manuals.${route.id}.measures`),
+  steps:publicMessage(locale,'practice-guide',`manuals.${route.id}.steps`).split('\n').filter(Boolean),
+  expect:publicMessage(locale,'practice-guide',`manuals.${route.id}.expect`),
+  requires:publicMessage(locale,'practice-guide',`manuals.${route.id}.requires`),
+ }:undefined;
+ return {
+  ...route,
+  path:prefixPath(route.path,locale),
+  title:publicMessage(locale,'public-site',`${key}.title`),
+  heading:publicMessage(locale,'public-site',`${key}.heading`),
+  description:publicMessage(locale,'public-site',`${key}.description`),
+  ...(guide?{guide}:{}),
+  locale,
+  // Localized canonical pages are standalone server-rendered content, so their
+  // initial HTML contains the translated page even before app JavaScript runs.
+  ...(locale==='en'?{}:{appView:undefined}),
+ };
+}
+
+export const PUBLIC_ROUTES=sourceRoutes.map(route=>translatedRoute(route,'en'));
+export const ALL_PUBLIC_ROUTES=PUBLIC_LOCALES.flatMap(locale=>sourceRoutes.map(route=>translatedRoute(route,locale)));
+export const publicRoute=path=>ALL_PUBLIC_ROUTES.find(route=>route.path===path);
 export const publicAssetPath=path=>path==='/'?'/index.html':`/site${path}index.html`;
-export const sitemapXML=()=>`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${PUBLIC_ROUTES.map(route=>`  <url><loc>${CANONICAL_ORIGIN}${route.path}</loc></url>`).join('\n')}\n</urlset>\n`;
+export const sitemapXML=()=>{
+ const alternates=sourceRoutes.map(route=>Object.fromEntries(PUBLIC_LOCALES.map(locale=>[locale,CANONICAL_ORIGIN+prefixPath(route.path,locale)])));
+ const entries=sourceRoutes.flatMap((route,index)=>PUBLIC_LOCALES.map(locale=>{
+  const path=prefixPath(route.path,locale),urls=alternates[index];
+  const links=[...PUBLIC_LOCALES.map(language=>`    <xhtml:link rel="alternate" hreflang="${language}" href="${urls[language]}" />`),`    <xhtml:link rel="alternate" hreflang="x-default" href="${urls.en}" />`].join('\n');
+  return `  <url>\n    <loc>${CANONICAL_ORIGIN}${path}</loc>\n${links}\n  </url>`;
+ }));
+ return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join('\n')}\n</urlset>\n`;
+};
 export const robotsTXT=`User-agent: *\nAllow: /\nSitemap: ${CANONICAL_ORIGIN}/sitemap.xml\n`;

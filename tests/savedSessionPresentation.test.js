@@ -9,6 +9,20 @@ function setup(){
   const context={gun:{id:'one'}};
   const getSessions=jest.fn(),onPracticeRecord=jest.fn(),showRecord=jest.fn();
   const bindings={getSessions,getContext:()=>context,$:selector=>document.querySelector(selector),onPracticeRecord,showRecord,onDeleteSaved:undefined,
+    translate:(_namespace,key,parameters={})=>{const copy={
+      'sessions.noSessions':'No saved drill sessions for this gun yet.',
+      'sessions.shots':`${parameters.count} shots · ${parameters.attempts} attempts`,
+      'sessions.repetitions':`${parameters.completed}/${parameters.total}`,
+      'actions.statusCompleted':'completed','actions.statusInterrupted':'interrupted','actions.statusAbandoned':'abandoned',
+      'actions.delete':'Delete','actions.cancel':'Cancel',
+      'sessions.sessionDelete':`Delete ${parameters.title} session`,
+      'sessions.sessionConfirmation':`Delete ${parameters.title} session?`,
+      'sessions.sessionConfirmDelete':`Confirm deleting ${parameters.title} session`,
+      'sessions.sessionCancelDelete':`Cancel deleting ${parameters.title} session`,
+      'sessions.deleteSavedQuestion':'Delete this saved session?'
+    };return copy[key]??key;},
+    formatLocaleDate:(value,options)=>new Date(value).toLocaleString(undefined,options),
+    formatLocaleNumber:value=>String(value),
     node:(tag,text,className='')=>{const item=document.createElement(tag);item.textContent=text;item.className=className;return item;}};
   const render=vm.runInNewContext(rendering+'\nrenderSavedSessions',bindings);
   return{render,context,getSessions,onPracticeRecord,showRecord,host:document.querySelector('#savedSessions')};

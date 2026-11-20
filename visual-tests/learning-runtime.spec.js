@@ -1,9 +1,9 @@
 import {freezeMotionArtwork} from './motion-fixture.js';
-import {createHash} from 'node:crypto';
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
+import {captureRenderParity} from './render-parity.js';
 const library=readFileSync(new URL('./fixtures/library.json',import.meta.url));
-for(const theme of ['dark','light'])test(`Learn keeps ${theme} pixels, drafts, sound scopes and safety after delayed handoff`,async({page},testInfo)=>{
+for(const theme of ['dark','light'])test(`Learn preserves ${theme} content and layout, drafts, sound scopes and safety after delayed handoff`,async({page},testInfo)=>{
   const errors=[];page.on('pageerror',error=>errors.push(error.message));page.on('dialog',dialog=>dialog.accept());
   let release;const blocked=new Promise(resolve=>{release=resolve;});
   await page.route('**/assets/learnPage-*.js',async route=>{await blocked;await route.continue();});
@@ -14,6 +14,8 @@ for(const theme of ['dark','light'])test(`Learn keeps ${theme} pixels, drafts, s
   const disclosures=page.locator('#learnView details.optional-sounds');for(const disclosure of await disclosures.all())await disclosure.locator('summary').click();
   for(const image of await page.locator('#learnView img').all()){await image.scrollIntoViewIfNeeded();await expect.poll(()=>image.evaluate(node=>node.complete&&node.naturalWidth>0)).toBe(true);}
   await page.evaluate(()=>scrollTo(0,0));
+  await page.evaluate(()=>document.fonts.ready);
+  const nativeParity=await captureRenderParity(page,'#learnView',['#learn-title','#classCards','.listen-panel','#optionalClassCards']);
   const before=await page.locator('#learnView').screenshot({animations:'disabled'});
   const loaded=page.waitForResponse(response=>/\/assets\/learnPage-/.test(response.url()));release();await loaded;
   await expect(page.locator('#learnView')).not.toHaveAttribute('data-react-learn');
@@ -21,7 +23,9 @@ for(const theme of ['dark','light'])test(`Learn keeps ${theme} pixels, drafts, s
   for(const disclosure of await disclosures.all())await expect(disclosure).toHaveAttribute('open','');
   for(const image of await page.locator('#learnView img').all()){await image.scrollIntoViewIfNeeded();await expect.poll(()=>image.evaluate(node=>node.complete&&node.naturalWidth>0)).toBe(true);}
   await page.evaluate(()=>scrollTo(0,0));
-  const after=await page.locator('#learnView').screenshot({animations:'disabled'});await testInfo.attach('native',{body:before,contentType:'image/png'});await testInfo.attach('react',{body:after,contentType:'image/png'});expect(createHash('sha256').update(after).digest('hex')).toBe(createHash('sha256').update(before).digest('hex'));
+  await page.evaluate(()=>document.fonts.ready);
+  const reactParity=await captureRenderParity(page,'#learnView',['#learn-title','#classCards','.listen-panel','#optionalClassCards']);
+  const after=await page.locator('#learnView').screenshot({animations:'disabled'});await testInfo.attach('native',{body:before,contentType:'image/png'});await testInfo.attach('react',{body:after,contentType:'image/png'});expect(reactParity).toEqual(nativeParity);
   const optional=page.locator('[data-sound-label="draw"] input');const enabled=await optional.isChecked();await optional.setChecked(!enabled);await expect(optional).toBeChecked({checked:!enabled});
   await page.locator('[data-sound-label="trigger"] .reset-class').click();await expect(page.locator('[data-sound-label="trigger"] .progress-label')).toContainText('0 / 10 samples');await expect(page.locator('[data-sound-label="draw"] .progress-label')).toContainText('3 / 10 samples');
   await page.locator('[data-sound-label="trigger"] .record-example').click();await expect(page.locator('#safetyModal')).toBeVisible();

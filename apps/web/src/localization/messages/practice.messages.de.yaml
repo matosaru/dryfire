@@ -9,6 +9,18 @@ steps:
 guideLink: Über diese Übung
 learnMissing: Fehlende Geräusche lernen
 timingNote: Zeiten beziehen sich auf erkannte Geräusche. Die App kann keine körperlichen Handlungen, das Zielen, Bewegungen oder einen entladenen Zustand überprüfen.
+modes:
+  single: Einzelner Abzugsdruck
+  repeated: Wiederholte Abzugsbetätigung
+  par: Übung mit Zeitlimit
+  control: Abzugskontrolle
+feedback:
+  unclear: Geräusch erkannt, aber zu leise oder unklar. Überprüfe deine Beispiele unter „Lernen“.
+  cueRecognized: Startsignal erkannt.
+  recognized: "{{sound}} erkannt."
+  excluded: Geräusch erkannt und durch gelernte Profile ausgeschlossen. Überprüfe deine Abzugs- und Rückstellbeispiele unter „Lernen“.
+  noMatch: Geräusch erkannt, aber keine zuverlässige Übereinstimmung. Füge unter „Lernen“ klare Beispiele hinzu.
+  early: Zu früher Abzug · Versuch fehlgeschlagen. Warte auf das nächste Signal.
 setup:
   legend: Übung einrichten
   start: Übung starten

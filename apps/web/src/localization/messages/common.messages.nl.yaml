@@ -16,3 +16,146 @@ result:
   repetitions:
     one: "{{count}} herhaling voltooid"
     other: "{{count}} herhalingen voltooid"
+sound:
+  draw: Trek uit het holster
+  rack: Grendel bedienen
+  trigger: Trekker overhalen
+  reload: Magazijn wisselen
+  unknown: Onbekend geluid
+soundDescription:
+  draw: Geluiden van het trekken uit het holster en presenteren
+  rack: Beweging en terugkeer van de slede
+  trigger: Droge trekkerklik
+  reload: Magazijn verwijderen en plaatsen
+  unknown: Niet-geclassificeerd geluid
+runtimeAudio:
+  requestRecordingPermission: Microfoontoestemming aanvragen…
+  getReady: Maak je klaar… {{count}}
+  recordingSound: Opname… maak nu één geluid
+  analyzing: Geluid analyseren…
+  requestMicrophoneAccess: Microfoontoegang aanvragen…
+  preparingMicrophone: Microfoon voorbereiden…
+  roomNoisy: Het is rumoerig · Ga dichterbij of verminder achtergrondgeluid
+  microphoneReady: Microfoon klaar · Luistert vóór het signaal
+  liveWorklet: Live luisteren (AudioWorklet)
+  compatibility: Live luisteren (compatibiliteitsmodus)
+runtimeMain:
+  navigationLocked: Rond de huidige actie af of sla de resultaten op voordat je dit scherm verlaat.
+  sequenceUnavailable: Deze reeks is niet beschikbaar voor het geselecteerde wapen. Kies een oefening.
+  learnTriggerFirst: Neem eerst minstens {{count}} trekkerklikken op.
+  removeCalibration: Kalibratie voor {{title}} voor dit wapen verwijderen? Geleerde actiegeluiden en de volledige geschiedenis blijven behouden.
+  calibrationSaved: Kalibratie opgeslagen
+  resetSoundProfile: Alleen de geleerde geluiden voor {{sound}} resetten? Andere geluiden en de herkenningsgeschiedenis blijven behouden.
+  soundProfileReset: "{{sound}} gereset"
+  soundExamplesRemoved: "Voorbeelden van {{sound}} voor {{gun}} verwijderd. Andere geluiden, wapens en geschiedenis blijven behouden."
+  backupPrepared: Back-up voorbereid. Bewaar het gedownloade JSON-bestand privé.
+  backupLocked: Rond de opname af of stop met luisteren voordat je een back-up importeert.
+  backupTooLarge: De back-up is te groot (maximaal 10 MB).
+  replaceBackup: De volledige wapenbibliotheek, geleerde geluiden, aangepaste reeksen, voorkeuren, herkenningsgeschiedenis en opgeslagen oefensessies vervangen door deze back-up? Oudere back-ups bevatten geen sessies en verwijderen huidige opgeslagen sessies.
+  backupRestored: "{{guns}} wapenprofielen, {{examples}} geluidsvoorbeelden, {{events}} herkenningsresultaten en {{sessions}} opgeslagen oefensessies hersteld."
+  chooseActualSound: Selecteer wat er echt gebeurde voordat je dit verifieert.
+  verificationSaved: Verificatie opgeslagen. Bekijk Geschiedenis voor nauwkeurigheidsstatistieken.
+  confirmSoundReset: Alle geleerde geluiden en de kalibratie voor reset-, ruis- en pieptonen voor {{gun}} resetten? Wapenprofielen, reeksen, opgeslagen sessies, herkenningsgeschiedenis en andere wapens blijven behouden.
+  soundsReset: Alle geleerde geluiden gereset
+  soundResetMessage: Alle geleerde geluiden voor {{gun}} zijn gereset. Andere wapens en herkenningsgeschiedenis blijven behouden.
+  soundResetOutcome: Alle geleerde geluiden en kalibratie voor {{gun}} zijn gereset. Opgeslagen wapens, reeksen en geschiedenis blijven behouden.
+  confirmDeleteData: ALLE wapens en appgegevens uit deze browser verwijderen? Dit verwijdert elk wapen, geleerd geluid, kalibratie, reeks, instelling, herkenningsresultaat en opgeslagen oefensessie. Exporteer eerst een back-up. Zonder back-up kan deze actie niet ongedaan worden gemaakt.
+  confirmClearHistory: Herkenningsgeschiedenis voor {{gun}} wissen? Opgeslagen oefensessies, voortgangsstatistieken, geleerde geluiden en andere wapens blijven behouden.
+  confirmClearSessions: ALLE opgeslagen oefen- en sessiereeksen voor {{gun}} wissen? Resultaten en voortgangsstatistieken worden verwijderd. Geleerde geluiden, aangepaste oefeningen, instellingen, herkenningsgeschiedenis en andere wapens blijven behouden. Exporteer eerst een back-up; dit kan daarna niet ongedaan worden gemaakt.
+  historyEventDeleted: Eén herkenningsresultaat is verwijderd.
+  sessionDeleted: Eén opgeslagen sessie is verwijderd. De voortgangsstatistieken zijn bijgewerkt.
+  safetyConfirmed: Bevestigd voor deze sessie
+  safetyRequired: Vereist vóór opname
+  historyCleared: Herkenningsgeschiedenis gewist
+  historyClearedOutcome: "De herkenningsgeschiedenis voor {{gun}} is gewist. Opgeslagen sessies en geleerde geluiden zijn behouden."
+  sessionsCleared: Opgeslagen sessies gewist
+  sessionsClearedOutcome: "Opgeslagen sessies en voortgangsstatistieken voor {{gun}} zijn gewist. Geleerde geluiden en herkenningsgeschiedenis zijn behouden."
+  switchGunBlocked: Rond de opname af of stop met luisteren voordat je van wapen wisselt.
+  switchGun: Ander wapen kiezen
+  attention: Aandacht vereist
+  sampleSaved: "{{sound}} opgeslagen"
+  liveListening: Luistert · microfoon actief
+  matchedSound: "Herkenning: {{sound}}"
+  unknownSound: Onbekend / onduidelijk
+  ready: Klaar
+  learnRequired: Leer eerst minstens {{count}} trekkerklikvoorbeelden. Andere geluiden zijn optioneel.
+  clickTarget: Klikdoel
+  repetitions: Herhalingen
+  secureConnection: Beveiligde verbinding
+  insecureConnection: Onbeveiligde verbinding — microfoon wordt mogelijk geblokkeerd
+  microphoneApiAvailable: Microfoon-API beschikbaar
+  microphoneApiUnavailable: Microfoon-API niet beschikbaar
+  localStorageOnly: Alleen lokale opslag
+  gunLimit: In deze versie kun je geen extra wapen maken. Opgeslagen wapens blijven beschikbaar.
+  gunPlaceholder: Wapen
+  triggerTrainingCount: "{{count}} / {{target}} trekkerklik"
+  selectGun: Kies een wapen
+  switchGunAria: "Wapen wijzigen. Geselecteerd: {{name}}, {{type}}"
+  gunTypeUnset: type niet ingesteld
+  gunNameFallback: Je wapen
+  gunDetailsPrompt: Profielgegevens toevoegen
+  resetSamplesSummary: "{{samples}} geleerde voorbeelden · {{calibration}} kalibratievoorbeelden voor {{gun}}"
+  resetSamplesChooseGun: Kies een wapen voordat je de geleerde geluiden wist.
+  outdatedSamples: "{{count}} oudere trainingsvoorbeelden gebruiken een incompatibel kenmerkformaat en worden genegeerd. Wis de geluiden van dit wapen en neem nieuwe voorbeelden op voor het bijgewerkte model."
+  installStatusInstalled: "Geïnstalleerd: je gebruikt de app vanaf het beginscherm."
+  installStatusNotInstalled: Nog niet geïnstalleerd. Volg deze stappen om de app aan je beginscherm toe te voegen.
+  saveUnsentSession: De oefenresultaten zijn niet opgeslagen. Probeer opnieuw op te slaan voordat je gegevens verwijdert.
+  deleteGun: "{{gun}} en ALLE bijbehorende gegevens verwijderen? Dit verwijdert geleerde geluiden, kalibratie, aangepaste oefeningen, instellingen, herkenningsgeschiedenis en opgeslagen oefen- en sessiereeksen. Andere wapens blijven opgeslagen. Exporteer eerst een back-up; dit kan daarna niet ongedaan worden gemaakt."
+  gunDeleted: Wapen verwijderd
+  gunDeletedOther: "{{gun}} en alle bijbehorende gegevens zijn verwijderd. Andere wapens zijn behouden."
+  gunDeletedFinal: "{{gun}} en alle bijbehorende gegevens zijn verwijderd. Voeg een nieuw wapen toe om door te gaan."
+  enterGunName: Voer een wapennaam in.
+  gunSaved: Wapen opgeslagen
+  replaceSamplesConfirm: "Neem één nieuw voorbeeld van {{sound}} op en vervang daarna alle bestaande voorbeelden van {{sound}} voor dit wapen? Andere geluiden en geschiedenis blijven behouden."
+  soundProfileReplaced: "Profiel voor {{sound}} vervangen"
+  samplesReplaceSuccess: "Bestaande voorbeelden van {{sound}} zijn pas vervangen nadat de nieuwe opname was gelukt."
+runtimeErrors:
+  audioTooShort: De opname is te kort om te analyseren.
+  audioNoClearSound: Geen duidelijk geluid herkend. Ga dichter bij de microfoon staan of probeer een stillere ruimte.
+  audioDistorted: De audio was vervormd. Vergroot de afstand tussen microfoon en geluidsbron.
+  secureContext: Microfoontoegang vereist HTTPS of localhost en een compatibele browser.
+  webAudioUnavailable: Web Audio is niet beschikbaar op dit apparaat.
+  pcmUnavailable: Deze WebView ondersteunt geen PCM-opname. Native audio-opname is vereist.
+  noMicrophoneAudio: Er is geen audio van de microfoon ontvangen.
+  microphoneDenied: Microfoontoestemming geweigerd. Schakel deze in bij de browser- of appinstellingen.
+  microphoneSecureContext: De microfoon vereist HTTPS of localhost en toestemming.
+  noInput: Er komt geen audio binnen. Controleer de microfoontoestemming en probeer het opnieuw.
+  listeningStopped: Luisteren gestopt.
+  recorderUnavailable: AudioWorklet en de compatibiliteitsrecorder zijn allebei niet beschikbaar.
+  microphoneInterrupted: De microfoonaudio is onderbroken. Start de geluidstest of oefening opnieuw.
+  microphoneDisconnected: De microfoon is losgekoppeld. Start de geluidstest of oefening opnieuw.
+  microphoneMuted: De microfooningang is gedempt. Controleer de microfoontoegang en start opnieuw.
+  inputStopped: Er komt geen audio meer binnen. Start de geluidstest of oefening opnieuw.
+  guideUnavailable: De oefengids kon niet worden geladen. Je instellingen zijn ongewijzigd. Controleer je verbinding en laad de pagina opnieuw.
+runtime:
+  practice:
+    inputDetected: Microfooningang gedetecteerd.
+    inputQuiet: Luistert · zwak of zacht ingangssignaal.
+    inputMissing: Er komt geen audio binnen. Controleer de microfoontoestemming.
+    inputWaiting: Wachten op audio…
+    completeSettings: Vul de zichtbare oefeninstellingen in.
+    learnExamples: Leer 3 compatibele voorbeelden van {{labels}}. Andere geluiden zijn optioneel.
+    learnCue: Leer 3 voorbeelden van externe pieptonen via Herkenning verbeteren in Leren.
+    soundsReadySafety: Geluiden zijn klaar. Start opent de veiligheidsbevestiging.
+    soundsReady: Vereiste geluiden zijn klaar. Start wanneer je er klaar voor bent.
+    cueExternal: De akoestische timer start wanneer je gekalibreerde pieptoon wordt herkend. De app speelt geen tweede signaal af.
+    cueBeep: Microfoon gereed vóór het aftellen. {{earlyTrigger}}Stel het mediavolume van je apparaat in voor het startgeluid. De eerste {{seconds}} s na GO worden uitgesloten om de pieptoon te weren.
+    earlyTrigger: Een trekkerklik vóór de pieptoon laat de poging mislukken.
+    cueSilent: Microfoon gereed vóór het aftellen. Stil starten gebruikt het signaal op het scherm; een trekkerklik daarvoor laat de enkele poging mislukken.
+    saved: Oefening opgeslagen
+    beepUnavailable: Startpieptoon niet beschikbaar. STOP en de microfoonindicator markeren de start.
+    startSoundUnavailable: Startgeluid niet beschikbaar. Controleer de audiotoestemming van de browser en het mediavolume.
+    previewUnavailable: Startgeluid niet beschikbaar. Controleer de audiotoestemming van de browser en het mediavolume.
+  session:
+    enterConfig: Voer het aantal herhalingen en geldige startvertragingen in.
+    trainExamples: Leer voor dit wapen minstens {{count}} voorbeelden van {{labels}}.
+    readySafety: Geluiden zijn klaar. Start opent de veiligheidsbevestiging.
+    ready: De geluiden zijn getraind en de veiligheid is bevestigd. Je kunt starten.
+    presetOne: 1 geluidsactie · {{state}}
+    presetOther: "{{count}} geluidsacties · {{state}}"
+    setup: Sessie instellen
+    saved: Sessie opgeslagen
+    cancelled: Sessie geannuleerd vóór de start
+    noModel: Er is geen compatibel geleerd geluidsmodel beschikbaar.
+    cueUnavailable: Startpieptoon niet beschikbaar. Het visuele GO-signaal blijft actief.
+    previewUnavailable: Startgeluid niet beschikbaar. Controleer de audiotoestemming van de browser en het mediavolume.

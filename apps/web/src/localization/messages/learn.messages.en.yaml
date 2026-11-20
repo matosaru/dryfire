@@ -24,3 +24,31 @@ privacy:
 recordingTip:
   label: "Recording tip:"
   description: Use the same phone position you will use during practice. Record one natural press at a time in a representative room. Raw audio is not saved—only numeric sound features.
+soundCard:
+  progress: "{{count}} / {{maximum}} samples · {{summary}}"
+  imageAlt: Illustrative sound preview for {{sound}}
+  record: Record {{sound}} sample
+  train: "▶ Train"
+  sampleLimit: Sample limit reached
+  replace: Replace learned {{sound}} sounds
+  reset: Reset learned {{sound}} sounds
+  recognize: Recognize {{sound}} when trained
+  recognizeLabel: Recognize when trained
+  primary: PRIMARY SOUND
+  optional: OPTIONAL SOUND
+  limitReached: limit reached · existing samples kept
+  recommendedReached: recommended amount reached
+  ready: ready to recognize
+  minimumRemaining: "{{count}} to minimum"
+  replaceLabel: Replace
+  resetLabel: Reset
+profile:
+  eyebrow: TRIGGER PROFILE
+  needsSamples: Needs samples
+  needsSamplesMessage: "Record {{count}} more natural trigger presses."
+  oneSample: Record 1 more natural trigger press.
+  variable: Variable examples
+  variableMessage: The examples differ. Keep one room and phone position; reset and rerecord if this stays variable.
+  stable: Stable profile
+  stableMessage: Your trigger examples are consistent. Run a sound check before practice.
+  soundCheck: Run sound check

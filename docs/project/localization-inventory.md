@@ -1,6 +1,6 @@
 # CHG-070 message inventory and ownership — LOC-01
 
-Updated: 2026-11-17 · State: source-surface inventory established; per-message key assignment continues during migration.
+Updated: 2026-11-20 · State: page ownership map established; runtime scans continue as localization is migrated. Untranslated surfaces are still being identified.
 
 This inventory maps every maintained UI/page family and its source owner to one YAML namespace. It intentionally does not translate or catalog user data, stable IDs, code identifiers, browser/OS-owned controls, or approved product/brand names. All actual editable UI copy must end up in the assigned catalogs; the current English strings are the extraction source until each consumer is migrated. A catalog parity/build check is the release proof that the three language files contain the same keys and parameters.
 
@@ -38,3 +38,7 @@ The current route registry contains 14 app screen identities, four trigger mode 
 - English (`en`) is the source copy; German (`de`) and Dutch (`nl`) require identical keys and parameter contracts. No released localized page may silently fall back to English.
 
 LOC-01 is complete when the ownership table, route/screen inventory and exclusions are represented in the key manifest; each migrated consumer points to one stable key and the source-scan gate reports no unowned user-facing copy. Translation completeness and user-visible flow coverage are separately enforced by LOC-03/06/08.
+
+## Newly audited Learn Sounds surface — 2026-11-20
+
+The Learn page and its `SoundCard` primitive previously retained English-only progress summaries, action labels, image alternative text, optional-sound controls, and trigger-profile status copy. These now belong to `learn.soundCard.*` and `learn.profile.*` in the English, German and Dutch YAML catalogs. The page adapts the profile's language-neutral status/count data at render time; the domain assessment in `src/profileQuality.js` remains responsible for classification only. A locale-switch test covers the German controls and incomplete-profile guidance. This increment does not complete the global key-level source inventory: run/review fragments, remaining legacy dialogs/controllers and practice-guide details still need systematic scanning.

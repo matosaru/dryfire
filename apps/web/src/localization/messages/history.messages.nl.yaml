@@ -28,6 +28,12 @@ recognition:
   resultDelete: Herkenningsresultaat van {{date}} verwijderen
   resultConfirmDelete: Verwijderen van herkenningsresultaat van {{date}} bevestigen
   resultCancelDelete: Verwijderen van herkenningsresultaat van {{date}} annuleren
+  notVerified: Niet gecontroleerd
+  otherNoise: Ander geluid / achtergrondgeluid
+  sequenceRecognized: "{{title}} · Reeks herkend ✓"
+  outOfOrder: "{{title}} · Verkeerde volgorde"
+  unknownSequenceSound: "{{title}} · Onbekend geluid"
+  stepDetected: "{{title}} · Stap herkend"
 actions:
   delete: Verwijderen
   cancel: Annuleren

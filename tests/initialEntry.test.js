@@ -1,13 +1,14 @@
 import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
+import {translate} from '../apps/web/src/localization/runtime.ts';
 const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const open=source.slice(source.indexOf('async function openEntry()'),source.indexOf('const gunTypeImages'));
 const start=source.indexOf('  if (!activeGun || activeGun.needsDetails)',source.indexOf('  const recovered = [];'));
 const entry=source.slice(start,source.indexOf('  const recoveredForGun',start));
 function setup(pendingEntry,activeGun={id:'a'}){
  let release;const pending=new Promise(resolve=>{release=resolve;});
- const context={pendingEntry,activeGun,switchView:jest.fn(()=>pending),practiceController:{open:jest.fn(()=>pending)},openGunSetup:jest.fn(),setStatus:jest.fn()};
+ const context={pendingEntry,activeGun,translate,switchView:jest.fn(()=>pending),practiceController:{open:jest.fn(()=>pending)},openGunSetup:jest.fn(),setStatus:jest.fn()};
  const run=runInNewContext(`${open}\nasync function finish(){${entry}\nsetStatus('Ready');}\nfinish;`,context);
  return {run,context,release};
 }

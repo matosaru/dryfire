@@ -17,3 +17,4 @@ collection:
 custom:
   create: + Eigen oefening maken
   empty: Er zijn nog geen eigen oefeningen voor dit wapen. Maak een eigen oefening om een reeks toe te voegen.
+  edit: Reeks bewerken

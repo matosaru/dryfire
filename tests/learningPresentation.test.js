@@ -13,6 +13,7 @@ import {renderPageTemplates} from '../tools/page-templates.mjs';
 import {listeningReadiness} from '../apps/web/src/features/live-listen/readiness.ts';
 import {soundCard} from '../src/uiComponents.js';
 import {assessTriggerProfile,renderTriggerProfile} from '../src/profileQuality.js';
+import {formatLocaleNumber,translate} from '../apps/web/src/localization/runtime.ts';
 const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 const start=source.indexOf('const labelMeta ='), metadata=source.slice(start,source.indexOf('};',start)+2);
 const rendering=source.slice(source.indexOf('function learningProps()'),source.indexOf('async function toggleOptionalSound'));
@@ -20,8 +21,8 @@ function setup() {
   document.body.innerHTML=renderPageTemplates('{{app}}');
   const counts={trigger:3,draw:1,rack:0,reload:0};
   const record=jest.fn(),reset=jest.fn(),calibration=jest.fn();
-  const context={setNodeText,setNodeDisabled,learnPage:null,livePage:null,homePage:undefined,drillsPage:null,informationPages:{setNavigationDisabled:jest.fn()},listeningReadiness,preferencePending:false,profileLoading:false,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
-    titleFor:label=>label,labels:['draw','rack','trigger','reload'],getCounts:()=>counts,triggerReady:()=>counts.trigger>=3,
+  const context={translate,formatLocaleNumber,setNodeText,setNodeDisabled,learnPage:null,livePage:null,homePage:undefined,drillsPage:null,informationPages:{setNavigationDisabled:jest.fn()},listeningReadiness,preferencePending:false,profileLoading:false,document,soundCard,$:selector=>document.querySelector(selector),activeView:'learn',activeGun:{id:'one',name:'One',needsDetails:false},
+    titleFor:label=>label,labelMetaFor:label=>({title:label,description:label,tone:'blue'}),labels:['draw','rack','trigger','reload'],getCounts:()=>counts,triggerReady:()=>counts.trigger>=3,
     MAX_EXAMPLES_PER_CLASS:10,MIN_EXAMPLES_PER_CLASS:3,RECOMMENDED_EXAMPLES_PER_CLASS:8,
     profileLocked:()=>context.busy,busy:false,livePendingStart:false,liveSession:null,sessionController:null,practiceController:null,
     calibration:[],examples:[],profileQuality:{assessTriggerProfile,renderTriggerProfile},recordCalibration:jest.fn(),resetCalibration:jest.fn(),enabledSoundLabels:['trigger','draw'],recordExample:record,resetSoundProfile:reset,toggleOptionalSound:jest.fn(),renderCalibrationCards:calibration,

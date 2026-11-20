@@ -28,6 +28,12 @@ recognition:
   resultDelete: Erkennungsergebnis vom {{date}} löschen
   resultConfirmDelete: Löschen des Erkennungsergebnisses vom {{date}} bestätigen
   resultCancelDelete: Löschen des Erkennungsergebnisses vom {{date}} abbrechen
+  notVerified: Nicht bestätigt
+  otherNoise: Anderes Geräusch / Hintergrundlärm
+  sequenceRecognized: "{{title}} · Ablauf erkannt ✓"
+  outOfOrder: "{{title}} · Falsche Reihenfolge"
+  unknownSequenceSound: "{{title}} · Unbekanntes Geräusch"
+  stepDetected: "{{title}} · Schritt erkannt"
 actions:
   delete: Löschen
   cancel: Abbrechen

@@ -1,12 +1,26 @@
 import { GUIDE_MANUALS } from './practiceGuideManuals.js';
 import { normalizeCustomDrill, getDrill } from './drills.js';
+import {translate} from '../apps/web/src/localization/runtime.ts';
 
 export const PUBLIC_GUIDE_GUN = 'public-guide';
 export function isPublicGuideContextCurrent(guide, gunId) {
   return !!guide?.publicEntry && guide.gunId === (gunId ?? PUBLIC_GUIDE_GUN) && guide.sourceKey === `public:${guide.id}`;
 }
 
-const labels = { draw: 'Draw from holster', rack: 'Rack slide', trigger: 'Trigger pull', reload: 'Change magazine' };
+const soundMessageKeys = { draw: 'draw', rack: 'rack', trigger: 'trigger', reload: 'reload' };
+const localizedText = (source, field) => translate('practice-guide', `manuals.${source.id}.${field}`);
+const localizedList = (source, field) => localizedText(source, field).split('\n').filter(Boolean);
+const localizedManual = source => ({
+  ...source,
+  title: localizedText(source, 'title'),
+  purpose: localizedText(source, 'purpose'),
+  measures: localizedText(source, 'measures'),
+  steps: localizedList(source, 'steps'),
+  expect: localizedText(source, 'expect'),
+  requires: localizedText(source, 'requires'),
+  stages: localizedList(source, 'stages'),
+  exampleConfig: localizedText(source, 'exampleConfig'),
+});
 
 /** Read-only guide snapshot. Never validates or writes the original form draft. */
 export function getPracticeGuide(context) {
@@ -20,30 +34,27 @@ export function getPracticeGuide(context) {
   } else throw new TypeError('Unknown guide context.');
   const source = GUIDE_MANUALS.find(m => m.id === id);
   if (!source) throw new TypeError('Unknown practice guide.');
-  const guide = { ...structuredClone(source), ...(context.publicEntry ? { publicEntry: true } : {}), gunId: context.gunId, sourceKey: context.routeKey,
+  const guide = { ...structuredClone(localizedManual(source)), ...(context.publicEntry ? { publicEntry: true } : {}), gunId: context.gunId, sourceKey: context.routeKey,
     parent: context.type === 'practice' ? 'practice' : 'session', contextKey: `${context.type}:${context.routeKey}` };
   if (drill) {
-    guide.title = drill.title; guide.sequence = [...drill.steps];
-    guide.stages = ['Microphone connected', 'Countdown and app signal', drill.steps.map(s => labels[s]).join(' → '), 'Result and next repetition'];
+    const builtIn = getDrill(drill.id);
+    guide.title = builtIn ? translate('public-site', `routes.${id}.heading`) : drill.title;
+    guide.sequence = [...drill.steps];
   }
   if (id === 'sequence-custom') {
-    guide.expect = 'The displayed steps belong to this saved preset. Only recognized sounds in that order complete a repetition.';
-    guide.requires = 'Learn each distinct sound shown in this preset. A sound can appear more than once.';
-    guide.exampleConfig = `${drill.steps.length > 3 ? 1 : 2} example attempts · random 2–5 s delay · app beep on`;
+    guide.exampleConfig = translate('practice-guide', 'runtime.customExampleConfig', { attempts: drill.steps.length > 3 ? 1 : 2 });
   }
   if (context.type === 'practice' && config.startSource === 'external') {
-    guide.currentSetup = 'Your setup uses a calibrated external beep: no app countdown or app beep. The illustration below demonstrates the app-signal option.';
-    guide.steps = guide.steps.map(s => s.replace(/ready delay/g, 'start signal').replace(/countdown/g, 'external-cue wait'));
+    guide.currentSetup = translate('practice-guide', 'runtime.setup.externalCue');
+    guide.steps = translate('practice-guide', `runtime.externalCue.${id}Steps`).split('\n').filter(Boolean);
     if (id === 'single') {
-      guide.steps[0] = 'Choose your repetition target and Calibrated external beep.';
-      guide.steps[1] = 'Start and wait for the external beep before one trigger press.';
-      guide.expect = 'In this external-cue setup, trigger clicks before the calibrated cue are not counted as attempts. The early-failure example below demonstrates App signal mode.';
+      guide.expect = translate('practice-guide', 'runtime.externalCue.singleExpect');
     }
-    guide.requires += ' Calibrated external-beep start needs three compatible cue examples.';
+    guide.requires += translate('practice-guide', 'runtime.externalCue.requirementSuffix');
   } else if (config.soundAtStart === false) {
-    guide.currentSetup = 'Your setup uses a silent visual start. Wait for the on-screen signal; the illustration demonstrates the optional app beep.';
-  } else guide.currentSetup = 'App-signal example. Your chosen counts and timing stay unchanged when you return to setup.';
-  if (context.publicEntry) guide.currentSetup = 'Example settings shown. Return to setup to choose your counts and timing.';
+    guide.currentSetup = translate('practice-guide', 'runtime.setup.silentStart');
+  } else guide.currentSetup = translate('practice-guide', 'runtime.setup.appSignal');
+  if (context.publicEntry) guide.currentSetup = translate('practice-guide', 'runtime.setup.publicEntry');
   return guide;
 }
 
@@ -51,4 +62,7 @@ export function isGuideContextCurrent(guide, gunId, sourceKey) {
   return !!guide && guide.gunId === gunId && !!sourceKey && guide.sourceKey === sourceKey;
 }
 
-export function guideSoundTitle(label) { return labels[label]; }
+export function guideSoundTitle(label) {
+  const key = soundMessageKeys[label];
+  return key ? translate('common', `sound.${key}`) : label;
+}

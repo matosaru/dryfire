@@ -2,6 +2,7 @@ import {bindPreferenceContext} from './helpers/preferenceContext.js';
 import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
+import {translate} from '../apps/web/src/localization/runtime.ts';
 const source=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
 function setup(){
  const practice={showRecord:jest.fn()},session={};
@@ -18,7 +19,7 @@ test('deferred owners retain context, action, feedback, catalog locks and saved-
 });
 
 test('practice feedback does not recursively refresh its already rendered run/review; external changes still refresh it',()=>{
- const context={liveSession:null,sessionController:null,practiceController:{locked:()=>false,refresh:jest.fn()},profileLoading:false,busy:false,livePendingStart:false,drillsPage:{update:jest.fn()},liveText:jest.fn(),liveClass:jest.fn(),liveDisabled:jest.fn(),settingsDisabled:jest.fn(),historyDisabled:jest.fn(),renderLearningLocks:jest.fn(),renderGunControls:jest.fn(),renderPreferences:jest.fn(),profileLocked:()=>false};
+ const context={translate,liveSession:null,sessionController:null,practiceController:{locked:()=>false,refresh:jest.fn()},profileLoading:false,busy:false,livePendingStart:false,drillsPage:{update:jest.fn()},liveText:jest.fn(),liveClass:jest.fn(),liveDisabled:jest.fn(),settingsDisabled:jest.fn(),historyDisabled:jest.fn(),renderLearningLocks:jest.fn(),renderGunControls:jest.fn(),renderPreferences:jest.fn(),profileLocked:()=>false};
  bindPreferenceContext(context);
  const render=vm.runInNewContext(source.slice(source.indexOf('function renderLiveButton('),source.indexOf('async function stopLive()'))+'\nrenderLiveButton;',context);
  render(false);expect(context.practiceController.refresh).not.toHaveBeenCalled();expect(context.renderGunControls).toHaveBeenCalledTimes(1);expect(context.renderPreferences).toHaveBeenCalledTimes(1);render();expect(context.practiceController.refresh).toHaveBeenCalledTimes(1);
