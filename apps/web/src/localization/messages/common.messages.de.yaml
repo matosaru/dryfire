@@ -152,7 +152,7 @@ runtime:
     soundsReadySafety: Geräusche bereit. „Starten“ öffnet die Sicherheitsbestätigung.
     soundsReady: Erforderliche Geräusche sind bereit. Starte, wenn du bereit bist.
     cueExternal: Der akustische Timer startet, wenn dein kalibrierter Signalton erkannt wird. Die App spielt keinen zweiten Signalton.
-    cueBeep: Mikrofon vor dem Countdown bereit. {{earlyTrigger}}Stelle die Medienlautstärke deines Geräts für den Startton ein. Die ersten {{seconds}} s nach GO werden zum Herausfiltern des Tons ausgeschlossen.
+    cueBeep: Mikrofon vor dem Countdown bereit. {{earlyTrigger}} Stelle die Medienlautstärke deines Geräts für den Startton ein. Die ersten {{seconds}} s nach GO werden zum Herausfiltern des Tons ausgeschlossen.
     earlyTrigger: Ein Abzugsgeräusch vor dem Signalton lässt den Versuch scheitern.
     cueSilent: Mikrofon vor dem Countdown bereit. Der stille Start verwendet das Signal auf dem Bildschirm; ein Abzugsgeräusch davor lässt den Einzelversuch scheitern.
     saved: Übung gespeichert

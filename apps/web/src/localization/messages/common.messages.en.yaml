@@ -152,7 +152,7 @@ runtime:
     soundsReadySafety: Sounds ready. Start opens safety confirmation.
     soundsReady: Required sounds ready. Start when you are ready.
     cueExternal: Waiting for your calibrated beep starts the acoustic timer. The app does not play a second cue.
-    cueBeep: Microphone ready before countdown. {{earlyTrigger}}Set your device media volume for the start sound. The first {{seconds}} s after GO is excluded to reject the cue.
+    cueBeep: Microphone ready before countdown. {{earlyTrigger}} Set your device media volume for the start sound. The first {{seconds}} s after GO is excluded to reject the cue.
     earlyTrigger: A trigger before the beep fails the attempt.
     cueSilent: Microphone ready before countdown. Silent start uses the on-screen signal; Single triggers before it fail the attempt.
     saved: Practice saved

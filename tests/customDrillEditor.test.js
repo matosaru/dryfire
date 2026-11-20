@@ -13,14 +13,14 @@ import {editionCapabilities} from '../src/buildEdition.js';
 const $=id=>document.getElementById(id);
 let rendererMode='native',mountedView;
 afterEach(async()=>{if(mountedView)act(()=>mountedView.dispose());mountedView=null;document.body.replaceChildren();await loadLocale('en');});
-function setup(edition='preview'){
+function setup(edition='preview',connect=true){
  document.body.innerHTML=renderPageTemplates('{{app}}');let busy=false,currentEdition=edition;
  const saved={id:'custom-existing',title:'Existing preset',steps:['draw','trigger']};
  const context={activeGun:{id:'gun-one',name:'Owned gun',type:'Handguns'},customDrills:[saved]};
  const onSave=jest.fn(async()=>{}),onError=jest.fn(),onMessage=jest.fn();
  const editor=createCustomDrillEditor({doc:document,getCapabilities:()=>editionCapabilities(currentEdition),getContext:()=>context,locked:()=>busy,titleFor:label=>label,setBusy:value=>{busy=value;},onSave,onError,onMessage});
- if(rendererMode==='react')act(()=>{mountedView=editor.connectView(mountCustomDrillFields);expect(editor.connectView(mountCustomDrillFields)).toBe(mountedView);});
- const actions={...editor,open(...args){act(()=>editor.open(...args));},reset(){act(()=>editor.reset());}};
+ if(rendererMode==='react'&&connect)act(()=>{mountedView=editor.connectView(mountCustomDrillFields);expect(editor.connectView(mountCustomDrillFields)).toBe(mountedView);});
+ const actions={...editor,open(...args){act(()=>editor.open(...args));},connect(){act(()=>{mountedView=editor.connectView(mountCustomDrillFields);});return mountedView;},reset(){act(()=>editor.reset());}};
  return{editor:actions,saved,context,onSave,onError,onMessage,lock:value=>{busy=value;},edition:value=>{currentEdition=value;},busy:()=>busy};
 }
 const add=label=>{$('customAction').value=label;fireEvent.click($('addCustomActionBtn'));};
@@ -35,5 +35,6 @@ test('Full creation saves a normalized new id without reusing another preset',as
 test('Cancel hides but retains a draft, and incomplete profiles cannot replace it',()=>{const s=setup();s.editor.open(s.saved);$('customDrillName').value='Keep on cancel';fireEvent.click($('cancelCustomDrillBtn'));expect($('customDrillForm')).toHaveClass('hidden');expect($('customDrillName').value).toBe('Keep on cancel');s.context.activeGun={...s.context.activeGun,needsDetails:true};s.editor.open();expect($('customDrillName').value).toBe('Keep on cancel');});
 test('changed capability/profile guards prevent stale new-preset submissions without losing a draft',()=>{const s=setup();s.editor.open();$('customDrillName').value='New draft';add('trigger');s.edition('public');const before=stepNames();add('rack');fireEvent.click($('customDrillSteps').querySelector('[data-step-action="remove"]'));expect(stepNames()).toEqual(before);fireEvent.submit($('customDrillForm'));expect(s.onSave).not.toHaveBeenCalled();expect(s.onMessage).toHaveBeenCalledWith('New custom drills are unavailable in this public version.');s.context.activeGun=null;s.editor.open(s.saved);expect($('customDrillName').value).toBe('New draft');});
 if(mode==='react')test.each([{locale:'de',title:'Übung bearbeiten',label:'Name der Übung',save:'Übung speichern',trigger:'Abzugsdruck',step:'Ziehen aus dem Holster'},{locale:'nl',title:'Oefening bewerken',label:'Naam van de oefening',save:'Oefening opslaan',trigger:'Trekker overhalen',step:'Trek uit het holster'}])('mounted editor follows $locale changes without controller remount',async({locale,title,label,save,trigger,step})=>{const s=setup();s.editor.open(s.saved);expect($('customDrillEditorTitle')).toHaveTextContent('Edit drill');await act(async()=>{await loadLocale(locale);});expect($('customDrillEditorTitle')).toHaveTextContent(title);expect($('customDrillName').parentElement).toHaveTextContent(label);expect($('saveCustomDrillBtn')).toHaveTextContent(save);expect($('customAction')).toHaveTextContent(trigger);expect($('customDrillSteps').firstElementChild).toHaveTextContent(`1. ${step}`);});
+if(mode==='react')test('delayed React mount preserves the existing draft title and content',()=>{const s=setup('preview',false);s.editor.open(s.saved);expect($('customDrillEditorTitle')).toHaveTextContent('Edit drill');expect($('customDrillName')).toHaveValue('Existing preset');s.editor.connect();expect($('customDrillEditorTitle')).toHaveTextContent('Edit drill');expect($('customDrillName')).toHaveValue('Existing preset');expect(stepNames()).toEqual(['1. Draw from holster','2. Trigger pull']);});
 
 });

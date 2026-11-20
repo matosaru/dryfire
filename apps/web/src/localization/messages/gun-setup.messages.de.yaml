@@ -1,6 +1,6 @@
 page:
   firstTitle: Erste Waffe hinzufügen
-  firstDescription: Gib ihr einen Namen und wähle einen Typ. Ihre Töne und Übungen bleiben getrennt.
+  firstDescription: Gib dieser Waffe einen Namen und Typ. Gelernte Töne, Abläufe und Verlauf werden separat auf diesem Gerät gespeichert.
   addTitle: Deine Waffe hinzufügen
   addDescription: Gib dieser Waffe einen Namen und Typ. Gelernte Töne, Abläufe und Verlauf werden separat auf diesem Gerät gespeichert.
   editTitle: Waffe bearbeiten

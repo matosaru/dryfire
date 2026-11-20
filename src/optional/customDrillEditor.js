@@ -66,7 +66,7 @@ export function createCustomDrillEditor({ doc, getCapabilities, getContext, lock
   return{open,
     connectView(mount){
       if(view)return view;
-      view=mount($('customDrillForm'),{titleKey:'create',nameValue:$('customDrillName').value,actionValue:$('customAction').value,stepLabels:steps,addDisabled:$('addCustomActionBtn').disabled,saveDisabled:$('saveCustomDrillBtn').disabled},{onAdd:addAction,onCancel:cancel,onStep:changeStep});
+      view=mount($('customDrillForm'),{titleKey:editingId?'edit':'create',nameValue:$('customDrillName').value,actionValue:$('customAction').value,stepLabels:steps,addDisabled:$('addCustomActionBtn').disabled,saveDisabled:$('saveCustomDrillBtn').disabled},{onAdd:addAction,onCancel:cancel,onStep:changeStep});
       return view;
     },
     reset(){editingId=null;steps=[];if(view)view.reset({nameValue:'',actionValue:'draw',stepLabels:[]});else{$('customDrillForm').reset();$('customDrillSteps').replaceChildren();}},

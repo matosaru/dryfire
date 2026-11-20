@@ -125,3 +125,7 @@ The native Live Listen selector's free-listening entry now uses `live-listen.mod
 The shared Contact email-copy control now consumes `contact.email.*` itself, so the localized app page and localized public SEO Contact route use the same translated button, hint, copied status and clipboard-unavailable fallback.
 
 Sound Check now delegates microphone/readiness statuses to the common audio-status translator. Its locale-refresh logic stores the current source status and translates it again on language changes instead of matching English status sentences to a duplicate Sound Check key map.
+
+## Newly audited History evaluation matrix — 2026-11-20
+
+React History now formats the matrix's stable sound IDs with the same common sound and History noise labels as the native renderer. Matrix lookups and correct-cell logic continue to use the unchanged IDs. Focused component coverage and delayed-handoff pixel parity pass in Chromium and WebKit; the reviewed English mobile History baseline now reflects the readable labels. The repository-wide source scan remains open; remaining English strings in shared UI package defaults are reviewed as app fallbacks separately from live YAML-owned app copy.

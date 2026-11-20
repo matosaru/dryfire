@@ -1,6 +1,6 @@
 page:
   firstTitle: Add your first gun
-  firstDescription: Give it a name and choose a type. Its sounds and drills stay separate.
+  firstDescription: Give this gun a name and type. Its learned sounds, presets and history will be saved separately on this device.
   addTitle: Add your gun
   addDescription: Give this gun a name and type. Its learned sounds, presets and history will be saved separately on this device.
   editTitle: Edit gun

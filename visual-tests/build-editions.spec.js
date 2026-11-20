@@ -57,7 +57,7 @@ if (edition === 'public') {
     await page.evaluate(() => { document.querySelector('#addGunBtn').classList.remove('hidden'); document.querySelector('#addGunBtn').disabled = false; });
     await page.evaluate(() => document.querySelector('#addGunBtn').click()); await expect(page.locator('#gunsView')).toBeVisible();
     await page.evaluate(() => { document.querySelector('#gunName').value = 'Blocked third gun'; document.querySelector('#gunType').value = 'Handguns'; document.querySelector('#gunForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); });
-    await expect(page.locator('#appMessage')).toContainText('two guns');
+    await expect(page.locator('#appMessage')).toContainText('gun profile limit');
     await page.locator('#gunList .gun-card').first().click(); await expect(page.locator('#homeView')).toBeVisible();
     await page.locator('.tab[data-view="drills"]').click();
     await expect(page.locator('#customDrillsTab')).not.toBeVisible();

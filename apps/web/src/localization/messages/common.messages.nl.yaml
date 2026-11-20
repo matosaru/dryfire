@@ -152,7 +152,7 @@ runtime:
     soundsReadySafety: Geluiden zijn klaar. Start opent de veiligheidsbevestiging.
     soundsReady: Vereiste geluiden zijn klaar. Start wanneer je er klaar voor bent.
     cueExternal: De akoestische timer start wanneer je gekalibreerde pieptoon wordt herkend. De app speelt geen tweede signaal af.
-    cueBeep: Microfoon gereed vóór het aftellen. {{earlyTrigger}}Stel het mediavolume van je apparaat in voor het startgeluid. De eerste {{seconds}} s na GO worden uitgesloten om de pieptoon te weren.
+    cueBeep: Microfoon gereed vóór het aftellen. {{earlyTrigger}} Stel het mediavolume van je apparaat in voor het startgeluid. De eerste {{seconds}} s na GO worden uitgesloten om de pieptoon te weren.
     earlyTrigger: Een trekkerklik vóór de pieptoon laat de poging mislukken.
     cueSilent: Microfoon gereed vóór het aftellen. Stil starten gebruikt het signaal op het scherm; een trekkerklik daarvoor laat de enkele poging mislukken.
     saved: Oefening opgeslagen
