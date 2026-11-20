@@ -16,7 +16,7 @@ This inventory maps every maintained UI/page family and its source owner to one 
 | Built-in and saved drill catalog | `drills` | `apps/web/src/pages/DrillsPage/**`; `src/drills.js`; `src/practiceModes.js`; drill card/preset presentation |
 | Trigger-practice configure/run/review | `practice` | `apps/web/src/pages/PracticePage/**`; `apps/web/src/app/practiceContents.tsx`; `src/practiceController.js`; practice state/result presentation |
 | Sequence configure/run/review | `sequence` | `apps/web/src/pages/SequencePage/**`; `apps/web/src/app/sequenceContents.tsx`; `src/sessionController.js`; session result/presentation copy |
-| About this practice, all built-in guide variants and custom guide | `practice-guide` | `apps/web/src/pages/PracticeGuidePage/**`; `src/practiceGuideManuals.js`; `src/practiceGuides.js`; `src/practiceGuideExamples.js`; guide content/presentation |
+| About this practice, all built-in guide variants and custom guide | `practice-guide` | `apps/web/src/pages/PracticeGuidePage/**`; `src/practiceGuideManuals.js` (structural IDs/kinds/sound order only); `src/practiceGuides.js`; `src/practiceGuideExamples.js`; guide content/presentation |
 | Live Listen | `live-listen` | `apps/web/src/pages/LiveListenPage/**`; `apps/web/src/features/live-listen/**`; live-listen readiness/presentation/controller |
 | History, progress and deletion | `history` | `apps/web/src/pages/HistoryPage/**`; `apps/web/src/features/history/**`; `src/optional/renderLegacyHistory.js`; `src/history*` and `src/sessionController.js` |
 | Gun list | `guns` | `apps/web/src/pages/GunsPage/**`; gun library presentation/coordinator |
@@ -55,6 +55,10 @@ The create/edit form's titles, field labels, action-order accessibility name, ac
 ## Newly audited animated Practice Guide — 2026-11-20
 
 Guide animation frame labels, simulated microphone states, countdown/results, counters, captions, no-save disclosures, and play/pause/replay controls now use the `practice-guide.example.*` message keys in all supported locales. Sequence-step sound labels reuse `common.sound.*`; integer and decimal example values use locale formatting. The animation continues to simulate only presentation state and does not access audio or storage. German/Dutch tests cover representative frame states and number formatting; English frame parity remains covered separately. The overall scan for unowned user-facing text is still open.
+
+## Practice Guide catalog ownership cleanup — 2026-11-20
+
+Removed the duplicate English manual prose from `src/practiceGuideManuals.js`; that module now contains only stable guide IDs, guide kinds and example sound order. `src/practiceGuides.js` resolves all displayed manual fields from the `practice-guide` YAML catalogs. A source-ownership regression test protects this boundary, while the guide tests verify localized values still populate the returned manual. This is one completed source-audit slice; LOC-01 remains open for the repository-wide scan.
 
 ## Newly audited Learn calibration cards — 2026-11-20
 

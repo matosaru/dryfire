@@ -1,9 +1,18 @@
 import { getPracticeGuide, guideSoundTitle, isGuideContextCurrent, isPublicGuideContextCurrent } from '../src/practiceGuides.js';
+import { GUIDE_MANUALS } from '../src/practiceGuideManuals.js';
 import { createScenario } from '../src/practiceGuideExamples.js';
 import {loadLocale,translate} from '../apps/web/src/localization/runtime.ts';
 const context = (mode, config = {}) => ({ type: 'practice', mode, gunId: 'gun-a', routeKey: 'setup-a', config });
 
 afterEach(async () => { await loadLocale('en'); });
+
+test('guide source records contain structure only; localized catalogs own the manual copy', () => {
+  expect(GUIDE_MANUALS).toHaveLength(9);
+  expect(GUIDE_MANUALS.every(manual => Object.keys(manual).sort().join(',') === 'id,kind,sequence')).toBe(true);
+  const guide = getPracticeGuide(context('single'));
+  expect(guide.title).toBe(translate('practice-guide', 'manuals.single.title'));
+  expect(guide.steps).toEqual(translate('practice-guide', 'manuals.single.steps').split('\n').filter(Boolean));
+});
 
 test.each(['single', 'repeated', 'par', 'control'])('%s has its own short manual and an engine-checked example', mode => {
   const guide = getPracticeGuide(context(mode));
