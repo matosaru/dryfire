@@ -133,6 +133,8 @@ runtimeErrors:
   gunLimit: Diese Version hat die maximale Anzahl an Waffenprofilen erreicht. Wähle ein vorhandenes Profil aus.
   sampleLimit: Das Limit für Beispiele dieses Tons ist erreicht. Vorhandene Beispiele bleiben erhalten.
   calibrationLimit: Das Kalibrierungslimit für diese Kategorie ist erreicht. Vorhandene Beispiele bleiben erhalten.
+  recordMissing: Dieser Verlaufseintrag ist für die ausgewählte Waffe nicht mehr verfügbar. Aktualisiere den Verlauf und versuche es erneut.
+  trainingDataInvalid: Das gelernte Klangprofil ist nicht verfügbar oder ungültig. Überprüfe das Training unter Töne lernen, bevor du fortfährst.
 runtime:
   practice:
     inputDetected: Mikrofoneingang erkannt.

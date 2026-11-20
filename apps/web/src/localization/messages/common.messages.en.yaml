@@ -133,6 +133,8 @@ runtimeErrors:
   gunLimit: This version has reached its gun profile limit. Select an existing gun to continue.
   sampleLimit: The sample limit for this sound has been reached. Existing samples are unchanged.
   calibrationLimit: The calibration sample limit for this category has been reached. Existing samples are unchanged.
+  recordMissing: This history item is no longer available for the selected gun. Refresh History and try again.
+  trainingDataInvalid: The learned sound profile is unavailable or invalid. Review training in Learn before continuing.
 runtime:
   practice:
     inputDetected: Microphone input detected.

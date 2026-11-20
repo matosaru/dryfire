@@ -109,7 +109,7 @@ test('samples, manual verification, resets, trimming and clearing belong only to
   await addExample('draw', features.map(v => v + 0.4), b.id);
   const aEvent = await addEvent({ label: 'draw', score: 60 }, a.id);
   const bEvent = await addEvent({ label: 'rack', score: 80 }, b.id);
-  await expect(verifyEvent(aEvent.id, 'reload', b.id)).rejects.toThrow(/not found|gun/i);
+  await expect(verifyEvent(aEvent.id, 'reload', b.id)).rejects.toMatchObject({code:'EVENT_MISSING',message:expect.stringMatching(/not found|gun/i)});
   expect((await getEvents(a.id))[0].actualLabel).toBeUndefined();
   await verifyEvent(aEvent.id, 'reload', a.id);
   await clearExamplesForLabel('draw', a.id);

@@ -37,4 +37,6 @@ test('gun library and training-capacity errors use actionable localized messages
  expect(translateApplicationError({code:'GUN_LIMIT',message:'Maximum five guns saved.'})).toContain('maximale Anzahl an Waffenprofilen');
  expect(translateApplicationError({code:'SAMPLE_LIMIT',message:'Maximum examples reached.'})).toContain('Limit für Beispiele dieses Tons');
  expect(translateApplicationError({code:'CALIBRATION_LIMIT',message:'Maximum calibration examples reached.'})).toContain('Kalibrierungslimit');
+ expect(translateApplicationError({code:'SESSION_MISSING',message:'Session missing.'})).toContain('Verlaufseintrag ist für die ausgewählte Waffe');
+ expect(translateApplicationError({code:'TRAINING_DATA_INVALID',message:'Training data is invalid.'})).toContain('Klangprofil ist nicht verfügbar oder ungültig');
 });

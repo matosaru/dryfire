@@ -284,7 +284,7 @@ export async function verifyEvent(id, actualLabel, gunId) {
     const store = tx.objectStore(EVENTS);
     const request = store.get(id);
     request.onsuccess = () => {
-      if (!request.result || request.result.gunId !== owner) { context.fail(new Error('Recognition event not found for this gun.')); return; }
+      if (!request.result || request.result.gunId !== owner) { context.fail(storageError('EVENT_MISSING','Recognition event not found for this gun.')); return; }
       const row = { ...request.result };
       if (actualLabel === null) delete row.actualLabel;
       else row.actualLabel = actualLabel;
@@ -305,7 +305,7 @@ export async function clearEvents(gunId) {
 export async function deleteEvent(id,gunId){
  if(typeof id!=='string'||!id)throw new TypeError('Invalid recognition event ID.');
  const owner=await resolveGunId(gunId,true);
- return withOwnedTransaction(owner,EVENTS,(tx,context)=>{const store=tx.objectStore(EVENTS),request=store.get(id);request.onsuccess=()=>{if(!request.result||request.result.gunId!==owner){context.fail(new Error('Recognition event not found for this gun.'));return;}store.delete(id);};});
+ return withOwnedTransaction(owner,EVENTS,(tx,context)=>{const store=tx.objectStore(EVENTS),request=store.get(id);request.onsuccess=()=>{if(!request.result||request.result.gunId!==owner){context.fail(storageError('EVENT_MISSING','Recognition event not found for this gun.'));return;}store.delete(id);};});
 }
 
 export async function trimEvents(maxResults, gunId) {
@@ -423,7 +423,7 @@ export async function clearSessions(gunId) {
 export async function deleteSession(id,gunId){
  if(typeof id!=='string'||!id)throw new TypeError('Invalid saved session ID.');
  const owner=await resolveGunId(gunId,true);
- return withOwnedTransaction(owner,SESSIONS,(tx,context)=>{const store=tx.objectStore(SESSIONS),request=store.get(id);request.onsuccess=()=>{if(!request.result||request.result.gunId!==owner){context.fail(new Error('Saved session not found for this gun.'));return;}store.delete(id);};});
+ return withOwnedTransaction(owner,SESSIONS,(tx,context)=>{const store=tx.objectStore(SESSIONS),request=store.get(id);request.onsuccess=()=>{if(!request.result||request.result.gunId!==owner){context.fail(storageError('SESSION_MISSING','Saved session not found for this gun.'));return;}store.delete(id);};});
 }
 
 export async function getSession(id, gunId) {

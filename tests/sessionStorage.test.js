@@ -1,7 +1,7 @@
 import {
   addEvent, addExample, clearEvents, clearExamples, clearExamplesForLabel, createGun,
   exportBackup, getEvents, getExamples, getGunSetting, getGuns, getSession, getSessions,
-  getSetting, recoverInterruptedSessions, restoreBackup, saveCustomDrill, saveSession,
+  getSetting, recoverInterruptedSessions, restoreBackup, saveCustomDrill, saveSession, deleteSession,
   setActiveGun, setGunSetting, setSetting, trimEvents,
 } from '../src/storage.js';
 
@@ -44,6 +44,10 @@ function completedSession(gun, overrides = {}) {
 
 beforeEach(removeDb);
 afterAll(removeDb);
+
+test('stale session deletion reports a stable localizable code',async()=>{
+ const gun=await makeGun('A');await expect(deleteSession('missing-session',gun.id)).rejects.toMatchObject({code:'SESSION_MISSING',message:expect.stringMatching(/not found/i)});
+});
 
 test('schema-two upgrade creates separate session store and preserves models, events and all preferences', async () => {
   const gun = { id: 'existing-gun', name: 'Existing gun', type: 'Handguns', needsDetails: false, createdAt: 10 };

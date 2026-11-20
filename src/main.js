@@ -218,7 +218,7 @@ const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+
 const gunLibraryCoordinator=createGunLibraryCoordinator({get guns(){return guns;},set guns(value){guns=value;},get gun(){return activeGun;},get capabilities(){return CAPABILITIES;},get loading(){return profileLoading;},set loading(value){profileLoading=value;},get events(){return eventQueue;},get session(){return sessionController;},get practice(){return practiceController;},get pendingEntry(){return pendingEntry;},get pages(){return profilePages;}},{getGuns,getExamples,getCustomDrills,deleteGun,setActiveGun,updateGun,createGun},{profileLocked,setMessage,switchView,loadProfilePages,showError,setBusy,loadActiveGun,setStatus,openEntry,renderGunControls,renderLiveButton,renderClassCards,gunImagePath,$,document,confirm:message=>confirm(message)});
 
 function ownerId() {
-  if (!activeGun || activeGun.needsDetails) throw new Error('Add gun details before training.');
+  if (!activeGun || activeGun.needsDetails) throw Object.assign(new Error('Add gun details before training.'),{code:'GUN_REQUIRED'});
   return activeGun.id;
 }
 function profileLocked() { return busy || profileLoading || preferenceState.pending || !!liveSession || livePendingStart || !!sessionController?.locked() || !!sessionController?.hasUnsavedResults() || !!practiceController?.locked() || !!soundCheckController?.locked?.(); }
@@ -748,7 +748,7 @@ function showRecognition(result, event) {
 
 async function savePrediction(features, token = null, gunId = ownerId(), prediction = undefined) {
   const result = prediction === undefined ? classify(examples, features, recognitionOptions(calibration, enabledSoundLabels)) : prediction;
-  if (!result) throw new Error('Training data is invalid.');
+  if (!result) throw Object.assign(new Error('Training data is invalid.'),{code:'TRAINING_DATA_INVALID'});
   if (token !== null && token !== liveToken) return;
   const drillMatch = token !== null ? recordDrillPrediction(result) : null;
   const event = await addEvent({
