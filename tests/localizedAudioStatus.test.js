@@ -22,6 +22,8 @@ test('recognition and microphone errors use the active language',async()=>{
  await loadLocale('nl');
  expect(translateAudioStatus('No clear sound detected. Move closer to the microphone or try a quieter room.'))
   .toBe('Geen duidelijk geluid herkend. Ga dichter bij de microfoon staan of probeer een stillere ruimte.');
+ expect(translateApplicationError({code:'AUDIO_NO_CLEAR_SOUND',message:'changed diagnostic wording'}))
+  .toBe('Geen duidelijk geluid herkend. Ga dichter bij de microfoon staan of probeer een stillere ruimte.');
 });
 
 test('invalid backup validation errors are localized without changing their storage error details',async()=>{

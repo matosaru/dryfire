@@ -46,7 +46,7 @@ export function translateAudioStatus(status) {
 }
 
 export function translateApplicationError(error) {
-  const errorKeys={INVALID_BACKUP:'invalidBackup',GUN_REQUIRED:'gunRequired',GUN_MISSING:'gunMissing',GUN_LIMIT:'gunLimit',SAMPLE_LIMIT:'sampleLimit',CALIBRATION_LIMIT:'calibrationLimit',EVENT_MISSING:'recordMissing',SESSION_MISSING:'recordMissing',TRAINING_DATA_INVALID:'trainingDataInvalid',GUIDE_UNAVAILABLE:'guideUnavailable'};
+  const errorKeys={INVALID_BACKUP:'invalidBackup',GUN_REQUIRED:'gunRequired',GUN_MISSING:'gunMissing',GUN_LIMIT:'gunLimit',SAMPLE_LIMIT:'sampleLimit',CALIBRATION_LIMIT:'calibrationLimit',EVENT_MISSING:'recordMissing',SESSION_MISSING:'recordMissing',TRAINING_DATA_INVALID:'trainingDataInvalid',GUIDE_UNAVAILABLE:'guideUnavailable',AUDIO_TOO_SHORT:'audioTooShort',AUDIO_NO_CLEAR_SOUND:'audioNoClearSound',AUDIO_DISTORTED:'audioDistorted',MICROPHONE_SECURE_CONTEXT:'microphoneSecureContext',WEB_AUDIO_UNAVAILABLE:'webAudioUnavailable',PCM_UNAVAILABLE:'pcmUnavailable',NO_MICROPHONE_AUDIO:'noMicrophoneAudio',MICROPHONE_DENIED:'microphoneDenied',NO_AUDIO_INPUT:'noInput',LISTENING_STOPPED:'listeningStopped',RECORDER_UNAVAILABLE:'recorderUnavailable'};
   const key=errorKeys[error?.code];
   if(key)return translate('common',`runtimeErrors.${key}`);
   return translateAudioStatus(error?.message||String(error));

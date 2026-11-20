@@ -109,3 +109,5 @@ Gun-library write guards now also attach stable codes for a missing gun, missing
 Stale event/session lookups and invalid training-data errors also now carry stable codes mapped to localized `common.runtimeErrors.*` text. The underlying English diagnostic remains attached for storage/debug callers. Focused persistence/localization tests cover missing records and translated training-data feedback. The broader audit of low-frequency controller, storage and validation errors remains open.
 
 Practice Guide lazy-load recovery now uses a stable `GUIDE_UNAVAILABLE` code routed through the shared common error catalog, rather than relying on exact English-message matching.
+
+Microphone and recording failures now attach stable codes for too-short, unclear or distorted samples; secure-context, Web Audio, PCM recorder and input availability; denied permission; and stopped capture. The shared error translator maps these codes into the existing common YAML messages. Focused audio lifecycle tests preserve the expected diagnostic strings and resource cleanup behavior.

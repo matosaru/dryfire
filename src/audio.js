@@ -9,6 +9,7 @@ export const RECORD_MS = 2000;
 const PREP_SECONDS = 2;
 const MIN_PEAK = 0.012;
 const MIN_RMS = 0.0012;
+const audioError = (code, message) => Object.assign(new Error(message), {code});
 
 function rms(data) {
   let sum = 0;
@@ -85,17 +86,17 @@ export function extractFeatures(samples, sampleRate) {
  */
 export function analyzeRecording(samples, sampleRate) {
   if (!(samples instanceof Float32Array) || samples.length < sampleRate * 0.11 || !Number.isFinite(sampleRate) || sampleRate < 1000) {
-    throw new Error('Recording is too short to analyse.');
+    throw audioError('AUDIO_TOO_SHORT', 'Recording is too short to analyse.');
   }
   const overallPeak = peak(samples);
   const overallRms = rms(samples);
   if (overallPeak < MIN_PEAK || overallRms < MIN_RMS) {
-    throw new Error('No clear sound detected. Move closer to the microphone or try a quieter room.');
+    throw audioError('AUDIO_NO_CLEAR_SOUND', 'No clear sound detected. Move closer to the microphone or try a quieter room.');
   }
   let clipped = 0;
   for (const sample of samples) if (Math.abs(sample) >= 0.985) clipped += 1;
   if (clipped / samples.length > 0.02) {
-    throw new Error('Audio was distorted. Move the microphone farther from the source.');
+    throw audioError('AUDIO_DISTORTED', 'Audio was distorted. Move the microphone farther from the source.');
   }
 
   const frameLength = Math.max(64, Math.floor(sampleRate * 0.01));
@@ -149,10 +150,10 @@ export async function recordFeatureVector(onState = () => {}, { audioPreferences
   const capabilities = getAudioCapabilities();
   throwIfAborted(signal);
   if (!globalThis.navigator?.mediaDevices?.getUserMedia) {
-    throw new Error('Microphone access requires HTTPS or localhost and a compatible browser.');
+    throw audioError('MICROPHONE_SECURE_CONTEXT', 'Microphone access requires HTTPS or localhost and a compatible browser.');
   }
   const AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext;
-  if (!AudioContextClass) throw new Error('Web Audio is unavailable on this device.');
+  if (!AudioContextClass) throw audioError('WEB_AUDIO_UNAVAILABLE', 'Web Audio is unavailable on this device.');
 
   let stream;
   let context;
@@ -183,7 +184,7 @@ export async function recordFeatureVector(onState = () => {}, { audioPreferences
     throwIfAborted(signal);
     source = context.createMediaStreamSource(stream);
     if (typeof context.createScriptProcessor !== 'function') {
-      throw new Error('This WebView does not support PCM recording. Native audio capture is required.');
+      throw audioError('PCM_UNAVAILABLE', 'This WebView does not support PCM recording. Native audio capture is required.');
     }
     processor = context.createScriptProcessor(2048, 1, 1);
     silentOutput = context.createGain();
@@ -211,7 +212,7 @@ export async function recordFeatureVector(onState = () => {}, { audioPreferences
     processor.onaudioprocess = null;
     onState('Analysing sound…');
     const length = chunks.reduce((total, chunk) => total + chunk.length, 0);
-    if (!length) throw new Error('No audio arrived from the microphone.');
+    if (!length) throw audioError('NO_MICROPHONE_AUDIO', 'No audio arrived from the microphone.');
     const samples = new Float32Array(length);
     let offset = 0;
     for (const chunk of chunks) { samples.set(chunk, offset); offset += chunk.length; }
@@ -221,7 +222,7 @@ export async function recordFeatureVector(onState = () => {}, { audioPreferences
     return analysis.features;
   } catch (error) {
     if (error?.name === 'NotAllowedError' || error?.name === 'PermissionDeniedError') {
-      throw new Error('Microphone permission was denied. Enable it in browser or app settings.');
+      throw audioError('MICROPHONE_DENIED', 'Microphone permission was denied. Enable it in browser or app settings.');
     }
     throw error;
   } finally {
@@ -241,10 +242,10 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   throwIfAborted(signal);
   if (typeof onEvent !== 'function') throw new TypeError('onEvent callback is required.');
   if (!globalThis.navigator?.mediaDevices?.getUserMedia) {
-    throw new Error('Microphone requires HTTPS/localhost and permission.');
+    throw audioError('MICROPHONE_SECURE_CONTEXT', 'Microphone requires HTTPS/localhost and permission.');
   }
   const AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext;
-  if (!AudioContextClass) throw new Error('Web Audio is unavailable on this device.');
+  if (!AudioContextClass) throw audioError('WEB_AUDIO_UNAVAILABLE', 'Web Audio is unavailable on this device.');
   const [{ createEventDetector }, readiness] = await Promise.all([
     import('./eventDetector.js'), import('./audioReadiness.js'),
   ]);
@@ -279,7 +280,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
           if (error) reject(error); else resolve(readinessResult);
         },
       };
-      waiter.timer = setTimeout(() => waiter.finish(new Error('No audio input arriving. Check microphone permission and try again.')), timeoutMs);
+      waiter.timer = setTimeout(() => waiter.finish(audioError('NO_AUDIO_INPUT', 'No audio input arriving. Check microphone permission and try again.')), timeoutMs);
       inputWaiters.add(waiter);
     });
   }
@@ -333,7 +334,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     onState('Requesting microphone access…');
     stream = await navigator.mediaDevices.getUserMedia(buildAudioConstraints(preferences, capabilities));
     throwIfAborted(signal);
-    if (stopped) throw new Error('Listening stopped.');
+    if (stopped) throw audioError('LISTENING_STOPPED', 'Listening stopped.');
     context = new AudioContextClass();
     signal?.addEventListener('abort', onAbort, { once: true });
     if (context.state === 'suspended') await context.resume();
@@ -391,7 +392,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
       try {
         await context.audioWorklet.addModule(import.meta.env?.DEV ? '/workers/pcm-capture.worklet.js' : '/pcm-capture.worklet.js');
         throwIfAborted(signal);
-        if (stopped) throw new Error('Listening stopped.');
+        if (stopped) throw audioError('LISTENING_STOPPED', 'Listening stopped.');
         node = new AudioWorkletNode(context, 'pcm-capture', { numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [1] });
         node.port.onmessage = event => onChunk(event.data?.samples, event.data?.startFrame);
         onState('Live listening (AudioWorklet)');
@@ -402,7 +403,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
     }
     if (!node) {
       if (typeof context.createScriptProcessor !== 'function') {
-        throw new Error('Neither AudioWorklet nor the compatibility recorder is available.');
+        throw audioError('RECORDER_UNAVAILABLE', 'Neither AudioWorklet nor the compatibility recorder is available.');
       }
       node = context.createScriptProcessor(2048, 1, 1);
       node.onaudioprocess = event => {
@@ -425,7 +426,7 @@ export async function startContinuousListening({ onEvent, onLevel = () => {}, on
   } catch (error) {
     await stop();
     if (error?.name === 'NotAllowedError' || error?.name === 'PermissionDeniedError') {
-      throw new Error('Microphone permission was denied. Check browser or app permissions.');
+      throw audioError('MICROPHONE_DENIED', 'Microphone permission was denied. Check browser or app permissions.');
     }
     throw error;
   }
