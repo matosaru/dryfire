@@ -1,4 +1,5 @@
-import {parseAppPath,appPathFor,isAppPath,offlineAppPaths,legacyPathRedirect,guidePathFor,isIndexableAppPath} from '../src/appPaths.js';
+import {parseAppPath,appPathFor,isAppPath,offlineAppPaths,legacyPathRedirect,guidePathFor,isIndexableAppPath,appTitleFor} from '../src/appPaths.js';
+import {loadLocale,translate} from '../apps/web/src/localization/runtime.ts';
 test('canonical application pages use flat paths with the application at root',()=>{
  for(const [view,path]of Object.entries({home:'/',guns:'/guns/',gunSetup:'/gun-setup/',learn:'/learn/',soundCheck:'/sound-check/',drills:'/drills/',recognize:'/live-listen/',history:'/history/',settings:'/settings/',about:'/about/',contact:'/contact/'})){
   expect(appPathFor({view})).toBe(path);expect(parseAppPath(path)).toEqual({view});
@@ -38,4 +39,12 @@ test('German and Dutch routes add explicit locale prefixes while English remains
  }
  expect(appPathFor({view:'settings',locale:'en'})).toBe('/settings/');expect(parseAppPath('/de/single-trigger-press/')).toEqual({view:'practice',mode:'single',locale:'de'});
  expect(offlineAppPaths()).toContain('/nl/settings/');expect(offlineAppPaths()).toContain('/de/');
+});
+
+test.each([{locale:'de',view:'settings',expected:'Einstellungen — Dry Fire With Ease'},{locale:'nl',view:'history',expected:'Geschiedenis — Dry Fire With Ease'}])('document titles follow the selected locale for $locale $view routes',async({locale,view,expected})=>{
+ await loadLocale(locale);try{expect(appTitleFor({view,locale},translate)).toBe(expected);}finally{await loadLocale('en');}
+});
+
+test('localized guide document titles use the published localized SEO title',async()=>{
+ await loadLocale('de');try{expect(appTitleFor({view:'practiceGuide',guideId:'sequence-rack-trigger',locale:'de'},translate)).toBe('Anleitung: Verschluss spannen und Abzug betätigen — Dry Fire With Ease');}finally{await loadLocale('en');}
 });

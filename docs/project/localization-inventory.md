@@ -95,3 +95,7 @@ The global microphone/data-storage disclosure and copyright now use `common.foot
 ## Newly audited private preview controls and edition messaging — 2026-11-20
 
 The private Settings preview selector, choices, retained-data explanation, edition badge, and dynamic Free/Full status now use the Settings catalog. The preview controller rerenders these messages on locale changes. The Drills page chooses its Free/Full Sequence description from a catalog key inside the React page, so switching language while Full preview is selected does not leave stale English copy. Existing preview capabilities, browser preference storage and stable route/mode IDs are unchanged. Locale, DOM rebinding, and retained draft handoff tests cover this surface. The complete source ownership scan remains open.
+
+## Localized client document titles — 2026-11-20
+
+Client-side application titles now resolve from the current locale catalog for app pages, guide pages and the homepage. Public guide titles reuse their localized SEO title entries; existing English build-time consumers retain the English default. Tests cover German and Dutch app titles and a German guide title. Static public HTML title/description/canonical/hreflang output remains generated and validated by the public build. A full source scan and visual/documentation evidence review are still open.

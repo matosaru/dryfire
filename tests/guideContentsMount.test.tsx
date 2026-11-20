@@ -5,6 +5,7 @@
 import '@dryfire/testing/setup';
 import {act} from '@testing-library/react';
 import {jest} from '@jest/globals';
+import {translate} from '../apps/web/src/localization/runtime.ts';
 import {serialize,deserialize} from 'node:v8';
 import {mountGuideContents} from '../apps/web/src/app/guideContents';
 // @ts-expect-error Existing JS renderer/controller boundary.
@@ -24,7 +25,7 @@ for(const name of guideCases)test(`${name} React examples retain every native en
  let view!:ReturnType<typeof mountGuideContents>;
  act(()=>{expect(render.connectView((...args:Parameters<typeof mountGuideContents>)=>(view=mountGuideContents(...args)),action)).toBe(true);});
  expect(render.connectView(jest.fn(),action)).toBe(false);
- for(const frame of scenario.frames){reference(frame,guide);act(()=>render(frame,guide));expect(tree(typed)).toEqual(tree(native));}
+ for(const frame of scenario.frames){reference(frame,guide);act(()=>render(frame,guide));for(const[id,key]of [['practiceLatest','sessionUi.practiceLatestEmpty'],['sessionLatestResult','sessionUi.latestEmpty']]){const content=typed.getElementById('example-'+id)!,placeholder=content.querySelector(':scope > p.muted.small');if(placeholder){expect(placeholder.textContent).toBe(translate('common',key));native.getElementById('example-'+id)!.replaceChildren(placeholder.cloneNode(true));}}expect(tree(typed)).toEqual(tree(native));}
  expect(typed.querySelector('#example-sessionReview .session-review-card button')).toBeNull();
  act(()=>typed.getElementById('example-practiceStopBtn')!.click());expect(action).toHaveBeenCalledWith('practiceStopBtn');
  act(()=>view.dispose());

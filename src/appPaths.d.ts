@@ -7,6 +7,6 @@ export function setupForGuide(guideId:string):AppRoute|null;
 export function offlineAppPaths():string[];
 export function isAppPath(path:unknown):boolean;
 export function isIndexableAppPath(path:string):boolean;
-export function appTitleFor(route:AppRoute):string;
+export function appTitleFor(route:AppRoute,message?:(namespace:string,key:string)=>string):string;
 export function legacyPathRedirect(path:string):string|null;
 export function legacyRedirects():Record<string,string|null>;

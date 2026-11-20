@@ -593,7 +593,7 @@ function displayView(name) {
   const previousView=activeView;
   if(previousView==='soundCheck'&&name!=='soundCheck'&&soundCheckController){soundCheckController.dispose();soundCheckController=null;}
   activeView=name;
-  if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity);if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
+  if(appURLs && location.pathname!==metadataPath){const identity=parseAppPath(location.pathname)??routeFor(name);document.title=appTitleFor(identity,(namespace,key)=>translate(namespace,key));if(canonicalLink)canonicalLink.href='https://easydryfire.com'+location.pathname;document.querySelector('meta[name=robots]')?.setAttribute('content',isIndexableAppPath(location.pathname)?'index, follow':'noindex, nofollow');metadataPath=location.pathname;}
   document.body.dataset.view = name;
   if(previousView!==name) document.getElementById(previousView+'View').classList.add('hidden');
   document.getElementById(name+'View').classList.toggle('hidden',false);

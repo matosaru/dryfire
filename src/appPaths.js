@@ -74,15 +74,20 @@ export function legacyPathRedirect(path){
  if(canonical.startsWith('/practice/')){const slug=canonical.slice(10,-1);for(const[mode,value]of Object.entries(modes))if(slug===value||mode==='par'&&slug==='par-time')return guidePathFor(mode);}
  return null;
 }
-export function appTitleFor(route){
+export function appTitleFor(route,message){
  const product='Dry Fire With Ease';
- if(route?.view==='home')return product+' — Free Dry-Fire Practice App';
- const titles={gunSetup:'Gun setup',guns:'My Guns',learn:'Learn Sounds',soundCheck:'Sound Check',drills:'Drills',recognize:'Test Learned Sounds',history:'History',settings:'Settings',about:'About',contact:'Contact'};
- let title=titles[route?.view]??'App';
- if(route?.view==='practice')title=practiceDefinition(route.mode)?.title??'Practice';
- if(route?.view==='session')title=DRILLS.find(drill=>drill.id===route.preset)?.title??'Custom sequence';
- if(route?.view==='practiceGuide'){const setup=setupForGuide(route.guideId);return appTitleFor(setup??{view:'drills'}).replace(' — '+product,' guide — '+product);}
- return title+' — '+product;
+ const localized=(namespace,key,fallback)=>typeof message==='function'?message(namespace,key):fallback;
+ if(route?.view==='home')return localized('public-site','routes.home.title',product+' — Free Dry-Fire Practice App');
+ const pages={gunSetup:['gun-setup','page.firstTitle','Gun setup'],guns:['guns','page.title','My Guns'],learn:['learn','page.title','Learn Sounds'],soundCheck:['sound-check','page.title','Sound Check'],drills:['drills','page.title','Drills'],recognize:['live-listen','page.title','Test Learned Sounds'],history:['history','page.title','History'],settings:['settings','page.title','Settings'],about:['public-site','routes.about.title','About — '+product],contact:['public-site','routes.contact.title','Contact — '+product]};
+ if(route?.view==='practice')return localized('practice-guide',`manuals.${route.mode}.title`,practiceDefinition(route.mode)?.title??'Practice')+' — '+product;
+ if(route?.view==='session')return localized('sequence','page.title',DRILLS.find(drill=>drill.id===route.preset)?.title??'Custom sequence')+' — '+product;
+ if(route?.view==='practiceGuide'){
+  const guideId=route.guideId??'single',publicId=guideId==='single'||guideId==='repeated'||guideId==='par'||guideId==='control'?guideId:guideId==='sequence-custom'?null:guideId.startsWith('sequence-')?guideId:null;
+  const fallbackSetup=setupForGuide(guideId),fallback=appTitleFor(fallbackSetup??{view:'drills'}).replace(' — '+product,' guide — '+product);
+  return publicId?localized('public-site',`routes.${publicId}.title`,fallback):localized('practice-guide',`manuals.${guideId==='sequence-custom'?'custom':guideId}.title`,fallback)+' — '+product;
+ }
+ const page=pages[route?.view];
+ return page?localized(page[0],page[1],page[2])+(route?.view==='about'||route?.view==='contact'?'':' — '+product):'App — '+product;
 }
 /** Build-only redirect inventory for installed offline clients using old bookmarks. */
 export function legacyRedirects(){
