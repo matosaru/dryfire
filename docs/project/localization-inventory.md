@@ -28,6 +28,10 @@ This inventory maps every maintained UI/page family and its source owner to one 
 
 The current route registry contains 14 app screen identities, four trigger mode setup paths, built-in/custom sequence setup paths and their manual routes. Those route variants share their owning page namespace; stable mode/guide IDs select the corresponding message keys. Public page metadata is catalog copy, while paths, route IDs and app data remain stable technical identifiers.
 
+## Newly audited session presentation surface — 2026-11-20
+
+Practice and Sequence live announcements, phase labels, review summaries, result statuses, timing labels, detection outcomes, score labels, and date/number formats are owned by `common.sessionUi.*` and `common.sessionResult.*`. User and drill names remain data; stable domain reason/outcome enums are mapped to translated messages. Locale tests verify German and Dutch rendering while unchanged English DOM/reference tests protect the guide examples.
+
 ## Copy inventory rules
 
 - Visible JSX text, template text, native DOM-created messages, button/field text, placeholders, visible labels, accessible names/descriptions, validation/error/status/empty states, safety and confirmation copy, page headings, help/manuals, metadata and structured SEO text are user-facing messages and receive stable locale-neutral keys.

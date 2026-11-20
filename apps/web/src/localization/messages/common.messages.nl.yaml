@@ -161,6 +161,7 @@ runtime:
     previewUnavailable: Startgeluid niet beschikbaar. Controleer de audiotoestemming van de browser en het mediavolume.
 sessionUi:
   attempts: Pogingen
+  clicks: Klikken
   shots: Klikken
   left: Over
   stop: STOPPEN
@@ -197,3 +198,85 @@ sessionUi:
   repeatSession: Sessie herhalen
   sessionTimingNote: De tijden geven herkende geluiden weer, niet geverifieerde handelingen. De app kan fysieke acties of een ongeladen vuurwapen niet controleren.
   relativeInputLevel: "{{count}} relatief ingangsniveau"
+  microphoneConnected: Microfoon verbonden
+  microphoneActive: Microfoon actief
+  microphoneConnecting: Microfoon verbinden…
+  connecting: Verbinden
+  paused: Gepauzeerd
+  saved: Opgeslagen
+  saving: Opslaan
+  savingDevice: Opslaan op dit apparaat…
+  savingSessionResults: Resultaten opslaan op dit apparaat…
+  statusCompleted: voltooid
+  statusEnded: beëindigd
+  practiceTitle: "Oefening {{status}}"
+  sessionTitle: "Sessie {{status}}"
+  sessionCompletedTitle: Sessie voltooid
+  acceptedShots:
+    one: "{{count}} herkende klik"
+    other: "{{count}} herkende klikken"
+  recognizedAttempts: "{{hits}} herkende pogingen · {{misses}} missers"
+  gunActiveTime: "{{gun}} · actieve tijd {{time}}"
+  startedTiming: "{{date}} · {{timing}}"
+  noGoSignal: Geen GO-signaal
+  externalCueTiming: Timing vanaf extern signaal
+  scheduledGoTiming: Timing vanaf gepland GO-signaal
+  clickIntervals: "Klikintervallen · gemiddeld {{mean}} · min. {{min}} · max. {{max}} · spreiding {{spread}}"
+  parTiming: "Par-tijd {{seconds}} s · een klik op de deadline telt mee"
+  beepTimingNote: In de pieptoonmodus wordt de eerste 0,08 s na de start uitgesloten. De luidsprekervertraging verschilt per apparaat.
+  practiceSaveError: Niet opgeslagen. Laat deze pagina open en probeer opnieuw op te slaan.
+  sequenceCompletion: "{{completed}} voltooid · {{left}} resterend"
+  gunSessionDate: "{{gun}} · {{date}}"
+  practiceSaveRetry: Resultaten zijn niet opgeslagen. Laat deze pagina open en probeer opnieuw op te slaan.
+  sequenceSaveError: Resultaten zijn niet opgeslagen. Laat deze pagina open en probeer opnieuw op te slaan.
+  practiceConnecting: Microfoon voorbereiden. Wachten op audio-invoer voordat het aftellen begint…
+  practiceCountdown: "Volgend signaal over {{seconds}} s. Maak je klaar."
+  practiceActive: Oefening gestart. Luistert naar trekkervuurklikken.
+  practiceAwaitCue: Wachten op je gekalibreerde externe pieptoon.
+  practiceEarlyResult: Vroege trek opgeslagen als misser. Het volgende signaal wordt automatisch voorbereid.
+  practiceClickResult: Klik opgeslagen. Het volgende signaal wordt automatisch voorbereid.
+  practiceNextResult: Reset wanneer je klaar bent en kies Volgende herhaling.
+  practicePaused: Microfoon losgekoppeld. Hervatten begint met een nieuwe aftelling.
+  practiceClosing: Tijdslimiet bereikt. Audio die vóór de deadline is vastgelegd wordt verwerkt.
+  sequenceConnecting: Wachten op microfoontoestemming.
+  sequenceCountdown: "Maak je klaar · {{count}} seconden."
+  sequenceActive: "GO · wacht op {{step}}."
+  sequencePaused: Gepauzeerd. Hervatten begint met een nieuwe aftelling.
+  sequenceSaved: Herhaling voltooid en opgeslagen.
+  sequenceSaving: Herhaling herkend · resultaten opslaan.
+sessionResult:
+  recognized: Herkend
+  earlyMiss: Misser · te vroeg overgehaald
+  lateMiss: Misser · te late klik
+  noClickMiss: Misser · geen klik
+  partial: "Gedeeltelijk · {{reason}}"
+  completed: Voltooid
+  practiceSummary: "{{ordinal}} · {{status}} · {{time}}"
+  sequenceSummary: "Herhaling {{ordinal}} · {{outcome}} · {{time}}"
+  intervalSinceClick: "Interval sinds vorige klik: {{time}}"
+  practiceStepTiming: "{{label}} · {{time}} · tussentijd {{split}}"
+  sequenceCounts: "{{unknown}} onbekend · {{incorrect}} niet op volgorde"
+  sequenceStepTiming: "{{label}}: {{time}} vanaf GO · tussentijd {{split}}"
+  detection: "{{label}} · {{time}} · {{outcome}} · score {{score}}/100"
+  outcome:
+    early: te vroeg
+    late: te laat
+    shot: klik
+    handling: bediening
+    ignored: genegeerd
+    matched: herkend
+    incorrect: niet op volgorde
+    completed: voltooid
+  reason:
+    early: te vroege trekkerbeweging
+    late: te late klik
+    refresh: vernieuwen
+    interrupted: onderbroken
+    paused: gepauzeerd
+    completed: voltooid
+    recognized: herkend
+    unknown: onbekend
+    undefined: onbekend
+    timeout: time-out
+    ended: beëindigd
+    storage-or-capture-error: opslag- of opnamefout

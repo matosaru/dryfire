@@ -161,6 +161,7 @@ runtime:
     previewUnavailable: Start sound unavailable. Check browser audio permission and media volume.
 sessionUi:
   attempts: Attempts
+  clicks: Clicks
   shots: Shots
   left: Left
   stop: STOP
@@ -197,3 +198,85 @@ sessionUi:
   repeatSession: Repeat Session
   sessionTimingNote: Times reflect sound detection. The app cannot verify physical actions or whether a firearm is unloaded.
   relativeInputLevel: "{{count}} relative input level"
+  microphoneConnected: Microphone connected
+  microphoneActive: Microphone active
+  microphoneConnecting: Connecting microphone…
+  connecting: Connecting
+  paused: Paused
+  saved: Saved
+  saving: Saving
+  savingDevice: Saving on this device…
+  savingSessionResults: Saving results on this device…
+  statusCompleted: completed
+  statusEnded: ended
+  practiceTitle: "Practice {{status}}"
+  sessionTitle: "Session {{status}}"
+  sessionCompletedTitle: Session completed
+  acceptedShots:
+    one: "{{count}} accepted shots"
+    other: "{{count}} accepted shots"
+  recognizedAttempts: "{{hits}} recognized attempts · {{misses}} misses"
+  gunActiveTime: "{{gun}} · active {{time}}"
+  startedTiming: "{{date}} · {{timing}}"
+  noGoSignal: No GO signal
+  externalCueTiming: External cue onset timing
+  scheduledGoTiming: Scheduled GO timing
+  clickIntervals: "Click intervals · mean {{mean}} · min {{min}} · max {{max}} · spread {{spread}}"
+  parTiming: "Par {{seconds}} s · onset at the deadline is in time"
+  beepTimingNote: Beep mode excluded the first 0.08 s after start. Audible speaker latency varies by device.
+  practiceSaveError: Not saved. Keep this page open and retry saving.
+  sequenceCompletion: "{{completed}} completed · {{left}} left"
+  gunSessionDate: "{{gun}} · {{date}}"
+  practiceSaveRetry: Results are not saved. Keep this page open and retry saving.
+  sequenceSaveError: Results are not saved. Keep this page open and retry saving.
+  practiceConnecting: Preparing microphone. Waiting for audio input before countdown…
+  practiceCountdown: "Next signal in {{seconds}} s. Get ready."
+  practiceActive: Practice started. Listening for trigger clicks.
+  practiceAwaitCue: Listening for your calibrated external beep.
+  practiceEarlyResult: Early trigger saved as a miss. Preparing the next signal automatically.
+  practiceClickResult: Click saved. Preparing the next signal automatically.
+  practiceNextResult: Reset when ready, then choose Next repetition.
+  practicePaused: Microphone released. Resume starts with a fresh signal.
+  practiceClosing: Time limit reached. Finishing audio captured before the deadline.
+  sequenceConnecting: Waiting for microphone permission.
+  sequenceCountdown: "Get ready · {{count}} seconds."
+  sequenceActive: "GO · awaiting {{step}}."
+  sequencePaused: Paused. Resume starts a fresh countdown.
+  sequenceSaved: Repetition completed and saved.
+  sequenceSaving: Repetition detected · saving results.
+sessionResult:
+  recognized: Recognized
+  earlyMiss: Miss · early trigger
+  lateMiss: Miss · late click
+  noClickMiss: Miss · no click
+  partial: "Partial · {{reason}}"
+  completed: Completed
+  practiceSummary: "{{ordinal}} · {{status}} · {{time}}"
+  sequenceSummary: "Repetition {{ordinal}} · {{outcome}} · {{time}}"
+  intervalSinceClick: "Interval since previous click: {{time}}"
+  practiceStepTiming: "{{label}} · {{time}} · split {{split}}"
+  sequenceCounts: "{{unknown}} unknown · {{incorrect}} out of order"
+  sequenceStepTiming: "{{label}}: {{time}} from GO · split {{split}}"
+  detection: "{{label}} · {{time}} · {{outcome}} · score {{score}}/100"
+  outcome:
+    early: early
+    late: late
+    shot: shot
+    handling: handling
+    ignored: ignored
+    matched: matched
+    incorrect: incorrect
+    completed: completed
+  reason:
+    early: early trigger
+    late: late click
+    refresh: refresh
+    interrupted: interrupted
+    paused: paused
+    completed: completed
+    recognized: recognized
+    unknown: unknown
+    undefined: undefined
+    timeout: timeout
+    ended: ended
+    storage-or-capture-error: storage or capture error

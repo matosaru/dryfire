@@ -161,6 +161,7 @@ runtime:
     previewUnavailable: Startton nicht verfügbar. Überprüfe die Audioberechtigung des Browsers und die Medienlautstärke.
 sessionUi:
   attempts: Versuche
+  clicks: Klicks
   shots: Klicks
   left: Übrig
   stop: STOPP
@@ -197,3 +198,85 @@ sessionUi:
   repeatSession: Sitzung wiederholen
   sessionTimingNote: Die Zeiten zeigen die erkannten Geräusche, nicht überprüfte Handlungen. Die App kann weder körperliche Aktionen noch einen entladenen Zustand bestätigen.
   relativeInputLevel: "{{count}} relativer Eingangspegel"
+  microphoneConnected: Mikrofon verbunden
+  microphoneActive: Mikrofon aktiv
+  microphoneConnecting: Mikrofon wird verbunden …
+  connecting: Wird verbunden
+  paused: Pausiert
+  saved: Gespeichert
+  saving: Wird gespeichert
+  savingDevice: Wird auf diesem Gerät gespeichert …
+  savingSessionResults: Ergebnisse werden auf diesem Gerät gespeichert …
+  statusCompleted: abgeschlossen
+  statusEnded: beendet
+  practiceTitle: "Übung {{status}}"
+  sessionTitle: "Sitzung {{status}}"
+  sessionCompletedTitle: Sitzung abgeschlossen
+  acceptedShots:
+    one: "{{count}} akzeptierter Klick"
+    other: "{{count}} akzeptierte Klicks"
+  recognizedAttempts: "{{hits}} erkannte Versuche · {{misses}} Fehlversuche"
+  gunActiveTime: "{{gun}} · aktive Zeit {{time}}"
+  startedTiming: "{{date}} · {{timing}}"
+  noGoSignal: Kein GO-Signal
+  externalCueTiming: Zeitmessung ab externem Signal
+  scheduledGoTiming: Zeitmessung ab geplantem GO-Signal
+  clickIntervals: "Klickintervalle · Mittel {{mean}} · min. {{min}} · max. {{max}} · Streuung {{spread}}"
+  parTiming: "Par-Zeit {{seconds}} s · ein Klick genau zum Ablauf zählt"
+  beepTimingNote: Im Signaltonmodus werden die ersten 0,08 s nach dem Start ausgeschlossen. Die Lautsprecherlatenz variiert je nach Gerät.
+  practiceSaveError: Nicht gespeichert. Lass diese Seite geöffnet und versuche es erneut.
+  sequenceCompletion: "{{completed}} abgeschlossen · {{left}} übrig"
+  gunSessionDate: "{{gun}} · {{date}}"
+  practiceSaveRetry: Ergebnisse sind nicht gespeichert. Lass diese Seite geöffnet und versuche es erneut.
+  sequenceSaveError: Ergebnisse sind nicht gespeichert. Lass diese Seite geöffnet und versuche es erneut.
+  practiceConnecting: Mikrofon wird vorbereitet. Warte auf Audioeingang, bevor der Countdown beginnt …
+  practiceCountdown: "Nächstes Signal in {{seconds}} s. Mach dich bereit."
+  practiceActive: Übung gestartet. Suche nach Abzugsklicks.
+  practiceAwaitCue: Warte auf deinen kalibrierten externen Signalton.
+  practiceEarlyResult: Vorzeitiger Abzug als Fehlversuch gespeichert. Das nächste Signal wird automatisch vorbereitet.
+  practiceClickResult: Klick gespeichert. Das nächste Signal wird automatisch vorbereitet.
+  practiceNextResult: Setze zurück, wenn du bereit bist, und wähle „Nächste Wiederholung“.
+  practicePaused: Mikrofon getrennt. Beim Fortsetzen startet ein neuer Countdown.
+  practiceClosing: Zeitlimit erreicht. Aufnahmen bis zum Ablauf werden fertig verarbeitet.
+  sequenceConnecting: Warte auf die Mikrofonberechtigung.
+  sequenceCountdown: "Mach dich bereit · {{count}} Sekunden."
+  sequenceActive: "GO · warte auf {{step}}."
+  sequencePaused: Pausiert. Beim Fortsetzen startet ein neuer Countdown.
+  sequenceSaved: Wiederholung abgeschlossen und gespeichert.
+  sequenceSaving: Wiederholung erkannt · Ergebnisse werden gespeichert.
+sessionResult:
+  recognized: Erkannt
+  earlyMiss: Fehlversuch · zu früher Abzug
+  lateMiss: Fehlversuch · zu später Klick
+  noClickMiss: Fehlversuch · kein Klick
+  partial: "Teilweise · {{reason}}"
+  completed: Abgeschlossen
+  practiceSummary: "{{ordinal}} · {{status}} · {{time}}"
+  sequenceSummary: "Wiederholung {{ordinal}} · {{outcome}} · {{time}}"
+  intervalSinceClick: "Abstand zum vorherigen Klick: {{time}}"
+  practiceStepTiming: "{{label}} · {{time}} · Abstand {{split}}"
+  sequenceCounts: "{{unknown}} unbekannt · {{incorrect}} nicht in Reihenfolge"
+  sequenceStepTiming: "{{label}}: {{time}} ab GO · Abstand {{split}}"
+  detection: "{{label}} · {{time}} · {{outcome}} · Wert {{score}}/100"
+  outcome:
+    early: zu früh
+    late: zu spät
+    shot: Klick
+    handling: Handhabung
+    ignored: ignoriert
+    matched: erkannt
+    incorrect: nicht in Reihenfolge
+    completed: abgeschlossen
+  reason:
+    early: zu früher Abzug
+    late: zu später Klick
+    refresh: Neuladen
+    interrupted: unterbrochen
+    paused: pausiert
+    completed: abgeschlossen
+    recognized: erkannt
+    unknown: unbekannt
+    undefined: unbekannt
+    timeout: Zeitlimit
+    ended: beendet
+    storage-or-capture-error: Speicher- oder Aufnahmefehler
