@@ -3,7 +3,7 @@ import { createPreviewTesting } from '../src/optional/previewTesting.js';
 const PREVIEW_MODE_KEY = 'dryfire-private-preview-mode';
 
 function controls() {
-  document.body.innerHTML = '<select id="previewTestMode"><option value="free">Free</option><option value="full">Full</option></select><p id="previewModeBadge"></p><p id="previewModeStatus"></p>';
+  document.body.innerHTML = '<h3 id="previewTestingTitle"></h3><label><span id="previewTestAs"></span><select id="previewTestMode" aria-describedby="previewModeStatus"><option value="free"></option><option value="full"></option></select></label><p id="previewModeBadge"></p><p id="previewModeStatus"></p><p id="previewTestDataNote"></p>';
   return document.getElementById('previewTestMode');
 }
 function setup() {

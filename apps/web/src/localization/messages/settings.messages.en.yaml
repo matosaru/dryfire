@@ -57,6 +57,16 @@ deleteData:
   action: Delete all guns & app data
 device:
   title: Device information
+preview:
+  title: Private preview testing
+  testAs: Test as
+  free: Free
+  full: Full
+  dataNote: Changes test availability only. Your saved data is kept.
+  locked: Finish active work before changing test mode.
+  fullStatus: "Full: five guns, new custom drills and progress graphs."
+  freeStatus: "Free: two guns, built-in practice and saved timing results. Existing data stays available."
+  badge: "Private preview · {{mode}} mode"
 language:
   section: Language · this device
   label: Language

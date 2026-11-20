@@ -1143,8 +1143,7 @@ async function init() {
       const full = CAPABILITIES.advancedGraphs;
       document.documentElement.dataset.featureEdition = CAPABILITIES.edition;
       gunLibraryCoordinator.setNotice(full ? 'full' : 'public');
-      const sequenceDescription=full ? 'These require only the sounds in their sequence. Create your own or choose a built-in preset.' : 'Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.';
-      if(drillsPage)drillsPage.update({sequenceDescription});else $('#sequenceDescription').textContent=sequenceDescription;
+      if(drillsPage)drillsPage.update({sequenceFull:full});else $('#sequenceDescription').textContent=translate('drills',full?'sequenceGroup.descriptionFull':'sequenceGroup.description');
       informationPages.setFull(full);
     };
     previewTesting = createPreviewTesting({ doc: document, storage,

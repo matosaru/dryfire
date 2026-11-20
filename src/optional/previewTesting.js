@@ -1,4 +1,5 @@
 import { editionCapabilities } from '../buildEdition.js';
+import { translate } from '../../apps/web/src/localization/runtime.ts';
 
 const PREVIEW_MODE_KEY = 'dryfire-private-preview-mode';
 export function createPreviewSimulation({ storage, locked = () => false, onChange = () => {} } = {}) {
@@ -35,11 +36,15 @@ export function createPreviewTesting({ doc, storage, locked, onChange, onMessage
       select.addEventListener('change', change);
     }
     const full = simulation.mode === 'full';
+    doc.getElementById('previewTestingTitle').textContent=translate('settings','preview.title');
+    doc.getElementById('previewTestAs').textContent=translate('settings','preview.testAs');
+    doc.querySelector('#previewTestMode option[value="free"]').textContent=translate('settings','preview.free');
+    doc.querySelector('#previewTestMode option[value="full"]').textContent=translate('settings','preview.full');
+    doc.getElementById('previewTestDataNote').textContent=translate('settings','preview.dataNote');
     select.value = simulation.mode; select.disabled = locked();
-    doc.getElementById('previewModeBadge').textContent = `Private preview · ${full ? 'Full' : 'Free'} mode`;
-    doc.getElementById('previewModeStatus').textContent = locked() ? 'Finish active work before changing test mode.'
-      : full ? 'Full: five guns, new custom drills and progress graphs.'
-      : 'Free: two guns, built-in practice and saved timing results. Existing data stays available.';
+    doc.getElementById('previewModeBadge').textContent = translate('settings','preview.badge',{mode:translate('settings',full?'preview.full':'preview.free')});
+    doc.getElementById('previewModeStatus').textContent = locked() ? translate('settings','preview.locked')
+      : translate('settings',full?'preview.fullStatus':'preview.freeStatus');
   }
   render();
   return { get capabilities() { return simulation.capabilities; }, render };

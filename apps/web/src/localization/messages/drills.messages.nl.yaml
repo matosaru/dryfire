@@ -10,6 +10,7 @@ triggerGroup:
 sequenceGroup:
   title: Reeksoefeningen
   description: Kies een ingebouwde of eerder opgeslagen reeks. Alleen de geluiden in de reeks zijn nodig.
+  descriptionFull: Deze oefeningen gebruiken alleen de geluiden in de reeks. Maak je eigen oefening of kies een ingebouwde reeks.
 modes:
   singleDescription: Reactietijd voor één klik na elk startsignaal.
   repeatedDescription: Tel afzonderlijke klikken en de tijd ertussen.

@@ -10,6 +10,7 @@ triggerGroup:
 sequenceGroup:
   title: Sequence drills
   description: Choose a built-in or an existing saved preset. Each requires only the sounds in its sequence.
+  descriptionFull: These require only the sounds in their sequence. Create your own or choose a built-in preset.
 modes:
   singleDescription: Reaction time for one click after each start signal.
   repeatedDescription: Count distinct clicks and the intervals between them.

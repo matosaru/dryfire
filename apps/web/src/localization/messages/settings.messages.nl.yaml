@@ -57,6 +57,16 @@ deleteData:
   action: Alle wapens en appgegevens verwijderen
 device:
   title: Apparaatgegevens
+preview:
+  title: Privé-preview testen
+  testAs: Testen als
+  free: Gratis
+  full: Volledig
+  dataNote: Dit wijzigt alleen de beschikbaarheid van testfuncties. Je opgeslagen gegevens blijven behouden.
+  locked: Rond de actieve bewerking af voordat je de testmodus wijzigt.
+  fullStatus: "Volledig: vijf wapens, nieuwe eigen oefeningen en voortgangsgrafieken."
+  freeStatus: "Gratis: twee wapens, ingebouwde oefeningen en opgeslagen tijdresultaten. Bestaande gegevens blijven beschikbaar."
+  badge: "Privé-preview · {{mode}}-modus"
 language:
   section: Taal · dit apparaat
   label: Taal

@@ -57,6 +57,16 @@ deleteData:
   action: Alle Waffen & App-Daten löschen
 device:
   title: Geräteinformationen
+preview:
+  title: Privater Vorschautest
+  testAs: Testmodus
+  free: Kostenlos
+  full: Vollständig
+  dataNote: Änderungen betreffen nur die Testfunktionen. Deine gespeicherten Daten bleiben erhalten.
+  locked: Beende die aktive Aktion, bevor du den Testmodus änderst.
+  fullStatus: "Vollständig: fünf Waffen, neue eigene Übungen und Fortschrittsdiagramme."
+  freeStatus: "Kostenlos: zwei Waffen, integrierte Übungen und gespeicherte Zeitmessungen. Vorhandene Daten bleiben verfügbar."
+  badge: "Private Vorschau · {{mode}}-Modus"
 language:
   section: Sprache · dieses Gerät
   label: Sprache

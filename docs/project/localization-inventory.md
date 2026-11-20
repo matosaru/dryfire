@@ -66,7 +66,7 @@ Trigger Press and Sequence card descriptions, built-in sequence titles, and Star
 
 ## Newly audited Live Listen and shared shell — 2026-11-20
 
-Live Listen panel controls, accessible names, distance fallback text, step counts, drill status and result notes now use the `live-listen` YAML catalogs in React and the retained native presentation. The shared safety dialog/disclosure, selected-gun switcher, and startup status use `common.shellSafety.*`, `common.shellGun.*`, and `common.shellStartup` messages passed into UI primitives as props; the primitives retain English defaults for standalone consumers. English shell/tree parity and German/Dutch shell text checks pass. Remaining native Practice latest-result fallback and Progress chart/table labels are still identified for migration. LOC-01's repository-wide key/source scan remains open.
+Live Listen panel controls, accessible names, distance fallback text, step counts, drill status and result notes now use the `live-listen` YAML catalogs in React and the retained native presentation. The shared safety dialog/disclosure, selected-gun switcher, and startup status use `common.shellSafety.*`, `common.shellGun.*`, and `common.shellStartup` messages passed into UI primitives as props; the primitives retain English defaults for standalone consumers. English shell/tree parity and German/Dutch shell text checks pass. The native Practice latest-result fallback and History progress chart/table labels have since been localized. LOC-01's repository-wide key/source scan remains open.
 
 ## Newly audited History progress — 2026-11-20
 
@@ -75,3 +75,7 @@ Progress chart timing summaries, comparison trends, empty states, metric names, 
 ## Newly audited shared footer and review empty states — 2026-11-20
 
 The global microphone/data-storage disclosure and copyright now use `common.footer.*` messages passed into the shared footer component. Native Practice and Sequence review fallbacks receive the shared localized no-result messages; the component package retains its English standalone defaults. English shell parity and locale-specific footer tests pass. The broad inventory remains open for remaining public, manual, controller/status and review-detail copy.
+
+## Newly audited private preview controls and edition messaging — 2026-11-20
+
+The private Settings preview selector, choices, retained-data explanation, edition badge, and dynamic Free/Full status now use the Settings catalog. The preview controller rerenders these messages on locale changes. The Drills page chooses its Free/Full Sequence description from a catalog key inside the React page, so switching language while Full preview is selected does not leave stale English copy. Existing preview capabilities, browser preference storage and stable route/mode IDs are unchanged. Locale, DOM rebinding, and retained draft handoff tests cover this surface. The complete source ownership scan remains open.

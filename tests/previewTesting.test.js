@@ -1,4 +1,8 @@
+/**
+ * @jest-environment jsdom
+ */
 import { createPreviewSimulation, retirePreviewShell } from '../src/optional/previewTesting.js';
+import { loadLocale } from '../apps/web/src/localization/runtime.ts';
 const PREVIEW_MODE_KEY = 'dryfire-private-preview-mode';
 
 function saved(value) {
@@ -37,6 +41,21 @@ test('unavailable browser preference storage does not break the mode switch', ()
   const storage = { getItem() { throw new Error('Blocked'); }, setItem() { throw new Error('Blocked'); } };
   const simulation = createPreviewSimulation({ storage });
   expect(simulation.mode).toBe('free'); expect(simulation.select('full')).toBe(true); expect(simulation.mode).toBe('full');
+});
+test('private preview controls and live status follow the selected language', async()=>{
+  document.body.innerHTML='<div id="previewModeBadge"></div><section><h3 id="previewTestingTitle"></h3><label><span id="previewTestAs"></span><select id="previewTestMode" aria-describedby="previewModeStatus"><option value="free"></option><option value="full"></option></select></label><p id="previewModeStatus"></p><p id="previewTestDataNote"></p></section>';
+  await loadLocale('de');
+  const testing=(await import('../src/optional/previewTesting.js')).createPreviewTesting({doc:document,storage:saved(),locked:()=>false,onChange:()=>{},onMessage:()=>{}});
+  expect(document.querySelector('#previewTestingTitle').textContent).toBe('Privater Vorschautest');
+  expect(document.querySelector('#previewTestAs').textContent).toBe('Testmodus');
+  expect(document.querySelector('#previewModeStatus').textContent).toContain('zwei Waffen');
+  document.querySelector('#previewTestMode').value='full';document.querySelector('#previewTestMode').dispatchEvent(new Event('change'));
+  expect(testing.capabilities.advancedGraphs).toBe(true);
+  expect(document.querySelector('#previewModeStatus').textContent).toContain('fünf Waffen');
+  await loadLocale('en');testing.render();
+  expect(document.querySelector('#previewTestingTitle').textContent).toBe('Private preview testing');
+  expect(document.querySelector('#previewModeBadge').textContent).toBe('Private preview · Full mode');
+  await loadLocale('en');
 });
 test('preview retirement removes only its origin app shell and registration, preserving unrelated caches/workers', async () => {
   const removed = [], unregistered = []; const origin = 'https://dev-dryfire.matosaru.workers.dev';

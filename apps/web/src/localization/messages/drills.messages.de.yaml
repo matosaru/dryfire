@@ -10,6 +10,7 @@ triggerGroup:
 sequenceGroup:
   title: Ablaufübungen
   description: Wähle eine integrierte oder gespeicherte Vorlage. Benötigt werden nur die Geräusche des jeweiligen Ablaufs.
+  descriptionFull: Für diese Übungen werden nur die Geräusche des Ablaufs benötigt. Erstelle eine eigene oder wähle eine integrierte Vorlage.
 modes:
   singleDescription: Reaktionszeit für einen Klick nach jedem Startsignal.
   repeatedDescription: Zähle einzelne Klicks und die Zeitabstände dazwischen.
