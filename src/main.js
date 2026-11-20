@@ -567,8 +567,10 @@ function renderDrillCatalog() {
 function routeFor(name) { const route={ view: name, preset:name==='session'?sessionController?.selectionId?.():undefined, guideId:name==='practiceGuide'?practiceGuideController?.current()?.id:undefined, mode:name==='practice'?practiceController?.practiceMode?.():undefined, gunId: activeGun?.id || null,
   context: name === 'practiceGuide' ? practiceGuideController?.current()?.contextKey : name === 'practice' ? practiceController?.routeKey() : name === 'session' ? sessionController?.routeKey() : null };const locale=typeof preferenceState!=='undefined'?preferenceState.language:'en';if(locale!=='en')route.locale=locale;return route; }
 function resolveRoute(route) {
-  if(typeof preferenceState!=='undefined'&&route.locale&&route.locale!==preferenceState.language){preferenceState.language=route.locale;void setSetting('language',route.locale).catch(showError);void loadLocale(route.locale).catch(showError);}
-  return routeFor(resolveRouteView(route, [activeGun, practiceController, sessionController, practiceGuideController]));
+  const resolved=resolveRouteView(route,[activeGun,practiceController,sessionController,practiceGuideController]);
+  const locale=route.locale??'en';
+  if(typeof preferenceState!=='undefined'&&locale!==preferenceState.language){return loadLocale(locale).then(()=>{preferenceState.language=locale;return setSetting('language',locale);}).then(()=>routeFor(resolved));}
+  return routeFor(resolved);
 }
 function switchView(name) { return screenNavigation ? screenNavigation.navigate(routeFor(name)) : displayView(name); }
 function goBack(fallback = 'home') { return screenNavigation ? screenNavigation.back(routeFor(fallback)) : switchView(fallback); }

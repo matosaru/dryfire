@@ -6,14 +6,14 @@ import { PAGE_IDS } from '../src/pageDefinitions.js';
 
 // The same characterization cases passed against the released main.js functions
 // before moving implementation. They now exercise the extracted public seam.
-function setup() {
+function setup(options={}) {
   const state = { activeGun: { id: 7 }, practiceController: null, sessionController: null, practiceGuideController: null };
   const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   const source = main.slice(main.indexOf('function routeFor('), main.indexOf('function switchView('));
   const routes = runInNewContext(`${source}\n({routeFor, resolveRoute})`, { ...state,
     get activeGun() { return state.activeGun; }, get practiceController() { return state.practiceController; },
     get sessionController() { return state.sessionController; }, get practiceGuideController() { return state.practiceGuideController; },
-    PAGE_IDS, resolveRouteView, isGuideContextCurrent });
+    PAGE_IDS, resolveRouteView, isGuideContextCurrent,preferenceState:options.preferenceState,loadLocale:options.loadLocale,setSetting:options.setSetting });
   const route = (view, context = null, gunId = 7) => ({ view, gunId, context });
   return { state, ...routes, route };
 }
@@ -25,6 +25,13 @@ test('all ordinary routes retain the active gun and never manufacture a session 
     expect(s.resolveRoute(s.route(view))).toEqual(s.route(view));
   }
   expect(s.resolveRoute(s.route('unknown'))).toEqual(s.route('home'));
+});
+
+test('locale-changing routes load their catalog before committing the device language',async()=>{
+ let finish;const preferenceState={language:'de'},events=[];const s=setup({preferenceState,loadLocale:locale=>{events.push(`load:${locale}`);return new Promise(resolve=>{finish=()=>resolve(locale);});},setSetting:async(name,value)=>events.push(`save:${name}:${value}`)});
+ const pending=s.resolveRoute(s.route('home'));
+ expect(preferenceState.language).toBe('de');expect(events).toEqual(['load:en']);
+ finish();await expect(pending).resolves.toEqual(s.route('home'));expect(preferenceState.language).toBe('en');expect(events).toEqual(['load:en','save:language:en']);
 });
 
 test.each([null, { id: 7, needsDetails: true }])('first use and legacy incomplete guns allow only setup/library/information/settings: %p', gun => {

@@ -39,3 +39,11 @@ test('locale changes create restorable routes and Back/Forward reapplies the sav
  history.back();await nav.flush();expect(locale).toBe('en');expect(shown.at(-1)).toBe('home:en');expect(writes).toEqual(['/de/','/de/learn/','/de/','/']);
  history.go(1);await nav.flush();expect(locale).toBe('de');expect(shown.at(-1)).toBe('home:de');
 });
+
+test('navigation waits for an asynchronous locale resolver before rendering a route',async()=>{
+ const events=new EventTarget(),entries=[];let index=-1,locale='en',release,ready=false;
+ const history={get state(){return entries[index];},replaceState(state){if(index<0)index=0;entries[index]=state;},pushState(state){entries.splice(index+1);entries.push(state);index++;},go(n){index+=n;const event=new Event('popstate');event.state=entries[index];events.dispatchEvent(event);},back(){this.go(-1);}};
+ const shown=[],nav=createScreenNavigation({history,events,initial:{view:'home'},resolve:async route=>{if(route.locale==='de'&&!ready){await new Promise(resolve=>{release=resolve;});ready=true;}locale=route.locale??'en';return route;},show:route=>shown.push(`${route.view}:${locale}`),canLeave:()=>true,beforeLeave:async()=>{},onError:error=>{throw error;}});
+ const pending=nav.navigate({view:'learn',locale:'de'});await Promise.resolve();expect(shown).toEqual([]);release();await pending;expect(shown).toEqual(['learn:de']);
+ history.back();await nav.flush();expect(shown.at(-1)).toBe('home:en');expect(locale).toBe('en');
+});

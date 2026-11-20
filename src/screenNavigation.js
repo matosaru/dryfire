@@ -23,16 +23,16 @@ export function createScreenNavigation({ history, events, initial, resolve, show
         if (distance) { restoring = true; history.go(distance); } else write('replaceState',current);
         return;
       }
-      const route = resolve(target.route);
+      const route = await resolve(target.route);
       current = { ...target, route }; write('replaceState',current); await show(route);
     });
   });
   return {
     navigate(route) { return enqueue(async () => {
-      route = resolve(route);
+      route = await resolve(route);
       if (same(current.route, route)) return true;
       if (!await leave()) return false;
-      route = resolve(route);
+      route = await resolve(route);
       current = { dryfireNavigation: 1, index: current.index + 1, route };
       write('pushState',current); await show(route); return true;
     }); },
