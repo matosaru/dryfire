@@ -2,7 +2,14 @@ import { textElement } from '../textElement.js';
 import {progressPresentation} from '../../apps/web/src/features/history/progressPresentation.ts';
 import { progressGroups, progressSummary } from '../practiceProgress.js';
 import progressStyles from '../../packages/ui/src/ProgressContent/ProgressContent.css?inline';
+import {translate} from '../../apps/web/src/localization/runtime.ts';
 const element = (doc, tag, text, className = '') => textElement(tag, text, className, doc);
+const builtInSequenceTitles={'trigger-only':'sound.trigger','rack-trigger':'cards.builtInTitles.rack','mag-trigger':'cards.builtInTitles.magazine','draw-mag-trigger':'cards.builtInTitles.drawMagazine'};
+function groupTitle(group){
+  if(group.mode!=='sequence')return translate('practice-guide',`manuals.${group.mode}.title`);
+  const key=builtInSequenceTitles[group.drillId];
+  return key?translate(key.startsWith('sound.')?'common':'drills',key):group.title;
+}
 export function createProgressView(doc, { enabled = () => true, onError = () => {}, message, locale = () => 'en' } = {}) {
   if(typeof message!=='function')throw new TypeError('A History message resolver is required to render progress.');
   if(!doc.querySelector('style[data-progress-styles]')){const style=doc.createElement('style');style.dataset.progressStyles='';style.textContent=progressStyles;doc.head.append(style);}
@@ -48,7 +55,7 @@ export function createProgressView(doc, { enabled = () => true, onError = () => 
     clear(){if(view)view.update({});else host.replaceChildren();},
     render(records, gunId) {
       const previous=owner===gunId?select.value:null;owner=gunId;groups=progressGroups(records,gunId);
-      select.replaceChildren(...groups.map(group=>{const presentation=progressPresentation(group,progressSummary(group,{days:Number(range.value)}),message,locale());const option=element(doc,'option',`${group.title} · ${presentation.timing??''}`);option.value=group.key;return option;}));
+      select.replaceChildren(...groups.map(group=>{const presentation=progressPresentation(group,progressSummary(group,{days:Number(range.value)}),message,locale());const option=element(doc,'option',`${groupTitle(group)} · ${presentation.timing??''}`);option.value=group.key;return option;}));
       select.disabled=!groups.length;
       if(groups.some(group=>group.key===previous))select.value=previous;
       else if(groups.some(group=>group.mode==='single'))select.value=groups.find(group=>group.mode==='single').key;

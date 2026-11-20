@@ -86,6 +86,8 @@ Progress chart timing summaries, comparison trends, empty states, metric names, 
 
 Removed the duplicate English message dictionary from `progressPresentation.ts` and the native renderer's duplicate table-summary fallback. Both presentation and native chart APIs now require a History message resolver; current app callers provide `history.progress.*` catalog values. Tests supply catalog resolvers explicitly.
 
+History comparison option titles now resolve built-in practice and sequence names from their YAML catalogs instead of displaying the English title stored in each saved session. User-created drill titles remain saved user data and are shown as entered.
+
 ## Newly audited shared footer and review empty states — 2026-11-20
 
 The global microphone/data-storage disclosure and copyright now use `common.footer.*` messages passed into the shared footer component. Native Practice and Sequence review fallbacks receive the shared localized no-result messages; the component package retains its English standalone defaults. English shell parity and locale-specific footer tests pass. The broad inventory remains open for remaining public, manual, controller/status and review-detail copy.

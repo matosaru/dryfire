@@ -16,7 +16,7 @@ export function progressGroups(records, gunId) {
   const groups = new Map();
   for (const record of records.filter(row => row.gunId === gunId && !['running', 'paused'].includes(row.status)).sort((a, b) => a.startedAt - b.startedAt)) {
     const key = comparable(record), mode = record.kind === 'practice' ? record.practiceMode : 'sequence';
-    if (!groups.has(key)) groups.set(key, { key, mode, title: record.drillTitle, config: record.config, records: [] });
+    if (!groups.has(key)) groups.set(key, { key, mode, drillId: record.drillId, title: record.drillTitle, config: record.config, records: [] });
     groups.get(key).records.push(record);
   }
   return [...groups.values()];
