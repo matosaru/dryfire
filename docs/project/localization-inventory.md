@@ -117,3 +117,5 @@ App navigation guards, unsaved Practice review handling, and History chart-load 
 Local database unavailable/blocked/open/transaction failures and saved-session revision/data conflicts now carry stable codes and use actionable common YAML copy. Browser-provided low-level causes remain attached where present for diagnostics.
 
 Sound Check invalid-attempt and incomplete-export state guards now use `sound-check.status.*` messages in the active locale.
+
+The successful audio-processing preference save notice is now keyed as `settings.audio.savedNotice` in all supported languages. The preference coordinator returns the stable key; the app resolves it using the active locale before showing the notice.

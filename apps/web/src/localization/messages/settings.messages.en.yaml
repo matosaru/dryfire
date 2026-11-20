@@ -39,6 +39,7 @@ audio:
   autoGain: Auto Gain
   checking: Checking browser support…
   note: Changes apply to the next capture. Audio processing may affect recognition and require fresh examples; it never deletes your learned sounds.
+  savedNotice: Saved for the next capture. Audio processing may affect recognition and require fresh examples; your learned sounds are kept.
 preferences:
   title: Appearance, units & feedback · this device
   appearance: Appearance

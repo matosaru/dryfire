@@ -39,6 +39,7 @@ audio:
   autoGain: Automatische versterking
   checking: Browserondersteuning controleren…
   note: Wijzigingen gelden voor de volgende opname. Audioverwerking kan herkenning beïnvloeden en nieuwe voorbeelden vereisen; aangeleerde geluiden worden niet gewist.
+  savedNotice: Opgeslagen voor de volgende opname. Audioverwerking kan herkenning beïnvloeden en nieuwe voorbeelden vereisen; aangeleerde geluiden blijven behouden.
 preferences:
   title: Weergave, eenheden en feedback · dit apparaat
   appearance: Weergave

@@ -11,7 +11,7 @@ export function createPreferenceActions(state,ports){
  async function audio(id,key){
   if(ports.locked()){ports.render();return;}
   const previous=state.audio;
-  try{const gunId=ports.owner();const next=normalizeAudioPreferences({...state.audio,[key]:ports.read(id).checked});state.pending=true;state.audio=next;ports.refresh();await ports.saveGun('audioPreferences',next,gunId);if(gunId!==ports.activeOwner())return;state.audio=next;state.processing=null;ports.render();ports.message('Saved for the next capture. Audio processing can affect recognition; collect fresh examples if needed. Existing samples were kept.');}
+  try{const gunId=ports.owner();const next=normalizeAudioPreferences({...state.audio,[key]:ports.read(id).checked});state.pending=true;state.audio=next;ports.refresh();await ports.saveGun('audioPreferences',next,gunId);if(gunId!==ports.activeOwner())return;state.audio=next;state.processing=null;ports.render();ports.message('audio.savedNotice');}
   catch(error){state.audio=previous;ports.error(error);}
   finally{state.pending=false;ports.refresh();}
  }

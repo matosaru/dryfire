@@ -39,6 +39,7 @@ audio:
   autoGain: Automatische Verstärkung
   checking: Browserunterstützung wird geprüft…
   note: Änderungen gelten für die nächste Aufnahme. Audioverarbeitung kann die Erkennung beeinflussen und neue Beispiele erfordern; gelernte Töne werden nicht gelöscht.
+  savedNotice: Für die nächste Aufnahme gespeichert. Audioverarbeitung kann die Erkennung beeinflussen und neue Beispiele erfordern; gelernte Töne bleiben erhalten.
 preferences:
   title: Darstellung, Einheiten & Feedback · dieses Gerät
   appearance: Darstellung

@@ -11,6 +11,9 @@ test('a completed write cannot replace another gun snapshot and locked inputs do
  const {state,ports,actions}=setup(),write=deferred();ports.saveGun.mockReturnValue(write.promise);const pending=actions.audio('noiseFilter','noiseFilter');const changed={noiseFilter:false,autoGain:true};state.audio=changed;ports.activeOwner.mockReturnValue('b');write.resolve();await pending;expect(state.audio).toBe(changed);expect(state.pending).toBe(false);expect(ports.message).not.toHaveBeenCalled();
  state.pending=true;await actions.audio('autoGainControl','autoGain');expect(ports.saveGun).toHaveBeenCalledTimes(1);
 });
+test('saved audio preference reports a stable message key for the active locale',async()=>{
+ const {ports,actions}=setup();await actions.audio('noiseFilter','noiseFilter');expect(ports.message).toHaveBeenCalledWith('audio.savedNotice');
+});
 test('device failures preserve committed appearance and reload vibration preferences',async()=>{
  const {state,ports,actions}=setup();ports.saveDevice.mockRejectedValue(Error('offline'));await actions.appearance();expect(state.theme).toBe('dark');expect(ports.applyTheme).not.toHaveBeenCalled();
  ports.reload.mockImplementation(async()=>{state.vibration=false;});await actions.vibration();expect(ports.reload).toHaveBeenCalledTimes(1);expect(state.vibration).toBe(false);expect(ports.error).toHaveBeenCalledTimes(2);
