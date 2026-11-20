@@ -12,12 +12,13 @@ import {progressGroups,progressSummary} from '../../../../src/practiceProgress.j
 import {progressPresentation} from '../../../../apps/web/src/features/history/progressPresentation';
 import {loadLocale,translate} from '../../../../apps/web/src/localization/runtime.ts';
 import {ProgressContent} from './ProgressContent';
+const message=(key:string,parameters?:Record<string,string|number>)=>translate('history',`progress.${key}`,parameters);
 afterEach(()=>{cleanup();document.body.replaceChildren();});
 const library=JSON.parse(readFileSync(new URL('../../../../visual-tests/fixtures/library.json',import.meta.url),'utf8'));
 test.each(['single','repeated','control','par','sequence'])('%s chart DOM, values, SVG geometry and accessible table match the native renderer',mode=>{
  const records=library.sessions.filter((record:{gunId:string;practiceMode:string})=>record.gunId==='qa-gun-a'&&record.practiceMode==='single').map((record:Record<string,unknown>,i:number)=>({...record,kind:mode==='sequence'?'sequence':'practice',practiceMode:mode,shots:3,elapsedMs:3000+i*200,repetitions:[0,1,2].map(j=>({status:'completed',elapsedMs:500+i*50+j*20,intervalMs:400+i*10+j*30,stepTimings:[{splitMs:800+i*20+j*10}]}))}));
  const native=document.createElement('div');native.innerHTML='<select id="progressGroup"></select><select id="progressRange"><option value="0">All</option></select><div id="progressContent"></div>';document.body.append(native);
- createProgressView(document).render(records,'qa-gun-a');const group=progressGroups(records,'qa-gun-a')[0],data=progressSummary(group);const model=progressPresentation(group,data);
+ createProgressView(document,{message}).render(records,'qa-gun-a');const group=progressGroups(records,'qa-gun-a')[0],data=progressSummary(group);const model=progressPresentation(group,data,message);
  const actual=render(<ProgressContent model={model}/>);const expected=native.querySelector('#progressContent')!;
  expect(actual.container.childNodes.length).toBe(expected.childNodes.length);expect([...actual.container.childNodes].every((node,index)=>node.isEqualNode(expected.childNodes[index]))).toBe(true);
  native.remove();expect(actual.getByRole('img')).toHaveAccessibleName(model.chart!.label);expect(actual.getByText('View values and sample counts')).toBeInTheDocument();native.remove();

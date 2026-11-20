@@ -4,6 +4,7 @@ import { progressGroups, progressSummary } from '../practiceProgress.js';
 import progressStyles from '../../packages/ui/src/ProgressContent/ProgressContent.css?inline';
 const element = (doc, tag, text, className = '') => textElement(tag, text, className, doc);
 export function createProgressView(doc, { enabled = () => true, onError = () => {}, message, locale = () => 'en' } = {}) {
+  if(typeof message!=='function')throw new TypeError('A History message resolver is required to render progress.');
   if(!doc.querySelector('style[data-progress-styles]')){const style=doc.createElement('style');style.dataset.progressStyles='';style.textContent=progressStyles;doc.head.append(style);}
   const $ = id => doc.getElementById(id), select = $('progressGroup'), range = $('progressRange'), host = $('progressContent');
   let groups = [], owner = null, view, module, pending;
@@ -29,7 +30,7 @@ export function createProgressView(doc, { enabled = () => true, onError = () => 
     for(const dotModel of chart.dots){const dot=svgNode('circle',{cx:dotModel.x,cy:dotModel.y,r:5,class:'progress-dot'});dot.append(svgNode('title',{},dotModel.title));svg.append(dot);}
     for(const date of chart.dates)svg.append(svgNode('text',{x:date.x,y:209,'text-anchor':date.anchor},date.text));
     host.append(svg,element(doc,'p',chart.note,'muted small'));
-    const details=element(doc,'details','','progress-data');details.append(element(doc,'summary',model.tableSummary??'View values and sample counts'));
+    const details=element(doc,'details','','progress-data');details.append(element(doc,'summary',model.tableSummary??''));
     const table=element(doc,'table'),head=element(doc,'tr');
     for(const title of model.tableHeaders??[]){const th=element(doc,'th',title);th.scope='col';head.append(th);}
     const thead=element(doc,'thead');thead.append(head);table.append(thead);
