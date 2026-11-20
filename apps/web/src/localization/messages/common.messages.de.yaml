@@ -280,3 +280,23 @@ sessionResult:
     timeout: Zeitlimit
     ended: beendet
     storage-or-capture-error: Speicher- oder Aufnahmefehler
+shellSafety:
+  dialogTitle: Sicherheit vor dem Üben bestätigen
+  dialogDescription: Vergewissere dich, dass die Schusswaffe entladen ist, entferne scharfe Munition aus dem Übungsbereich und richte die Waffe in eine sichere Richtung auf einen geeigneten Kugelfang.
+  dialogLimitation: Das Mikrofon kann diese Sicherheitsprüfungen nicht bestätigen. Die Bestätigung gilt für diese App-Sitzung.
+  acknowledgement: Ich habe die Sicherheitsprüfung durchgeführt.
+  confirm: Bestätigen und fortfahren
+  cancel: Abbrechen
+  summary: Sicherheitsprüfung
+  confirmed: Für diese Sitzung bestätigt
+  required: Vor der Aufnahme erforderlich
+  heading: Sicherheit zuerst
+  instructions: Vergewissere dich, dass die Waffe entladen ist; entferne scharfe Munition aus dem Bereich; richte die Waffe in eine sichere Richtung auf einen geeigneten Kugelfang.
+  disclosureAcknowledgement: Ich bestätige die Sicherheitsprüfung.
+shellGun:
+  switchSelected: "Waffe wechseln. Ausgewählt: {{name}}, {{type}}"
+  choose: Waffe auswählen
+  typeUnset: Typ nicht festgelegt
+  active: Aktive Waffe
+  switch: Waffe wechseln
+shellStartup: Öffne deine gespeicherten Waffenprofile…

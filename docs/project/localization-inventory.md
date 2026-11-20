@@ -63,3 +63,7 @@ Reset-click, noise/handling, and external-cue calibration labels, descriptions, 
 ## Newly audited Drills catalog — 2026-11-20
 
 Trigger Press and Sequence card descriptions, built-in sequence titles, and Start Drill/Edit actions now use `drills.modes.*`, `drills.cards.*`, and `drills.custom.edit` message keys in English, German and Dutch. The React page and native fallback share the catalogs; UI package cards take copy through props and saved custom preset names remain user data. Locale-switch tests cover the page, and a native fallback test checks translated labels without changing practice-mode IDs. The global source scan remains open.
+
+## Newly audited Live Listen and shared shell — 2026-11-20
+
+Live Listen panel controls, accessible names, distance fallback text, step counts, drill status and result notes now use the `live-listen` YAML catalogs in React and the retained native presentation. The shared safety dialog/disclosure, selected-gun switcher, and startup status use `common.shellSafety.*`, `common.shellGun.*`, and `common.shellStartup` messages passed into UI primitives as props; the primitives retain English defaults for standalone consumers. English shell/tree parity and German/Dutch shell text checks pass. Remaining native Practice latest-result fallback and Progress chart/table labels are still identified for migration. LOC-01's repository-wide key/source scan remains open.

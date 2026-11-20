@@ -13,19 +13,23 @@ const labelsFor=(catalog:Catalog)=>{const text=(key:string)=>{const value=catalo
  header:{home:text('header.home'),about:text('header.about'),contact:text('header.contact'),settings:text('header.settings'),information:text('header.information'),beta:text('header.beta')},
  navigation:{home:text('navigation.home'),learn:text('navigation.learn'),drills:text('navigation.drills'),history:text('navigation.history')},
  navigationLabel:text('navigation.label'),
+ safetyDialog:{title:text('shellSafety.dialogTitle'),description:text('shellSafety.dialogDescription'),limitation:text('shellSafety.dialogLimitation'),acknowledgement:text('shellSafety.acknowledgement'),confirm:text('shellSafety.confirm'),cancel:text('shellSafety.cancel')},
+ safetyDisclosure:{summary:text('shellSafety.summary'),confirmed:text('shellSafety.confirmed'),required:text('shellSafety.required'),heading:text('shellSafety.heading'),instructions:text('shellSafety.instructions'),acknowledgement:text('shellSafety.disclosureAcknowledgement')},
+ gunSwitcher:{switchSelected:text('shellGun.switchSelected'),choose:text('shellGun.choose'),typeUnset:text('shellGun.typeUnset'),active:text('shellGun.active'),switch:text('shellGun.switch')},
+ startup:text('shellStartup'),
 };};
 
 /** Trusted page/footer slots preserve mounted native section/draft nodes.
  * Safety and gun-context behavior stay with their existing native owners. */
 export function renderAppShell(locale:AppLocale='en') {
+  const catalog=catalogs[locale],labels=labelsFor(catalog);
   const context = <>
-    <SafetyDisclosure />
+    <SafetyDisclosure copy={labels.safetyDisclosure} />
     <p id="appMessage" className="app-message hidden" role="alert" />
-    <p className="startup-message" role="status">Opening your saved gun profiles…</p>
-    <GunSwitcher />
+    <p className="startup-message" role="status">{labels.startup}</p>
+    <GunSwitcher copy={labels.gunSwitcher} />
   </>;
-  const catalog=catalogs[locale];
-  const html = renderToStaticMarkup(<LocalizationProvider value={{locale,catalog}}><AppShell labels={labelsFor(catalog)} safety={<SafetyDialog />} context={context} footerNotice="{{footerNotice}}">{'{{pages}}'}</AppShell></LocalizationProvider>);
+  const html = renderToStaticMarkup(<LocalizationProvider value={{locale,catalog}}><AppShell labels={labels} safety={<SafetyDialog copy={labels.safetyDialog} />} context={context} footerNotice="{{footerNotice}}">{'{{pages}}'}</AppShell></LocalizationProvider>);
   // Omit React's automatic image hints to retain the released request graph.
   return html.replace('<link rel="preload" as="image" href="/logo.svg"/>', '')
     .replace('<link rel="preload" as="image" href="/gun-types/unknown.svg"/>', '');

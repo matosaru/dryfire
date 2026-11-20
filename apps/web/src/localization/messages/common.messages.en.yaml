@@ -280,3 +280,23 @@ sessionResult:
     timeout: timeout
     ended: ended
     storage-or-capture-error: storage or capture error
+shellSafety:
+  dialogTitle: Confirm safety before practice
+  dialogDescription: Verify the firearm is unloaded, remove live ammunition from the practice area, and use a safe direction and backstop.
+  dialogLimitation: The microphone cannot verify these checks. Confirmation applies to this app session.
+  acknowledgement: I have completed the safety check.
+  confirm: Confirm & continue
+  cancel: Cancel
+  summary: Safety check
+  confirmed: Confirmed for this session
+  required: Required before recording
+  heading: Safety first
+  instructions: Verify unloaded; remove live ammunition from the area; use a safe direction and backstop.
+  disclosureAcknowledgement: I confirm the safety check.
+shellGun:
+  switchSelected: "Switch gun. Selected: {{name}}, {{type}}"
+  choose: Choose a gun
+  typeUnset: type not set
+  active: Active gun
+  switch: Switch gun
+shellStartup: Opening your saved gun profiles…

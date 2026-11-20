@@ -20,11 +20,21 @@ mode:
   explanation: Ordne jedes einzelne Geräusch direkt zu.
   change: Modus ändern / Übung wählen
   steps: Erwarteter Geräuschablauf
+  stepCount: "Schritt {{current}} / {{total}}"
   completed: abgeschlossen
   outOfOrder: in falscher Reihenfolge
   unknown: unbekannt
   reset: Übungszähler zurücksetzen
   note: Eine abgeschlossene Übung bedeutet, dass die App den gewählten Ablauf in der richtigen Reihenfolge erkannt hat. Die tatsächlichen Handlungen werden nicht überprüft. Unbekannte Geräusche führen den Ablauf nicht fort.
+drill:
+  heading: Übungseinheit
+  selectionExplanation: Wähle eine Vorlage, um ihre geordnete Geräuscherkennung zu verfolgen, während das Mikrofon aktiv bleibt.
+  orderedExplanation: Erkenne die unten angezeigte Geräuschfolge. Die Zählung erfasst Geräusche und überprüft keine tatsächlichen Handlungen.
+  ready: "Bereit · erwartet {{sound}}."
+  matched: "Erkannt · als Nächstes: {{sound}}."
+  completed: Ablauf erkannt ({{count}} abgeschlossen). Die App hört für den nächsten Versuch weiter zu.
+  incorrect: "Unerwartete Aktion · neu gestartet. Erwartet wird {{sound}}."
+  unknown: "Unbekanntes Geräusch · höre weiter auf {{sound}}."
 capture:
   ready: Klangprofile werden geprüft…
   gun: Wähle vor dem Zuhören eine Waffe.
@@ -56,9 +66,13 @@ result:
   empty: Das nächste Erkennungsergebnis erscheint hier.
   latest: LETZTES ERGEBNIS
   note: Werte und Ähnlichkeitsabstände sind experimentell und keine kalibrierten Wahrscheinlichkeiten. Prüfe Treffer selbst.
+  noteBefore: Werte und Ähnlichkeitsabstände sind experimentell und
+  noteEmphasis: keine kalibrierten Wahrscheinlichkeiten
+  noteAfter: . Prüfe Treffer selbst.
   unknown: Unbekannt / unklar
   closestMatch: Ähnlichstes gelerntes Profil; überprüfe die Übereinstimmung selbst.
   noReliableMatch: Keine zuverlässige Übereinstimmung. Versuche ein anderes Ereignis oder füge markierte Beispiele hinzu.
+  notLearned: nicht gelernt
 timeline:
   event: "Nr. {{count}} · {{score}}/100 · {{time}}"
   drillCompleted: " · ✓ Übung abgeschlossen"

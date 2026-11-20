@@ -2,7 +2,7 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import {flushSync} from 'react-dom';
 import {LiveListenPage,type LiveListenState,type LiveListenPageProps} from '../pages/LiveListenPage/index.ts';
-const textIds=['drill-heading','drillProgressBadge','drillExplanation','drillCompleted','drillIncorrect','drillUnknown','drillFeedback','trainingSummary','listeningIndicator','listenNote','eventCounter','predictionEmpty','predictionLabel','predictionConfidence','predictionScore','listenBtn'];
+const textIds=['drill-heading','drillProgressBadge','drillExplanation','drillCompleted','drillIncorrect','drillUnknown','drillFeedback','trainingSummary','listeningIndicator','predictionLabel','predictionConfidence','predictionScore','listenBtn'];
 const controls=['listenBtn','singleShotBtn','changeDrillBtn','resetDrillBtn','verifyLatestBtn','sensitivity','drillSelect','latestActual'];
 const hiddenIds=['drillStats','resetDrillBtn','predictionCard','predictionEmpty'];
 const selectIds=['sensitivity','drillSelect','latestActual'];

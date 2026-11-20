@@ -35,6 +35,18 @@ test('the compiled shell includes the same context/dialog without extra wrappers
  expect(tree(rendered)).toEqual(tree(parse(legacy)));
 });
 
+test.each([
+ ['de','Sicherheitsprüfung','Aktive Waffe','Öffne deine gespeicherten Waffenprofile'],
+ ['nl','Veiligheidscontrole','Actief wapen','Je opgeslagen wapenprofielen openen'],
+])('shared shell safety and gun labels use %s messages',async(locale,safety,gun,startup)=>{
+ const {renderAppShell}=await import('../apps/web/src/app/renderAppShell.tsx');
+ const rendered=parse(renderAppShell(locale as 'de'|'nl'));
+ expect(rendered.querySelector('.safety-disclosure')?.textContent).toContain(safety);
+ expect(rendered.querySelector('#activeGunName')?.parentElement?.textContent).toContain(gun);
+ expect(rendered.querySelector('.startup-message')?.textContent).toContain(startup);
+ expect(rendered.querySelector('#safetyModalTitle')?.textContent).not.toBe('Confirm safety before practice');
+});
+
 
 test('ordered CSS matches the reviewed CHG-063 local candidate',()=>{
  const proof=JSON.parse(readFileSync(new URL('../docs/design/proposals/chg-063/review.json',import.meta.url),'utf8'));

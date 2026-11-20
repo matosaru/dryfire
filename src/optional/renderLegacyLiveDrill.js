@@ -1,7 +1,7 @@
 import {liveDrillPresentation} from '../../apps/web/src/features/live-listen/presentation.ts';
 
-export function renderLegacyLiveDrill(doc,drill,state,titleFor,renderDOM){
-  const view=liveDrillPresentation(drill,state,titleFor);
+export function renderLegacyLiveDrill(doc,drill,state,titleFor,renderDOM,message){
+  const view=liveDrillPresentation(drill,state,titleFor,message);
   if(!renderDOM)return view;
   for(const[id,text]of Object.entries(view.texts))doc.getElementById(id).textContent=text;
   for(const[id,hidden]of Object.entries(view.hidden))doc.getElementById(id).classList.toggle('hidden',hidden);

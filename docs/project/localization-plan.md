@@ -9,18 +9,20 @@ These estimates are active Codex engineering hours, not elapsed calendar time. T
 
 | Ticket | Status | Remaining likely | Remaining range | Main uncertainty |
 | --- | --- | ---: | ---: | --- |
-| LOC-01 Inventory | In progress | 2 h | 1–3 h | Per-message key assignment and source-scan gate |
+| LOC-01 Inventory | In progress | 1.5 h | 1–2 h | Remaining run/history source mapping and source-scan gate |
 | LOC-02 Requirements and SEO schema | Done | 0 h | 0 h | Approved route, fallback, message, and SEO contract |
 | LOC-03 YAML catalogs and validation | Done | 0 h | 0 h | Compiler, schema parity, generated-file checks, and release completeness gate are in place |
 | LOC-04 Locale runtime and persistence | In progress | 0.75 h | 0.25–1.5 h | Browser-level back/forward and persisted preference/data acceptance |
 | LOC-05 Settings and shared chrome | In progress | 1 h | 0.5–2 h | Complete common-message source audit and interaction coverage |
-| LOC-06 Page and feature localization | In progress | 12.25 h | 6.25–16.75 h | Remaining app/public surfaces, manuals and translation-source audit |
+| LOC-06 Page and feature localization | In progress | 11.75 h | 6–16 h | Remaining app/public surfaces, manuals and translation-source audit |
 | LOC-07 Localized SEO routes | Implemented; acceptance pending | 1 h | 0.5–2 h | Public build/artifact checks pass; docs/source review remains |
 | LOC-08 Tests and accessibility/overflow checks | In progress | 4 h | 2–7 h | Finish locale, accessibility, overflow coverage and rerun visual suite |
 | LOC-09 Full validation and release candidate | Blocked | 3 h | 2–6 h | Docs/visual review and full release checks; pinned Chromium download is blocked by HTTP 403 |
-| **Total remaining Codex effort** |  | **24 h** | **12.5–38.25 h** | Sum of ticket estimates; fluent DE/NL review and owner device acceptance are separate |
+| **Total remaining Codex effort** |  | **23 h** | **12.25–36.5 h** | Sum of ticket estimates; fluent DE/NL review and owner device acceptance are separate |
 
 The latest localization implementation increment took **18m 47s (0.31 h)**, timed from 14:20:30 to 14:39:17 UTC; it covers the Learn calibration cards and the Drills card/catalog slice, including focused/full validation. The immediately previous increments took **10m 51s (0.18 h)** and **11m 22s (0.19 h)**. Earlier cumulative time is not reconstructible. Catalog completeness, public route generation and SEO artifact validation pass. Remaining effort covers source-copy inventory/migration, locale persistence acceptance, accessibility/overflow coverage, documentation/screenshot review, and final release validation. Current forecast is **24 active Codex hours (12.5–38.25 h)**, excluding fluent DE/NL review and owner device acceptance. Visual validation is blocked in this environment until the pinned Playwright Chromium can be installed; its CDN returned HTTP 403. The system Chromium can run functional flows, but its screenshot differs from the pinned baseline and is not accepted as a replacement.
+
+**Tracked increment — 2026-11-20:** Live Listen panel/status copy and shared safety/gun/startup shell copy moved to English, German and Dutch YAML with React/native fallbacks and locale coverage. Focused tests pass **17 tests / 7 suites**; localization completeness, typecheck, component/runtime lint and architecture checks pass. Elapsed time **20m 03s (0.33 h)**, 14:45:04–15:05:07 UTC. LOC-01 scan is still open (remaining latest estimate 1.5 h); LOC-06 remaining forecast is now **11.75 h (6–16 h)**. Feature remaining forecast is **23 h (12.25–36.5 h)**. Remaining hardcoded Practice latest-result and Progress chart/table fallbacks are inventoried for follow-up. No version bump or release; `b` and `main` unchanged.
 
 ## Proposed behavior and technical decisions
 

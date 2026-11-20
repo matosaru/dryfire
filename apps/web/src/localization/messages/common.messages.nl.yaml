@@ -280,3 +280,23 @@ sessionResult:
     timeout: time-out
     ended: beëindigd
     storage-or-capture-error: opslag- of opnamefout
+shellSafety:
+  dialogTitle: Veiligheid controleren vóór het oefenen
+  dialogDescription: Controleer of het vuurwapen ongeladen is, verwijder scherpe munitie uit de oefenruimte en richt in een veilige richting op een geschikte kogelvanger.
+  dialogLimitation: De microfoon kan deze controles niet verifiëren. De bevestiging geldt voor deze appsessie.
+  acknowledgement: Ik heb de veiligheidscontrole uitgevoerd.
+  confirm: Bevestigen en doorgaan
+  cancel: Annuleren
+  summary: Veiligheidscontrole
+  confirmed: Bevestigd voor deze sessie
+  required: Vereist vóór opname
+  heading: Veiligheid eerst
+  instructions: Controleer of het wapen ongeladen is; verwijder scherpe munitie uit de ruimte; richt in een veilige richting op een geschikte kogelvanger.
+  disclosureAcknowledgement: Ik bevestig de veiligheidscontrole.
+shellGun:
+  switchSelected: "Wapen wisselen. Geselecteerd: {{name}}, {{type}}"
+  choose: Kies een wapen
+  typeUnset: type niet ingesteld
+  active: Actief wapen
+  switch: Wapen wisselen
+shellStartup: Je opgeslagen wapenprofielen openen…

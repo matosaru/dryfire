@@ -20,11 +20,21 @@ mode:
   explanation: Classificeer elk afzonderlijk geluid direct.
   change: Modus wijzigen / oefening kiezen
   steps: Verwachte geluidsreeks
+  stepCount: "Stap {{current}} / {{total}}"
   completed: voltooid
   outOfOrder: verkeerde volgorde
   unknown: onbekend
   reset: Oefentellers resetten
   note: Een voltooide oefening betekent dat de app de gekozen reeks in de juiste volgorde heeft herkend; fysieke handelingen worden niet gecontroleerd. Onbekende geluiden gaan niet verder met de reeks.
+drill:
+  heading: Oefensessie
+  selectionExplanation: Kies een preset om de herkende volgorde te volgen terwijl de microfoon actief blijft.
+  orderedExplanation: Herken de geluidsreeks hieronder. De telling registreert geluiden en controleert geen fysieke handelingen.
+  ready: "Klaar · verwacht {{sound}}."
+  matched: "Herkenning · hierna: {{sound}}."
+  completed: Reeks herkend ({{count}} voltooid). De app blijft luisteren voor de volgende poging.
+  incorrect: "Onverwachte actie · opnieuw gestart. Verwacht {{sound}}."
+  unknown: "Onbekend geluid · blijf luisteren naar {{sound}}."
 capture:
   ready: Geluidsprofielen controleren…
   gun: Kies een wapen voordat je luistert.
@@ -56,9 +66,13 @@ result:
   empty: Het volgende herkenningsresultaat verschijnt hier.
   latest: LAATSTE RESULTAAT
   note: Scores en gelijkenisafstanden zijn experimenteel en geen gekalibreerde kansen. Controleer overeenkomsten zelf.
+  noteBefore: Scores en gelijkenisafstanden zijn experimenteel en
+  noteEmphasis: geen gekalibreerde kansen
+  noteAfter: . Controleer overeenkomsten zelf.
   unknown: Onbekend / onduidelijk
   closestMatch: Dit is het meest vergelijkbare geleerde profiel; controleer de herkenning zelf.
   noReliableMatch: Geen betrouwbare overeenkomst. Probeer een ander geluid of voeg gelabelde voorbeelden toe.
+  notLearned: niet geleerd
 timeline:
   event: "Nr. {{count}} · {{score}}/100 · {{time}}"
   drillCompleted: " · ✓ oefening voltooid"

@@ -20,11 +20,21 @@ mode:
   explanation: Classify each separate sound as it happens.
   change: Change mode / choose drill
   steps: Expected sound sequence
+  stepCount: "Step {{current}} / {{total}}"
   completed: completed
   outOfOrder: out of order
   unknown: unknown
   reset: Reset drill counters
   note: A completed drill means the app detected the selected sequence in order, not that the actions were physically verified. Unknown sounds do not advance the sequence.
+drill:
+  heading: Drill Session
+  selectionExplanation: Select a preset to track its ordered sound detections while the microphone stays active.
+  orderedExplanation: Detect the ordered sound sequence below. Counts reflect acoustic recognition, not verified physical actions.
+  ready: "Ready · awaiting {{sound}}."
+  matched: "Recognized · next: {{sound}}."
+  completed: Sequence recognized ({{count}} completed). Listening for the next attempt.
+  incorrect: "Unexpected action · restarted. Awaiting {{sound}}."
+  unknown: "Unknown sound · keep listening for {{sound}}."
 capture:
   ready: Checking sound profiles…
   gun: Choose a gun before listening.
@@ -56,9 +66,13 @@ result:
   empty: Your next recognition result will appear here.
   latest: LATEST RESULT
   note: Scores and similarity distances are experimental and are not calibrated probabilities. Confirm matches yourself.
+  noteBefore: Scores and similarity distances are experimental and are
+  noteEmphasis: not calibrated probabilities
+  noteAfter: . Confirm matches yourself.
   unknown: Unknown / unclear
   closestMatch: Closest learned profile; check the match yourself.
   noReliableMatch: No reliable match. Try another event or add labeled examples.
+  notLearned: not learned
 timeline:
   event: "#{{count}} · {{score}}/100 · {{time}}"
   drillCompleted: " · ✓ drill completed"

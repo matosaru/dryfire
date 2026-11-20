@@ -671,12 +671,12 @@ function displayView(name) {
 
 function renderDistances(distances){
  if(!livePage&&activeView!=='recognize')return;
- void import('./optional/renderLegacyDistances.js').then(({renderLegacyDistances})=>{const rows=renderLegacyDistances(document,labels,distances,titleFor,!livePage);if(livePage)livePage.update({distances:rows});}).catch(showError);
+ void import('./optional/renderLegacyDistances.js').then(({renderLegacyDistances})=>{const rows=renderLegacyDistances(document,labels,distances,titleFor,!livePage,translate('live-listen','result.notLearned'));if(livePage)livePage.update({distances:rows});}).catch(showError);
 }
 function renderDrill(){
  if(!livePage&&activeView!=='recognize')return;
  const drill=currentDrill($('#drillSelect').value),state=drillState;
- void import('./optional/renderLegacyLiveDrill.js').then(({renderLegacyLiveDrill})=>{const view=renderLegacyLiveDrill(document,drill,state,titleFor,!livePage);if(livePage)livePage.update(view);}).catch(showError);
+ void import('./optional/renderLegacyLiveDrill.js').then(({renderLegacyLiveDrill})=>{const message=(key,parameters={})=>translate('live-listen',key,Object.fromEntries(Object.entries(parameters).map(([name,value])=>[name,['count','current','total'].includes(name)?formatLocaleNumber(Number(value)):value])));const view=renderLegacyLiveDrill(document,drill,state,titleFor,!livePage,message);if(livePage)livePage.update(view);}).catch(showError);
 }
 
 function resetDrill() {
