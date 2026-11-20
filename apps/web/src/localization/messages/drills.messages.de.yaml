@@ -18,3 +18,23 @@ custom:
   create: + Eigene Übung erstellen
   empty: Für diese Waffe gibt es noch keine eigenen Übungen. Erstelle eine eigene Übung, um einen Ablauf hinzuzufügen.
   edit: Ablauf bearbeiten
+editor:
+  create: Übung erstellen
+  edit: Übung bearbeiten
+  name: Name der Übung
+  namePlaceholder: Gib deiner Übung einen Namen
+  sequence: Aktionsfolge
+  actionOrder: Reihenfolge der Aktionen in der Übung
+  removeAction: Aktion {{index}} entfernen
+  moveAction: Aktion {{index}} nach {{direction}} verschieben
+  up: oben
+  down: unten
+  remove: entfernen
+  addSound: Geräusch hinzufügen
+  addAction: + Aktion hinzufügen
+  reorderHint: Mit den Pfeilen kannst du die Reihenfolge ändern. Geräusche können wiederholt werden.
+  save: Übung speichern
+  cancel: Abbrechen
+  unavailableEditable: Neue eigene Übungen sind in dieser öffentlichen Version nicht verfügbar. Gespeicherte Vorlagen können weiterhin verwendet und bearbeitet werden.
+  unavailable: Neue eigene Übungen sind in dieser öffentlichen Version nicht verfügbar.
+  saved: Eigene Übung für {{gun}} gespeichert.

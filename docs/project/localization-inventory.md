@@ -46,3 +46,8 @@ LOC-01 is complete when the ownership table, route/screen inventory and exclusio
 ## Newly audited Learn Sounds surface — 2026-11-20
 
 The Learn page and its `SoundCard` primitive previously retained English-only progress summaries, action labels, image alternative text, optional-sound controls, and trigger-profile status copy. These now belong to `learn.soundCard.*` and `learn.profile.*` in the English, German and Dutch YAML catalogs. The page adapts the profile's language-neutral status/count data at render time; the domain assessment in `src/profileQuality.js` remains responsible for classification only. A locale-switch test covers the German controls and incomplete-profile guidance. This increment does not complete the global key-level source inventory: run/review fragments, remaining legacy dialogs/controllers and practice-guide details still need systematic scanning.
+
+
+## Newly audited Custom Drill Editor — 2026-11-20
+
+The create/edit form's titles, field labels, action-order accessibility name, action buttons, helper copy, unavailable/save feedback and sound option names are now owned by `drills.editor.*` and the shared `common.sound.*` keys. The stable app-owned editor host resolves the page/common catalogs and subscribes to locale changes; the shared UI package receives messages as props and remains independent of application localization. Controller/native fallback feedback also uses the drill catalog. Tests cover retained English markup, both render paths, dynamic German/Dutch changes while editing a saved sequence, and the existing native-form rollback contract. The key-level whole-repository source scan remains open.

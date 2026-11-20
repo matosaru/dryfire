@@ -18,3 +18,23 @@ custom:
   create: + Create Custom Drill
   empty: No custom drills for this gun yet. Choose Create Custom Drill to add a sequence.
   edit: Edit sequence
+editor:
+  create: Create a drill
+  edit: Edit drill
+  name: Drill name
+  namePlaceholder: Name your drill
+  sequence: Action sequence
+  actionOrder: Custom drill action order
+  removeAction: Remove action {{index}}
+  moveAction: Move {{direction}} action {{index}}
+  up: up
+  down: down
+  remove: remove
+  addSound: Add a sound
+  addAction: + Add Action
+  reorderHint: Use the arrow buttons to reorder. Sounds can repeat.
+  save: Save Drill
+  cancel: Cancel
+  unavailableEditable: New custom drills are unavailable in this public version. Saved presets remain usable and editable.
+  unavailable: New custom drills are unavailable in this public version.
+  saved: Custom drill saved for {{gun}}.

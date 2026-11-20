@@ -18,3 +18,23 @@ custom:
   create: + Eigen oefening maken
   empty: Er zijn nog geen eigen oefeningen voor dit wapen. Maak een eigen oefening om een reeks toe te voegen.
   edit: Reeks bewerken
+editor:
+  create: Oefening maken
+  edit: Oefening bewerken
+  name: Naam van de oefening
+  namePlaceholder: Geef je oefening een naam
+  sequence: Actiereeks
+  actionOrder: Volgorde van acties in de oefening
+  removeAction: Actie {{index}} verwijderen
+  moveAction: Actie {{index}} naar {{direction}} verplaatsen
+  up: boven
+  down: beneden
+  remove: verwijderen
+  addSound: Geluid toevoegen
+  addAction: + Actie toevoegen
+  reorderHint: Gebruik de pijlen om de volgorde te wijzigen. Geluiden mogen worden herhaald.
+  save: Oefening opslaan
+  cancel: Annuleren
+  unavailableEditable: Nieuwe eigen oefeningen zijn niet beschikbaar in deze openbare versie. Opgeslagen oefeningen kun je blijven gebruiken en bewerken.
+  unavailable: Nieuwe eigen oefeningen zijn niet beschikbaar in deze openbare versie.
+  saved: Eigen oefening voor {{gun}} opgeslagen.
