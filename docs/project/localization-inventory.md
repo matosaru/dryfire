@@ -24,7 +24,7 @@ This inventory maps every maintained UI/page family and its source owner to one 
 | About page, retained marketing overview and app explanation | `about` | `apps/web/src/pages/AboutPage/**`; `apps/web/src/public-site/MarketingOverview/**`; `apps/web/src/app/informationPages.tsx` |
 | Contact page | `contact` | `apps/web/src/pages/ContactPage/**`; `apps/web/src/public-site/PublicPage/**`; email-copy feedback |
 | Browser setup and help content | `help` | Public Help page source, `docs/development/README.md` user-help content, installation/privacy/manual copy rendered in Settings |
-| Public route names, page titles/descriptions, open-graph copy and public-only marketing/manual landing content | `public-site` | `site/routes.js`; `tools/public-pages.mjs`; `apps/web/src/public-site/**`; public SEO templates and build-time page metadata |
+| Public route names, page titles/descriptions, open-graph copy, public-only marketing/manual landing content, no-JavaScript fallback, and not-found fallback | `public-site` | `site/routes.js`; `site/fallbacks.js`; `tools/public-pages.mjs`; `apps/web/src/public-site/**`; public SEO templates and build-time page metadata |
 
 The current route registry contains 14 app screen identities, four trigger mode setup paths, built-in/custom sequence setup paths and their manual routes. Those route variants share their owning page namespace; stable mode/guide IDs select the corresponding message keys. Public page metadata is catalog copy, while paths, route IDs and app data remain stable technical identifiers.
 

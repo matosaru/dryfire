@@ -57,6 +57,18 @@ related:
   aria: Weitere Anleitungen
   sequence: Ablaufübungen
   calibration: Kalibrierung
+fallback:
+  noScript:
+    intro: Aktiviere JavaScript, um den Trainer zu verwenden. Besuche
+    about: Über uns
+    connector: oder
+    help: Hilfe
+    ending: für Funktionen und Anleitungen.
+  notFound:
+    title: Seite nicht gefunden — Dry Fire With Ease
+    heading: Seite nicht gefunden
+    home: Startseite
+    openApp: App öffnen
 routes:
   home:
     title: Dry Fire With Ease — Kostenlose App für das Trockentraining

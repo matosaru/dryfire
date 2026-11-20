@@ -57,6 +57,18 @@ related:
   aria: Meer gidsen
   sequence: Volgordeoefeningen
   calibration: Kalibratie
+fallback:
+  noScript:
+    intro: Schakel JavaScript in om de trainer te gebruiken. Bezoek
+    about: Over de app
+    connector: of
+    help: Hulp
+    ending: voor functies en instructies.
+  notFound:
+    title: Pagina niet gevonden — Dry Fire With Ease
+    heading: Pagina niet gevonden
+    home: Home
+    openApp: App openen
 routes:
   home:
     title: Dry Fire With Ease — Gratis app voor droog oefenen

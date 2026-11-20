@@ -9,6 +9,7 @@ import{publicLocaleCatalog}from'../site/locales.js';
 import{LocalizationProvider}from'../apps/web/src/localization/runtime.ts';
 import{minifyProductionHtml,prioritizeAppStyles}from'./minify-html.mjs';
 import{prerenderAppScreen}from'./app-document.mjs';
+import{renderNotFoundHTML}from'../site/fallbacks.js';
 const escape=text=>String(text).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 export function publicHead(route){
  const canonical=CANONICAL_ORIGIN+route.path;
@@ -46,5 +47,5 @@ export function publicPagesPlugin(){return{name:'public-pages',generateBundle:{o
  }
  for(const route of PUBLIC_ROUTES.filter(row=>row.guide))this.emitFile({type:'asset',fileName:`guide-examples/${route.id}.gif`,source:readFileSync(`docs/design/screens/practice-guide/examples/${route.id}.gif`)});
  this.emitFile({type:'asset',fileName:'sitemap.xml',source:sitemapXML()});this.emitFile({type:'asset',fileName:'robots.txt',source:robotsTXT});
- this.emitFile({type:'asset',fileName:'404.html',source:'<!doctype html><html lang="en"><meta charset="UTF-8"><meta name="robots" content="noindex"><title>Page not found — Dry Fire With Ease</title><h1>Page not found</h1><p><a href="/">Home</a> · <a href="/">Open app</a></p></html>'});
+ this.emitFile({type:'asset',fileName:'404.html',source:renderNotFoundHTML('en')});
 }}};}

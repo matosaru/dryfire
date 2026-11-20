@@ -57,6 +57,18 @@ related:
   aria: More guides
   sequence: Sequence drills
   calibration: Calibration
+fallback:
+  noScript:
+    intro: Enable JavaScript to use the trainer. Visit
+    about: About
+    connector: or
+    help: Help
+    ending: for features and instructions.
+  notFound:
+    title: Page not found — Dry Fire With Ease
+    heading: Page not found
+    home: Home
+    openApp: Open app
 routes:
   home:
     title: Dry Fire With Ease — Free Dry-Fire Practice App

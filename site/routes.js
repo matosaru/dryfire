@@ -32,6 +32,7 @@ function translatedRoute(route,locale){
   purpose:publicMessage(locale,'practice-guide',`manuals.${route.id}.purpose`),
   measures:publicMessage(locale,'practice-guide',`manuals.${route.id}.measures`),
   steps:publicMessage(locale,'practice-guide',`manuals.${route.id}.steps`).split('\n').filter(Boolean),
+  example:publicMessage(locale,'public-site','guide.example'),
   expect:publicMessage(locale,'practice-guide',`manuals.${route.id}.expect`),
   requires:publicMessage(locale,'practice-guide',`manuals.${route.id}.requires`),
  }:undefined;
