@@ -43,7 +43,7 @@ import {materializeStaticCatalog} from './staticCatalog.js';
 import {renderLegacyPracticeCatalog as updateLegacyPracticeCatalog} from './optional/localizedDrillCatalog.js';
 import { afterPaint } from './afterPaint.js';
 import {formatLocaleDate,formatLocaleNumber,translate} from '../apps/web/src/localization/runtime.ts';
-import {translateAudioStatus} from './localizedAudioStatus.js';
+import {translateAudioStatus,translateApplicationError} from './localizedAudioStatus.js';
 
 const labelMeta = {
   draw: { tone: 'blue' },
@@ -704,7 +704,7 @@ function recordDrillPrediction(result) {
 function showError(error) {
   console.error(error);
   setStatus(translate('common','runtimeMain.attention'));
-  setMessage(translateAudioStatus(error?.message || String(error)));
+  setMessage(translateApplicationError(error));
 }
 
 async function capture(action) {

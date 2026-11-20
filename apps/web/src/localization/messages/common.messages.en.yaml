@@ -127,6 +127,7 @@ runtimeErrors:
   microphoneMuted: Microphone input was muted. Check microphone access, then restart the sound check or practice.
   inputStopped: Microphone input stopped arriving. Restart the sound check or practice to reconnect.
   guideUnavailable: Practice guide could not load. Your setup is unchanged. Check your connection and reload to try again.
+  invalidBackup: This backup is invalid or incompatible. Choose a backup exported by Dry Fire With Ease.
 runtime:
   practice:
     inputDetected: Microphone input detected.

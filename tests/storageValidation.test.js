@@ -14,7 +14,7 @@ test('legacy conversion obtains identity and missing times only from supplied fa
  expect(create).toHaveBeenCalledTimes(1);expect(clock).toHaveBeenCalledTimes(1);expect(value.activeGunId).toBe('legacy');expect(value.events[0]).toMatchObject({gunId:'legacy',createdAt:7});
 });
 test('invalid owners and session identities are rejected before any persistence work',()=>{
- const input=backup();input.events=[{id:'event',gunId:'another',label:'trigger',score:50,createdAt:1}];expect(()=>validateBackup(input,()=>null,()=>7)).toThrow(/unknown gun owner/);expect(()=>validateSession({},'g')).toThrow(/Invalid saved drill session/);
+ const input=backup();input.events=[{id:'event',gunId:'another',label:'trigger',score:50,createdAt:1}];let error;try{validateBackup(input,()=>null,()=>7);}catch(caught){error=caught;}expect(error).toMatchObject({code:'INVALID_BACKUP'});expect(error.message).toMatch(/unknown gun owner/);expect(()=>validateSession({},'g')).toThrow(/Invalid saved drill session/);
  expect(()=>validatePracticeSetting('practiceConfig',{unsupported:{}})).toThrow(/Invalid practice mode/);
 });
 test.each([[NaN,50],[-2,1],[1000,500],[3.9,3]])('existing normalization preserves %s → %s',(input,expected)=>expect(normalizeMaxResults(input)).toBe(expected));

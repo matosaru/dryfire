@@ -99,3 +99,7 @@ The private Settings preview selector, choices, retained-data explanation, editi
 ## Localized client document titles — 2026-11-20
 
 Client-side application titles now resolve from the current locale catalog for app pages, guide pages and the homepage. Public guide titles reuse their localized SEO title entries; existing English build-time consumers retain the English default. Tests cover German and Dutch app titles and a German guide title. Static public HTML title/description/canonical/hreflang output remains generated and validated by the public build. A full source scan and visual/documentation evidence review are still open.
+
+## Backup validation feedback — 2026-11-20
+
+Backup validation now marks invalid-import errors with a stable error code while preserving detailed English messages for storage-level diagnostics and existing tests. The Settings import flow displays a localized, actionable compatibility message from `common.runtimeErrors.invalidBackup` for all validation failures. English, German and Dutch feedback are covered; database replacement still begins only after full validation.

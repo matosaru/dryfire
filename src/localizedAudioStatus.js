@@ -44,3 +44,8 @@ export function translateAudioStatus(status) {
   if (key.includes('.')) return translate('common', `runtime.${key}`);
   return translate('common', `runtimeAudio.${key}`);
 }
+
+export function translateApplicationError(error) {
+  if(error?.code==='INVALID_BACKUP')return translate('common','runtimeErrors.invalidBackup');
+  return translateAudioStatus(error?.message||String(error));
+}

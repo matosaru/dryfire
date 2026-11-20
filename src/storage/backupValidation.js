@@ -16,6 +16,11 @@ function isJsonValue(value, depth = 0) {
 }
 
 export function validateBackup(backup, createLegacyGun, now) {
+  try { return validateBackupData(backup,createLegacyGun,now); }
+  catch(error) { if(error instanceof Error)error.code='INVALID_BACKUP';throw error; }
+}
+
+function validateBackupData(backup, createLegacyGun, now) {
   if (!backup || backup.format !== 'sound-trainer-backup' || ![1, 2, 3, 4].includes(backup.version) || backup.featureVersion !== FEATURE_VERSION) {
     throw new Error('This file is not a compatible Dry Fire With Ease backup.');
   }

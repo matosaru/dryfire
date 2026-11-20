@@ -127,6 +127,7 @@ runtimeErrors:
   microphoneMuted: Der Mikrofoneingang wurde stummgeschaltet. Überprüfe den Mikrofonzugriff und starte neu.
   inputStopped: Es kommt kein Audio mehr an. Starte Sound Check oder die Übung neu.
   guideUnavailable: Die Übungsanleitung konnte nicht geladen werden. Deine Einstellungen sind unverändert. Überprüfe die Verbindung und lade die Seite erneut.
+  invalidBackup: Diese Sicherung ist ungültig oder inkompatibel. Wähle eine mit Dry Fire With Ease exportierte Sicherung.
 runtime:
   practice:
     inputDetected: Mikrofoneingang erkannt.

@@ -127,6 +127,7 @@ runtimeErrors:
   microphoneMuted: De microfooningang is gedempt. Controleer de microfoontoegang en start opnieuw.
   inputStopped: Er komt geen audio meer binnen. Start de geluidstest of oefening opnieuw.
   guideUnavailable: De oefengids kon niet worden geladen. Je instellingen zijn ongewijzigd. Controleer je verbinding en laad de pagina opnieuw.
+  invalidBackup: Deze back-up is ongeldig of niet compatibel. Kies een back-up die met Dry Fire With Ease is geëxporteerd.
 runtime:
   practice:
     inputDetected: Microfooningang gedetecteerd.

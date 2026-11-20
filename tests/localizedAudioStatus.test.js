@@ -1,6 +1,6 @@
 import {afterEach,test,expect} from '@jest/globals';
 import {loadLocale} from '../apps/web/src/localization/runtime.ts';
-import {translateAudioStatus} from '../src/localizedAudioStatus.js';
+import {translateAudioStatus,translateApplicationError} from '../src/localizedAudioStatus.js';
 
 afterEach(async()=>loadLocale('en'));
 
@@ -22,4 +22,10 @@ test('recognition and microphone errors use the active language',async()=>{
  await loadLocale('nl');
  expect(translateAudioStatus('No clear sound detected. Move closer to the microphone or try a quieter room.'))
   .toBe('Geen duidelijk geluid herkend. Ga dichter bij de microfoon staan of probeer een stillere ruimte.');
+});
+
+test('invalid backup validation errors are localized without changing their storage error details',async()=>{
+ const error=Object.assign(new Error('Backup contains invalid gun settings.'),{code:'INVALID_BACKUP'});
+ await loadLocale('de');expect(translateApplicationError(error)).toBe('Diese Sicherung ist ungültig oder inkompatibel. Wähle eine mit Dry Fire With Ease exportierte Sicherung.');
+ await loadLocale('nl');expect(translateApplicationError(error)).toBe('Deze back-up is ongeldig of niet compatibel. Kies een back-up die met Dry Fire With Ease is geëxporteerd.');
 });
