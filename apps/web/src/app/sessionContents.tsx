@@ -7,11 +7,11 @@ import {SequenceRunContents,type SequenceRunProps} from '@dryfire/ui/SequenceRun
 import {SequenceReviewContents,type SequenceReviewProps} from '@dryfire/ui/SequenceReview';
 import {RetainedNode} from '@dryfire/ui/RetainedNode';
 import {translate} from '../localization/runtime.ts';
+import {sessionUiLabels} from './sessionUiLabels.ts';
 export type PracticeContents={kind:'practice';run:PracticeRunProps;review:PracticeReviewProps;meter:HTMLElement};
 export type SequenceContents={kind:'sequence';run:SequenceRunProps;review:SequenceReviewProps};
 export type SessionContents=PracticeContents|SequenceContents;
-const sessionUiKeys=['attempts','shots','left','stop','stopExample','stopPractice','microphoneInput','microphoneLevel','relativeLevel','waitingAudio','activeTime','pause','resume','nextRepetition','endPractice','practiceLatestEmpty','practiceReview','noAttempt','retrySaving','repeatPractice','backDrills','sessionProgress','completed','completedRepetitions','currentRepetition','microphoneInactive','latestRepetition','latestEmpty','endSession','pauseNote','sessionReview','savedDevice','repetitionResults','noRepetition','repeatSession','sessionTimingNote'] as const;
-const sessionUi=()=>Object.fromEntries(sessionUiKeys.map(key=>[key,translate('common',`sessionUi.${key}`)]));
+const sessionUi=()=>sessionUiLabels(key=>translate('common',key));
 /** Explicit, synchronous two-host handoff. Feature controllers retain outer visibility and capture. */
 export function mountSessionContents(runHost:HTMLElement,reviewHost:HTMLElement,initial:SessionContents){
  let model=initial,epoch=0,disposed=false,failure:unknown;

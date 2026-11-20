@@ -1,6 +1,6 @@
 # CHG-070 message inventory and ownership — LOC-01
 
-Updated: 2026-11-20 · State: page ownership map established; runtime scans continue as localization is migrated. Untranslated surfaces are still being identified.
+Updated: 2026-11-20 · State: page ownership map established; a release-gated audit catches unowned static JSX and direct DOM copy. Native/controller/template ownership review is still in progress.
 
 This inventory maps every maintained UI/page family and its source owner to one YAML namespace. It intentionally does not translate or catalog user data, stable IDs, code identifiers, browser/OS-owned controls, or approved product/brand names. All actual editable UI copy must end up in the assigned catalogs; the current English strings are the extraction source until each consumer is migrated. A catalog parity/build check is the release proof that the three language files contain the same keys and parameters.
 
@@ -42,6 +42,12 @@ Practice and Sequence live announcements, phase labels, review summaries, result
 - English (`en`) is the source copy; German (`de`) and Dutch (`nl`) require identical keys and parameter contracts. No released localized page may silently fall back to English.
 
 LOC-01 is complete when the ownership table, route/screen inventory and exclusions are represented in the key manifest; each migrated consumer points to one stable key and the source-scan gate reports no unowned user-facing copy. Translation completeness and user-visible flow coverage are separately enforced by LOC-03/06/08.
+
+## Static literal audit gate — 2026-11-20
+
+`npm run localization:complete` now checks production JSX text, accessible text attributes, application-level English fallback copy, literal DOM `textContent`/`innerHTML` and accessible `setAttribute` values, plus direct text arguments passed to the shared legacy `node` and `textNode` helpers. New unowned literals fail this gate. Six reviewed brand/product literals cover the approved product name, lockup and BETA badge. Shared UI primitives still keep English fallback defaults for app-independent consumers; page owners supply YAML labels in the app. The scanner explicitly ignores empty/decorative alt text, stable `{{token}}` page-template markers, translated expressions, tests, generated catalogs and user data. It does not parse arbitrary English strings in controller logic, error construction, static HTML templates or documentation; those remain part of LOC-01/06 review.
+
+The currently audited app page shells pass this gate. A remaining runtime source audit still needs to review controller/storage diagnostics, template content and dynamic namespace/key assembly rather than treating a clean static-literal scan as complete localization.
 
 ## Newly audited Learn Sounds surface — 2026-11-20
 
@@ -129,3 +135,7 @@ Sound Check now delegates microphone/readiness statuses to the common audio-stat
 ## Newly audited History evaluation matrix — 2026-11-20
 
 React History now formats the matrix's stable sound IDs with the same common sound and History noise labels as the native renderer. Matrix lookups and correct-cell logic continue to use the unchanged IDs. Focused component coverage and delayed-handoff pixel parity pass in Chromium and WebKit; the reviewed English mobile History baseline now reflects the readable labels. The repository-wide source scan remains open; remaining English strings in shared UI package defaults are reviewed as app fallbacks separately from live YAML-owned app copy.
+
+## Practice and Sequence initial review shells — 2026-11-20
+
+The static Practice and Sequence page wrappers now supply common YAML labels to their initially rendered run/review fragments, including the distinct localized review titles. The live React handoff uses the same shared label map. Practice's latest-result component fallback accepts its localized label rather than always rendering its internal English default. A dead English-only About feature-summary utility used only by a bridge test was removed; that bridge test now gets both Free and Full copy from `about.messages.en.yaml`. Focused EN/DE/NL tests cover the pre-mounted shells and standalone component fallback. The shared UI package keeps deliberate English defaults for app-independent consumers, and app page owners provide localized values.

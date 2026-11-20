@@ -1,7 +1,7 @@
 /** @jest-environment jsdom */
 import { jest } from '@jest/globals';
 import { readFileSync } from 'node:fs';
-import { aboutFeatureSummary } from '../pages/AboutPage/AboutPage.copy.ts';
+import { loadLocale, translate } from '../localization/runtime.ts';
 const fixture=readFileSync(new URL('../../../../tests/fixtures/legacy-shell.html',import.meta.url),'utf8');
 const mountChrome=()=>({update:jest.fn(),dispose:jest.fn()});
 const setContent=(html: string)=>{document.body.innerHTML=fixture+html;};
@@ -67,15 +67,16 @@ test('leaving the application while the chunk loads never mounts abandoned roots
   expect(mount).not.toHaveBeenCalled();
 });
 
-test('Full preview copy is correct immediately while its React chunk is still pending', () => {
+test('Full preview copy is correct immediately while its React chunk is still pending', async () => {
+  await loadLocale('en');
   setContent('<section id="aboutView"><p id="aboutFeatureSummary">Public copy</p></section><section id="contactView"></section>');
-  document.querySelector<HTMLElement>('#aboutFeatureSummary')!.dataset.fullSummary=aboutFeatureSummary(true);
-  document.querySelector('#aboutFeatureSummary')!.textContent=aboutFeatureSummary(false);
+  document.querySelector<HTMLElement>('#aboutFeatureSummary')!.dataset.fullSummary=translate('about','features.full');
+  document.querySelector('#aboutFeatureSummary')!.textContent=translate('about','features.free');
   const bridge = createInformationBridge({ onNavigate:jest.fn(), onBack() {}, onError() {}, load: () => new Promise(() => {}) });
   bridge.setFull(true); bridge.show('about');
-  expect(document.querySelector('#aboutFeatureSummary')?.textContent).toContain('up to five guns');
+  expect(document.querySelector('#aboutFeatureSummary')?.textContent).toBe(translate('about','features.full'));
   bridge.setFull(false);
-  expect(document.querySelector('#aboutFeatureSummary')?.textContent).toContain('built-in practice mode');
+  expect(document.querySelector('#aboutFeatureSummary')?.textContent).toBe(translate('about','features.free'));
   bridge.dispose();
 });
 

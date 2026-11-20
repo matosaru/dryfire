@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "faf91dbc9a98fb61662b75105d247a14acb8ab79",
+  "sourceCommit": "5e4fe9da8b477d847fdaec3e080baf0ef53209c7",
   "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
@@ -97,9 +97,9 @@
     "src/practiceModes.js": "ab67bd067862ae92d46772f90f099a60e35c87a0299ef343aab24c60f98933f7",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c",
-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "4f998d1ad5573f69a15e9024a4853a96298945508c0eac56ec13a1be7e3056c6",
+    "apps/web/src/pages/PracticePage/PracticePage.tsx": "5f4073b517fa7dd22509077eceb2a35f6f3619edeab05d85b60843e3ca4f5b55",
     "apps/web/src/pages/PracticePage/index.ts": "5b5b81bf639048fdae1497102f8195e6f3e88390603e112e39e0ec56f5ae5876",
-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "ab6b244f0ea755cbf4dbf05a55bb0289b066274e2e3077873318d48a2f51dea0",
+    "apps/web/src/pages/SequencePage/SequencePage.tsx": "188f1910c692709ad73ca25b099551d7600ec7ceceb809df80f35b7e50afc2ee",
     "apps/web/src/pages/SequencePage/index.ts": "35d27d3e9d6ca4e0b66385e97fb718a7aebe519045baa635d7d0cb77dc0465ec",
     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "a53e15721e842633e6a87d9a84dd1b184745f337006f4fcb5dfbcd48b5379493",
     "apps/web/src/pages/PracticeGuidePage/index.ts": "cbaa34b0c350d037b794d8112a741d5e4d191d0f19cf941e3a0a457d74665f52",
@@ -110,7 +110,7 @@
     "tools/export-guide-examples.mjs": "5cf9a642dff74dcc1a39ada83255322c9becec5a073947c3f6bf5f078235a758",
     "visual-tests/legacy-sequence.js": "ce618fc284a672556a4cf2fc2824e3f5fc42dab1dfe1f9e49e429a3cc08cd160",
     "tools/encode-guide-examples.py": "a73547fadf24e1e957aedaf2cf6228306734cf3e7dacafbc7259425455933536",
-    "apps/web/src/app/sessionContents.tsx": "b52c60dc3e55b326d324c49b26fbae6b9c904e9017d87867a9a0007b92b72ef5",
+    "apps/web/src/app/sessionContents.tsx": "49ec42643460577c5d217fac0175391273634347780ce42c09e58cca2980e12d",
     "apps/web/src/app/practiceContents.tsx": "b2ebc00e6385080155f27b7fac16d964c8f914100b742f0ecdcdce33f2e3cee6",
     "apps/web/src/app/sequenceContents.tsx": "47229b751bc654749387ead6278e542de272ba5e4c75552120982733b554e512",
     "apps/web/src/app/guideContents.tsx": "52da80bafebfe6213fb93dd34f75792998ed70d1bccadbc9331b3190eabb9209",
@@ -121,7 +121,7 @@
     "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
     "packages/ui/src/RepetitionResult/RepetitionResult.tsx": "0ab5ca95f294b59879cf33f0e4864a3d051d6fa37b92c1ba3d6787ac89447149",
     "packages/ui/src/RepetitionResult/index.ts": "3ce259aabc5f6c35a147c068e686bfa5cf4719b7a382b4ce24fd51065dd43f5d",
-    "packages/ui/src/PracticeRun/PracticeRun.tsx": "540d2705eb02da58b1a0cc6c7c7e616ec097695c3864bab4e954aa3c079b661b",
+    "packages/ui/src/PracticeRun/PracticeRun.tsx": "6ec6d41a542c8c38255de9b79040057b74840039f4513d944f44ea6de9f5ee31",
     "packages/ui/src/PracticeRun/index.ts": "f55f10e07db39a44c21d9938ddc251ceba7835ffcdc4032d160682187cdde8d4",
     "packages/ui/src/PracticeReview/PracticeReview.tsx": "f88950ad229734d5846d224cff06e9d0ec46bb13651380061e503bb27a1e51d9",
     "packages/ui/src/PracticeReview/index.ts": "9c5505f720fbbb76719cc0e7d124cd40794a5126977c636dc3c795c5bebcd904",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "e6f3ad7a404ed1900240093697746536c291863c82b1c506e38c6e42fba83d9b",
+      "sha256": "23327253d7c53267e999a91c3d0c93f37922153cee58164c1273908673d70b74",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "cdea0c47f3ed571f25748ad22d1e7d586c5b4c3453119526576b8f045228c49c",
+      "sha256": "f64da77962096e7f12c9cc39f3196ee126f9ae370f7be152ebf104d9ab3d2e47",
       "width": 358,
       "height": 1004
     },
@@ -154,7 +154,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "repeated.gif",
-      "sha256": "686fd52896e6b72f55168e6e149d04ea83eefc7768f2ced5908803e1fe560dfa",
+      "sha256": "0d934a00479d3219bcae8245bf31d6db5c414e101607d4f1e4c406575a6b0ab2",
       "width": 358,
       "height": 949
     },
@@ -163,7 +163,7 @@
       "frames": 68,
       "frameMs": 200,
       "file": "par.gif",
-      "sha256": "302ceedf9a066e38ae4d4a219ce9fea979329a4cfeb77952c0a8047fc827f90e",
+      "sha256": "0ea002c2ffe80cc94c3a01ef3e410f45c30c879142e722b71653837019a5b971",
       "width": 358,
       "height": 1004
     },
@@ -172,7 +172,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "control.gif",
-      "sha256": "686fd52896e6b72f55168e6e149d04ea83eefc7768f2ced5908803e1fe560dfa",
+      "sha256": "6a514b398c7a195fa17d6c22d5e00b80bd73c7420d08754da818516c2f2c4ad1",
       "width": 358,
       "height": 949
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "ee65a38f3e7a6d2d983c88e7c18514010505024d55cc14543bae507898e0cba0",
+      "sha256": "a7e65e089f58703a10f52da0990a3fd0d497d5ac5816e7e6fcba50b4b3d9e0a6",
       "width": 358,
       "height": 750
     },
@@ -190,7 +190,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-rack-trigger.gif",
-      "sha256": "dc7ef323046ca96b86e08c3073e42c0c95b060a67ed1fdd222b2fb449e514b2d",
+      "sha256": "086c0e255e8d5a95cb320110840a2e263cdecfb06563b50718a9f09edcda96d0",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "455565e61f1586b336dff12cbc8a6ebdc14e3e47450106caf4a00fc99f03b648",
+      "sha256": "688491317c5b604b2a43f7028fa0fbe470ee80b3ce9a680d6bf59246c3b6d41f",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "a939bdce0d60111cd17ed4373dcec0db6f25d20c0cfe6ba638512c45768dce3a",
+      "sha256": "2ae4e6ee65ee910c152b2d5a52af6a35e0f06be94c6306140b404c53ae012654",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "3f8eb2849ccb5b9ec884bd3ed05f87e40adb06b891e6b391ab8c867352c0c6a4",
+      "sha256": "092c70643db8dbf241e1f35ea905afbaa338c0f040046fa1237f4dd3a3de3af9",
       "width": 358,
       "height": 750
     }
