@@ -49,10 +49,11 @@ export function sequenceResultDetails(row,{node,titleFor}){
   return resultDetailsNode(sequenceResultPresentation(row,titleFor),node);
 }
 
-export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails,present,reviewNote,noRepetition='No repetition was completed before this session ended.' }){
+export function renderSequenceReview(record,{ $,node,state,savedRevision,saveError,saving,pending,retrySaveButton,locked,getContext,resultDetails,present,reviewNote,noRepetition='No repetition was completed before this session ended.',retryLabel='Retry saving results' }){
   const model=sequenceReviewPresentation(record,{state,savedRevision,saveError:!!saveError,saving,pending,locked:locked(),gunId:getContext().gun?.id});
   if(reviewNote!==undefined)model.savedNote=reviewNote;
   if(present?.(model))return;
+  retrySaveButton.textContent=retryLabel;
   $('#sessionReviewStatus').dataset.status=model.status;$('#sessionReviewStatus').textContent=model.title;
   $('#sessionReviewSummary').replaceChildren(...model.summary.map(row=>node('p',row.text,row.className)));
   const host=$('#sessionResultList');host.replaceChildren();
@@ -63,11 +64,11 @@ export function renderSequenceReview(record,{ $,node,state,savedRevision,saveErr
   $('#repeatSessionBtn').disabled=model.repeatDisabled;
 }
 
-export function renderSequenceRun({ $,state,pending,clock,microphone,readConfig,savedRevision,titleFor,resultDetails,announce,node,present }){
+export function renderSequenceRun({ $,state,pending,clock,microphone,readConfig,savedRevision,titleFor,resultDetails,announce,node,present,latestEmpty='Your completed repetition will appear here.' }){
   const model=sequenceRunPresentation({state,pending,clock,microphone:!!microphone,readConfig,savedRevision,titleFor});
   if(present?.(model))return;
   const get=id=>$('#'+id);renderControls(model,get);
   $('#sessionProgressMeter').max=model.progress.max;$('#sessionProgressMeter').value=model.progress.value;
   announce(model.announcement);
-  $('#sessionLatestResult').replaceChildren(model.latest?resultDetails(model.latest):node('p','Your completed repetition will appear here.','muted small'));
+  $('#sessionLatestResult').replaceChildren(model.latest?resultDetails(model.latest):node('p',latestEmpty,'muted small'));
 }

@@ -112,7 +112,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
   }
 
   const resultDetails = row => presentation.sequenceResultDetails(row, { node, titleFor });
-  const renderReview = record => presentation.renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails, noRepetition:translate('common','sessionUi.noRepetition'), present:presentReview });
+  const renderReview = record => presentation.renderSequenceReview(record, { $, node, state, savedRevision, saveError, saving, pending, retrySaveButton, locked, getContext, resultDetails, noRepetition:translate('common','sessionUi.noRepetition'), retryLabel:translate('common','sessionUi.retrySaving'), present:presentReview });
 
   function announce(text) {
     if (text !== lastAnnouncement) {
@@ -134,7 +134,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     if (record && !running) { renderReview(record); return; }
     updateReadiness();
     if (!running) return;
-    presentation.renderSequenceRun({ $, state, pending, clock, microphone, readConfig, savedRevision, titleFor, resultDetails, announce, node, present:presentRun });
+    presentation.renderSequenceRun({ $, state, pending, clock, microphone, readConfig, savedRevision, titleFor, resultDetails, announce, node, latestEmpty:translate('common','sessionUi.latestEmpty'), present:presentRun });
   }
 
   async function persist() {
@@ -381,7 +381,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     return records;
   }
 
-  const retrySaveButton = node('button', 'Retry saving results', 'button secondary wide-action hidden');
+  const retrySaveButton = node('button', translate('common','sessionUi.retrySaving'), 'button secondary wide-action hidden');
   retrySaveButton.type = 'button';
   const retrySave = () => { enqueue(persist).then(changed).catch(onError); };
   actions.set('retrySessionSave',retrySave);retrySaveButton.addEventListener('click',retrySave);

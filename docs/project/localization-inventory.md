@@ -30,7 +30,7 @@ The current route registry contains 14 app screen identities, four trigger mode 
 
 ## Newly audited session presentation surface — 2026-11-20
 
-Practice and Sequence live announcements, phase labels, review summaries, result statuses, timing labels, detection outcomes, score labels, and date/number formats are owned by `common.sessionUi.*` and `common.sessionResult.*`. User and drill names remain data; stable domain reason/outcome enums are mapped to translated messages. Locale tests verify German and Dutch rendering while unchanged English DOM/reference tests protect the guide examples.
+Practice and Sequence live announcements, phase labels, review summaries, result statuses, timing labels, detection outcomes, score labels, date/number formats, empty-result fallbacks, and retry-save actions are owned by `common.sessionUi.*` and `common.sessionResult.*`. User and drill names remain data; stable domain reason/outcome enums are mapped to translated messages. Locale tests verify German and Dutch rendering while unchanged English DOM/reference tests protect the guide examples.
 
 ## Copy inventory rules
 

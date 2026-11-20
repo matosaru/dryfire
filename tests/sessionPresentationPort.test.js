@@ -3,6 +3,7 @@ import {jest} from '@jest/globals';
 import {readFileSync} from 'node:fs';
 import * as presentation from '../src/sessionPresentation.js';
 import {semanticTree} from './helpers/guidePresentation.js';
+import {loadLocale,translate} from '../apps/web/src/localization/runtime.ts';
 const config={repetitions:2,startSource:'app',soundAtStart:true,parSeconds:1.5};
 const state={phase:'active',completed:0,remaining:2,revision:0,shots:0,config,repetitions:[],countdownEndsAtMs:null,segmentStartMs:0,elapsedMs:0,practiceMode:'single',drillSteps:['trigger'],current:{stepIndex:0}};
 const record={status:'completed',shots:0,completed:0,remaining:2,gunId:'one',gunName:'One',elapsedMs:0,startedAt:0,practiceMode:'single',config,repetitions:[]};
@@ -24,3 +25,14 @@ for(const kind of ['practice-run','practice-review','session-run','session-revie
   if(practice&&run){expect(input).toHaveBeenCalledTimes(1);expect(host.dataset.phase).toBe('active');}
  });
 }
+
+test('sequence native run and retry fallback copy follow the selected locale',async()=>{
+ await loadLocale('de');
+ try{
+  const run=setup('session-run');presentation.renderSequenceRun({$:run.query,node:run.node,state:null,pending:true,clock:()=>0,microphone:false,readConfig:()=>config,savedRevision:0,titleFor:label=>label,resultDetails:()=>run.node('p',''),announce:()=>{},latestEmpty:translate('common','sessionUi.latestEmpty')});
+  expect(run.get('sessionLatestResult').textContent).toBe('Deine abgeschlossene Wiederholung erscheint hier.');
+  const review=setup('session-review'),retry=review.node('button','');review.query('.session-review-card').append(retry);
+  presentation.renderSequenceReview({status:'completed',completed:0,remaining:1,gunId:'one',startedAt:0,config,repetitions:[],drillSteps:['trigger']},{$:review.query,node:review.node,state:null,savedRevision:null,saveError:null,saving:false,pending:false,retrySaveButton:retry,locked:()=>false,getContext:()=>({gun:{id:'one'}}),resultDetails:()=>review.node('p',''),retryLabel:translate('common','sessionUi.retrySaving')});
+  expect(retry.textContent).toBe('Ergebnisse erneut speichern');
+ }finally{await loadLocale('en');}
+});
