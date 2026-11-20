@@ -26,7 +26,7 @@ export function recordSoundCheckDetection(check,v2,v3,detectedAt=Date.now(),feat
 }
 
 export function beginSoundCheckAttempt(check,startedAt=Date.now()){
- if(!check||check.active||check.attempts.length>=check.targetAttempts)throw new Error('Sound check is not ready for another attempt.');
+ if(!check||check.active||check.attempts.length>=check.targetAttempts)throw Object.assign(new Error('Sound check is not ready for another attempt.'),{code:'SOUND_CHECK_NOT_READY'});
  return Object.freeze({...check,active:Object.freeze({startedAt:Number(startedAt)||0}),pending:Object.freeze([])});
 }
 
@@ -39,7 +39,7 @@ export function finishSoundCheckAttempt(check,{actualLabel,startedAt=check?.acti
 export function soundCheckSummary(check){return{v2:summaryFor(check.attempts,'v2'),v3:summaryFor(check.attempts,'v3')};}
 
 export function buildSoundCheckReport(check,metadata={}){
- if(!check||check.active||check.attempts.length!==check.targetAttempts)throw new Error('Complete every sound check attempt before exporting.');
+ if(!check||check.active||check.attempts.length!==check.targetAttempts)throw Object.assign(new Error('Complete every sound check attempt before exporting.'),{code:'SOUND_CHECK_INCOMPLETE'});
  return{format:'dryfire-sound-check',version:1,createdAt:new Date().toISOString(),targetAttempts:check.targetAttempts,
   metadata:{...check.metadata,...metadata},summary:soundCheckSummary(check),attempts:check.attempts.map(attempt=>({...attempt,detections:attempt.detections.map(row=>({...row}))}))};
 }

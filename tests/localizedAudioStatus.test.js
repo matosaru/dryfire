@@ -66,3 +66,8 @@ test('local database and saved-session conflicts have actionable translated feed
  expect(translateApplicationError({code:'SESSION_DATA_CONFLICT'})).toContain('gespeicherten Übungsdaten haben sich unerwartet geändert');
  await loadLocale('nl');expect(translateApplicationError({code:'DATABASE_UNAVAILABLE'})).toContain('Lokale opslag is niet beschikbaar');
 });
+
+test('invalid Sound Check states use its translated status copy',async()=>{
+ await loadLocale('de');expect(translateApplicationError({code:'SOUND_CHECK_NOT_READY'})).toContain('Klangtest ist noch nicht');
+ await loadLocale('nl');expect(translateApplicationError({code:'SOUND_CHECK_INCOMPLETE'})).toContain('Voltooi alle pogingen');
+});

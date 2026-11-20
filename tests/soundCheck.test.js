@@ -23,7 +23,7 @@ test('labelled attempts count matches, misses, duplicates and false trigger shot
 test('detections outside an open attempt are ignored and reports reject unfinished checks',()=>{
  const check=createSoundCheck({attempts:1});
  expect(recordSoundCheckDetection(check,{label:'trigger'},null,10)).toBe(check);
- expect(()=>buildSoundCheckReport(check)).toThrow(/complete/i);
+ expect(()=>buildSoundCheckReport(check)).toThrow(expect.objectContaining({code:'SOUND_CHECK_INCOMPLETE'}));
  expect(()=>createSoundCheck({attempts:0})).toThrow(RangeError);
  expect(()=>finishSoundCheckAttempt(check,{actualLabel:'invalid'})).toThrow(TypeError);
 });

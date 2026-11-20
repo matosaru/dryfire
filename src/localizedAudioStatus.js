@@ -52,5 +52,7 @@ export function translateApplicationError(error) {
   if(error?.code==='NAVIGATION_LOCKED')return translate('common','runtimeMain.navigationLocked');
   if(error?.code==='PRACTICE_RESULTS_UNSAVED')return translate('common','sessionUi.practiceSaveRetry');
   if(error?.code==='PROGRESS_CHARTS_UNAVAILABLE')return translate('common','runtimeErrors.progressChartsUnavailable');
+  if(error?.code==='SOUND_CHECK_NOT_READY')return translate('sound-check','status.attemptNotReady');
+  if(error?.code==='SOUND_CHECK_INCOMPLETE')return translate('sound-check','status.incompleteExport');
   return translateAudioStatus(error?.message||String(error));
 }

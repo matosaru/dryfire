@@ -66,3 +66,5 @@ status:
   attemptSaved: Poging opgeslagen. Kies het volgende geluid en begin opnieuw.
   listening: "Luistert naar één {{sound}}…"
   analysisFailed: "Geluid gedetecteerd, maar analyseren is mislukt: {{message}}"
+  attemptNotReady: De geluidstest is nog niet klaar voor een volgende poging.
+  incompleteExport: Voltooi alle pogingen van de geluidstest voordat je het rapport exporteert.

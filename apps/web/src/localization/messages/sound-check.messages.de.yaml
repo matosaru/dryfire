@@ -66,3 +66,5 @@ status:
   attemptSaved: Versuch gespeichert. Wähle das nächste Geräusch und starte erneut.
   listening: "Erfasse einen Ton: {{sound}}…"
   analysisFailed: "Geräusch erkannt, aber Analyse fehlgeschlagen: {{message}}"
+  attemptNotReady: Der Klangtest ist noch nicht für einen weiteren Versuch bereit.
+  incompleteExport: Schließe alle Klangtestversuche ab, bevor du den Bericht exportierst.
