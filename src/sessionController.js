@@ -13,6 +13,7 @@ import { requestFeedbackVibration } from './feedback.js';
 import { readNumberInput } from './inputLimits.js';
 import {formatLocaleDate,formatLocaleNumber,translate} from '../apps/web/src/localization/runtime.ts';
 import {translateAudioStatus} from './localizedAudioStatus.js';
+import {localizeRetainedSetup} from '../apps/web/src/localization/retainedSetup.ts';
 
 const $ = selector => document.querySelector(selector);
 
@@ -106,9 +107,9 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
 
   function renderSequence(record) {
     const steps = record?.drillSteps || selection?.steps || [];
-    const rows=steps.map((label,index)=>({text:titleFor(label),className:'drill-step'+(state?.phase==='active'?(index<state.current.stepIndex?' done':index===state.current.stepIndex?' current':''):'')}));
+    const rows=steps.map((label,index)=>({label,text:titleFor(label),className:'drill-step'+(state?.phase==='active'?(index<state.current.stepIndex?' done':index===state.current.stepIndex?' current':''):'')}));
     const presetName=tr(steps.length===1?'presetOne':'presetOther',{count:steps.length,state:record?tr('saved'):tr('setup')});
-    if(page)page.update({steps:rows,presetName});else{const host=$('#sessionSteps');host.replaceChildren(...rows.map(row=>node('li',row.text,row.className)));$('#sessionPresetName').textContent=presetName;}
+    if(page)page.update({steps:rows,presetName});else{const host=$('#sessionSteps');host.replaceChildren(...rows.map(row=>{const item=node('li',row.text,row.className);item.dataset.soundId=row.label;return item;}));$('#sessionPresetName').textContent=presetName;}
   }
 
   const resultDetails = row => presentation.sequenceResultDetails(row, { node, titleFor });
@@ -343,7 +344,8 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     savedRevision = null; saveError = null;
     try { fillConfig(saved); } catch { fillConfig(DEFAULT_SESSION_CONFIG); }
     changed();
-    routeKey = crypto.randomUUID(); onNavigate('session');
+    routeKey = crypto.randomUUID(); await onNavigate('session');
+    localizeRetainedSetup($('#sessionConfigure'),'sequence');
     $('#session-title').setAttribute('tabindex', '-1'); $('#session-title').focus();
   }
 
@@ -424,6 +426,7 @@ export function createSessionController({ getContext, titleFor, ensureSafe, onNa
     return true;
   }
   function connectPage(mount,onGuide){if(page||locked()||saveError)return false;page=mount($('#sessionView'),{onBack,onGuide});return true;}
-  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh: render, locked, routeKey: () => routeKey, selectionId: () => selection?.id ?? null, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
+  function refresh(){render();localizeRetainedSetup($('#sessionConfigure'),'sequence');}
+  return { connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, openSavedRecord, renderSavedSessions, refresh, locked, routeKey: () => routeKey, selectionId: () => selection?.id ?? null, hasUnsavedResults: () => !!saveError, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken += 1; routeKey = null; selection = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }

@@ -1,6 +1,6 @@
 {
-  "sourceCommit": "b3c09248c13b34c308e146bea7979d1daef75e18",
-  "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
+  "sourceCommit": "a7ba1c3d293d007b785a002a7c4b33db50c49be4",
+  "renderer": "local Chromium 145.0.7632.6",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
@@ -85,9 +85,9 @@
     "src/textElement.js": "3e0caf240dff3450b87ded1e1bc49e27233d463bc4232f2666e67478d77b6275",
     "apps/web/src/features/sessions/resultPresentation.ts": "269f2dfe5342bcc32f02fb830cc23cf0aa83acc5927d43ef4c27f4929999b4cd",
     "apps/web/src/features/sessions/phasePresentation.ts": "3f2de23f086b509cdcb2a9567e6b75cfa066bfd49fd965ba5f341baa0c08ea51",
-    "src/practiceGuideController.js": "42cabc4e5d8e07af86a686b5b0379d247a1f1c3aafc1521575d084d13637c858",
-    "src/practiceGuideBridge.js": "d948b3e54cba2795165226f6a68d153d9989cf3cda3fe2c1cc2b0bccda1418e1",
-    "src/main.js": "6c648089c11b68e9e08db5ae459b6685dfa9f31f45efcac39a4c7c16054cbc7f",
+    "src/practiceGuideController.js": "302df6b59cfcc62371ac425b25bf01aa8509ddab6c1e484fc56db87114cb452b",
+    "src/practiceGuideBridge.js": "cf60455330ccb5b80b0b790380adfe256fa233831a78e12be9735c97186b071a",
+    "src/main.js": "d5118ace6b49c07caa3198937290cb893809fdf02f7f9e1430fd7828eee2ae8c",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "src/practiceGuideRendering.js": "98ab13fd4b8f8710e19204d3130d498053ded6fc33337602034acbad05f8e17c",
     "src/practiceGuideExamples.js": "f2b21b862d222a2d12aff8799e7bcc1ee9dbc0638f8512d3e82dbc7660eb5962",
@@ -97,9 +97,9 @@
     "src/practiceModes.js": "ab67bd067862ae92d46772f90f099a60e35c87a0299ef343aab24c60f98933f7",
     "src/drillSession.js": "787ef523db1a1b79439d705f8c894713b2dad47688684d58c766ba6025ecbebd",
     "src/drills.js": "addb5cf9aee01cb2fd46cc2a570f1e883a9aa8a4bbae2ea204e43ae3b487223c",
-    "apps/web/src/pages/PracticePage/PracticePage.tsx": "5f4073b517fa7dd22509077eceb2a35f6f3619edeab05d85b60843e3ca4f5b55",
+    "apps/web/src/pages/PracticePage/PracticePage.tsx": "58591c5181c2167cfd8999aee503f377f3ae316570a1cd78728a27368c1a269a",
     "apps/web/src/pages/PracticePage/index.ts": "5b5b81bf639048fdae1497102f8195e6f3e88390603e112e39e0ec56f5ae5876",
-    "apps/web/src/pages/SequencePage/SequencePage.tsx": "188f1910c692709ad73ca25b099551d7600ec7ceceb809df80f35b7e50afc2ee",
+    "apps/web/src/pages/SequencePage/SequencePage.tsx": "3682e67a8552833f86f7958440966742db5df27b698aa18bc22b8ea2125a70a2",
     "apps/web/src/pages/SequencePage/index.ts": "35d27d3e9d6ca4e0b66385e97fb718a7aebe519045baa635d7d0cb77dc0465ec",
     "apps/web/src/pages/PracticeGuidePage/PracticeGuidePage.tsx": "b1ff02b34b0c66dd6aa62af038aeda32780ae3ba6e7a3ea550d10b54cc22d847",
     "apps/web/src/pages/PracticeGuidePage/index.ts": "cbaa34b0c350d037b794d8112a741d5e4d191d0f19cf941e3a0a457d74665f52",
@@ -114,8 +114,8 @@
     "apps/web/src/app/practiceContents.tsx": "b2ebc00e6385080155f27b7fac16d964c8f914100b742f0ecdcdce33f2e3cee6",
     "apps/web/src/app/sequenceContents.tsx": "47229b751bc654749387ead6278e542de272ba5e4c75552120982733b554e512",
     "apps/web/src/app/guideContents.tsx": "52da80bafebfe6213fb93dd34f75792998ed70d1bccadbc9331b3190eabb9209",
-    "apps/web/src/app/practicePage.tsx": "31df92bc14158bab94b873a011f1b92b93936cfbc46ebac5db032f0c774b1025",
-    "apps/web/src/app/sequencePage.tsx": "b11242558b94cffc0c4d6f0521ddba0368b64abfa709656facd9cfc439199783",
+    "apps/web/src/app/practicePage.tsx": "71156be879666ad8cf367406f3a3f5c7a4b8c00e98d4d0cc50047828740d9282",
+    "apps/web/src/app/sequencePage.tsx": "c60dd403323fb69a55fc1eec6dd46db1c27eca25215617941080fa0741f2a275",
     "apps/web/src/app/guidePage.tsx": "d4e466e74a0306e1ec63ba95f00159119f6e83ab2aab6faba4ac7079f430defa",
     "apps/web/src/app/retainedPage.tsx": "016947d1bcec20b153ef45e2a459af98274c2e736204caeae9f995aed59a1f35",
     "apps/web/src/features/sessions/controlClasses.ts": "361461c2f3a080c5bcd60ed67921c1c6ccbb8126219ed242a06295aa01c8fb68",
@@ -136,7 +136,7 @@
       "frames": 47,
       "frameMs": 200,
       "file": "single.gif",
-      "sha256": "23327253d7c53267e999a91c3d0c93f37922153cee58164c1273908673d70b74",
+      "sha256": "7a106f2860c5fd1bd1b60ed78c60a35bbf68edc46cd80d1e744dff7efc82f831",
       "width": 358,
       "height": 1004
     },
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "f64da77962096e7f12c9cc39f3196ee126f9ae370f7be152ebf104d9ab3d2e47",
+      "sha256": "f4109a821445e0522e2d873c504e6f6245274286b5ce5a07a652f893c6f6be62",
       "width": 358,
       "height": 1004
     },
@@ -154,7 +154,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "repeated.gif",
-      "sha256": "0d934a00479d3219bcae8245bf31d6db5c414e101607d4f1e4c406575a6b0ab2",
+      "sha256": "686fd52896e6b72f55168e6e149d04ea83eefc7768f2ced5908803e1fe560dfa",
       "width": 358,
       "height": 949
     },
@@ -163,7 +163,7 @@
       "frames": 68,
       "frameMs": 200,
       "file": "par.gif",
-      "sha256": "0ea002c2ffe80cc94c3a01ef3e410f45c30c879142e722b71653837019a5b971",
+      "sha256": "302ceedf9a066e38ae4d4a219ce9fea979329a4cfeb77952c0a8047fc827f90e",
       "width": 358,
       "height": 1004
     },
@@ -172,7 +172,7 @@
       "frames": 36,
       "frameMs": 200,
       "file": "control.gif",
-      "sha256": "6a514b398c7a195fa17d6c22d5e00b80bd73c7420d08754da818516c2f2c4ad1",
+      "sha256": "686fd52896e6b72f55168e6e149d04ea83eefc7768f2ced5908803e1fe560dfa",
       "width": 358,
       "height": 949
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "a7e65e089f58703a10f52da0990a3fd0d497d5ac5816e7e6fcba50b4b3d9e0a6",
+      "sha256": "ee65a38f3e7a6d2d983c88e7c18514010505024d55cc14543bae507898e0cba0",
       "width": 358,
       "height": 750
     },
@@ -190,7 +190,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-rack-trigger.gif",
-      "sha256": "086c0e255e8d5a95cb320110840a2e263cdecfb06563b50718a9f09edcda96d0",
+      "sha256": "701562f46c1eb8bfa61f9e623d4021277fa563bf76f506515a3deccd8d1f12ca",
       "width": 358,
       "height": 750
     },
@@ -199,7 +199,7 @@
       "frames": 64,
       "frameMs": 200,
       "file": "sequence-mag-trigger.gif",
-      "sha256": "688491317c5b604b2a43f7028fa0fbe470ee80b3ce9a680d6bf59246c3b6d41f",
+      "sha256": "8ce8cd1658eeefcbd56d25be8fa64720b1ec7d6c09cde929a665a7c55b05770a",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "2ae4e6ee65ee910c152b2d5a52af6a35e0f06be94c6306140b404c53ae012654",
+      "sha256": "0888202afc206dd992ce7205a63763bf31003602d50ad0f70c5c34d36067939b",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "092c70643db8dbf241e1f35ea905afbaa338c0f040046fa1237f4dd3a3de3af9",
+      "sha256": "3e163546ac83399cbd18f9293b29c3512635cbe9633d2803e3aef3b8f85f4012",
       "width": 358,
       "height": 750
     }

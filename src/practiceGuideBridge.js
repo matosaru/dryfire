@@ -41,6 +41,7 @@ export function createPracticeGuideBridge({ onBack, onNavigate, onError,
       }
     },
     pause() { generation++; controller?.pause(); },
+    refreshLocale() { return controller?.refreshLocale?.() ?? false; },
     current() { return controller?.current() ?? null; },
     connectView(mount) { return controller?.connectView(mount) ?? false; },
     connectPage(mount) { return controller?.connectPage(mount) ?? false; },

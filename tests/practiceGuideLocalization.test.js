@@ -11,6 +11,16 @@ const originalClone=globalThis.structuredClone;
 beforeAll(()=>{globalThis.structuredClone=value=>deserialize(serialize(value));});
 afterAll(()=>{globalThis.structuredClone=originalClone;});
 afterEach(async()=>{document.body.replaceChildren();await loadLocale('en');});
+test('an already open guide refreshes all retained guidance after locale changes',async()=>{
+ document.body.innerHTML=renderPageTemplates('{{app}}');
+ const controller=createPracticeGuideController({onBack:()=>{}});
+ controller.open({type:'practice',mode:'single',gunId:'gun-a',routeKey:'setup-a',config:{repetitions:2}});
+ await loadLocale('de');controller.refreshLocale();
+ expect(document.getElementById('practiceGuidePlayBtn')).toHaveTextContent('Beispiel abspielen');
+ expect(document.getElementById('practiceGuideKind')).toHaveTextContent('ÜBUNGSANLEITUNG');
+ expect(document.getElementById('practiceGuideName').textContent).not.toBe('Single trigger press');
+ expect(document.getElementById('practiceGuideSteps').textContent).not.toContain('Wait');
+});
 test.each([
  ['de','Beispiel abspielen','Beispiel stoppen','Beispiel: Das Mikrofon hört zu.'],
  ['nl','Voorbeeld afspelen','Voorbeeld stoppen','Voorbeeld: de microfoon luistert.'],

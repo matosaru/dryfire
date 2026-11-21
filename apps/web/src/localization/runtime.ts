@@ -29,7 +29,7 @@ export async function loadLocale(value:unknown):Promise<AppLocale>{
  if(next!==locale||!Object.keys(catalog).length){
   const pending=loading[next]??=loaders[next]().then(module=>module.default);
   const loaded=await pending;delete loading[next];
-  if(request===generation){catalog=loaded;locale=next;if(typeof document!=='undefined'){document.documentElement.lang=next;refreshNumericHints();}publish();}
+  if(request===generation){catalog=loaded;locale=next;if(typeof document!=='undefined'){document.documentElement.lang=next;refreshLocalizedNumericHints();}publish();}
  }
  return locale;
 }
@@ -45,7 +45,7 @@ export function translate(namespace:string,key:string,parameters:MessageParamete
  return translated(catalog,locale,namespace,key,parameters);
 }
 
-function refreshNumericHints(){
+export function refreshLocalizedNumericHints(){
  if(typeof document==='undefined')return;
  document.querySelectorAll<HTMLElement>('.numeric-hint[id$="Limit"]').forEach(node=>{
   const inputId=node.id.slice(0,-'Limit'.length),input=document.getElementById(inputId);

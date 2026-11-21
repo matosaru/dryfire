@@ -7,10 +7,10 @@ import {SequenceRun} from '@dryfire/ui/SequenceRun';
 import {SequenceReview} from '@dryfire/ui/SequenceReview';
 import {useLocaleMessages} from '../../localization/runtime.ts';
 import {sessionUiLabels} from '../../app/sessionUiLabels.ts';
-export type SequencePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;guideHref?:string;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
+export type SequencePageProps={gunName?:string;contextHidden?:boolean;guideHidden?:boolean;guideHref?:string;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
 /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
-export function SequencePage({title,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){const {t}=useLocaleMessages('sequence');const {t:common}=useLocaleMessages('common');const labels=sessionUiLabels(common);return <>
-<PageHeading id="session-title" title={title??t('page.title')} backId="sessionBackBtn" backLabel={t('back')} sharedBack={false} reactBack={false} onBack={onBack}/>
+export function SequencePage({gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,presetName,onBack,onGuide,onAction}:SequencePageProps){const {t}=useLocaleMessages('sequence');const {t:common}=useLocaleMessages('common');const labels=sessionUiLabels(common);return <>
+<PageHeading id="session-title" title={t('page.title')} backId="sessionBackBtn" backLabel={t('back')} sharedBack={false} reactBack={false} onBack={onBack}/>
 
       <GunContext name={gunName} hidden={contextHidden} prefix={t('gunContext.prefix')} suffix={t('gunContext.suffix')}/>
       <p id="sessionPresetName" className="session-preset-name">{presetName}</p>

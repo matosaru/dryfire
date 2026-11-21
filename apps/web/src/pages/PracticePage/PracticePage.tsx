@@ -7,10 +7,10 @@ import {PracticeRun} from '@dryfire/ui/PracticeRun';
 import {PracticeReview} from '@dryfire/ui/PracticeReview';
 import {useLocaleMessages} from '../../localization/runtime.ts';
 import {sessionUiLabels} from '../../app/sessionUiLabels.ts';
-export type PracticePageProps={title?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;guideHref?:string;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
+export type PracticePageProps={title?:string;mode?:string;gunName?:string;contextHidden?:boolean;guideHidden?:boolean;guideHref?:string;configure?:ReactNode;run?:ReactNode;review?:ReactNode;steps?:ReactNode;presetName?:string;onBack?:()=>void;onGuide?:React.MouseEventHandler<HTMLAnchorElement>;onAction?:(id:string)=>void};
 /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
-export function PracticePage({title,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,onBack,onGuide,onAction}:PracticePageProps){const {t}=useLocaleMessages('practice');const {t:common}=useLocaleMessages('common');const labels=sessionUiLabels(common);return <>
-<PageHeading id="practice-title" title={title??t('page.title')} backId="practiceBackBtn" backLabel={t('back')} sharedBack={false} reactBack={false} onBack={onBack}/>
+export function PracticePage({title,mode,gunName,contextHidden=false,guideHidden=false,guideHref,configure,run,review,steps,onBack,onGuide,onAction}:PracticePageProps){const {t}=useLocaleMessages('practice');const {t:common}=useLocaleMessages('common');const labels=sessionUiLabels(common);const pageTitle=mode?t(`modes.${mode}`):title??t('page.title');return <>
+<PageHeading id="practice-title" title={pageTitle} backId="practiceBackBtn" backLabel={t('back')} sharedBack={false} reactBack={false} onBack={onBack}/>
 
       <GunContext name={gunName} hidden={contextHidden} prefix={t('gunContext.prefix')} suffix={t('gunContext.suffix')}/>
       <DrillSetupSteps id="practiceSteps" label={t('steps.label')}>{steps}</DrillSetupSteps>

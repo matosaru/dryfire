@@ -38,6 +38,17 @@ test('changing Settings language preserves local gun/history data and the matchi
  await page.reload();await expect(page.locator('html')).toHaveAttribute('lang','de');await expect(page.locator('#history-title')).toHaveText('Verlauf');
  await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
 });
+test('changing locale refreshes Settings, retained Practice setup and Sequence setup copy',async({page})=>{
+ await restore(page);await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');await page.locator('#settingsShortcut').click();await expect(page).toHaveURL(/\/settings\/$/);await expect(page.locator('#language')).toBeVisible();await page.locator('#language').selectOption('de');await expect(page).toHaveURL(/\/de\/settings\/$/);
+ await expect(page.locator('#soundResetSummary')).toContainText('gelernte Beispiele');await expect(page.locator('#deviceCheck')).toContainText('Sichere Verbindung');
+ await page.locator('.tab[data-view="drills"]').click();await page.locator('[data-practice-mode="par"]').click();
+ await expect(page.locator('#practice-title')).toHaveText('Übung mit Zeitlimit');await expect(page.locator('#practiceConfigFields legend')).toHaveText('Übung einrichten');await expect(page.locator('#practiceCountLabel')).toHaveText('Wiederholungen');await expect(page.locator('#practiceRepetitionsLimit')).toContainText('ganze Zahlen');
+ await page.locator('#practiceRepetitions').fill('17');await page.locator('#settingsShortcut').click();await expect(page).toHaveURL(/\/de\/settings\/$/);await expect(page.locator('#language')).toBeVisible();await page.locator('#language').selectOption('nl');await expect(page).toHaveURL(/\/nl\/settings\/$/);
+ await expect(page.locator('#soundResetSummary')).toContainText('geleerde voorbeelden');
+ await page.locator('.tab[data-view="drills"]').click();await page.locator('[data-practice-mode="par"]').click();
+ await expect(page.locator('#practice-title')).toHaveText('Oefening met tijdslimiet');await expect(page.locator('#practiceConfigFields legend')).toHaveText('Oefening instellen');await expect(page.locator('#practiceCountLabel')).toHaveText('Herhalingen');await expect(page.locator('#practiceRepetitionsLimit')).toContainText('hele getallen');
+ await page.locator('#practiceBackBtn').click();await expect(page.locator('#drills-title')).toBeVisible();await page.locator('#builtInDrillsTab').click();await page.locator('#drillCatalog button').first().click();await expect(page.locator('#session-title')).toHaveText('Trainingssessie');await expect(page.locator('#sessionConfigFields legend')).toHaveText('Sessie instellen');await expect(page.locator('#sessionSteps')).toContainText('Trekker overhalen');
+});
 test('flat app routes preserve profile data, invalid drafts and browser history',async({page})=>{
  await restore(page,'/history/');await expect(page.locator('#historyView')).toBeVisible();
  await page.reload();await expect(page).toHaveURL(/\/history\/$/);await expect(page).toHaveTitle('History — Dry Fire With Ease');

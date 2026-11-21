@@ -10,7 +10,7 @@ for(const theme of ['dark','light'])test(`session handoffs preserve ${theme} sav
  await page.goto('/');await page.locator('#restoreGunBackupBtn').click();await expect(page.locator('#settingsView')).toBeVisible();await page.locator('#importFile').setInputFiles({name:'library.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(data))});await expect(page.locator('#homeView')).toBeVisible();
  const loaded=page.waitForResponse(response=>/\/assets\/practiceContents-/.test(response.url()));
  await page.locator('.tab[data-view="history"]').click();await page.locator('#savedSessions .saved-session-card button').first().click();await loaded;await expect(page.locator('#practiceReview')).not.toHaveAttribute('data-react-session');
- await page.locator('#practiceResults details').first().locator('summary').click();await page.locator('#practice-title').click();
+ await page.locator('#practice-title').click();
  const before=await page.locator('#practiceView').screenshot({animations:'disabled'});
  await page.locator('.tab[data-view="home"]').click();await page.goBack();await expect(page.locator('#practiceReview')).toHaveAttribute('data-react-session','');await expect(page.locator('#practiceView')).toHaveAttribute('data-react-practice','');await page.locator('#practice-title').click();
  const after=await page.locator('#practiceView').screenshot({animations:'disabled'});await info.attach('native-review',{body:before,contentType:'image/png'});await info.attach('react-review',{body:after,contentType:'image/png'});expect(createHash('sha256').update(after).digest('hex')).toBe(createHash('sha256').update(before).digest('hex'));

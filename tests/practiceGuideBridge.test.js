@@ -2,7 +2,7 @@ import {jest} from '@jest/globals';
 import {createPracticeGuideBridge} from '../src/practiceGuideBridge.js';
 const deferred=()=>{let resolve,reject;const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});return{promise,resolve,reject};};
 function setup(){
- const pending=deferred(),controller={open:jest.fn(),pause:jest.fn(),current:jest.fn(()=>({contextKey:'practice:a'})),connectView:jest.fn(()=>true),connectPage:jest.fn(()=>true)};
+ const pending=deferred(),controller={open:jest.fn(),pause:jest.fn(),refreshLocale:jest.fn(()=>true),current:jest.fn(()=>({contextKey:'practice:a'})),connectView:jest.fn(()=>true),connectPage:jest.fn(()=>true)};
  const factory=jest.fn(()=>controller),load=jest.fn(()=>pending.promise),onNavigate=jest.fn(),onError=jest.fn(),onBack=jest.fn();
  const bridge=createPracticeGuideBridge({load,onNavigate,onError,onBack});let context={gunId:'gun',routeKey:'a',type:'practice',config:{repetitions:10}};
  return {pending,controller,factory,load,onNavigate,onError,onBack,bridge,resolve:()=>context,set:value=>{context=value;},module:{createPracticeGuideController:factory}};
@@ -15,6 +15,7 @@ test('an explicit open reads fresh setup after loading, creates once and retains
  const s=setup(),open=s.bridge.open(s.resolve);s.set({...s.resolve(),config:{repetitions:20}});s.pending.resolve(s.module);expect(await open).toBe(true);
  expect(s.controller.open).toHaveBeenCalledWith(s.resolve());expect(s.factory).toHaveBeenCalledWith({onBack:s.onBack});expect(s.onNavigate).toHaveBeenCalledTimes(1);
  expect(s.bridge.current()).toEqual({contextKey:'practice:a'});const mount=()=>{};expect(s.bridge.connectView(mount)).toBe(true);expect(s.bridge.connectPage(mount)).toBe(true);s.bridge.pause();expect(s.controller.pause).toHaveBeenCalled();
+ expect(s.bridge.refreshLocale()).toBe(true);expect(s.controller.refreshLocale).toHaveBeenCalledTimes(1);
  expect(await s.bridge.open(s.resolve)).toBe(true);expect(s.factory).toHaveBeenCalledTimes(1);
 });
 test.each(['cancel','gun','route','type','locked'])('late loading cannot open an obsolete or locked setup: %s',async kind=>{

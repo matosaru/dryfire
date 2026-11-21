@@ -13,7 +13,7 @@ function setup(options={}) {
   const routes = runInNewContext(`${source}\n({routeFor, resolveRoute})`, { ...state,
     get activeGun() { return state.activeGun; }, get practiceController() { return state.practiceController; },
     get sessionController() { return state.sessionController; }, get practiceGuideController() { return state.practiceGuideController; },
-    PAGE_IDS, resolveRouteView, isGuideContextCurrent,preferenceState:options.preferenceState,loadLocale:options.loadLocale,setSetting:options.setSetting });
+    PAGE_IDS, resolveRouteView, isGuideContextCurrent,preferenceState:options.preferenceState,loadLocale:options.loadLocale,setSetting:options.setSetting,refreshLocalizedViews:options.refreshLocalizedViews??(()=>Promise.resolve()) });
   const route = (view, context = null, gunId = 7) => ({ view, gunId, context });
   return { state, ...routes, route };
 }
@@ -28,10 +28,10 @@ test('all ordinary routes retain the active gun and never manufacture a session 
 });
 
 test('locale-changing routes load their catalog before committing the device language',async()=>{
- let finish;const preferenceState={language:'de'},events=[];const s=setup({preferenceState,loadLocale:locale=>{events.push(`load:${locale}`);return new Promise(resolve=>{finish=()=>resolve(locale);});},setSetting:async(name,value)=>events.push(`save:${name}:${value}`)});
+ let finish;const preferenceState={language:'de'},events=[];const s=setup({preferenceState,loadLocale:locale=>{events.push(`load:${locale}`);return new Promise(resolve=>{finish=()=>resolve(locale);});},setSetting:async(name,value)=>events.push(`save:${name}:${value}`),refreshLocalizedViews:async()=>events.push('refresh')});
  const pending=s.resolveRoute(s.route('home'));
  expect(preferenceState.language).toBe('de');expect(events).toEqual(['load:en']);
- finish();await expect(pending).resolves.toEqual(s.route('home'));expect(preferenceState.language).toBe('en');expect(events).toEqual(['load:en','save:language:en']);
+ finish();await expect(pending).resolves.toEqual(s.route('home'));expect(preferenceState.language).toBe('en');expect(events).toEqual(['load:en','save:language:en','refresh']);
 });
 
 test.each([null, { id: 7, needsDetails: true }])('first use and legacy incomplete guns allow only setup/library/information/settings: %p', gun => {

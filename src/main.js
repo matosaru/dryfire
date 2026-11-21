@@ -213,7 +213,7 @@ function renderPreferences() {
 function reportAudioProcessing(report) { preferenceState.processing = report; renderPreferences(); }
 function reportVibration(result) { if (!result.supported || !result.accepted) { preferenceState.rejected = true; renderPreferences(); } }
 
-const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+id),locked:profileLocked,owner:ownerId,activeOwner:()=>activeGun?.id,saveDevice:setSetting,saveGun:setGunSetting,render:renderPreferences,refresh:()=>{renderLiveButton();renderClassCards();},applyTheme:applyAppearance,applyMeasurements:()=>soundCheckPage?.updateUnits(preferenceState.measurementSystem),applyLocale:async locale=>{await loadLocale(locale);renderDeviceCheck();renderSafetySummary();soundCheckController?.updateLocale?.();if(screenNavigation)await screenNavigation.navigate(routeFor(activeView));},reload:loadDevicePreferences,error:showError,message:key=>setMessage(translate('settings',key))});
+const preferenceActions=createPreferenceActions(preferenceState,{read:id=>$('#'+id),locked:profileLocked,owner:ownerId,activeOwner:()=>activeGun?.id,saveDevice:setSetting,saveGun:setGunSetting,render:renderPreferences,refresh:()=>{renderLiveButton();renderClassCards();},applyTheme:applyAppearance,applyMeasurements:()=>soundCheckPage?.updateUnits(preferenceState.measurementSystem),applyLocale:async locale=>{await loadLocale(locale);await refreshLocalizedViews();if(screenNavigation)await screenNavigation.navigate(routeFor(activeView));},reload:loadDevicePreferences,error:showError,message:key=>setMessage(translate('settings',key))});
 
 const gunLibraryCoordinator=createGunLibraryCoordinator({get guns(){return guns;},set guns(value){guns=value;},get gun(){return activeGun;},get capabilities(){return CAPABILITIES;},get loading(){return profileLoading;},set loading(value){profileLoading=value;},get events(){return eventQueue;},get session(){return sessionController;},get practice(){return practiceController;},get pendingEntry(){return pendingEntry;},get pages(){return profilePages;}},{getGuns,getExamples,getCustomDrills,deleteGun,setActiveGun,updateGun,createGun},{profileLocked,setMessage,switchView,loadProfilePages,showError,setBusy,loadActiveGun,setStatus,openEntry,renderGunControls,renderLiveButton,renderClassCards,gunImagePath,$,document,confirm:message=>confirm(message)});
 
@@ -251,9 +251,11 @@ function renderGunControls() {
   $('#gunSwitcherBtn').disabled = profileLocked();
   $('#gunSwitcherBtn').classList.toggle('hidden', !activeGun || activeGun.needsDetails);
   $('#gunSwitcherBtn').title = profileLocked() ? translate('common','runtimeMain.switchGunBlocked') : translate('common','runtimeMain.switchGun');
-  $('#gunSwitcherBtn').setAttribute('aria-label', activeGun?.name ? translate('common','runtimeMain.switchGunAria',{name:activeGun.name,type:activeGun.type||translate('common','runtimeMain.gunTypeUnset')}) : translate('common','runtimeMain.selectGun'));
+  const gunType=activeGun?.type?translate('guns',`type.${activeGun.type}`):'';
+  const gunTypeLabel=gunType&&!gunType.startsWith('⟦')?gunType:activeGun?.type||translate('common','runtimeMain.gunDetailsPrompt');
+  $('#gunSwitcherBtn').setAttribute('aria-label', activeGun?.name ? translate('common','runtimeMain.switchGunAria',{name:activeGun.name,type:gunTypeLabel}) : translate('common','runtimeMain.selectGun'));
   setNodeText($('#activeGunName'),activeGun?.name || translate('common','runtimeMain.gunNameFallback'));
-  setNodeText($('#activeGunType'),activeGun?.type || translate('common','runtimeMain.gunDetailsPrompt'));
+  setNodeText($('#activeGunType'),gunTypeLabel);
   const gunImage = $('#activeGunImage'), imagePath = gunImagePath(activeGun?.type);
   if (gunImage.getAttribute('src') !== imagePath) gunImage.src = imagePath;
   settingsText('soundResetSummary',activeGun && !activeGun.needsDetails
@@ -411,8 +413,17 @@ function setMessage(text = '') {
   $('#appMessage').textContent = text;
   $('#appMessage').classList.toggle('hidden', !text);
 }
-function renderDeviceCheck(){const secure=window.isSecureContext,microphone=!!navigator.mediaDevices?.getUserMedia;$('#deviceCheck').textContent=`${translate('common',secure?'runtimeMain.secureConnection':'runtimeMain.insecureConnection')} · ${translate('common',microphone?'runtimeMain.microphoneApiAvailable':'runtimeMain.microphoneApiUnavailable')} · ${translate('common','runtimeMain.localStorageOnly')}`;}
+function renderDeviceCheck(){const secure=window.isSecureContext,microphone=!!navigator.mediaDevices?.getUserMedia;settingsText('deviceCheck',`${translate('common',secure?'runtimeMain.secureConnection':'runtimeMain.insecureConnection')} · ${translate('common',microphone?'runtimeMain.microphoneApiAvailable':'runtimeMain.microphoneApiUnavailable')} · ${translate('common','runtimeMain.localStorageOnly')}`);}
+function renderInstallStatus(){const standalone=window.matchMedia?.('(display-mode: standalone)').matches||navigator.standalone===true;settingsText('installStatus',translate('common',standalone?'runtimeMain.installStatusInstalled':'runtimeMain.installStatusNotInstalled'));}
+function renderSettingsOutcome(){const outcome=$('#soundResetOutcome');if(outcome?.textContent?.trim()&&activeGun&&!activeGun.needsDetails)settingsText('soundResetOutcome',translate('common','runtimeMain.soundResetOutcome',{gun:activeGun.name}));}
 function renderSafetySummary(){$('#safetySummaryState').textContent=$('#safetyAck').checked?translate('common','runtimeMain.safetyConfirmed'):translate('common','runtimeMain.safetyRequired');}
+async function refreshLocalizedViews(){
+  renderGunControls();renderPreferences();renderInstallStatus();renderDeviceCheck();renderSettingsOutcome();renderSafetySummary();
+  renderClassCards();renderDrillCatalog();renderCustomCatalog();renderLiveButton();renderDrill();
+  practiceController?.refresh();sessionController?.refresh();practiceGuideController?.refreshLocale();soundCheckController?.updateLocale?.();
+  if(activeView==='home')renderHome().catch(showError);
+  if(activeView==='history')await renderHistory();
+}
 function ensureSafe(action) { return safetyGate.ensure(action); }
 function setBusy(next) {
   busy = next;
@@ -570,7 +581,7 @@ function routeFor(name) { const route={ view: name, preset:name==='session'?sess
 function resolveRoute(route) {
   const resolved=resolveRouteView(route,[activeGun,practiceController,sessionController,practiceGuideController]);
   const locale=route.locale??'en';
-  if(typeof preferenceState!=='undefined'&&locale!==preferenceState.language){return loadLocale(locale).then(()=>{preferenceState.language=locale;return setSetting('language',locale);}).then(()=>routeFor(resolved));}
+  if(typeof preferenceState!=='undefined'&&locale!==preferenceState.language){return loadLocale(locale).then(()=>{preferenceState.language=locale;return setSetting('language',locale);}).then(async()=>{await refreshLocalizedViews();return routeFor(resolved);});}
   return routeFor(resolved);
 }
 function switchView(name) { return screenNavigation ? screenNavigation.navigate(routeFor(name)) : displayView(name); }
@@ -1135,8 +1146,7 @@ async function init() {
     try { const max = readNumberInput(event.target); const gunId = ownerId(); await setGunSetting('maxResults', max, gunId); await trimEvents(max, gunId); await renderHistory(); }
     catch (error) { showError(error); }
   });
-  const standalone = window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true;
-  $('#installStatus').textContent = translate('common',standalone?'runtimeMain.installStatusInstalled':'runtimeMain.installStatusNotInstalled');
+  renderInstallStatus();
   renderDeviceCheck();
   if (previewPreparation) {
     const { createPreviewTesting } = await previewPreparation;

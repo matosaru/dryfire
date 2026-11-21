@@ -17,7 +17,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
   // screen readers. Only the real session keeps live announcements.
   $('practiceGuideExample').querySelectorAll('[role="status"], [aria-live]').forEach(el => el.setAttribute('aria-live', 'off'));
   $('example-practiceStopBtn').setAttribute('aria-label', tr('stopExample'));
-  let guide = null, scenario = null, playing = false, position = 0, startedAt = 0, raf = null;
+  let guide = null, guideContext = null, scenario = null, playing = false, position = 0, startedAt = 0, raf = null;
   let lastPainted = -1, early = false;
   const text = (id, value) => { $(id).textContent = value; };
   function paint(index) {
@@ -49,7 +49,7 @@ export function createPracticeGuideController({ onBack, document: doc = document
     text('practiceGuidePlayBtn', tr('playExample'));
   }
   function open(context) {
-    pause(); guide = getPracticeGuide(context);
+    guideContext=context;pause(); guide = getPracticeGuide(context);
     const showSteps=guide.kind==='sequence';
     const manual={texts:{practiceGuideKind:translate('practice-guide',guide.kind==='practice'?'kind':'sequenceKind'),practiceGuideName:guide.title,practiceGuidePurpose:guide.purpose,practiceGuideCurrentSetup:guide.currentSetup,practiceGuideMeasures:guide.measures,practiceGuideExpect:guide.expect,practiceGuideRequires:guide.requires,practiceGuideExampleNote:translate('practice-guide','example.note',{config:guide.exampleConfig})},steps:guide.steps,sequenceHidden:!showSteps,examplesHidden:guide.id!=='single',sequence:(showSteps?guide.sequence:[]).map(label=>({label,text:guideSoundTitle(label)}))};
     if(page)page.update(manual);else{
@@ -60,6 +60,15 @@ export function createPracticeGuideController({ onBack, document: doc = document
       $('practiceGuideExamples').classList.toggle('hidden',manual.examplesHidden);
     }
     selectExample(false); return guide;
+  }
+  function refreshLocale(){
+    if(!guideContext)return false;
+    const resume=playing,wasEarly=early,previousPosition=position;
+    open(guideContext);
+    if(wasEarly)selectExample(true);
+    if(previousPosition){position=Math.min(previousPosition,scenario.durationMs);lastPainted=-1;paint(Math.floor(position/FRAME_MS));}
+    if(resume)togglePlay();
+    return true;
   }
   function togglePlay() {
     if (!scenario) return;
@@ -84,5 +93,5 @@ export function createPracticeGuideController({ onBack, document: doc = document
   for (const id of ['practiceGuideBackBtn', 'practiceGuideReturnBtn']) bindParent(id, () => { pause(); onBack(guide?.parent ?? 'drills'); });
   doc.addEventListener('visibilitychange', () => { if (doc.hidden) pause(); });
   function connectPage(mount){if(page||playing||!guide)return false;page=mount($('practiceGuideView'),{onBack:()=>parentActions.get('practiceGuideBackBtn')?.(),onAction:id=>parentActions.get(id)?.()});return true;}
-  return { connectPage,open, pause, current: () => guide,connectView(mount){if(playing||!guide)return false;return renderExample.connectView(mount,id=>actions.get(id)?.());} };
+  return { connectPage,open, pause,refreshLocale,current: () => guide,connectView(mount){if(playing||!guide)return false;return renderExample.connectView(mount,id=>actions.get(id)?.());} };
 }

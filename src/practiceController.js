@@ -13,6 +13,7 @@ import { readNumberInput } from './inputLimits.js';
 import {materializeStaticCatalog} from './staticCatalog.js';
 import {formatLocaleNumber,translate} from '../apps/web/src/localization/runtime.ts';
 import {translateAudioStatus} from './localizedAudioStatus.js';
+import {localizeRetainedSetup} from '../apps/web/src/localization/retainedSetup.ts';
 
 const $ = id => document.getElementById(id);
 
@@ -116,14 +117,15 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
       : $('practiceStartSound').checked ? tr('cueBeep',{earlyTrigger:mode==='single'?tr('earlyTrigger'):'' ,seconds:(PRACTICE_CUE_GUARD_MS/1000).toFixed(2)}) : tr('cueSilent');
     renderSteps(required);
   }
-  function renderSteps(labels){const steps=labels.map(label=>({text:titleFor(label),className:'drill-step'}));if(page)page.update({steps});else $('practiceSteps').replaceChildren(...steps.map(step=>node('li',step.text,step.className)));}
+  function renderSteps(labels){const steps=labels.map(label=>({label,text:titleFor(label),className:'drill-step'}));if(page)page.update({steps});else $('practiceSteps').replaceChildren(...steps.map(step=>{const row=node('li',step.text,step.className);row.dataset.soundId=step.label;return row;}));}
   const details = row => presentation.practiceResultDetails(row, { node, titleFor });
   const renderReview = record => presentation.renderPracticeReview(record, { $, node, state, savedRevision, saveError, saving, interruption, locked, getContext, details, noAttempt:translate('common','sessionUi.noAttempt'), present:presentReview });
   function render() {
     const record = state?.phase === 'review' ? toPracticeRecord(state) : review;
     const running = pending || state && state.phase !== 'review';
-    const parent={guideHref:guidePathFor(mode),guideHidden:!!running||!!record,title:translate('practice',`modes.${record?.practiceMode||mode}`)};
-    if(page)page.update(parent);else{$('practiceGuideLink').setAttribute('href',parent.guideHref);$('practiceGuideLink').classList.toggle('hidden',parent.guideHidden);$('practice-title').textContent=parent.title;}
+    const currentMode=record?.practiceMode||mode;
+    const parent={guideHref:guidePathFor(mode),guideHidden:!!running||!!record,mode:currentMode};
+    if(page)page.update(parent);else{$('practiceView').dataset.practicePageMode=currentMode;$('practiceGuideLink').setAttribute('href',parent.guideHref);$('practiceGuideLink').classList.toggle('hidden',parent.guideHidden);$('practice-title').textContent=translate('practice',`modes.${currentMode}`);}
     $('practiceConfigure').classList.toggle('hidden', !!running || !!record);
     $('practiceRun').classList.toggle('hidden', !running); $('practiceReview').classList.toggle('hidden', !!running || !record);
     $('practiceConfigFields').disabled = !!running;
@@ -285,7 +287,7 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     if (token !== readToken || owner !== getContext().gun?.id || locked() || getContext().available === false) return;
     routeKey = crypto.randomUUID(); mode = id; state = null; review = null; saveError = null; savedRevision = null;
     try { fillConfig(config || saved[id] || {}); } catch { fillConfig({}); }
-    changed(); onNavigate('practice'); $('practice-title').setAttribute('tabindex', '-1'); $('practice-title').focus();
+    changed(); await onNavigate('practice');localizeRetainedSetup($('practiceConfigure'),'practice'); $('practice-title').setAttribute('tabindex', '-1'); $('practice-title').focus();
   }
   async function showRecord(record) {
     if (locked() || record.gunId !== getContext().gun?.id || record.kind !== 'practice') return;
@@ -338,7 +340,8 @@ export function createPracticeController({ getContext, titleFor, ensureSafe, onN
     view=mount($('practiceRun'),$('practiceReview'),{runModel,reviewModel,titleFor,onAction:id=>actions.get(id)?.()});
     return true;
   }
-  function connectPage(mount,onGuide){if(page||locked())return false;page=mount($('practiceView'),{onBack,onGuide});return true;}
-  return { practiceMode:()=>mode, connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh: render, flush: () => Promise.all([configQueue, queue]),
+  function connectPage(mount,onGuide){if(page||locked())return false;page=mount($('practiceView'),{onBack,onGuide});render();return true;}
+  function refresh(){render();localizeRetainedSetup($('practiceConfigure'),'practice');}
+  return { practiceMode:()=>mode, connectPage,hasPage:()=>!!page,updateContext:props=>page?.update(props),connectView, open, showRecord, guideContext, interrupt, locked, routeKey: () => routeKey, hasUnsavedResults: () => !!saveError, renderCatalog, refresh, flush: () => Promise.all([configQueue, queue]),
     reset() { if (!locked()) { readToken++; routeKey = null; state = null; review = null; saveError = null; savedRevision = null; } } };
 }
