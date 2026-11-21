@@ -1,5 +1,6 @@
 navigation:
   label: Hoofdnavigatie
+  back: Terug naar de vorige pagina
   home: Startpagina
   learn: Leren
   drills: Oefeningen
@@ -12,6 +13,9 @@ header:
   about: Over
   contact: Contact
   settings: Instellingen
+numberInput:
+  wholeNumbers: hele getallen
+  decimalIncrements: in stappen van 0,1
 result:
   repetitions:
     one: "{{count}} herhaling voltooid"
@@ -200,6 +204,7 @@ sessionUi:
   completed: Voltooid
   completedRepetitions: Voltooide herhalingen
   currentRepetition: Huidige herhaling
+  getReady: Maak je klaar…
   microphoneInactive: Microfoon inactief
   latestRepetition: Laatste herhaling
   latestEmpty: Je voltooide herhaling verschijnt hier.

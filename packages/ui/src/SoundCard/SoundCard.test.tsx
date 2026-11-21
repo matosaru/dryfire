@@ -6,7 +6,8 @@ import {jest} from '@jest/globals';
 import {soundCard} from '../../../../src/uiComponents.js';
 import {SoundCard} from './SoundCard.tsx';
 afterEach(cleanup);
-const defaults={label:'trigger',meta:{title:'Trigger pull',description:'Dry trigger click',tone:'orange'},count:0,maxExamples:10,minExamples:3,recommendedExamples:8,locked:false};
+const messages={sampleProgress:(count:number,max:number,summary:string)=>`${count} / ${max} samples · ${summary}`,imageAlt:(title:string)=>`Illustrative sound preview for ${title}`,record:(title:string)=>`Record ${title} sample`,train:'▶ Train',sampleLimit:'Sample limit reached',replace:(title:string)=>`Replace learned ${title} sounds`,reset:(title:string)=>`Reset learned ${title} sounds`,recognize:(title:string)=>`Recognize ${title} when trained`,recognizeLabel:'Recognize when trained',primary:'PRIMARY SOUND',optional:'OPTIONAL SOUND',limitReached:'limit reached · existing samples kept',recommendedReached:'recommended amount reached',ready:'ready to recognize',minimumRemaining:(count:number)=>`${count} to minimum`,replaceLabel:'Replace',resetLabel:'Reset'};
+const defaults={label:'trigger',meta:{title:'Trigger pull',description:'Dry trigger click',tone:'orange'},count:0,maxExamples:10,minExamples:3,recommendedExamples:8,locked:false,messages};
 function tree(node:Node):unknown{if(node.nodeType===Node.TEXT_NODE)return node.textContent?.replace(/\s+/g,' ').trim()||null;if(!(node instanceof Element))return null;return[node.tagName,[...node.attributes].filter(a=>a.name!=='checked').map(a=>[a.name,a.name==='style'?(node as HTMLElement).style.cssText:a.value]).sort(),node instanceof HTMLInputElement?node.checked:null,[...node.childNodes].map(tree).filter(Boolean)];}
 test('every progress and lock state preserves the native sound card DOM and reduced-motion media',()=>{
  for(const count of [0,3,8,10,12])for(const locked of [false,true])for(const optional of [false,true]){

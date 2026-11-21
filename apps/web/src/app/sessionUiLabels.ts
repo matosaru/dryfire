@@ -3,7 +3,7 @@ const SESSION_UI_KEYS = [
   'microphoneLevel', 'relativeLevel', 'waitingAudio', 'activeTime', 'pause', 'resume',
   'nextRepetition', 'endPractice', 'practiceLatestEmpty', 'practiceReview', 'noAttempt',
   'retrySaving', 'repeatPractice', 'backDrills', 'sessionProgress', 'completed',
-  'completedRepetitions', 'currentRepetition', 'microphoneInactive', 'latestRepetition',
+  'completedRepetitions', 'currentRepetition', 'getReady', 'microphoneInactive', 'latestRepetition',
   'latestEmpty', 'endSession', 'pauseNote', 'sessionReview', 'savedDevice',
   'repetitionResults', 'noRepetition', 'repeatSession', 'sessionTimingNote',
 ] as const;

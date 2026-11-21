@@ -29,7 +29,7 @@ export async function loadLocale(value:unknown):Promise<AppLocale>{
  if(next!==locale||!Object.keys(catalog).length){
   const pending=loading[next]??=loaders[next]().then(module=>module.default);
   const loaded=await pending;delete loading[next];
-  if(request===generation){catalog=loaded;locale=next;if(typeof document!=='undefined')document.documentElement.lang=next;publish();}
+  if(request===generation){catalog=loaded;locale=next;if(typeof document!=='undefined'){document.documentElement.lang=next;refreshNumericHints();}publish();}
  }
  return locale;
 }
@@ -43,6 +43,17 @@ function interpolate(value:string,parameters:MessageParameters,namespace:string,
 
 export function translate(namespace:string,key:string,parameters:MessageParameters={}):string{
  return translated(catalog,locale,namespace,key,parameters);
+}
+
+function refreshNumericHints(){
+ if(typeof document==='undefined')return;
+ document.querySelectorAll<HTMLElement>('.numeric-hint[id$="Limit"]').forEach(node=>{
+  const inputId=node.id.slice(0,-'Limit'.length),input=document.getElementById(inputId);
+  const min=input?.getAttribute('min'),max=input?.getAttribute('max'),step=input?.getAttribute('step');
+  if(min===null||min===undefined||max===null||max===undefined||step===null||step===undefined)return;
+  const kind=Number(step)===1?'wholeNumbers':'decimalIncrements';
+  node.textContent=`${min}–${max} · ${translate('common',`numberInput.${kind}`)}`;
+ });
 }
 
 export function translateWithLocale(messages:Catalog,active:AppLocale,namespace:string,key:string,parameters:MessageParameters={}):string{

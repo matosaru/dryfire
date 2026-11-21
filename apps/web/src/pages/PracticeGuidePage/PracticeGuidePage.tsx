@@ -6,9 +6,10 @@ import {PracticeReview} from '@dryfire/ui/PracticeReview';
 import {SequenceRun} from '@dryfire/ui/SequenceRun';
 import {SequenceReview} from '@dryfire/ui/SequenceReview';
 import {useLocaleMessages} from '../../localization/runtime.ts';
+import {sessionUiLabels} from '../../app/sessionUiLabels.ts';
 export type PracticeGuidePageProps={title?:string;texts?:Record<string,string>;sequence?:ReactNode;steps?:ReactNode;example?:ReactNode;early?:boolean;sequenceHidden?:boolean;examplesHidden?:boolean;onBack?:()=>void;onAction?:(id:string)=>void};
 /** Shared parent source; native configuration and child-root lifetimes may be retained explicitly. */
-export function PracticeGuidePage({title,texts,sequence,steps,example,early=false,sequenceHidden=false,examplesHidden=false,onBack,onAction}:PracticeGuidePageProps){const {t}=useLocaleMessages('practice-guide');return <>
+export function PracticeGuidePage({title,texts,sequence,steps,example,early=false,sequenceHidden=false,examplesHidden=false,onBack,onAction}:PracticeGuidePageProps){const {t}=useLocaleMessages('practice-guide');const {t:common}=useLocaleMessages('common');const labels=sessionUiLabels(common);return <>
 <PageHeading id="practiceGuide-title" title={title??t('page.title')} backId="practiceGuideBackBtn" backLabel={t('back')} sharedBack={false} reactBack={false} onBack={onBack}/>
 <p id="practiceGuideKind" className="guide-kicker">{texts?.practiceGuideKind??t('kind')}</p>
 <h3 id="practiceGuideName" className="guide-title">{texts?.practiceGuideName}</h3>
@@ -20,10 +21,10 @@ export function PracticeGuidePage({title,texts,sequence,steps,example,early=fals
 <figure className="guide-media">
 <p id="practiceGuideExampleLabel" className="guide-example-label">{texts?.practiceGuideExampleLabel??t('exampleDisclosure')}</p>
 <div id="practiceGuideExample" className="guide-live-example" aria-label={t('exampleAriaLabel')}>
-<PracticeRun prefix="example-"/>
-<PracticeReview prefix="example-"/>
-<SequenceRun prefix="example-"/>
-<SequenceReview prefix="example-"/>
+<PracticeRun prefix="example-" labels={labels}/>
+<PracticeReview prefix="example-" labels={{...labels,reviewTitle:labels.practiceReview}}/>
+<SequenceRun prefix="example-" labels={labels}/>
+<SequenceReview prefix="example-" labels={{...labels,reviewTitle:labels.sessionReview}}/>
 </div>
 <figcaption><span>{t('exampleCaption')}</span><button onClick={()=>onAction?.('practiceGuidePlayBtn')} id="practiceGuidePlayBtn" className="guide-play" type="button" aria-pressed="false">{t('playExample')}</button></figcaption></figure>
 </>}

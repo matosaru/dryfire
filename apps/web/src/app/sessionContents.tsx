@@ -8,8 +8,8 @@ import {SequenceReviewContents,type SequenceReviewProps} from '@dryfire/ui/Seque
 import {RetainedNode} from '@dryfire/ui/RetainedNode';
 import {translate} from '../localization/runtime.ts';
 import {sessionUiLabels} from './sessionUiLabels.ts';
-export type PracticeContents={kind:'practice';run:PracticeRunProps;review:PracticeReviewProps;meter:HTMLElement};
-export type SequenceContents={kind:'sequence';run:SequenceRunProps;review:SequenceReviewProps};
+export type PracticeContents={kind:'practice';run:Omit<PracticeRunProps,'labels'>;review:Omit<PracticeReviewProps,'labels'>;meter:HTMLElement};
+export type SequenceContents={kind:'sequence';run:Omit<SequenceRunProps,'labels'>;review:Omit<SequenceReviewProps,'labels'>};
 export type SessionContents=PracticeContents|SequenceContents;
 const sessionUi=()=>sessionUiLabels(key=>translate('common',key));
 /** Explicit, synchronous two-host handoff. Feature controllers retain outer visibility and capture. */

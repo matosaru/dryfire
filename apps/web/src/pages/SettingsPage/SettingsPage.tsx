@@ -8,7 +8,7 @@ import type {ReactNode,ChangeEventHandler} from 'react';
 export type SettingsState={gunName?:string;language?:'en'|'de'|'nl';contextHidden?:boolean;installationOpen?:boolean;texts?:Record<string,string>;disabled?:Record<string,boolean>};
 export type SettingsPageProps={state?:SettingsState;fileInput?:ReactNode;preview?:ReactNode;onBack?:()=>void;onAction?:(id:string)=>void;onPreference?:(id:string,value:string|boolean)=>void;onImport?:ChangeEventHandler<HTMLInputElement>};
 /** Shared source for Settings; persistence/capabilities/preview lifetimes remain feature-owned. */
-export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreference,onImport}:SettingsPageProps){const {locale,t}=useLocaleMessages('settings');return <><PageHeading id="settings-title" title={t('page.title')} eyebrow={t('page.eyebrow')} reactBack={false} onBack={onBack}/>
+export function SettingsPage({state,fileInput,preview,onBack,onAction,onPreference,onImport}:SettingsPageProps){const {locale,t}=useLocaleMessages('settings'),{t:common}=useLocaleMessages('common');return <><PageHeading id="settings-title" title={t('page.title')} eyebrow={t('page.eyebrow')} backLabel={common('navigation.back')} reactBack={false} onBack={onBack}/>
       {preview}
       <GunContext name={state?.gunName} hidden={state?.contextHidden} prefix={t('gunContext.prefix')} suffix={t('gunContext.suffix')}/>
       <details className="install-details" open={state?.installationOpen}><summary>{t('installation.summary')} <span>›</span></summary><div className="install-card">

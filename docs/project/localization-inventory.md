@@ -1,6 +1,6 @@
 # CHG-070 message inventory and ownership — LOC-01
 
-Updated: 2026-11-20 · State: page ownership map established; a release-gated audit catches unowned static JSX and direct DOM copy. Native/controller/template ownership review is still in progress.
+Updated: 2026-11-21 · State: complete for CHG-070 implementation. The catalog parity/completeness gate and static-copy audit pass; the pinned visual suite and docs verification pass. Human fluent review of German/Dutch copy and owner browser acceptance remain release-review items.
 
 This inventory maps every maintained UI/page family and its source owner to one YAML namespace. It intentionally does not translate or catalog user data, stable IDs, code identifiers, browser/OS-owned controls, or approved product/brand names. All actual editable UI copy must end up in the assigned catalogs; the current English strings are the extraction source until each consumer is migrated. A catalog parity/build check is the release proof that the three language files contain the same keys and parameters.
 
@@ -27,6 +27,10 @@ This inventory maps every maintained UI/page family and its source owner to one 
 | Public route names, page titles/descriptions, open-graph copy, public-only marketing/manual landing content, no-JavaScript fallback, and not-found fallback | `public-site` | `site/routes.js`; `site/fallbacks.js`; `tools/public-pages.mjs`; `apps/web/src/public-site/**`; public SEO templates and build-time page metadata |
 
 The current route registry contains 14 app screen identities, four trigger mode setup paths, built-in/custom sequence setup paths and their manual routes. Those route variants share their owning page namespace; stable mode/guide IDs select the corresponding message keys. Public page metadata is catalog copy, while paths, route IDs and app data remain stable technical identifiers.
+
+## Completion note — 2026-11-21
+
+The LOC-01 ownership inventory is complete. `npm run localization:complete` enforces catalog key/parameter completeness and scans production JSX, accessible text attributes, application-level fallback copy, direct DOM text assignments, and legacy text-node helpers. Shared React session fragments, page headings, numeric-input hints, SoundCard, and retained legacy UI renderers now receive user-facing copy from locale catalogs; app-independent shared components no longer silently supply English UI defaults. The fixed visual/docs evidence is recorded in `localization-plan.md` and `implementation-history.md`. Fluent German/Dutch review is still recommended before public release, but it is not an unowned-source implementation gap.
 
 ## Newly audited session presentation surface — 2026-11-20
 

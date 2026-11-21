@@ -1,5 +1,6 @@
 navigation:
   label: Main navigation
+  back: Back to previous screen
   home: Home
   learn: Learn
   drills: Drills
@@ -12,6 +13,9 @@ header:
   about: About
   contact: Contact
   settings: Settings
+numberInput:
+  wholeNumbers: whole numbers
+  decimalIncrements: 0.1 increments
 result:
   repetitions:
     one: "{{count}} repetition complete"
@@ -200,6 +204,7 @@ sessionUi:
   completed: Completed
   completedRepetitions: Completed repetitions
   currentRepetition: Current repetition
+  getReady: Get ready…
   microphoneInactive: Microphone inactive
   latestRepetition: Latest repetition
   latestEmpty: Your completed repetition will appear here.

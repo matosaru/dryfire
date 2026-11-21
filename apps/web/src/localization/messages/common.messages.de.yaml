@@ -1,5 +1,6 @@
 navigation:
   label: Hauptnavigation
+  back: Zur vorherigen Seite
   home: Startseite
   learn: Lernen
   drills: Übungen
@@ -12,6 +13,9 @@ header:
   about: Über uns
   contact: Kontakt
   settings: Einstellungen
+numberInput:
+  wholeNumbers: ganze Zahlen
+  decimalIncrements: in 0,1-Schritten
 result:
   repetitions:
     one: "{{count}} Wiederholung abgeschlossen"
@@ -200,6 +204,7 @@ sessionUi:
   completed: Abgeschlossen
   completedRepetitions: Abgeschlossene Wiederholungen
   currentRepetition: Aktuelle Wiederholung
+  getReady: Mach dich bereit…
   microphoneInactive: Mikrofon inaktiv
   latestRepetition: Letzte Wiederholung
   latestEmpty: Deine abgeschlossene Wiederholung erscheint hier.

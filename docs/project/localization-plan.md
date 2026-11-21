@@ -1,26 +1,26 @@
 # Application localization refactor plan — CHG-070
 
-**Status:** In progress on `codex/environment-recovery-2026-11-19`; `b` and `main` are unchanged. LOC-02/03/04/07/08 are complete; LOC-01/05/06 remain in progress; LOC-09 is waiting for those tickets to close. The pinned visual suite and documentation gate now pass. No version bump or release has been prepared.
+**Status:** Implementation and validation complete on `codex/environment-recovery-2026-11-19`; `b` and `main` are unchanged. LOC-01 through LOC-08 are done. LOC-09's clean-candidate checks pass; remaining steps are fluent German/Dutch review, owner browser acceptance, then the user's approval before version bump, merge, or release. No version bump or release has been prepared.
 **Scope requested:** English remains the default; add English, German and Dutch; put user-facing copy in page-and-language YAML files plus one shared common-message file; support parameterized messages; allow language selection in Settings; preserve correct SEO; require tests to pass. Visual tests are required for the English release only.
 
-## Updated remaining-effort forecast (2026-11-20)
+## Final acceptance status (2026-11-21)
 
 These estimates are active Codex engineering hours, not elapsed calendar time. They include each ticket's implementation and focused tests; LOC-09 includes full integration/acceptance fixes and release preparation. They exclude fluent German/Dutch copy review by a human and the user's hands-on browser/device testing. Estimates assume the current route/build architecture remains usable and no data migration is required.
 
 | Ticket | Status | Remaining likely | Remaining range | Main uncertainty |
 | --- | --- | ---: | ---: | --- |
-| LOC-01 Inventory | In progress | 0.65 h | 0.3–1.0 h | Complete key-level ownership and audit native/template/controller copy beyond the new static source gate |
+| LOC-01 Inventory | Done | 0 h | 0 h | Ownership inventory plus `localization:complete` static-copy audit pass |
 | LOC-02 Requirements and SEO schema | Done | 0 h | 0 h | Approved route, fallback, message, and SEO contract |
 | LOC-03 YAML catalogs and validation | Done | 0 h | 0 h | Compiler, schema parity, generated-file checks, and release completeness gate are in place |
 | LOC-04 Locale runtime and persistence | Done | 0 h | 0 h | Browser reload restores selected locale and preserves local profile/history data |
-| LOC-05 Settings and shared chrome | In progress | 0.75 h | 0.3–1.5 h | Finish the common-message ownership audit and any uncovered locale-switch interactions |
-| LOC-06 Page and feature localization | In progress | 9.20 h | 3.45–13.45 h | Audit remaining app/public/manual surfaces and remove any live copy not supplied by catalogs |
+| LOC-05 Settings and shared chrome | Done | 0 h | 0 h | Settings selector, shared shell labels, and locale-switch tests pass |
+| LOC-06 Page and feature localization | Done | 0 h | 0 h | All required app/public/manual copy has EN/DE/NL catalogs; remaining source audit checks pass |
 | LOC-07 Localized SEO routes | Done | 0 h | 0 h | Public artifact verifies 42 canonical pages across 14 route identities with sitemap, hreflang, canonical and robots checks |
 | LOC-08 Tests and accessibility/overflow checks | Done | 0 h | 0 h | English-only pinned visual suite and cross-locale interaction/overflow checks pass |
-| LOC-09 Full validation and release candidate | Waiting | 0.5 h | 0.25–1 h | Final clean-candidate checks and single version bump after LOC-01/05/06; release stays on feature branch until approval |
-| **Total remaining Codex effort** |  | **11.10 h** | **4.30–16.95 h** | Sum of open ticket estimates; fluent DE/NL review and owner device acceptance are separate |
+| LOC-09 Full validation and candidate | Done | 0 h | 0 h | Full unit, smoke, type, lint, architecture, catalog, docs, visual, build, SEO artifact and profile gates pass |
+| **Total remaining Codex implementation effort** |  | **0 h** | **0 h** | Human fluent-copy review, owner browser acceptance, and approval-controlled version/release are outside this completed implementation |
 
-The earlier feature increments are recorded below; cumulative effort before explicit timers began is not reconstructible. Catalog completeness, public route generation/SEO, locale preference restore, the full pinned visual suite, and current documentation verification pass. Remaining work is the repository-wide key/source ownership audit beyond the new JSX/legacy-DOM literal gate, any newly found missed copy, translation-source review, and the final acceptance/version step. Current forecast is **11.10 active Codex hours (4.30–16.95 h)**, excluding fluent DE/NL review and owner device acceptance. The exact pinned Playwright image is available and was used for full visual validation.
+The earlier feature increments are recorded below; cumulative effort before explicit timers began is not reconstructible. Catalog completeness, public route generation/SEO, locale preference restore, the full pinned visual suite, documentation verification, and all listed clean-candidate gates pass. The remaining work is human review and release authorization, not an open localization implementation ticket. Active time for the final resumed increment was not tracked separately; do not add an invented duration to the historical measured entries. The exact pinned Playwright image was used for visual validation.
 
 **Tracked increment — 2026-11-20:** Added a static-source audit to the localization completeness gate for raw visible JSX text, accessible labels, application-level English fallback copy, direct DOM text assignments and legacy text-node helpers; only approved product/brand literal text is allowlisted. Localized Practice/Sequence initial review-shell titles, routed the Practice latest-result fallback through common catalog labels, and removed a dead English-only About summary helper. The bridge test now reads About copy from YAML. Regenerated and visually reviewed the 10 English guide exports in the pinned Playwright image; refreshed and checked the source manifest. Full Jest passes **188 suites / 1,299 tests**, smoke **16/16**, typecheck, component/runtime lint, architecture, localization completeness, `docs:check`, public/preview builds and distribution checks pass. Pinned visual suite: **179 passed, 38 skipped, 0 failed**. Active elapsed time approximately **24m (0.40 h)**, 20:02–20:26 UTC. Remaining forecast is **11.75 h (4.95–17.75 h)**; user-owned fluent translation review and device acceptance remain separate. No version bump, merge, release or deployment; `b` and `main` remain unchanged.
 

@@ -9,7 +9,7 @@ import {DrillSetup,DrillSetupDelayMode,DrillSetupDelayRange,DrillSetupCount,Dril
 import {NumberInput} from '../NumberInput';
 afterEach(cleanup);
 test.each(['practice','session'] as const)('%s uses one semantic configuration template with native bounds and disabled fieldset behavior',prefix=>{
- const v=render(<DrillSetup prefix={prefix} legend="Setup" footer={<button type="submit">Start</button>}><DrillSetupCount inputId="count" label={<span>Repetitions</span>}><NumberInput id="count" min={1} max={100} step={1} defaultValue="10" required/></DrillSetupCount></DrillSetup>);
+ const v=render(<DrillSetup prefix={prefix} legend="Setup" footer={<button type="submit">Start</button>}><DrillSetupCount inputId="count" label={<span>Repetitions</span>}><NumberInput id="count" min={1} max={100} step={1} defaultValue="10" required hintText="whole numbers"/></DrillSetupCount></DrillSetup>);
  const input=v.getByRole('spinbutton',{name:'Repetitions 1–100 · whole numbers'}) as HTMLInputElement;
  expect(input.labels?.[0]).toHaveClass('session-repetition-field');expect(input).toHaveAttribute('aria-describedby','countLimit');input.value='101';expect(input.validity.rangeOverflow).toBe(true);expect(v.container.querySelector(`#${prefix}ConfigForm`)).toContainElement(v.getByRole('button',{name:'Start'}));
  v.container.querySelector('fieldset')!.disabled=true;expect(input).toBeDisabled();expect(v.getByRole('button')).toBeEnabled();

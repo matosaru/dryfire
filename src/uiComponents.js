@@ -20,6 +20,7 @@ export function soundCard({
   label, meta, count, maxExamples, minExamples, recommendedExamples, locked,
   onRecord, onReplace, onReset, optional = false, enabled = false, onToggle, messages
 }, doc = document) {
+  if (!messages) throw new TypeError('Sound cards require localized message props.');
   const card = doc.createElement('article');
   card.className = `class-card tone-${meta.tone}`;
   card.setAttribute('data-sound-label', label);
@@ -28,7 +29,7 @@ export function soundCard({
   preview.className = 'class-preview';
   const animation = doc.createElement('img');
   animation.src = `/motions/${label}.svg`;
-  animation.alt = messages?.imageAlt?.(meta.title)??`Illustrative sound preview for ${meta.title}`;
+  animation.alt = messages.imageAlt(meta.title);
   animation.width = 240;
   animation.height = 140;
   animation.loading = 'lazy';
@@ -41,16 +42,16 @@ export function soundCard({
 
   const info = doc.createElement('div');
   info.className = 'class-info';
-  info.append(textNode(doc, 'p', 'eyebrow', optional ? (messages?.optional??'OPTIONAL SOUND') : (messages?.primary??'PRIMARY SOUND')), textNode(doc, 'h3', '', meta.title), textNode(doc, 'p', '', meta.description));
+  info.append(textNode(doc, 'p', 'eyebrow', optional ? messages.optional : messages.primary), textNode(doc, 'h3', '', meta.title), textNode(doc, 'p', '', meta.description));
   const top = doc.createElement('div');
   top.className = 'class-card-top';
   top.append(preview, info);
 
-  const summary = count >= maxExamples ? (messages?.limitReached??'limit reached · existing samples kept') : count >= recommendedExamples
-    ? (messages?.recommendedReached??'recommended amount reached')
-    : count >= minExamples ? (messages?.ready??'ready to recognize')
-      : messages?.minimumRemaining?.(Math.max(0,minExamples-count))??`${Math.max(0, minExamples - count)} to minimum`;
-  const progress = textNode(doc, 'p', 'progress-label', messages?.sampleProgress?.(count,maxExamples,summary)??`${count} / ${maxExamples} samples · ${summary}`);
+  const summary = count >= maxExamples ? messages.limitReached : count >= recommendedExamples
+    ? messages.recommendedReached
+    : count >= minExamples ? messages.ready
+      : messages.minimumRemaining(Math.max(0,minExamples-count));
+  const progress = textNode(doc, 'p', 'progress-label', messages.sampleProgress(count,maxExamples,summary));
   const bar = doc.createElement('div');
   bar.className = 'progress-track';
   const fill = doc.createElement('span');
@@ -61,24 +62,24 @@ export function soundCard({
   actions.className = 'class-actions';
   actions.append(
     actionButton({
-      label: count >= maxExamples ? (messages?.sampleLimit??'Sample limit reached') : (messages?.train??'▶ Train'),
+      label: count >= maxExamples ? messages.sampleLimit : messages.train,
       className: 'button primary record-example',
       disabled: locked || count >= maxExamples,
-      ariaLabel: messages?.record?.(meta.title)??`Record ${meta.title} sample`,
+      ariaLabel: messages.record(meta.title),
       onClick: onRecord
     }, doc),
     actionButton({
-      label: messages?.replaceLabel??'Replace',
+      label: messages.replaceLabel,
       className: 'button secondary replace-class',
       disabled: locked || count === 0,
-      ariaLabel: messages?.replace?.(meta.title)??`Replace learned ${meta.title} sounds`,
+      ariaLabel: messages.replace(meta.title),
       onClick: onReplace
     }, doc),
     actionButton({
-      label: messages?.resetLabel??'Reset',
+      label: messages.resetLabel,
       className: 'button secondary reset-class',
       disabled: locked || count === 0,
-      ariaLabel: messages?.reset?.(meta.title)??`Reset learned ${meta.title} sounds`,
+      ariaLabel: messages.reset(meta.title),
       onClick: onReset
     }, doc)
   );
@@ -86,8 +87,8 @@ export function soundCard({
   if (optional && onToggle) {
     const control = textNode(doc, 'label', 'optional-sound-control', '');
     const input = doc.createElement('input'); input.type = 'checkbox'; input.checked = enabled; input.disabled = locked;
-    input.setAttribute('aria-label', messages?.recognize?.(meta.title)??`Recognize ${meta.title} when trained`);
-    input.addEventListener('change', () => onToggle(input.checked)); control.append(input, textNode(doc, 'span', '', messages?.recognizeLabel??'Recognize when trained')); info.append(control);
+    input.setAttribute('aria-label', messages.recognize(meta.title));
+    input.addEventListener('change', () => onToggle(input.checked)); control.append(input, textNode(doc, 'span', '', messages.recognizeLabel)); info.append(control);
   }
   card.append(top);
   return card;

@@ -16,13 +16,14 @@ function fakeDocument() {
 function flatten(root) {
   return [root, ...root.children.flatMap(flatten)];
 }
+const soundMessages={sampleProgress:(count,max,summary)=>`${count} / ${max} samples · ${summary}`,imageAlt:title=>`Illustrative sound preview for ${title}`,record:title=>`Record ${title} sample`,train:'▶ Train',sampleLimit:'Sample limit reached',replace:title=>`Replace learned ${title} sounds`,reset:title=>`Reset learned ${title} sounds`,recognize:title=>`Recognize ${title} when trained`,recognizeLabel:'Recognize when trained',primary:'PRIMARY SOUND',optional:'OPTIONAL SOUND',limitReached:'limit reached · existing samples kept',recommendedReached:'recommended amount reached',ready:'ready to recognize',minimumRemaining:count=>`${count} to minimum`,replaceLabel:'Replace',resetLabel:'Reset'};
 describe('reusable UI factories', () => {
   test('learning card retains progress, accessibility and independent reset action', () => {
     const record = jest.fn(), replace = jest.fn(), reset = jest.fn();
     const card = soundCard({
       label:'rack', meta:{title:'Rack slide',description:'Slide movement',tone:'blue'}, count:3,
       maxExamples:50, minExamples:3, recommendedExamples:10, locked:false,
-      onRecord:record, onReplace:replace, onReset:reset
+      messages:soundMessages,onRecord:record, onReplace:replace, onReset:reset
     },fakeDocument());
     const nodes = flatten(card);
     const buttons = nodes.filter(node => node.tag === 'button');
@@ -43,7 +44,7 @@ describe('reusable UI factories', () => {
     const card=soundCard({
       label:'draw', meta:{title:'Draw',description:'Draw',tone:'orange'},count:0,
       maxExamples:50,minExamples:3,recommendedExamples:10,locked:true,
-      onRecord:()=>{},onReset:()=>{}
+      messages:soundMessages,onRecord:()=>{},onReset:()=>{}
     },fakeDocument());
     expect(flatten(card).filter(node => node.tag === 'button').every(button => button.disabled)).toBe(true);
   });
@@ -73,7 +74,7 @@ describe('reusable UI factories', () => {
 
 test('reference design cards retain real actions without repeating sequence chips', () => {
   const doc = fakeDocument();
-  const sound = soundCard({label:'draw',meta:{title:'Draw',description:'Draw',tone:'blue'},count:4,maxExamples:50,minExamples:3,recommendedExamples:10,locked:false,onRecord:()=>{},onReset:()=>{}},doc);
+  const sound = soundCard({label:'draw',meta:{title:'Draw',description:'Draw',tone:'blue'},count:4,maxExamples:50,minExamples:3,recommendedExamples:10,locked:false,messages:soundMessages,onRecord:()=>{},onReset:()=>{}},doc);
   expect(flatten(sound).find(n=>n.tag==='button').textContent).toBe('▶ Train');
   const drill = drillCard({drill:{title:'Draw then trigger',steps:['draw','trigger']},index:0,titleFor:l=>l,description:'2-action sound sequence.',startLabel:'▶ Start Drill',onChoose:()=>{}},doc);
   expect(flatten(drill).find(n=>n.tag==='button').textContent).toBe('▶ Start Drill');
@@ -81,7 +82,7 @@ test('reference design cards retain real actions without repeating sequence chip
 });
 
 test('learning GIFs have a reduced-motion SVG fallback', () => {
-  const card = soundCard({label:'rack',meta:{title:'Rack',description:'Rack',tone:'green'},count:0,maxExamples:50,minExamples:3,recommendedExamples:10,locked:false,onRecord:()=>{},onReset:()=>{}},fakeDocument());
+  const card = soundCard({label:'rack',meta:{title:'Rack',description:'Rack',tone:'green'},count:0,maxExamples:50,minExamples:3,recommendedExamples:10,locked:false,messages:soundMessages,onRecord:()=>{},onReset:()=>{}},fakeDocument());
   const nodes = flatten(card);
   expect(nodes.find(n=>n.tag==='source').srcset).toBe('/motions/rack.gif');
   expect(nodes.find(n=>n.tag==='source').media).toBe('(prefers-reduced-motion: no-preference)');
@@ -89,6 +90,6 @@ test('learning GIFs have a reduced-motion SVG fallback', () => {
 });
 
 test('optional sound recognition control reports its current checked state',()=>{
- const onToggle=jest.fn();const card=soundCard({label:'rack',meta:{title:'Rack',description:'Rack',tone:'green'},count:3,maxExamples:10,minExamples:3,recommendedExamples:10,locked:false,optional:true,enabled:false,onRecord:()=>{},onReset:()=>{},onToggle},fakeDocument());
+ const onToggle=jest.fn();const card=soundCard({label:'rack',meta:{title:'Rack',description:'Rack',tone:'green'},count:3,maxExamples:10,minExamples:3,recommendedExamples:10,locked:false,optional:true,enabled:false,messages:soundMessages,onRecord:()=>{},onReset:()=>{},onToggle},fakeDocument());
  const input=flatten(card).find(node=>node.tag==='input');expect(input.checked).toBe(false);input.checked=true;input.handlers.change();expect(onToggle).toHaveBeenCalledWith(true);
 });

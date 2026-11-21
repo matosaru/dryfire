@@ -7,8 +7,9 @@ export interface AboutPageProps { full?: boolean; onBack?: () => void }
 
 export function AboutPage({ full = false, onBack }: AboutPageProps) {
   const {t}=useLocaleMessages('about');
+  const {t:common}=useLocaleMessages('common');
   return <>
-    <PageHeading id="about-title" title={t('page.title')} onBack={onBack} />
+    <PageHeading id="about-title" title={t('page.title')} backLabel={common('navigation.back')} onBack={onBack} />
     <MarketingOverview full={full} namespace="about" afterIntro={<InformationCard id="aboutBetaTitle" title={t('feedback.title')}><p>{t('feedback.description')}</p></InformationCard>} />
     <InformationCard id="aboutDataTitle" title={t('saved.title')}>
       <p>{t('saved.description')}</p>

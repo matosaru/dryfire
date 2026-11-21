@@ -3,8 +3,8 @@ import {PageHeading} from '@dryfire/ui/PageHeading';
 import {normalizeMeasurementSystem} from '../../../../../src/measurementUnits.js';
 import {useLocaleMessages} from '../../localization/runtime.ts';
 
-export function SoundCheckPage({gunName,measurementSystem='metric'}:{gunName?:string;measurementSystem?:string}){const {t}=useLocaleMessages('sound-check'),system=normalizeMeasurementSystem(measurementSystem);return <>
- <PageHeading id="soundCheck-title" title={t('page.title')} eyebrow={t('page.eyebrow')} reactBack={false}/>
+export function SoundCheckPage({gunName,measurementSystem='metric'}:{gunName?:string;measurementSystem?:string}){const {t}=useLocaleMessages('sound-check'),{t:common}=useLocaleMessages('common'),system=normalizeMeasurementSystem(measurementSystem);return <>
+ <PageHeading id="soundCheck-title" title={t('page.title')} eyebrow={t('page.eyebrow')} backLabel={common('navigation.back')} reactBack={false}/>
  <GunContext name={gunName} prefix={t('gunContext.prefix')} suffix={t('gunContext.suffix')}/>
  <section id="soundCheckSetup" className="sound-check-card" aria-labelledby="soundCheckSetupTitle">
   <h3 id="soundCheckSetupTitle">{t('setup.title')}</h3>
