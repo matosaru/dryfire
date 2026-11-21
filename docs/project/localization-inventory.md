@@ -1,6 +1,6 @@
 # CHG-070 message inventory and ownership — LOC-01
 
-Updated: 2026-11-21 · State: complete for CHG-070 implementation. The catalog parity/completeness gate and static-copy audit pass; the pinned visual suite and docs verification pass. Human fluent review of German/Dutch copy and owner browser acceptance remain release-review items.
+Updated: 2026-11-21 · State: source/catalog audit passes, but runtime acceptance is reopened. Owner screenshots show stale English copy in German Settings and Practice views; see the corrective tickets in [localization-plan.md](localization-plan.md).
 
 This inventory maps every maintained UI/page family and its source owner to one YAML namespace. It intentionally does not translate or catalog user data, stable IDs, code identifiers, browser/OS-owned controls, or approved product/brand names. All actual editable UI copy must end up in the assigned catalogs; the current English strings are the extraction source until each consumer is migrated. A catalog parity/build check is the release proof that the three language files contain the same keys and parameters.
 
@@ -150,4 +150,4 @@ React History now formats the matrix's stable sound IDs with the same common sou
 
 ## Practice and Sequence initial review shells — 2026-11-20
 
-The static Practice and Sequence page wrappers now supply common YAML labels to their initially rendered run/review fragments, including the distinct localized review titles. The live React handoff uses the same shared label map. Practice's latest-result component fallback accepts its localized label rather than always rendering its internal English default. A dead English-only About feature-summary utility used only by a bridge test was removed; that bridge test now gets both Free and Full copy from `about.messages.en.yaml`. Focused EN/DE/NL tests cover the pre-mounted shells and standalone component fallback. The shared UI package keeps deliberate English defaults for app-independent consumers, and app page owners provide localized values.
+The static Practice and Sequence page wrappers supply common YAML labels to initially rendered run/review fragments, including localized review titles. The live React handoff uses the same label map. Practice's latest-result fallback accepts its localized label. This component coverage did not catch stale language in already-retained configuration DOM or copied parent state: the owner's screenshots show that Practice setup and Settings runtime summaries can remain English after selecting German. Catalog/source completeness is not sufficient runtime acceptance; corrective work is tracked in [localization-plan.md](localization-plan.md).
