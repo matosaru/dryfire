@@ -136,7 +136,7 @@ let learnPage;
 let soundCheckController,soundCheckPage,soundCheckPending;
 let legacyHistoryRenderer;
 let livePage,livePageModule,livePagePending;
-let drillsPage,legacyDrillsPending,customDrillCollectionSelected=false;
+let drillsPage,drillsPagePromise,legacyDrillsPending,customDrillCollectionSelected=false;
 let historyPage, historyPagePending, historyOwner, historyRows=[], historySessions=[];
 const preparePageModule=createModulePreparation(showError);
 let profileQuality;
@@ -256,6 +256,10 @@ function renderGunControls() {
   $('#gunSwitcherBtn').setAttribute('aria-label', activeGun?.name ? translate('common','runtimeMain.switchGunAria',{name:activeGun.name,type:gunTypeLabel}) : translate('common','runtimeMain.selectGun'));
   setNodeText($('#activeGunName'),activeGun?.name || translate('common','runtimeMain.gunNameFallback'));
   setNodeText($('#activeGunType'),gunTypeLabel);
+  setNodeText($('#gunSwitcherBtn .gun-switcher-label'),translate('common','shellGun.active'));
+  const switchAction=$('#gunSwitcherBtn .gun-switcher-action');
+  const switchLabel=[...switchAction.childNodes].find(node=>node.nodeType===Node.TEXT_NODE);
+  if(switchLabel)switchLabel.textContent=translate('common','shellGun.switch')+' ';
   const gunImage = $('#activeGunImage'), imagePath = gunImagePath(activeGun?.type);
   if (gunImage.getAttribute('src') !== imagePath) gunImage.src = imagePath;
   settingsText('soundResetSummary',activeGun && !activeGun.needsDetails
@@ -383,6 +387,13 @@ function drillCards(){return{
  builtIns:SEQUENCE_DRILLS.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id)})),
  customs:customDrills.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id),onEdit:()=>customEditor.open(drill)})),emptyCustom:!customDrills.length,
 };}
+function loadDrillsPageModule(){return drillsPagePromise||=afterPaint(()=>{renderLegacyDrills();return import('../apps/web/src/app/drillsPage.tsx');});}
+function mountDrillsPage(module){
+  if(drillsPage||activeView!=='drills'||profileLocked()||$('#safetyModal').open)return;
+  try{drillsPage=module.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open()},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}
+  catch(error){showError(error);return;}
+  try{customEditor.connectView(module.mountCustomDrillFields);}catch(error){showError(error);}
+}
 async function chooseDrill(id) {
   if (profileLocked() || !activeGun || activeGun.needsDetails) return;
   const drill = currentDrill(id);
@@ -416,9 +427,19 @@ function setMessage(text = '') {
 function renderDeviceCheck(){const secure=window.isSecureContext,microphone=!!navigator.mediaDevices?.getUserMedia;settingsText('deviceCheck',`${translate('common',secure?'runtimeMain.secureConnection':'runtimeMain.insecureConnection')} · ${translate('common',microphone?'runtimeMain.microphoneApiAvailable':'runtimeMain.microphoneApiUnavailable')} · ${translate('common','runtimeMain.localStorageOnly')}`);}
 function renderInstallStatus(){const standalone=window.matchMedia?.('(display-mode: standalone)').matches||navigator.standalone===true;settingsText('installStatus',translate('common',standalone?'runtimeMain.installStatusInstalled':'runtimeMain.installStatusNotInstalled'));}
 function renderSettingsOutcome(){const outcome=$('#soundResetOutcome');if(outcome?.textContent?.trim()&&activeGun&&!activeGun.needsDetails)settingsText('soundResetOutcome',translate('common','runtimeMain.soundResetOutcome',{gun:activeGun.name}));}
-function renderSafetySummary(){$('#safetySummaryState').textContent=$('#safetyAck').checked?translate('common','runtimeMain.safetyConfirmed'):translate('common','runtimeMain.safetyRequired');}
+function renderSafetySummary(){$('#safetySummaryState').textContent=$('#safetyAck').checked?translate('common','shellSafety.confirmed'):translate('common','shellSafety.required');}
+function renderSafetyDisclosure(){
+  const summary=$('.safety-disclosure summary'),summaryLabel=summary?.childNodes[0];
+  if(summaryLabel?.nodeType===Node.TEXT_NODE)summaryLabel.textContent=translate('common','shellSafety.summary')+' ';
+  setNodeText($('#safety-title'),translate('common','shellSafety.heading'));
+  setNodeText($('.safety-card p'),translate('common','shellSafety.instructions'));
+  const acknowledgement=$('#safetyAck').closest('label');
+  const acknowledgementText=[...acknowledgement.childNodes].find(node=>node.nodeType===Node.TEXT_NODE);
+  if(acknowledgementText)acknowledgementText.textContent=' '+translate('common','shellSafety.disclosureAcknowledgement');
+  renderSafetySummary();
+}
 async function refreshLocalizedViews(){
-  renderGunControls();renderPreferences();renderInstallStatus();renderDeviceCheck();renderSettingsOutcome();renderSafetySummary();
+  renderGunControls();renderPreferences();renderInstallStatus();renderDeviceCheck();renderSettingsOutcome();renderSafetyDisclosure();
   renderClassCards();renderDrillCatalog();renderCustomCatalog();renderLiveButton();renderDrill();
   practiceController?.refresh();sessionController?.refresh();practiceGuideController?.refreshLocale();soundCheckController?.updateLocale?.();
   if(activeView==='home')renderHome().catch(showError);
@@ -632,11 +653,9 @@ function displayView(name) {
   }
   if(name==='drills'){
     $('#practiceCatalog').firstElementChild.tagName==='TEMPLATE'&&practiceController.renderCatalog();
-    const drillsModule=preparePageModule('drills',()=>afterPaint(()=>(renderLegacyDrills(),import('../apps/web/src/app/drillsPage.tsx'))));
-    if(!drillsPage && drillsModule && !profileLocked() && !$('#safetyModal').open){
-      try{drillsPage=drillsModule.mountDrillsPage($('#drillsView'),{...drillCards(),onBack:()=>goBack(),onCollection:selectDrillCollection,onCreate:()=>customEditor.open()},id=>{if(!practiceController.locked())practiceController.open(id).catch(showError);});}catch(error){showError(error);}
-    }
-    if(drillsPage && !profileLocked() && !$('#safetyModal').open){try{customEditor.connectView(drillsModule.mountCustomDrillFields);}catch(error){showError(error);}}
+    const drillsModule=preparePageModule('drills',loadDrillsPageModule);
+    if(drillsModule)mountDrillsPage(drillsModule);
+    else if(drillsPagePromise)void drillsPagePromise.then(mountDrillsPage).catch(showError);
   }
   if(name==='recognize'){
     // Startup no longer downloads the optional Live Listen renderers on Home.
