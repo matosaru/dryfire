@@ -47,6 +47,7 @@ test('cold localized Settings routes refresh the full shell and dynamic summarie
  for(const locale of ['de','nl']){
   await page.goto(`/${locale}/settings/`);await expect(page).toHaveURL(new RegExp(`/${locale}/settings/$`));await expect(page.locator('html')).toHaveAttribute('lang',locale);await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
   await expect(page.locator('#settings-title')).toHaveText(locale==='de'?'Einstellungen':'Instellingen');await expect(page.locator('#language')).toHaveValue(locale);
+  await expect(page.locator('label[for="noiseFilter"]')).toContainText(locale==='de'?'Rauschfilter':'Ruisfilter');await expect(page.locator('label[for="appearance"]')).toContainText(locale==='de'?'Darstellung':'Weergave');await expect(page.locator('label[for="measurementSystem"]')).toContainText(locale==='de'?'Maßeinheiten':'Maateenheden');await expect(page.locator('#languageHelp')).toHaveText(locale==='de'?'Wähle die Sprache für die gesamte App.':'Kies de taal voor de hele app.');
   await expect(page.locator('.safety-disclosure summary')).toContainText(locale==='de'?'Sicherheitsprüfung':'Veiligheidscontrole');
   await expect(page.locator('#safetySummaryState')).toHaveText(locale==='de'?'Vor der Aufnahme erforderlich':'Vereist vóór opname');
   await expect(page.locator('#safety-title')).toHaveText(locale==='de'?'Sicherheit zuerst':'Veiligheid eerst');
