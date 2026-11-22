@@ -118,7 +118,7 @@ test('measurement units persist, export and update Sound Check distance guidance
   await expect(page.locator('.sound-check-distance-help')).toContainText('under 30 cm');
 });
 
-for(const theme of ['dark','light'])test(`delayed Settings code keeps controls and pixel-identical ${theme} handoff`,async({page})=>{
+for(const theme of ['dark','light'])test(`delayed Settings code mounts on first visit and keeps controls and pixel-identical ${theme} handoff`,async({page})=>{
   let release;const blocked=new Promise(resolve=>{release=resolve;});
   await page.route('**/assets/settingsPage-*.js',async route=>{await blocked;await route.continue();});
   page.on('dialog',dialog=>dialog.accept());await restore(page);
@@ -129,8 +129,6 @@ for(const theme of ['dark','light'])test(`delayed Settings code keeps controls a
   const before=await page.locator('#settingsView').screenshot({animations:'disabled'});
   const loaded=page.waitForResponse(response=>/\/assets\/settingsPage-/.test(response.url()));release();await loaded;
   expect(await file.evaluate(node=>node===document.getElementById('importFile'))).toBe(true);
-  await expect(page.locator('#settingsView')).not.toHaveAttribute('data-react-settings');
-  await page.locator('.tab[data-view="home"]').click();await page.locator('#settingsShortcut').click();
   await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
   expect(await file.evaluate(node=>node===document.getElementById('importFile'))).toBe(true);
   expect(createHash('sha256').update(await page.locator('#settingsView').screenshot({animations:'disabled'})).digest('hex')).toBe(createHash('sha256').update(before).digest('hex'));

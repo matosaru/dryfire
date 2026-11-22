@@ -40,6 +40,22 @@ test('changing Settings language preserves local gun/history data and the matchi
  await page.reload();await expect(page.locator('html')).toHaveAttribute('lang','de');await expect(page.locator('#history-title')).toHaveText('Verlauf');
  await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
 });
+test('cold localized Settings routes refresh the full shell and dynamic summaries',async({page})=>{
+ await restore(page);await expect(page.locator('#homeView')).toBeVisible();await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');
+ for(const locale of ['de','nl']){
+  await page.goto(`/${locale}/settings/`);await expect(page).toHaveURL(new RegExp(`/${locale}/settings/$`));await expect(page.locator('html')).toHaveAttribute('lang',locale);await expect(page.locator('#settingsView')).toHaveAttribute('data-react-settings','');
+  await expect(page.locator('#settings-title')).toHaveText(locale==='de'?'Einstellungen':'Instellingen');await expect(page.locator('#language')).toHaveValue(locale);
+  await expect(page.locator('.safety-disclosure summary')).toContainText(locale==='de'?'Sicherheitsprüfung':'Veiligheidscontrole');
+  await expect(page.locator('#safetySummaryState')).toHaveText(locale==='de'?'Vor der Aufnahme erforderlich':'Vereist vóór opname');
+  await expect(page.locator('#safety-title')).toHaveText(locale==='de'?'Sicherheit zuerst':'Veiligheid eerst');
+  await expect(page.locator('#safetyAck').locator('..')).toContainText(locale==='de'?'Ich bestätige die Sicherheitsprüfung.':'Ik bevestig de veiligheidscontrole.');
+  await expect(page.locator('#activeGunType')).toHaveText(locale==='de'?'Kurzwaffen':'Handvuurwapens');
+  await expect(page.locator('.gun-switcher-label')).toHaveText(locale==='de'?'Aktive Waffe':'Actief wapen');
+  await expect(page.locator('.gun-switcher-action')).toContainText(locale==='de'?'Waffe wechseln':'Wapen wisselen');
+  await expect(page.locator('#soundResetSummary')).toContainText(locale==='de'?'gelernte Beispiele':'geleerde voorbeelden');
+  await expect(page.locator('#soundResetSummary')).not.toContainText(/learned samples|calibration samples/i);
+ }
+});
 test('changing locale refreshes Settings, retained Practice setup and Sequence setup copy',async({page})=>{
  await restore(page);await expect(page.locator('#activeGunName')).toHaveText('QA Handgun');await page.locator('#settingsShortcut').click();await expect(page).toHaveURL(/\/settings\/$/);await expect(page.locator('#language')).toBeVisible();await page.locator('#language').selectOption('de');await expect(page).toHaveURL(/\/de\/settings\/$/);
  await expect(page.locator('#soundResetSummary')).toContainText('gelernte Beispiele');await expect(page.locator('#soundResetSummary')).not.toContainText('learned samples');await expect(page.locator('#deviceCheck')).toContainText('Sichere Verbindung');

@@ -59,7 +59,7 @@ let appStarted=false;
 const canonicalLink=document.querySelector('link[rel=canonical]');
 let metadataPath=canonicalLink?.getAttribute('href')?.replace('https://easydryfire.com','');
 async function openEntry(){const entry=pendingEntry;pendingEntry=null;return openAppEntry(entry??{view:'home'});}
-async function applyRouteLocale(entry){if(typeof preferenceState==='undefined')return;const routeLocale=entry.locale??'en';if(preferenceState.language!==routeLocale){preferenceState.language=routeLocale;await setSetting('language',routeLocale);await loadLocale(routeLocale);}}
+async function applyRouteLocale(entry){if(typeof preferenceState==='undefined')return;const routeLocale=entry.locale??'en';if(preferenceState.language!==routeLocale){preferenceState.language=routeLocale;await setSetting('language',routeLocale);await loadLocale(routeLocale);await refreshLocalizedViews();}}
 async function missingSequence(){await switchView('drills');setMessage(translate('common','runtimeMain.sequenceUnavailable'));}
 async function openAppEntry(entry){
   await applyRouteLocale(entry);
@@ -131,7 +131,7 @@ let screenNavigation = null;
 let historyRenderToken = 0;
 let homeRenderToken = 0;
 let homePage, homePagePending, profilePages;
-let settingsPage;
+let settingsPage,settingsPagePromise;
 let learnPage;
 let soundCheckController,soundCheckPage,soundCheckPending;
 let legacyHistoryRenderer;
@@ -387,6 +387,13 @@ function drillCards(){return{
  builtIns:SEQUENCE_DRILLS.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id)})),
  customs:customDrills.map(drill=>({drill,titleFor,onChoose:()=>chooseDrill(drill.id),onEdit:()=>customEditor.open(drill)})),emptyCustom:!customDrills.length,
 };}
+function loadSettingsPageModule(){return settingsPagePromise||=afterPaint(()=>import('../apps/web/src/app/settingsPage.tsx'));}
+function mountSettingsPage(module){
+  if(settingsPage||activeView!=='settings'||profileLocked()||$('#safetyModal').open||!activeGun||activeGun.needsDetails)return;
+  try{settingsPage=module.mountSettingsPage($('#settingsView'),{onBack:()=>goBack(),onAction:id=>settingsHandlers.get(id)?.(),onPreference:id=>settingsHandlers.get(id)?.()});}
+  catch(error){showError(error);return;}
+  renderPreferences();
+}
 function loadDrillsPageModule(){return drillsPagePromise||=afterPaint(()=>{renderLegacyDrills();return import('../apps/web/src/app/drillsPage.tsx');});}
 function mountDrillsPage(module){
   if(drillsPage||activeView!=='drills'||profileLocked()||$('#safetyModal').open)return;
@@ -693,11 +700,9 @@ function displayView(name) {
   if(name==='guns')renderGunLibrary().catch(showError);
   if(name==='settings'){
     // Restore/help already work natively before onboarding; prepare React after a valid gun exists.
-    const settingsModule=activeGun && !activeGun.needsDetails && preparePageModule('settings',()=>afterPaint(()=>import('../apps/web/src/app/settingsPage.tsx')));
-    if(!settingsPage && settingsModule && !profileLocked() && !$('#safetyModal').open){
-      try{settingsPage=settingsModule.mountSettingsPage($('#settingsView'),{onBack:()=>goBack(),onAction:id=>settingsHandlers.get(id)?.(),onPreference:id=>settingsHandlers.get(id)?.()});}
-      catch(error){showError(error);}
-    }
+    const settingsModule=activeGun && !activeGun.needsDetails && preparePageModule('settings',loadSettingsPageModule);
+    if(settingsModule)mountSettingsPage(settingsModule);
+    else if(settingsPagePromise)void settingsPagePromise.then(mountSettingsPage).catch(showError);
     renderPreferences();
   }
 }
@@ -1190,6 +1195,7 @@ async function init() {
   const library = await getLibraryOverview();
   for (const gun of library.guns) recovered.push(...await recoverInterruptedSessions(gun.id));
   await loadActiveGun(library);
+  renderSafetyDisclosure();
   renderLiveButton();
   if (!activeGun || activeGun.needsDetails) {if(pendingEntry&&(['settings','about','contact','guns','gunSetup'].includes(pendingEntry.view)||pendingEntry.view==='practiceGuide'&&pendingEntry.guideId!=='sequence-custom'))await openEntry();else {await applyRouteLocale({locale:pendingEntry?.locale});openGunSetup(activeGun);}}
   else if (pendingEntry && pendingEntry.view !== 'home') await openEntry();
