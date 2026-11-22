@@ -182,8 +182,10 @@ function applyAppearance() {
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#f4f6f8' : '#0b1116');
 }
 async function loadDevicePreferences() {
-  const [saved, vibration, measurementSystem,language] = await Promise.all([getSetting('appearance', 'dark'), getSetting('vibrationFeedback', false),getSetting('measurementSystem','metric'),getSetting('language','en')]);
-  await applyDevicePreferences({appearance:saved,vibrationFeedback:vibration,measurementSystem,language});
+  const routeLocale=pendingEntry?.locale??'en';
+  const [saved, vibration, measurementSystem,storedLanguage] = await Promise.all([getSetting('appearance', 'dark'), getSetting('vibrationFeedback', false),getSetting('measurementSystem','metric'),getSetting('language','en')]);
+  await applyDevicePreferences({appearance:saved,vibrationFeedback:vibration,measurementSystem,language:routeLocale});
+  if(storedLanguage!==routeLocale)await setSetting('language',routeLocale);
 }
 async function applyDevicePreferences({appearance:saved,vibrationFeedback:vibration,measurementSystem,language='en'}) {
   preferenceState.theme = ['dark', 'light', 'system'].includes(saved) ? saved : 'dark';

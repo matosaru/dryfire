@@ -22,7 +22,7 @@ const deferred=()=>{let resolve;const promise=new Promise(yes=>{resolve=yes;});r
 function setup(gun={id:'a',name:'Test',type:'Handguns'}){
  document.body.innerHTML=renderPageTemplates('{{app}}');
  const context={translate,formatLocaleNumber,gunLibraryCoordinator:{invalidate:jest.fn()},startGunPreferenceReads,getLibraryOverview:jest.fn(async()=>({activeGun:gun,guns:gun?[gun]:[],devicePreferences:{appearance:'light',vibrationFeedback:true}})),setNodeText,setNodeDisabled,initializeTimedControllers:jest.fn(),historyPage:null,learnPage:null,livePage:null,document,Option,$:s=>document.querySelector(s),historyRenderToken:0,homeRenderToken:0,gunLibraryToken:0,
-  activeGun:null,guns:[],examples:[],customDrills:[],audioPreferences:{},calibration:[],enabledSoundLabels:[],
+  activeGun:null,guns:[],examples:[],customDrills:[],audioPreferences:{},calibration:[],enabledSoundLabels:[],pendingEntry:null,setSetting:jest.fn(async()=>{}),
   processingReport:{old:true},latestEventId:'old',sessionEventCount:4,ignoredEventCount:2,appearance:'dark',measurementSystem:'metric',language:'en',vibrationFeedback:false,vibrationRejected:true,
   getActiveGun:jest.fn(async()=>gun),getGuns:jest.fn(async()=>gun?[gun]:[]),
   getExamples:jest.fn(async()=>[{label:'trigger',gunId:'a'}]),getCustomDrills:jest.fn(async()=>[]),getOutdatedExampleCount:jest.fn(async()=>2),
