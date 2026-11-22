@@ -1,6 +1,6 @@
 {
-  "sourceCommit": "a7ba1c3d293d007b785a002a7c4b33db50c49be4",
-  "renderer": "local Chromium 145.0.7632.6",
+  "sourceCommit": "8eb270d9afe10f05bd72d84d19f34202f72fdc01",
+  "renderer": "mcr.microsoft.com/playwright:v1.58.2-noble@sha256:65cefd09a5e943921ecd3a6e5414c603db2eb161e9eb48f2e2ccc63486dc7dc0",
   "sources": {
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
     "apps/web/src/styles/legacy-before-guide-page.css": "e83f3be0127e92b11d8f6aaccfdad8299caa97e5b0f2507b8b9a8ed1ee0645ab",
@@ -87,7 +87,7 @@
     "apps/web/src/features/sessions/phasePresentation.ts": "3f2de23f086b509cdcb2a9567e6b75cfa066bfd49fd965ba5f341baa0c08ea51",
     "src/practiceGuideController.js": "302df6b59cfcc62371ac425b25bf01aa8509ddab6c1e484fc56db87114cb452b",
     "src/practiceGuideBridge.js": "cf60455330ccb5b80b0b790380adfe256fa233831a78e12be9735c97186b071a",
-    "src/main.js": "d5118ace6b49c07caa3198937290cb893809fdf02f7f9e1430fd7828eee2ae8c",
+    "src/main.js": "d2ec01b804528a6b8465065d84120213838c574bdc5986dc836b03bae75029fe",
     "src/afterPaint.js": "403723edaf8ea01aafaccf81a4ee7948b6f72256d1df3ef3a96ed638f905b8b1",
     "src/practiceGuideRendering.js": "98ab13fd4b8f8710e19204d3130d498053ded6fc33337602034acbad05f8e17c",
     "src/practiceGuideExamples.js": "f2b21b862d222a2d12aff8799e7bcc1ee9dbc0638f8512d3e82dbc7660eb5962",
@@ -145,7 +145,7 @@
       "frames": 42,
       "frameMs": 200,
       "file": "single-early.gif",
-      "sha256": "f4109a821445e0522e2d873c504e6f6245274286b5ce5a07a652f893c6f6be62",
+      "sha256": "5d030e19e06c828a59237c2a916e636885825155a2f9aeb981cc44a64bd838b9",
       "width": 358,
       "height": 1004
     },
@@ -181,7 +181,7 @@
       "frames": 56,
       "frameMs": 200,
       "file": "sequence-trigger-only.gif",
-      "sha256": "ee65a38f3e7a6d2d983c88e7c18514010505024d55cc14543bae507898e0cba0",
+      "sha256": "fa94dad166e2d0d6ebab63b9fe9f3e5c347f5653c45903484278292d89e4a854",
       "width": 358,
       "height": 750
     },
@@ -208,7 +208,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-draw-mag-trigger.gif",
-      "sha256": "0888202afc206dd992ce7205a63763bf31003602d50ad0f70c5c34d36067939b",
+      "sha256": "0b8c638bd7840318f83735f6a045951102b9cec96e3fd1a1ae9594abdd430fa6",
       "width": 358,
       "height": 750
     },
@@ -217,7 +217,7 @@
       "frames": 72,
       "frameMs": 200,
       "file": "sequence-custom.gif",
-      "sha256": "3e163546ac83399cbd18f9293b29c3512635cbe9633d2803e3aef3b8f85f4012",
+      "sha256": "be492eb862cb670beb087e3f0f9bda77c4d883052cba9e1a5b7f593c87b51f3e",
       "width": 358,
       "height": 750
     }

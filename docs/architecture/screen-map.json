@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewedOn": "2026-11-21",
+  "reviewedOn": "2026-11-22",
   "sourceBaseline": "98e4bbd594d0961692ceff28a9d72cceab20eb3c",
   "publicOrigin": "https://easydryfire.com",
   "publicPaths": [
@@ -831,7 +831,7 @@
   ],
   "reviewedSources": {
     "index.html": "9e8b7df3ddb6306c4ba95d8a38a84f51530986f8ace641624a4f7d6a16d68f6a",
-    "src/main.js": "d5118ace6b49c07caa3198937290cb893809fdf02f7f9e1430fd7828eee2ae8c",
+    "src/main.js": "d2ec01b804528a6b8465065d84120213838c574bdc5986dc836b03bae75029fe",
     "src/styles.css": "8ffd2be91b0372419a98dd631ee465b6c02368d4c6f4febff01ad78f9713ffbc",
     "src/screenNavigation.js": "e4404aacd5ea30cdba05ddd2593e00c18ab78b994f9942bc6410b99b68132a74",
     "src/practiceSession.js": "e7d955a7e05db50e7a7d3bc2da38d7488fada897bf6b8c0b7319063e7c0f37f5",
